@@ -4,5 +4,5 @@ import { authState } from '../state/auth';
 export const useAuth = () => {
   const user = useRecoilValue(authState);
 
-  return { user };
+  return { isAuthenticated: user !== null };
 };
