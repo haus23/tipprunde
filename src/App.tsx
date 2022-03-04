@@ -1,15 +1,19 @@
-import { useChampionships } from './api/hooks/use-championships';
+import { Suspense } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import Backyard from './backyard/Backyard';
+import FrontOfHouse from './front-of-house/FrontOfHouse';
 
 function App() {
-  const { championships } = useChampionships();
-
   return (
-    <div>
-      <h1>runde.tips</h1>
-      <h2>
-        {championships.length ? championships[0].title : 'Noch kein Turnier'}
-      </h2>
-    </div>
+    <BrowserRouter>
+      <Suspense fallback={<p>Loading ...</p>}>
+        <Routes>
+          <Route path="/*" element={<FrontOfHouse />} />
+          <Route path="/hinterhof/*" element={<Backyard />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 }
 
