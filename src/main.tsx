@@ -1,9 +1,12 @@
-import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import { StrictMode } from 'react';
 import { RecoilRoot } from 'recoil';
 
+// The App
+import App from './App';
+import './assets/styles.css';
+
+// Bootstrap
 ReactDOM.render(
   <StrictMode>
     <RecoilRoot>
