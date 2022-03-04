@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Logo from '@/core/components/Logo';
+import ThemeSwitch from '@/core/components/ThemeSwitch';
 
 function Header() {
   return (
@@ -12,7 +13,9 @@ function Header() {
               <h1 className="ml-2 text-2xl font-semibold">runde.tips</h1>
             </Link>
           </div>
-          <div className="flex items-center">{/* <ThemeSwitch /> */}</div>
+          <div className="flex items-center">
+            <ThemeSwitch />
+          </div>
         </div>
       </div>
     </nav>
