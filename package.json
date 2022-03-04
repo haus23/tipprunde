@@ -9,8 +9,10 @@
     "format": "prettier src --write"
   },
   "dependencies": {
+    "firebase": "^9.6.7",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "recoil": "0.6.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.33",
