@@ -22,4 +22,7 @@ export const darkModeState = selector({
     setDarkClass(darkMode);
     return darkMode;
   },
+  cachePolicy_UNSTABLE: {
+    eviction: 'most-recent',
+  },
 });
