@@ -1,8 +1,13 @@
 import { useRecoilValue } from 'recoil';
-import { championshipsState } from '../state/championships';
+import { Championship } from '../model/championship';
+import { add } from '../model/repository/add';
+import { championshipsStreamState } from '../state/championships-stream';
 
 export const useChampionships = () => {
-  const championships = useRecoilValue(championshipsState);
+  const championships = useRecoilValue(championshipsStreamState);
 
-  return { championships };
+  const create = (championship: Championship) =>
+    add<Championship>('championships', championship);
+
+  return { championships, create };
 };

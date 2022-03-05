@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { useChampionships } from '@/api/hooks/use-championships';
 import { currentChampionshipState } from '../state/current-championship';
+import { championshipsState } from '@/api/state/championships';
 
 export const useCurrentChampionship = () => {
   const [championship, setChampionship] = useRecoilState(
     currentChampionshipState
   );
-  const { championships } = useChampionships();
+  const championships = useRecoilValue(championshipsState);
 
   useEffect(() => {
     if (!championship && championships.length > 0) {
