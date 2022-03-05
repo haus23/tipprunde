@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase/auth';
 import { authState } from '../state/auth';
 
@@ -15,5 +15,10 @@ export const useAuth = () => {
     successHandler();
   };
 
-  return { isAuthenticated: user !== null, logIn };
+  const logOut = async (successHandler: () => void) => {
+    await signOut(auth);
+    successHandler();
+  };
+
+  return { isAuthenticated: user !== null, logIn, logOut };
 };
