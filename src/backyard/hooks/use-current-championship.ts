@@ -1,12 +1,8 @@
-import { useChampionships } from '@/api/hooks/use-championships';
-import { Championship } from '@/api/model/championship';
 import { useEffect } from 'react';
-import { atom, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 
-const currentChampionshipState = atom<Championship | null>({
-  key: 'backyard-currentChampionship-state',
-  default: null,
-});
+import { useChampionships } from '@/api/hooks/use-championships';
+import { currentChampionshipState } from '../state/current-championship';
 
 export const useCurrentChampionship = () => {
   const [championship, setChampionship] = useRecoilState(
