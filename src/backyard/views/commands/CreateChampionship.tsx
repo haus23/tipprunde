@@ -107,7 +107,7 @@ function CreateChampionship() {
           </div>
           <div className="flex justify-end">
             <Button primary className="w-32" type="submit">
-              Speichern
+              Anlegen
             </Button>
           </div>
         </form>
