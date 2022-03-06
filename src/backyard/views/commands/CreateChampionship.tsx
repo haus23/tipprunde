@@ -10,11 +10,13 @@ import Button from '@/ui/atoms/Button';
 import TextField from '@/ui/atoms/TextField';
 import FormPanel from '@/ui/FormPanel';
 import ContentPanel from '@/backyard/components/ContentPanel';
+import { useNotify } from '@/core/hooks/use-notify';
 
 function CreateChampionship() {
   const { championships, create } = useChampionships();
   const { setChampionship } = useCurrentChampionship();
   const navigate = useNavigate();
+  const notify = useNotify();
 
   const {
     register,
@@ -49,7 +51,7 @@ function CreateChampionship() {
       published: false,
       completed: false,
     };
-    await create(championship);
+    await notify(create(championship), `Turnier ${title} angelegt.`);
     setChampionship(championship);
     navigate('..');
   };

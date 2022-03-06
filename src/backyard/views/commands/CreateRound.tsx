@@ -7,21 +7,26 @@ import { useCurrentChampionship } from '@/backyard/hooks/use-current-championshi
 import Button from '@/ui/atoms/Button';
 import FormPanel from '@/ui/FormPanel';
 import ContentPanel from '@/backyard/components/ContentPanel';
+import { useNotify } from '@/core/hooks/use-notify';
 
 function CreateRound() {
   const navigate = useNavigate();
   const { championship } = useCurrentChampionship();
   const { rounds, create } = useRounds(championship?.id);
+  const notify = useNotify();
 
   const nextNr = useRef(rounds.length + 1);
 
   const createRound = async () => {
-    await create({
-      id: `round-${nextNr.current}`,
-      nr: nextNr.current,
-      published: false,
-      completed: false,
-    });
+    await notify(
+      create({
+        id: `round-${nextNr.current}`,
+        nr: nextNr.current,
+        published: false,
+        completed: false,
+      }),
+      `Runde ${nextNr.current} angelegt.`
+    );
     navigate('..');
   };
 
