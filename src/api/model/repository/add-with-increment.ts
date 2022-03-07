@@ -1,29 +1,33 @@
 import { db } from '@/api/firebase/db';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, runTransaction } from 'firebase/firestore';
 import { BaseModel } from '../base';
 import { Sequence } from '../sequence';
-import { add } from './add';
 import { converter } from './converter';
 
 export const addWithIncrement = async <T extends BaseModel>(
   path: string,
-  sequenceName: string,
+  sequence: string,
   entity: T
 ) => {
-  const sequenceRef = doc(db, `sequences/${sequenceName}`).withConverter(
+  const seqRef = doc(db, 'sequences', sequence).withConverter(
     converter<Sequence>()
   );
-  const snapshot = await getDoc(sequenceRef);
-  let sequence: Sequence;
-  if (snapshot.exists()) {
-    sequence = snapshot.data();
-  } else {
-    sequence = { id: sequenceName, sequence: 0 };
-  }
-  ++sequence.sequence;
-  await setDoc(sequenceRef, sequence);
+  let nextId = 1;
 
-  entity.id = sequence.sequence.toString();
+  return await runTransaction(db, async (tx) => {
+    const seqDoc = await tx.get(seqRef);
 
-  return add(path, entity);
+    if (seqDoc.exists()) {
+      nextId = seqDoc.data().sequence + 1;
+      tx.update(seqRef, { sequence: nextId });
+    } else {
+      tx.set(seqRef, { sequence: nextId });
+    }
+
+    entity.id = nextId;
+    const entityRef = doc(db, path, entity.id.toString()).withConverter(
+      converter<T>()
+    );
+    tx.set(entityRef, entity);
+  });
 };
