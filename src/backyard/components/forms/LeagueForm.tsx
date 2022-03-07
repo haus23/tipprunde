@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form';
 import { League } from '@/api/model/league';
 import { useLeagues } from '@/api/hooks/use-leagues';
 
-import { slugify } from '@/core/helpers/slugify';
-
 import Button from '@/ui/atoms/Button';
 import TextField from '@/ui/atoms/TextField';
 
@@ -18,19 +16,9 @@ function LeagueForm({ onSave, onCancel }: LeagueFormProps) {
 
   const {
     formState: { dirtyFields, errors },
-    getValues,
-    setValue,
     handleSubmit,
     register,
   } = useForm<League>();
-
-  const handleShortNameChange = () => {
-    if (!dirtyFields.slug) {
-      const shortName = getValues('short_name');
-      const slug = slugify(shortName);
-      setValue('slug', slug);
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit(onSave)}>
@@ -44,27 +32,23 @@ function LeagueForm({ onSave, onCancel }: LeagueFormProps) {
           errorMsg={errors.name?.message}
           {...register('name', {
             required: 'Pflichtfeld',
+            validate: {
+              uniqueName: (name) =>
+                !leagues.some((c) => c.name === name) ||
+                'Liga mit diesem Namen ist schon angelegt.',
+            },
           })}
         />
         <TextField
           className="col-span-6"
           label="Kurzform"
-          errorMsg={errors.short_name?.message}
-          {...register('short_name', {
-            required: 'Pflichtfeld',
-            onBlur: handleShortNameChange,
-          })}
-        />
-        <TextField
-          className="col-span-6"
-          label="Kennung"
-          errorMsg={errors.slug?.message}
-          {...register('slug', {
+          errorMsg={errors.shortName?.message}
+          {...register('shortName', {
             required: 'Pflichtfeld',
             validate: {
-              uniqueSlug: (slug) =>
-                !leagues.some((c) => c.slug === slug) ||
-                'Liga mit dieser Kennung existiert schon',
+              uniqueShortname: (shortName) =>
+                !leagues.some((c) => c.shortName === shortName) ||
+                'Diese Kurzbezeichnung gibt es schon.',
             },
           })}
         />
@@ -73,7 +57,7 @@ function LeagueForm({ onSave, onCancel }: LeagueFormProps) {
             Abbrechen
           </Button>
           <Button primary type="submit">
-            Speichern
+            Anlegen
           </Button>
         </div>
       </div>
