@@ -24,10 +24,8 @@ export const addWithIncrement = async <T extends BaseModel>(
       tx.set(seqRef, { sequence: nextId });
     }
 
-    entity.id = nextId;
-    const entityRef = doc(db, path, entity.id.toString()).withConverter(
-      converter<T>()
-    );
+    entity.id = nextId.toString();
+    const entityRef = doc(db, path, entity.id).withConverter(converter<T>());
     tx.set(entityRef, entity);
   });
 };
