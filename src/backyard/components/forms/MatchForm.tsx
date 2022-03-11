@@ -13,16 +13,19 @@ import ComboboxField from '@/ui/atoms/ComboboxField';
 
 export type MatchFormType = {
   date: string;
-  league: League;
+  leagueId: string;
   firstTeam: string;
   secondTeam: string;
 };
 
 function MatchForm() {
   const { leagues, create: createLeague } = useLeagues();
-  const { control, register, handleSubmit } = useForm<MatchFormType>({
-    defaultValues: { league: leagues && leagues[0] },
-  });
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<MatchFormType>();
 
   const notify = useNotify();
 
@@ -31,11 +34,11 @@ function MatchForm() {
 
   const onSubmit: SubmitHandler<MatchFormType> = async (data) => {
     // Hack: no clue how to handle errors on object type fields
-    if (typeof data.league == 'undefined') {
-      setLeagueError('Liga muss schon ausgewählt werden.');
-    } else {
-      setLeagueError('');
-    }
+    // if (typeof data.league == 'undefined') {
+    //   setLeagueError('Liga muss schon ausgewählt werden.');
+    // } else {
+    //   setLeagueError('');
+    // }
     // onAddMatch(data);
     console.log(data);
   };
@@ -56,9 +59,11 @@ function MatchForm() {
             lang="de"
             {...register('date')}
           />
+
           <Controller
             control={control}
-            name="league"
+            name="leagueId"
+            rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <ComboboxField
                 className="col-span-4 sm:col-span-3 sm:col-start-4 md:col-span-4 lg:col-span-3 lg:col-start-4"
@@ -69,8 +74,8 @@ function MatchForm() {
                   league.name.toLowerCase().includes(query.toLowerCase())
                 }
                 onChange={onChange}
-                currentItem={value}
-                errorMsg={leagueError}
+                currentItemId={value}
+                errorMsg={errors.leagueId?.message}
               />
             )}
           />

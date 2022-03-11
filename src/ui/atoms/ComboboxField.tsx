@@ -14,8 +14,8 @@ type ComboboxFieldProps<T> = {
   items: T[];
   displayField: Extract<keyof T, string>;
   filter: (query: string, item: T) => boolean;
-  currentItem: T;
-  onChange: (item: T) => void;
+  currentItemId: string | undefined;
+  onChange: (itemId: string) => void;
   errorMsg?: string;
 };
 
@@ -26,7 +26,7 @@ function ComboboxField<T extends BaseModel>({
   displayField,
   filter,
   onChange,
-  currentItem,
+  currentItemId,
   errorMsg,
 }: ComboboxFieldProps<T>) {
   const [query, setQuery] = useState('');
@@ -40,7 +40,7 @@ function ComboboxField<T extends BaseModel>({
     <div className={className}>
       <Combobox
         as="div"
-        value={currentItem}
+        value={currentItemId}
         onChange={onChange}
         className="relative"
       >
@@ -63,7 +63,10 @@ function ComboboxField<T extends BaseModel>({
               )}
               autoComplete="off"
               onChange={(event) => setQuery(event.target.value)}
-              displayValue={(item: T) => String(item[displayField])}
+              displayValue={(id: string) => {
+                const item = items.find((it) => it.id === id)!;
+                return String(item[displayField]);
+              }}
             />
             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-1">
               <SelectorIcon
@@ -93,7 +96,7 @@ function ComboboxField<T extends BaseModel>({
             {filteredItems.map((item) => (
               <Combobox.Option
                 key={item.id}
-                value={item}
+                value={item.id}
                 className={({ active }) =>
                   classNames(
                     'relative cursor-default select-none py-2 pl-8 pr-4',
@@ -101,8 +104,7 @@ function ComboboxField<T extends BaseModel>({
                   )
                 }
               >
-                {({ active }) => {
-                  const selected = item.id === currentItem?.id;
+                {({ active, selected }) => {
                   return (
                     <>
                       <span
@@ -132,6 +134,11 @@ function ComboboxField<T extends BaseModel>({
           </Combobox.Options>
         )}
       </Combobox>
+      {errorMsg && (
+        <p data-testid="errorMsg" className="mt-2 text-sm text-red-500">
+          {errorMsg}
+        </p>
+      )}
     </div>
   );
 }
