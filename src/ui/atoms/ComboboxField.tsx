@@ -10,40 +10,39 @@ import { useState } from 'react';
 
 type ComboboxFieldProps<T> = {
   className?: string;
+  name: string;
   label: string;
   items: T[];
   displayField: Extract<keyof T, string>;
   filter: (query: string, item: T) => boolean;
-  currentItemId: string | undefined;
+  value: string | undefined;
   onChange: (itemId: string) => void;
+  onBlur: () => void;
+  hasError?: boolean;
   errorMsg?: string;
 };
 
 function ComboboxField<T extends BaseModel>({
   className,
+  name,
   label,
   items,
   displayField,
   filter,
+  onBlur,
+  value,
   onChange,
-  currentItemId,
+  hasError,
   errorMsg,
 }: ComboboxFieldProps<T>) {
   const [query, setQuery] = useState('');
-
-  const hasError = !!errorMsg;
 
   const filteredItems =
     query === '' ? items : items.filter((item) => filter(query, item));
 
   return (
     <div className={className}>
-      <Combobox
-        as="div"
-        value={currentItemId}
-        onChange={onChange}
-        className="relative"
-      >
+      <Combobox as="div" value={value} onChange={onChange} className="relative">
         <Combobox.Label
           className={classNames(
             'block text-sm font-medium text-gray-700 dark:text-gray-200',
@@ -55,6 +54,7 @@ function ComboboxField<T extends BaseModel>({
         <div className="relative mt-2 flex rounded-md shadow-sm">
           <div className="relative z-10 grow">
             <Combobox.Input
+              name={name}
               className={classNames(
                 'block w-full rounded-none rounded-l-md shadow-sm disabled:bg-gray-100 dark:bg-gray-800 dark:disabled:bg-gray-700 sm:text-sm',
                 hasError
@@ -62,6 +62,7 @@ function ComboboxField<T extends BaseModel>({
                   : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600'
               )}
               autoComplete="off"
+              onBlur={onBlur}
               onChange={(event) => setQuery(event.target.value)}
               displayValue={(id: string) => {
                 const item = items.find((it) => it.id === id)!;
