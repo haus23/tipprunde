@@ -64,8 +64,9 @@ function MatchForm() {
             control={control}
             name="leagueId"
             rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange, value, name, onBlur } }) => (
               <ComboboxField
+                name={name}
                 className="col-span-4 sm:col-span-3 sm:col-start-4 md:col-span-4 lg:col-span-3 lg:col-start-4"
                 label="Liga / Runde / Gruppe / Wettbewerb"
                 items={leagues}
@@ -74,7 +75,9 @@ function MatchForm() {
                   league.name.toLowerCase().includes(query.toLowerCase())
                 }
                 onChange={onChange}
-                currentItemId={value}
+                onBlur={onBlur}
+                value={value}
+                hasError={!!errors.leagueId}
                 errorMsg={errors.leagueId?.message}
               />
             )}
