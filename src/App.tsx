@@ -1,3 +1,3 @@
 export default function App() {
-    return <h1>runde.tips</h1>
+  return <h1>runde.tips</h1>;
 }
