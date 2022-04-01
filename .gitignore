@@ -1,0 +1,5 @@
+# NPM deps
+/node_modules/
+
+# Build
+/dist/
