@@ -8,6 +8,7 @@ import Dashboard from '@/views/backyard/Dashboard';
 import Home from '@/views/front-of-house/Home';
 import LogIn from '@/views/front-of-house/LogIn';
 import LogOut from '@/views/front-of-house/LogOut';
+import Experiment from '@/views/backyard/Experiment';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         </Route>
         <Route path="/hinterhof" element={<Backyard />}>
           <Route index element={<Dashboard />} />
+          <Route path="experiment" element={<Experiment />} />
         </Route>
       </Routes>
     </Suspense>
