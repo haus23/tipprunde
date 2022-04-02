@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/api/hooks/use-auth';
 import Button from '@/components/atoms/Button';
 
 export default function Home() {
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -13,12 +15,28 @@ export default function Home() {
         Online-Auswertung. Bis allerdings erste Tabellenstände tatsächlich hier
         auf Abruf stehen, dauert es noch eine kleine Weile.
         <div className="mt-8 flex flex-col items-center gap-y-4">
-          <>
-            <Button onClick={() => navigate('login')} primary className="w-32">
-              Log In
+          {isAuthenticated ? (
+            <Button
+              primary
+              onClick={() => navigate('hinterhof')}
+              className="w-40"
+            >
+              Zum Hinterhof
             </Button>
-            <div className="text-sm text-gray-500">Nur für interne Zwecke</div>
-          </>
+          ) : (
+            <>
+              <Button
+                primary
+                onClick={() => navigate('login')}
+                className="w-32"
+              >
+                Log In
+              </Button>
+              <div className="text-sm text-gray-500">
+                Nur für interne Zwecke
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
