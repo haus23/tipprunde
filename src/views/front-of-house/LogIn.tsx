@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { useAuth } from '@/api/hooks/use-auth';
 import TextField from '@/components/atoms/TextField';
 import Button from '@/components/atoms/Button';
 import FormPanel from '@/components/FormPanel';
@@ -10,6 +13,17 @@ type LoginFormType = {
 };
 
 export default function LogIn() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { isAuthenticated, logIn } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
   const [error, setError] = useState('');
   const {
     register,
@@ -17,13 +31,19 @@ export default function LogIn() {
     formState: { errors },
   } = useForm<LoginFormType>();
 
+  const state = location.state as { from: Location } | null;
+  const from = state?.from.pathname || '/';
+
   const onSubmit: SubmitHandler<LoginFormType> = async ({
     email,
     password,
   }) => {
-    console.log('Trying to log in with ', email, password);
+    try {
+      await logIn(email, password, () => navigate(from, { replace: true }));
+    } catch {
+      setError('Email und/oder Passwort falsch!');
+    }
   };
-
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">

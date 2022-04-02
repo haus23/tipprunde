@@ -8,6 +8,7 @@ export default function Backyard() {
           runde.tips
         </h1>
       </Link>
+      <Link to="/logout">Log out</Link>
       <main className="sm:mt-4 max-w-3xl mx-auto p-4">
         <Outlet />
       </main>
