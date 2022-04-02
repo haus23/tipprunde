@@ -9,7 +9,7 @@ import 'tailwindcss/tailwind.css';
 import App from '@/App';
 import { RecoilRoot } from 'recoil';
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <RecoilRoot>
       <BrowserRouter>
