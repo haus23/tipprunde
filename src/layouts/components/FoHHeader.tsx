@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Logo from '@/layouts/components/Logo';
+import ThemeSwitch from '@/layouts/components/ThemeSwitch';
 
 export default function FoHHeader() {
   return (
@@ -11,6 +12,9 @@ export default function FoHHeader() {
               <Logo className="h-8" />
               <h1 className="ml-2 text-2xl font-semibold">runde.tips</h1>
             </Link>
+          </div>
+          <div className="flex items-center">
+            <ThemeSwitch />
           </div>
         </div>
       </div>
