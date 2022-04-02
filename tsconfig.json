@@ -4,9 +4,14 @@
     "moduleResolution": "Node",
     "noEmit": true,
     "target": "ESNext",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
+    "vite.config.ts",
     "src"
   ]
 }
