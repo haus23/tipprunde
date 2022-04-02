@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Logo from './Logo';
+import Logo from '@/layouts/components/Logo';
 
 export default function FoHHeader() {
   return (

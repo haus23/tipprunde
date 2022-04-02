@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import FoHHeader from './components/FoHHeader';
+import FoHHeader from '@/layouts/components/FoHHeader';
 
 export default function FrontOfHouse() {
   return (

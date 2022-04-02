@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
-import FrontOfHouse from './layouts/FrontOfHouse';
-import Backyard from './layouts/Backyard';
-import Home from './views/front-of-house/Home';
-import Dashboard from './views/backyard/Dashboard';
+import Backyard from '@/layouts/Backyard';
+import FrontOfHouse from '@/layouts/FrontOfHouse';
+import Dashboard from '@/views/backyard/Dashboard';
+import Home from '@/views/front-of-house/Home';
 
 export default function App() {
   return (
