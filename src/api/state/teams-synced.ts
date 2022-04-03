@@ -3,7 +3,7 @@ import { syncedList } from '@/api/model/repository/synced-list';
 import { Team } from '@/api/model/team';
 
 export const teamsSyncedState = atom<Team[]>({
-  key: 'teams-stream',
+  key: 'teams-synced',
   default: [],
   effects: [
     ({ setSelf }) => {

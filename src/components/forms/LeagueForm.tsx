@@ -1,16 +1,17 @@
 import { useForm } from 'react-hook-form';
 import { League } from '@/api/model/league';
-import { useLeaguesSynced } from '@/api/hooks/use-leagues-synced';
+import { useLeagues } from '@/api/hooks/use-leagues';
 
 import TextField from '../atoms/TextField';
 import Button from '@/components/atoms/Button';
 
 type LeagueFormProps = {
   onDone: () => void;
+  onCreated?: (league: League) => void;
 };
 
-export default function LeagueForm({ onDone }: LeagueFormProps) {
-  const { leagues, create } = useLeaguesSynced();
+export default function LeagueForm({ onDone, onCreated }: LeagueFormProps) {
+  const { leagues, create } = useLeagues();
 
   const {
     formState: { errors },
@@ -20,6 +21,7 @@ export default function LeagueForm({ onDone }: LeagueFormProps) {
 
   const onSave = async (league: League) => {
     await create(league);
+    onCreated?.call(null, league);
     onDone();
   };
 

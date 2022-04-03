@@ -7,8 +7,9 @@ import {
 
 import { db } from '@/api/firebase/db';
 import { converter } from '@/api/model/repository/converter';
+import { BaseModel } from '@/api/model/base/Model';
 
-export const syncedList = <T>(
+export const syncedList = <T extends BaseModel>(
   onData: (entities: T[]) => void,
   path: string,
   ...constraints: QueryConstraint[]

@@ -2,15 +2,15 @@ import { useForm } from 'react-hook-form';
 
 import TextField from '../atoms/TextField';
 import Button from '@/components/atoms/Button';
-import { useTeamsSynced } from '@/api/hooks/use-teams-synced';
 import { Team } from '@/api/model/team';
+import { useTeams } from '@/api/hooks/use-teams';
 
 type TeamFormProps = {
   onDone: () => void;
 };
 
 export default function TeamForm({ onDone }: TeamFormProps) {
-  const { teams, create } = useTeamsSynced();
+  const { teams, create } = useTeams();
 
   const {
     formState: { errors },
