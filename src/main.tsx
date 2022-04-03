@@ -10,11 +10,9 @@ import App from '@/App';
 import { RecoilRoot } from 'recoil';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  <StrictMode>
-    <RecoilRoot>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </RecoilRoot>
-  </StrictMode>
+  <RecoilRoot>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </RecoilRoot>
 );
