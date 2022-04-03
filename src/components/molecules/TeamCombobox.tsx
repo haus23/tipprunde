@@ -1,6 +1,5 @@
-import { ElementType, Fragment, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Combobox, Transition } from '@headlessui/react';
-import { BaseModel } from '@/api/model/base/Model';
 import { classNames } from '@/core/helpers/class-names';
 import {
   CheckIcon,
@@ -8,36 +7,41 @@ import {
   SelectorIcon,
   XCircleIcon,
 } from '@heroicons/react/outline';
+import { useTeams } from '@/api/hooks/use-teams';
+import { Team } from '@/api/model/team';
+import ModalDialog from '@/components/ModalDialog';
+import TeamForm from '@/components/forms/TeamForm';
 
-type ComboFieldProps<T extends BaseModel> = {
+type TeamComboboxProps = {
   className?: string;
   label: string;
-  items: T[];
-  value: string | null;
-  onChange: (id: string | null) => void;
-  displayField: Extract<keyof T, string>;
-  filter: (query: string, item: T) => boolean;
+  value: Team | null;
+  onChange: (team: Team | null) => void;
   hasError?: boolean;
   errorMsg?: string;
-  createHandler: () => void;
 };
 
-export default function ComboField<T extends BaseModel>({
+export default function TeamCombobox({
   className,
   label,
-  items,
   value,
   onChange,
-  displayField,
-  filter,
   hasError,
   errorMsg,
-  createHandler,
-}: ComboFieldProps<T>) {
+}: TeamComboboxProps) {
   const [query, setQuery] = useState('');
+  const [dlgOpen, setDlgOpen] = useState(false);
+
+  const { teams, create } = useTeams();
 
   const filteredItems =
-    query === '' ? items : items.filter((item) => filter(query, item));
+    query === ''
+      ? teams
+      : teams.filter((item) =>
+          `${item.name} ${item.shortName}`
+            .toLowerCase()
+            .includes(query.toLowerCase())
+        );
 
   return (
     <div className={className}>
@@ -54,20 +58,14 @@ export default function ComboField<T extends BaseModel>({
           <div className="relative z-10 grow">
             <Combobox.Input
               className={classNames(
-                'block w-full pl-8 rounded-none rounded-l-md shadow-sm disabled:bg-gray-100 dark:bg-gray-800 dark:disabled:bg-gray-700 sm:text-sm',
+                'block w-full pl-8 rounded-none mr-1 rounded-l-md shadow-sm disabled:bg-gray-100 dark:bg-gray-800 dark:disabled:bg-gray-700 sm:text-sm',
                 hasError
                   ? 'border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 dark:border-2 dark:border-red-600 dark:text-red-500'
                   : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600'
               )}
               autoComplete="off"
               onChange={(event) => setQuery(event.target.value)}
-              displayValue={(id: string) => {
-                if (!id) {
-                  return '';
-                }
-                const item = items.find((it) => it.id === id);
-                return item ? String(item[displayField]) : '';
-              }}
+              displayValue={(team: Team) => team?.name ?? ''}
             />
             {value && (
               <button
@@ -94,7 +92,7 @@ export default function ComboField<T extends BaseModel>({
             )}
           </div>
           <button
-            onClick={createHandler}
+            onClick={() => setDlgOpen(true)}
             type="button"
             className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 focus-within:z-10 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-700"
           >
@@ -113,7 +111,7 @@ export default function ComboField<T extends BaseModel>({
               {filteredItems.map((item) => (
                 <Combobox.Option
                   key={item.id}
-                  value={item.id}
+                  value={item}
                   className={({ active }) =>
                     classNames(
                       'relative cursor-default select-none py-2 pl-8 pr-4',
@@ -130,7 +128,7 @@ export default function ComboField<T extends BaseModel>({
                             selected ? 'font-semibold' : ''
                           )}
                         >
-                          {item[displayField]}
+                          {item.name}
                         </span>
 
                         {selected && (
@@ -157,6 +155,13 @@ export default function ComboField<T extends BaseModel>({
           {errorMsg}
         </p>
       )}
+      <ModalDialog
+        title="Neue Mannschaft"
+        open={dlgOpen}
+        onClose={() => setDlgOpen(false)}
+      >
+        <TeamForm onCreated={onChange} onDone={() => setDlgOpen(false)} />
+      </ModalDialog>
     </div>
   );
 }

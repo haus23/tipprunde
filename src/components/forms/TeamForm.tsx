@@ -7,9 +7,10 @@ import { useTeams } from '@/api/hooks/use-teams';
 
 type TeamFormProps = {
   onDone: () => void;
+  onCreated?: (team: Team) => void;
 };
 
-export default function TeamForm({ onDone }: TeamFormProps) {
+export default function TeamForm({ onDone, onCreated }: TeamFormProps) {
   const { teams, create } = useTeams();
 
   const {
@@ -19,7 +20,8 @@ export default function TeamForm({ onDone }: TeamFormProps) {
   } = useForm<Team>();
 
   const onSave = async (team: Team) => {
-    await create(team);
+    team = await create(team);
+    onCreated?.call(null, team);
     onDone();
   };
 
