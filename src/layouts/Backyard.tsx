@@ -24,7 +24,7 @@ export default function Backyard() {
       </div>
       <div
         className={classNames(
-          'absolute top-0 right-4 flex h-14 items-center transition-opacity md:h-16',
+          'absolute z-20 top-0 right-4 flex h-14 items-center transition-opacity md:h-16',
           sidebarOpen ? 'opacity-0' : 'opacity-100'
         )}
       >

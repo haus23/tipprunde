@@ -23,7 +23,7 @@ export default function ThemeSwitch() {
   const { theme, setTheme, darkMode } = useDarkMode();
 
   return (
-    <Menu as="div" className="flex relative z-20">
+    <Menu as="div" className="flex relative">
       <Menu.Button className="text-gray-400 hover:text-gray-500 dark:hover:text-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 dark:focus:ring-white">
         {darkMode ? (
           <MoonIcon className="h-6 w-6 m-1" />
