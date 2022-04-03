@@ -9,7 +9,7 @@
     "lint": "eslint src --fix --ext .ts,.tsx"
   },
   "dependencies": {
-    "@headlessui/react": "^1.5.0",
+    "@headlessui/react": "^0.0.0-insiders.ab6310c",
     "@heroicons/react": "^1.0.6",
     "@tailwindcss/forms": "0.5.0",
     "firebase": "^9.6.10",
