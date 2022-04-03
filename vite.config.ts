@@ -9,4 +9,12 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) =>
+          id.match(/node_modules\/[@]?firebase/) ? 'firebase' : undefined,
+      },
+    },
+  },
 });
