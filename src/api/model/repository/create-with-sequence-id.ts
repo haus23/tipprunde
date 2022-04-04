@@ -6,7 +6,7 @@ import { Sequence } from '@/api/model/base/sequence';
 
 import { converter } from './converter';
 
-export const createWithAutoId = async <T extends BaseModel>(
+export const createWithSequenceId = async <T extends BaseModel>(
   path: string,
   sequence: string,
   entity: T
