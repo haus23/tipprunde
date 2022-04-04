@@ -1,4 +1,4 @@
-import { ElementType, Fragment, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Combobox, Transition } from '@headlessui/react';
 import { BaseModel } from '@/api/model/base/Model';
 import { classNames } from '@/core/helpers/class-names';

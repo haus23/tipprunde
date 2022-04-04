@@ -14,6 +14,14 @@ module.exports = {
   parserOptions: {
     sourceType: 'module',
   },
+  rules: {
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        ignoreRestSiblings: true,
+      },
+    ],
+  },
   settings: {
     react: {
       version: 'detect',

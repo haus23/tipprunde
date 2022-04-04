@@ -1,5 +1,5 @@
 import { ElementType } from 'react';
-import { Link, NavLink, useMatch } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import {
   CalendarIcon,
   FolderIcon,

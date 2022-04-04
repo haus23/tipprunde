@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { createWithId } from '@/api/model/repository/createWithId';
 import { Championship } from '@/api/model/championship';
 import { championshipsState } from '@/api/state/championships';

@@ -14,7 +14,7 @@ export const useCurrentChampionship = () => {
     if (!championship && championships.length > 0) {
       setChampionship(championships[0]);
     }
-  }, []);
+  }, [championship, championships, setChampionship]);
 
   return { championship, setChampionship };
 };

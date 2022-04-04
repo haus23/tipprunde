@@ -32,7 +32,7 @@ export default function LeagueCombobox({
   const [query, setQuery] = useState('');
   const [dlgOpen, setDlgOpen] = useState(false);
 
-  const { leagues, create } = useLeagues();
+  const { leagues } = useLeagues();
 
   const filteredItems =
     query === ''

@@ -32,7 +32,7 @@ export default function TeamCombobox({
   const [query, setQuery] = useState('');
   const [dlgOpen, setDlgOpen] = useState(false);
 
-  const { teams, create } = useTeams();
+  const { teams } = useTeams();
 
   const filteredItems =
     query === ''

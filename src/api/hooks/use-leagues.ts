@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { League } from '@/api/model/league';
 import { createWithSequenceId } from '@/api/model/repository/create-with-sequence-id';
 import { leaguesState } from '@/api/state/leagues-async';

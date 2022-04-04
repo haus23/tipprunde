@@ -1,4 +1,3 @@
-import { Transition } from '@headlessui/react';
 import Logo from '@/layouts/components/Logo';
 
 export default function SplashScreen() {
