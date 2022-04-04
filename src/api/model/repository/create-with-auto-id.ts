@@ -23,7 +23,7 @@ export const createWithAutoId = async <T extends BaseModel>(
       nextId = seqDoc.data().sequence + 1;
       tx.update(seqRef, { sequence: nextId });
     } else {
-      tx.set(seqRef, { sequence: nextId });
+      tx.set(seqRef, { id: sequence, sequence: nextId });
     }
 
     entity.id = nextId.toString();
