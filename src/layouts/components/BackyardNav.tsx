@@ -8,13 +8,15 @@ import {
   UserIcon,
 } from '@heroicons/react/outline';
 
+import { classNames } from '@/core/helpers/class-names';
+
 import { useProfile } from '@/api/hooks/use-profile';
+import { useCurrentChampionship } from '@/views/backyard/hooks/use-current-championship';
 
 import { Championship } from '@/api/model/championship';
 import { Round } from '@/api/model/round';
 
 import Logo from '@/layouts/components/Logo';
-import { classNames } from '@/core/helpers/class-names';
 
 type SidebarProps = {
   onNavAction?: () => void;
@@ -55,6 +57,7 @@ const navLinks: {
 
 export default function BackyardNav({ onNavAction }: SidebarProps) {
   const { profile } = useProfile();
+  const { championship } = useCurrentChampionship();
 
   return (
     <div className="flex grow flex-col border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -67,7 +70,7 @@ export default function BackyardNav({ onNavAction }: SidebarProps) {
         </div>
         <nav className="mt-2 grow space-y-1 px-2">
           {navLinks
-            .filter((link) => link.visible(null, []))
+            .filter((link) => link.visible(championship, []))
             .map((link, ix) => {
               const Icon = link.icon;
               return (
