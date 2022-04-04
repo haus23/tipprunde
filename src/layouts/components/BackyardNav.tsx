@@ -12,6 +12,7 @@ import { classNames } from '@/core/helpers/class-names';
 
 import { useProfile } from '@/api/hooks/use-profile';
 import { useCurrentChampionship } from '@/views/backyard/hooks/use-current-championship';
+import { useRounds } from '@/api/hooks/use-rounds';
 
 import { Championship } from '@/api/model/championship';
 import { Round } from '@/api/model/round';
@@ -58,6 +59,7 @@ const navLinks: {
 export default function BackyardNav({ onNavAction }: SidebarProps) {
   const { profile } = useProfile();
   const { championship } = useCurrentChampionship();
+  const { rounds } = useRounds(championship?.id);
 
   return (
     <div className="flex grow flex-col border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -70,7 +72,7 @@ export default function BackyardNav({ onNavAction }: SidebarProps) {
         </div>
         <nav className="mt-2 grow space-y-1 px-2">
           {navLinks
-            .filter((link) => link.visible(championship, []))
+            .filter((link) => link.visible(championship, rounds))
             .map((link, ix) => {
               const Icon = link.icon;
               return (
