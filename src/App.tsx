@@ -11,6 +11,7 @@ import LogOut from '@/views/front-of-house/LogOut';
 import Experiment from '@/views/backyard/Experiment';
 import CreateChampionship from '@/views/backyard/commands/CreateChampionship';
 import CreateRound from '@/views/backyard/commands/CreateRound';
+import Championship from '@/views/backyard/Championship';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         </Route>
         <Route path="/hinterhof" element={<Backyard />}>
           <Route index element={<Dashboard />} />
+          <Route path="turnier" element={<Championship />} />
           {/* Commands */}
           <Route path="neues-turnier" element={<CreateChampionship />} />
           <Route path="neue-runde" element={<CreateRound />} />

@@ -3,6 +3,15 @@ import { db } from '@/api/firebase/db';
 import { converter } from '@/api/model/repository/converter';
 import { BaseModel } from '../base/Model';
 
+/**
+ * Creates an entity with id
+ *
+ * If entity.id is falsy, firestore will create a unique id.
+ * If entity.id is truthy set, given id will be used.
+ *
+ * @param path
+ * @param entity
+ */
 export const createWithId = async <T extends BaseModel>(
   path: string,
   entity: T
