@@ -28,8 +28,12 @@ export const useChampionshipPlayers = (championshipId?: string) => {
 
   const addPlayer = async (playerId: string) => {
     const championshipPlayer: ChampionshipPlayer = {
-      playerId: playerId,
       id: '',
+      playerId: playerId,
+      points: 0,
+      extraPoints: 0,
+      totalPoints: 0,
+      rank: 0,
     };
     await createWithId<ChampionshipPlayer>(
       `championships/${championshipId}/players`,
