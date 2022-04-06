@@ -49,7 +49,7 @@ export default function CreateChampionship() {
     };
     await create(championship);
     setChampionship(championship);
-    navigate('..');
+    navigate('../turnier');
   };
 
   return (
