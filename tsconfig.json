@@ -1,0 +1,21 @@
+{
+  "include": ["app/**/*", "workers/**/*.ts"],
+  "compilerOptions": {
+    // Type checking
+    "strict": true,
+
+    // Typings
+    "types": ["@cloudflare/workers-types/2023-07-01", "vite/client"],
+
+    // React
+    "jsx": "react-jsx",
+
+    // Modules and module constraints
+    "module": "Preserve",
+    "verbatimModuleSyntax": true,
+
+    // Bundler
+    "noEmit": true,
+    "skipLibCheck": true
+  }
+}

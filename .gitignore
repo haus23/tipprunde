@@ -1,0 +1,14 @@
+# NPM deps
+node_modules/
+
+# Wrangler project
+.wrangler/
+
+# Remix project
+build/
+
+# Development docs/hints
+NOTES.md
+
+# Local development environment
+.env

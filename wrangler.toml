@@ -1,0 +1,11 @@
+#:schema node_modules/wrangler/config-schema.json
+
+# Project entry
+name = "tipprunde"
+main = "build/server/index.js"
+
+# Node Compatibility
+compatibility_date = "2024-12-05"
+
+# Static Assets
+assets = { directory = "./build/client/" }
