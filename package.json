@@ -1,6 +1,17 @@
 {
   "name": "tipprunde",
   "version": "0.0.0",
+  "description": "Tipprunde der Haus23 Webseite",
+  "author": {
+    "name": "Micha Buchholz",
+    "email": "micha@haus23.net",
+    "url": "https://haus23.net"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/haus23/tipprunde.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
