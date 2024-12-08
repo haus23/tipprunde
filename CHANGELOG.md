@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.0.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.1...v0.0.2)
+
+### 🚀 Enhancements
+
+- Add tailwind v4 (beta) ([de1073e](https://github.com/haus23/tipprunde/commit/de1073e))
+
+### ❤️ Contributors
+
+- Micha Buchholz <micha@haus23.net>
+
 ## v0.0.1
 
 
