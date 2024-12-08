@@ -6,7 +6,7 @@ export const meta = [
 export default function TablesRoute() {
   return (
     <div>
-      <h1>Tabelle</h1>
+      <h1 className="font-semibold text-2xl">Tabelle</h1>
     </div>
   );
 }
