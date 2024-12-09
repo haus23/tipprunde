@@ -35,7 +35,7 @@ export function Link({ className, ...props }: Link.Props) {
 
 const navLinkStyles = tv({
   extend: linkStyles,
-  base: 'px-2 py-1',
+  base: 'px-2 py-1 transition-colors aria-[current]:text-accent-11',
 });
 
 namespace NavLink {
