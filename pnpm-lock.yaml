@@ -20,6 +20,9 @@ importers:
       react:
         specifier: ~19.0.0
         version: 19.0.0
+      react-aria:
+        specifier: ~3.36.0
+        version: 3.36.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react-aria-components:
         specifier: ~1.5.0
         version: 1.5.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -29,6 +32,9 @@ importers:
       react-router:
         specifier: ~7.0.2
         version: 7.0.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      tailwind-merge:
+        specifier: ~2.5.5
+        version: 2.5.5
       tailwind-variants:
         specifier: 0.3.0
         version: 0.3.0(tailwindcss@4.0.0-beta.6)

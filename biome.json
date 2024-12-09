@@ -25,7 +25,7 @@
           "level": "warn",
           "fix": "safe",
           "options": {
-            "functions": ["tv"]
+            "functions": ["tv", "twMerge"]
           }
         }
       }
