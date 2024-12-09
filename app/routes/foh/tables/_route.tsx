@@ -7,5 +7,5 @@ export const meta = [
 ];
 
 export default function TablesRoute() {
-  return <h1>Aktuelle Tabelle</h1>;
+  return <h1 className="font-medium text-3xl">Aktuelle Tabelle</h1>;
 }
