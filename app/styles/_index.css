@@ -40,6 +40,14 @@
 }
 
 @layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-grey-6, currentColor);
+  }
+
   body {
     @apply bg-white text-grey-12/90 dark:bg-grey-1;
   }
