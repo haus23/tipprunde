@@ -4,6 +4,9 @@
     // Type checking
     "strict": true,
 
+    // Additional typings
+    "types": ["vite/client"],
+
     // Constraints
     "verbatimModuleSyntax": true,
 
