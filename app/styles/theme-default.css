@@ -1,0 +1,78 @@
+
+:root {
+	--olive-1: #fcfdfc;
+	--olive-2: #f8faf8;
+	--olive-3: #eff1ef;
+	--olive-4: #e7e9e7;
+	--olive-5: #dfe2df;
+	--olive-6: #d7dad7;
+	--olive-7: #cccfcc;
+	--olive-8: #b9bcb8;
+	--olive-9: #898e87;
+	--olive-10: #7f847d;
+	--olive-11: #60655f;
+	--olive-12: #1d211c;
+	--olive-dark-1: #111210;
+	--olive-dark-2: #181917;
+	--olive-dark-3: #212220;
+	--olive-dark-4: #282a27;
+	--olive-dark-5: #2f312e;
+	--olive-dark-6: #383a36;
+	--olive-dark-7: #454843;
+	--olive-dark-8: #5c625b;
+	--olive-dark-9: #687066;
+	--olive-dark-10: #767d74;
+	--olive-dark-11: #afb5ad;
+	--olive-dark-12: #eceeec;
+
+	--grey-1: light-dark(var(--olive-1), var(--olive-dark-1));
+	--grey-2: light-dark(var(--olive-2), var(--olive-dark-2));
+	--grey-3: light-dark(var(--olive-3), var(--olive-dark-3));
+	--grey-4: light-dark(var(--olive-4), var(--olive-dark-4));
+	--grey-5: light-dark(var(--olive-5), var(--olive-dark-5));
+	--grey-6: light-dark(var(--olive-6), var(--olive-dark-6));
+	--grey-7: light-dark(var(--olive-7), var(--olive-dark-7));
+	--grey-8: light-dark(var(--olive-8), var(--olive-dark-8));
+	--grey-9: light-dark(var(--olive-9), var(--olive-dark-9));
+	--grey-10: light-dark(var(--olive-10), var(--olive-dark-10));
+	--grey-11: light-dark(var(--olive-11), var(--olive-dark-11));
+	--grey-12: light-dark(var(--olive-12), var(--olive-dark-12));
+
+	--grass-1: #fbfefb;
+	--grass-2: #f5fbf5;
+	--grass-3: #e9f6e9;
+	--grass-4: #daf1db;
+	--grass-5: #c9e8ca;
+	--grass-6: #b2ddb5;
+	--grass-7: #94ce9a;
+	--grass-8: #65ba74;
+	--grass-9: #46a758;
+	--grass-10: #3e9b4f;
+	--grass-11: #2a7e3b;
+	--grass-12: #203c25;
+	--grass-dark-1: #0e1511;
+	--grass-dark-2: #141a15;
+	--grass-dark-3: #1b2a1e;
+	--grass-dark-4: #1d3a24;
+	--grass-dark-5: #25482d;
+	--grass-dark-6: #2d5736;
+	--grass-dark-7: #366740;
+	--grass-dark-8: #3e7949;
+	--grass-dark-9: #46a758;
+	--grass-dark-10: #53b365;
+	--grass-dark-11: #71d083;
+	--grass-dark-12: #c2f0c2;
+
+	--accent-1: light-dark(var(--grass-1), var(--grass-dark-1));
+	--accent-2: light-dark(var(--grass-2), var(--grass-dark-2));
+	--accent-3: light-dark(var(--grass-3), var(--grass-dark-3));
+	--accent-4: light-dark(var(--grass-4), var(--grass-dark-4));
+	--accent-5: light-dark(var(--grass-5), var(--grass-dark-5));
+	--accent-6: light-dark(var(--grass-6), var(--grass-dark-6));
+	--accent-7: light-dark(var(--grass-7), var(--grass-dark-7));
+	--accent-8: light-dark(var(--grass-8), var(--grass-dark-8));
+	--accent-9: light-dark(var(--grass-9), var(--grass-dark-9));
+	--accent-10: light-dark(var(--grass-10), var(--grass-dark-10));
+	--accent-11: light-dark(var(--grass-11), var(--grass-dark-11));
+	--accent-12: light-dark(var(--grass-12), var(--grass-dark-12));
+}

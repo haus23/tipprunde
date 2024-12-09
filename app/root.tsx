@@ -1,7 +1,7 @@
 import type { LinksFunction } from 'react-router';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 
-import stylesUrl from './styles/app.css?url';
+import stylesUrl from './styles/_index.css?url';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesUrl },

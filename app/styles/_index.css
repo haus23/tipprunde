@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@import "./dark-mode.css";
+@import "./theme-default.css";
+
+@theme {
+  --color-*: initial;
+  --color-white: white;
+
+  --color-grey-1: var(--grey-1);
+  --color-grey-2: var(--grey-2);
+  --color-grey-3: var(--grey-3);
+  --color-grey-4: var(--grey-4);
+  --color-grey-5: var(--grey-5);
+  --color-grey-6: var(--grey-6);
+  --color-grey-7: var(--grey-7);
+  --color-grey-8: var(--grey-8);
+  --color-grey-9: var(--grey-9);
+  --color-grey-10: var(--grey-10);
+  --color-grey-11: var(--grey-11);
+  --color-grey-12: var(--grey-12);
+
+  --color-accent-1: var(--accent-1);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-accent-4: var(--accent-4);
+  --color-accent-5: var(--accent-5);
+  --color-accent-6: var(--accent-6);
+  --color-accent-7: var(--accent-7);
+  --color-accent-8: var(--accent-8);
+  --color-accent-9: var(--accent-9);
+  --color-accent-10: var(--accent-10);
+  --color-accent-11: var(--accent-11);
+  --color-accent-12: var(--accent-12);
+}
+
+@layer base {
+  body {
+    @apply bg-white text-grey-12/90 dark:bg-grey-1;
+  }
+}
