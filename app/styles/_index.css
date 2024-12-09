@@ -4,7 +4,12 @@
 @import "./theme-default.css";
 
 @theme {
+  --breakpoint-*: initial;
   --color-*: initial;
+
+  --breakpoint-wide: 768px;
+  --breakpoint-small: 420px;
+
   --color-white: white;
 
   --color-grey-1: var(--grey-1);
