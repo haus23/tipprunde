@@ -1,0 +1,41 @@
+{
+  "name": "tipprunde",
+  "version": "0.0.0",
+  "description": "Tipprunde der Haus23 Webseite",
+  "author": {
+    "name": "Micha Buchholz",
+    "email": "micha@haus23.net",
+    "url": "https://haus23.net"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/haus23/tipprunde.git"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "react-router dev"
+  },
+  "dependencies": {
+    "@react-router/node": "~7.0.2",
+    "isbot": "~5.1.17",
+    "react": "~19.0.0",
+    "react-dom": "~19.0.0",
+    "react-router": "~7.0.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@react-router/dev": "~7.0.2",
+    "@types/react": "~19.0.1",
+    "@types/react-dom": "~19.0.1",
+    "typescript": "~5.7.2",
+    "vite": "~6.0.3"
+  },
+  "resolutions": {
+    "vite": "6"
+  },
+  "engines": {
+    "node": ">=22 <23"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

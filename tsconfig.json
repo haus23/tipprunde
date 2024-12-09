@@ -1,0 +1,21 @@
+{
+  "include": ["app/**/*"],
+  "compilerOptions": {
+    // Type checking
+    "strict": true,
+
+    // Constraints
+    "verbatimModuleSyntax": true,
+
+    // React Router
+    "jsx": "react-jsx",
+
+    // Modules
+    "module": "Preserve",
+    "moduleDetection": "force",
+
+    // Bundler
+    "noEmit": true,
+    "skipLibCheck": true
+  }
+}

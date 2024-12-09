@@ -1,0 +1,8 @@
+# NPM deps
+node_modules/
+
+# React Router
+.react-router/
+
+# Local dev environment
+.env
