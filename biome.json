@@ -24,7 +24,9 @@
         "useSortedClasses": {
           "level": "warn",
           "fix": "safe",
-          "options": {}
+          "options": {
+            "functions": ["tv"]
+          }
         }
       }
     }
