@@ -11,14 +11,18 @@ import { Logo } from '#/components/logo';
 import { Button } from '#/components/ui/button/button';
 import { Icon, type IconName } from '#/components/ui/icon/icon';
 import { Link, NavLink } from '#/components/ui/link/link';
+import { useChampionships } from '#/utils/app/use-championships';
 
 const navItems = [
-  { path: '/', label: 'Tabelle', icon: 'list-ordered' },
-  { path: '/spieler', label: 'Spieler', icon: 'users' },
-  { path: '/spiele', label: 'Spiele', icon: 'dices' },
+  { path: '', label: 'Tabelle', icon: 'list-ordered' },
+  { path: 'spieler', label: 'Spieler', icon: 'users' },
+  { path: 'spiele', label: 'Spiele', icon: 'dices' },
 ] satisfies { path: string; label: string; icon: IconName }[];
 
 export function Header() {
+  const { currentChampionship } = useChampionships();
+  const championshipSegment = currentChampionship.slug;
+
   const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
@@ -39,7 +43,11 @@ export function Header() {
         </Link>
         <nav className="flex items-center gap-x-2 pt-[3px]">
           {navItems.map((item) => (
-            <NavLink to={item.path} key={item.path}>
+            <NavLink
+              key={item.path}
+              to={`/${[championshipSegment, item.path].filter(Boolean).join('/')}`}
+              end
+            >
               {item.label}
             </NavLink>
           ))}
@@ -71,9 +79,10 @@ export function Header() {
                       <nav className="flex flex-col items-stretch gap-y-2 p-2">
                         {navItems.map((item) => (
                           <NavLink
-                            to={item.path}
                             key={item.path}
                             className="flex"
+                            to={`/${[championshipSegment, item.path].filter(Boolean).join('/')}`}
+                            end
                           >
                             <Icon name={item.icon}>{item.label}</Icon>
                           </NavLink>
