@@ -6,3 +6,6 @@ node_modules/
 
 # Local dev environment
 .env
+
+# Dev Notes
+NOTES.md
