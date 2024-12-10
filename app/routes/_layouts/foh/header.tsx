@@ -1,14 +1,9 @@
 import { useEffect, useState } from 'react';
-import {
-  Dialog,
-  DialogTrigger,
-  LinkContext,
-  Modal,
-  ModalOverlay,
-} from 'react-aria-components';
+import { LinkContext } from 'react-aria-components';
 
 import { Logo } from '#/components/logo';
 import { Button } from '#/components/ui/button/button';
+import { Dialog, DialogPanel } from '#/components/ui/dialog/dialog';
 import { Icon, type IconName } from '#/components/ui/icon/icon';
 import { Link, NavLink } from '#/components/ui/link/link';
 import { useChampionships } from '#/utils/app/use-championships';
@@ -55,51 +50,41 @@ export function Header() {
         <div />
       </div>
       <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 small:hidden">
-        <DialogTrigger
-          isOpen={isOpen}
-          onOpenChange={(isOpen) => setOpen(isOpen)}
-        >
+        <Dialog isOpen={isOpen} onOpenChange={(isOpen) => setOpen(isOpen)}>
           <LinkContext value={{ onPress: () => setOpen(false) }}>
             <Button variant="ghost">
               <Icon name="menu" />
             </Button>
-            <ModalOverlay
-              className="fixed inset-0 backdrop-blur-xs"
-              isDismissable
-            >
-              <Modal className="fixed inset-2 bottom-auto mx-auto max-w-xl rounded-md bg-white shadow-sm ring-1 ring-grey-6 dark:bg-grey-1">
-                <Dialog className="outline-none">
-                  {({ close }: { close: () => void }) => (
-                    <div className="relative flex flex-col divide-y divide-grey-6">
-                      <header className="p-2">
-                        <Link to="/" className="mr-12 flex">
-                          <Logo />
-                        </Link>
-                      </header>
-                      <nav className="flex flex-col items-stretch gap-y-2 p-2">
-                        {navItems.map((item) => (
-                          <NavLink
-                            key={item.path}
-                            className="flex"
-                            to={`/${[championshipSegment, item.path].filter(Boolean).join('/')}`}
-                            end
-                          >
-                            <Icon name={item.icon}>{item.label}</Icon>
-                          </NavLink>
-                        ))}
-                      </nav>
-                      <div className="absolute top-2.5 right-2">
-                        <Button variant="pure" onPress={close}>
-                          <Icon name="x" className="size-6" />
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </Dialog>
-              </Modal>
-            </ModalOverlay>
+            <DialogPanel className="fixed inset-2 bottom-auto mx-auto max-w-xl">
+              {({ close }: { close: () => void }) => (
+                <div className="relative flex flex-col divide-y divide-grey-6">
+                  <header className="p-2">
+                    <Link to="/" className="mr-12 flex">
+                      <Logo />
+                    </Link>
+                  </header>
+                  <nav className="flex flex-col items-stretch gap-y-2 p-2">
+                    {navItems.map((item) => (
+                      <NavLink
+                        key={item.path}
+                        className="flex"
+                        to={`/${[championshipSegment, item.path].filter(Boolean).join('/')}`}
+                        end
+                      >
+                        <Icon name={item.icon}>{item.label}</Icon>
+                      </NavLink>
+                    ))}
+                  </nav>
+                  <div className="absolute top-2.5 right-2">
+                    <Button variant="pure" onPress={close}>
+                      <Icon name="x" className="size-6" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </DialogPanel>
           </LinkContext>
-        </DialogTrigger>
+        </Dialog>
       </div>
     </header>
   );
