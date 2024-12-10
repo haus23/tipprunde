@@ -1,6 +1,26 @@
 # Changelog
 
 
+## v0.1.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.1.1)
+
+### 🚀 Enhancements
+
+- Prepare the championship routing. ([4d5409f](https://github.com/haus23/tipprunde/commit/4d5409f))
+
+### 🩹 Fixes
+
+- Add the generated route types. ([361dc1d](https://github.com/haus23/tipprunde/commit/361dc1d))
+
+### 🏡 Chore
+
+- **dx:** Ignore local dev notes ([dccf52b](https://github.com/haus23/tipprunde/commit/dccf52b))
+
+### ❤️ Contributors
+
+- Micha Buchholz <micha@haus23.net>
+
 ## v0.1.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.2...v0.1.0)
