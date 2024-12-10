@@ -45,6 +45,15 @@
   <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
 </symbol>
 
+<symbol id="list-ordered" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 12h11"/>
+  <path d="M10 18h11"/>
+  <path d="M10 6h11"/>
+  <path d="M4 10h2"/>
+  <path d="M4 6h1v4"/>
+  <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>
+</symbol>
+
 <symbol id="log-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
   <polyline points="16 17 21 12 16 7"/>

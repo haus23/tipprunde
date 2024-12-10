@@ -9,14 +9,13 @@ import { focusRingStyles } from '../theme';
 
 const styles = tv({
   extend: focusRingStyles,
-  base: [
-    'inline-flex items-center rounded-md border-2 p-1.5',
-    'transition-all data-[pressed]:scale-95 data-[hovered]:bg-grey-4 data-[pressed]:bg-grey-5',
-  ],
+  base: ['inline-flex items-center rounded-md p-1.5', 'transition-all'],
   variants: {
     variant: {
       default: '',
-      ghost: '',
+      pure: '',
+      ghost:
+        'border-2 data-[pressed]:scale-95 data-[hovered]:bg-grey-4 data-[pressed]:bg-grey-5',
     },
   },
   defaultVariants: {

@@ -6,7 +6,11 @@ import {
 } from 'react-router';
 
 import { useFocusRing } from 'react-aria';
-import { composeRenderProps } from 'react-aria-components';
+import {
+  LinkContext,
+  composeRenderProps,
+  useSlottedContext,
+} from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 import { type VariantProps, tv } from '#/utils/tv';
 import { focusRingStyles } from '../theme';
@@ -23,9 +27,18 @@ namespace Link {
 export function Link({ className, ...props }: Link.Props) {
   const { focusProps, isFocusVisible } = useFocusRing();
 
+  // Delegate click event to press event context handler
+  const linkContext = useSlottedContext(LinkContext);
+  function handleClick() {
+    if (linkContext?.onPress) {
+      linkContext.onPress(undefined as never);
+    }
+  }
+
   return (
     <RRLink
       className={twMerge(linkStyles({ isFocusVisible, className }))}
+      onClick={handleClick}
       {...{ 'data-focus-visible': isFocusVisible || undefined }}
       {...focusProps}
       {...props}
@@ -47,11 +60,20 @@ namespace NavLink {
 export function NavLink({ className, ...props }: NavLink.Props) {
   const { focusProps, isFocusVisible } = useFocusRing();
 
+  // Delegate click event to press event context handler
+  const linkContext = useSlottedContext(LinkContext);
+  function handleClick() {
+    if (linkContext?.onPress) {
+      linkContext.onPress(undefined as never);
+    }
+  }
+
   return (
     <RRNavLink
       className={composeRenderProps(className, (className, renderProps) =>
         navLinkStyles({ ...renderProps, isFocusVisible, className }),
       )}
+      onClick={handleClick}
       {...{ 'data-focus-visible': isFocusVisible || undefined }}
       {...focusProps}
       {...props}

@@ -9,6 +9,7 @@ type IconName =
   | 'folder-sync'
   | 'folders'
   | 'house'
+  | 'list-ordered'
   | 'log-out'
   | 'menu'
   | 'moon'
