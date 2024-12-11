@@ -15,7 +15,7 @@ const navItems = [
 ] satisfies { path: string; label: string; icon: IconName }[];
 
 export function Header() {
-  const { currentChampionship } = useChampionships();
+  const { currentChampionship, championships } = useChampionships();
   const championshipSegment = currentChampionship.slug;
 
   const [isOpen, setOpen] = useState(false);
@@ -30,8 +30,21 @@ export function Header() {
     return () => query.removeEventListener('change', closeDialog);
   }, []);
 
+  // Eager return for now
+  if (championships.length === 0) {
+    return (
+      <header className="mx-auto max-w-6xl p-2 wide:px-4">
+        <div className="grid items-center">
+          <Link to="/" className="pr-1">
+            <Logo />
+          </Link>
+        </div>
+      </header>
+    );
+  }
+
   return (
-    <header className="mx-auto grid max-w-6xl items-center gap-x-4 p-2 wide:px-4">
+    <header className="mx-auto max-w-6xl p-2 wide:px-4">
       <div className="hidden grid-cols-[auto_1fr_auto] items-center gap-x-4 small:grid">
         <Link to="/" className="pr-1">
           <Logo />
