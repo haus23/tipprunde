@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.1.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.2...v0.1.3)
+
+### 📖 Documentation
+
+- Start documenting project decisions. ([074b64b](https://github.com/haus23/tipprunde/commit/074b64b))
+
+### 🏡 Chore
+
+- Prepare production build and start. ([a997a38](https://github.com/haus23/tipprunde/commit/a997a38))
+- **dx:** Provide docker image with docs. ([8c491df](https://github.com/haus23/tipprunde/commit/8c491df))
+
+### ❤️ Contributors
+
+- Micha Buchholz <micha@haus23.net>
+
 ## v0.1.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.1...v0.1.2)
