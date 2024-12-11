@@ -1,4 +1,24 @@
 import { Separator } from 'react-aria-components';
+import { redirect } from 'react-router';
+
+import { getPublishedChampionships } from '#/utils/app/championships.server';
+
+export const meta = [
+  { title: 'runde.tips' },
+  {
+    name: 'description',
+    content: 'Haus23 Tipprunde',
+  },
+];
+
+export async function loader() {
+  const championships = await getPublishedChampionships();
+
+  if (championships.length > 0) {
+    throw redirect('/');
+  }
+  return null;
+}
 
 export default function WelcomeRoute() {
   return (
