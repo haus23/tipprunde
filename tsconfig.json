@@ -1,12 +1,17 @@
 {
-  "include": ["app/**/*", ".react-router/types/**/*"],
+  "include": [
+    "app/**/*",
+    "app/**/.server/**/*",
+    "app/**/.client/**/*",
+    ".react-router/types/**/*"
+  ],
   "compilerOptions": {
     // Type checking
     "strict": true,
 
     // Additional typings / libs
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
+    "types": ["node", "vite/client"],
 
     // Constraints
     "verbatimModuleSyntax": true,
