@@ -8,5 +8,6 @@ export default [
       route('spieler', 'routes/foh/players/_route.tsx'),
       route('spiele', 'routes/foh/matches/_route.tsx'),
     ]),
+    route('willkommen', 'routes/foh/welcome/_route.tsx'),
   ]),
 ] satisfies RouteConfig;
