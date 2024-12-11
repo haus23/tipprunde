@@ -6,6 +6,6 @@ export const meta = [
   },
 ];
 
-export default function TablesRoute() {
+export default function PlayersRoute() {
   return <h1 className="font-medium text-3xl">Spieler</h1>;
 }

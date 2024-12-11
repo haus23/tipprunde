@@ -6,6 +6,6 @@ export const meta = [
   },
 ];
 
-export default function TablesRoute() {
+export default function MatchesRoute() {
   return <h1 className="font-medium text-3xl">Spiele</h1>;
 }
