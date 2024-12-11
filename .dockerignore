@@ -1,0 +1,30 @@
+# React Router
+.react-router
+
+# Build
+build
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Sensible data
+.env*
+
+# Git
+.git
+.gitignore
+
+# Editor
+.vscode
+
+# NPM
+node_modules
+
+# Project
+docs
+biome.json
+LICENSE
+README.md
+CHANGELOG.md
+NOTES.md
