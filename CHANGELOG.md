@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.1.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.1...v0.1.2)
+
+### 🚀 Enhancements
+
+- Add welcome route. ([22c19d0](https://github.com/haus23/tipprunde/commit/22c19d0))
+- Adapt layout with no championships. ([54a9861](https://github.com/haus23/tipprunde/commit/54a9861))
+- Implement routing guards. ([0037b35](https://github.com/haus23/tipprunde/commit/0037b35))
+
+### 🩹 Fixes
+
+- Align component names. ([151e03e](https://github.com/haus23/tipprunde/commit/151e03e))
+- Finally increase the libs. ([6216565](https://github.com/haus23/tipprunde/commit/6216565))
+
+### 💅 Refactors
+
+- Extract dialog component. ([84a6eb6](https://github.com/haus23/tipprunde/commit/84a6eb6))
+
+### ❤️ Contributors
+
+- Micha Buchholz <micha@haus23.net>
+
 ## v0.1.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.1.1)
