@@ -4,7 +4,8 @@
     // Type checking
     "strict": true,
 
-    // Additional typings
+    // Additional typings / libs
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
 
     // Constraints
