@@ -1,9 +1,9 @@
 import * as v from 'valibot';
 
-const colorSchemeSchema = v.picklist(['dark', 'light']);
-const themeColorSchema = v.picklist(['default']);
+export const colorSchemeSchema = v.picklist(['dark', 'light']);
+export const themeColorSchema = v.picklist(['default']);
 
-const themeSchema = v.object({
+export const themeSchema = v.object({
   colorScheme: colorSchemeSchema,
   themeColor: themeColorSchema,
 });

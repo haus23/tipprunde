@@ -1,5 +1,5 @@
 import { createCookieSessionStorage } from 'react-router';
-import type { Theme } from '../theme/theme';
+import type { Theme } from '../theme/schema';
 
 const prefsSessionStorage = createCookieSessionStorage<{ theme: Theme }>({
   cookie: {
