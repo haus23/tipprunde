@@ -1,6 +1,33 @@
 # Changelog
 
 
+## v0.1.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.3...v0.1.4)
+
+### 🚀 Enhancements
+
+- Create a user prefs session. ([e2c9b67](https://github.com/haus23/tipprunde/commit/e2c9b67))
+- Read (not now) existing cookie and set dark mode class. ([c6a667a](https://github.com/haus23/tipprunde/commit/c6a667a))
+- Add theme chooser component. ([21214c7](https://github.com/haus23/tipprunde/commit/21214c7))
+- Toggle theme via action. ([50bc979](https://github.com/haus23/tipprunde/commit/50bc979))
+
+### 🩹 Fixes
+
+- Finally add node typings. ([4429c75](https://github.com/haus23/tipprunde/commit/4429c75))
+
+### 📖 Documentation
+
+- Add theme docs. ([d5803dc](https://github.com/haus23/tipprunde/commit/d5803dc))
+
+### 🏡 Chore
+
+- Switch to class base dark mode. ([1546f87](https://github.com/haus23/tipprunde/commit/1546f87))
+
+### ❤️ Contributors
+
+- Micha Buchholz <micha@haus23.net>
+
 ## v0.1.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.2...v0.1.3)
