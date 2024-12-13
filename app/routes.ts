@@ -9,5 +9,6 @@ export default [
       route('spiele', 'routes/foh/matches/_route.tsx'),
     ]),
     route('willkommen', 'routes/foh/welcome/_route.tsx'),
+    ...prefix('actions', [route('set-theme', 'routes/actions/set-theme.ts')]),
   ]),
 ] satisfies RouteConfig;

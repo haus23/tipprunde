@@ -3,9 +3,21 @@ import { Button } from './ui/button/button';
 import { Icon } from './ui/icon/icon';
 
 export function ThemeChooser() {
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
+
+  function handleColorSchemeChange() {
+    setTheme({
+      ...theme,
+      colorScheme: theme.colorScheme === 'light' ? 'dark' : 'light',
+    });
+  }
+
   return (
-    <Button variant="ghost" className="overflow-clip">
+    <Button
+      onPress={handleColorSchemeChange}
+      variant="ghost"
+      className="overflow-clip"
+    >
       <div className="relative size-5">
         <Icon
           name="moon"
