@@ -17,6 +17,7 @@ type IconName =
   | 'scale'
   | 'shield'
   | 'smile-plus'
+  | 'sun'
   | 'trophy'
   | 'user'
   | 'users'

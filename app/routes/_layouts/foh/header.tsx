@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { LinkContext } from 'react-aria-components';
 
 import { Logo } from '#/components/logo';
+import { ThemeChooser } from '#/components/theme-chooser';
 import { Button } from '#/components/ui/button/button';
 import { Dialog, DialogPanel } from '#/components/ui/dialog/dialog';
 import { Icon, type IconName } from '#/components/ui/icon/icon';
@@ -34,10 +35,13 @@ export function Header() {
   if (championships.length === 0) {
     return (
       <header className="mx-auto max-w-6xl p-2 wide:px-4">
-        <div className="grid items-center">
+        <div className="grid grid-cols-[1fr_auto] items-center">
           <Link to="/" className="pr-1">
             <Logo />
           </Link>
+          <div>
+            <ThemeChooser />
+          </div>
         </div>
       </header>
     );
@@ -60,7 +64,9 @@ export function Header() {
             </NavLink>
           ))}
         </nav>
-        <div />
+        <div>
+          <ThemeChooser />
+        </div>
       </div>
       <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 small:hidden">
         <Dialog isOpen={isOpen} onOpenChange={(isOpen) => setOpen(isOpen)}>
@@ -98,6 +104,10 @@ export function Header() {
             </DialogPanel>
           </LinkContext>
         </Dialog>
+        <div />
+        <div>
+          <ThemeChooser />
+        </div>
       </div>
     </header>
   );
