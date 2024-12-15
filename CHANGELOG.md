@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.4...v0.1.5)
+
+### 🚀 Enhancements
+
+- Animate dialogs. ([6f831ff](https://github.com/haus23/tipprunde/commit/6f831ff))
+
+### 🏡 Chore
+
+- Update deps. ([d607c9c](https://github.com/haus23/tipprunde/commit/d607c9c))
+
+### ❤️ Contributors
+
+- Micha Buchholz <micha@haus23.net>
+
 ## v0.1.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.3...v0.1.4)
