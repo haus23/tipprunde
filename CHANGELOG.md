@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.6
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.5...v0.1.6)
+
+### 🚀 Enhancements
+
+- Validate and type environment vars. ([f7f32e1](https://github.com/haus23/tipprunde/commit/f7f32e1))
+
+### 🏡 Chore
+
+- Update deps. ([d2ae580](https://github.com/haus23/tipprunde/commit/d2ae580))
+
+### ❤️ Contributors
+
+- Micha Buchholz <micha@haus23.net>
+
 ## v0.1.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.4...v0.1.5)
