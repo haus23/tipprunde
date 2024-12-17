@@ -1,7 +1,6 @@
 import { motion } from 'motion/react';
 import { useContext, useEffect, useState } from 'react';
 import {
-  DialogContext,
   type DialogProps,
   DialogTrigger,
   type DialogTriggerProps,
@@ -9,7 +8,6 @@ import {
   ModalOverlay,
   OverlayTriggerStateContext,
   Dialog as RACDialog,
-  useSlottedContext,
 } from 'react-aria-components';
 
 import { type VariantProps, tv } from '#/utils/tv';
