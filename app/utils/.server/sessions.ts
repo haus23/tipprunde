@@ -1,5 +1,7 @@
 import { createCookieSessionStorage } from 'react-router';
+
 import type { Theme } from '../theme/schema';
+import { env } from './env';
 
 const prefsSessionStorage = createCookieSessionStorage<{ theme: Theme }>({
   cookie: {
@@ -7,8 +9,8 @@ const prefsSessionStorage = createCookieSessionStorage<{ theme: Theme }>({
     sameSite: 'lax',
     path: '/',
     httpOnly: true,
-    secrets: [process.env.SESSION_SECRET || 'V3ryStrang3S3cr3t'],
-    secure: process.env.NODE_ENV === 'production',
+    secrets: [env.PREFS_SESSION_SECRET],
+    secure: env.NODE_ENV === 'production',
   },
 });
 
