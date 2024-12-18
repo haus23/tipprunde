@@ -10,6 +10,7 @@ type IconName =
   | 'folders'
   | 'house'
   | 'list-ordered'
+  | 'log-in'
   | 'log-out'
   | 'menu'
   | 'moon'

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { LinkContext } from 'react-aria-components';
+import { LinkContext, Separator } from 'react-aria-components';
 
 import { Logo } from '#/components/logo';
 import { ThemeChooser } from '#/components/theme-chooser';
 import { Button } from '#/components/ui/button/button';
 import { Dialog, DialogPanel } from '#/components/ui/dialog/dialog';
+import { Divider } from '#/components/ui/divider/divider';
 import { Icon, type IconName } from '#/components/ui/icon/icon';
 import { Link, NavLink } from '#/components/ui/link/link';
 import { useChampionships } from '#/utils/app/use-championships';
@@ -32,15 +33,17 @@ export function Header() {
   }, []);
 
   // Eager return for now
-  if (championships.length === 0) {
+  if (championships.length !== 0) {
     return (
       <header className="mx-auto max-w-6xl p-2 wide:px-4">
         <div className="grid grid-cols-[1fr_auto] items-center">
           <Link to="/" className="pr-1">
             <Logo />
           </Link>
-          <div>
+          <div className="flex items-center gap-x-2">
             <ThemeChooser />
+            <Divider orientation="vertical" className="ml-2 h-10" />
+            <NavLink to="/login">Log In</NavLink>
           </div>
         </div>
       </header>
@@ -64,8 +67,10 @@ export function Header() {
             </NavLink>
           ))}
         </nav>
-        <div>
+        <div className="flex items-center gap-x-2">
           <ThemeChooser />
+          <Divider orientation="vertical" className="ml-2 h-10" />
+          <NavLink to="/login">Log In</NavLink>
         </div>
       </div>
       <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 small:hidden">
@@ -93,6 +98,12 @@ export function Header() {
                         <Icon name={item.icon}>{item.label}</Icon>
                       </NavLink>
                     ))}
+                  </nav>
+                  <Divider />
+                  <nav className="flex flex-col items-stretch gap-y-2 p-2">
+                    <NavLink className="flex" to="/login" end>
+                      <Icon name="log-in">Log In</Icon>
+                    </NavLink>
                   </nav>
                   <div className="absolute top-2.5 right-2">
                     <Button variant="pure" onPress={close}>
