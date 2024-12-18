@@ -1,11 +1,11 @@
 # base node image
-FROM node:22-bookworm-slim as base
+FROM node:22-bookworm-slim AS base
 
 ENV NODE_ENV production
 RUN corepack enable
 
 # all deps
-FROM base as deps
+FROM base AS deps
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY pnpm-lock.yaml ./
 RUN pnpm fetch --prod false
 
 # prod deps
-FROM deps as prod-deps
+FROM deps AS prod-deps
 
 WORKDIR /app
 
@@ -21,7 +21,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --offline --frozen-lockfile
 
 # build
-FROM deps as build
+FROM deps AS build
 
 WORKDIR /app
 
