@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v0.1.7
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.6...v0.1.7)
+
+### 🩹 Fixes
+
+- Rename actions folder. ([bf31cc5](https://github.com/haus23/tipprunde/commit/bf31cc5))
+- Inconsitent casing. ([c8c2e7a](https://github.com/haus23/tipprunde/commit/c8c2e7a))
+- Remove bouncing animation. ([13c270f](https://github.com/haus23/tipprunde/commit/13c270f))
+
+### ❤️ Contributors
+
+- Micha Buchholz <micha@haus23.net>
+
 ## v0.1.6
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.5...v0.1.6)
