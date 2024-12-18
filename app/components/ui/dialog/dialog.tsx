@@ -70,8 +70,8 @@ export function DialogPanel({ className, ...props }: DialogPanel.Props) {
       <MotionModal
         className={modal({ className })}
         variants={{
-          hidden: { opacity: 0, y: -200 },
-          visible: { opacity: 1, y: 0 },
+          hidden: { opacity: 0 },
+          visible: { opacity: 1 },
         }}
       >
         <RACDialog className={panel()} {...props} />
