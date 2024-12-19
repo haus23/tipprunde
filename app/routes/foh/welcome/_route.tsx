@@ -1,5 +1,7 @@
-import { Separator } from 'react-aria-components';
 import { redirect } from 'react-router';
+
+import { Card, CardBody, CardHeader } from '#/components/ui/card/card';
+import { Divider } from '#/components/ui/divider/divider';
 
 import { getPublishedChampionships } from '#/utils/app/championships.server';
 
@@ -22,12 +24,12 @@ export async function loader() {
 
 export default function WelcomeRoute() {
   return (
-    <article className="mx-2 mt-4 wide:mt-8 rounded-sm bg-white shadow-md ring-1 ring-grey-6 small:mx-0 dark:bg-grey-2">
-      <header className="p-4 wide:px-6">
+    <Card className="mx-2 mt-4 wide:mt-8 small:mx-4">
+      <CardHeader>
         <h1 className="font-medium text-3xl">Haus 23 Tipprunde</h1>
-      </header>
-      <Separator className="border-grey-6" />
-      <div className="grid gap-y-4 p-4 wide:px-6 text-lg">
+      </CardHeader>
+      <Divider />
+      <CardBody className="grid gap-y-4 text-xl">
         <p>Willkommen bei unserer kleinen Fussball-Tipprunde!</p>
         <p>
           Leider gibt es noch keine Turniere und nichts zu tippen. Wir warten
@@ -35,7 +37,7 @@ export default function WelcomeRoute() {
           wird. Bis dahin empfehle ich ein kühles Blondes am Lieblingstresen
           deiner Stadt.
         </p>
-      </div>
-    </article>
+      </CardBody>
+    </Card>
   );
 }

@@ -2,7 +2,7 @@ import { Separator, type SeparatorProps } from 'react-aria-components';
 import { type VariantProps, tv } from '#/utils/tv';
 
 const styles = tv({
-  base: 'shrink-0 bg-grey-6',
+  base: 'bg-grey-6',
   variants: {
     orientation: {
       horizontal: 'h-[1px] w-full',
