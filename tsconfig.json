@@ -1,0 +1,10 @@
+{
+  "include": ["app", ".react-router/types/**/*", "vite.config.ts"],
+  "compilerOptions": {
+    // Best practices
+    "module": "Preserve",
+
+    // React
+    "jsx": "react-jsx"
+  }
+}

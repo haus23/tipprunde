@@ -1,9 +1,12 @@
-
 # Dependency directories
 node_modules/
 
 # Local environment files
 .env
+
+# React Router
+.react-router/
+build/
 
 # Wrangler project
 .dev.vars
