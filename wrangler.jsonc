@@ -3,13 +3,14 @@
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "tipprunde",
-	"main": "src/index.js",
-	"compatibility_date": "2025-02-24",
-	"observability": {
-		"enabled": true
-	}
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tipprunde",
+  "main": "./build/server/index.js",
+  "compatibility_date": "2025-02-24",
+  "observability": {
+    "enabled": true
+  },
+  "workers_dev": true,
   /**
    * Smart Placement
    * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
@@ -38,7 +39,7 @@
    * https://developers.cloudflare.com/workers/static-assets/binding/
    */
   // "assets": { "directory": "./public/", "binding": "ASSETS" },
-
+  "assets": { "directory": "./build/client/" }
   /**
    * Service Bindings (communicate between multiple Workers)
    * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings

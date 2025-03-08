@@ -1,10 +1,20 @@
 {
-  "include": ["app", ".react-router/types/**/*", "vite.config.ts"],
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.app.json" }
+  ],
   "compilerOptions": {
     // Best practices
-    "module": "Preserve",
+    "verbatimModuleSyntax": true,
+    "strict": true,
 
-    // React
-    "jsx": "react-jsx"
+    // Performance
+    "skipLibCheck": true,
+
+    // Bundler
+    "noEmit": true,
+
+    "types": ["node"]
   }
 }
