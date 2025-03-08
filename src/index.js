@@ -10,6 +10,6 @@
 
 export default {
   async fetch(request, env, ctx) {
-    return new Response("Hallo Tipprunde!");
+    return new Response('Hallo Tipprunde!');
   },
 };
