@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.0.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.3...v0.0.4)
+
+### 🏡 Chore
+
+- Remove remaining initial worker. ([120d065](https://github.com/haus23/tipprunde/commit/120d065))
+- Simplify tsconfig. Add typechecking. ([3bf35e4](https://github.com/haus23/tipprunde/commit/3bf35e4))
+
+### ❤️ Contributors
+
+- Micha Buchholz <micha@haus23.net>
+
 ## v0.0.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.2...v0.0.3)
