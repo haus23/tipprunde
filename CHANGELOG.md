@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.0.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.2...v0.0.3)
+
+### 🩹 Fixes
+
+- Add build options. ([f5475ce](https://github.com/haus23/tipprunde/commit/f5475ce))
+
+### 🏡 Chore
+
+- Setup local dev runtime. ([611242b](https://github.com/haus23/tipprunde/commit/611242b))
+- Prepare cloudflare deployment. ([a45c991](https://github.com/haus23/tipprunde/commit/a45c991))
+
+### ❤️ Contributors
+
+- Micha Buchholz <micha@haus23.net>
+
 ## v0.0.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.1...v0.0.2)
