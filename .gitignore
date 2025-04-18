@@ -1,0 +1,8 @@
+# NPM deps
+node_modules/
+
+# Build
+dist/
+
+# Editor / IDE settings
+.idea/
