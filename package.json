@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "waku dev",
-    "build": "waku build",
+    "build": "waku build --with-cloudflare",
     "start": "waku start",
     "check": "biome check --write ."
   },
@@ -24,12 +24,15 @@
     "@types/react-dom": "^19.1.2",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.4",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "wrangler": "^4.12.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "@swc/core",
-      "esbuild"
+      "esbuild",
+      "sharp",
+      "workerd"
     ]
   }
 }
