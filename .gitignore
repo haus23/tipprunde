@@ -4,8 +4,9 @@ node_modules/
 # Build
 build/
 
-# React Router
+# React Router on Cloudflare
 .react-router/
+.wrangler/
 
 # Editor/IDE settings
 .idea/

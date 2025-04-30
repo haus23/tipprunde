@@ -4,12 +4,15 @@
     "target": "ES2024",
     // Enable strict mode
     "strict": true,
-    // Bundler Mode
+    // Bundler Mode (Vite)
     "module": "Preserve",
     "noEmit": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
+    "types": ["vite/client"],
     // React
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    // React Router
+    "rootDirs": [".", "./.react-router/types"]
   }
 }
