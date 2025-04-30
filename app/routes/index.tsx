@@ -1,3 +1,9 @@
+export function meta() {
+    return [
+        { title: "runde.tips" }
+    ];
+}
+
 export default function Home() {
     return (
         <div>
