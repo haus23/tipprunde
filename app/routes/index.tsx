@@ -6,8 +6,8 @@ export function meta() {
 
 export default function Home() {
     return (
-        <div>
-            <h1>runde.tips</h1>
+        <div className="p-2">
+            <h1 className="text-2xl font-medium">runde.tips</h1>
         </div>
     );
 }
