@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    // Enable modern JS
+    "target": "ES2024",
+    // Enable strict mode
+    "strict": true,
+    // Bundler Mode
+    "module": "Preserve",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "verbatimModuleSyntax": true,
+    // React
+    "jsx": "react-jsx"
+  }
+}
