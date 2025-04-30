@@ -1,9 +1,9 @@
-import { getLoadContext } from "../load-context";
-import { createRequestHandler } from "react-router";
+import { createRequestHandler } from 'react-router';
+import { getLoadContext } from '../load-context';
 
 const requestHandler = createRequestHandler(
   // @ts-ignore
-  () => import("virtual:react-router/server-build"),
+  () => import('virtual:react-router/server-build'),
   import.meta.env.MODE,
 );
 
