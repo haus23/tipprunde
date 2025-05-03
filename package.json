@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
+    "dev:email": "email dev",
     "build": "react-router build",
     "check": "biome check --write .",
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@react-email/components": "0.0.36",
     "@react-router/node": "~7.5.3",
     "isbot": "^5.1.27",
     "react": "~19.1.0",
@@ -24,6 +26,7 @@
     "@types/node": "~22.15.3",
     "@types/react": "~19.1.2",
     "@types/react-dom": "~19.1.2",
+    "react-email": "~4.0.7",
     "tailwindcss": "^4.1.4",
     "typescript": "~5.8.3",
     "vite": "^6.3.4",
