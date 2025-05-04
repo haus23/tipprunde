@@ -1,4 +1,5 @@
 import { createRequestHandler } from 'react-router';
+
 import { getLoadContext } from '../load-context';
 
 const requestHandler = createRequestHandler(
