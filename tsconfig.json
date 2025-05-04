@@ -13,6 +13,10 @@
     // React
     "jsx": "react-jsx",
     // React Router
-    "rootDirs": [".", "./.react-router/types"]
+    "rootDirs": [".", "./.react-router/types"],
+    // DX
+    "paths": {
+      "~/*": ["./app/*"]
+    }
   }
 }
