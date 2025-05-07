@@ -1,5 +1,7 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 
+import { AppShell } from '~/components/shell/app-shell';
+
 import './root.css';
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -12,7 +14,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <AppShell>{children}</AppShell>
         <ScrollRestoration />
         <Scripts />
       </body>
