@@ -13,20 +13,20 @@
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.6",
     "@react-email/components": "0.0.38",
-    "@react-router/node": "~7.5.3",
+    "@react-router/node": "~7.6.0",
     "isbot": "^5.1.27",
     "lucide-react": "^0.508.0",
     "react": "~19.1.0",
     "react-aria": "^3.39.0",
     "react-dom": "~19.1.0",
-    "react-router": "~7.5.3",
+    "react-router": "~7.6.0",
     "tailwind-merge": "^3.2.0",
     "tailwind-variants": "^1.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.0-beta.2",
     "@cloudflare/vite-plugin": "~1.1.1",
-    "@react-router/dev": "~7.5.3",
+    "@react-router/dev": "~7.6.0",
     "@tailwindcss/vite": "^4.1.5",
     "@types/node": "~22.15.17",
     "@types/react": "~19.1.3",
