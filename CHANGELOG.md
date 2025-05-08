@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.0.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.4...v0.0.5)
+
+### 🚀 Enhancements
+
+- Switch to Geist font. ([cb14f68](https://github.com/haus23/tipprunde/commit/cb14f68))
+
+### 🏡 Chore
+
+- Update dev deps. ([bd6af07](https://github.com/haus23/tipprunde/commit/bd6af07))
+- Upgrade react router. ([6828d3f](https://github.com/haus23/tipprunde/commit/6828d3f))
+
 ## v0.0.4
 
 
