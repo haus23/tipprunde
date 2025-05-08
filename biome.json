@@ -24,6 +24,15 @@
             "style": "separatedType"
           }
         }
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {
+            "functions": ["tv", "twMerge"]
+          }
+        }
       }
     }
   },
