@@ -5,7 +5,7 @@ export function meta() {
 export default function Home() {
   return (
     <div className="p-2">
-      <h1 className="text-2xl font-medium">Dashboard</h1>
+      <h1 className="font-medium text-2xl">Dashboard</h1>
     </div>
   );
 }

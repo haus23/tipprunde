@@ -1,0 +1,56 @@
+:root {
+  --mauve-1: #fdfcfd;
+  --mauve-2: #faf9fb;
+  --mauve-3: #f2eff3;
+  --mauve-4: #eae7ec;
+  --mauve-5: #e3dfe6;
+  --mauve-6: #dbd8e0;
+  --mauve-7: #d0cdd7;
+  --mauve-8: #bcbac7;
+  --mauve-9: #8e8c99;
+  --mauve-10: #84828e;
+  --mauve-11: #65636d;
+  --mauve-12: #211f26;
+  --mauve-dark-1: #121113;
+  --mauve-dark-2: #1a191b;
+  --mauve-dark-3: #232225;
+  --mauve-dark-4: #2b292d;
+  --mauve-dark-5: #323035;
+  --mauve-dark-6: #3c393f;
+  --mauve-dark-7: #49474e;
+  --mauve-dark-8: #625f69;
+  --mauve-dark-9: #6f6d78;
+  --mauve-dark-10: #7c7a85;
+  --mauve-dark-11: #b5b2bc;
+  --mauve-dark-12: #eeeef0;
+}
+
+[data-theme="mauvi"] {
+  --app-1: var(--mauve-1);
+  --app-2: var(--mauve-2);
+  --app-3: var(--mauve-3);
+  --app-4: var(--mauve-4);
+  --app-5: var(--mauve-5);
+  --app-6: var(--mauve-6);
+  --app-7: var(--mauve-7);
+  --app-8: var(--mauve-8);
+  --app-9: var(--mauve-9);
+  --app-10: var(--mauve-10);
+  --app-11: var(--mauve-11);
+  --app-12: var(--mauve-12);
+}
+
+[data-theme="mauvi"].dark {
+  --app-1: var(--mauve-dark-1);
+  --app-2: var(--mauve-dark-2);
+  --app-3: var(--mauve-dark-3);
+  --app-4: var(--mauve-dark-4);
+  --app-5: var(--mauve-dark-5);
+  --app-6: var(--mauve-dark-6);
+  --app-7: var(--mauve-dark-7);
+  --app-8: var(--mauve-dark-8);
+  --app-9: var(--mauve-dark-9);
+  --app-10: var(--mauve-dark-10);
+  --app-11: var(--mauve-dark-11);
+  --app-12: var(--mauve-dark-12);
+}

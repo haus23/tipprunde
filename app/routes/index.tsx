@@ -15,8 +15,8 @@ export async function loader({ context }: Route.LoaderArgs) {
 export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <div className="p-2">
-      <h1 className="text-2xl font-medium">runde.tips</h1>
-      <h2 className="text-2xl font-medium">{loaderData.championship.name}</h2>
+      <h1 className="font-medium text-2xl">runde.tips</h1>
+      <h2 className="font-medium text-2xl">{loaderData.championship.name}</h2>
     </div>
   );
 }

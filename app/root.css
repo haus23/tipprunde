@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+/* Colors */
+@import "./theme/mauve-violet.css";
+
+/* Dark mode: css class dark */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Theme */
+@theme {
+  --color-app-1: var(--app-1);
+  --color-app-2: var(--app-2);
+  --color-app-3: var(--app-3);
+  --color-app-4: var(--app-4);
+  --color-app-5: var(--app-5);
+  --color-app-6: var(--app-6);
+  --color-app-7: var(--app-7);
+  --color-app-8: var(--app-8);
+  --color-app-9: var(--app-9);
+  --color-app-10: var(--app-10);
+  --color-app-11: var(--app-11);
+  --color-app-12: var(--app-12);
+}
