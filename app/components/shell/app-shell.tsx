@@ -4,12 +4,17 @@ import { AppSidebar } from '~/components/shell/app-sidebar';
 
 const SIDEBAR_WIDTH = '16rem';
 
+export interface AppShellProps extends React.ComponentProps<'div'> {
+  nav: React.ReactNode;
+}
+
 export function AppShell({
   children,
   className,
+  nav,
   style,
   ...props
-}: React.ComponentProps<'div'>) {
+}: AppShellProps) {
   return (
     <div
       style={
@@ -21,9 +26,7 @@ export function AppShell({
       className={twMerge('isolate flex min-h-svh w-full', className)}
       {...props}
     >
-      <div className="w-[var(--sidebar-width)] border-app-6 border-r shadow-sm">
-        <AppSidebar />
-      </div>
+      <AppSidebar>{nav}</AppSidebar>
       <main className="grow p-4">{children}</main>
     </div>
   );
