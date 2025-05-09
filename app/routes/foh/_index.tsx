@@ -1,4 +1,4 @@
-import type { Route } from './+types/index';
+import type { Route } from './+types/_index';
 
 import { appContext } from '~/utils/app-context.server';
 
