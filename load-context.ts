@@ -1,25 +1,17 @@
-import type { AppLoadContext } from 'react-router';
+import type { unstable_InitialContext } from 'react-router';
+import type { AppContext } from '~/utils/app-context.server';
 
-declare global {
-  interface CloudflareEnvironment extends Env {}
-}
-
-declare module 'react-router' {
-  export interface AppLoadContext {
-    cloudflare: {
-      env: CloudflareEnvironment;
-      ctx: Omit<ExecutionContext, 'props'>;
-    };
-  }
-}
+import { appContext } from '~/utils/app-context.server';
 
 type GetLoadContextArgs = {
   request: Request;
-  context: Pick<AppLoadContext, 'cloudflare'>;
+  context: AppContext;
 };
 
-export function getLoadContext({ context }: GetLoadContextArgs) {
-  return {
-    cloudflare: context.cloudflare,
-  };
+export function getLoadContext({
+  context,
+}: GetLoadContextArgs): unstable_InitialContext {
+  let map = new Map();
+  map.set(appContext, context);
+  return map;
 }
