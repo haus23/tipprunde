@@ -18,10 +18,12 @@ export function AppShell({
           ...style,
         } as React.CSSProperties
       }
-      className={twMerge('flex', className)}
+      className={twMerge('isolate flex min-h-svh w-full', className)}
       {...props}
     >
-      <AppSidebar />
+      <div className="w-[var(--sidebar-width)] border-app-6 border-r shadow-sm">
+        <AppSidebar />
+      </div>
       <main className="grow p-4">{children}</main>
     </div>
   );
