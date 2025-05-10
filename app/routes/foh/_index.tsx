@@ -1,4 +1,5 @@
 import type { Route } from './+types/_index';
+import {env} from "~/utils/.server/env";
 
 export function meta() {
   return [{ title: 'runde.tips' }];
@@ -6,7 +7,7 @@ export function meta() {
 
 export async function loader() {
   const response = await fetch(
-    `${process.env.UNTERBAU_URL}/api/v1/championships`,
+    `${env.UNTERBAU_URL}/api/v1/championships`,
   );
   const data = (await response.json()) as Record<string, string>[];
   return { championship: data[0] };
