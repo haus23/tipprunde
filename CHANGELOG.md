@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v0.0.7
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.6...v0.0.7)
+
+### 🚀 Enhancements
+
+- Add login route. ([a970946](https://github.com/haus23/tipprunde/commit/a970946))
+- Add an auth session and secure the admin routes. ([b42fe76](https://github.com/haus23/tipprunde/commit/b42fe76))
+
+### 💅 Refactors
+
+- Drop unstable middleware by now. ([75e53b1](https://github.com/haus23/tipprunde/commit/75e53b1))
+- Drop the server folder. ([3d80e99](https://github.com/haus23/tipprunde/commit/3d80e99))
+
 ## v0.0.6
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.5...v0.0.6)
