@@ -1,6 +1,26 @@
 # Changelog
 
 
+## v0.0.6
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.5...v0.0.6)
+
+### 🚀 Enhancements
+
+- Initial take on the admin sidebar. Fix layout issue. ([679e289](https://github.com/haus23/tipprunde/commit/679e289))
+- Validate environment vars. ([d34ddc6](https://github.com/haus23/tipprunde/commit/d34ddc6))
+
+### 🩹 Fixes
+
+- Add vite plugin to handle chrome devtool requests. ([ece605d](https://github.com/haus23/tipprunde/commit/ece605d))
+
+### 💅 Refactors
+
+- Switch to (unstable) middleware. ([85caacf](https://github.com/haus23/tipprunde/commit/85caacf))
+- Create cleaner route folders. ([2c45264](https://github.com/haus23/tipprunde/commit/2c45264))
+- Bring back the layouts. ([124fda3](https://github.com/haus23/tipprunde/commit/124fda3))
+- Simplify env usage with nodejs compat flag. No need for cf context by now. ([1d67af9](https://github.com/haus23/tipprunde/commit/1d67af9))
+
 ## v0.0.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.4...v0.0.5)
