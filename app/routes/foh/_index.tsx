@@ -1,6 +1,6 @@
 import type { Route } from './+types/_index';
 
-import { env } from '~/utils/.server/env';
+import { env } from '~/utils/env.server';
 
 export function meta() {
   return [{ title: 'runde.tips' }];

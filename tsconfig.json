@@ -1,5 +1,4 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "**/.server/**/*.ts"],
   "compilerOptions": {
     // Enable modern JS
     "target": "ES2024",
