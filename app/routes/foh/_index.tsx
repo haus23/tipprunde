@@ -1,17 +1,12 @@
 import type { Route } from './+types/_index';
 
-import { appContext } from '~/utils/app-context.server';
-
 export function meta() {
   return [{ title: 'runde.tips' }];
 }
 
-export async function loader({ context }: Route.LoaderArgs) {
-  // @ts-ignore
-  const appCtx = context.get(appContext);
-
+export async function loader() {
   const response = await fetch(
-    `${appCtx.cloudflare.env.UNTERBAU_URL}/api/v1/championships`,
+    `${process.env.UNTERBAU_URL}/api/v1/championships`,
   );
   const data = (await response.json()) as Record<string, string>[];
   return { championship: data[0] };
