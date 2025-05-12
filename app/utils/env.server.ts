@@ -7,6 +7,9 @@ const envSchema = v.object({
     'development',
   ),
 
+  // Root Email
+  ROOT_EMAIL: v.string(),
+
   // Secrets
   AUTH_SESSION_SECRET: v.string(),
 
