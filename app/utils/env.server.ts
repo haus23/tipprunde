@@ -10,6 +10,10 @@ const envSchema = v.object({
   // Root Email
   ROOT_EMAIL: v.string(),
 
+  // TOTP Settings
+  TOTP_PERIOD: v.pipe(v.string(), v.transform(Number)),
+  TOTP_ATTEMPTS: v.pipe(v.string(), v.transform(Number)),
+
   // Secrets
   AUTH_SESSION_SECRET: v.string(),
 

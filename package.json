@@ -11,6 +11,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@epic-web/totp": "^4.0.1",
     "@fontsource-variable/geist": "^5.2.6",
     "@react-email/components": "0.0.39",
     "@react-router/node": "~7.6.0",

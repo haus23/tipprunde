@@ -5,6 +5,10 @@
   "compatibility_date": "2025-04-28",
   "main": "./workers/app.ts",
   "vars": {
-    "UNTERBAU_URL": "https://unterbau.runde.tips"
+    // Legacy Backend Host
+    "UNTERBAU_URL": "https://unterbau.runde.tips",
+    // TOTP related (period in seconds the code is valid and max attempts to enter the code)
+    "TOTP_PERIOD": 300,
+    "TOTP_ATTEMPTS": 3
   }
 }
