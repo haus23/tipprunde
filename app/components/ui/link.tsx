@@ -7,8 +7,8 @@ import { tv } from 'tailwind-variants';
 
 import { focusVisibleStyles } from '~/components/ui/_common';
 
-const linkStyles = tv({
-  base: [focusVisibleStyles, 'p-1'],
+const styles = tv({
+  base: [focusVisibleStyles, 'rounded-md p-1'],
   variants: {
     variant: {
       default: '',
@@ -21,9 +21,7 @@ const linkStyles = tv({
   },
 });
 
-export interface LinkProps
-  extends _LinkProps,
-    VariantProps<typeof linkStyles> {}
+export interface LinkProps extends _LinkProps, VariantProps<typeof styles> {}
 
 export function Link({ className, variant, ...props }: LinkProps) {
   const { isFocusVisible, focusProps } = useFocusRing();
@@ -31,7 +29,7 @@ export function Link({ className, variant, ...props }: LinkProps) {
 
   return (
     <_Link
-      className={linkStyles({ className, variant })}
+      className={styles({ className, variant })}
       {...(isFocusVisible && { 'data-focus-visible': true })}
       {...focusProps}
       {...(isHovered && { 'data-hovered': true })}
