@@ -4,10 +4,22 @@
 @import "tailwindcss";
 
 /* Colors */
+@import "./theme/semantic.css";
 @import "./theme/mauve-violet.css";
 
 /* Dark mode: css class dark */
+
 @custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+}
 
 /* Theme */
 @theme {
@@ -24,4 +36,17 @@
   --color-app-10: var(--app-10);
   --color-app-11: var(--app-11);
   --color-app-12: var(--app-12);
+  --color-accent-1: var(--accent-1);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-accent-4: var(--accent-4);
+  --color-accent-5: var(--accent-5);
+  --color-accent-6: var(--accent-6);
+  --color-accent-7: var(--accent-7);
+  --color-accent-8: var(--accent-8);
+  --color-accent-9: var(--accent-9);
+  --color-accent-10: var(--accent-10);
+  --color-accent-11: var(--accent-11);
+  --color-accent-12: var(--accent-12);
+  --color-error: var(--ruby-9);
 }
