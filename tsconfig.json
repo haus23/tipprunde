@@ -27,6 +27,7 @@
     // DX
     "paths": {
       "~/*": ["./app/*"],
+      "~/database/*": ["./database/*"],
       "~/emails/*": ["./emails/*"]
     }
   }
