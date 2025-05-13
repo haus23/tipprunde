@@ -10,5 +10,12 @@
     // TOTP related (period in seconds the code is valid and max attempts to enter the code)
     "TOTP_PERIOD": 300,
     "TOTP_ATTEMPTS": 3
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tipprunde-db",
+      "database_id": "2bafeb39-eb95-43ce-88d0-c307c3200587"
+    }
+  ]
 }
