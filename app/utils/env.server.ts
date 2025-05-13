@@ -8,7 +8,11 @@ const envSchema = v.object({
   ),
 
   // Root Email
-  ROOT_EMAIL: v.string(),
+  ROOT_EMAIL: v.pipe(v.string(), v.email()),
+
+  // Sender Emails
+  WELCOME_EMAIL: v.pipe(v.string(), v.email()),
+  SECURITY_EMAIL: v.pipe(v.string(), v.email()),
 
   // TOTP Settings
   TOTP_PERIOD: v.pipe(v.string(), v.transform(Number)),
@@ -16,6 +20,10 @@ const envSchema = v.object({
 
   // Secrets
   AUTH_SESSION_SECRET: v.string(),
+
+  // Email SaaS tokens
+  POSTMARK_TOKEN: v.string(),
+  RESEND_TOKEN: v.string(),
 
   // Legacy Backend
   UNTERBAU_URL: v.string(),
