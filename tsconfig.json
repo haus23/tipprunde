@@ -1,4 +1,14 @@
 {
+  "include": [
+    ".react-router/types/**/*",
+    "app/**/*",
+    "database/**/*",
+    "emails/**/*",
+    "workers/**/*",
+    "drizzle.config.ts",
+    "load-context.ts",
+    "worker-configuration.d.ts"
+  ],
   "compilerOptions": {
     // Enable modern JS
     "target": "ES2024",
@@ -9,7 +19,7 @@
     "noEmit": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
     // React
     "jsx": "react-jsx",
     // React Router
