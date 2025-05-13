@@ -1,6 +1,8 @@
 import { env } from '~/utils/env.server';
 import { createLoginCode } from '~/utils/totp.server';
 
+import { sendCodeMail, sendErrorMail } from './email.server';
+
 /**
  * Gets user by email address
  *
@@ -26,11 +28,15 @@ export async function prepareOnboarding(request: Request) {
 
   const user = await getUserByEmail(email);
   if (!user) {
+    await sendErrorMail({
+      subject: 'Login-Fehler mit ungültiger Email-Adresse.',
+      msg: `Bei einem Login-Versuch wurde die ungültige Email-Adresse ${email} verwendet.`,
+    });
     return {
       errors: { email: 'Unbekannte Email-Adresse. Wende dich an Micha.' },
     };
   }
 
   const code = await createLoginCode(email);
-  console.log(code);
+  await sendCodeMail({ userName: user.name, code, email });
 }

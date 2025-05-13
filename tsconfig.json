@@ -16,7 +16,8 @@
     "rootDirs": [".", "./.react-router/types"],
     // DX
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "~/emails/*": ["./emails/*"]
     }
   }
 }
