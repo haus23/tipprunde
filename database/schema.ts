@@ -3,9 +3,11 @@ import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 const timestamps = {
   createdAt: integer({ mode: 'timestamp' })
-    .notNull().$default(() => new Date()),
+    .notNull()
+    .$default(() => new Date()),
   updatedAt: integer({ mode: 'timestamp' })
-    .notNull().$onUpdate(() => new Date()),
+    .notNull()
+    .$onUpdate(() => new Date()),
 };
 
 export const verifications = sqliteTable('verifications', {

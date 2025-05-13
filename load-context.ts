@@ -25,7 +25,10 @@ type GetLoadContextArgs = {
 };
 
 export function getLoadContext({ context }: GetLoadContextArgs) {
-  const db = drizzle(context.cloudflare.env.DB, { schema, casing: 'snake_case' });
+  const db = drizzle(context.cloudflare.env.DB, {
+    schema,
+    casing: 'snake_case',
+  });
   return {
     cloudflare: context.cloudflare,
     db,
