@@ -8,21 +8,36 @@ import {
   Img,
   Link,
   Preview,
+  pretty,
+  render,
   Section,
   Text,
 } from '@react-email/components';
 
-interface SendTotpEmailProps {
+import {
+  button,
+  buttonContainer,
+  codeContainer,
+  codeNumbers,
+  container,
+  heading,
+  hr,
+  linkContainer,
+  linkText,
+  logo,
+  main,
+  primary,
+  secondary,
+  tertiary,
+} from './_styles';
+
+interface SendCodeProps {
   name: string;
   code: string;
   magicLink: string;
 }
 
-export default function SendCode({
-  name,
-  code,
-  magicLink,
-}: SendTotpEmailProps) {
+export default function SendCode({ name, code, magicLink }: SendCodeProps) {
   return (
     <Html>
       <Head />
@@ -78,143 +93,8 @@ SendCode.PreviewProps = {
   magicLink: 'https://www.runde.tips/login?code=546713',
 };
 
-const mauve = {
-  mauve1: '#fdfcfd',
-  mauve2: '#faf9fb',
-  mauve3: '#f2eff3',
-  mauve4: '#eae7ec',
-  mauve5: '#e3dfe6',
-  mauve6: '#dbd8e0',
-  mauve7: '#d0cdd7',
-  mauve8: '#bcbac7',
-  mauve9: '#8e8c99',
-  mauve10: '#84828e',
-  mauve11: '#65636d',
-  mauve12: '#211f26',
-};
-
-const violet = {
-  violet1: '#fdfcfe',
-  violet2: '#faf8ff',
-  violet3: '#f4f0fe',
-  violet4: '#ebe4ff',
-  violet5: '#e1d9ff',
-  violet6: '#d4cafe',
-  violet7: '#c2b5f5',
-  violet8: '#aa99ec',
-  violet9: '#6e56cf',
-  violet10: '#654dc4',
-  violet11: '#6550b9',
-  violet12: '#2f265f',
-};
-
-const main = {
-  backgroundColor: mauve.mauve1,
-  fontFamily: 'HelveticaNeue,Helvetica,Arial,sans-serif',
-};
-
-const container = {
-  backgroundColor: '#ffffff',
-  margin: '0 auto',
-  marginBottom: '16px',
-  padding: '24px 16px',
-  border: '1px solid #eee',
-  borderRadius: '5px',
-  boxShadow: '0 5px 10px ' + mauve.mauve6,
-};
-
-const heading = {
-  color: violet.violet12,
-  fontSize: '24px',
-  fontWeight: 'medium',
-  lineHeight: '32px',
-  margin: '16px 0 0',
-  textAlign: 'center' as const,
-};
-
-const primary = {
-  color: mauve.mauve12,
-  fontSize: '16px',
-  lineHeight: '28px',
-  textAlign: 'center' as const,
-};
-
-const secondary = {
-  color: mauve.mauve11,
-  fontSize: '16px',
-  lineHeight: '28px',
-  textAlign: 'center' as const,
-};
-
-const tertiary = {
-  fontSize: '16px',
-  color: mauve.mauve10,
-  display: 'block',
-  textAlign: 'center' as const,
-};
-
-const logo = {
-  margin: '12px auto 0',
-};
-
-const codeContainer = {
-  background: mauve.mauve3,
-  borderRadius: '4px',
-  margin: '16px auto 14px',
-  verticalAlign: 'middle',
-  width: '280px',
-};
-
-const codeNumbers = {
-  color: '#000',
-  fontFamily: 'HelveticaNeue-Bold',
-  fontSize: '32px',
-  fontWeight: 700,
-  letterSpacing: '6px',
-  lineHeight: '40px',
-  paddingBottom: '8px',
-  paddingTop: '8px',
-  margin: '0 auto',
-  display: 'block',
-  textAlign: 'center' as const,
-};
-
-const buttonContainer = {
-  margin: '16px auto 14px',
-  verticalAlign: 'middle',
-  width: '280px',
-};
-
-const button = {
-  marginTop: '16px',
-  backgroundColor: violet.violet9,
-  borderRadius: '5px',
-  color: '#fff',
-  display: 'block',
-  fontSize: '16px',
-  fontWeight: 'semi-bold',
-  textAlign: 'center' as const,
-  textDecoration: 'none',
-  padding: '12px 64px',
-  margin: '0 auto',
-};
-
-const hr = {
-  borderColor: mauve.mauve6,
-  margin: '20px 0',
-};
-
-const linkContainer = {
-  background: mauve.mauve3,
-  borderRadius: '4px',
-  margin: '16px auto 14px',
-  verticalAlign: 'middle',
-};
-
-const linkText = {
-  color: mauve.mauve11,
-  fontSize: '16px',
-  lineHeight: '28px',
-  textAlign: 'center' as const,
-  padding: '0 16px',
-};
+export async function renderSendCodeEmail(props: SendCodeProps) {
+  const html = await pretty(await render(<SendCode {...props} />));
+  const text = await render(<SendCode {...props} />, { plainText: true });
+  return { html, text };
+}
