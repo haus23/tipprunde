@@ -7,6 +7,6 @@ CREATE TABLE `verifications` (
 	`char_set` text NOT NULL,
 	`expires_at` integer NOT NULL,
 	`attempts` integer DEFAULT 0 NOT NULL,
-	`created_at` integer DEFAULT current_timestamp NOT NULL,
-	`updated_at` integer DEFAULT current_timestamp NOT NULL
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL
 );
