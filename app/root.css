@@ -49,4 +49,17 @@
   --color-accent-11: var(--accent-11);
   --color-accent-12: var(--accent-12);
   --color-error: var(--ruby-9);
+
+  @keyframes caret-blink {
+    0%,
+    70%,
+    100% {
+      opacity: 1;
+    }
+    20%,
+    50% {
+      opacity: 0;
+    }
+  }
+  --animate-caret: caret-blink 1.2s ease-out infinite;
 }
