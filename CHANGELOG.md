@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.0.8
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.7...v0.0.8)
+
+### 🚀 Enhancements
+
+- Add initial set of lean form components. ([ab9cc25](https://github.com/haus23/tipprunde/commit/ab9cc25))
+- Add login form. ([0f3c197](https://github.com/haus23/tipprunde/commit/0f3c197))
+- Create TOTP code. ([181a9e2](https://github.com/haus23/tipprunde/commit/181a9e2))
+- Add security log email. ([2281234](https://github.com/haus23/tipprunde/commit/2281234))
+- Add email sending via Email-SaaS. ([79dbc07](https://github.com/haus23/tipprunde/commit/79dbc07))
+
+### 💅 Refactors
+
+- Remove focus visible styling by now. ([49b1468](https://github.com/haus23/tipprunde/commit/49b1468))
+- Move the mail addresses to secrets. Add email saas tokens. ([83d3a32](https://github.com/haus23/tipprunde/commit/83d3a32))
+
+### 🏡 Chore
+
+- Add react aria components dependency. ([2dd8fa0](https://github.com/haus23/tipprunde/commit/2dd8fa0))
+- Update dev deps. ([db9f5e2](https://github.com/haus23/tipprunde/commit/db9f5e2))
+- Update lucide icons and email components. ([29aba56](https://github.com/haus23/tipprunde/commit/29aba56))
+
 ## v0.0.7
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.6...v0.0.7)
