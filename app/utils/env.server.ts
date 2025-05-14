@@ -18,6 +18,9 @@ const envSchema = v.object({
   TOTP_PERIOD: v.pipe(v.string(), v.transform(Number)),
   TOTP_ATTEMPTS: v.pipe(v.string(), v.transform(Number)),
 
+  // Session duration (server)
+  SESSION_DURATION: v.pipe(v.string(), v.transform(Number)),
+
   // Secrets
   AUTH_SESSION_SECRET: v.string(),
   APP_SESSION_SECRET: v.string(),

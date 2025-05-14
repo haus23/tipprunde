@@ -1,3 +1,5 @@
+import { sessions } from '~/database/schema';
+import { db } from '~/utils/db.server';
 import { env } from '~/utils/env.server';
 import { commitAuthSession, getAuthSession } from '~/utils/sessions.server';
 import { redirectWithToast } from '~/utils/toast.server';
@@ -139,4 +141,28 @@ export async function verifyOnboardingCode(request: Request) {
     }
     return { errors: { code: verifyResult.error } };
   }
+
+  // Create app session
+  const expirationDate = new Date(Date.now() + env.SESSION_DURATION * 1000);
+  const [sessionData] = await db.instance
+    .insert(sessions)
+    .values({
+      userId: user.id,
+      expirationDate,
+      expires: true,
+    })
+    .returning({ sessionId: sessions.id });
+
+  session.set('sessionId', String(sessionData.sessionId));
+  console.log(sessionData);
+  throw await redirectWithToast(
+    request,
+    '/',
+    { type: 'success', message: `Hallo ${user.name}! Du bist drin.` },
+    {
+      headers: {
+        'Set-Cookie': await commitAuthSession(session, {}),
+      },
+    },
+  );
 }

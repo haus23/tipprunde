@@ -9,7 +9,9 @@
     "UNTERBAU_URL": "https://unterbau.runde.tips",
     // TOTP related (period in seconds the code is valid and max attempts to enter the code)
     "TOTP_PERIOD": 300,
-    "TOTP_ATTEMPTS": 3
+    "TOTP_ATTEMPTS": 3,
+    // Default time a session (saved in the session table) longs in seconds
+    "SESSION_DURATION": 2592000 // 30 days
   },
   "d1_databases": [
     {
