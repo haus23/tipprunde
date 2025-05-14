@@ -125,10 +125,19 @@ export async function verifyOnboardingCode(request: Request) {
   const verifyResult = await verifyLoginCode(email, code);
   if (!verifyResult.success) {
     if (!verifyResult.retry) {
-      throw await redirectWithToast(request, '/login', {
-        type: 'error',
-        message: verifyResult.error,
-      });
+      throw await redirectWithToast(
+        request,
+        '/login',
+        {
+          type: 'error',
+          message: verifyResult.error,
+        },
+        {
+          headers: {
+            'Set-Cookie': await commitAuthSession(session),
+          },
+        },
+      );
     }
     return { errors: { code: verifyResult.error } };
   }
