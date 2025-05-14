@@ -1,6 +1,26 @@
 # Changelog
 
 
+## v0.0.9
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.8...v0.0.9)
+
+### 🚀 Enhancements
+
+- Add d1 database binding. ([f392cce](https://github.com/haus23/tipprunde/commit/f392cce))
+- Prepare drizzle for db development. ([aa5e98f](https://github.com/haus23/tipprunde/commit/aa5e98f))
+- Create the first table: verifications ([2ae50e7](https://github.com/haus23/tipprunde/commit/2ae50e7))
+- Put drizzle instance into appLoadContext and expose singleton instance. ([5521176](https://github.com/haus23/tipprunde/commit/5521176))
+- Create and update a verification row entry. ([b6f5919](https://github.com/haus23/tipprunde/commit/b6f5919))
+- Implement otp input field. ([df70ecc](https://github.com/haus23/tipprunde/commit/df70ecc))
+- Add a code verify route. ([d30f1fd](https://github.com/haus23/tipprunde/commit/d30f1fd))
+- Integrate otp-input with react aria components. Add validation. ([84734c5](https://github.com/haus23/tipprunde/commit/84734c5))
+- Validate submitted totp. ([98dcc6a](https://github.com/haus23/tipprunde/commit/98dcc6a))
+
+### 🩹 Fixes
+
+- Update schema and configure casing for the instance. ([ce6a6af](https://github.com/haus23/tipprunde/commit/ce6a6af))
+
 ## v0.0.8
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.7...v0.0.8)
