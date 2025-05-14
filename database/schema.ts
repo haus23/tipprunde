@@ -1,4 +1,3 @@
-import { sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 const timestamps = {
@@ -11,7 +10,10 @@ const timestamps = {
 };
 
 export const sessions = sqliteTable('sessions', {
-  id: text().primaryKey().notNull().$default(() => crypto.randomUUID()),
+  id: text()
+    .primaryKey()
+    .notNull()
+    .$default(() => crypto.randomUUID()),
   expires: integer({ mode: 'boolean' }).notNull(),
   expirationDate: integer({ mode: 'timestamp' }).notNull(),
   userId: integer().notNull(),
