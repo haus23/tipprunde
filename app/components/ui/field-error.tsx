@@ -4,7 +4,7 @@ import { FieldError as _FieldError } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 const styles = tv({
-  base: ['text-error'],
+  base: ['text-error-9'],
 });
 
 interface FieldErrorProps extends _FieldErrorProps {

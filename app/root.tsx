@@ -14,17 +14,12 @@ import { getToast } from '~/utils/toast.server';
 import './root.css';
 
 import { combineHeaders } from '~/utils/misc';
+import { Toaster } from '~/utils/toast';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { toast, headers: toastHeaders } = await getToast(request);
 
-  if (toast) {
-    console.log(toast);
-  } else {
-    console.log('No toast');
-  }
-
-  return data(null, { headers: combineHeaders(toastHeaders) });
+  return data({ toast }, { headers: combineHeaders(toastHeaders) });
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -38,6 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body className="bg-white text-app-12 dark:bg-black">
         {children}
+        <Toaster />
         <ScrollRestoration />
         <Scripts />
       </body>

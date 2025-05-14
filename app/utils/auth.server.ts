@@ -1,5 +1,3 @@
-import { redirect } from 'react-router';
-
 import { env } from '~/utils/env.server';
 import { commitAuthSession, getAuthSession } from '~/utils/sessions.server';
 import { redirectWithToast } from '~/utils/toast.server';
@@ -61,7 +59,7 @@ export async function prepareOnboarding(request: Request) {
     request,
     '/code',
     {
-      type: 'success',
+      type: 'info',
       message:
         'Eine Email mit einem Login-Code wurde an deine Email-Adresse gesendet.',
     },

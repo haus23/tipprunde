@@ -22,8 +22,7 @@
 }
 
 /* Theme */
-@theme {
-  --font-sans: "Geist Variable", system-ui;
+@theme inline {
   --color-app-1: var(--app-1);
   --color-app-2: var(--app-2);
   --color-app-3: var(--app-3);
@@ -48,7 +47,10 @@
   --color-accent-10: var(--accent-10);
   --color-accent-11: var(--accent-11);
   --color-accent-12: var(--accent-12);
-  --color-error: var(--ruby-9);
+}
+
+@theme {
+  --font-sans: "Geist Variable", system-ui;
 
   @keyframes caret-blink {
     0%,
@@ -62,4 +64,28 @@
     }
   }
   --animate-caret: caret-blink 1.2s ease-out infinite;
+}
+
+@layer components {
+  ::view-transition-new(.toast):only-child {
+    animation: slide-in 400ms;
+  }
+
+  ::view-transition-old(.toast):only-child {
+    animation: slide-out 400ms;
+  }
+
+  @keyframes slide-out {
+    to {
+      translate: 100% 0;
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      translate: 100% 0;
+      opacity: 0;
+    }
+  }
 }
