@@ -9,17 +9,21 @@ import {
   ScrollRestoration,
 } from 'react-router';
 
+import { getUser } from '~/utils/auth.server';
+import { combineHeaders } from '~/utils/misc';
+import { Toaster } from '~/utils/toast';
 import { getToast } from '~/utils/toast.server';
 
 import './root.css';
 
-import { combineHeaders } from '~/utils/misc';
-import { Toaster } from '~/utils/toast';
-
 export async function loader({ request }: Route.LoaderArgs) {
+  const { user, headers: authHeaders } = await getUser(request);
   const { toast, headers: toastHeaders } = await getToast(request);
 
-  return data({ toast }, { headers: combineHeaders(toastHeaders) });
+  return data(
+    { toast, user },
+    { headers: combineHeaders(authHeaders, toastHeaders) },
+  );
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
