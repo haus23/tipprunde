@@ -1,6 +1,31 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import type { Route } from './+types/root';
+
+import {
+  data,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from 'react-router';
+
+import { getToast } from '~/utils/toast.server';
 
 import './root.css';
+
+import { combineHeaders } from '~/utils/misc';
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const { toast, headers: toastHeaders } = await getToast(request);
+
+  if (toast) {
+    console.log(toast);
+  } else {
+    console.log('No toast');
+  }
+
+  return data(null, { headers: combineHeaders(toastHeaders) });
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

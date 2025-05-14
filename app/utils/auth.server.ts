@@ -2,6 +2,7 @@ import { redirect } from 'react-router';
 
 import { env } from '~/utils/env.server';
 import { commitAuthSession, getAuthSession } from '~/utils/sessions.server';
+import { redirectWithToast } from '~/utils/toast.server';
 import { createLoginCode, verifyLoginCode } from '~/utils/totp.server';
 
 import { sendCodeMail, sendErrorMail } from './email.server';
@@ -56,11 +57,20 @@ export async function prepareOnboarding(request: Request) {
   const session = await getAuthSession(request);
   session.flash('email', email);
 
-  throw redirect('/code', {
-    headers: {
-      'Set-Cookie': await commitAuthSession(session),
+  throw await redirectWithToast(
+    request,
+    '/code',
+    {
+      type: 'success',
+      message:
+        'Eine Email mit einem Login-Code wurde an deine Email-Adresse gesendet.',
     },
-  });
+    {
+      headers: {
+        'Set-Cookie': await commitAuthSession(session),
+      },
+    },
+  );
 }
 
 /**
@@ -75,7 +85,10 @@ export async function ensureOnboardingSession(request: Request) {
   const email = session.get('email');
 
   if (!email) {
-    throw redirect('/login');
+    throw await redirectWithToast(request, '/login', {
+      type: 'error',
+      message: 'Kein aktueller Anmeldeversuch. Bitte versuche es erneut.',
+    });
   }
 
   const user = await getUserByEmail(email);
@@ -94,14 +107,16 @@ export async function ensureOnboardingSession(request: Request) {
 export async function verifyOnboardingCode(request: Request) {
   const session = await getAuthSession(request);
   const email = session.get('email');
-console.log(email);
+
   if (!email) {
-    throw redirect('/login');
+    throw await redirectWithToast(request, '/login', {
+      type: 'error',
+      message: 'Kein aktueller Anmeldeversuch. Bitte versuche es erneut.',
+    });
   }
 
   const user = await getUserByEmail(email);
   if (!user) throw Error('Netter Versuch!');
-
 
   const formData = await request.formData();
   const code = String(formData.get('code'));
@@ -110,7 +125,10 @@ console.log(email);
   const verifyResult = await verifyLoginCode(email, code);
   if (!verifyResult.success) {
     if (!verifyResult.retry) {
-      throw redirect('/login');
+      throw await redirectWithToast(request, '/login', {
+        type: 'error',
+        message: verifyResult.error,
+      });
     }
     return { errors: { code: verifyResult.error } };
   }

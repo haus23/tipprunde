@@ -20,6 +20,7 @@ const envSchema = v.object({
 
   // Secrets
   AUTH_SESSION_SECRET: v.string(),
+  APP_SESSION_SECRET: v.string(),
 
   // Email SaaS tokens
   POSTMARK_TOKEN: v.string(),
