@@ -3,6 +3,8 @@ import type { AppLoadContext } from 'react-router';
 
 import { drizzle } from 'drizzle-orm/d1';
 
+import { initializeDb } from '~/utils/db.server';
+
 import * as schema from './database/schema';
 
 declare global {
@@ -29,6 +31,8 @@ export function getLoadContext({ context }: GetLoadContextArgs) {
     schema,
     casing: 'snake_case',
   });
+  initializeDb(db);
+
   return {
     cloudflare: context.cloudflare,
     db,

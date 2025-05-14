@@ -4,17 +4,13 @@ import { isbot } from 'isbot';
 import { renderToReadableStream } from 'react-dom/server';
 import { ServerRouter } from 'react-router';
 
-import { initializeDb } from '~/utils/db.server';
-
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   routerContext: EntryContext,
-  loadContext: AppLoadContext,
+  _loadContext: AppLoadContext,
 ) {
-  initializeDb(loadContext.db);
-
   let shellRendered = false;
   const userAgent = request.headers.get('user-agent');
 
