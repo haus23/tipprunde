@@ -2,7 +2,7 @@ import { redirect } from 'react-router';
 
 import { env } from '~/utils/env.server';
 import { commitAuthSession, getAuthSession } from '~/utils/sessions.server';
-import { createLoginCode } from '~/utils/totp.server';
+import { createLoginCode, verifyLoginCode } from '~/utils/totp.server';
 
 import { sendCodeMail, sendErrorMail } from './email.server';
 
@@ -25,6 +25,15 @@ async function getUserByEmail(email: string) {
   return null;
 }
 
+/**
+ * Prepares users onboarding. Expects email in request form data.
+ *
+ * If no valid email address is in the form data, it returns an error.
+ * Otherwise, it creates an onboarding code and redirects to the onboarding page
+ * to let the user enter the mailed code.
+ *
+ * @param request Request object
+ */
 export async function prepareOnboarding(request: Request) {
   const formData = await request.formData();
   const email = String(formData.get('email'));
@@ -52,4 +61,38 @@ export async function prepareOnboarding(request: Request) {
       'Set-Cookie': await commitAuthSession(session),
     },
   });
+}
+
+/**
+ * Performs user login
+ *
+ * Expects valid email in session and totp code in request.
+ * Returns error for invalid data. Logs the user in and redirects to home otherwise.
+ *
+ * @param request Request object
+ * @returns Login errors or redirects
+ */
+export async function verifyOnboardingCode(request: Request) {
+  const session = await getAuthSession(request);
+  const email = session.get('email');
+
+  if (!email) {
+    throw redirect('/login');
+  }
+
+  const user = await getUserByEmail(email);
+  if (!user) throw Error('Netter Versuch!');
+
+
+  const formData = await request.formData();
+  const code = String(formData.get('code'));
+
+  // Verify code
+  const verifyResult = await verifyLoginCode(email, code);
+  if (!verifyResult.success) {
+    if (!verifyResult.retry) {
+      throw redirect('/login');
+    }
+    return { errors: { code: verifyResult.error } };
+  }
 }
