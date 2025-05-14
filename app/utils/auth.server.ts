@@ -64,6 +64,25 @@ export async function prepareOnboarding(request: Request) {
 }
 
 /**
+ * Ensures that there is an ongoing onboarding session.
+ *
+ * Prevents a route from being called directly
+ *
+ * @param request Request object
+ */
+export async function ensureOnboardingSession(request: Request) {
+  const session = await getAuthSession(request);
+  const email = session.get('email');
+
+  if (!email) {
+    throw redirect('/login');
+  }
+
+  const user = await getUserByEmail(email);
+  if (!user) throw Error('Netter Versuch!');
+}
+
+/**
  * Performs user login
  *
  * Expects valid email in session and totp code in request.
@@ -75,7 +94,7 @@ export async function prepareOnboarding(request: Request) {
 export async function verifyOnboardingCode(request: Request) {
   const session = await getAuthSession(request);
   const email = session.get('email');
-
+console.log(email);
   if (!email) {
     throw redirect('/login');
   }

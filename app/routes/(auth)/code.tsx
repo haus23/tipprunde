@@ -5,10 +5,14 @@ import { useSubmit } from 'react-router';
 import { Button } from '~/components/ui/button';
 import { Form } from '~/components/ui/form';
 import { OtpField } from '~/components/ui/otp-field';
-import { verifyOnboardingCode } from '~/utils/auth.server';
+import { ensureOnboardingSession, verifyOnboardingCode } from '~/utils/auth.server';
 
 export function meta() {
   return [{ title: 'Login - runde.tips' }];
+}
+
+export async function loader({ request }: Route.LoaderArgs) {
+  await ensureOnboardingSession(request);
 }
 
 export async function action({ request }: Route.ActionArgs) {
