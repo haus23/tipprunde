@@ -8,7 +8,6 @@ export function meta() {
 
 export async function loader({ request }: Route.LoaderArgs) {
   await requireManager(request);
-  return null;
 }
 
 export default function Dashboard() {

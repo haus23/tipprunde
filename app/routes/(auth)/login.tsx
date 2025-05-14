@@ -6,12 +6,21 @@ import { Button } from '~/components/ui/button';
 import { Form } from '~/components/ui/form';
 import { TextField } from '~/components/ui/text-field';
 import { prepareOnboarding } from '~/utils/auth.server';
+import { requireAnonymous } from '~/utils/user.server';
 
 export function meta() {
-  return [{ title: 'Log In - runde.tips' }];
+  return [
+    { title: 'Log In - runde.tips' },
+    { name: 'description', content: 'Anmeldung bei der Haus23 Tipprunde' },
+  ];
+}
+
+export async function loader({ request }: Route.LoaderArgs) {
+  await requireAnonymous(request);
 }
 
 export async function action({ request }: Route.ActionArgs) {
+  await requireAnonymous(request);
   return await prepareOnboarding(request);
 }
 

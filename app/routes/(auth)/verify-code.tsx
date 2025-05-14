@@ -1,4 +1,4 @@
-import type { Route } from './+types/code';
+import type { Route } from './+types/verify-code';
 
 import { useSubmit } from 'react-router';
 
@@ -11,7 +11,13 @@ import {
 } from '~/utils/auth.server';
 
 export function meta() {
-  return [{ title: 'Login - runde.tips' }];
+  return [
+    { title: 'Login - runde.tips' },
+    {
+      name: 'description',
+      value: 'Einmalpasswort-Eingabe für die Anmeldung zur Haus23 Tipprunde',
+    },
+  ];
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -22,7 +28,7 @@ export async function action({ request }: Route.ActionArgs) {
   return await verifyOnboardingCode(request);
 }
 
-export default function Code({ actionData }: Route.ComponentProps) {
+export default function VerifyCode({ actionData }: Route.ComponentProps) {
   const submit = useSubmit();
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

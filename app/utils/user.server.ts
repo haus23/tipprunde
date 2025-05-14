@@ -1,9 +1,86 @@
+/*
+ * This file contains the auth state functions
+ *
+ * - getUser(): called by the root loader, returns logged-in user or null
+ * - requireAnonymous(): loader/action quard
+ * - requireManager(): loader/action quard
+ *
+ */
+/*
+ * The auth state functions
+ *
+ * - getUser(): called by the root loader, returns logged-in user or null
+ * - requireAnonymous(): loader/action quard
+ * - requireManager(): loader/action quard
+ *
+ */
+
+import { eq } from 'drizzle-orm';
 import { redirect } from 'react-router';
 
-import { getAuthSession } from '~/utils/sessions.server';
+import { sessions } from '~/database/schema';
+import { getUserById } from '~/utils/db.queries.server';
+import { db } from '~/utils/db.server';
+import { destroyAuthSession, getAuthSession } from '~/utils/sessions.server';
 
 /**
- * Loads user from db - identified by session
+ * Validates app session and returns logged-in user or null.
+ * In case of an invalid session, all session data will be deleted.
+ *
+ * This function is the main authentication point, it is only called from the root loader.
+ *
+ * @param request Request Object
+ * @returns User or null
+ */
+export async function getUser(request: Request) {
+  const authSession = await getAuthSession(request);
+  const sessionId = authSession.get('sessionId');
+
+  // No client session? Exit early
+  if (!sessionId) {
+    return {
+      user: null,
+      headers: null,
+    };
+  }
+
+  const session = await db.instance.query.sessions.findFirst({
+    where: (sessions, { eq }) => eq(sessions.id, sessionId),
+  });
+
+  // No server session? Log the user out from the client and exit
+  if (!session) {
+    return {
+      user: null,
+      headers: {
+        'Set-Cookie': await destroyAuthSession(authSession),
+      },
+    };
+  }
+
+  // Load associated user
+  const user = await getUserById(session.userId);
+
+  // No user or expired server session? Destroy server session and log user out from the client
+  // This covers the rare case that the user account is already deleted, but there is still a browser session
+  if (!user || new Date() > session.expirationDate) {
+    await db.instance.delete(sessions).where(eq(sessions.id, sessionId));
+    return {
+      user: null,
+      headers: {
+        'Set-Cookie': await destroyAuthSession(authSession),
+      },
+    };
+  }
+
+  return {
+    user,
+    headers: null,
+  };
+}
+
+/**
+ * Loads user - may be identified by session from db
  *
  * @param request Request object
  * @returns User or null
@@ -12,7 +89,23 @@ async function getOptionalUser(request: Request) {
   const authSession = await getAuthSession(request);
   const sessionId = authSession.get('sessionId');
 
-  return null;
+  if (!sessionId) return null;
+
+  const session = await db.instance.query.sessions.findFirst({
+    where: (sessions, { eq }) => eq(sessions.id, sessionId),
+  });
+
+  return session ? await getUserById(session.userId) : null;
+}
+
+/**
+ * Ensures no logged-in user
+ *
+ * @param request Request object
+ */
+export async function requireAnonymous(request: Request) {
+  const user = await getOptionalUser(request);
+  if (user) throw redirect('/');
 }
 
 /**
@@ -22,6 +115,7 @@ async function getOptionalUser(request: Request) {
  */
 export async function requireManager(request: Request) {
   const user = await getOptionalUser(request);
-
-  throw redirect('/login');
+  if (!user?.roles.includes('MANAGER')) {
+    throw redirect('/login');
+  }
 }

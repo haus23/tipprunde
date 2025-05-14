@@ -9,10 +9,10 @@ import {
   ScrollRestoration,
 } from 'react-router';
 
-import { getUser } from '~/utils/auth.server';
 import { combineHeaders } from '~/utils/misc';
 import { Toaster } from '~/utils/toast';
 import { getToast } from '~/utils/toast.server';
+import { getUser } from '~/utils/user.server';
 
 import './root.css';
 
