@@ -10,6 +10,14 @@ const timestamps = {
     .$onUpdate(() => new Date()),
 };
 
+export const sessions = sqliteTable('sessions', {
+  id: text().primaryKey().notNull().$default(() => crypto.randomUUID()),
+  expires: integer({ mode: 'boolean' }).notNull(),
+  expirationDate: integer({ mode: 'timestamp' }).notNull(),
+  userId: integer().notNull(),
+  ...timestamps,
+});
+
 export const verifications = sqliteTable('verifications', {
   email: text().primaryKey().notNull(),
   secret: text().notNull(),

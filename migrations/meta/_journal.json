@@ -8,6 +8,13 @@
       "when": 1747134484705,
       "tag": "0000_create_verifications",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1747235455918,
+      "tag": "0001_create_sessions",
+      "breakpoints": true
     }
   ]
 }
