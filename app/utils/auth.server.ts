@@ -1,4 +1,7 @@
+import { redirect } from 'react-router';
+
 import { env } from '~/utils/env.server';
+import { commitAuthSession, getAuthSession } from '~/utils/sessions.server';
 import { createLoginCode } from '~/utils/totp.server';
 
 import { sendCodeMail, sendErrorMail } from './email.server';
@@ -38,5 +41,15 @@ export async function prepareOnboarding(request: Request) {
   }
 
   const code = await createLoginCode(email);
-  await sendCodeMail({ userName: user.name, code, email });
+  console.log(code);
+  // await sendCodeMail({ userName: user.name, code, email });
+
+  const session = await getAuthSession(request);
+  session.flash('email', email);
+
+  throw redirect('/code', {
+    headers: {
+      'Set-Cookie': await commitAuthSession(session),
+    },
+  });
 }
