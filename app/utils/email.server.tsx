@@ -1,5 +1,6 @@
 import { renderSendCodeEmail } from '~/emails/send-code';
 import { renderSendSecurityLogEmail } from '~/emails/send-security-log';
+import { getDomainUrl } from '~/utils/misc';
 
 import { env } from './env.server';
 
@@ -33,18 +34,23 @@ export async function sendErrorMail({
 /**
  * Sends email with login code to user
  *
- * @param props Username, email-address and the login code
+ * @param request Request object
+ * @param emailProps Username, email-address and the login code
  */
-export async function sendCodeMail(props: {
-  userName: string;
-  code: string;
-  email: string;
-}) {
-  const { userName, code, email } = props;
+export async function sendCodeMail(
+  request: Request,
+  emailProps: {
+    userName: string;
+    code: string;
+    email: string;
+  },
+) {
+  const { userName, code, email } = emailProps;
+  const domainUrl = getDomainUrl(request);
   const { html, text } = await renderSendCodeEmail({
     name: userName,
     code,
-    magicLink: `https://www.runde.tips/onboarding?code=${code}`,
+    magicLink: `${domainUrl}/kontrolle?code=${code}`,
   });
 
   await sendMail(

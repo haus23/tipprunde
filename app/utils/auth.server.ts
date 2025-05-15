@@ -51,7 +51,7 @@ export async function prepareOnboarding(request: Request) {
   }
 
   const code = await createLoginCode(email);
-  await sendCodeMail({ userName: user.name, code, email });
+  await sendCodeMail(request, { userName: user.name, code, email });
 
   const session = await getAuthSession(request);
   session.flash('email', email);
@@ -83,11 +83,14 @@ export async function prepareOnboarding(request: Request) {
 export async function ensureOnboardingSession(request: Request) {
   const session = await getAuthSession(request);
   const email = session.get('email');
+  const requestUrl = new URL(request.url);
 
   if (!email) {
     throw await redirectWithToast(request, '/login', {
       type: 'error',
-      message: 'Kein aktueller Anmeldeversuch. Bitte versuche es erneut.',
+      message: requestUrl.searchParams.has('code')
+        ? 'Die Anmeldung wurde auf einem anderen Browser gestartet. Hier funktioniert der Link nicht.'
+        : 'Kein aktueller Anmeldeversuch. Bitte versuche es erneut.',
     });
   }
 
@@ -119,8 +122,19 @@ export async function verifyOnboardingCode(request: Request) {
   const user = await getUserByEmail(email);
   if (!user) throw Error('Netter Versuch!');
 
-  const formData = await request.formData();
-  const code = String(formData.get('code'));
+  let code: string | null = null;
+  if (request.method === 'GET') {
+    const searchParams = new URL(request.url).searchParams;
+    code = searchParams.get('code');
+  } else if (request.method === 'POST') {
+    const formData = await request.formData();
+    code = String(formData.get('code'));
+  }
+  if (!code) {
+    return {
+      errors: { code: 'Du musst Deinen Code eingeben, um fortzufahren.' },
+    };
+  }
 
   // Verify code
   const verifyResult = await verifyLoginCode(email, code);

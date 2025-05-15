@@ -22,13 +22,19 @@ export function meta() {
 
 export async function loader({ request }: Route.LoaderArgs) {
   await ensureOnboardingSession(request);
+  if (new URL(request.url).searchParams.has('code')) {
+    return await verifyOnboardingCode(request);
+  }
 }
 
 export async function action({ request }: Route.ActionArgs) {
   return await verifyOnboardingCode(request);
 }
 
-export default function VerifyCode({ actionData }: Route.ComponentProps) {
+export default function VerifyCode({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
   const submit = useSubmit();
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,7 +47,7 @@ export default function VerifyCode({ actionData }: Route.ComponentProps) {
       <Form
         method="post"
         onSubmit={onSubmit}
-        validationErrors={actionData?.errors}
+        validationErrors={actionData?.errors || loaderData?.errors}
         className="flex flex-col gap-y-4"
       >
         <OtpField name="code" maxLength={6} minLength={6} isRequired />
