@@ -39,7 +39,7 @@ const regionStyles = tv({
 const toastStyles = tv({
   base: [
     '[view-transition-class:toast]',
-    'flex w-64 items-center gap-x-2',
+    'flex max-w-xs items-center gap-x-2 md:max-w-md',
     'rounded-md border-app-6 px-4 py-2 shadow-sm',
   ],
   variants: {
