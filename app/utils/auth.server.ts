@@ -51,8 +51,7 @@ export async function prepareOnboarding(request: Request) {
   }
 
   const code = await createLoginCode(email);
-  console.log(code);
-  // await sendCodeMail({ userName: user.name, code, email });
+  await sendCodeMail({ userName: user.name, code, email });
 
   const session = await getAuthSession(request);
   session.flash('email', email);
