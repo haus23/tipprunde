@@ -16,23 +16,28 @@ import { getUser } from '~/utils/user.server';
 
 import './root.css';
 
+import { useTheme } from '~/utils/theme';
+import { getTheme } from '~/utils/theme.server';
 import { useAuthBroadcast } from '~/utils/user';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { user, headers: authHeaders } = await getUser(request);
   const { toast, headers: toastHeaders } = await getToast(request);
+  const theme = await getTheme(request);
 
   return data(
-    { toast, user },
+    { theme, toast, user },
     { headers: combineHeaders(authHeaders, toastHeaders) },
   );
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { theme } = useTheme();
+
   useAuthBroadcast();
 
   return (
-    <html lang="de" className='system' data-theme="mauvi">
+    <html lang="de" className={theme.colorScheme} data-theme={theme.themeColor}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

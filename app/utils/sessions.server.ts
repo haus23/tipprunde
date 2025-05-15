@@ -1,11 +1,14 @@
 import type { Session } from 'react-router';
+import type { Theme } from '~/utils/theme';
 import type { Toast } from '~/utils/toast';
 
 import { createCookie, createCookieSessionStorage } from 'react-router';
 
 import { env } from '~/utils/env.server';
 
-type AppSessionData = unknown;
+type AppSessionData = {
+  theme: Theme;
+};
 type AppSessionFlashData = {
   toast: Toast;
 };
