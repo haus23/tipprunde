@@ -32,3 +32,18 @@ export function getDomainUrl(request: Request) {
   const protocol = request.headers.get('X-Forwarded-Proto') ?? 'http';
   return `${protocol}://${host}`;
 }
+
+/**
+ * Helper to handle readonly arrays
+ * See: https://fettblog.eu/typescript-array-includes/
+ *
+ * @param array Readonly array of values
+ * @param el Value to test
+ * @returns true if el was found in coll
+ */
+export function includes<T extends U, U>(
+  array: ReadonlyArray<T>,
+  el: U,
+): el is T {
+  return array.includes(el as T);
+}

@@ -1,6 +1,7 @@
 import { twMerge } from 'tailwind-merge';
 
 import { AppSidebar } from '~/components/shell/app-sidebar';
+import { ThemeMenu } from '~/components/theme-menu';
 
 const SIDEBAR_WIDTH = '16rem';
 
@@ -28,6 +29,9 @@ export function AppShell({
     >
       <AppSidebar>{nav}</AppSidebar>
       <main className="grow p-4">{children}</main>
+      <div className="absolute top-2 right-4">
+        <ThemeMenu />
+      </div>
     </div>
   );
 }
