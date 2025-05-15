@@ -8,7 +8,7 @@ import { tv } from 'tailwind-variants';
 import { focusVisibleStyles } from '~/components/ui/_common';
 
 const styles = tv({
-  base: [focusVisibleStyles, 'rounded-md p-1'],
+  base: [focusVisibleStyles, 'rounded-md p-1 transition-all'],
   variants: {
     variant: {
       default: '',

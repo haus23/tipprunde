@@ -7,7 +7,7 @@ import { tv } from 'tailwind-variants';
 import { focusVisibleStyles } from '~/components/ui/_common';
 
 const styles = tv({
-  base: [focusVisibleStyles, 'rounded-md'],
+  base: [focusVisibleStyles, 'rounded-md transition-all'],
   variants: {
     variant: {
       default: '',
@@ -20,7 +20,7 @@ const styles = tv({
     {
       variant: ['default', 'primary'],
       className:
-        'border border-app-7 px-4 py-2 font-medium text-sm outline-offset-4',
+        'border border-app-7 px-4 py-2 font-medium text-sm outline-offset-4 data-[pressed=true]:scale-98',
     },
   ],
   defaultVariants: {
