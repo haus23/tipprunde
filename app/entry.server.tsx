@@ -4,6 +4,8 @@ import { isbot } from 'isbot';
 import { renderToReadableStream } from 'react-dom/server';
 import { ServerRouter } from 'react-router';
 
+import { prolongRememberMeSession } from '~/utils/auth.server';
+
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
@@ -13,6 +15,8 @@ export default async function handleRequest(
 ) {
   let shellRendered = false;
   const userAgent = request.headers.get('user-agent');
+
+  await prolongRememberMeSession(request, responseHeaders);
 
   const body = await renderToReadableStream(
     <ServerRouter context={routerContext} url={request.url} />,

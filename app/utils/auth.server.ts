@@ -5,6 +5,7 @@
  * - ensureOnboarding(): ensures ongoing boarding
  * - verifyOnboardingCode(): validates TOTP and logs user in
  * - logout(): logs user out
+ * - prolongRememberMeSession(): prolongs an eventually ongoing rememberMe-Session
  */
 
 import { eq } from 'drizzle-orm';
@@ -14,6 +15,7 @@ import { getUserByEmail } from '~/utils/db.queries.server';
 import { db } from '~/utils/db.server';
 import { env } from '~/utils/env.server';
 import {
+  authCookie,
   commitAuthSession,
   destroyAuthSession,
   getAuthSession,
@@ -162,7 +164,7 @@ export async function verifyOnboardingCode(request: Request) {
     {
       headers: {
         'Set-Cookie': await commitAuthSession(session, {
-          ...(rememberMe && { expires: expirationDate })
+          ...(rememberMe && { expires: expirationDate }),
         }),
       },
     },
@@ -194,5 +196,47 @@ export async function logout(request: Request) {
     {
       headers,
     },
+  );
+}
+
+/**
+ * Prolongs an eventually ongoing rememberMe-Session
+ *
+ * @param request Request object
+ * @param responseHeaders Response headers
+ */
+export async function prolongRememberMeSession(
+  request: Request,
+  responseHeaders: Headers,
+) {
+  // Is there an ongoing auth cookie set in the headers
+  const cookieBeingSet = await authCookie.parse(
+    responseHeaders.get('Set-Cookie'),
+  );
+  if (cookieBeingSet !== null) return;
+
+  const authSession = await getAuthSession(request);
+  const sessionId = authSession.get('sessionId');
+  if (!sessionId) return;
+
+  const appSession = await db.instance.query.sessions.findFirst({
+    where: (sessions, { and, eq, gt }) =>
+      and(eq(sessions.id, sessionId), gt(sessions.expirationDate, new Date())),
+  });
+  if (!appSession || appSession.expires) return;
+
+  const expirationDate = new Date(Date.now() + env.SESSION_DURATION * 1000);
+  await db.instance
+    .update(sessions)
+    .set({
+      ...appSession,
+      updatedAt: new Date(),
+      expirationDate,
+    })
+    .where(eq(sessions.id, sessionId));
+
+  responseHeaders.append(
+    'Set-Cookie',
+    await commitAuthSession(authSession, { expires: expirationDate }),
   );
 }

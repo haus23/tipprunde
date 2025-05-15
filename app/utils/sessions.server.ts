@@ -1,7 +1,7 @@
 import type { Session } from 'react-router';
 import type { Toast } from '~/utils/toast';
 
-import { createCookieSessionStorage } from 'react-router';
+import { createCookie, createCookieSessionStorage } from 'react-router';
 
 import { env } from '~/utils/env.server';
 
@@ -47,18 +47,19 @@ type AuthSessionFlashData = {
   rememberMe: boolean;
 };
 
+export const authCookie = createCookie('__auth', {
+  sameSite: 'lax',
+  path: '/',
+  httpOnly: true,
+  secrets: [env.AUTH_SESSION_SECRET],
+  secure: env.NODE_ENV === 'production',
+});
+
 const authSessionStorage = createCookieSessionStorage<
   AuthSessionData,
   AuthSessionFlashData
 >({
-  cookie: {
-    name: '__auth',
-    sameSite: 'lax',
-    path: '/',
-    httpOnly: true,
-    secrets: [env.AUTH_SESSION_SECRET],
-    secure: env.NODE_ENV === 'production',
-  },
+  cookie: authCookie,
 });
 
 const authSessionHelpers = {
