@@ -8,7 +8,7 @@ const rootUser = {
   id: 0,
   email: env.ROOT_EMAIL,
   name: 'Root',
-  roles: 'ROOT ADMIN MANAGER',
+  roles: 'ROOT ADMIN',
 };
 
 /**

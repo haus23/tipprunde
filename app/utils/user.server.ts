@@ -113,9 +113,9 @@ export async function requireAnonymous(request: Request) {
  *
  * @param request Request object
  */
-export async function requireManager(request: Request) {
+export async function requireAdmin(request: Request) {
   const user = await getOptionalUser(request);
-  if (!user?.roles.includes('MANAGER')) {
+  if (!user?.roles.includes('ADMIN')) {
     throw redirect('/login');
   }
 }

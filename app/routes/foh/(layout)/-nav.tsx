@@ -1,8 +1,17 @@
-import { DicesIcon, LogInIcon, TableIcon, UsersIcon } from 'lucide-react';
+import {
+  DicesIcon,
+  LogInIcon,
+  SettingsIcon,
+  TableIcon,
+  UsersIcon,
+} from 'lucide-react';
 
 import { Link } from '~/components/ui/link';
+import { useUser } from '~/utils/user';
 
 export function Nav() {
+  const user = useUser();
+
   return (
     <div className="flex grow flex-col justify-between">
       <div className="flex flex-col gap-y-1.5 p-2">
@@ -20,7 +29,13 @@ export function Nav() {
         </Link>
       </div>
       <div className="flex flex-col gap-y-1.5 p-2">
-        <Link to={'/hinterhof'} variant="sidebar">
+        {user.isAdmin && (
+          <Link to={'/hinterhof'} variant="sidebar">
+            <SettingsIcon className="size-5" />
+            <span>Manager</span>
+          </Link>
+        )}
+        <Link to={'/login'} variant="sidebar">
           <LogInIcon className="size-5" />
           <span>Login</span>
         </Link>
