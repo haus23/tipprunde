@@ -12,4 +12,6 @@ export default [
   layout('routes/hinterhof/(layout)/index.tsx', [
     ...prefix('/hinterhof', [index('routes/hinterhof/_index.tsx')]),
   ]),
+  // Actions
+  route('/action/set-theme', 'routes/(actions)/set-theme.ts'),
 ] satisfies RouteConfig;
