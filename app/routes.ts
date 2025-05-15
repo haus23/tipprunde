@@ -1,6 +1,6 @@
 import type { RouteConfig } from '@react-router/dev/routes';
 
-import { index, layout, route } from '@react-router/dev/routes';
+import { index, layout, prefix, route } from '@react-router/dev/routes';
 
 export default [
   layout('routes/foh/(layout)/index.tsx', [
@@ -9,7 +9,7 @@ export default [
     route('/logout', 'routes/(auth)/logout.tsx'),
     route('/kontrolle', 'routes/(auth)/verify-code.tsx'),
   ]),
-  route('/hinterhof', 'routes/hinterhof/(layout)/index.tsx', [
-    index('routes/hinterhof/_index.tsx'),
+  layout('routes/hinterhof/(layout)/index.tsx', [
+    ...prefix('/hinterhof', [index('routes/hinterhof/_index.tsx')]),
   ]),
 ] satisfies RouteConfig;
