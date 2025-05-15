@@ -3,6 +3,7 @@ import type { Route } from './+types/login';
 import { useSubmit } from 'react-router';
 
 import { Button } from '~/components/ui/button';
+import { Checkbox } from '~/components/ui/checkbox';
 import { Form } from '~/components/ui/form';
 import { TextField } from '~/components/ui/text-field';
 import { prepareOnboarding } from '~/utils/auth.server';
@@ -47,6 +48,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
           label="Email"
           placeholder="Deine Email-Adresse aus der Tipprunde"
         />
+        <Checkbox name="rememberMe">Angemeldet bleiben</Checkbox>
         <Button type="submit" variant="primary">
           Login-Code anfordern
         </Button>

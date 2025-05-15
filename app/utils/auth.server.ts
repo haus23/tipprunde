@@ -35,6 +35,7 @@ import { sendCodeMail, sendErrorMail } from './email.server';
 export async function prepareOnboarding(request: Request) {
   const formData = await request.formData();
   const email = String(formData.get('email'));
+  const rememberMe = String(formData.get('rememberMe')) === 'on';
 
   const user = await getUserByEmail(email);
   if (!user) {
@@ -53,6 +54,7 @@ export async function prepareOnboarding(request: Request) {
 
   const session = await getAuthSession(request);
   session.flash('email', email);
+  session.flash('rememberMe', rememberMe);
 
   throw await redirectWithToast(
     request,
@@ -104,6 +106,7 @@ export async function ensureOnboardingSession(request: Request) {
 export async function verifyOnboardingCode(request: Request) {
   const session = await getAuthSession(request);
   const email = session.get('email');
+  const rememberMe = session.get('rememberMe') ?? false;
 
   if (!email) {
     throw await redirectWithToast(request, '/login', {
@@ -146,7 +149,7 @@ export async function verifyOnboardingCode(request: Request) {
     .values({
       userId: user.id,
       expirationDate,
-      expires: true,
+      expires: !rememberMe,
     })
     .returning({ sessionId: sessions.id });
 
@@ -158,7 +161,9 @@ export async function verifyOnboardingCode(request: Request) {
     { type: 'success', message: `Hallo ${user.name}! Du bist drin.` },
     {
       headers: {
-        'Set-Cookie': await commitAuthSession(session, {}),
+        'Set-Cookie': await commitAuthSession(session, {
+          ...(rememberMe && { expires: expirationDate })
+        }),
       },
     },
   );
