@@ -1,6 +1,28 @@
 # Changelog
 
 
+## v0.1.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.11...v0.1.0)
+
+### 🚀 Enhancements
+
+- Make the auth cookie a rolling cookie for remember-me sessions. ([3a67b47](https://github.com/haus23/tipprunde/commit/3a67b47))
+- Add the login flow with a magic link. ([3761311](https://github.com/haus23/tipprunde/commit/3761311))
+
+### 🩹 Fixes
+
+- Re-enable code mailing. ([7314081](https://github.com/haus23/tipprunde/commit/7314081))
+
+### 💅 Refactors
+
+- Aligned route definitions. ([f5d69b6](https://github.com/haus23/tipprunde/commit/f5d69b6))
+
+### 🏡 Chore
+
+- **dx:** Add editorconfig. ([4ad065a](https://github.com/haus23/tipprunde/commit/4ad065a))
+- Update deps and toolchain. ([42c715e](https://github.com/haus23/tipprunde/commit/42c715e))
+
 ## v0.0.11
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.10...v0.0.11)
