@@ -6,7 +6,7 @@ export default [
   layout('routes/foh/(layout)/index.tsx', [
     index('routes/foh/_index.tsx'),
     route('/login', 'routes/(auth)/login.tsx'),
-    route('/logout', 'routes/(auth)/logout.tsx'),
+    route('/logout', 'routes/(auth)/logout.ts'),
     route('/kontrolle', 'routes/(auth)/verify-code.tsx'),
   ]),
   layout('routes/hinterhof/(layout)/index.tsx', [
