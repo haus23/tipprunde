@@ -32,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   useAuthBroadcast();
 
   return (
-    <html lang="de" data-theme="mauvi">
+    <html lang="de" className='system' data-theme="mauvi">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -50,55 +50,28 @@
 }
 
 [data-theme="mauvi"] {
-  --app-1: var(--mauve-1);
-  --app-2: var(--mauve-2);
-  --app-3: var(--mauve-3);
-  --app-4: var(--mauve-4);
-  --app-5: var(--mauve-5);
-  --app-6: var(--mauve-6);
-  --app-7: var(--mauve-7);
-  --app-8: var(--mauve-8);
-  --app-9: var(--mauve-9);
-  --app-10: var(--mauve-10);
-  --app-11: var(--mauve-11);
-  --app-12: var(--mauve-12);
-  --accent-1: var(--violet-1);
-  --accent-2: var(--violet-2);
-  --accent-3: var(--violet-3);
-  --accent-4: var(--violet-4);
-  --accent-5: var(--violet-5);
-  --accent-6: var(--violet-6);
-  --accent-7: var(--violet-7);
-  --accent-8: var(--violet-8);
-  --accent-9: var(--violet-9);
-  --accent-10: var(--violet-10);
-  --accent-11: var(--violet-11);
-  --accent-12: var(--violet-12);
-}
-
-[data-theme="mauvi"].dark {
-  --app-1: var(--mauve-dark-1);
-  --app-2: var(--mauve-dark-2);
-  --app-3: var(--mauve-dark-3);
-  --app-4: var(--mauve-dark-4);
-  --app-5: var(--mauve-dark-5);
-  --app-6: var(--mauve-dark-6);
-  --app-7: var(--mauve-dark-7);
-  --app-8: var(--mauve-dark-8);
-  --app-9: var(--mauve-dark-9);
-  --app-10: var(--mauve-dark-10);
-  --app-11: var(--mauve-dark-11);
-  --app-12: var(--mauve-dark-12);
-  --accent-1: var(--violet-dark-1);
-  --accent-2: var(--violet-dark-2);
-  --accent-3: var(--violet-dark-3);
-  --accent-4: var(--violet-dark-4);
-  --accent-5: var(--violet-dark-5);
-  --accent-6: var(--violet-dark-6);
-  --accent-7: var(--violet-dark-7);
-  --accent-8: var(--violet-dark-8);
-  --accent-9: var(--violet-dark-9);
-  --accent-10: var(--violet-dark-10);
-  --accent-11: var(--violet-dark-11);
-  --accent-12: var(--violet-dark-12);
+  --app-1: light-dark(var(--mauve-1), var(--mauve-dark-1));
+  --app-2: light-dark(var(--mauve-2), var(--mauve-dark-2));
+  --app-3: light-dark(var(--mauve-3), var(--mauve-dark-3));
+  --app-4: light-dark(var(--mauve-4), var(--mauve-dark-4));
+  --app-5: light-dark(var(--mauve-5), var(--mauve-dark-5));
+  --app-6: light-dark(var(--mauve-6), var(--mauve-dark-6));
+  --app-7: light-dark(var(--mauve-7), var(--mauve-dark-7));
+  --app-8: light-dark(var(--mauve-8), var(--mauve-dark-8));
+  --app-9: light-dark(var(--mauve-9), var(--mauve-dark-9));
+  --app-10: light-dark(var(--mauve-10), var(--mauve-dark-10));
+  --app-11: light-dark(var(--mauve-11), var(--mauve-dark-11));
+  --app-12: light-dark(var(--mauve-12), var(--mauve-dark-12));
+  --accent-1: light-dark(var(--violet-1), var(--violet-dark-1));
+  --accent-2: light-dark(var(--violet-2), var(--violet-dark-2));
+  --accent-3: light-dark(var(--violet-3), var(--violet-dark-3));
+  --accent-4: light-dark(var(--violet-4), var(--violet-dark-4));
+  --accent-5: light-dark(var(--violet-5), var(--violet-dark-5));
+  --accent-6: light-dark(var(--violet-6), var(--violet-dark-6));
+  --accent-7: light-dark(var(--violet-7), var(--violet-dark-7));
+  --accent-8: light-dark(var(--violet-8), var(--violet-dark-8));
+  --accent-9: light-dark(var(--violet-9), var(--violet-dark-9));
+  --accent-10: light-dark(var(--violet-10), var(--violet-dark-10));
+  --accent-11: light-dark(var(--violet-11), var(--violet-dark-11));
+  --accent-12: light-dark(var(--violet-12), var(--violet-dark-12));
 }

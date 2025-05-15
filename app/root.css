@@ -7,12 +7,27 @@
 @import "./theme/semantic.css";
 @import "./theme/mauve-violet.css";
 
-/* Dark mode: css class dark */
+/* Dark mode: css class dark or system class + media query */
+@custom-variant dark {
+  /* This supports the .dark class */
+  &:where(.dark *, .dark) {
+    @slot;
+  }
 
-@custom-variant dark (&:where(.dark, .dark *));
+  /* This supports the .system class + media query */
+  &:where(.system *, .system) {
+    @media (prefers-color-scheme: dark) {
+      @slot;
+    }
+  }
+}
 
 @layer base {
   :root {
+    color-scheme: light dark;
+  }
+
+  .light {
     color-scheme: light;
   }
 
