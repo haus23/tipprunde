@@ -1,6 +1,21 @@
 # Changelog
 
 
+## v0.1.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.1.1)
+
+### 🚀 Enhancements
+
+- Introduce a theme setting in the app session. ([db7e7b0](https://github.com/haus23/tipprunde/commit/db7e7b0))
+- Add logic to change theme. ([6df4ba9](https://github.com/haus23/tipprunde/commit/6df4ba9))
+- Implement theme / color-scheme switching. ([3f6e17e](https://github.com/haus23/tipprunde/commit/3f6e17e))
+
+### 💅 Refactors
+
+- Change color-scheme switching. ([f51b76b](https://github.com/haus23/tipprunde/commit/f51b76b))
+- Make logout action. ;-) No jsx here, ([8b8bd4d](https://github.com/haus23/tipprunde/commit/8b8bd4d))
+
 ## v0.1.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.11...v0.1.0)
