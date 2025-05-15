@@ -7,16 +7,22 @@ import { tv } from 'tailwind-variants';
 import { focusVisibleStyles } from '~/components/ui/_common';
 
 const styles = tv({
-  base: [
-    focusVisibleStyles,
-    'rounded-md border border-app-7 px-4 py-2 font-medium text-sm outline-offset-4',
-  ],
+  base: [focusVisibleStyles, 'rounded-md'],
   variants: {
     variant: {
       default: '',
       primary: 'bg-accent-9 text-white hover:bg-accent-10',
+      sidebar:
+        'flex grow items-center gap-x-2 px-2 py-1.5 text-app-11 data-hovered:bg-app-3 data-hovered:text-app-12',
     },
   },
+  compoundVariants: [
+    {
+      variant: ['default', 'primary'],
+      className:
+        'border border-app-7 px-4 py-2 font-medium text-sm outline-offset-4',
+    },
+  ],
   defaultVariants: {
     variant: 'default',
   },

@@ -12,7 +12,9 @@ import {
   TrophyIcon,
   UsersIcon,
 } from 'lucide-react';
+import { Form } from 'react-router';
 
+import { Button } from '~/components/ui/button';
 import { Link } from '~/components/ui/link';
 
 export function Nav() {
@@ -70,10 +72,12 @@ export function Nav() {
         </div>
         <hr className="border-app-6" />
         <div className="flex flex-col gap-y-1.5 p-2">
-          <Link to={'/'} variant="sidebar">
-            <LogOutIcon className="size-5" />
-            <span>Logout</span>
-          </Link>
+          <Form action="/logout" method="post" className="flex">
+            <Button type="submit" variant="sidebar">
+              <LogOutIcon className="size-5" />
+              <span>Logout</span>
+            </Button>
+          </Form>
         </div>
       </div>
     </div>

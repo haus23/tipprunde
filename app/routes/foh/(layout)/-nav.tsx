@@ -1,11 +1,14 @@
 import {
   DicesIcon,
   LogInIcon,
+  LogOutIcon,
   SettingsIcon,
   TableIcon,
   UsersIcon,
 } from 'lucide-react';
+import { Form } from 'react-router';
 
+import { Button } from '~/components/ui/button';
 import { Link } from '~/components/ui/link';
 import { useUser } from '~/utils/user';
 
@@ -35,10 +38,19 @@ export function Nav() {
             <span>Manager</span>
           </Link>
         )}
-        <Link to={'/login'} variant="sidebar">
-          <LogInIcon className="size-5" />
-          <span>Login</span>
-        </Link>
+        {user.isAuthenticated ? (
+          <Form action="/logout" method="post" className="flex">
+            <Button type="submit" variant="sidebar">
+              <LogOutIcon className="size-5" />
+              <span>Logout</span>
+            </Button>
+          </Form>
+        ) : (
+          <Link to={'/login'} variant="sidebar">
+            <LogInIcon className="size-5" />
+            <span>Login</span>
+          </Link>
+        )}
       </div>
     </div>
   );

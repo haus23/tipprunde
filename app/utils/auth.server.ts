@@ -4,7 +4,7 @@
  * - prepareOnboarding(): validates onboarding email and sends TOTP and magic link via email
  * - ensureOnboarding(): ensures ongoing boarding
  * - verifyOnboardingCode(): validates TOTP and logs user in
- *
+ * - logout(): logs user out
  */
 
 import { eq } from 'drizzle-orm';
@@ -160,6 +160,34 @@ export async function verifyOnboardingCode(request: Request) {
       headers: {
         'Set-Cookie': await commitAuthSession(session, {}),
       },
+    },
+  );
+}
+
+/**
+ * Performs user logout and redirects to referer or home if no referer is available.
+ *
+ * @param request Request object
+ */
+export async function logout(request: Request) {
+  const session = await getAuthSession(request);
+  const sessionId = session.get('sessionId');
+
+  if (sessionId) {
+    await db.instance.delete(sessions).where(eq(sessions.id, sessionId));
+  }
+
+  const headers = new Headers({
+    'Set-Cookie': await destroyAuthSession(session),
+  });
+
+  const redirectUrl = request.headers.get('Referer') || '/';
+  throw await redirectWithToast(
+    request,
+    redirectUrl,
+    { type: 'info', message: 'Du bist abgemeldet. Bis bald mal wieder.' },
+    {
+      headers,
     },
   );
 }
