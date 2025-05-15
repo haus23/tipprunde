@@ -8,7 +8,7 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 
 const styles = tv({
-  base: ['flex flex-col gap-y-1'],
+  base: ['flex flex-col gap-y-2'],
 });
 
 interface TextFieldProps extends _TextFieldProps {

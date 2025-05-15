@@ -23,6 +23,30 @@
   --green-dark-10: #33b074;
   --green-dark-11: #3dd68c;
   --green-dark-12: #b1f1cb;
+  --blue-1: #fbfdff;
+  --blue-2: #f4faff;
+  --blue-3: #e6f4fe;
+  --blue-4: #d5efff;
+  --blue-5: #c2e5ff;
+  --blue-6: #acd8fc;
+  --blue-7: #8ec8f6;
+  --blue-8: #5eb1ef;
+  --blue-9: #0090ff;
+  --blue-10: #0588f0;
+  --blue-11: #0d74ce;
+  --blue-12: #113264;
+  --blue-dark-1: #0d1520;
+  --blue-dark-2: #111927;
+  --blue-dark-3: #0d2847;
+  --blue-dark-4: #003362;
+  --blue-dark-5: #004074;
+  --blue-dark-6: #104d87;
+  --blue-dark-7: #205d9e;
+  --blue-dark-8: #2870bd;
+  --blue-dark-9: #0090ff;
+  --blue-dark-10: #3b9eff;
+  --blue-dark-11: #70b8ff;
+  --blue-dark-12: #c2e6ff;
   --red-1: #fffcfc;
   --red-2: #fff7f7;
   --red-3: #feebec;
@@ -50,6 +74,18 @@
 }
 
 :root {
+  --info-1: var(--blue-1);
+  --info-2: var(--blue-2);
+  --info-3: var(--blue-3);
+  --info-4: var(--blue-4);
+  --info-5: var(--blue-5);
+  --info-6: var(--blue-6);
+  --info-7: var(--blue-7);
+  --info-8: var(--blue-8);
+  --info-9: var(--blue-9);
+  --info-10: var(--blue-10);
+  --info-11: var(--blue-11);
+  --info-12: var(--blue-12);
   --success-1: var(--green-1);
   --success-2: var(--green-2);
   --success-3: var(--green-3);
@@ -77,6 +113,18 @@
 }
 
 .dark {
+  --info-1: var(--blue-dark-1);
+  --info-2: var(--blue-dark-2);
+  --info-3: var(--blue-dark-3);
+  --info-4: var(--blue-dark-4);
+  --info-5: var(--blue-dark-5);
+  --info-6: var(--blue-dark-6);
+  --info-7: var(--blue-dark-7);
+  --info-8: var(--blue-dark-8);
+  --info-9: var(--blue-dark-9);
+  --info-10: var(--blue-dark-10);
+  --info-11: var(--blue-dark-11);
+  --info-12: var(--blue-dark-12);
   --success-1: var(--green-dark-1);
   --success-2: var(--green-dark-2);
   --success-3: var(--green-dark-3);
@@ -104,6 +152,18 @@
 }
 
 @theme inline {
+  --color-info-1: var(--info-1);
+  --color-info-2: var(--info-2);
+  --color-info-3: var(--info-3);
+  --color-info-4: var(--info-4);
+  --color-info-5: var(--info-5);
+  --color-info-6: var(--info-6);
+  --color-info-7: var(--info-7);
+  --color-info-8: var(--info-8);
+  --color-info-9: var(--info-9);
+  --color-info-10: var(--info-10);
+  --color-info-11: var(--info-11);
+  --color-info-12: var(--info-12);
   --color-error-1: var(--error-1);
   --color-error-2: var(--error-2);
   --color-error-3: var(--error-3);
