@@ -16,7 +16,7 @@ const slotStyles = tv({
     'transition-all duration-300',
     'border-app-6 border-y border-r first:rounded-l-md first:border-l last:rounded-r-md',
     'group-focus-within:border-accent-7 group-hover:border-accent-7',
-    'outline-0 outline-accent-7/30',
+    'outline-0 outline-accent-7/80',
   ],
   variants: {
     isActive: {
@@ -36,8 +36,8 @@ export function OtpInput({ className, ...props }: OTPInputProps) {
     <_OTPInput
       ref={mergedRef}
       containerClassName={containerStyles({ className })}
-      pattern={REGEXP_ONLY_DIGITS}
       {...otpInputProps}
+      pattern={REGEXP_ONLY_DIGITS}
       render={({ slots }) => (
         <div className="flex">
           {slots.map((slot, ix) => (
