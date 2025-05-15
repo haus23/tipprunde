@@ -16,6 +16,8 @@ import { getUser } from '~/utils/user.server';
 
 import './root.css';
 
+import { useAuthBroadcast } from '~/utils/user';
+
 export async function loader({ request }: Route.LoaderArgs) {
   const { user, headers: authHeaders } = await getUser(request);
   const { toast, headers: toastHeaders } = await getToast(request);
@@ -27,6 +29,8 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  useAuthBroadcast();
+
   return (
     <html lang="de" data-theme="mauvi">
       <head>
