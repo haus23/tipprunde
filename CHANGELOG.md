@@ -1,6 +1,26 @@
 # Changelog
 
 
+## v0.0.11
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.10...v0.0.11)
+
+### 🚀 Enhancements
+
+- Broadcast auth state changes across browser tabs. ([9cdd221](https://github.com/haus23/tipprunde/commit/9cdd221))
+- Add a checkbox component. ([7fdc868](https://github.com/haus23/tipprunde/commit/7fdc868))
+- Implement the remember-me feature. ([75d689d](https://github.com/haus23/tipprunde/commit/75d689d))
+
+### 🩹 Fixes
+
+- Pattern was not applied. And: better active visibility in dark mode. ([c68f1d8](https://github.com/haus23/tipprunde/commit/c68f1d8))
+
+### 💅 Refactors
+
+- Bring back focus styles to align outlines. ([7ede76c](https://github.com/haus23/tipprunde/commit/7ede76c))
+- Add transitions. ([7c07a40](https://github.com/haus23/tipprunde/commit/7c07a40))
+- Add transitions. ([b54af64](https://github.com/haus23/tipprunde/commit/b54af64))
+
 ## v0.0.10
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.9...v0.0.10)
