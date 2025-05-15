@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.0.10
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.9...v0.0.10)
+
+### 🚀 Enhancements
+
+- Implement toast message creation in server code. ([b7c22d0](https://github.com/haus23/tipprunde/commit/b7c22d0))
+- Add a server sessions table to the database. ([3bef9ce](https://github.com/haus23/tipprunde/commit/3bef9ce))
+- Create a server and client session after successful code validation. ([df4573d](https://github.com/haus23/tipprunde/commit/df4573d))
+- Authenticate the user in the root loader. ([978a984](https://github.com/haus23/tipprunde/commit/978a984))
+- Add auth guards. Refactor server files. ([362d11f](https://github.com/haus23/tipprunde/commit/362d11f))
+- Add client user hook. Rethink roles (no manager role needed by now). ([db64c47](https://github.com/haus23/tipprunde/commit/db64c47))
+- Add layout logic. ([c04199f](https://github.com/haus23/tipprunde/commit/c04199f))
+
+### 🩹 Fixes
+
+- Redirect from code route if no login session is present. ([06f1b33](https://github.com/haus23/tipprunde/commit/06f1b33))
+- Move the db singleton setting next to the db instance creation. ([7979252](https://github.com/haus23/tipprunde/commit/7979252))
+- Remove flash data (the email) from the auth session. We need a new code. ([35d908d](https://github.com/haus23/tipprunde/commit/35d908d))
+- Add a basic toast implementation. ([8bba557](https://github.com/haus23/tipprunde/commit/8bba557))
+- Small layout change, add some margin. ([8149a86](https://github.com/haus23/tipprunde/commit/8149a86))
+- Small layout change, make toasts wider. ([620b3f9](https://github.com/haus23/tipprunde/commit/620b3f9))
+
 ## v0.0.9
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.8...v0.0.9)
