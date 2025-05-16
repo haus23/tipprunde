@@ -1,3 +1,28 @@
+import { useEffect, useState } from 'react';
+
+const MOBILE_BREAKPOINT = 768; // md (medium) breakpoint in TailwindCSS
+
+/**
+ * Hook watching my mobile breakpoint
+ *
+ * @returns true if screen width is mobile
+ */
+export function useIsMobile() {
+  const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+    const onChange = () => {
+      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    };
+    mql.addEventListener('change', onChange, { passive: true });
+    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    return () => mql.removeEventListener('change', onChange);
+  }, []);
+
+  return !!isMobile;
+}
+
 /**
  * Combine multiple header objects into one (uses append so headers are not overridden)
  *
