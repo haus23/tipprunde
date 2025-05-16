@@ -1,5 +1,7 @@
 import { createContext, use, useCallback, useState } from 'react';
 
+import { useSettings } from '~/utils/prefs';
+
 type ShellContextType = {
   isSidebarCollapsed: boolean;
   setSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,6 +10,7 @@ type ShellContextType = {
 const ShellContext = createContext<ShellContextType>(undefined as never);
 
 export function useShell() {
+  const { settings, setSettings } = useSettings();
   const context = use(ShellContext);
   if (!context) {
     throw new Error('useAppShell must be used within the AppShell.');
@@ -17,8 +20,8 @@ export function useShell() {
 
   const toggleSidebar = useCallback(() => {
     setSidebarCollapsed((state) => !state);
-    console.log('toggleSidebar');
-  }, [setSidebarCollapsed]);
+    setSettings({ ...settings, sidebarCollapsed: !settings.sidebarCollapsed });
+  }, [settings, setSettings, setSidebarCollapsed]);
 
   return {
     isSidebarCollapsed,
@@ -27,7 +30,10 @@ export function useShell() {
 }
 
 export function ShellProvider({ children }: { children: React.ReactNode }) {
-  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { settings } = useSettings();
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(
+    settings.sidebarCollapsed,
+  );
 
   return (
     <ShellContext value={{ isSidebarCollapsed, setSidebarCollapsed }}>

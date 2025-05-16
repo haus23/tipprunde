@@ -17,17 +17,18 @@ import { getUser } from '~/utils/user.server';
 import './root.css';
 
 import { ShellProvider } from '~/components/shell/shell-provider';
-import { useTheme } from '~/utils/theme';
-import { getTheme } from '~/utils/theme.server';
+import { useTheme } from '~/utils/prefs';
+import { getSettings, getTheme } from '~/utils/prefs.server';
 import { useAuthBroadcast } from '~/utils/user';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { user, headers: authHeaders } = await getUser(request);
   const { toast, headers: toastHeaders } = await getToast(request);
   const theme = await getTheme(request);
+  const settings = await getSettings(request);
 
   return data(
-    { theme, toast, user },
+    { settings, theme, toast, user },
     { headers: combineHeaders(authHeaders, toastHeaders) },
   );
 }

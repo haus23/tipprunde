@@ -1,5 +1,5 @@
 import type { Key } from 'react-aria-components';
-import type { Theme } from '~/utils/theme';
+import type { Theme } from '~/utils/prefs';
 
 import {
   CheckIcon,
@@ -15,7 +15,7 @@ import { tv } from 'tailwind-variants';
 import { Button } from '~/components/ui/button';
 import { Popover } from '~/components/ui/popover';
 import { includes } from '~/utils/misc';
-import { useTheme } from '~/utils/theme';
+import { useTheme } from '~/utils/prefs';
 
 const colorSchemes: {
   name: Theme['colorScheme'];

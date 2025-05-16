@@ -14,4 +14,5 @@ export default [
   ]),
   // Actions
   route('/action/set-theme', 'routes/(actions)/set-theme.ts'),
+  route('/action/set-settings', 'routes/(actions)/set-settings.ts'),
 ] satisfies RouteConfig;
