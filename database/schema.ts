@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 const timestamps = {
@@ -9,10 +10,21 @@ const timestamps = {
     .$onUpdate(() => new Date()),
 };
 
+export const users = sqliteTable('users', {
+  id: integer().primaryKey(),
+  name: text().notNull(),
+  slug: text().notNull(),
+  email: text().notNull(),
+  roles: text().notNull().default(''),
+});
+
+export const usersRelations = relations(users, ({ many }) => ({
+  sessions: many(sessions),
+}));
+
 export const sessions = sqliteTable('sessions', {
   id: text()
     .primaryKey()
-    .notNull()
     .$default(() => crypto.randomUUID()),
   expires: integer({ mode: 'boolean' }).notNull(),
   expirationDate: integer({ mode: 'timestamp' }).notNull(),
@@ -20,8 +32,12 @@ export const sessions = sqliteTable('sessions', {
   ...timestamps,
 });
 
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, { fields: [sessions.userId], references: [users.id] }),
+}));
+
 export const verifications = sqliteTable('verifications', {
-  email: text().primaryKey().notNull(),
+  email: text().primaryKey(),
   secret: text().notNull(),
   algorithm: text().notNull(),
   digits: integer().notNull(),
