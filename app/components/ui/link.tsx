@@ -1,11 +1,13 @@
 import type { LinkProps as _LinkProps } from 'react-router';
 import type { VariantProps } from 'tailwind-variants';
 
-import { useFocusRing, useHover } from 'react-aria';
+import { Focusable, useFocusRing, useHover } from 'react-aria';
+import { TooltipContext, useSlottedContext } from 'react-aria-components';
 import { Link as _Link } from 'react-router';
 import { tv } from 'tailwind-variants';
 
 import { focusVisibleStyles } from '~/components/ui/_common';
+import { Tooltip, TooltipTrigger } from '~/components/ui/tooltip';
 
 const styles = tv({
   base: [focusVisibleStyles, 'rounded-md p-1 transition-all duration-300'],
@@ -21,13 +23,16 @@ const styles = tv({
   },
 });
 
-export interface LinkProps extends _LinkProps, VariantProps<typeof styles> {}
+export interface LinkProps extends _LinkProps, VariantProps<typeof styles> {
+  tooltip?: string;
+}
 
-export function Link({ className, variant, ...props }: LinkProps) {
+export function Link({ className, tooltip, variant, ...props }: LinkProps) {
   const { isFocusVisible, focusProps } = useFocusRing();
   const { isHovered, hoverProps } = useHover({});
+  const tooltipProps = useSlottedContext(TooltipContext);
 
-  return (
+  const link = (
     <_Link
       className={styles({ className, variant })}
       {...(isFocusVisible && { 'data-focus-visible': true })}
@@ -37,4 +42,15 @@ export function Link({ className, variant, ...props }: LinkProps) {
       {...props}
     />
   );
+
+  if (tooltip) {
+    return (
+      <TooltipTrigger>
+        <Focusable>{link}</Focusable>
+        <Tooltip {...tooltipProps}>{tooltip}</Tooltip>
+      </TooltipTrigger>
+    );
+  }
+
+  return link;
 }

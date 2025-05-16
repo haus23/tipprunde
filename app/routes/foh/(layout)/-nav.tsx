@@ -18,19 +18,19 @@ export function Nav() {
   return (
     <div className="flex grow flex-col justify-between">
       <div className="flex flex-col gap-y-1.5 p-2 group-data-[sidebar-collapsed=true]:items-center group-data-[sidebar-collapsed=true]:px-0">
-        <Link to={'#'} variant="sidebar">
+        <Link to={'#'} variant="sidebar" tooltip="Tabelle">
           <TableIcon className="size-5" />
           <span className="group-data-[sidebar-collapsed=true]:hidden">
             Tabelle
           </span>
         </Link>
-        <Link to={'#'} variant="sidebar">
+        <Link to={'#'} variant="sidebar" tooltip="Spieler">
           <UsersIcon className="size-5" />
           <span className="group-data-[sidebar-collapsed=true]:hidden">
             Spieler
           </span>
         </Link>
-        <Link to={'#'} variant="sidebar">
+        <Link to={'#'} variant="sidebar" tooltip="Spiele">
           <DicesIcon className="size-5" />
           <span className="group-data-[sidebar-collapsed=true]:hidden">
             Spiele
@@ -39,7 +39,7 @@ export function Nav() {
       </div>
       <div className="flex flex-col gap-y-1.5 p-2 group-data-[sidebar-collapsed=true]:items-center group-data-[sidebar-collapsed=true]:px-0">
         {user.isAdmin && (
-          <Link to={'/hinterhof'} variant="sidebar">
+          <Link to={'/hinterhof'} variant="sidebar" tooltip="Manager">
             <SettingsIcon className="size-5" />
             <span className="group-data-[sidebar-collapsed=true]:hidden">
               Manager
@@ -48,7 +48,7 @@ export function Nav() {
         )}
         {user.isAuthenticated ? (
           <Form action="/logout" method="post" className="flex">
-            <Button type="submit" variant="sidebar">
+            <Button type="submit" variant="sidebar" tooltip="Logout">
               <LogOutIcon className="size-5" />
               <span className="group-data-[sidebar-collapsed=true]:hidden">
                 Logout
@@ -56,7 +56,7 @@ export function Nav() {
             </Button>
           </Form>
         ) : (
-          <Link to={'/login'} variant="sidebar">
+          <Link to={'/login'} variant="sidebar" tooltip="Login">
             <LogInIcon className="size-5" />
             <span className="group-data-[sidebar-collapsed=true]:hidden">
               Login

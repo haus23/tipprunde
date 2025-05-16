@@ -9,7 +9,7 @@ export function AppHeader() {
   const { toggleSidebar } = useShell();
 
   return (
-    <header className="flex h-14 items-center justify-between px-2 md:px-4">
+    <header className="flex h-14 items-center justify-between px-2">
       <div>
         <Button variant="toolbar" onClick={toggleSidebar}>
           <PanelLeftIcon className="size-5" />

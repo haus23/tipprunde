@@ -1,10 +1,15 @@
 import type { ButtonProps as _ButtonProps } from 'react-aria-components';
 import type { VariantProps } from 'tailwind-variants';
 
-import { Button as _Button } from 'react-aria-components';
+import {
+  Button as _Button,
+  TooltipContext,
+  useSlottedContext,
+} from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 import { focusVisibleStyles } from '~/components/ui/_common';
+import { Tooltip, TooltipTrigger } from '~/components/ui/tooltip';
 
 const styles = tv({
   base: [focusVisibleStyles, 'rounded-md transition-all duration-300'],
@@ -31,8 +36,24 @@ const styles = tv({
 
 interface ButtonProps extends _ButtonProps, VariantProps<typeof styles> {
   className?: string;
+  tooltip?: string;
 }
 
-export function Button({ className, variant, ...props }: ButtonProps) {
-  return <_Button className={styles({ className, variant })} {...props} />;
+export function Button({ className, tooltip, variant, ...props }: ButtonProps) {
+  const tooltipProps = useSlottedContext(TooltipContext);
+
+  const button = (
+    <_Button className={styles({ className, variant })} {...props} />
+  );
+
+  if (tooltip) {
+    return (
+      <TooltipTrigger>
+        {button}
+        <Tooltip {...tooltipProps}>{tooltip}</Tooltip>
+      </TooltipTrigger>
+    );
+  }
+
+  return button;
 }

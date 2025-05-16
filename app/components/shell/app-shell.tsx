@@ -5,7 +5,7 @@ import { AppSidebar } from '~/components/shell/app-sidebar';
 import { useShell } from '~/components/shell/shell-provider';
 
 const SIDEBAR_WIDTH = '12rem';
-const SIDEBAR_COLLAPSED_WIDTH = '3rem';
+const SIDEBAR_COLLAPSED_WIDTH = '4rem';
 
 export interface AppShellProps extends React.ComponentProps<'div'> {
   nav: React.ReactNode;
