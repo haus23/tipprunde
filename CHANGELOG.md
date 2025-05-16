@@ -1,6 +1,21 @@
 # Changelog
 
 
+## v0.1.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.3...v0.1.4)
+
+### 🚀 Enhancements
+
+- Add mobile nav state to the shell context. ([5b3e8b5](https://github.com/haus23/tipprunde/commit/5b3e8b5))
+- Add hook to determine the mobile breakpoint. ([4704394](https://github.com/haus23/tipprunde/commit/4704394))
+- Add mobile navbar. ([b05a985](https://github.com/haus23/tipprunde/commit/b05a985))
+- Close mobile nav after action. ([5c8791e](https://github.com/haus23/tipprunde/commit/5c8791e))
+
+### 💅 Refactors
+
+- Add app bg color to tailwindcss. ([a1e4250](https://github.com/haus23/tipprunde/commit/a1e4250))
+
 ## v0.1.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.2...v0.1.3)
