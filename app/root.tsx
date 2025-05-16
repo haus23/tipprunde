@@ -16,6 +16,7 @@ import { getUser } from '~/utils/user.server';
 
 import './root.css';
 
+import { ShellProvider } from '~/components/shell/shell-provider';
 import { useTheme } from '~/utils/theme';
 import { getTheme } from '~/utils/theme.server';
 import { useAuthBroadcast } from '~/utils/user';
@@ -55,5 +56,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function Root() {
-  return <Outlet />;
+  return (
+    <ShellProvider>
+      <Outlet />
+    </ShellProvider>
+  );
 }
