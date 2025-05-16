@@ -14,7 +14,7 @@ const styles = tv({
       primary: 'bg-accent-9 text-white hover:bg-accent-10',
       sidebar:
         'flex grow items-center gap-x-2 px-2 py-1.5 text-app-11 data-hovered:bg-app-3 data-hovered:text-app-12',
-      toolbar: 'p-1.5 hover:bg-app-3 data-[pressed=true]:bg-app-4',
+      toolbar: 'p-1.5 text-app-11 hover:bg-app-3 data-[pressed=true]:bg-app-4',
     },
   },
   compoundVariants: [
