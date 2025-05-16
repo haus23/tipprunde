@@ -1,5 +1,6 @@
 import {
   CalendarIcon,
+  ConstructionIcon,
   DicesIcon,
   FoldersIcon,
   HomeIcon,
@@ -57,6 +58,12 @@ export function Nav() {
             Zusatzpunkte
           </span>
         </Link>
+        <Link to={'/hinterhof/wartung'} variant="sidebar" tooltip="Wartung">
+          <ConstructionIcon className="size-5" />
+          <span className="group-data-[sidebar-collapsed=true]:hidden">
+            Wartung
+          </span>
+        </Link>
       </div>
       <div>
         <div className="flex flex-col gap-y-1.5 p-2 group-data-[sidebar-collapsed=true]:items-center group-data-[sidebar-collapsed=true]:px-0">
@@ -69,7 +76,7 @@ export function Nav() {
               Turniere
             </span>
           </Link>
-          <Link to={'/hinterhof'} variant="sidebar" tooltip="Spieler">
+          <Link to={'/hinterhof/spieler'} variant="sidebar" tooltip="Spieler">
             <UsersIcon className="size-5" />
             <span className="group-data-[sidebar-collapsed=true]:hidden">
               Spieler

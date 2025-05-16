@@ -10,7 +10,11 @@ export default [
     route('/kontrolle', 'routes/(auth)/verify-code.tsx'),
   ]),
   layout('routes/hinterhof/(layout)/index.tsx', [
-    ...prefix('/hinterhof', [index('routes/hinterhof/_index.tsx')]),
+    ...prefix('/hinterhof', [
+      index('routes/hinterhof/_index.tsx'),
+      route('/wartung', 'routes/hinterhof/(maintenance)/_route.tsx'),
+      route('/spieler', 'routes/hinterhof/shared-data/users/_route.tsx'),
+    ]),
   ]),
   // Actions
   route('/action/set-theme', 'routes/(actions)/set-theme.ts'),

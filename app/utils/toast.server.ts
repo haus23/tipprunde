@@ -1,6 +1,6 @@
 import type { Toast } from '~/utils/toast';
 
-import { redirect } from 'react-router';
+import { data, redirect } from 'react-router';
 
 import { combineHeaders } from '~/utils/misc';
 import { commitAppSession, getAppSession } from '~/utils/sessions.server';
@@ -33,6 +33,21 @@ export async function redirectWithToast(
   init?: ResponseInit,
 ) {
   return redirect(url, {
+    ...init,
+    headers: combineHeaders(
+      init?.headers,
+      await createToastHeaders(request, toast),
+    ),
+  });
+}
+
+export async function dataWithToast(
+  request: Request,
+  payload: unknown,
+  toast: Toast,
+  init?: ResponseInit,
+) {
+  return data(payload, {
     ...init,
     headers: combineHeaders(
       init?.headers,
