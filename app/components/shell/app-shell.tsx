@@ -1,9 +1,9 @@
 import { tv } from 'tailwind-variants';
 
+import { AppHeader } from '~/components/shell/app-header';
 import { AppSidebar } from '~/components/shell/app-sidebar';
-import { ThemeMenu } from '~/components/theme-menu';
 
-const SIDEBAR_WIDTH = '16rem';
+const SIDEBAR_WIDTH = '12rem';
 
 export interface AppShellProps extends React.ComponentProps<'div'> {
   nav: React.ReactNode;
@@ -35,9 +35,9 @@ export function AppShell({
       {...props}
     >
       <AppSidebar>{nav}</AppSidebar>
-      <main className="grow p-4">{children}</main>
-      <div className="absolute top-2 right-4">
-        <ThemeMenu />
+      <div className="grid grid-rows-[auto_1fr]">
+        <AppHeader />
+        <main className="pb-8 sm:px-2 md:px-4">{children}</main>
       </div>
     </div>
   );
