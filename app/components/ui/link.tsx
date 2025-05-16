@@ -1,12 +1,14 @@
 import type { LinkProps as _LinkProps } from 'react-router';
 import type { VariantProps } from 'tailwind-variants';
 
+import { use } from 'react';
 import { Focusable, useFocusRing, useHover } from 'react-aria';
 import { TooltipContext, useSlottedContext } from 'react-aria-components';
 import { Link as _Link } from 'react-router';
 import { tv } from 'tailwind-variants';
 
 import { focusVisibleStyles } from '~/components/ui/_common';
+import { ActionContext } from '~/components/ui/action-context';
 import { Tooltip, TooltipTrigger } from '~/components/ui/tooltip';
 
 const styles = tv({
@@ -31,9 +33,15 @@ export function Link({ className, tooltip, variant, ...props }: LinkProps) {
   const { isFocusVisible, focusProps } = useFocusRing();
   const { isHovered, hoverProps } = useHover({});
   const tooltipProps = useSlottedContext(TooltipContext);
+  const ctx = use(ActionContext);
+
+  function handleClick() {
+    ctx?.onAction();
+  }
 
   const link = (
     <_Link
+      onClick={handleClick}
       className={styles({ className, variant })}
       {...(isFocusVisible && { 'data-focus-visible': true })}
       {...focusProps}

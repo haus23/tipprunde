@@ -1,6 +1,10 @@
-import type { ButtonProps as _ButtonProps } from 'react-aria-components';
+import type {
+  ButtonProps as _ButtonProps,
+  PressEvent,
+} from 'react-aria-components';
 import type { VariantProps } from 'tailwind-variants';
 
+import { use } from 'react';
 import {
   Button as _Button,
   TooltipContext,
@@ -9,6 +13,7 @@ import {
 import { tv } from 'tailwind-variants';
 
 import { focusVisibleStyles } from '~/components/ui/_common';
+import { ActionContext } from '~/components/ui/action-context';
 import { Tooltip, TooltipTrigger } from '~/components/ui/tooltip';
 
 const styles = tv({
@@ -39,11 +44,29 @@ interface ButtonProps extends _ButtonProps, VariantProps<typeof styles> {
   tooltip?: string;
 }
 
-export function Button({ className, tooltip, variant, ...props }: ButtonProps) {
+export function Button({
+  className,
+  tooltip,
+  variant,
+  onPress,
+  type = 'button',
+  ...props
+}: ButtonProps) {
   const tooltipProps = useSlottedContext(TooltipContext);
+  const ctx = use(ActionContext);
+
+  function handlePress(e: PressEvent) {
+    onPress?.(e);
+    ctx?.onAction();
+  }
 
   const button = (
-    <_Button className={styles({ className, variant })} {...props} />
+    <_Button
+      className={styles({ className, variant })}
+      onPress={handlePress}
+      type={type}
+      {...props}
+    />
   );
 
   if (tooltip) {
