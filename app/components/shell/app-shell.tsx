@@ -1,4 +1,4 @@
-import { twMerge } from 'tailwind-merge';
+import { tv } from 'tailwind-variants';
 
 import { AppSidebar } from '~/components/shell/app-sidebar';
 import { ThemeMenu } from '~/components/theme-menu';
@@ -8,6 +8,13 @@ const SIDEBAR_WIDTH = '16rem';
 export interface AppShellProps extends React.ComponentProps<'div'> {
   nav: React.ReactNode;
 }
+
+const shellStyles = tv({
+  base: [
+    'isolate min-h-svh w-full',
+    'grid grid-cols-[0_1fr] md:grid-cols-[var(--sidebar-width)_1fr]',
+  ],
+});
 
 export function AppShell({
   children,
@@ -24,7 +31,7 @@ export function AppShell({
           ...style,
         } as React.CSSProperties
       }
-      className={twMerge('isolate flex min-h-svh w-full', className)}
+      className={shellStyles({ className })}
       {...props}
     >
       <AppSidebar>{nav}</AppSidebar>
