@@ -16,8 +16,10 @@
   "dependencies": {
     "@epic-web/totp": "^4.0.1",
     "@fontsource-variable/geist": "^5.2.6",
+    "@haus23/tipprunde-model": "^0.19.7",
     "@react-email/components": "0.0.41",
     "@react-router/node": "~7.6.0",
+    "@tanstack/react-table": "^8.21.3",
     "drizzle-orm": "^0.43.1",
     "input-otp": "^1.4.2",
     "isbot": "^5.1.28",
