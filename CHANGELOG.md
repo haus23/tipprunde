@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.1.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.1...v0.1.2)
+
+### 🚀 Enhancements
+
+- Rotate the button icons. ([47e16ac](https://github.com/haus23/tipprunde/commit/47e16ac))
+- Add an app-header component. ([2910f02](https://github.com/haus23/tipprunde/commit/2910f02))
+- Make sidebar collapsible on medium and above devices. ([d979cdc](https://github.com/haus23/tipprunde/commit/d979cdc))
+
+### 💅 Refactors
+
+- Hide sidebar on small devices. ([79f3cba](https://github.com/haus23/tipprunde/commit/79f3cba))
+- Align icon size with header icons. ([1d684b8](https://github.com/haus23/tipprunde/commit/1d684b8))
+- Make toolbar buttons text lighter. ([4d6335d](https://github.com/haus23/tipprunde/commit/4d6335d))
+- Adjust styles for the now responsive design. ([cccad0e](https://github.com/haus23/tipprunde/commit/cccad0e))
+
 ## v0.1.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.1.1)
