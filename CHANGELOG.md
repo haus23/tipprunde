@@ -1,6 +1,15 @@
 # Changelog
 
 
+## v0.1.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.2...v0.1.3)
+
+### 🚀 Enhancements
+
+- Add tooltips to the sidebar nav items. ([daf041b](https://github.com/haus23/tipprunde/commit/daf041b))
+- Persist sidebar collapse state to the app session. ([310e133](https://github.com/haus23/tipprunde/commit/310e133))
+
 ## v0.1.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.1...v0.1.2)
