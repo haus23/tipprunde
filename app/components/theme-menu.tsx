@@ -8,17 +8,14 @@ import {
   SunIcon,
   SunMoonIcon,
 } from 'lucide-react';
-import {
-  Menu,
-  MenuItem,
-  MenuTrigger,
-} from 'react-aria-components';
+import { Menu, MenuItem, MenuTrigger } from 'react-aria-components';
+import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
 import { Button } from '~/components/ui/button';
 import { Popover } from '~/components/ui/popover';
+import { includes } from '~/utils/misc';
 import { useTheme } from '~/utils/theme';
-import {includes} from "~/utils/misc";
 
 const colorSchemes: {
   name: Theme['colorScheme'];
@@ -55,8 +52,34 @@ export function ThemeMenu() {
 
   return (
     <MenuTrigger>
-      <Button variant="toolbar">
-        <SunMoonIcon className="size-6" />
+      <Button
+        variant="toolbar"
+        className="overflow-clip"
+        style={{ '--theme-icon-width': '24px' } as React.CSSProperties}
+      >
+        <div className="relative size-[var(--theme-icon-width)]">
+          <SunIcon
+            className={twMerge(
+              '-rotate-45 absolute inset-0 size-[var(--theme-icon-width)] origin-[50%_100px] transition-transform duration-300',
+              theme.colorScheme === 'light' && 'rotate-0',
+              theme.colorScheme === 'system' && '-rotate-90',
+            )}
+          />
+          <MoonIcon
+            className={twMerge(
+              'absolute inset-0 size-[var(--theme-icon-width)] origin-[50%_100px] rotate-0 transition-transform duration-300',
+              theme.colorScheme === 'light' && 'rotate-45',
+              theme.colorScheme === 'system' && '-rotate-45',
+            )}
+          />
+          <SunMoonIcon
+            className={twMerge(
+              'absolute inset-0 size-[var(--theme-icon-width)] origin-[50%_100px] rotate-45 transition-transform duration-300',
+              theme.colorScheme === 'light' && 'rotate-90',
+              theme.colorScheme === 'system' && 'rotate-0',
+            )}
+          />
+        </div>
       </Button>
       <Popover>
         <Menu
