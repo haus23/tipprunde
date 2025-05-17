@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v0.2.0-0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.4...v0.2.0-0)
+
+### 🚀 Enhancements
+
+- Add users table. ([9122a6e](https://github.com/haus23/tipprunde/commit/9122a6e))
+- Just a POC. Sync and display users. Next tasks in readme. ([93e44bc](https://github.com/haus23/tipprunde/commit/93e44bc))
+
+### 💅 Refactors
+
+- Move body styling into the styles. Define default border. ([d2086b4](https://github.com/haus23/tipprunde/commit/d2086b4))
+- Add some basic styling to the table and route. ([c77b662](https://github.com/haus23/tipprunde/commit/c77b662))
+
+### 🏡 Chore
+
+- Add deps for tipprunde-model and tanstack query. ([b3acebc](https://github.com/haus23/tipprunde/commit/b3acebc))
+
 ## v0.1.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.3...v0.1.4)
