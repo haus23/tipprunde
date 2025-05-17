@@ -34,7 +34,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
 
   return (
     <div className="px-2 sm:px-0">
-      <div className="mx-auto flex max-w-md flex-col gap-y-6 rounded-md border border-app-6 p-4 shadow-md">
+      <div className="mx-auto flex max-w-md flex-col gap-y-6 rounded-md border p-4 shadow-md">
         <h1 className="font-medium text-2xl">Log In</h1>
         <Form
           method="post"

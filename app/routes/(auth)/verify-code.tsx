@@ -42,7 +42,7 @@ export default function VerifyCode({
   };
 
   return (
-    <div className="mx-auto mt-12 flex max-w-md flex-col gap-y-6 rounded-md border border-app-6 p-4 shadow-md">
+    <div className="mx-auto mt-12 flex max-w-md flex-col gap-y-6 rounded-md border p-4 shadow-md">
       <h1 className="font-medium text-2xl">Log In Code</h1>
       <Form
         method="post"

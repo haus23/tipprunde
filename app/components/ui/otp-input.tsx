@@ -14,7 +14,7 @@ const slotStyles = tv({
     'relative h-14 w-10 text-3xl',
     'flex items-center justify-center',
     'transition-all duration-300',
-    'border-app-6 border-y border-r first:rounded-l-md first:border-l last:rounded-r-md',
+    ' border-y border-r first:rounded-l-md first:border-l last:rounded-r-md',
     'group-focus-within:border-accent-7 group-hover:border-accent-7',
     'outline-0 outline-accent-7/80',
   ],

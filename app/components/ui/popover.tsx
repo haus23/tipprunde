@@ -4,7 +4,7 @@ import { Popover as _Popover } from 'react-aria-components';
 import { tv } from 'tailwind-variants';
 
 const styles = tv({
-  base: ['rounded-xl border border-app-6 bg-app-1 shadow-md'],
+  base: ['rounded-xl border bg-app-1 shadow-md'],
 });
 
 interface PopoverProps extends _PopoverProps {

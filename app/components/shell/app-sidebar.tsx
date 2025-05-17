@@ -32,7 +32,7 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
             style: { '--origin': 'translateX(-4px)' } as React.CSSProperties,
           }}
         >
-          <div className="overflow-x-clip border-app-6 border-r shadow-sm">
+          <div className="overflow-x-clip border-r shadow-sm">
             <div className="fixed inset-y-0 left-0 hidden w-[calc(var(--sidebar-width)-1px)] overflow-y-auto bg-app-1 font-medium md:flex md:flex-col">
               <div className="p-2 group-data-[sidebar-collapsed=true]:px-0">
                 <Link
@@ -45,7 +45,7 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
                   </span>
                 </Link>
               </div>
-              <hr className="border-app-6" />
+              <hr />
               {children}
             </div>
           </div>
@@ -75,7 +75,7 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
                   </span>
                 </Link>
               </div>
-              <hr className="border-app-6" />
+              <hr />
               {children}
             </Dialog>
           </ActionContext>

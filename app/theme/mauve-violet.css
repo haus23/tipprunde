@@ -50,6 +50,8 @@
 }
 
 [data-theme="mauvi"] {
+  --app-bg: white;
+  --app-bg-dark: color-mix(in oklab, var(--mauve-dark-1) 90%, transparent);
   --app-1: light-dark(var(--mauve-1), var(--mauve-dark-1));
   --app-2: light-dark(var(--mauve-2), var(--mauve-dark-2));
   --app-3: light-dark(var(--mauve-3), var(--mauve-dark-3));

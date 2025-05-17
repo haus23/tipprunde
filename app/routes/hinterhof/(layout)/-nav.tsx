@@ -101,7 +101,7 @@ export function Nav() {
             </span>
           </Link>
         </div>
-        <hr className="border-app-6" />
+        <hr />
         <div className="flex flex-col gap-y-1.5 p-2 group-data-[sidebar-collapsed=true]:items-center group-data-[sidebar-collapsed=true]:px-0">
           <Form action="/logout" method="post" className="flex">
             <Button type="submit" variant="sidebar" tooltip="Logout">
