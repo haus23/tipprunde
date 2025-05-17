@@ -2,14 +2,17 @@
 
 ## Next tasks
 
+- Common
+  - [ ] Add tanstack-query
+
 - Users
-  - [ ] Style the table at /hinterhof/spieler
+  - [x] Style the table at /hinterhof/spieler
+  - [ ] Add pagination and filtering to the table
   - [ ] Add logic for the /hinterhof/wartung
     - [ ] Add KV Binding
     - [ ] Set last sync date
     - [ ] Enable button only for recent updates
     - [ ] Or if there are no synced users
-    - [ ] Add tanstack-query
     - [ ] Let users log-in
 
 ## Todos

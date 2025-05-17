@@ -20,7 +20,9 @@ export default function UsersRoute({ loaderData }: Route.ComponentProps) {
   return (
     <div>
       <h1 className="font-medium text-2xl">Spieler</h1>
-      <DataTable columns={columns} data={loaderData.users} />
+      <div className="mt-4 overflow-clip rounded-xl border">
+        <DataTable columns={columns} data={loaderData.users} />
+      </div>
     </div>
   );
 }

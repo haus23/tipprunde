@@ -18,7 +18,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
   return (
     <thead
       data-slot="table-header"
-      className={twMerge('[&_tr]:border-b', className)}
+      className={twMerge('bg-app-3 [&_tr]:border-b', className)}
       {...props}
     />
   );
@@ -39,7 +39,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<'tfoot'>) {
     <tfoot
       data-slot="table-footer"
       className={twMerge(
-        'border-t bg-app-2/50 font-medium [&>tr]:last:border-b-0',
+        'border-t bg-app-2 font-medium [&>tr]:last:border-b-0',
         className,
       )}
       {...props}
@@ -52,7 +52,7 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
     <tr
       data-slot="table-row"
       className={twMerge(
-        'border-b transition-colors hover:bg-app-2/50 data-[state=selected]:bg-app-2',
+        'border-b transition-colors hover:bg-app-4 data-[state=selected]:bg-app-5',
         className,
       )}
       {...props}
