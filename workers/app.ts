@@ -1,5 +1,7 @@
 import { createRequestHandler } from 'react-router';
 
+import { initializeApp } from '~/app';
+
 import { getLoadContext } from '../load-context';
 
 const requestHandler = createRequestHandler(
@@ -10,6 +12,8 @@ const requestHandler = createRequestHandler(
 
 export default {
   fetch(request, env, ctx) {
+    initializeApp(env);
+
     const loadContext = getLoadContext({
       request,
       context: { cloudflare: { env, ctx } },
