@@ -19,5 +19,11 @@
       "database_name": "tipprunde-db",
       "database_id": "2bafeb39-eb95-43ce-88d0-c307c3200587"
     }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "LEGACY_SYNC",
+      "id": "a3b9867ac9de470ebedf7a48df965d6b"
+    }
   ]
 }
