@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.2.0-1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-0...v0.2.0-1)
+
+### 🚀 Enhancements
+
+- Add a cloudflare kv namespace binding. ([93d2a6f](https://github.com/haus23/tipprunde/commit/93d2a6f))
+
+### 🩹 Fixes
+
+- Remove remaining db.server dependencies. ([751ac17](https://github.com/haus23/tipprunde/commit/751ac17))
+
+### 💅 Refactors
+
+- Introduce a new way to initialize the app from a cloudflare environment. ([9141c29](https://github.com/haus23/tipprunde/commit/9141c29))
+- Use the new app config in the auth flow. ([0c6279c](https://github.com/haus23/tipprunde/commit/0c6279c))
+- Clean up remaining files. ([6cc3744](https://github.com/haus23/tipprunde/commit/6cc3744))
+- Simplify the worker. Drop load-context at all. ([1fa5ad8](https://github.com/haus23/tipprunde/commit/1fa5ad8))
+
+### 🏡 Chore
+
+- **dx:** Enable cloudflare observability. ([2b58f7c](https://github.com/haus23/tipprunde/commit/2b58f7c))
+
 ## v0.2.0-0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.4...v0.2.0-0)
