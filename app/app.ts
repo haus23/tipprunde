@@ -27,7 +27,7 @@ const app = {
   },
 } satisfies App;
 
-export function initializeApp(cloudflareEnv: Cloudflare.Env): App {
+export function initializeApp(cloudflareEnv: Env): App {
   appInstance.db = drizzle(cloudflareEnv.DB, {
     schema,
     casing: 'snake_case',
