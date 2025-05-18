@@ -4,6 +4,9 @@
   "compatibility_flags": ["nodejs_compat"],
   "compatibility_date": "2025-04-28",
   "main": "./workers/app.ts",
+  "observability": {
+    "enabled": true
+  },
   "vars": {
     // Legacy Backend Host
     "UNTERBAU_URL": "https://unterbau.runde.tips",
