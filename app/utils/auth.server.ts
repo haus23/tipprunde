@@ -10,9 +10,9 @@
 
 import { eq } from 'drizzle-orm';
 
+import app from '~/app';
 import { sessions } from '~/database/schema';
 import { getUserByEmail } from '~/utils/db.queries.server';
-import { db } from '~/utils/db.server';
 import { env } from '~/utils/env.server';
 import {
   authCookie,
@@ -108,6 +108,8 @@ export async function ensureOnboardingSession(request: Request) {
  * @returns Login errors or redirects
  */
 export async function verifyOnboardingCode(request: Request) {
+  const { db } = app;
+
   const session = await getAuthSession(request);
   const email = session.get('email');
   const rememberMe = session.get('rememberMe') ?? false;
@@ -159,7 +161,7 @@ export async function verifyOnboardingCode(request: Request) {
 
   // Create app session
   const expirationDate = new Date(Date.now() + env.SESSION_DURATION * 1000);
-  const [sessionData] = await db.instance
+  const [sessionData] = await db
     .insert(sessions)
     .values({
       userId: user.id,
@@ -190,11 +192,13 @@ export async function verifyOnboardingCode(request: Request) {
  * @param request Request object
  */
 export async function logout(request: Request) {
+  const { db } = app;
+
   const session = await getAuthSession(request);
   const sessionId = session.get('sessionId');
 
   if (sessionId) {
-    await db.instance.delete(sessions).where(eq(sessions.id, sessionId));
+    await db.delete(sessions).where(eq(sessions.id, sessionId));
   }
 
   const headers = new Headers({
@@ -222,6 +226,8 @@ export async function prolongRememberMeSession(
   request: Request,
   responseHeaders: Headers,
 ) {
+  const { db } = app;
+
   // Is there an ongoing auth cookie set in the headers
   const cookieBeingSet = await authCookie.parse(
     responseHeaders.get('Set-Cookie'),
@@ -232,14 +238,14 @@ export async function prolongRememberMeSession(
   const sessionId = authSession.get('sessionId');
   if (!sessionId) return;
 
-  const appSession = await db.instance.query.sessions.findFirst({
+  const appSession = await db.query.sessions.findFirst({
     where: (sessions, { and, eq, gt }) =>
       and(eq(sessions.id, sessionId), gt(sessions.expirationDate, new Date())),
   });
   if (!appSession || appSession.expires) return;
 
   const expirationDate = new Date(Date.now() + env.SESSION_DURATION * 1000);
-  await db.instance
+  await db
     .update(sessions)
     .set({
       ...appSession,

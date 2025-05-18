@@ -1,9 +1,9 @@
 import { generateTOTP, verifyTOTP } from '@epic-web/totp';
 import { eq } from 'drizzle-orm';
 
+import app from '~/app';
 import { verifications } from '~/database/schema';
 
-import { db } from './db.server';
 import { env } from './env.server';
 
 /**
@@ -13,13 +13,15 @@ import { env } from './env.server';
  * @returns Code
  */
 export async function createLoginCode(email: string) {
+  const { db } = app;
+
   const { otp, secret, period, charSet, digits, algorithm } =
     await generateTOTP({
       period: env.TOTP_PERIOD,
     });
 
   const expiresAt = new Date(Date.now() + period * 1000);
-  await db.instance
+  await db
     .insert(verifications)
     .values({
       email,
@@ -60,7 +62,9 @@ export async function verifyLoginCode(
 ): Promise<
   { success: true } | { success: false; retry: boolean; error: string }
 > {
-  const verificationData = await db.instance.query.verifications.findFirst({
+  const { db } = app;
+
+  const verificationData = await db.query.verifications.findFirst({
     where: (v, { eq }) => eq(v.email, email),
   });
   if (!verificationData) {
@@ -84,7 +88,7 @@ export async function verifyLoginCode(
     const attempts = verificationData.attempts + 1;
     const remainingAttempts = env.TOTP_ATTEMPTS - attempts;
     if (attempts < env.TOTP_ATTEMPTS) {
-      await db.instance
+      await db
         .update(verifications)
         .set({
           attempts,
