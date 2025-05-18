@@ -6,10 +6,10 @@ import * as v from 'valibot';
 
 import { Button } from '~/components/ui/button';
 import { users } from '~/database/schema';
-import { db } from '~/utils/db.server';
 import { env } from '~/utils/env.server';
 import { dataWithToast } from '~/utils/toast.server';
 import { requireAdmin } from '~/utils/user.server';
+import app from "~/app";
 
 export function meta() {
   return [{ title: 'Hinterhof - runde.tips' }];
@@ -21,13 +21,16 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export async function action({ request }: Route.ActionArgs) {
   await requireAdmin(request);
+
+  const {db} = app;
+
   const response = await fetch(`${env.UNTERBAU_URL}/api/v1/accounts`);
   const data = await response.json();
   const legacyUsers = v.parse(v.array(AccountSchema), data);
 
   await Promise.all(
     legacyUsers.map(async (u) => {
-      await db.instance
+      await db
         .insert(users)
         .values({ name: u.name, email: u.email, slug: u.id });
     }),
