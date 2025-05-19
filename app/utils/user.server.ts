@@ -2,16 +2,14 @@
  * This file contains the auth state functions
  *
  * - getUser(): called by the root loader, returns logged-in user or null
- * - requireAnonymous(): loader/action quard
- * - requireManager(): loader/action quard
+ * - requireAnonymous(): loader/action guard
+ * - requireManager(): loader/action guard
  *
  */
 
-import { eq } from 'drizzle-orm';
 import { redirect } from 'react-router';
 
-import app from '~/app';
-import { sessions } from '~/database/schema';
+import { deleteSession, getSession } from '~/utils/db/session';
 import { getUserById } from '~/utils/db.queries.server';
 import { destroyAuthSession, getAuthSession } from '~/utils/sessions.server';
 
@@ -25,8 +23,6 @@ import { destroyAuthSession, getAuthSession } from '~/utils/sessions.server';
  * @returns User or null
  */
 export async function getUser(request: Request) {
-  const { db } = app;
-
   const authSession = await getAuthSession(request);
   const sessionId = authSession.get('sessionId');
 
@@ -38,9 +34,7 @@ export async function getUser(request: Request) {
     };
   }
 
-  const session = await db.query.sessions.findFirst({
-    where: (sessions, { eq }) => eq(sessions.id, sessionId),
-  });
+  const session = await getSession(sessionId);
 
   // No server session? Log the user out from the client and exit
   if (!session) {
@@ -58,7 +52,7 @@ export async function getUser(request: Request) {
   // No user or expired server session? Destroy server session and log user out from the client
   // This covers the rare case that the user account is already deleted, but there is still a browser session
   if (!user || new Date() > session.expirationDate) {
-    await db.delete(sessions).where(eq(sessions.id, sessionId));
+    await deleteSession(sessionId);
     return {
       user: null,
       headers: {
@@ -80,16 +74,12 @@ export async function getUser(request: Request) {
  * @returns User or null
  */
 async function getOptionalUser(request: Request) {
-  const { db } = app;
-
   const authSession = await getAuthSession(request);
   const sessionId = authSession.get('sessionId');
 
   if (!sessionId) return null;
 
-  const session = await db.query.sessions.findFirst({
-    where: (sessions, { eq }) => eq(sessions.id, sessionId),
-  });
+  const session = await getSession(sessionId);
 
   return session ? await getUserById(session.userId) : null;
 }

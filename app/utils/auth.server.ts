@@ -8,10 +8,12 @@
  * - prolongRememberMeSession(): prolongs an eventually ongoing rememberMe-Session
  */
 
-import { eq } from 'drizzle-orm';
-
-import app from '~/app';
-import { sessions } from '~/database/schema';
+import {
+  createSession,
+  deleteSession,
+  getSession,
+  updateSession,
+} from '~/utils/db/session';
 import { getUserByEmail } from '~/utils/db.queries.server';
 import { env } from '~/utils/env.server';
 import {
@@ -108,8 +110,6 @@ export async function ensureOnboardingSession(request: Request) {
  * @returns Login errors or redirects
  */
 export async function verifyOnboardingCode(request: Request) {
-  const { db } = app;
-
   const session = await getAuthSession(request);
   const email = session.get('email');
   const rememberMe = session.get('rememberMe') ?? false;
@@ -161,16 +161,13 @@ export async function verifyOnboardingCode(request: Request) {
 
   // Create app session
   const expirationDate = new Date(Date.now() + env.SESSION_DURATION * 1000);
-  const [sessionData] = await db
-    .insert(sessions)
-    .values({
-      userId: user.id,
-      expirationDate,
-      expires: !rememberMe,
-    })
-    .returning({ sessionId: sessions.id });
+  const { id: sessionId } = await createSession(
+    user.id,
+    expirationDate,
+    rememberMe,
+  );
 
-  session.set('sessionId', String(sessionData.sessionId));
+  session.set('sessionId', sessionId);
 
   throw await redirectWithToast(
     request,
@@ -192,13 +189,11 @@ export async function verifyOnboardingCode(request: Request) {
  * @param request Request object
  */
 export async function logout(request: Request) {
-  const { db } = app;
-
   const session = await getAuthSession(request);
   const sessionId = session.get('sessionId');
 
   if (sessionId) {
-    await db.delete(sessions).where(eq(sessions.id, sessionId));
+    await deleteSession(sessionId);
   }
 
   const headers = new Headers({
@@ -226,8 +221,6 @@ export async function prolongRememberMeSession(
   request: Request,
   responseHeaders: Headers,
 ) {
-  const { db } = app;
-
   // Is there an ongoing auth cookie set in the headers
   const cookieBeingSet = await authCookie.parse(
     responseHeaders.get('Set-Cookie'),
@@ -238,21 +231,12 @@ export async function prolongRememberMeSession(
   const sessionId = authSession.get('sessionId');
   if (!sessionId) return;
 
-  const appSession = await db.query.sessions.findFirst({
-    where: (sessions, { and, eq, gt }) =>
-      and(eq(sessions.id, sessionId), gt(sessions.expirationDate, new Date())),
-  });
+  const appSession = await getSession(sessionId);
+  // No ongoing session (action on another tab ?!) or expiring session? Exit early
   if (!appSession || appSession.expires) return;
 
   const expirationDate = new Date(Date.now() + env.SESSION_DURATION * 1000);
-  await db
-    .update(sessions)
-    .set({
-      ...appSession,
-      updatedAt: new Date(),
-      expirationDate,
-    })
-    .where(eq(sessions.id, sessionId));
+  await updateSession(sessionId, expirationDate);
 
   responseHeaders.append(
     'Set-Cookie',
