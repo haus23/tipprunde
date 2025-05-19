@@ -16,14 +16,15 @@
   "dependencies": {
     "@epic-web/totp": "^4.0.1",
     "@fontsource-variable/geist": "^5.2.6",
-    "@haus23/tipprunde-model": "^0.19.7",
+    "@haus23/tipprunde-model": "~0.21.2",
     "@react-email/components": "0.0.41",
     "@react-router/node": "~7.6.0",
+    "@standard-schema/spec": "^1.0.0",
     "@tanstack/react-table": "^8.21.3",
     "drizzle-orm": "^0.43.1",
     "input-otp": "^1.4.2",
     "isbot": "^5.1.28",
-    "lucide-react": "0.510.0",
+    "lucide-react": "0.511.0",
     "react": "~19.1.0",
     "react-aria": "^3.39.0",
     "react-aria-components": "^1.8.0",
@@ -35,20 +36,20 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.0-beta.2",
-    "@cloudflare/vite-plugin": "~1.2.1",
+    "@cloudflare/vite-plugin": "~1.2.2",
     "@react-router/dev": "~7.6.0",
     "@tailwindcss/vite": "^4.1.7",
-    "@types/node": "~22.15.18",
+    "@types/node": "~22.15.19",
     "@types/react": "~19.1.4",
     "@types/react-dom": "~19.1.5",
     "drizzle-kit": "^0.31.1",
-    "react-email": "~4.0.13",
+    "react-email": "~4.0.14",
     "tailwindcss": "^4.1.7",
     "typescript": "~5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-devtools-json": "^0.1.0",
     "vite-tsconfig-paths": "^5.1.4",
-    "wrangler": "~4.15.1"
+    "wrangler": "~4.15.2"
   },
   "packageManager": "pnpm@10.11.0"
 }
