@@ -10,7 +10,7 @@
 import { redirect } from 'react-router';
 
 import { deleteSession, getSession } from '~/utils/db/session';
-import { getUserById } from '~/utils/db.queries.server';
+import { getUser as getUserFromDb } from '~/utils/db/user';
 import { destroyAuthSession, getAuthSession } from '~/utils/sessions.server';
 
 /**
@@ -47,7 +47,7 @@ export async function getUser(request: Request) {
   }
 
   // Load associated user
-  const user = await getUserById(session.userId);
+  const user = await getUserFromDb(session.userId);
 
   // No user or expired server session? Destroy server session and log user out from the client
   // This covers the rare case that the user account is already deleted, but there is still a browser session
@@ -81,7 +81,7 @@ async function getOptionalUser(request: Request) {
 
   const session = await getSession(sessionId);
 
-  return session ? await getUserById(session.userId) : null;
+  return session ? await getUserFromDb(session.userId) : null;
 }
 
 /**

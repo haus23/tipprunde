@@ -14,7 +14,7 @@ import {
   getSession,
   updateSession,
 } from '~/utils/db/session';
-import { getUserByEmail } from '~/utils/db.queries.server';
+import { getUserByEmail } from '~/utils/db/user';
 import { env } from '~/utils/env.server';
 import {
   authCookie,
@@ -159,7 +159,7 @@ export async function verifyOnboardingCode(request: Request) {
     return { errors: { code: verifyResult.error } };
   }
 
-  // Create app session
+  // Create the app session
   const expirationDate = new Date(Date.now() + env.SESSION_DURATION * 1000);
   const { id: sessionId } = await createSession(
     user.id,
