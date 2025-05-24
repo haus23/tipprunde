@@ -25,7 +25,7 @@ export function TooltipTrigger({ ...props }: TooltipTriggerComponentProps) {
 
 const styles = tv({
   base: [
-    'rounded-sm bg-accent-9 px-2 py-1 text-sm text-white shadow-sm transition duration-300',
+    'rounded-sm bg-app-12 px-2 py-1 text-app-1 text-sm shadow-sm transition duration-300',
     'data-[entering=true]:transform-[var(--origin)] data-[exiting=true]:transform-[var(--origin)]',
     'data-[entering=true]:opacity-0 data-[exiting=true]:opacity-0',
     'data-[placement=right]:ml-2',
