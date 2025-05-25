@@ -17,7 +17,11 @@ import { ActionContext } from '~/components/ui/action-context';
 import { Tooltip, TooltipTrigger } from '~/components/ui/tooltip';
 
 const styles = tv({
-  base: [focusVisibleStyles, 'rounded-md transition-all duration-300'],
+  base: [
+    focusVisibleStyles,
+    'rounded-md transition-all duration-300',
+    'disabled:pointer-events-none disabled:opacity-50',
+  ],
   variants: {
     variant: {
       default: '',
