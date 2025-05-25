@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "37f08a12-a4ea-448d-9e8a-ed7078a720de",
+  "id": "bdc490af-48d2-4e1b-a8a2-b6faacfb8156",
   "prevId": "2ecdc1c3-466d-444e-8c56-1f9c24e5e71d",
   "tables": {
     "sessions": {
@@ -66,15 +66,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
+        "slug": {
+          "name": "slug",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "slug": {
-          "name": "slug",
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -94,9 +94,29 @@
           "notNull": true,
           "autoincrement": false,
           "default": "''"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "users_slug_unique": {
+          "name": "users_slug_unique",
+          "columns": ["slug"],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

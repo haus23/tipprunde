@@ -12,10 +12,11 @@ const timestamps = {
 
 export const users = sqliteTable('users', {
   id: integer().primaryKey(),
+  slug: text().notNull().unique(),
   name: text().notNull(),
-  slug: text().notNull(),
   email: text().notNull(),
   roles: text().notNull().default(''),
+  ...timestamps,
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
