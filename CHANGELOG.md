@@ -1,6 +1,30 @@
 # Changelog
 
 
+## v0.2.0-2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-1...v0.2.0-2)
+
+### 🚀 Enhancements
+
+- Add disabled styles. ([b05478f](https://github.com/haus23/tipprunde/commit/b05478f))
+- Create concept for loading and updating shared legacy data. ([2114085](https://github.com/haus23/tipprunde/commit/2114085))
+
+### 🩹 Fixes
+
+- Adjust tooltip colors. ([93f4abf](https://github.com/haus23/tipprunde/commit/93f4abf))
+
+### 💅 Refactors
+
+- Extract verifications db operations to utils. ([1d1d980](https://github.com/haus23/tipprunde/commit/1d1d980))
+- Extract sessions db operations to utils. ([70a1474](https://github.com/haus23/tipprunde/commit/70a1474))
+- Extract users db operations to utils. ([b198085](https://github.com/haus23/tipprunde/commit/b198085))
+- Make slug column unique. Add timestamps. ([beebf5a](https://github.com/haus23/tipprunde/commit/beebf5a))
+
+### 🏡 Chore
+
+- Update deps. ([acdd877](https://github.com/haus23/tipprunde/commit/acdd877))
+
 ## v0.2.0-1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-0...v0.2.0-1)
