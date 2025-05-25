@@ -2,8 +2,8 @@ import type { Route } from './+types/_route';
 
 import { DataTable } from '~/components/ui/data-table';
 import { columns } from '~/routes/hinterhof/shared-data/users/column-defs';
+import { getUsers } from '~/utils/db/user';
 import { requireAdmin } from '~/utils/user.server';
-import app from "~/app";
 
 export function meta() {
   return [{ title: 'Hinterhof - runde.tips' }];
@@ -12,9 +12,7 @@ export function meta() {
 export async function loader({ request }: Route.LoaderArgs) {
   await requireAdmin(request);
 
-  const {db} = app;
-
-  const users = await db.query.users.findMany();
+  const users = await getUsers();
   return { users };
 }
 

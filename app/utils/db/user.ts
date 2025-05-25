@@ -9,9 +9,17 @@ const rootUser = {
   roles: 'ROOT ADMIN',
 };
 
-export async function createUser(props: typeof users.$inferInsert) {
+export async function createOrUpdateUser(props: typeof users.$inferInsert) {
   const { db } = app;
-  return db.insert(users).values(props).returning();
+  return db.insert(users).values(props).onConflictDoUpdate({
+    target: users.slug,
+    set: props,
+  });
+}
+
+export async function getUsers() {
+  const { db } = app;
+  return db.query.users.findMany();
 }
 
 export async function getUser(id: number) {
@@ -35,4 +43,9 @@ export async function getUserByEmail(email: string) {
     return rootUser;
   }
   return user;
+}
+
+export async function getUserCount() {
+  const { db } = app;
+  return db.$count(users);
 }

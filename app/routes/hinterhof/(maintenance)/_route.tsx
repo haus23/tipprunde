@@ -1,15 +1,12 @@
 import type { Route } from './+types/_route';
 
-import { AccountSchema } from '@haus23/tipprunde-model';
 import { Form } from 'react-router';
-import * as v from 'valibot';
 
 import { Button } from '~/components/ui/button';
-import { users } from '~/database/schema';
-import { env } from '~/utils/env.server';
+import { syncUsers } from '~/utils/legacy-api/sync.server';
+import { getSyncState } from '~/utils/legacy-api/sync-state.server';
 import { dataWithToast } from '~/utils/toast.server';
 import { requireAdmin } from '~/utils/user.server';
-import app from "~/app";
 
 export function meta() {
   return [{ title: 'Hinterhof - runde.tips' }];
@@ -17,24 +14,15 @@ export function meta() {
 
 export async function loader({ request }: Route.LoaderArgs) {
   await requireAdmin(request);
+  const syncState = await getSyncState();
+
+  return { syncState };
 }
 
 export async function action({ request }: Route.ActionArgs) {
   await requireAdmin(request);
 
-  const {db} = app;
-
-  const response = await fetch(`${env.UNTERBAU_URL}/api/v1/accounts`);
-  const data = await response.json();
-  const legacyUsers = v.parse(v.array(AccountSchema), data);
-
-  await Promise.all(
-    legacyUsers.map(async (u) => {
-      await db
-        .insert(users)
-        .values({ name: u.name, email: u.email, slug: u.id });
-    }),
-  );
+  await syncUsers();
 
   return dataWithToast(request, null, {
     type: 'success',
@@ -42,12 +30,18 @@ export async function action({ request }: Route.ActionArgs) {
   });
 }
 
-export default function MaintenanceRoute() {
+export default function MaintenanceRoute({ loaderData }: Route.ComponentProps) {
+  const { syncState } = loaderData;
+
   return (
     <div>
       <h1 className="font-medium text-2xl">Wartung</h1>
       <Form method="POST">
-        <Button type="submit" variant="primary">
+        <Button
+          isDisabled={syncState.usersInSync}
+          variant="primary"
+          type="submit"
+        >
           Sync Users
         </Button>
       </Form>
