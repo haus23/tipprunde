@@ -9,11 +9,12 @@
   - [x] Style the table at /hinterhof/spieler
   - [ ] Add pagination and filtering to the table
   - [ ] Add logic for the /hinterhof/wartung
-    - [ ] Add KV Binding
-    - [ ] Set last sync date
-    - [ ] Enable button only for recent updates
-    - [ ] Or if there are no synced users
-    - [ ] Let users log-in
+    - [x] Add KV Binding
+    - [x] Set last sync date
+    - [x] Enable button only for recent updates
+    - [x] Or if there are no synced users
+    - [ ] Check use of async sync data and a suspense
+  - [ ] Let users log-in
 
 ## Todos
 
