@@ -21,7 +21,7 @@ export default function UsersRoute({ loaderData }: Route.ComponentProps) {
     <div>
       <h1 className="font-medium text-2xl">Spieler</h1>
       <div className="mt-4 overflow-clip rounded-xl border">
-        <DataTable columns={columns} data={loaderData.users} />
+        <DataTable columns={columns} data={loaderData.users} withPagination />
       </div>
     </div>
   );
