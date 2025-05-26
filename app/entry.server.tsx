@@ -8,12 +8,13 @@ import { prolongRememberMeSession } from '~/utils/auth.server';
 
 export default async function handleRequest(
   request: Request,
-  responseStatusCode: number,
+  responseStatusCodeValue: number,
   responseHeaders: Headers,
   routerContext: EntryContext,
   _loadContext: AppLoadContext,
 ) {
   let shellRendered = false;
+  let responseStatusCode = responseStatusCodeValue;
   const userAgent = request.headers.get('user-agent');
 
   await prolongRememberMeSession(request, responseHeaders);

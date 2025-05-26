@@ -7,7 +7,7 @@
         Frontend könnte ein Caching vertragen
 
 - Users
-  - [x] Style the table at /hinterhof/spieler
+  - [ ] Style the table at /hinterhof/spieler (inclusive xs-Design)
   - [ ] Add pagination and filtering to the table
   - [ ] Add logic for the /hinterhof/wartung
     - [x] Add KV Binding
@@ -27,6 +27,7 @@
   - [ ] Spinning-Buttons oder ähnliches bei den Login-Buttons
   - [ ] Sidebar-Rail (siehe shadcn)
   - [ ] Evaluate: Vgl Menu-Styles (Theme-Menü mit Select). Align?
+
 ## Todos
 
 - Make root user variable (suche nach Root, ROOT_EMAIL, ...)

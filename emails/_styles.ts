@@ -55,7 +55,7 @@ export const container = {
   padding: '24px 16px',
   border: '1px solid #eee',
   borderRadius: '5px',
-  boxShadow: '0 5px 10px ' + mauve.mauve6,
+  boxShadow: `0 5px 10px ${mauve.mauve6}`,
 };
 
 export const heading = {
