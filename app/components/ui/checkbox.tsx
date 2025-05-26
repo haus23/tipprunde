@@ -31,16 +31,12 @@ interface CheckboxProps extends _CheckboxProps {
 export function Checkbox({ children, className, ...props }: CheckboxProps) {
   return (
     <_Checkbox {...props} className={containerStyles()}>
-      {({ isSelected }) => (
-        <>
-          <div className={styles()}>
-            <svg viewBox="0 0 18 18" aria-hidden="true" className={svgStyles()}>
-              <polyline points="1 9 7 14 15 4" />
-            </svg>
-          </div>
-          <span className="font-semibold text-sm">{children}</span>
-        </>
-      )}
+      <div className={styles()}>
+        <svg viewBox="0 0 18 18" aria-hidden="true" className={svgStyles()}>
+          <polyline points="1 9 7 14 15 4" />
+        </svg>
+      </div>
+      <span className="font-semibold text-sm">{children}</span>
     </_Checkbox>
   );
 }
