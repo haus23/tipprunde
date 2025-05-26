@@ -25,7 +25,8 @@
   - [ ] Als Nicht-Admin den Hinterhof aufrufen -> Toast
   - [ ] OTP-Eingabe schon prüfen nach der 6. Ziffer
   - [ ] Spinning-Buttons oder ähnliches bei den Login-Buttons
-
+  - [ ] Sidebar-Rail (siehe shadcn)
+  - [ ] Evaluate: Vgl Menu-Styles (Theme-Menü mit Select). Align?
 ## Todos
 
 - Make root user variable (suche nach Root, ROOT_EMAIL, ...)
