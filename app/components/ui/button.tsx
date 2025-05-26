@@ -19,23 +19,32 @@ import { Tooltip, TooltipTrigger } from '~/components/ui/tooltip';
 const styles = tv({
   base: [
     focusVisibleStyles,
+    'inline-flex items-center gap-x-2',
     'rounded-md transition-all duration-300',
     'disabled:pointer-events-none disabled:opacity-50',
+    'px-4 py-2 font-medium text-sm',
   ],
   variants: {
     variant: {
-      default: '',
+      default: 'bg-app-9 text-white hover:bg-app-10',
       primary: 'bg-accent-9 text-white hover:bg-accent-10',
-      sidebar:
-        'flex grow items-center gap-x-2 px-2 py-1.5 text-app-11 data-hovered:bg-app-3 data-hovered:text-app-12',
-      toolbar: 'p-1.5 text-app-11 hover:bg-app-3 data-[pressed=true]:bg-app-4',
+      outline: 'hover:bg-app-3',
+      toolbar: 'data-[pressed=true]:bg-app-4',
+      sidebar: 'grow px-2 py-1.5 text-base data-hovered:text-app-12',
+    },
+    iconOnly: {
+      true: 'p-1.5',
     },
   },
   compoundVariants: [
     {
-      variant: ['default', 'primary'],
+      variant: ['default', 'primary', 'outline'],
       className:
-        'border border-app-7 px-4 py-2 font-medium text-sm outline-offset-4 data-[pressed=true]:scale-98',
+        'border border-app-7 outline-offset-4 data-[pressed=true]:scale-98',
+    },
+    {
+      variant: ['toolbar', 'sidebar'],
+      className: 'text-app-11 hover:bg-app-3',
     },
   ],
   defaultVariants: {
@@ -54,6 +63,7 @@ export function Button({
   variant,
   onPress,
   type = 'button',
+  iconOnly,
   ...props
 }: ButtonProps) {
   const tooltipProps = useSlottedContext(TooltipContext);
@@ -66,7 +76,7 @@ export function Button({
 
   const button = (
     <_Button
-      className={styles({ className, variant })}
+      className={styles({ className, iconOnly, variant })}
       onPress={handlePress}
       type={type}
       {...props}

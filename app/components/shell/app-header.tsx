@@ -21,7 +21,7 @@ export function AppHeader() {
   return (
     <header className="flex h-14 items-center justify-between px-2">
       <div>
-        <Button variant="toolbar" onClick={handleSidebarClick}>
+        <Button variant="toolbar" iconOnly onClick={handleSidebarClick}>
           <PanelLeftIcon className="size-5" />
         </Button>
       </div>

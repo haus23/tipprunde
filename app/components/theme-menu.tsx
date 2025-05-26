@@ -55,6 +55,7 @@ export function ThemeMenu() {
       <Button
         variant="toolbar"
         className="overflow-clip"
+        iconOnly
         style={{ '--theme-icon-width': '20px' } as React.CSSProperties}
       >
         <div className="relative size-[var(--theme-icon-width)]">
