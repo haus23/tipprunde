@@ -1,6 +1,26 @@
 # Changelog
 
 
+## v0.2.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0...v0.2.1)
+
+### 🚀 Enhancements
+
+- Add separator wrapper. ([1fd4805](https://github.com/haus23/tipprunde/commit/1fd4805))
+- Add select component. First take. ([11dc61c](https://github.com/haus23/tipprunde/commit/11dc61c))
+- Add pagination to data tables. ([59d9a2e](https://github.com/haus23/tipprunde/commit/59d9a2e))
+
+### 🩹 Fixes
+
+- Remove unused render prop. ([5b2464d](https://github.com/haus23/tipprunde/commit/5b2464d))
+
+### 💅 Refactors
+
+- Refine button styles. ([6d0c0ab](https://github.com/haus23/tipprunde/commit/6d0c0ab))
+- Align label styles. ([e938804](https://github.com/haus23/tipprunde/commit/e938804))
+- Rethink focus styles. ([760a737](https://github.com/haus23/tipprunde/commit/760a737))
+
 ## v0.2.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-2...v0.2.0)
