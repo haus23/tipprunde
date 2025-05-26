@@ -25,7 +25,7 @@ export function TextField({
 }: TextFieldProps) {
   return (
     <_TextField {...props} className={styles({ className })}>
-      <Label className="font-semibold text-sm">{label}</Label>
+      <Label>{label}</Label>
       <Input placeholder={placeholder} />
       <FieldError className="text-sm" />
     </_TextField>

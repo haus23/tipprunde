@@ -26,7 +26,7 @@ export function OtpField({
   return (
     <_TextField {...props} className={styles({ className })}>
       <div className="flex flex-col gap-y-2 self-center">
-        <Label className="font-semibold text-sm">{label}</Label>
+        <Label>{label}</Label>
         <OtpInput maxLength={maxLength} />
       </div>
       <FieldError className="text-center text-sm" />
