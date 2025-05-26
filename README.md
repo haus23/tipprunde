@@ -3,7 +3,8 @@
 ## Next tasks
 
 - Common
-  - [ ] Add tanstack-query
+  - [ ] Add tanstack-query, werde ich für das Backend nicht machen.
+        Frontend könnte ein Caching vertragen
 
 - Users
   - [x] Style the table at /hinterhof/spieler
@@ -14,11 +15,19 @@
     - [x] Enable button only for recent updates
     - [x] Or if there are no synced users
     - [ ] Check use of async sync data and a suspense
-  - [ ] Let users log-in
+  - [x] Let users log-in
+
+- Workflow
+  - [ ] Enable preview builds (define production brand v1)
+  - [ ] Add preview bindings (d1 and kv)
+
+- Nice to have
+  - [ ] Als Nicht-Admin den Hinterhof aufrufen -> Toast
+  - [ ] OTP-Eingabe schon prüfen nach der 6. Ziffer
+  - [ ] Spinning-Buttons oder ähnliches bei den Login-Buttons
 
 ## Todos
 
 - Make root user variable (suche nach Root, ROOT_EMAIL, ...)
 - Make default theme variable (siehe theme.ts)
 - prefs.server.ts: Kann ich hier parsen (valibot), also auch wenn undefined reinkommt?
-- Think still about PostgreSQL (Neon)
