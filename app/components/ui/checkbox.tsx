@@ -10,7 +10,8 @@ const containerStyles = tv({
 const styles = tv({
   base: [
     'flex h-5 w-5 items-center justify-center rounded border-2 border-app-7 transition-all duration-150',
-    'group-data-[focus-visible=true]:ring-2 group-data-[focus-visible=true]:ring-info-7',
+    'ring-offset-2 ring-offset-app-1',
+    'group-data-[focus-visible=true]:ring-2 group-data-[focus-visible=true]:ring-info-11',
     'group-data-[pressed=true]:scale-90',
   ],
 });

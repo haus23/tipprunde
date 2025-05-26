@@ -19,8 +19,9 @@ import { Tooltip, TooltipTrigger } from '~/components/ui/tooltip';
 const styles = tv({
   base: [
     focusVisibleStyles,
+    'ring-offset-2 ring-offset-app-1',
     'inline-flex items-center gap-x-2',
-    'rounded-md transition-all duration-300',
+    'rounded-md transition-all duration-150',
     'disabled:pointer-events-none disabled:opacity-50',
     'px-4 py-2 font-medium text-sm',
   ],
@@ -29,22 +30,28 @@ const styles = tv({
       default: 'bg-app-9 text-white hover:bg-app-10',
       primary: 'bg-accent-9 text-white hover:bg-accent-10',
       outline: 'hover:bg-app-3',
-      toolbar: 'data-[pressed=true]:bg-app-4',
+      select: 'justify-between gap-x-4 px-2 py-1.5',
       sidebar: 'grow px-2 py-1.5 text-base data-hovered:text-app-12',
+      toolbar: 'data-[pressed=true]:bg-app-4',
     },
     iconOnly: {
       true: 'p-1.5',
     },
   },
   compoundVariants: [
+    // Action Buttons
     {
       variant: ['default', 'primary', 'outline'],
-      className:
-        'border border-app-7 outline-offset-4 data-[pressed=true]:scale-98',
+      className: 'data-[pressed=true]:scale-98',
+    },
+    // Bordered Buttons
+    {
+      variant: ['default', 'primary', 'outline', 'select'],
+      className: 'border border-app-7',
     },
     {
       variant: ['toolbar', 'sidebar'],
-      className: 'text-app-11 hover:bg-app-3',
+      className: 'text-app-11 ring-offset-0 hover:bg-app-3',
     },
   ],
   defaultVariants: {

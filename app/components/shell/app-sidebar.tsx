@@ -34,7 +34,7 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
         >
           <div className="overflow-x-clip border-r shadow-sm">
             <div className="fixed inset-y-0 left-0 hidden w-[calc(var(--sidebar-width)-1px)] overflow-y-auto bg-app-1 font-medium md:flex md:flex-col">
-              <div className="p-2 group-data-[sidebar-collapsed=true]:px-0">
+              <div className="p-2">
                 <Link
                   to={'/'}
                   className="flex items-center justify-center gap-x-1"
