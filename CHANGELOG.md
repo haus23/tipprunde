@@ -1,6 +1,15 @@
 # Changelog
 
 
+## v0.2.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-2...v0.2.0)
+
+### 🏡 Chore
+
+- Update dev deps inclusive biome. ([e0cf542](https://github.com/haus23/tipprunde/commit/e0cf542))
+- Update deps. ([4b4793e](https://github.com/haus23/tipprunde/commit/4b4793e))
+
 ## v0.2.0-2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-1...v0.2.0-2)
