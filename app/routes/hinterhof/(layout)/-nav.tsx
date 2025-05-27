@@ -22,7 +22,7 @@ export function Nav() {
   return (
     <div className="flex grow flex-col justify-between">
       <div className="flex flex-col gap-y-1.5 p-2 group-data-[sidebar-collapsed=true]:items-center group-data-[sidebar-collapsed=true]:px-0">
-        <Link to={'#'} variant="sidebar" tooltip="Dashboard">
+        <Link to={'/hinterhof'} variant="sidebar" tooltip="Dashboard">
           <HomeIcon className="size-5" />
           <span className="group-data-[sidebar-collapsed=true]:hidden">
             Dashboard
