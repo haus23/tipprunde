@@ -27,7 +27,6 @@ export const columns: ColumnDef<User>[] = [
         <TooltipTrigger>
           <Button
             onPress={() => {
-              row.toggleSelected();
               actions.onEditClick(user);
             }}
             iconOnly
