@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.2.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.1...v0.2.2)
+
+### 🚀 Enhancements
+
+- Make text-field more customizable. ([8d5ca96](https://github.com/haus23/tipprunde/commit/8d5ca96))
+- Add table row filtering. ([243363d](https://github.com/haus23/tipprunde/commit/243363d))
+
+### 🩹 Fixes
+
+- Lint errors. ([f38c428](https://github.com/haus23/tipprunde/commit/f38c428))
+
 ## v0.2.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0...v0.2.1)
