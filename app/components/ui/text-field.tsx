@@ -1,7 +1,8 @@
 import type { TextFieldProps as _TextFieldProps } from 'react-aria-components';
+import type { VariantProps } from 'tailwind-variants';
 
 import { TextField as _TextField } from 'react-aria-components';
-import {tv, type VariantProps} from 'tailwind-variants';
+import { tv } from 'tailwind-variants';
 
 import { FieldError } from '~/components/ui/field-error';
 import { Input } from '~/components/ui/input';
