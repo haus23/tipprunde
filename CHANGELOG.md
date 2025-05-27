@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v0.2.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.3...v0.2.4)
+
+### 🚀 Enhancements
+
+- Do not reset page index after mutation. ([e8f74ce](https://github.com/haus23/tipprunde/commit/e8f74ce))
+- Add search field ([8357145](https://github.com/haus23/tipprunde/commit/8357145))
+
+### 🩹 Fixes
+
+- Update dashboard link. ([c1ca80d](https://github.com/haus23/tipprunde/commit/c1ca80d))
+
+### 💅 Refactors
+
+- Add mobile styles. ([0283e30](https://github.com/haus23/tipprunde/commit/0283e30))
+- Order users by name. ([864a7bd](https://github.com/haus23/tipprunde/commit/864a7bd))
+
 ## v0.2.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.2...v0.2.3)
