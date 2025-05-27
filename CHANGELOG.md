@@ -1,6 +1,30 @@
 # Changelog
 
 
+## v0.2.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.2...v0.2.3)
+
+### 🚀 Enhancements
+
+- Add sheet component. ([0690d53](https://github.com/haus23/tipprunde/commit/0690d53))
+- Add disabled styles. ([5f34d48](https://github.com/haus23/tipprunde/commit/5f34d48))
+- Add drizzle-valibot to be able to validate db data. ([e089dd1](https://github.com/haus23/tipprunde/commit/e089dd1))
+- Add slugify helper function. ([1e90398](https://github.com/haus23/tipprunde/commit/1e90398))
+- Add user creation/editing. ([928ba48](https://github.com/haus23/tipprunde/commit/928ba48))
+
+### 🩹 Fixes
+
+- Refine transformation. ([89771e2](https://github.com/haus23/tipprunde/commit/89771e2))
+
+### 💅 Refactors
+
+- Make outline variant the default. ([0399f08](https://github.com/haus23/tipprunde/commit/0399f08))
+- Import react types. ([4b6ca5d](https://github.com/haus23/tipprunde/commit/4b6ca5d))
+- Infer types in separate file. ([ea8565f](https://github.com/haus23/tipprunde/commit/ea8565f))
+- Remove row hovering. ([a89c059](https://github.com/haus23/tipprunde/commit/a89c059))
+- No need to solect the row. ([5af8a47](https://github.com/haus23/tipprunde/commit/5af8a47))
+
 ## v0.2.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.1...v0.2.2)
