@@ -1,3 +1,5 @@
+import type * as React from 'react';
+
 import { tv } from 'tailwind-variants';
 
 import { AppHeader } from '~/components/shell/app-header';
