@@ -52,7 +52,7 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
     <tr
       data-slot="table-row"
       className={twMerge(
-        'border-b transition-colors hover:bg-app-4 data-[state=selected]:bg-app-5',
+        'border-b transition-colors data-[state=selected]:bg-app-5',
         className,
       )}
       {...props}
