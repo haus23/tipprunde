@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import slugifyFn from 'slugify';
 
 const MOBILE_BREAKPOINT = 768; // md (medium) breakpoint in TailwindCSS
 
@@ -71,4 +72,14 @@ export function includes<T extends U, U>(
   el: U,
 ): el is T {
   return array.includes(el as T);
+}
+
+/**
+ * Helper to slug string values
+ *
+ * @param str Original string value
+ * @returns Slugified string
+ */
+export function slugify(str: string) {
+  return slugifyFn(str, { locale: 'de', lower: true });
 }
