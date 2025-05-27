@@ -25,7 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from '~/components/ui/table';
-import { TextField } from '~/components/ui/text-field';
+import { SearchField } from '~/components/ui/text-field';
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -55,7 +55,7 @@ export function DataTable<TData, TValue>({
     <div className="flex flex-col gap-y-4">
       {withFilter && (
         <div className="p-2">
-          <TextField
+          <SearchField
             onChange={(value) => table.setGlobalFilter(value)}
             label="Filter:"
             labelClasses="text-app-11 font-medium"

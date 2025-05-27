@@ -7,7 +7,7 @@
         Frontend könnte ein Caching vertragen
   - [ ] Use tooltips explicit (not coded in Button/Link - see shared-data/users/column-defs)
   - [ ] Need for custom form wrapper ?
-  - [ ] Add a SearchField Wrapper for usage eg in table filters
+  - [x] Add a SearchField Wrapper for usage eg in table filters
 
 - Users
   - [ ] Style the table at /hinterhof/spieler (inclusive xs-Design)
