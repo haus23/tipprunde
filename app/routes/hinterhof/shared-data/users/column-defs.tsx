@@ -1,7 +1,14 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import type { users } from '~/database/schema';
+import type { User } from '~/database/types';
 
-type User = typeof users.$inferSelect;
+import { PenIcon } from 'lucide-react';
+
+import { Button } from '~/components/ui/button';
+import { Tooltip, TooltipTrigger } from '~/components/ui/tooltip';
+
+export const actions = {
+  onEditClick: (_user: User) => {},
+};
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -11,5 +18,25 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'email',
     header: 'Email',
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const user = row.original;
+      return (
+        <TooltipTrigger>
+          <Button
+            onPress={() => {
+              row.toggleSelected();
+              actions.onEditClick(user);
+            }}
+            iconOnly
+          >
+            <PenIcon className="size-5 text-app-11" />
+          </Button>
+          <Tooltip offset={6}>{`${user.name} bearbeiten`}</Tooltip>
+        </TooltipTrigger>
+      );
+    },
   },
 ];

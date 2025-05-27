@@ -43,6 +43,7 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
+    enableMultiRowSelection: false,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: withFilter ? getFilteredRowModel() : undefined,
     getPaginationRowModel: withPagination ? getPaginationRowModel() : undefined,
