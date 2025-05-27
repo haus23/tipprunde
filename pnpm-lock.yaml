@@ -32,6 +32,9 @@ importers:
       drizzle-orm:
         specifier: ^0.43.1
         version: 0.43.1
+      drizzle-valibot:
+        specifier: ^0.4.2
+        version: 0.4.2(drizzle-orm@0.43.1)(valibot@1.1.0(typescript@5.8.3))
       input-otp:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -2306,6 +2309,12 @@ packages:
         optional: true
       sqlite3:
         optional: true
+
+  drizzle-valibot@0.4.2:
+    resolution: {integrity: sha512-tzjT7g0Di/HX7426marIy8IDtWODjPgrwvgscdevLQRUe5rzYzRhx6bDsYLdDFF9VI/eaYgnjNeF/fznWJoUjg==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      valibot: '>=1.0.0-beta.7'
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
@@ -5635,6 +5644,11 @@ snapshots:
       - supports-color
 
   drizzle-orm@0.43.1: {}
+
+  drizzle-valibot@0.4.2(drizzle-orm@0.43.1)(valibot@1.1.0(typescript@5.8.3)):
+    dependencies:
+      drizzle-orm: 0.43.1
+      valibot: 1.1.0(typescript@5.8.3)
 
   eastasianwidth@0.2.0: {}
 
