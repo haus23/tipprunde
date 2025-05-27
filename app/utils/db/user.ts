@@ -1,6 +1,6 @@
 import type { UserInsert } from '~/database/types';
 
-import { eq } from 'drizzle-orm';
+import { asc, eq } from 'drizzle-orm';
 
 import app from '~/app';
 import { users } from '~/database/schema';
@@ -54,7 +54,7 @@ export async function createOrUpdateUser(props: UserInsert) {
 
 export async function getUsers() {
   const { db } = app;
-  return db.query.users.findMany();
+  return db.query.users.findMany({ orderBy: [asc(users.name)] });
 }
 
 export async function getUser(id: number) {
