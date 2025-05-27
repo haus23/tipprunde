@@ -1,4 +1,4 @@
-import type { ColumnDef, Table as TableType } from '@tanstack/react-table';
+import {type ColumnDef, getFilteredRowModel, type Table as TableType} from '@tanstack/react-table';
 
 import {
   flexRender,
@@ -24,27 +24,37 @@ import {
   TableHeader,
   TableRow,
 } from '~/components/ui/table';
+import {TextField} from "~/components/ui/text-field";
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  withFilter?: boolean;
   withPagination?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  withFilter = false,
   withPagination = false,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: withFilter ? getFilteredRowModel() : undefined,
     getPaginationRowModel: withPagination ? getPaginationRowModel() : undefined,
+    globalFilterFn: 'includesString'
   });
 
   return (
     <div className="flex flex-col gap-y-4">
+      {withFilter && (<div className='p-2'>
+        <TextField
+          onChange={value => table.setGlobalFilter(value)}
+          label='Filter:' labelClasses='text-app-11 font-medium' className='text-sm' placeholder='Suche nach ...' orientation='horizontal' />
+      </div>)}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
