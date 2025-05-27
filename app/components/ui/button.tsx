@@ -27,9 +27,8 @@ const styles = tv({
   ],
   variants: {
     variant: {
-      default: 'bg-app-9 text-white hover:bg-app-10',
+      default: 'hover:bg-app-3',
       primary: 'bg-accent-9 text-white hover:bg-accent-10',
-      outline: 'hover:bg-app-3',
       select: 'justify-between gap-x-4 px-2 py-1.5',
       sidebar: 'grow px-2 py-1.5 text-base data-hovered:text-app-12',
       toolbar: 'data-[pressed=true]:bg-app-4',
@@ -41,12 +40,12 @@ const styles = tv({
   compoundVariants: [
     // Action Buttons
     {
-      variant: ['default', 'primary', 'outline'],
+      variant: ['default', 'primary'],
       className: 'data-[pressed=true]:scale-98',
     },
     // Bordered Buttons
     {
-      variant: ['default', 'primary', 'outline', 'select'],
+      variant: ['default', 'primary', 'select'],
       className: 'border border-app-7',
     },
     {

@@ -1,8 +1,9 @@
-import {type ColumnDef, getFilteredRowModel, type Table as TableType} from '@tanstack/react-table';
+import type { ColumnDef, Table as TableType } from '@tanstack/react-table';
 
 import {
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
@@ -24,7 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from '~/components/ui/table';
-import {TextField} from "~/components/ui/text-field";
+import { TextField } from '~/components/ui/text-field';
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -45,16 +46,23 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: withFilter ? getFilteredRowModel() : undefined,
     getPaginationRowModel: withPagination ? getPaginationRowModel() : undefined,
-    globalFilterFn: 'includesString'
+    globalFilterFn: 'includesString',
   });
 
   return (
     <div className="flex flex-col gap-y-4">
-      {withFilter && (<div className='p-2'>
-        <TextField
-          onChange={value => table.setGlobalFilter(value)}
-          label='Filter:' labelClasses='text-app-11 font-medium' className='text-sm' placeholder='Suche nach ...' orientation='horizontal' />
-      </div>)}
+      {withFilter && (
+        <div className="p-2">
+          <TextField
+            onChange={(value) => table.setGlobalFilter(value)}
+            label="Filter:"
+            labelClasses="text-app-11 font-medium"
+            className="text-sm"
+            placeholder="Suche nach ..."
+            orientation="horizontal"
+          />
+        </div>
+      )}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -142,7 +150,6 @@ function DataTablePagination<TData>({
       <Separator orientation="vertical" />
       <div className="flex gap-x-2">
         <Button
-          variant="outline"
           iconOnly
           onClick={() => table.setPageIndex(0)}
           isDisabled={!table.getCanPreviousPage()}
@@ -150,7 +157,6 @@ function DataTablePagination<TData>({
           <ChevronsLeftIcon className="size-5" />
         </Button>
         <Button
-          variant="outline"
           iconOnly
           onClick={() => table.previousPage()}
           isDisabled={!table.getCanPreviousPage()}
@@ -158,7 +164,6 @@ function DataTablePagination<TData>({
           <ChevronLeftIcon className="size-5" />
         </Button>
         <Button
-          variant="outline"
           iconOnly
           onClick={() => table.nextPage()}
           isDisabled={!table.getCanNextPage()}
@@ -166,7 +171,6 @@ function DataTablePagination<TData>({
           <ChevronRightIcon className="size-5" />
         </Button>
         <Button
-          variant="outline"
           iconOnly
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           isDisabled={!table.getCanNextPage()}
