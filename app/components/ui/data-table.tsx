@@ -48,6 +48,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: withFilter ? getFilteredRowModel() : undefined,
     getPaginationRowModel: withPagination ? getPaginationRowModel() : undefined,
     globalFilterFn: 'includesString',
+    autoResetPageIndex: false,
   });
 
   return (

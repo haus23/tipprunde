@@ -13,7 +13,7 @@
   - [ ] Style the table at /hinterhof/spieler (inclusive xs-Design)
   - [x] Add pagination and filtering to the table
   - [x] Add a form to create/edit users
-  - [ ] Persist pagination??
+  - [x] Persist pagination??
   - [ ] Add logic for the /hinterhof/wartung
     - [x] Add KV Binding
     - [x] Set last sync date
