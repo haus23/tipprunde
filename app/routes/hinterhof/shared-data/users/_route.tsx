@@ -93,13 +93,13 @@ export default function UsersRoute({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="mx-2 flex items-center justify-between sm:mx-0">
         <h1 className="font-medium text-2xl">Spieler</h1>
         <Button variant="default" onPress={createUser}>
           Neuer Spieler
         </Button>
       </div>
-      <div className="mt-4 overflow-clip rounded-xl border">
+      <div className="mt-4 overflow-clip sm:rounded-xl sm:border">
         <DataTable
           columns={columns}
           data={loaderData.users}

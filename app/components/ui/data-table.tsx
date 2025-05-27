@@ -120,36 +120,15 @@ function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="my-2 flex justify-center gap-x-4">
-      <Select
-        label="Zeilen pro Seite"
-        labelClasses="text-app-11 font-medium"
-        placeholder={`${table.getState().pagination.pageSize}`}
-        selectedKey={`${table.getState().pagination.pageSize}`}
-        onSelectionChange={(key) => table.setPageSize(Number(key))}
-        orientation="horizontal"
-        placement="top start"
-      >
-        {[10, 20, 30, 40, 50]
-          .map((elt) => ({ size: elt }))
-          .map((pageSize) => (
-            <SelectItem
-              textValue={`${pageSize.size}`}
-              key={`${pageSize.size}`}
-              id={`${pageSize.size}`}
-              value={pageSize}
-              className="w-32 tabular-nums"
-            >
-              {pageSize.size}
-            </SelectItem>
-          ))}
-      </Select>
-      <Separator orientation="vertical" />
+    <div className="mx-2 my-2 flex flex-col items-center justify-center gap-x-4 gap-y-3 sm:mx-0 sm:flex-row">
       <div className="flex items-center font-medium text-app-11 text-sm">
         Seite {table.getState().pagination.pageIndex + 1} von{' '}
         {table.getPageCount()}
       </div>
-      <Separator orientation="vertical" />
+      <Separator
+        className="hidden self-stretch sm:block"
+        orientation="vertical"
+      />
       <div className="flex gap-x-2">
         <Button
           iconOnly
@@ -179,6 +158,35 @@ function DataTablePagination<TData>({
         >
           <ChevronsRightIcon className="size-5" />
         </Button>
+      </div>
+      <Separator
+        className="hidden self-stretch sm:block"
+        orientation="vertical"
+      />
+      <div>
+        <Select
+          label="Zeilen pro Seite"
+          labelClasses="text-app-11 font-medium"
+          placeholder={`${table.getState().pagination.pageSize}`}
+          selectedKey={`${table.getState().pagination.pageSize}`}
+          onSelectionChange={(key) => table.setPageSize(Number(key))}
+          orientation="horizontal"
+          placement="top start"
+        >
+          {[10, 20, 30, 40, 50]
+            .map((elt) => ({ size: elt }))
+            .map((pageSize) => (
+              <SelectItem
+                textValue={`${pageSize.size}`}
+                key={`${pageSize.size}`}
+                id={`${pageSize.size}`}
+                value={pageSize}
+                className="w-32 tabular-nums"
+              >
+                {pageSize.size}
+              </SelectItem>
+            ))}
+        </Select>
       </div>
     </div>
   );

@@ -10,10 +10,11 @@
   - [x] Add a SearchField Wrapper for usage eg in table filters
 
 - Users
-  - [ ] Style the table at /hinterhof/spieler (inclusive xs-Design)
+  - [x] Style the table at /hinterhof/spieler (inclusive xs-Design)
   - [x] Add pagination and filtering to the table
   - [x] Add a form to create/edit users
   - [x] Persist pagination??
+  - [ ] Style the route /hinterhof/wartung
   - [ ] Add logic for the /hinterhof/wartung
     - [x] Add KV Binding
     - [x] Set last sync date
