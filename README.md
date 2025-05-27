@@ -5,11 +5,15 @@
 - Common
   - [ ] Add tanstack-query, werde ich für das Backend nicht machen.
         Frontend könnte ein Caching vertragen
+  - [ ] Use tooltips explicit (not coded in Button/Link - see shared-data/users/column-defs)
+  - [ ] Need for custom form wrapper ?
+  - [ ] Add a SearchField Wrapper for usage eg in table filters
 
 - Users
   - [ ] Style the table at /hinterhof/spieler (inclusive xs-Design)
   - [x] Add pagination and filtering to the table
-  - [ ] Add a form to create/edit users
+  - [x] Add a form to create/edit users
+  - [ ] Persist pagination??
   - [ ] Add logic for the /hinterhof/wartung
     - [x] Add KV Binding
     - [x] Set last sync date
