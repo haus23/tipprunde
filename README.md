@@ -8,7 +8,8 @@
 
 - Users
   - [ ] Style the table at /hinterhof/spieler (inclusive xs-Design)
-  - [ ] Add pagination and filtering to the table
+  - [x] Add pagination and filtering to the table
+  - [ ] Add a form to create/edit users
   - [ ] Add logic for the /hinterhof/wartung
     - [x] Add KV Binding
     - [x] Set last sync date
