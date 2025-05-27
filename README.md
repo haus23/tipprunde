@@ -7,13 +7,8 @@
         Frontend könnte ein Caching vertragen
   - [ ] Use tooltips explicit (not coded in Button/Link - see shared-data/users/column-defs)
   - [ ] Need for custom form wrapper ?
-  - [x] Add a SearchField Wrapper for usage eg in table filters
 
 - Users
-  - [x] Style the table at /hinterhof/spieler (inclusive xs-Design)
-  - [x] Add pagination and filtering to the table
-  - [x] Add a form to create/edit users
-  - [x] Persist pagination??
   - [ ] Style the route /hinterhof/wartung
   - [ ] Add logic for the /hinterhof/wartung
     - [x] Add KV Binding
@@ -21,7 +16,6 @@
     - [x] Enable button only for recent updates
     - [x] Or if there are no synced users
     - [ ] Check use of async sync data and a suspense
-  - [x] Let users log-in
 
 - Workflow
   - [ ] Enable preview builds (define production brand v1)
