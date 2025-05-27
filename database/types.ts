@@ -5,7 +5,14 @@ import { users } from '~/database/schema';
 
 export const userInsertSchema = createInsertSchema(users, {
   id: v.optional(
-    v.union([v.number(), v.pipe(v.string(), v.transform(Number))]),
+    v.union([
+      v.undefined(),
+      v.number(),
+      v.pipe(
+        v.string(),
+        v.transform((value) => (value === '' ? undefined : Number(value))),
+      ),
+    ]),
   ),
 });
 
