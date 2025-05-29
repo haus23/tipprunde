@@ -27,6 +27,9 @@
   - [ ] Spinning-Buttons oder ähnliches bei den Login-Buttons
   - [ ] Sidebar-Rail (siehe shadcn)
   - [ ] Evaluate: Vgl Menu-Styles (Theme-Menü mit Select). Align?
+  - [ ] Animations
+    - [ ] Mobile Nav
+    - [ ] Theme Menu
 
 ## Todos
 
