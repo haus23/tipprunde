@@ -38,7 +38,7 @@ export default function MaintenanceRoute({ loaderData }: Route.ComponentProps) {
       <h1 className="font-medium text-2xl">Wartung</h1>
       <Form method="POST">
         <Button
-          isDisabled={syncState.usersInSync}
+          isDisabled={!syncState.sharedData.includes('users')}
           variant="primary"
           type="submit"
         >
