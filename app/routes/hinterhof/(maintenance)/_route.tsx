@@ -1,11 +1,9 @@
 import type { Route } from './+types/_route';
 
-import { Form } from 'react-router';
+import { Suspense } from 'react';
 
-import { Button } from '~/components/ui/button';
-import { syncUsers } from '~/utils/legacy-api/sync.server';
-import { getSyncState } from '~/utils/legacy-api/sync-state.server';
-import { dataWithToast } from '~/utils/toast.server';
+import { SharedData } from '~/routes/hinterhof/(maintenance)/-shared-data';
+import { getSharedDataSyncState } from '~/utils/legacy-api/sync-state.server';
 import { requireAdmin } from '~/utils/user.server';
 
 export function meta() {
@@ -14,37 +12,20 @@ export function meta() {
 
 export async function loader({ request }: Route.LoaderArgs) {
   await requireAdmin(request);
-  const syncState = await getSyncState();
+  const sharedDataSyncState = getSharedDataSyncState();
 
-  return { syncState };
-}
-
-export async function action({ request }: Route.ActionArgs) {
-  await requireAdmin(request);
-
-  await syncUsers();
-
-  return dataWithToast(request, null, {
-    type: 'success',
-    message: 'Synced users',
-  });
+  return { sharedDataSyncState };
 }
 
 export default function MaintenanceRoute({ loaderData }: Route.ComponentProps) {
-  const { syncState } = loaderData;
+  const { sharedDataSyncState } = loaderData;
 
   return (
     <div>
       <h1 className="font-medium text-2xl">Wartung</h1>
-      <Form method="POST">
-        <Button
-          isDisabled={!syncState.sharedData.includes('users')}
-          variant="primary"
-          type="submit"
-        >
-          Sync Users
-        </Button>
-      </Form>
+      <Suspense fallback={<div>Waiting...</div>}>
+        <SharedData syncState={sharedDataSyncState} />
+      </Suspense>
     </div>
   );
 }

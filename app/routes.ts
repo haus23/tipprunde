@@ -17,6 +17,9 @@ export default [
     ]),
   ]),
   // Actions
-  route('/action/set-theme', 'routes/(actions)/set-theme.ts'),
-  route('/action/set-settings', 'routes/(actions)/set-settings.ts'),
+  ...prefix('/action', [
+    route('/set-theme', 'routes/(actions)/set-theme.ts'),
+    route('/set-settings', 'routes/(actions)/set-settings.ts'),
+    route('/sync/shared-data', 'routes/(actions)/sync/shared-data.ts'),
+  ]),
 ] satisfies RouteConfig;
