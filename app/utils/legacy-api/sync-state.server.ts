@@ -1,8 +1,18 @@
+import * as v from 'valibot';
+
 import app from '~/app';
 import { getUserCount } from '~/utils/db/user';
 import { getLegacyUsers } from '~/utils/legacy-api/shared-data.server';
 
-export type SharedDataResource = 'users' | 'teams';
+export const sharedDataResourcesSchema = v.picklist([
+  'users',
+  'teams',
+  'leagues',
+  'rulesets',
+]);
+export type SharedDataResource = v.InferOutput<
+  typeof sharedDataResourcesSchema
+>;
 
 export type SharedDataSyncState = {
   updatedResources: SharedDataResource[];
@@ -11,7 +21,7 @@ export type SharedDataSyncState = {
 export async function getSharedDataSyncState() {
   const { kvLegacySync } = app;
 
-  const updatedResources: SharedDataResource[] = ['teams'];
+  const updatedResources: SharedDataResource[] = [];
 
   const lastUsersSyncDateStr = await kvLegacySync.get('users');
   const userCount = await getUserCount();

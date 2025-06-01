@@ -35,6 +35,24 @@ export function SharedData({
           >
             Teams
           </Button>
+          <Button
+            isDisabled={!state.updatedResources.includes('leagues')}
+            variant="primary"
+            type="submit"
+            name="intent"
+            value="leagues"
+          >
+            Ligen
+          </Button>
+          <Button
+            isDisabled={!state.updatedResources.includes('rulesets')}
+            variant="primary"
+            type="submit"
+            name="intent"
+            value="rulesets"
+          >
+            Regelwerke
+          </Button>
         </div>
       </fetcher.Form>
     </div>
