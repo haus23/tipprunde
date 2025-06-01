@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import type { User } from '~/database/types';
 
-import { PenIcon } from 'lucide-react';
+import { CheckIcon, PenIcon } from 'lucide-react';
 
 import { Button } from '~/components/ui/button';
 import { Tooltip, TooltipTrigger } from '~/components/ui/tooltip';
@@ -18,6 +18,18 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'email',
     header: 'Email',
+  },
+  {
+    accessorKey: 'roles',
+    header: () => <div className="flex justify-center">Administrator</div>,
+    cell: ({ row }) =>
+      row.original.roles.includes('ADMIN') ? (
+        <div className="flex justify-center">
+          <CheckIcon />
+        </div>
+      ) : (
+        ''
+      ),
   },
   {
     id: 'actions',
