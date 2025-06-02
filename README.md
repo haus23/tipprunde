@@ -3,11 +3,19 @@
 ## Next tasks
 
 - Common
-  - [ ] Add tanstack-query, werde ich für das Backend nicht machen.
-        Frontend könnte ein Caching vertragen
-  - [ ] Use tooltips explicit (not coded in Button/Link - see shared-data/users/column-defs)
-  - [ ] Need for custom form wrapper ?
-  - [ ] Evaluate usage of meta-Function vs React 19 head tags
+    - [ ] Switch to Prisma
+    - [ ] Add tanstack-query, werde ich für das Backend nicht machen.
+          Frontend könnte ein Caching vertragen
+    - [ ] Use tooltips explicit (not coded in Button/Link - see shared-data/users/column-defs)
+    - [ ] Need for custom form wrapper ?
+    - [ ] Evaluate usage of meta-Function vs React 19 head tags
+
+- Shared Data
+  - [ ] Users
+  - [ ] Teams
+  - [ ] Leagues
+  - [ ] Rulesets
+  - [ ] Enable Forced (Re-)Sync
 
 - Users
   - [ ] Style the route /hinterhof/wartung
