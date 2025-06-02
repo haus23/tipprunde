@@ -2,6 +2,7 @@ import type { Route } from './+types/_route';
 
 import { Suspense } from 'react';
 
+import { Collapsible } from '~/components/ui/collapsible';
 import {
   SharedData,
   SharedDataPlaceholder,
@@ -24,11 +25,13 @@ export default function MaintenanceRoute({ loaderData }: Route.ComponentProps) {
   const { sharedDataSyncState } = loaderData;
 
   return (
-    <div className="px-2 sm:px-0">
+    <div className="flex flex-col gap-y-6 px-2 sm:px-0">
       <h1 className="font-medium text-2xl">Wartung</h1>
-      <Suspense fallback={<SharedDataPlaceholder />}>
-        <SharedData syncState={sharedDataSyncState} />
-      </Suspense>
+      <Collapsible title="Stammdaten">
+        <Suspense fallback={<SharedDataPlaceholder />}>
+          <SharedData syncState={sharedDataSyncState} />
+        </Suspense>
+      </Collapsible>
     </div>
   );
 }

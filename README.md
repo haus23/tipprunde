@@ -11,20 +11,11 @@
     - [ ] Evaluate usage of meta-Function vs React 19 head tags
 
 - Shared Data
-  - [ ] Users
+  - [ ] Users - Table needs mobile styling
   - [ ] Teams
   - [ ] Leagues
   - [ ] Rulesets
   - [ ] Enable Forced (Re-)Sync
-
-- Users
-  - [ ] Style the route /hinterhof/wartung
-  - [ ] Add logic for the /hinterhof/wartung
-    - [x] Add KV Binding
-    - [x] Set last sync date
-    - [x] Enable button only for recent updates
-    - [x] Or if there are no synced users
-    - [ ] Check use of async sync data and a suspense
 
 - Workflow
   - [ ] Enable preview builds (define production brand v1)

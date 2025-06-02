@@ -1,28 +1,29 @@
 import type { SharedDataSyncState } from '~/utils/legacy-api/sync-state.server';
 
-import { use } from 'react';
+import { use, useEffect } from 'react';
 import { useFetcher } from 'react-router';
 
 import { Button } from '~/components/ui/button';
+import { CollapsibleContext } from '~/components/ui/collapsible';
 
 export function SharedDataPlaceholder() {
   return (
     <div className="mt-4 flex animate-pulse flex-col gap-y-4">
       <div className="flex flex-col gap-y-4 px-4">
-        <p class="space-y-3">
+        <div className="space-y-3">
           <div className="h-2 rounded bg-app-4" />
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2 h-2 rounded bg-app-4" />
             <div className="col-span-1 h-2 rounded bg-app-4" />
           </div>
-        </p>
-        <p class="space-y-3">
+        </div>
+        <div className="space-y-3">
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-1 h-2 rounded bg-app-4" />
             <div className="col-span-2 h-2 rounded bg-app-4" />
           </div>
           <div className="h-2 rounded bg-app-4" />
-        </p>
+        </div>
       </div>
       <div className="flex flex-wrap justify-around gap-4">
         <div className="h-[56px] w-32 rounded-md bg-app-4" />
@@ -41,6 +42,13 @@ export function SharedData({
 }) {
   const fetcher = useFetcher();
   const state = use(syncState);
+  const { setIsExpanded } = use(CollapsibleContext);
+
+  useEffect(() => {
+    if (state.updatedResources.length === 0) {
+      setIsExpanded(false);
+    }
+  }, [state, setIsExpanded]);
 
   return (
     <div className="mt-4 flex flex-col gap-y-4">
