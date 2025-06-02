@@ -14,6 +14,7 @@ export default [
       index('routes/hinterhof/_index.tsx'),
       route('/wartung', 'routes/hinterhof/(maintenance)/_route.tsx'),
       route('/spieler', 'routes/hinterhof/shared-data/users/_route.tsx'),
+      route('/teams', 'routes/hinterhof/shared-data/teams/_route.tsx'),
     ]),
   ]),
   // Actions

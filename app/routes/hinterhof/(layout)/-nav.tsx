@@ -82,7 +82,7 @@ export function Nav() {
               Spieler
             </span>
           </Link>
-          <Link to={'/hinterhof'} variant="sidebar" tooltip="Teams">
+          <Link to={'/hinterhof/teams'} variant="sidebar" tooltip="Teams">
             <ShieldIcon className="size-5" />
             <span className="group-data-[sidebar-collapsed=true]:hidden">
               Teams
