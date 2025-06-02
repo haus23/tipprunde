@@ -1,6 +1,28 @@
 # Changelog
 
 
+## v0.2.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.4...v0.2.5)
+
+### 🚀 Enhancements
+
+- Implement shared data sync concept. ([d542b9f](https://github.com/haus23/tipprunde/commit/d542b9f))
+- Visualize admin status. ([2a9e3dc](https://github.com/haus23/tipprunde/commit/2a9e3dc))
+- Add static data placeholder. ([f170f64](https://github.com/haus23/tipprunde/commit/f170f64))
+- Add initial collapsible. ([0e990c0](https://github.com/haus23/tipprunde/commit/0e990c0))
+- Add initial maintenance flow. ([d6b2288](https://github.com/haus23/tipprunde/commit/d6b2288))
+
+### 💅 Refactors
+
+- Make collecting sync data more flexible. ([28660b0](https://github.com/haus23/tipprunde/commit/28660b0))
+- Validate shared data resource names. ([4bec528](https://github.com/haus23/tipprunde/commit/4bec528))
+
+### 🏡 Chore
+
+- Update motion and drizzle ([2e192e6](https://github.com/haus23/tipprunde/commit/2e192e6))
+- Update dev deps. ([0c4ad50](https://github.com/haus23/tipprunde/commit/0c4ad50))
+
 ## v0.2.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.3...v0.2.4)
