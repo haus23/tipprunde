@@ -13,7 +13,7 @@
     - [ ] Evaluate usage of meta-Function vs React 19 head tags
 
 - Shared Data
-  - [ ] Users - Table needs mobile styling
+  - [x] Users
   - [ ] Teams
   - [ ] Leagues
   - [ ] Rulesets

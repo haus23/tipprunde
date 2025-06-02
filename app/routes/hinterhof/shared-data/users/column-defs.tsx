@@ -18,10 +18,18 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'email',
     header: 'Email',
+    cell: ({ row }) => (
+      <div className="w-32 truncate sm:w-auto">{row.original.email}</div>
+    ),
   },
   {
     accessorKey: 'roles',
-    header: () => <div className="flex justify-center">Administrator</div>,
+    header: () => (
+      <div className="flex justify-center">
+        <span className="hidden sm:block">Administrator</span>
+        <span className="sm:hidden">Admin</span>
+      </div>
+    ),
     cell: ({ row }) =>
       row.original.roles.includes('ADMIN') ? (
         <div className="flex justify-center">
@@ -42,6 +50,7 @@ export const columns: ColumnDef<User>[] = [
               actions.onEditClick(user);
             }}
             iconOnly
+            className="translate-x-2"
           >
             <PenIcon className="size-5 text-app-11" />
           </Button>
