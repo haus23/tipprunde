@@ -1,6 +1,14 @@
 # Changelog
 
 
+## v0.3.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.6...v0.3.0-pre.0)
+
+### 🚀 Enhancements
+
+- Add teams route. ([e2208b7](https://github.com/haus23/tipprunde/commit/e2208b7))
+
 ## v0.2.6
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.5...v0.2.6)
