@@ -1,6 +1,14 @@
 # Changelog
 
 
+## v0.2.6
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.5...v0.2.6)
+
+### 🩹 Fixes
+
+- Update mobile styles. ([9b4aee3](https://github.com/haus23/tipprunde/commit/9b4aee3))
+
 ## v0.2.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.4...v0.2.5)
