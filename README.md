@@ -39,6 +39,7 @@
   - [ ] Animations
     - [ ] Mobile Nav
     - [ ] Theme Menu
+    - [ ] Collapsible
 
 ## Todos
 
