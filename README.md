@@ -39,3 +39,10 @@
 - Make root user variable (suche nach Root, ROOT_EMAIL, ...)
 - Make default theme variable (siehe theme.ts)
 - prefs.server.ts: Kann ich hier parsen (valibot), also auch wenn undefined reinkommt?
+
+## Changelog
+
+### Prerelease
+
+- Create: `pnpx changelogen --noAuthors --preminor pre --bump --release --push`
+- Bump: `pnpx changelogen --noAuthors --prerelease --bump --release --push`
