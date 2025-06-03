@@ -22,6 +22,13 @@
       "when": 1748173812075,
       "tag": "0002_create_users",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1748945591432,
+      "tag": "0003_create_teams",
+      "breakpoints": true
     }
   ]
 }

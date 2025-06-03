@@ -48,3 +48,11 @@ export const verifications = sqliteTable('verifications', {
   attempts: integer().notNull().default(0),
   ...timestamps,
 });
+
+export const teams = sqliteTable('teams', {
+  id: integer().primaryKey(),
+  slug: text().notNull().unique(),
+  name: text().notNull(),
+  shortname: text().notNull(),
+  ...timestamps,
+});
