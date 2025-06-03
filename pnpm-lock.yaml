@@ -15,8 +15,8 @@ importers:
         specifier: ^5.2.6
         version: 5.2.6
       '@haus23/tipprunde-model':
-        specifier: ~0.21.3
-        version: 0.21.3(valibot@1.1.0(typescript@5.8.3))
+        specifier: ~0.21.4
+        version: 0.21.4(valibot@1.1.0(typescript@5.8.3))
       '@react-email/components':
         specifier: 0.0.41
         version: 0.0.41(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -836,8 +836,8 @@ packages:
   '@formatjs/intl-localematcher@0.6.1':
     resolution: {integrity: sha512-ePEgLgVCqi2BBFnTMWPfIghu6FkbZnnBVhO2sSxvLfrdFw7wCHAHiDoM2h4NRgjbaY7+B7HgOLZGkK187pZTZg==}
 
-  '@haus23/tipprunde-model@0.21.3':
-    resolution: {integrity: sha512-13gG+KAHDbj5pdJpwPROpOCQPpGwmfiy5fB53v2xoyRgTa1bqBJA6ZcZJNE8gY5MnZS4ctpdBhEzFAt3PxHkZw==}
+  '@haus23/tipprunde-model@0.21.4':
+    resolution: {integrity: sha512-A+ogZVG5APAGGgGnsgVsP3UkNqAhBIugWmvrJvNibYt6MxmPO9DA5KgYd72+fOGBypNA1LdgIonLV0TdhT+aBA==}
     peerDependencies:
       valibot: '>=1.0.0'
     peerDependenciesMeta:
@@ -4042,7 +4042,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@haus23/tipprunde-model@0.21.3(valibot@1.1.0(typescript@5.8.3))':
+  '@haus23/tipprunde-model@0.21.4(valibot@1.1.0(typescript@5.8.3))':
     optionalDependencies:
       valibot: 1.1.0(typescript@5.8.3)
 
