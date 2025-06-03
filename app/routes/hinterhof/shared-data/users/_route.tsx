@@ -13,14 +13,12 @@ import { Form } from '~/components/ui/form';
 import { Sheet } from '~/components/ui/sheet';
 import { TextField } from '~/components/ui/text-field';
 import { userInsertSchema } from '~/database/types';
-import {
-  actions,
-  columns,
-} from '~/routes/hinterhof/shared-data/users/column-defs';
 import { createUser, getUsers, updateUser } from '~/utils/db/user';
 import { slugify } from '~/utils/misc';
 import { dataWithToast } from '~/utils/toast.server';
 import { requireAdmin } from '~/utils/user.server';
+
+import { actions, columns } from './column-defs';
 
 export function meta() {
   return [{ title: 'Hinterhof - runde.tips' }];
