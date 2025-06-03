@@ -15,7 +15,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function UsersRoute({ loaderData }: Route.ComponentProps) {
-  console.log(loaderData);
   return (
     <div>
       <div className="mx-2 flex items-center justify-between sm:mx-0">

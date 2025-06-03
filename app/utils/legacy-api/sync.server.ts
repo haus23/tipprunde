@@ -1,7 +1,8 @@
 import app from '~/app';
-import { createOrUpdateUser } from '~/utils/db/user';
+import { createOrUpdateLegacyTeam } from '~/utils/db/team';
+import { createOrUpdateLegacyUser } from '~/utils/db/user';
 
-import { getLegacyUsers } from './shared-data.server';
+import { getLegacyTeams, getLegacyUsers } from './shared-data.server';
 
 export async function syncUsers() {
   const { kvLegacySync } = app;
@@ -19,7 +20,7 @@ export async function syncUsers() {
 
   await Promise.all(
     updatedUsers.map((u) =>
-      createOrUpdateUser({
+      createOrUpdateLegacyUser({
         name: u.name,
         email: u.email,
         slug: u.id,
@@ -29,4 +30,31 @@ export async function syncUsers() {
   );
 
   await kvLegacySync.put('users', usersSyncDate);
+}
+
+export async function syncTeams() {
+  const { kvLegacySync } = app;
+
+  const lastTeamsSyncDate = await kvLegacySync.get('teams');
+  const legacyTeams = await getLegacyTeams();
+
+  const teamsSyncDate = new Date().toISOString();
+
+  const updatedTeams = lastTeamsSyncDate
+    ? legacyTeams.filter(
+        (t) => !!t.updated_at && t.updated_at > new Date(lastTeamsSyncDate),
+      )
+    : legacyTeams;
+
+  await Promise.all(
+    updatedTeams.map((t) =>
+      createOrUpdateLegacyTeam({
+        name: t.name,
+        shortname: t.shortname,
+        slug: t.id,
+      }),
+    ),
+  );
+
+  await kvLegacySync.put('teams', teamsSyncDate);
 }

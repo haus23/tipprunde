@@ -44,7 +44,7 @@ export async function updateUser(id: number, user: UserInsert) {
  * @param props - The user data to insert or update. Must conform to the structure defined by `users.$inferInsert`.
  * @return A promise that resolves when the operation is completed.
  */
-export async function createOrUpdateUser(props: UserInsert) {
+export async function createOrUpdateLegacyUser(props: UserInsert) {
   const { db } = app;
   return db.insert(users).values(props).onConflictDoUpdate({
     target: users.slug,

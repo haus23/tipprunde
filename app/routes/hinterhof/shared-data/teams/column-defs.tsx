@@ -30,7 +30,6 @@ export const columns: ColumnDef<Team>[] = [
               actions.onEditClick(team);
             }}
             iconOnly
-            className="translate-x-2"
           >
             <PenIcon className="size-5 text-app-11" />
           </Button>
