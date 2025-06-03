@@ -1,6 +1,15 @@
 # Changelog
 
 
+## v0.3.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.1...v0.3.0-pre.2)
+
+### 🚀 Enhancements
+
+- Add typings for teams. ([2ed61a1](https://github.com/haus23/tipprunde/commit/2ed61a1))
+- Load teams and display teams table. ([35152a4](https://github.com/haus23/tipprunde/commit/35152a4))
+
 ## v0.3.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.0...v0.3.0-pre.1)
