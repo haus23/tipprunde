@@ -80,7 +80,7 @@ export async function getUserByEmail(email: string) {
   return user;
 }
 
-export async function getUserCount() {
+export async function getUsersCount() {
   const { db } = app;
   return db.$count(users);
 }
