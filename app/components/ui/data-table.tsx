@@ -13,6 +13,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Button } from '~/components/ui/button';
 import { Select, SelectItem } from '~/components/ui/select';
@@ -26,7 +27,6 @@ import {
   TableRow,
 } from '~/components/ui/table';
 import { SearchField } from '~/components/ui/text-field';
-import {useCallback, useEffect, useRef, useState} from "react";
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,7 +41,6 @@ export function DataTable<TData, TValue>({
   withFilter = false,
   withPagination = false,
 }: DataTableProps<TData, TValue>) {
-
   // Controlling pagination reset:
   // Generally do not reset the page index when the data changes. So the table is initialized
   // with autoResetPageIndex set to false.
@@ -51,17 +50,24 @@ export function DataTable<TData, TValue>({
 
   // The resetPageIndex function is used to enable the page index resetting. An effect is used
   // to disable the resetting afterwards.
-  const resetPageIndex = useCallback(() => { shouldResetPageIndexRef.current = true; }, []);
+  const resetPageIndex = useCallback(() => {
+    shouldResetPageIndexRef.current = true;
+  }, []);
   useEffect(() => {
-    if(autoResetPageIndex)
-      shouldResetPageIndexRef.current = false;
+    if (autoResetPageIndex) shouldResetPageIndexRef.current = false;
   }, [autoResetPageIndex]);
 
   // Filter state is manually controlled, setting the filter resets the page index. So filtering
   // jumps always to the first page of filtered items. And does not stay on the current page index - and
   // displaying no filter results ("Page 3 of 1" - No data)
   const [globalFilter, setInternalGlobalFilter] = useState<string>('');
-  const setGlobalFilter = useCallback((value: string) => { resetPageIndex(); setInternalGlobalFilter(value)}, [resetPageIndex]);
+  const setGlobalFilter = useCallback(
+    (value: string) => {
+      resetPageIndex();
+      setInternalGlobalFilter(value);
+    },
+    [resetPageIndex],
+  );
 
   const table = useReactTable({
     data,
@@ -74,8 +80,8 @@ export function DataTable<TData, TValue>({
     globalFilterFn: 'includesString',
     onGlobalFilterChange: setGlobalFilter,
     state: {
-      globalFilter
-    }
+      globalFilter,
+    },
   });
 
   return (
