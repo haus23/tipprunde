@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.3.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.0...v0.3.0-pre.1)
+
+### 🚀 Enhancements
+
+- Add the team table to the db. ([166dbb2](https://github.com/haus23/tipprunde/commit/166dbb2))
+- Get teams sync state. ([572d622](https://github.com/haus23/tipprunde/commit/572d622))
+
+### 🩹 Fixes
+
+- Reset page index when filtering. ([f2a25ed](https://github.com/haus23/tipprunde/commit/f2a25ed))
+
+### 🏡 Chore
+
+- Update tipprunde model to get the latest schema changes. ([09538be](https://github.com/haus23/tipprunde/commit/09538be))
+
 ## v0.3.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.6...v0.3.0-pre.0)
