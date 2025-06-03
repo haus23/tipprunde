@@ -1,6 +1,14 @@
 # Changelog
 
 
+## v0.3.0-pre.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.2...v0.3.0-pre.3)
+
+### 🚀 Enhancements
+
+- Synchronize legacy teams. ([b2ca324](https://github.com/haus23/tipprunde/commit/b2ca324))
+
 ## v0.3.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.1...v0.3.0-pre.2)
