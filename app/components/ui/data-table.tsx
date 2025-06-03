@@ -26,6 +26,7 @@ import {
   TableRow,
 } from '~/components/ui/table';
 import { SearchField } from '~/components/ui/text-field';
+import {useCallback, useEffect, useRef, useState} from "react";
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -40,6 +41,28 @@ export function DataTable<TData, TValue>({
   withFilter = false,
   withPagination = false,
 }: DataTableProps<TData, TValue>) {
+
+  // Controlling pagination reset:
+  // Generally do not reset the page index when the data changes. So the table is initialized
+  // with autoResetPageIndex set to false.
+
+  const shouldResetPageIndexRef = useRef(false);
+  const autoResetPageIndex = shouldResetPageIndexRef.current;
+
+  // The resetPageIndex function is used to enable the page index resetting. An effect is used
+  // to disable the resetting afterwards.
+  const resetPageIndex = useCallback(() => { shouldResetPageIndexRef.current = true; }, []);
+  useEffect(() => {
+    if(autoResetPageIndex)
+      shouldResetPageIndexRef.current = false;
+  }, [autoResetPageIndex]);
+
+  // Filter state is manually controlled, setting the filter resets the page index. So filtering
+  // jumps always to the first page of filtered items. And does not stay on the current page index - and
+  // displaying no filter results ("Page 3 of 1" - No data)
+  const [globalFilter, setInternalGlobalFilter] = useState<string>('');
+  const setGlobalFilter = useCallback((value: string) => { resetPageIndex(); setInternalGlobalFilter(value)}, [resetPageIndex]);
+
   const table = useReactTable({
     data,
     columns,
@@ -47,8 +70,12 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: withFilter ? getFilteredRowModel() : undefined,
     getPaginationRowModel: withPagination ? getPaginationRowModel() : undefined,
+    autoResetPageIndex: autoResetPageIndex,
     globalFilterFn: 'includesString',
-    autoResetPageIndex: false,
+    onGlobalFilterChange: setGlobalFilter,
+    state: {
+      globalFilter
+    }
   });
 
   return (
