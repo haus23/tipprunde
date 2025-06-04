@@ -14,7 +14,7 @@
 
 - Shared Data
   - [x] Users
-  - [ ] Teams
+  - [x] Teams
   - [ ] Leagues
   - [ ] Rulesets
   - [ ] Enable Forced (Re-)Sync
