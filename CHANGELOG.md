@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.3.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.3...v0.3.0)
+
+### 🚀 Enhancements
+
+- Update the teams db layer. Added create and update methods. ([ae002a5](https://github.com/haus23/tipprunde/commit/ae002a5))
+- Implement teams editing with tanstack form. Initial take - but looks promising. ([c7d4291](https://github.com/haus23/tipprunde/commit/c7d4291))
+
+### 💅 Refactors
+
+- Refine insert type. ([d0d05c1](https://github.com/haus23/tipprunde/commit/d0d05c1))
+
+### 🏡 Chore
+
+- Add tanstack form for evaluation. ([c4e7b69](https://github.com/haus23/tipprunde/commit/c4e7b69))
+
 ## v0.3.0-pre.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.2...v0.3.0-pre.3)
