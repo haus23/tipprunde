@@ -3,14 +3,16 @@
 ## Next tasks
 
 - Common
-    - [ ] Switch to Prisma - Hm, probably not doable by now. See
-          [Prisma Docs](https://www.prisma.io/docs/orm/overview/databases/cloudflare-d1) and
-          the [GitHub discussion](https://github.com/prisma/prisma/discussions/23646)
-    - [ ] Add tanstack-query, werde ich für das Backend nicht machen.
-          Frontend könnte ein Caching vertragen
-    - [ ] Use tooltips explicit (not coded in Button/Link - see shared-data/users/column-defs)
-    - [ ] Need for custom form wrapper ?
-    - [ ] Evaluate usage of meta-Function vs React 19 head tags
+  - [ ] Evaluate composing forms with tanstack form and react aria components
+  - [ ] Switch to Prisma - Hm, probably not doable by now. See
+        [Prisma Docs](https://www.prisma.io/docs/orm/overview/databases/cloudflare-d1) and
+        the [GitHub discussion](https://github.com/prisma/prisma/discussions/23646)
+  - [ ] Add tanstack-query, werde ich für das Backend nicht machen.
+        Frontend könnte ein Caching vertragen
+  - [ ] Use tooltips explicit (not coded in Button/Link - see shared-data/users/column-defs)
+  - [ ] Need for custom form wrapper ?
+  - [ ] Evaluate usage of meta-Function vs React 19 head tags
+  - [ ] Populate hooks folder with more hooks (theme, settings, ...)
 
 - Shared Data
   - [x] Users
