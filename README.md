@@ -20,6 +20,7 @@
   - [ ] Leagues
   - [ ] Rulesets
   - [ ] Enable Forced (Re-)Sync
+  - [ ] Move Nav Item to Shared Data Section (and use cloud icons?)
 
 - Workflow
   - [ ] Enable preview builds (define production brand v1)
