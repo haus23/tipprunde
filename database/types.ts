@@ -33,4 +33,7 @@ export const teamInsertSchema = createInsertSchema(teams, {
 });
 
 export type Team = typeof teams.$inferSelect;
-export type TeamInsert = typeof teams.$inferInsert;
+export type TeamInsert = Omit<
+  typeof teams.$inferInsert,
+  'createdAt' | 'updatedAt'
+>;
