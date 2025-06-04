@@ -1,6 +1,21 @@
 # Changelog
 
 
+## v0.4.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0...v0.4.0-pre.0)
+
+### 🚀 Enhancements
+
+- Create the starting point for creating composed forms. ([813e80b](https://github.com/haus23/tipprunde/commit/813e80b))
+
+### 🏡 Chore
+
+- Update react router. ([6370bd7](https://github.com/haus23/tipprunde/commit/6370bd7))
+- Update biome. ([7bf2bfc](https://github.com/haus23/tipprunde/commit/7bf2bfc))
+- Update dev deps. ([bf2bedc](https://github.com/haus23/tipprunde/commit/bf2bedc))
+- Update deps. ([90d907c](https://github.com/haus23/tipprunde/commit/90d907c))
+
 ## v0.3.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.3...v0.3.0)
