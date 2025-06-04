@@ -52,11 +52,22 @@ export async function createOrUpdateLegacyUser(props: UserInsert) {
   });
 }
 
+/**
+ * Get all users sorted by name
+ *
+ * @returns Promise resolving to an array of sorted users
+ */
 export async function getUsers() {
   const { db } = app;
   return db.query.users.findMany({ orderBy: [asc(users.name)] });
 }
 
+/**
+ * Gets a user bei its unique id
+ *
+ * @param id User id
+ * @returns Promise resolving to user or undefined
+ */
 export async function getUser(id: number) {
   if (id === 0) {
     return rootUser;
@@ -68,6 +79,12 @@ export async function getUser(id: number) {
   });
 }
 
+/**
+ * Gets a user bei its unique email
+ *
+ * @param email User email
+ * @returns Promise resolving to user or undefined
+ */
 export async function getUserByEmail(email: string) {
   const { db } = app;
   const user = await db.query.users.findFirst({
@@ -80,6 +97,11 @@ export async function getUserByEmail(email: string) {
   return user;
 }
 
+/**
+ * Gets users count
+ *
+ * @returns Promise resolving to the count of users
+ */
 export async function getUsersCount() {
   const { db } = app;
   return db.$count(users);
