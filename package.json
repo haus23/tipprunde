@@ -20,6 +20,7 @@
     "@react-email/components": "0.0.41",
     "@react-router/node": "~7.6.1",
     "@standard-schema/spec": "^1.0.0",
+    "@tanstack/react-form": "^1.12.1",
     "@tanstack/react-table": "^8.21.3",
     "drizzle-orm": "^0.44.0",
     "drizzle-valibot": "^0.4.2",
