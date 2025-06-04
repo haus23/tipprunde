@@ -46,3 +46,4 @@
 
 - Create: `pnpx changelogen --noAuthors --preminor pre --bump --release --push`
 - Bump: `pnpx changelogen --noAuthors --prerelease --bump --release --push`
+- Release: `pnpx changelogen --noAuthors --bump --release --push`
