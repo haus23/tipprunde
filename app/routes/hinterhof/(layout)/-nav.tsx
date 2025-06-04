@@ -88,7 +88,7 @@ export function Nav() {
               Teams
             </span>
           </Link>
-          <Link to={'/hinterhof'} variant="sidebar" tooltip="Ligen">
+          <Link to={'/hinterhof/ligen'} variant="sidebar" tooltip="Ligen">
             <Table2Icon className="size-5" />
             <span className="group-data-[sidebar-collapsed=true]:hidden">
               Ligen

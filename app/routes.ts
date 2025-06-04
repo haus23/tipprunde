@@ -15,6 +15,7 @@ export default [
       route('/wartung', 'routes/hinterhof/(maintenance)/_route.tsx'),
       route('/spieler', 'routes/hinterhof/shared-data/users/_route.tsx'),
       route('/teams', 'routes/hinterhof/shared-data/teams/_route.tsx'),
+      route('/ligen', 'routes/hinterhof/shared-data/leagues/_route.tsx'),
     ]),
   ]),
   // Actions
