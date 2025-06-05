@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.4.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.1...v0.4.0-pre.2)
+
+### 🚀 Enhancements
+
+- Synchronize the leagues. ([73cab62](https://github.com/haus23/tipprunde/commit/73cab62))
+
+### 🩹 Fixes
+
+- Use leagues count, not teams count. ([7cec1bc](https://github.com/haus23/tipprunde/commit/7cec1bc))
+- Load leagues, not teams. ([59e4e0a](https://github.com/haus23/tipprunde/commit/59e4e0a))
+
 ## v0.4.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.0...v0.4.0-pre.1)
