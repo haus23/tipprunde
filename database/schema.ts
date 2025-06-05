@@ -56,3 +56,11 @@ export const teams = sqliteTable('teams', {
   shortname: text().notNull(),
   ...timestamps,
 });
+
+export const leagues = sqliteTable('leagues', {
+  id: integer().primaryKey(),
+  slug: text().notNull().unique(),
+  name: text().notNull(),
+  shortname: text().notNull(),
+  ...timestamps,
+});

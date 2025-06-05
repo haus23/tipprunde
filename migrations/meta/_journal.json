@@ -29,6 +29,13 @@
       "when": 1748945591432,
       "tag": "0003_create_teams",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1749152605647,
+      "tag": "0004_create_leagues",
+      "breakpoints": true
     }
   ]
 }
