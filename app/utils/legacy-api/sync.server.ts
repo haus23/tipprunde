@@ -1,8 +1,13 @@
 import app from '~/app';
+import { createOrUpdateLegacyLeague } from '~/utils/db/league';
 import { createOrUpdateLegacyTeam } from '~/utils/db/team';
 import { createOrUpdateLegacyUser } from '~/utils/db/user';
 
-import { getLegacyTeams, getLegacyUsers } from './shared-data.server';
+import {
+  getLegacyLeagues,
+  getLegacyTeams,
+  getLegacyUsers,
+} from './shared-data.server';
 
 export async function syncUsers() {
   const { kvLegacySync } = app;
@@ -57,4 +62,31 @@ export async function syncTeams() {
   );
 
   await kvLegacySync.put('teams', teamsSyncDate);
+}
+
+export async function syncLeagues() {
+  const { kvLegacySync } = app;
+
+  const lastLeaguesSyncDate = await kvLegacySync.get('leagues');
+  const legacyLeagues = await getLegacyLeagues();
+
+  const leaguesSyncDate = new Date().toISOString();
+
+  const updatedLeagues = lastLeaguesSyncDate
+    ? legacyLeagues.filter(
+        (l) => !!l.updated_at && l.updated_at > new Date(lastLeaguesSyncDate),
+      )
+    : legacyLeagues;
+
+  await Promise.all(
+    updatedLeagues.map((t) =>
+      createOrUpdateLegacyLeague({
+        name: t.name,
+        shortname: t.shortname,
+        slug: t.id,
+      }),
+    ),
+  );
+
+  await kvLegacySync.put('leagues', leaguesSyncDate);
 }

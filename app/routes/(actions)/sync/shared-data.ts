@@ -2,7 +2,7 @@ import type { Route } from './+types/shared-data';
 
 import * as v from 'valibot';
 
-import { syncTeams, syncUsers } from '~/utils/legacy-api/sync.server';
+import {syncLeagues, syncTeams, syncUsers} from '~/utils/legacy-api/sync.server';
 import { sharedDataResourcesSchema } from '~/utils/legacy-api/sync-state.server';
 import { dataWithToast } from '~/utils/toast.server';
 
@@ -26,7 +26,13 @@ export async function action({ request }: Route.ActionArgs) {
       await syncTeams();
       return dataWithToast(request, null, {
         type: 'success',
-        message: 'Teamdaten abgeglichen.',
+        message: 'Teams abgeglichen.',
+      });
+    case 'leagues':
+      await syncLeagues();
+      return dataWithToast(request, null, {
+        type: 'success',
+        message: 'Ligen abgeglichen.',
       });
   }
 }
