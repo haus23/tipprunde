@@ -16,5 +16,5 @@ export async function getLegacyTeams() {
 }
 
 export async function getLegacyLeagues() {
-  return await getResource(v.array(LeagueSchema), '/api/v1/teams');
+  return await getResource(v.array(LeagueSchema), '/api/v1/leagues');
 }
