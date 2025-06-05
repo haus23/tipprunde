@@ -1,4 +1,8 @@
-import { AccountSchema, LeagueSchema, TeamSchema } from '@haus23/tipprunde-model';
+import {
+  AccountSchema,
+  LeagueSchema,
+  TeamSchema,
+} from '@haus23/tipprunde-model';
 import * as v from 'valibot';
 
 import { getResource } from './common';

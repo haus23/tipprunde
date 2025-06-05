@@ -1,6 +1,7 @@
 import * as v from 'valibot';
 
 import app from '~/app';
+import { getLeaguesCount } from '~/utils/db/league';
 import { getTeamsCount } from '~/utils/db/team';
 import { getUsersCount } from '~/utils/db/user';
 import {
@@ -59,7 +60,7 @@ export async function getSharedDataSyncState() {
   }
 
   const lastLeaguesSyncDateStr = await kvLegacySync.get('leagues');
-  const leaguesCount = await getTeamsCount();
+  const leaguesCount = await getLeaguesCount();
 
   if (!lastLeaguesSyncDateStr || leaguesCount === 0) {
     updatedResources.push('leagues');
