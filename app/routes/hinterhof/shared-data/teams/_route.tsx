@@ -171,9 +171,6 @@ export default function TeamsRoute({ loaderData }: Route.ComponentProps) {
             </Button>
           </div>
         </Form>
-        <div>
-          <pre>{form.state.isFormValid}</pre>
-        </div>
       </Sheet>
     </div>
   );

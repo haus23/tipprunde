@@ -3,7 +3,6 @@
 ## Next tasks
 
 - Common
-  - [ ] Evaluate composing forms with tanstack form and react aria components
   - [ ] Switch to Prisma - Hm, probably not doable by now. See
         [Prisma Docs](https://www.prisma.io/docs/orm/overview/databases/cloudflare-d1) and
         the [GitHub discussion](https://github.com/prisma/prisma/discussions/23646)
@@ -31,6 +30,7 @@
   - [ ] OTP-Eingabe schon prüfen nach der 6. Ziffer
   - [ ] Spinning-Buttons oder ähnliches bei den Login-Buttons
   - [ ] Sidebar-Rail (siehe shadcn)
+  - [ ] Feilen am Tabellen-Design (insbesondere Fill-Cols und Edit-Button Cols)
   - [ ] Evaluate: Vgl Menu-Styles (Theme-Menü mit Select). Align?
   - [ ] Animations
     - [ ] Mobile Nav
