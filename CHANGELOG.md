@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v0.4.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.0...v0.4.0-pre.1)
+
+### 🚀 Enhancements
+
+- Create initial leagues route. ([5cc20b8](https://github.com/haus23/tipprunde/commit/5cc20b8))
+- Add the league table. ([06977a0](https://github.com/haus23/tipprunde/commit/06977a0))
+- Determine the sync state of legacy leagues. ([7c46aa7](https://github.com/haus23/tipprunde/commit/7c46aa7))
+
+### 💅 Refactors
+
+- Implement hook to extract form errors into rac readable validation errors. ([5374e11](https://github.com/haus23/tipprunde/commit/5374e11))
+
+### 🏡 Chore
+
+- Revert the idea of composing forms with tanstack form. ([610c351](https://github.com/haus23/tipprunde/commit/610c351))
+
 ## v0.4.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0...v0.4.0-pre.0)
