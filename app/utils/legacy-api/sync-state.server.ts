@@ -4,6 +4,7 @@ import app from '~/app';
 import { getTeamsCount } from '~/utils/db/team';
 import { getUsersCount } from '~/utils/db/user';
 import {
+  getLegacyLeagues,
   getLegacyTeams,
   getLegacyUsers,
 } from '~/utils/legacy-api/shared-data.server';
@@ -55,6 +56,21 @@ export async function getSharedDataSyncState() {
       return !!t.updated_at && t.updated_at > lastTeamsSync;
     });
     if (hasUpdatedTeams) updatedResources.push('teams');
+  }
+
+  const lastLeaguesSyncDateStr = await kvLegacySync.get('leagues');
+  const leaguesCount = await getTeamsCount();
+
+  if (!lastLeaguesSyncDateStr || leaguesCount === 0) {
+    updatedResources.push('leagues');
+  } else {
+    const legacyLeagues = await getLegacyLeagues();
+    const lastLeaguesSync = new Date(lastLeaguesSyncDateStr);
+
+    const hasUpdatedLeagues = legacyLeagues.some((t) => {
+      return !!t.updated_at && t.updated_at > lastLeaguesSync;
+    });
+    if (hasUpdatedLeagues) updatedResources.push('leagues');
   }
 
   return { updatedResources } satisfies SharedDataSyncState;

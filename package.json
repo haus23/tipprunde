@@ -16,7 +16,7 @@
   "dependencies": {
     "@epic-web/totp": "^4.0.1",
     "@fontsource-variable/geist": "^5.2.6",
-    "@haus23/tipprunde-model": "~0.21.4",
+    "@haus23/tipprunde-model": "~0.21.5",
     "@react-email/components": "0.0.41",
     "@react-router/node": "~7.6.2",
     "@standard-schema/spec": "^1.0.0",
