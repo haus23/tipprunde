@@ -1,6 +1,16 @@
 # Changelog
 
 
+## v0.1.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.1...v0.1.0-pre.2)
+
+### 🏡 Chore
+
+- Add tailwind. ([4aef618](https://github.com/haus23/tipprunde/commit/4aef618))
+- Add tsconfig paths plugin for vite. ([6e59eaa](https://github.com/haus23/tipprunde/commit/6e59eaa))
+- Start with a landing page. ([ece51c9](https://github.com/haus23/tipprunde/commit/ece51c9))
+
 ## v0.1.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.0...v0.1.0-pre.1)
