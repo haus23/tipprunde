@@ -6,7 +6,7 @@
     // Environment Settings
     "module": "Preserve",
     "target": "ES2024",
-    "types": [],
+    "types": ["vite/client"],
 
     // Outputs
     "noEmit": true,
