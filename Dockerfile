@@ -30,6 +30,7 @@ RUN pnpm run build
 FROM base
 
 COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /myapp/package.json /myapp/package.json
 COPY --from=build /app/build /app/build
 EXPOSE 3103
 CMD [ "pnpm", "start" ]
