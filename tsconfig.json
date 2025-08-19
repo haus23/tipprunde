@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    // File Layout
+    "rootDirs": [".", "./.react-router/types"],
+
+    // Environment Settings
+    "module": "Preserve",
+    "target": "ES2024",
+    "types": [],
+
+    // Outputs
+    "noEmit": true,
+
+    // Strict Typechecking Options
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // React
+    "jsx": "react-jsx",
+
+    // Recommended Options
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+
+    // Style Options
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+
+    // DX
+    "paths": {
+      "~/*": ["./app/*"]
+    }
+  }
+}

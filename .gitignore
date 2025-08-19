@@ -1,2 +1,9 @@
 # Dependencies
 node_modules/
+
+# React Router
+.react-router/
+build/
+
+# Claude Code
+.claude/
