@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# DX / Editor settings
+.claude/
+.github/
+
+# Dev Enviroment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build
+.react-router/
+build/
+
+.git
+.gitignore
+CHANGELOG.md
+LICENSE
+README.md
