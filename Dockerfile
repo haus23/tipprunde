@@ -2,8 +2,8 @@
 FROM node:lts AS base
 
 # Production env (inherited)
-ENV NODE_ENV production
-ENV PORT 3103
+ENV NODE_ENV=production
+ENV PORT=3103
 
 # Setup and install pnpm
 ENV PNPM_HOME="/pnpm"
