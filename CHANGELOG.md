@@ -1,6 +1,14 @@
 # Changelog
 
 
+## v0.1.0-pre.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.3...v0.1.0-pre.4)
+
+### 🚀 Enhancements
+
+- Start adding a very basic header. ([0efe1e8](https://github.com/haus23/tipprunde/commit/0efe1e8))
+
 ## v0.1.0-pre.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.2...v0.1.0-pre.3)
