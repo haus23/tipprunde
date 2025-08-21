@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.0-pre.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.4...v0.1.0-pre.5)
+
+### 🚀 Enhancements
+
+- Add mobile nav. Initial take. ([59ab169](https://github.com/haus23/tipprunde/commit/59ab169))
+
+### 🏡 Chore
+
+- Install react-aria components. ([2df885e](https://github.com/haus23/tipprunde/commit/2df885e))
+
 ## v0.1.0-pre.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.3...v0.1.0-pre.4)
