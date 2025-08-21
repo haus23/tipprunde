@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.0-pre.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.2...v0.1.0-pre.3)
+
+### 💅 Refactors
+
+- Extract common layout component. ([2171fd6](https://github.com/haus23/tipprunde/commit/2171fd6))
+
+### 🏡 Chore
+
+- Add lucide icons. ([cbd330e](https://github.com/haus23/tipprunde/commit/cbd330e))
+
 ## v0.1.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.1...v0.1.0-pre.2)
