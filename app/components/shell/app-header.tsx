@@ -1,5 +1,5 @@
 import { PanelLeftIcon } from "lucide-react";
-import { Button } from "react-aria-components";
+import { Button } from "~/components/ui/button";
 import { useShell } from "./app-shell";
 
 export function AppHeader() {
@@ -10,7 +10,9 @@ export function AppHeader() {
       <div>
         <Button
           onPress={toggleMobileNav}
-          className="p-2 hover:bg-gray-100 rounded-md transition-colors md:hidden active:bg-gray-200"
+          variant="ghost"
+          size="sm"
+          className="md:hidden"
           aria-label="Toggle mobile navigation"
         >
           <PanelLeftIcon className="size-5" />
