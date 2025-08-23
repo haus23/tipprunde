@@ -62,7 +62,7 @@ export function NavLink({ className, size, variant, ...props }: NavLinkProps) {
         navLinkClasses({
           size,
           variant,
-          className: isActive ? "bg-gray-900 text-white" : className,
+          className: isActive ? "bg-gray-900 text-white hover:bg-gray-800" : className,
         })
       }
       {...props}
