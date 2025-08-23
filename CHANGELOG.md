@@ -1,6 +1,30 @@
 # Changelog
 
 
+## v0.1.0-pre.6
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.5...v0.1.0-pre.6)
+
+### 🚀 Enhancements
+
+- Add basic foh routes. ([2dcf8e9](https://github.com/haus23/tipprunde/commit/2dcf8e9))
+
+### 🩹 Fixes
+
+- Use the new cva@beta api. ([c2a0712](https://github.com/haus23/tipprunde/commit/c2a0712))
+- Light bg color on active link hover removed. ([7727517](https://github.com/haus23/tipprunde/commit/7727517))
+
+### 💅 Refactors
+
+- Use RAC button. ([96a3fd5](https://github.com/haus23/tipprunde/commit/96a3fd5))
+- Extract button component. ([2c59652](https://github.com/haus23/tipprunde/commit/2c59652))
+- Install and use cva@beta to build my components. ([54af941](https://github.com/haus23/tipprunde/commit/54af941))
+- Extract the link components. ([bfed8a2](https://github.com/haus23/tipprunde/commit/bfed8a2))
+
+### 🏡 Chore
+
+- **dx:** Add vite plugin for chrome dev tools. ([34c07c2](https://github.com/haus23/tipprunde/commit/34c07c2))
+
 ## v0.1.0-pre.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.4...v0.1.0-pre.5)
