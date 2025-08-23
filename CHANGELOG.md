@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.0-pre.7
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.6...v0.1.0-pre.7)
+
+### 🩹 Fixes
+
+- Close mobile nav with screen resize or device orientation change. ([ab58942](https://github.com/haus23/tipprunde/commit/ab58942))
+
+### 💅 Refactors
+
+- Adjust padding and spacing in sidebar. ([502e556](https://github.com/haus23/tipprunde/commit/502e556))
+
 ## v0.1.0-pre.6
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.5...v0.1.0-pre.6)
