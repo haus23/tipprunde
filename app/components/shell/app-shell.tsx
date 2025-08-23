@@ -1,4 +1,5 @@
 import { createContext, use, useState } from "react";
+import { useIsMobile } from "~/hooks/is-mobile";
 import { AppHeader } from "./app-header";
 import { AppSidebar } from "./app-sidebar";
 
@@ -27,6 +28,11 @@ export function useShell() {
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // Close mobile nav when switching to desktop
+  useIsMobile({
+    onDesktop: () => setMobileNavOpen(false),
+  });
 
   return (
     <ShellContext value={{ isMobileNavOpen, setMobileNavOpen }}>
