@@ -1,6 +1,6 @@
 import { DicesIcon, TableIcon, UsersIcon } from "lucide-react";
-import { NavLink } from "react-router";
 import { Dialog, Modal, ModalOverlay } from "react-aria-components";
+import { Link, NavLink } from "~/components/ui/link";
 import { Logo } from "./logo";
 import { useShell } from "./app-shell";
 
@@ -12,13 +12,10 @@ const fohNavItems = [
 
 function HomeLink() {
   return (
-    <NavLink
-      to="/"
-      className="flex items-center space-x-3 px-3 py-2 rounded-md text-base font-semibold transition-colors text-gray-700 hover:bg-gray-100"
-    >
+    <Link to="/" size="lg" className="font-semibold">
       <Logo className="size-6 flex-shrink-0" />
       <span>runde.tips</span>
-    </NavLink>
+    </Link>
   );
 }
 
@@ -28,17 +25,7 @@ function NavItems() {
       {fohNavItems.map((item) => {
         const Icon = item.icon;
         return (
-          <NavLink
-            key={item.label}
-            to={item.route}
-            className={({ isActive }) =>
-              `flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-gray-900 text-white"
-                  : "text-gray-700 hover:bg-gray-100"
-              }`
-            }
-          >
+          <NavLink key={item.label} to={item.route}>
             <Icon size={18} />
             <span>{item.label}</span>
           </NavLink>
