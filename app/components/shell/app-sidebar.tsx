@@ -12,9 +12,9 @@ const fohNavItems = [
 
 function HomeLink() {
   return (
-    <Link to="/" size="lg" className="font-semibold">
-      <Logo className="size-6 flex-shrink-0" />
-      <span>runde.tips</span>
+    <Link to="/" className="font-semibold">
+      <Logo className="size-10 flex-shrink-0" />
+      <span className="text-lg font-medium tracking-wide">runde.tips</span>
     </Link>
   );
 }
@@ -41,12 +41,12 @@ export function AppSidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:flex-col w-64 bg-gray-50 border-r border-gray-200 ">
-        <div className="p-4">
+      <aside className="hidden md:flex md:flex-col w-56 bg-gray-50 border-r border-gray-200 ">
+        <div className="p-2">
           <HomeLink />
         </div>
         <hr className="border-gray-200" />
-        <nav className="flex flex-col space-y-1 p-4">
+        <nav className="flex flex-col gap-1.5 px-2 py-4">
           <NavItems />
         </nav>
       </aside>
@@ -59,12 +59,12 @@ export function AppSidebar() {
         className="fixed inset-0 z-40 bg-black/50"
       >
         <Modal>
-          <Dialog className="fixed inset-y-0 left-0 w-64 bg-white z-50 flex flex-col shadow-xl">
-            <div className="p-4">
+          <Dialog className="fixed inset-y-0 left-0 w-56 bg-white z-50 flex flex-col shadow-xl">
+            <div className="p-2">
               <HomeLink />
             </div>
             <hr className="border-gray-200" />
-            <nav className="flex flex-col space-y-1 p-4">
+            <nav className="flex flex-col gap-1.5 px-2 py-4">
               <NavItems />
             </nav>
           </Dialog>
