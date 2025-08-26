@@ -11,8 +11,10 @@ const fohNavItems = [
 ];
 
 function HomeLink() {
+  const { closeMobileNav } = useShell();
+
   return (
-    <Link to="/" className="font-semibold">
+    <Link to="/" className="font-semibold" onClick={closeMobileNav}>
       <Logo className="size-10 flex-shrink-0" />
       <span className="text-lg font-medium tracking-wide">runde.tips</span>
     </Link>
@@ -20,12 +22,14 @@ function HomeLink() {
 }
 
 function NavItems() {
+  const { closeMobileNav } = useShell();
+
   return (
     <>
       {fohNavItems.map((item) => {
         const Icon = item.icon;
         return (
-          <NavLink key={item.label} to={item.route}>
+          <NavLink key={item.label} to={item.route} onClick={closeMobileNav}>
             <Icon size={18} />
             <span>{item.label}</span>
           </NavLink>

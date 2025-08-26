@@ -2,10 +2,6 @@
 
 ## Roadmap Task
 
-### v0.1.0
-
-- Close mobile navbar on click
-
 ### v0.2.0
 
 - Introduce color system
