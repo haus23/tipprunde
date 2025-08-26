@@ -1,6 +1,14 @@
 # Changelog
 
 
+## v0.1.0-pre.8
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.7...v0.1.0-pre.8)
+
+### 🏡 Chore
+
+- Add dark mode colors. ([fb73ad2](https://github.com/haus23/tipprunde/commit/fb73ad2))
+
 ## v0.1.0-pre.7
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.6...v0.1.0-pre.7)
