@@ -10,8 +10,8 @@ const linkClasses = cva({
   base: "flex items-center gap-2 p-1 rounded-md text-sm font-medium transition-colors",
   variants: {
     variant: {
-      default: "text-gray-700 hover:bg-gray-100",
-      ghost: "text-gray-600 hover:text-gray-900 hover:bg-gray-50",
+      default: "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800",
+      ghost: "text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-800",
     },
   },
   defaultVariants: {
@@ -23,8 +23,8 @@ const navLinkClasses = cva({
   base: "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
   variants: {
     variant: {
-      default: "text-gray-700 hover:bg-gray-100 data-[current]:bg-gray-900 data-[current]:text-white",
-      ghost: "text-gray-600 hover:text-gray-900 hover:bg-gray-50",
+      default: "text-gray-700 hover:bg-gray-100 data-[current]:bg-gray-900 data-[current]:text-white dark:text-gray-300 dark:hover:bg-gray-800 dark:data-[current]:bg-gray-100 dark:data-[current]:text-gray-900",
+      ghost: "text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-800",
     },
   },
   defaultVariants: {
@@ -51,7 +51,7 @@ export function NavLink({ className, variant, ...props }: NavLinkProps) {
       className={({ isActive }) =>
         navLinkClasses({
           variant,
-          className: isActive ? "bg-gray-900 text-white hover:bg-gray-800" : className,
+          className: isActive ? "bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200" : className,
         })
       }
       {...props}

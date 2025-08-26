@@ -8,8 +8,8 @@ const buttonClasses = cva({
   base: "rounded-md font-medium transition-colors",
   variants: {
     variant: {
-      default: "bg-gray-900 text-white hover:bg-gray-800 active:bg-gray-700",
-      ghost: "hover:bg-gray-100 active:bg-gray-200",
+      default: "bg-gray-900 text-white hover:bg-gray-800 active:bg-gray-700 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200 dark:active:bg-gray-300",
+      ghost: "text-gray-700 hover:bg-gray-100 active:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-800 dark:active:bg-gray-700",
     },
     size: {
       default: "px-3 py-2",

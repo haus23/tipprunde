@@ -4,7 +4,6 @@
 
 ### v0.1.0
 
-- Dark/Light Mode
 - Close mobile navbar on click
 
 ### v0.2.0
