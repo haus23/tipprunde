@@ -4,7 +4,6 @@
 
 ### v0.2.0
 
-- Introduce color system
 - Collapsible Sidebar on Desktop
 - Dark/Light Toggle
 

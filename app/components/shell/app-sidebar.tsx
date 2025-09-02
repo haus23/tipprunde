@@ -45,11 +45,11 @@ export function AppSidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:flex-col w-56 bg-gray-50 border-r border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+      <aside className="hidden md:flex md:flex-col w-56 bg-content border-r border-default">
         <div className="p-2">
           <HomeLink />
         </div>
-        <hr className="border-gray-200 dark:border-gray-700" />
+        <hr className="border-default" />
         <nav className="flex flex-col gap-1.5 px-2 py-4">
           <NavItems />
         </nav>
@@ -63,11 +63,11 @@ export function AppSidebar() {
         className="fixed inset-0 z-40 bg-black/50"
       >
         <Modal>
-          <Dialog className="fixed inset-y-0 left-0 w-56 bg-white z-50 flex flex-col shadow-xl dark:bg-gray-900">
+          <Dialog className="fixed inset-y-0 left-0 w-56 bg-popover z-50 flex flex-col shadow-xl">
             <div className="p-2">
               <HomeLink />
             </div>
-            <hr className="border-gray-200 dark:border-gray-700" />
+            <hr className="border-default" />
             <nav className="flex flex-col gap-1.5 px-2 py-4">
               <NavItems />
             </nav>

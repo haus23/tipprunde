@@ -1,0 +1,29 @@
+:root {
+    /* App colors (mauve scale) */
+    --app-1: light-dark(#fdfcfd, #121113);
+    --app-2: light-dark(#faf9fb, #1a191b);
+    --app-3: light-dark(#f2eff3, #232225);
+    --app-4: light-dark(#eae7ec, #2b292d);
+    --app-5: light-dark(#e3dfe6, #323035);
+    --app-6: light-dark(#dbd8e0, #3c393f);
+    --app-7: light-dark(#d0cdd7, #49474e);
+    --app-8: light-dark(#bcbac7, #625f69);
+    --app-9: light-dark(#8e8c99, #6f6d78);
+    --app-10: light-dark(#84828e, #7c7a85);
+    --app-11: light-dark(#65636d, #b5b2bc);
+    --app-12: light-dark(#211f26, #eeeef0);
+
+    /* Accent colors (violet scale) */
+    --accent-1: light-dark(#fdfcfe, #14121f);
+    --accent-2: light-dark(#faf8ff, #1b1525);
+    --accent-3: light-dark(#f4f0fe, #291f43);
+    --accent-4: light-dark(#ebe4ff, #33255b);
+    --accent-5: light-dark(#e1d9ff, #3c2e69);
+    --accent-6: light-dark(#d4cafe, #473876);
+    --accent-7: light-dark(#c2b5f5, #56468b);
+    --accent-8: light-dark(#aa99ec, #6958ad);
+    --accent-9: light-dark(#6e56cf, #6e56cf);
+    --accent-10: light-dark(#654dc4, #7d66d9);
+    --accent-11: light-dark(#6550b9, #baa7ff);
+    --accent-12: light-dark(#2f265f, #e2ddfe);
+}

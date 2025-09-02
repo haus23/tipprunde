@@ -1,1 +1,39 @@
 @import "tailwindcss";
+@import "./theme/mauve-violet.css";
+
+@theme {
+    --default-transition-duration: 150ms;
+
+    /* Background colors */
+    --background-color-app: var(--app-1);
+    --background-color-content: var(--app-2);
+    --background-color-popover: var(--app-3);
+    --background-color-surface: var(--app-4);
+    --background-color-hover: var(--app-5);
+
+    /* Border colors */
+    --border-color-subtle: var(--app-6);
+    --border-color-default: var(--app-7);
+    --border-color-strong: var(--app-8);
+
+    /* Text colors */
+    --text-color-subtle: var(--app-11);
+    --text-color-default: var(--app-12);
+
+    /* Accent colors */
+    --background-color-accent: var(--accent-9);
+    --background-color-accent-hover: var(--accent-10);
+    --text-color-accent: var(--accent-11);
+    --text-color-accent-contrast: white;
+    --border-color-accent: var(--accent-7);
+    --background-color-accent-surface: var(--accent-3);
+    --background-color-accent-surface-hover: var(--accent-4);
+}
+
+:root {
+    color-scheme: light dark;
+}
+
+.dark {
+    color-scheme: dark;
+}

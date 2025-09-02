@@ -36,7 +36,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <ShellContext value={{ isMobileNavOpen, setMobileNavOpen }}>
-      <div className="flex h-screen bg-white dark:bg-gray-950">
+      <div className="flex h-screen bg-app">
         <AppSidebar />
         <div className="flex-1 overflow-auto">
           <AppHeader />
