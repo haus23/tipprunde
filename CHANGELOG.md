@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.2.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.2.0-pre.0)
+
+### 🏡 Chore
+
+- Introduce color system. ([bbf49b7](https://github.com/haus23/tipprunde/commit/bbf49b7))
+- Patch update react router. ([6bd5498](https://github.com/haus23/tipprunde/commit/6bd5498))
+- Upgrade deps. ([e328d67](https://github.com/haus23/tipprunde/commit/e328d67))
+- Update dev deps and typings. ([cfce40a](https://github.com/haus23/tipprunde/commit/cfce40a))
+- Create user prefs cookie and its handling. ([26235c5](https://github.com/haus23/tipprunde/commit/26235c5))
+- Add valibot to validate user inputs ([94fffdf](https://github.com/haus23/tipprunde/commit/94fffdf))
+
 ## v0.1.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.8...v0.1.0)
