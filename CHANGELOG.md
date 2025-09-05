@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.2.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.0...v0.2.0-pre.1)
+
+### 🚀 Enhancements
+
+- Add dark/light toggle. ([f3d51d7](https://github.com/haus23/tipprunde/commit/f3d51d7))
+
+### 💅 Refactors
+
+- Use schema to validate session with default values. ([23cd84d](https://github.com/haus23/tipprunde/commit/23cd84d))
+
 ## v0.2.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.2.0-pre.0)
