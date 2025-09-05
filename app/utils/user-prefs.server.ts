@@ -5,13 +5,9 @@ export const ColorSchemeSchema = v.picklist(["light", "dark", "system"]);
 export type ColorScheme = v.InferInput<typeof ColorSchemeSchema>;
 
 export const UserPreferencesSchema = v.object({
-  colorScheme: ColorSchemeSchema,
+  colorScheme: v.optional(ColorSchemeSchema, "system"),
 });
 export type UserPreferences = v.InferInput<typeof UserPreferencesSchema>;
-
-const defaultPreferences: UserPreferences = {
-  colorScheme: "system",
-};
 
 // Create session storage for user preferences
 const { getSession, commitSession, destroySession } =
@@ -31,9 +27,8 @@ export async function getUserPreferences(
 ): Promise<UserPreferences> {
   const session = await getSession(request.headers.get("Cookie"));
 
-  const preferences: UserPreferences = {
-    colorScheme: session.get("colorScheme") || defaultPreferences.colorScheme,
-  };
+  // Parse and validate session data with defaults
+  const preferences = v.parse(UserPreferencesSchema, session.data);
 
   return preferences;
 }
