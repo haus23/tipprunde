@@ -1,6 +1,21 @@
 @import "tailwindcss";
 @import "./theme/mauve-violet.css";
 
+/* Dark mode: css class dark or system class + media query */
+@custom-variant dark {
+  /* This supports the .dark class */
+  &:where(.dark *, .dark) {
+    @slot;
+  }
+
+  /* This supports the .system class + media query */
+  &:where(.system *, .system) {
+    @media (prefers-color-scheme: dark) {
+      @slot;
+    }
+  }
+}
+
 @theme {
     --default-transition-duration: 150ms;
 
@@ -30,10 +45,16 @@
     --background-color-accent-surface-hover: var(--accent-4);
 }
 
-:root {
+@layer base {
+  :root {
     color-scheme: light dark;
-}
+  }
 
-.dark {
+  .light {
+    color-scheme: light;
+  }
+
+  .dark {
     color-scheme: dark;
+  }
 }

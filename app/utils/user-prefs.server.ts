@@ -1,13 +1,7 @@
 import { createCookieSessionStorage } from "react-router";
 import * as v from "valibot";
 
-export const ColorSchemeSchema = v.picklist(["light", "dark", "system"]);
-export type ColorScheme = v.InferInput<typeof ColorSchemeSchema>;
-
-export const UserPreferencesSchema = v.object({
-  colorScheme: v.optional(ColorSchemeSchema, "system"),
-});
-export type UserPreferences = v.InferInput<typeof UserPreferencesSchema>;
+import { UserPreferencesSchema, type UserPreferences } from "./user-prefs";
 
 // Create session storage for user preferences
 const { getSession, commitSession, destroySession } =

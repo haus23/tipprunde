@@ -1,6 +1,7 @@
 import { data, type ActionFunctionArgs } from "react-router";
 import * as v from "valibot";
-import { setUserPreference, ColorSchemeSchema } from "~/utils/user-prefs.server";
+import { setUserPreference } from "~/utils/user-prefs.server";
+import { ColorSchemeSchema } from "~/utils/user-prefs";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -11,7 +12,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if (!result.success) {
     return data(
       { success: false, error: "Invalid color scheme", issues: result.issues },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -26,6 +27,6 @@ export async function action({ request }: ActionFunctionArgs) {
       headers: {
         "Set-Cookie": cookie,
       },
-    }
+    },
   );
 }

@@ -1,6 +1,7 @@
 import { DicesIcon, TableIcon, UsersIcon } from "lucide-react";
 import { Dialog, Modal, ModalOverlay } from "react-aria-components";
 import { Link, NavLink } from "~/components/ui/link";
+import { ThemeMenu } from "./theme-menu";
 import { Logo } from "./logo";
 import { useShell } from "./app-shell";
 
@@ -50,9 +51,12 @@ export function AppSidebar() {
           <HomeLink />
         </div>
         <hr className="border-default" />
-        <nav className="flex flex-col gap-1.5 px-2 py-4">
+        <nav className="flex flex-col gap-1.5 px-2 py-4 flex-1">
           <NavItems />
         </nav>
+        <div className="p-2 border-t border-default">
+          <ThemeMenu />
+        </div>
       </aside>
 
       {/* Mobile Navigation Modal */}
@@ -68,9 +72,12 @@ export function AppSidebar() {
               <HomeLink />
             </div>
             <hr className="border-default" />
-            <nav className="flex flex-col gap-1.5 px-2 py-4">
+            <nav className="flex flex-col gap-1.5 px-2 py-4 flex-1">
               <NavItems />
             </nav>
+            <div className="p-2 border-t border-default">
+              <ThemeMenu />
+            </div>
           </Dialog>
         </Modal>
       </ModalOverlay>
