@@ -12,27 +12,44 @@ const fohNavItems = [
 ];
 
 function HomeLink() {
-  const { closeMobileNav } = useShell();
+  const { closeMobileNav, isDesktopNavCollapsed } = useShell();
 
   return (
-    <Link to="/" className="font-semibold" onClick={closeMobileNav}>
+    <Link
+      to="/"
+      className={`font-semibold ${isDesktopNavCollapsed ? "justify-center" : ""}`}
+      onClick={closeMobileNav}
+    >
       <Logo className="size-10 flex-shrink-0" />
-      <span className="text-lg font-medium tracking-wide">runde.tips</span>
+      <span
+        className={`text-lg font-medium tracking-wide transition-opacity duration-300 ${isDesktopNavCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}
+      >
+        runde.tips
+      </span>
     </Link>
   );
 }
 
 function NavItems() {
-  const { closeMobileNav } = useShell();
+  const { closeMobileNav, isDesktopNavCollapsed } = useShell();
 
   return (
     <>
       {fohNavItems.map((item) => {
         const Icon = item.icon;
         return (
-          <NavLink key={item.label} to={item.route} onClick={closeMobileNav}>
+          <NavLink
+            key={item.label}
+            to={item.route}
+            onClick={closeMobileNav}
+            className={isDesktopNavCollapsed ? "justify-center" : ""}
+          >
             <Icon size={18} />
-            <span>{item.label}</span>
+            <span
+              className={`transition-opacity duration-300 ${isDesktopNavCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}
+            >
+              {item.label}
+            </span>
           </NavLink>
         );
       })}
@@ -41,12 +58,17 @@ function NavItems() {
 }
 
 export function AppSidebar() {
-  const { isMobileNavOpen, closeMobileNav } = useShell();
+  const { isMobileNavOpen, closeMobileNav, isDesktopNavCollapsed } = useShell();
 
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:flex-col w-56 bg-content border-r border-default">
+      <aside
+        className={`
+        hidden md:flex md:flex-col bg-content border-r border-default transition-all duration-300
+        ${isDesktopNavCollapsed ? "w-16" : "w-56"}
+      `}
+      >
         <div className="p-2">
           <HomeLink />
         </div>

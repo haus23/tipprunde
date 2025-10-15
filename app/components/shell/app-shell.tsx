@@ -6,6 +6,8 @@ import { AppSidebar } from "./app-sidebar";
 interface ShellContextType {
   isMobileNavOpen: boolean;
   setMobileNavOpen: (open: boolean) => void;
+  isDesktopNavCollapsed: boolean;
+  setDesktopNavCollapsed: (collapsed: boolean) => void;
 }
 
 const ShellContext = createContext<ShellContextType | undefined>(undefined);
@@ -16,18 +18,23 @@ export function useShell() {
     throw new Error("useShell must be used within AppShell");
   }
   
-  const { isMobileNavOpen, setMobileNavOpen } = context;
+  const { isMobileNavOpen, setMobileNavOpen, isDesktopNavCollapsed, setDesktopNavCollapsed } = context;
   
   return {
     isMobileNavOpen,
     toggleMobileNav: () => setMobileNavOpen(!isMobileNavOpen),
     closeMobileNav: () => setMobileNavOpen(false),
     openMobileNav: () => setMobileNavOpen(true),
+    isDesktopNavCollapsed,
+    toggleDesktopNav: () => setDesktopNavCollapsed(!isDesktopNavCollapsed),
+    collapseDesktopNav: () => setDesktopNavCollapsed(true),
+    expandDesktopNav: () => setDesktopNavCollapsed(false),
   };
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
+  const [isDesktopNavCollapsed, setDesktopNavCollapsed] = useState(false);
 
   // Close mobile nav when switching to desktop
   useIsMobile({
@@ -35,7 +42,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   });
 
   return (
-    <ShellContext value={{ isMobileNavOpen, setMobileNavOpen }}>
+    <ShellContext value={{ isMobileNavOpen, setMobileNavOpen, isDesktopNavCollapsed, setDesktopNavCollapsed }}>
       <div className="flex h-screen bg-app">
         <AppSidebar />
         <div className="flex-1 overflow-auto">

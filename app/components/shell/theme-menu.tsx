@@ -26,14 +26,16 @@ const colorSchemeConfig = {
 
 export function ThemeMenu() {
   const { colorScheme, setColorScheme } = useTheme();
-  const { closeMobileNav } = useShell();
+  const { closeMobileNav, isDesktopNavCollapsed } = useShell();
   const CurrentIcon = colorSchemeConfig[colorScheme].icon;
 
   return (
     <MenuTrigger>
-      <Button className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-default hover:bg-hover transition-colors w-full justify-start">
-        <CurrentIcon className="size-4" />
-        <span>Hell-/Dunkel-Modus</span>
+      <Button className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-default hover:bg-hover transition-colors w-full ${isDesktopNavCollapsed ? 'justify-center' : 'justify-start'}`}>
+        <CurrentIcon size={18} className="flex-shrink-0" />
+        <span className={`transition-opacity duration-300 ${isDesktopNavCollapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
+          Hell-/Dunkel-Modus
+        </span>
       </Button>
       <Popover
         className="bg-popover border border-default rounded-lg shadow-lg p-1 min-w-56"
@@ -62,7 +64,7 @@ export function ThemeMenu() {
                   }
                 `}
               >
-                <Icon className="size-4" />
+                <Icon size={18} className="flex-shrink-0" />
                 <span>{config.label}</span>
                 {isSelected && <span className="ml-auto text-xs">✓</span>}
               </MenuItem>

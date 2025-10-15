@@ -5,9 +5,15 @@
 ### v0.2.0
 
 - Collapsible Sidebar on Desktop
-- Dark/Light Toggle
- 
+- CSS Variable for sidebar width (collapsed or not)
+- Persist collapsed state in prefs
+
 ### v0.3.0 (Auth)
+
+- Auth Session
+- Login Form
+- Prisma Setup
+- Email Validation
 
 
 ## Claude Code instructions:
