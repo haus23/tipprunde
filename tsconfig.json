@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    // Code
+    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    // Strictness
+    "strict": true,
+
+    // Bundler
+    "module": "Preserve",
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "noEmit": true,
+    "isolatedModules": true,
+
+    // Next
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "allowJs": false,
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}
