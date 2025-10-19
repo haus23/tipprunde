@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    // Code
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+
+    // Bundler
+    "module": "Preserve",
+    "target": "ES2024",
+
+    // Type Checking
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true
+  }
+}
