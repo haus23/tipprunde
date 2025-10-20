@@ -11,6 +11,11 @@
     // Type Checking
     "noEmit": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+
+    // DX
+    "paths": {
+      "~/*": ["./app/*"]
+    }
   }
 }
