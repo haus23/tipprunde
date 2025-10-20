@@ -1,5 +1,14 @@
 {
+  "include": [
+    "**/*",
+    "**/.server/**/*",
+    "**/.client/**/*",
+    ".react-router/types/**/*"
+  ],
   "compilerOptions": {
+    // File Layout
+    "rootDirs": [".", "./.react-router/types"],
+
     // Code
     "jsx": "react-jsx",
     "types": ["vite/client"],
@@ -7,6 +16,7 @@
     // Bundler
     "module": "Preserve",
     "target": "ES2024",
+    "verbatimModuleSyntax": true,
 
     // Type Checking
     "noEmit": true,
