@@ -1,4 +1,4 @@
-export function ServerComponent() {
+export default function IndexRoute() {
   return (
     <div>
       <title>Tabelle</title>
