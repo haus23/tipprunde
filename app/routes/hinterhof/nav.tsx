@@ -1,15 +1,13 @@
 import { NavLink } from "react-router";
 
-export function FohNav() {
+export function HinterhofNav() {
   return (
     <div className="grow flex flex-col justify-between">
       <div className="flex flex-col gap-2">
-        <NavLink to="/">Tabelle</NavLink>
-        <NavLink to="/spieler">Spieler</NavLink>
-        <NavLink to="/spiele">Spiele</NavLink>
+        <NavLink to="/hinterhof">Dashboard</NavLink>
       </div>
       <div className="flex flex-col gap-2">
-        <NavLink to="/hinterhof">Manager</NavLink>
+        <NavLink to="/hinterhof/spieler">Spieler</NavLink>
       </div>
     </div>
   );

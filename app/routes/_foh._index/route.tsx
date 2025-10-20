@@ -1,4 +1,4 @@
-export default function IndexRoute() {
+export default function RankingRoute() {
   return (
     <div>
       <title>Tabelle</title>

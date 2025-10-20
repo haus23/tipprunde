@@ -10,7 +10,7 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
           <span className="text-lg">runde.tips</span>
         </Link>
       </div>
-      <div className="grow p-2">{children}</div>
+      <div className="grow p-2 flex flex-col">{children}</div>
     </div>
   );
 }

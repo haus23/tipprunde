@@ -1,4 +1,4 @@
-export default function IndexRoute() {
+export default function MatchesRoute() {
   return (
     <div>
       <title>Spiele</title>

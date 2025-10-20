@@ -1,4 +1,4 @@
-export default function IndexRoute() {
+export default function PlayersRoute() {
   return (
     <div>
       <title>Spieler</title>
