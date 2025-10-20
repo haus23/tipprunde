@@ -7,3 +7,7 @@ build/
 
 # Dev Environment
 .env
+database/dev.db
+
+# Prisma Client
+database/client/
