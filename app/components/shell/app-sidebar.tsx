@@ -1,3 +1,16 @@
+import { Link } from "react-router";
+import { Logo } from "./logo";
+
 export function AppSidebar({ children }: { children: React.ReactNode }) {
-  return <div>{children}</div>;
+  return (
+    <div className="flex flex-col border-r">
+      <div className="p-2">
+        <Link to="/" className="flex items-center gap-1">
+          <Logo className="size-8" />
+          <span className="text-lg">runde.tips</span>
+        </Link>
+      </div>
+      <div className="grow p-2">{children}</div>
+    </div>
+  );
 }
