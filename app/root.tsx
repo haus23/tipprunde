@@ -17,12 +17,7 @@ export const middleware: Route.MiddlewareFunction[] = [
   async ({ context }) => {
     console.log("Root auth middleware");
 
-    context.set(userContext, {
-      id: 1,
-      name: "Micha",
-      email: "",
-      roles: "ADMIN",
-    });
+    context.set(userContext, null);
   },
 ];
 
