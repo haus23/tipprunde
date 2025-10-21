@@ -1,4 +1,4 @@
-import { db } from "../db.server";
+import { db } from "./_db.server";
 
 /**
  * Loads user by its email address
