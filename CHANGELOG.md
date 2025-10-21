@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.0-pre.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.2...v0.1.0-pre.3)
+
+### 🚀 Enhancements
+
+- Add runtime validation of env vars. ([27fb688](https://github.com/haus23/tipprunde/commit/27fb688))
+- Create totp code. ([dd727ed](https://github.com/haus23/tipprunde/commit/dd727ed))
+- Add otp input component. ([efabc8c](https://github.com/haus23/tipprunde/commit/efabc8c))
+- Implement login flow. ([42a82c1](https://github.com/haus23/tipprunde/commit/42a82c1))
+
+### 💅 Refactors
+
+- Prepare onboarding with email validation and create auth session. ([302c0a4](https://github.com/haus23/tipprunde/commit/302c0a4))
+- Move the db singleton into the db folder. ([9bc72c7](https://github.com/haus23/tipprunde/commit/9bc72c7))
+
 ## v0.1.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.1...v0.1.0-pre.2)
