@@ -10,4 +10,4 @@ build/
 database/dev.db
 
 # Prisma Client
-database/client/
+app/utils/prisma/
