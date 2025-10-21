@@ -1,27 +1,14 @@
-import { data, useFetcher } from "react-router";
+import { useFetcher } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { TextField } from "~/components/ui/text-field";
 
 import type { Route } from "./+types/route";
-import { db } from "~/utils/db.server";
-import { redirect } from "react-router";
+import { prepareOnboarding } from "~/utils/auth.server";
 
 export async function action({ request }: Route.ActionArgs) {
-  const formData = await request.formData();
-  const email = String(formData.get("email"));
-
-  const user = await db.user.findUnique({ where: { email } });
-
-  if (!user) {
-    return data(
-      { errors: { email: "Unbekannte Email-Adresse. Wende dich an Micha." } },
-      { status: 400 },
-    );
-  }
-
-  return redirect("/verify");
+  return await prepareOnboarding(request);
 }
 
 export default function LoginRoute() {
