@@ -21,7 +21,7 @@ export default function LoginRoute() {
       <meta name="description" content="Anmeldung bei der Haus23 Tipprunde" />
       <h1 className="text-2xl font-medium">Anmeldung</h1>
       <div>
-        <fetcher.Form method="post" className="flex flex-col gap-2">
+        <fetcher.Form method="post" className="flex flex-col gap-4">
           <TextField>
             <Label htmlFor="email">Email</Label>
             <Input type="email" name="email" id="email" required />

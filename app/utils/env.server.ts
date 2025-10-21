@@ -13,6 +13,9 @@ const envSchema = v.object({
   // TOTP Settings
   TOTP_PERIOD: v.pipe(v.string(), v.transform(Number)),
   TOTP_ATTEMPTS: v.pipe(v.string(), v.transform(Number)),
+
+  // Session duration (server maximum)
+  SESSION_DURATION: v.pipe(v.string(), v.transform(Number)),
 });
 
 export const env = v.parse(envSchema, process.env);
