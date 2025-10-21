@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.1.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.1...v0.1.0-pre.2)
+
+### 🚀 Enhancements
+
+- Add basic hinterhof backend routes. ([67e7952](https://github.com/haus23/tipprunde/commit/67e7952))
+- Implement basic auth concept as proof-of-concept. ([7069e6e](https://github.com/haus23/tipprunde/commit/7069e6e))
+- Add prisma orm. ([216fa9a](https://github.com/haus23/tipprunde/commit/216fa9a))
+- Add ui components and implement login form. ([56f467e](https://github.com/haus23/tipprunde/commit/56f467e))
+- Add singleton utility ([4773e64](https://github.com/haus23/tipprunde/commit/4773e64))
+- Validate email address implemented. ([05ec428](https://github.com/haus23/tipprunde/commit/05ec428))
+
+### 💅 Refactors
+
+- Simplify prisma client generation. ([94320eb](https://github.com/haus23/tipprunde/commit/94320eb))
+
 ## v0.1.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.0...v0.1.0-pre.1)
