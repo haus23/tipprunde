@@ -9,6 +9,10 @@ const envSchema = v.object({
 
   // Secrets
   AUTH_SESSION_SECRET: v.string(),
+
+  // TOTP Settings
+  TOTP_PERIOD: v.pipe(v.string(), v.transform(Number)),
+  TOTP_ATTEMPTS: v.pipe(v.string(), v.transform(Number)),
 });
 
 export const env = v.parse(envSchema, process.env);

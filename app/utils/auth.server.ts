@@ -2,6 +2,10 @@ import { createCookieSessionStorage } from "react-router";
 import { env } from "./env.server";
 import { getUserByEmail } from "./db/users";
 import { redirect } from "react-router";
+import { createLoginCode } from "./totp.server";
+
+// The Auth Session
+//
 
 type AuthSessionData = {};
 
@@ -27,6 +31,9 @@ async function getAuthSession(request: Request) {
   return authSessionStorage.getSession(request.headers.get("Cookie"));
 }
 
+// Auth Flow Helpers
+//
+
 /**
  * Prepares users onboarding. Expects email in request form data.
  *
@@ -47,6 +54,9 @@ export async function prepareOnboarding(request: Request) {
       errors: { email: "Unbekannte Email-Adresse. Wende dich an Micha." },
     };
   }
+
+  const code = await createLoginCode(email);
+  console.log("CODE", code);
 
   const session = await getAuthSession(request);
   session.flash("email", email);
