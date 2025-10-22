@@ -1,4 +1,6 @@
-import { useFetcher } from "react-router";
+import { useSubmit } from "react-router";
+import { Form } from "~/components/ui/form";
+import { FieldError } from "~/components/ui/field-error";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { OtpInput } from "~/components/ui/otp-input";
@@ -18,9 +20,12 @@ export async function action({ request }: Route.ActionArgs) {
   return await verifyOnboardingCode(request);
 }
 
-export default function VerifyRoute() {
-  const fetcher = useFetcher();
-  const errors = fetcher.data?.errors;
+export default function VerifyRoute({ actionData }: Route.ComponentProps) {
+  const submit = useSubmit();
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    submit(e.currentTarget);
+  };
 
   return (
     <div className="p-2 flex flex-col gap-4">
@@ -28,19 +33,27 @@ export default function VerifyRoute() {
       <meta name="description" content="Einlass bei der Haus23 Tipprunde" />
       <h1 className="text-2xl font-medium">Einlass</h1>
       <div>
-        <fetcher.Form
+        <Form
+          onSubmit={onSubmit}
+          validationErrors={actionData?.errors}
           method="post"
           className="flex flex-col items-center gap-4"
         >
-          <TextField className="items-center">
-            <Label htmlFor="code">Code</Label>
-            <OtpInput maxLength={6} name="code" id="code" autoFocus />
-            {errors?.code ? <em className="text-sm">{errors.code}</em> : null}
+          <TextField
+            maxLength={6}
+            name="code"
+            isRequired
+            className="items-center"
+            autoFocus
+          >
+            <Label>Code</Label>
+            <OtpInput />
+            <FieldError />
           </TextField>
           <div>
             <Button type="submit">Code prüfen</Button>
           </div>
-        </fetcher.Form>
+        </Form>
       </div>
     </div>
   );
