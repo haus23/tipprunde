@@ -20,7 +20,6 @@ export async function loader() {
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  console.log("prepare onboarding");
   return await prepareOnboarding(request);
 }
 

@@ -12,7 +12,10 @@ export async function createSession(
   expires: Date,
   rememberMe: boolean,
 ) {
-  return await db.session.create({ data: { userId, expires, rememberMe } });
+  // root user has no user table entry, so we use null for the userId here
+  return await db.session.create({
+    data: { userId: userId || null, expires, rememberMe },
+  });
 }
 
 /**
@@ -21,7 +24,12 @@ export async function createSession(
  * @param id - Id of the requested session
  */
 export async function getSession(id: string) {
-  return await db.session.findFirst({ where: { id } });
+  const session = await db.session.findFirst({ where: { id } });
+  // root user has no user table entry, so we use null for the userId here
+  if (session && session.userId === null) {
+    session.userId = 0;
+  }
+  return session;
 }
 
 /**
