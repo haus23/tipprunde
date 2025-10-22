@@ -1,6 +1,29 @@
 # Changelog
 
 
+## v0.1.0-pre.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.4...v0.1.0-pre.5)
+
+### 🚀 Enhancements
+
+- Guard the auth routes. ([b382745](https://github.com/haus23/tipprunde/commit/b382745))
+- Add a root user. ([d76ee2b](https://github.com/haus23/tipprunde/commit/d76ee2b))
+
+### 🩹 Fixes
+
+- Add missing loader in login route. See https://reactrouter.com/how-to/middleware#server-middleware ([e8cbeee](https://github.com/haus23/tipprunde/commit/e8cbeee))
+
+### 💅 Refactors
+
+- Make icons smaller. Removed log. ([24ba52e](https://github.com/haus23/tipprunde/commit/24ba52e))
+- Join user server files. ([cf3abdf](https://github.com/haus23/tipprunde/commit/cf3abdf))
+
+### 🏡 Chore
+
+- Update dev toolchain. ([b51bd47](https://github.com/haus23/tipprunde/commit/b51bd47))
+- Upgrade prisma. Prepare for prisma v7 ([fc241bf](https://github.com/haus23/tipprunde/commit/fc241bf))
+
 ## v0.1.0-pre.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.3...v0.1.0-pre.4)
