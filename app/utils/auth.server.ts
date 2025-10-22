@@ -1,38 +1,9 @@
-import { createCookieSessionStorage } from "react-router";
 import { env } from "./env.server";
 import { getUserByEmail } from "./db/users";
 import { redirect } from "react-router";
 import { createLoginCode, verifyLoginCode } from "./totp.server";
 import { createSession } from "./db/sessions";
-
-// The Auth Session
-//
-
-type AuthSessionData = {
-  sessionId: string;
-};
-
-type AuthSessionFlashData = {
-  email: string;
-};
-
-const authSessionStorage = createCookieSessionStorage<
-  AuthSessionData,
-  AuthSessionFlashData
->({
-  cookie: {
-    name: "__auth",
-    sameSite: "lax",
-    path: "/",
-    httpOnly: true,
-    secrets: [env.AUTH_SESSION_SECRET],
-    secure: process.env.NODE_ENV === "production",
-  },
-});
-
-async function getAuthSession(request: Request) {
-  return authSessionStorage.getSession(request.headers.get("Cookie"));
-}
+import { commitAuthSession, getAuthSession } from "./sessions.server";
 
 // Auth Flow Helpers
 //
@@ -66,7 +37,7 @@ export async function prepareOnboarding(request: Request) {
 
   throw redirect("/verify", {
     headers: {
-      "Set-Cookie": await authSessionStorage.commitSession(session),
+      "Set-Cookie": await commitAuthSession(session),
     },
   });
 }
@@ -113,7 +84,7 @@ export async function verifyOnboardingCode(request: Request) {
     if (!verifyResult.retry) {
       throw redirect("/login", {
         headers: {
-          "Set-Cookie": await authSessionStorage.commitSession(session),
+          "Set-Cookie": await commitAuthSession(session),
         },
       });
     }
@@ -128,7 +99,7 @@ export async function verifyOnboardingCode(request: Request) {
 
   throw redirect("/", {
     headers: {
-      "Set-Cookie": await authSessionStorage.commitSession(session),
+      "Set-Cookie": await commitAuthSession(session),
     },
   });
 }
