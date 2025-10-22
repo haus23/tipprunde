@@ -1,6 +1,5 @@
 import { Links, Outlet, Scripts, ScrollRestoration } from "react-router";
-import { userContext } from "./utils/user.context";
-import { getUser } from "./utils/user.server";
+import { getUser, userContext } from "./utils/user.server";
 
 import type { Route } from "./+types/root";
 

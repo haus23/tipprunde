@@ -1,6 +1,9 @@
+import { createContext } from "react-router";
 import { deleteSession, getSession } from "./db/sessions";
-import { getUserById } from "./db/users";
+import { getUserById, type User } from "./db/users";
 import { destroyAuthSession, getAuthSession } from "./sessions.server";
+
+export const userContext = createContext<User | null>(null);
 
 /**
  * Validates auth session and returns logged-in user or null.

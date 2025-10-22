@@ -6,7 +6,7 @@ import { TextField } from "~/components/ui/text-field";
 
 import type { Route } from "./+types/route";
 import { prepareOnboarding } from "~/utils/auth.server";
-import { userContext } from "~/utils/user.context";
+import { userContext } from "~/utils/user.server";
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ context }) => {

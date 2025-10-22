@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 import { AppShell } from "~/components/shell/app-shell";
 import { AppSidebar } from "~/components/shell/app-sidebar";
 import { HinterhofNav } from "./nav";
-import { userContext } from "~/utils/user.context";
+import { userContext } from "~/utils/user.server";
 import { redirect } from "react-router";
 
 import type { Route } from "./+types/route";
