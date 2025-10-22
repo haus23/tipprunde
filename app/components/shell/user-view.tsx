@@ -11,12 +11,12 @@ export function UserView() {
     return (
       <div className="flex flex-col gap-2">
         <NavLink to="/hinterhof">
-          <SettingsIcon className="size-5" />
+          <SettingsIcon size={18} />
           <span>Manager</span>
         </NavLink>
         <fetcher.Form method="post" action="/logout" className="flex flex-col">
           <button type="submit" className="flex items-center gap-2 px-1">
-            <LogOutIcon className="size-5" />
+            <LogOutIcon size={18} />
             <span>Log Out</span>
           </button>
         </fetcher.Form>
@@ -26,7 +26,7 @@ export function UserView() {
     return (
       <div>
         <NavLink to="/login">
-          <LogInIcon className="size-5" />
+          <LogInIcon size={18} />
           <span>Log In</span>
         </NavLink>
       </div>

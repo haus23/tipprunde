@@ -68,7 +68,6 @@ export async function verifyOnboardingCode(request: Request) {
 
   const formData = await request.formData();
   const code = String(formData.get("code"));
-  console.log(email, code);
 
   if (!code) {
     return {

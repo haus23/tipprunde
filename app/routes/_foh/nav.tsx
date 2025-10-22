@@ -6,15 +6,15 @@ export function FohNav() {
     <div className="grow flex flex-col justify-between">
       <div className="flex flex-col gap-2">
         <NavLink to="/">
-          <TableIcon className="size-5" />
+          <TableIcon size={18} />
           <span>Tabelle</span>
         </NavLink>
         <NavLink to="/spieler">
-          <UsersIcon className="size-5" />
+          <UsersIcon size={18} />
           <span>Spieler</span>
         </NavLink>
         <NavLink to="/spiele">
-          <DicesIcon className="size-5" />
+          <DicesIcon size={18} />
           <span>Spiele</span>
         </NavLink>
       </div>

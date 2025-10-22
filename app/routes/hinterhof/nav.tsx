@@ -6,13 +6,13 @@ export function HinterhofNav() {
     <div className="grow flex flex-col justify-between">
       <div className="flex flex-col gap-2">
         <NavLink to="/hinterhof">
-          <HouseIcon className="size-5" />
+          <HouseIcon size={18} />
           <span>Dashboard</span>
         </NavLink>
       </div>
       <div className="flex flex-col gap-2">
         <NavLink to="/hinterhof/spieler">
-          <UsersIcon className="size-5" />
+          <UsersIcon size={18} />
           <span>Spieler</span>
         </NavLink>
       </div>
