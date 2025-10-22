@@ -16,8 +16,6 @@ export function links() {
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ context, request }, next) => {
-    console.log("Root auth middleware");
-
     const { user, authCookieHeader } = await getUser(request);
     context.set(userContext, user);
 
@@ -25,12 +23,12 @@ export const middleware: Route.MiddlewareFunction[] = [
     if (authCookieHeader) {
       response.headers.append("Set-Cookie", authCookieHeader);
     }
+
+    return response;
   },
 ];
 
 export function loader({ context }: Route.LoaderArgs) {
-  console.log("Root loader");
-
   const user = context.get(userContext);
   return { user };
 }

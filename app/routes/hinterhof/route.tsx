@@ -9,8 +9,6 @@ import type { Route } from "./+types/route";
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ context }) => {
-    console.log("Hinterhof auth middleware");
-
     const user = context.get(userContext);
     if (!user || !user.isManager) {
       throw redirect("/login");
@@ -19,7 +17,6 @@ export const middleware: Route.MiddlewareFunction[] = [
 ];
 
 export function loader() {
-  console.log("Hinterhof loader");
   return null;
 }
 

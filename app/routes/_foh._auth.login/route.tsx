@@ -15,7 +15,12 @@ export const middleware: Route.MiddlewareFunction[] = [
   },
 ];
 
+export async function loader() {
+  return null;
+}
+
 export async function action({ request }: Route.ActionArgs) {
+  console.log("prepare onboarding");
   return await prepareOnboarding(request);
 }
 
