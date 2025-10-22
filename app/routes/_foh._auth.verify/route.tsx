@@ -3,9 +3,16 @@ import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { OtpInput } from "~/components/ui/otp-input";
 import { TextField } from "~/components/ui/text-field";
-import { verifyOnboardingCode } from "~/utils/auth.server";
+import {
+  ensureOnboardingSession,
+  verifyOnboardingCode,
+} from "~/utils/auth.server";
 
 import type { Route } from "./+types/route";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  await ensureOnboardingSession(request);
+}
 
 export async function action({ request }: Route.ActionArgs) {
   return await verifyOnboardingCode(request);

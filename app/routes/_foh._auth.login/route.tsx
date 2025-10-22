@@ -1,4 +1,4 @@
-import { useFetcher } from "react-router";
+import { redirect, useFetcher } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -6,6 +6,14 @@ import { TextField } from "~/components/ui/text-field";
 
 import type { Route } from "./+types/route";
 import { prepareOnboarding } from "~/utils/auth.server";
+import { userContext } from "~/utils/user.context";
+
+export const middleware: Route.MiddlewareFunction[] = [
+  async ({ context }) => {
+    const user = context.get(userContext);
+    if (user) throw redirect("/");
+  },
+];
 
 export async function action({ request }: Route.ActionArgs) {
   return await prepareOnboarding(request);

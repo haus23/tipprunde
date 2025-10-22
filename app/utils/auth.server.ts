@@ -47,6 +47,20 @@ export async function prepareOnboarding(request: Request) {
 }
 
 /**
+ * Ensures that there is an ongoing onboarding session.
+ *
+ * @param request Request object
+ */
+export async function ensureOnboardingSession(request: Request) {
+  const session = await getAuthSession(request);
+  const email = session.get("email");
+
+  if (!email) {
+    throw redirect("/login");
+  }
+}
+
+/**
  * Performs user login
  *
  * Expects valid email in session and totp code in request.
