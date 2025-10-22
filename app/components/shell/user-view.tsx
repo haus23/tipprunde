@@ -1,9 +1,11 @@
 import { useUser } from "~/utils/user";
 import { NavLink } from "../ui/nav-link";
 import { LogInIcon, LogOutIcon, SettingsIcon } from "lucide-react";
+import { useFetcher } from "react-router";
 
 export function UserView() {
   const user = useUser();
+  const fetcher = useFetcher();
 
   if (user) {
     return (
@@ -12,10 +14,12 @@ export function UserView() {
           <SettingsIcon className="size-5" />
           <span>Manager</span>
         </NavLink>
-        <NavLink to="/logout">
-          <LogOutIcon className="size-5" />
-          <span>Log Out</span>
-        </NavLink>
+        <fetcher.Form method="post" action="/logout" className="flex flex-col">
+          <button type="submit" className="flex items-center gap-2 px-1">
+            <LogOutIcon className="size-5" />
+            <span>Log Out</span>
+          </button>
+        </fetcher.Form>
       </div>
     );
   } else {

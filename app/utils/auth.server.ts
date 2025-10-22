@@ -2,8 +2,12 @@ import { env } from "./env.server";
 import { getUserByEmail } from "./db/users";
 import { redirect } from "react-router";
 import { createLoginCode, verifyLoginCode } from "./totp.server";
-import { createSession } from "./db/sessions";
-import { commitAuthSession, getAuthSession } from "./sessions.server";
+import { createSession, deleteSession } from "./db/sessions";
+import {
+  commitAuthSession,
+  destroyAuthSession,
+  getAuthSession,
+} from "./sessions.server";
 
 // Auth Flow Helpers
 //
@@ -102,4 +106,25 @@ export async function verifyOnboardingCode(request: Request) {
       "Set-Cookie": await commitAuthSession(session),
     },
   });
+}
+
+/**
+ * Performs user logout and redirects to referer or home if no referer is available.
+ *
+ * @param request Request object
+ */
+export async function logout(request: Request) {
+  const session = await getAuthSession(request);
+  const sessionId = session.get("sessionId");
+
+  if (sessionId) {
+    await deleteSession(sessionId);
+  }
+
+  const headers = new Headers({
+    "Set-Cookie": await destroyAuthSession(session),
+  });
+
+  const redirectUrl = request.headers.get("Referer") || "/";
+  throw redirect(redirectUrl, { headers });
 }
