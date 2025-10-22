@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.0-pre.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.3...v0.1.0-pre.4)
+
+### 🚀 Enhancements
+
+- Validates user session and sets user context. ([71318bc](https://github.com/haus23/tipprunde/commit/71318bc))
+- Add nav-link component. Use lucide icons. ([ff9a959](https://github.com/haus23/tipprunde/commit/ff9a959))
+- Add user view. ([21b69ea](https://github.com/haus23/tipprunde/commit/21b69ea))
+- Implement logout flow. ([7e6adbb](https://github.com/haus23/tipprunde/commit/7e6adbb))
+
+### 💅 Refactors
+
+- Extract auth session ([d98305a](https://github.com/haus23/tipprunde/commit/d98305a))
+- Add user result extension and use prisma type ([23cf263](https://github.com/haus23/tipprunde/commit/23cf263))
+
 ## v0.1.0-pre.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.2...v0.1.0-pre.3)
