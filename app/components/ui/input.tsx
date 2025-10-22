@@ -1,11 +1,10 @@
+import { Input as _Input, type InputProps } from "react-aria-components";
 import { cva } from "~/utils/cva";
 
 const inputClasses = cva({
   base: ["px-3 py-1.5 border"],
 });
 
-export interface InputProps extends React.ComponentProps<"input"> {}
-
 export function Input({ className, ...props }: InputProps) {
-  return <input className={inputClasses({ className })} {...props} />;
+  return <_Input className={inputClasses({ className })} {...props} />;
 }

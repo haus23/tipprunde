@@ -1,4 +1,4 @@
-import { redirect, useFetcher } from "react-router";
+import { redirect } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -7,6 +7,9 @@ import { TextField } from "~/components/ui/text-field";
 import type { Route } from "./+types/route";
 import { prepareOnboarding } from "~/utils/auth.server";
 import { userContext } from "~/utils/user.server";
+import { Form } from "~/components/ui/form";
+import { useSubmit } from "react-router";
+import { FieldError } from "~/components/ui/field-error";
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ context }) => {
@@ -23,9 +26,12 @@ export async function action({ request }: Route.ActionArgs) {
   return await prepareOnboarding(request);
 }
 
-export default function LoginRoute() {
-  const fetcher = useFetcher();
-  const errors = fetcher.data?.errors;
+export default function LoginRoute({ actionData }: Route.ComponentProps) {
+  const submit = useSubmit();
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    submit(e.currentTarget);
+  };
 
   return (
     <div className="p-2 flex flex-col gap-4">
@@ -33,16 +39,21 @@ export default function LoginRoute() {
       <meta name="description" content="Anmeldung bei der Haus23 Tipprunde" />
       <h1 className="text-2xl font-medium">Anmeldung</h1>
       <div>
-        <fetcher.Form method="post" className="flex flex-col gap-4">
-          <TextField>
-            <Label htmlFor="email">Email</Label>
-            <Input type="email" name="email" id="email" required />
-            {errors?.email ? <em className="text-sm">{errors.email}</em> : null}
+        <Form
+          onSubmit={onSubmit}
+          validationErrors={actionData?.errors}
+          method="post"
+          className="flex flex-col gap-4"
+        >
+          <TextField type="email" name="email" isRequired>
+            <Label>Email</Label>
+            <Input />
+            <FieldError />
           </TextField>
           <div>
             <Button type="submit">Code anfordern</Button>
           </div>
-        </fetcher.Form>
+        </Form>
       </div>
     </div>
   );
