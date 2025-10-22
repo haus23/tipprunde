@@ -1,4 +1,11 @@
+import type { Prisma } from "../prisma/client";
 import { db } from "./_db.server";
+
+export type User = Prisma.Result<
+  typeof db.user,
+  Prisma.UserFindFirstArgs,
+  "findFirst"
+>;
 
 /**
  * Loads user by its email address

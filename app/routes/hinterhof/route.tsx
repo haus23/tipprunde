@@ -12,7 +12,7 @@ export const middleware: Route.MiddlewareFunction[] = [
     console.log("Hinterhof auth middleware");
 
     const user = context.get(userContext);
-    if (!user || !user.roles.includes("ADMIN")) {
+    if (!user || !user.isManager) {
       throw redirect("/login");
     }
   },
