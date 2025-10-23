@@ -7,14 +7,10 @@ import { db } from "./_db.server";
  * @param expires - Expiration date
  * @param rememberMe - True if the user wants to stay logged in forever
  */
-export async function createSession(
-  userId: number,
-  expires: Date,
-  rememberMe: boolean,
-) {
+export async function createSession(userId: number, expires: Date) {
   // root user has no user table entry, so we use null for the userId here
   return await db.session.create({
-    data: { userId: userId || null, expires, rememberMe },
+    data: { userId: userId || null, expires },
   });
 }
 

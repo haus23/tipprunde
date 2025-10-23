@@ -24,6 +24,7 @@ import {
 export async function prepareOnboarding(request: Request) {
   const formData = await request.formData();
   const email = String(formData.get("email"));
+  const rememberMe = String(formData.get("rememberMe")) === "on";
 
   const user = await getUserByEmail(email);
 
@@ -38,6 +39,7 @@ export async function prepareOnboarding(request: Request) {
 
   const session = await getAuthSession(request);
   session.flash("email", email);
+  session.flash("rememberMe", rememberMe);
 
   throw redirect("/verify", {
     headers: {
@@ -72,6 +74,7 @@ export async function ensureOnboardingSession(request: Request) {
 export async function verifyOnboardingCode(request: Request) {
   const session = await getAuthSession(request);
   const email = session.get("email");
+  const rememberMe = session.get("rememberMe");
 
   if (!email) {
     throw redirect("/login");
@@ -109,14 +112,19 @@ export async function verifyOnboardingCode(request: Request) {
   }
 
   // Create the app session
-  const expirationDate = new Date(Date.now() + env.SESSION_DURATION * 1000);
-  const { id: sessionId } = await createSession(user.id, expirationDate, false);
+  const expires = rememberMe
+    ? new Date(Date.now() + 1000 * 60 * 60 * 24 * 365) // One year
+    : new Date(Date.now() + env.SESSION_DURATION * 1000);
+  const { id: sessionId } = await createSession(user.id, expires);
 
   session.set("sessionId", sessionId);
 
   throw redirect("/", {
     headers: {
-      "Set-Cookie": await commitAuthSession(session),
+      "Set-Cookie": await commitAuthSession(
+        session,
+        rememberMe ? { expires } : undefined,
+      ),
     },
   });
 }

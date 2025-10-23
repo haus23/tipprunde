@@ -29,11 +29,10 @@ model User {
 }
 
 model Session {
-  id         String   @id @default(ulid())
-  expires    DateTime
-  rememberMe Boolean  @default(false) @map("remember_me")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  id        String   @id @default(ulid())
+  expires   DateTime
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   user   User? @relation(fields: [userId], references: [id])
   userId Int?  @map("user_id")
