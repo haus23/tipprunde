@@ -1,35 +1,26 @@
-import { useUser } from "~/utils/user";
-import { NavLink } from "../ui/nav-link";
-import { LogInIcon, LogOutIcon, SettingsIcon } from "lucide-react";
+import { UserRoundIcon } from "lucide-react";
 import { useFetcher } from "react-router";
+import { useUser } from "~/utils/user";
 
 export function UserView() {
   const user = useUser();
   const fetcher = useFetcher();
 
-  if (user) {
-    return (
-      <div className="flex flex-col gap-2">
-        <NavLink to="/hinterhof">
-          <SettingsIcon size={18} />
-          <span>Manager</span>
-        </NavLink>
-        <fetcher.Form method="post" action="/logout" className="flex flex-col">
-          <button type="submit" className="flex items-center gap-2 px-1">
-            <LogOutIcon size={18} />
-            <span>Log Out</span>
+  if (!user) return null;
+
+  return (
+    <div className="flex items-center gap-2 px-1">
+      <div>
+        <UserRoundIcon size={18} />
+      </div>
+      <div className="flex flex-col text-sm">
+        <span className="font-semibold">{user.name}</span>
+        <fetcher.Form method="post" action="/logout" className="">
+          <button type="submit" className="text-xs hover:underline">
+            Log Out
           </button>
         </fetcher.Form>
       </div>
-    );
-  } else {
-    return (
-      <div>
-        <NavLink to="/login">
-          <LogInIcon size={18} />
-          <span>Log In</span>
-        </NavLink>
-      </div>
-    );
-  }
+    </div>
+  );
 }

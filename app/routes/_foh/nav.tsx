@@ -1,9 +1,12 @@
-import { DicesIcon, TableIcon, UsersIcon } from "lucide-react";
+import { DicesIcon, SettingsIcon, TableIcon, UsersIcon } from "lucide-react";
 import { NavLink } from "~/components/ui/nav-link";
+import { useUser } from "~/utils/user";
 
 export function FohNav() {
+  const user = useUser();
+
   return (
-    <div className="grow flex flex-col justify-between">
+    <div className="px-2 grow flex flex-col justify-between">
       <div className="flex flex-col gap-2">
         <NavLink to="/">
           <TableIcon size={18} />
@@ -18,6 +21,17 @@ export function FohNav() {
           <span>Spiele</span>
         </NavLink>
       </div>
+      {user?.isManager && (
+        <div className="flex flex-col gap-2">
+          <span className="text-xs uppercase">Hinterhof</span>
+          <div className="flex flex-col gap-2">
+            <NavLink to="/hinterhof">
+              <SettingsIcon size={18} />
+              <span>Dashboard</span>
+            </NavLink>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
