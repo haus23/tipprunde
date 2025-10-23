@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v0.1.0-pre.6
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.5...v0.1.0-pre.6)
+
+### 🚀 Enhancements
+
+- Add checkbox component. ([60ed8e2](https://github.com/haus23/tipprunde/commit/60ed8e2))
+- Implement rememberMe handling. ([bd56bc3](https://github.com/haus23/tipprunde/commit/bd56bc3))
+
+### 💅 Refactors
+
+- Migrate login form to rac components. ([56e9ee4](https://github.com/haus23/tipprunde/commit/56e9ee4))
+- Migrate verify form to rac components ([be2d4f8](https://github.com/haus23/tipprunde/commit/be2d4f8))
+
+### 🏡 Chore
+
+- Install react-aria-components. ([55c24ba](https://github.com/haus23/tipprunde/commit/55c24ba))
+
 ## v0.1.0-pre.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.4...v0.1.0-pre.5)
