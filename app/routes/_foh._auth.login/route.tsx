@@ -10,6 +10,7 @@ import { userContext } from "~/utils/user.server";
 import { Form } from "~/components/ui/form";
 import { useSubmit } from "react-router";
 import { FieldError } from "~/components/ui/field-error";
+import { Checkbox } from "~/components/ui/checkbox";
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ context }) => {
@@ -50,6 +51,7 @@ export default function LoginRoute({ actionData }: Route.ComponentProps) {
             <Input />
             <FieldError />
           </TextField>
+          <Checkbox name="rememberMe">Angemeldet bleiben</Checkbox>
           <div>
             <Button type="submit">Code anfordern</Button>
           </div>
