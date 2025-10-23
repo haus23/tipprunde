@@ -41,7 +41,7 @@ export async function prepareOnboarding(request: Request) {
   session.flash("email", email);
   session.flash("rememberMe", rememberMe);
 
-  throw redirect("/verify", {
+  throw redirect("/verify" + new URL(request.url).search, {
     headers: {
       "Set-Cookie": await commitAuthSession(session),
     },
@@ -119,7 +119,10 @@ export async function verifyOnboardingCode(request: Request) {
 
   session.set("sessionId", sessionId);
 
-  throw redirect("/", {
+  const searchParams = new URL(request.url).searchParams;
+  const redirectUrl = searchParams.get("redirectTo") ?? "/";
+
+  throw redirect(decodeURIComponent(redirectUrl), {
     headers: {
       "Set-Cookie": await commitAuthSession(
         session,

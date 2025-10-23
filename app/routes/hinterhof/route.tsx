@@ -6,12 +6,21 @@ import { userContext } from "~/utils/user.server";
 import { redirect } from "react-router";
 
 import type { Route } from "./+types/route";
+import { URL, URLSearchParams } from "url";
+import { createPath } from "react-router";
 
 export const middleware: Route.MiddlewareFunction[] = [
-  async ({ context }) => {
+  async ({ context, request }) => {
     const user = context.get(userContext);
     if (!user || !user.isManager) {
-      throw redirect("/login");
+      // TODO: validate the redirectUrl handling here and in the auth-methods.
+      const url = new URL(request.url);
+      const requestedPath = encodeURIComponent(url.pathname + url.search);
+      const redirectUrl = createPath({
+        pathname: "/login",
+        search: new URLSearchParams({ redirectTo: requestedPath }).toString(),
+      });
+      throw redirect(redirectUrl);
     }
   },
 ];
