@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# GitHub Workflow
+.github/
+
+# Dev Enviroment
+.claude/
+.env
+database/dev.db
+
+# Build
+.react-router/
+build/
+
+# Git
+.git
+.gitignore
+
+# Project files
+CHANGELOG.md
+LICENSE
+README.md
