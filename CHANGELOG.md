@@ -1,6 +1,28 @@
 # Changelog
 
 
+## v0.1.0-pre.7
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.6...v0.1.0-pre.7)
+
+### 🚀 Enhancements
+
+- Redirect back to protected route after login. ([9f29cb8](https://github.com/haus23/tipprunde/commit/9f29cb8))
+- Add send-totp mail. ([85f051c](https://github.com/haus23/tipprunde/commit/85f051c))
+- Implement email sending of the code email ([3c11ebe](https://github.com/haus23/tipprunde/commit/3c11ebe))
+
+### 🩹 Fixes
+
+- Tweak focus styling on checkbox. ([a047baa](https://github.com/haus23/tipprunde/commit/a047baa))
+
+### 💅 Refactors
+
+- Rethink navigation. Work in progress. ([cf12f68](https://github.com/haus23/tipprunde/commit/cf12f68))
+
+### 🏡 Chore
+
+- Add email dev tooling. ([2ce56a3](https://github.com/haus23/tipprunde/commit/2ce56a3))
+
 ## v0.1.0-pre.6
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.5...v0.1.0-pre.6)
