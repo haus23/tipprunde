@@ -33,15 +33,15 @@ ARG USER_ID=1000
 ARG GROUP_ID=1000
 RUN groupadd -g ${GROUP_ID} appuser && \
     useradd -u ${USER_ID} -g appuser -m appuser
-    
+
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/package.json /app/package.json
 COPY --from=build /app/build /app/build
 COPY database /app/database
 
-RUN chown -R appuser:appuser /app
+RUN chown -R node:node /app
 
-USER appuser
+USER node
 
 EXPOSE 3000
 CMD [ "sh", "-c", "pnpm prisma migrate deploy && pnpm start" ]
