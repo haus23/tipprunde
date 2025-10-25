@@ -10,6 +10,9 @@ const envSchema = v.object({
   // Root Email
   ROOT_EMAIL: v.pipe(v.string(), v.email()),
 
+  // Sender Emails
+  WELCOME_EMAIL: v.pipe(v.string(), v.email()),
+
   // Secrets
   AUTH_SESSION_SECRET: v.string(),
 
@@ -19,6 +22,10 @@ const envSchema = v.object({
 
   // Session duration (server maximum)
   SESSION_DURATION: v.pipe(v.string(), v.transform(Number)),
+
+  // Email SaaS tokens
+  POSTMARK_TOKEN: v.string(),
+  RESEND_TOKEN: v.string(),
 });
 
 export const env = v.parse(envSchema, process.env);

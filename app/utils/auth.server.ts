@@ -8,6 +8,7 @@ import {
   destroyAuthSession,
   getAuthSession,
 } from "./sessions.server";
+import { sendCodeMail } from "./emails.server";
 
 // Auth Flow Helpers
 //
@@ -23,7 +24,7 @@ import {
  */
 export async function prepareOnboarding(request: Request) {
   const formData = await request.formData();
-  const email = String(formData.get("email"));
+  const email = String(formData.get("email")).trim();
   const rememberMe = String(formData.get("rememberMe")) === "on";
 
   const user = await getUserByEmail(email);
@@ -35,7 +36,7 @@ export async function prepareOnboarding(request: Request) {
   }
 
   const code = await createLoginCode(email);
-  console.log("CODE", code);
+  await sendCodeMail({ email, name: user.name, code });
 
   const session = await getAuthSession(request);
   session.flash("email", email);
