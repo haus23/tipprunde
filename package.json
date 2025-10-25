@@ -12,6 +12,7 @@
   "dependencies": {
     "@epic-web/totp": "^4.0.1",
     "@prisma/client": "~6.18.0",
+    "@react-email/components": "1.0.0-canary.0",
     "@react-router/fs-routes": "^7.9.4",
     "@react-router/node": "^7.9.4",
     "@react-router/serve": "^7.9.4",
