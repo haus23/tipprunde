@@ -1,0 +1,51 @@
+name: Deploy to Lean Server
+
+on:
+  push:
+    branches: [main, v1]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # Determine deployment directory and container settings
+            if [[ "${{ github.ref_name }}" == "main" ]]; then
+              DEPLOY_DIR="/srv/vhosts/runde.tips/dev"
+              CONTAINER_NAME="tipprunde-staging"
+              PORT="3103"
+            elif [[ "${{ github.ref_name }}" == "v1" ]]; then
+              DEPLOY_DIR="/srv/vhosts/runde.tips/www"
+              CONTAINER_NAME="tipprunde-prod"
+              PORT="2605"
+            fi
+
+            # Update code in respective directory
+            cd $DEPLOY_DIR
+            git fetch origin
+            git checkout ${{ github.ref_name }}
+            git pull origin ${{ github.ref_name }}
+
+            # Build and deploy container
+            docker build \
+              --build-arg USER_ID=$(id -u) \
+              --build-arg GROUP_ID=$(id -g) \
+              -t tipprunde:${{ github.ref_name }} .
+
+            docker stop $CONTAINER_NAME || true
+            docker rm $CONTAINER_NAME || true
+
+            docker run -d \
+              --name $CONTAINER_NAME \
+              -p $PORT:3000 \
+              --env-file $DEPLOY_DIR/.env \
+              -v $DEPLOY_DIR/data:/app/data \
+              --restart unless-stopped \
+              tipprunde:${{ github.ref_name }}
