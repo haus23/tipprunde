@@ -40,5 +40,7 @@ RUN chown -R node:node /app
 
 USER node
 
+RUN pnpm prisma migrate deploy
+
 EXPOSE 3000
-CMD [ "sh", "-c", "pnpm prisma migrate deploy && pnpm start" ]
+CMD [ "pnpm", "start" ]
