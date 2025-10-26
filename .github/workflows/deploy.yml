@@ -35,7 +35,7 @@ jobs:
 
             # Build and deploy container
             docker build \
-              --build-arg DATABASE_URL="file:./data/tipprunde.db" \
+              --build-arg PRISMA_URL="file:/app/data/tipprunde.db" \
               -t tipprunde:${{ github.ref_name }} .
 
             docker stop $CONTAINER_NAME || true

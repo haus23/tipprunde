@@ -1,12 +1,12 @@
 generator client {
-  provider      = "prisma-client"
-  output        = "../app/utils/prisma"
-  binaryTargets = ["native", "debian-openssl-3.0.x"]
+  provider   = "prisma-client"
+  output     = "../app/utils/prisma"
+  engineType = "client"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = env("PRISMA_URL")
 }
 
 enum Role {
