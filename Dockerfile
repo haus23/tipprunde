@@ -20,6 +20,8 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-l
 
 ##### Build Image
 FROM base AS build
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 
 ADD . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
