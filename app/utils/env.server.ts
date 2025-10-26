@@ -8,7 +8,8 @@ const envSchema = v.object({
   ),
 
   // SQLite Database
-  DATABASE_URL: v.string(),
+  DATABASE_URL: v.string(), // URL used by the driver adapter. Relative to project root
+  PRISMA_URL: v.string(), // URL used by the Prisma CLI. Relative to prisma folder
 
   // Root Email
   ROOT_EMAIL: v.pipe(v.string(), v.email()),
