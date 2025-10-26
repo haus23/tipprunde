@@ -34,8 +34,7 @@ FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/package.json /app/package.json
 COPY --from=build /app/build /app/build
-COPY --from=build /app/database /app/database
-COPY --from=build /app/.config /app/.config
+COPY --from=build /app/prisma /app/prisma
 
 RUN chown -R node:node /app
 USER node
