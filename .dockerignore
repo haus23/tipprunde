@@ -1,0 +1,16 @@
+# NPM dependencies
+node_modules/
+
+# Dev and Build artefacts
+.nitro/
+.output/
+.tanstack/
+
+# Git
+.git/
+.gitignore
+
+# Project files
+CHANGELOG.md
+LICENSE
+README.md
