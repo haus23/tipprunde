@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    // Source
+    "jsx": "react-jsx",
+    "target": "ES2024",
+
+    // Strictness
+    "strict": true,
+    "strictNullChecks": true,
+
+    // Vite
+    "module": "Preserve",
+
+    // DX
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  }
+}

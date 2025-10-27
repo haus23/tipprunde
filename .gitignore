@@ -1,0 +1,6 @@
+# NPM dependencies
+node_modules/
+
+# TanStack
+.tanstack/
+routeTree.gen.ts
