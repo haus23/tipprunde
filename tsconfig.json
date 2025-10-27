@@ -3,6 +3,7 @@
     // Source
     "jsx": "react-jsx",
     "target": "ES2024",
+    "types": ["vite/client"],
 
     // Strictness
     "strict": true,

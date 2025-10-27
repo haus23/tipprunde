@@ -17,8 +17,8 @@ export const Route = createFileRoute("/_foh/")({
 
 function RouteComponent() {
   return (
-    <div>
-      <span>runde.tips</span>
+    <div className="p-2">
+      <span className="text-2xl font-medium">runde.tips</span>
     </div>
   );
 }
