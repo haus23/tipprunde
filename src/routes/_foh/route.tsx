@@ -2,6 +2,7 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { AppHeader } from "~/components/shell/app-header";
 import { AppInset } from "~/components/shell/app-inset";
 import { AppSidebar } from "~/components/shell/app-sidebar";
+import { FohNav } from "./-nav";
 
 export const Route = createFileRoute("/_foh")({
   component: RouteComponent,
@@ -10,7 +11,9 @@ export const Route = createFileRoute("/_foh")({
 function RouteComponent() {
   return (
     <>
-      <AppSidebar>Nav</AppSidebar>
+      <AppSidebar>
+        <FohNav />
+      </AppSidebar>
       <AppInset>
         <AppHeader>Header</AppHeader>
         <Outlet />

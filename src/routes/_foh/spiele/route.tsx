@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_foh/")({
+export const Route = createFileRoute("/_foh/spiele")({
   head: () => ({
     meta: [
       {
-        title: "Tabelle - runde.tips",
+        title: "Spiele - runde.tips",
       },
       {
         name: "description",
-        content: "Tabelle der Tipprunde der Haus23 Fussballfreunde",
+        content: "Spiele der Tipprunde der Haus23 Fussballfreunde",
       },
     ],
   }),
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_foh/")({
 function RouteComponent() {
   return (
     <div>
-      <span className="text-2xl font-medium">Tabelle</span>
+      <span className="text-2xl font-medium">Spiele</span>
     </div>
   );
 }
