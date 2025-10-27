@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles/app.css?url";
+import { AppShell } from "~/components/shell/app-shell";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -17,7 +18,9 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <AppShell>
+        <Outlet />
+      </AppShell>
     </RootDocument>
   );
 }

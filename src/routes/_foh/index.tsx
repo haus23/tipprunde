@@ -4,11 +4,11 @@ export const Route = createFileRoute("/_foh/")({
   head: () => ({
     meta: [
       {
-        title: "runde.tips",
+        title: "Tabelle - runde.tips",
       },
       {
         name: "description",
-        content: "Tipprunde der Haus23 Fussballfreunde",
+        content: "Tabelle der Tipprunde der Haus23 Fussballfreunde",
       },
     ],
   }),
@@ -17,8 +17,8 @@ export const Route = createFileRoute("/_foh/")({
 
 function RouteComponent() {
   return (
-    <div className="p-2">
-      <span className="text-2xl font-medium">runde.tips</span>
+    <div>
+      <span className="text-2xl font-medium">Tabelle</span>
     </div>
   );
 }
