@@ -15,7 +15,7 @@ function RouteComponent() {
         <FohNav />
       </AppSidebar>
       <AppInset>
-        <AppHeader>Header</AppHeader>
+        <AppHeader>{null}</AppHeader>
         <Outlet />
       </AppInset>
     </>

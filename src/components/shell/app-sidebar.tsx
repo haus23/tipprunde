@@ -6,7 +6,7 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
     <div className="flex flex-col border-r">
       <div className="p-2">
         <Link to="/" className="flex items-center gap-1">
-          <Logo className="size-8" />
+          <Logo className="size-8 shrink-0" />
           <span className="text-xl font-medium">runde.tips</span>
         </Link>
       </div>
