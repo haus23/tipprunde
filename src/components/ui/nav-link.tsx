@@ -2,7 +2,10 @@ import { createLink, type LinkComponent } from "@tanstack/react-router";
 import { cva } from "~/utils/cva";
 
 const navLinkClasses = cva({
-  base: ["flex items-center gap-2 px-1", "[&>svg]:size-5 [&>svg]:shrink-0"],
+  base: [
+    "flex items-center gap-2.5 px-1.5 group-data-[sidebar-collapsed=true]:w-8 overflow-hidden",
+    "[&>svg]:size-5 [&>svg]:shrink-0",
+  ],
 });
 
 interface NavLinkComponentProps extends React.ComponentProps<"a"> {

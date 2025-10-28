@@ -7,6 +7,7 @@ import {
 
 import appCss from "../styles/app.css?url";
 import { AppShell } from "~/components/shell/app-shell";
+import { ShellProvider } from "~/components/shell/shell-provider";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -18,9 +19,11 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
-      <AppShell>
-        <Outlet />
-      </AppShell>
+      <ShellProvider>
+        <AppShell>
+          <Outlet />
+        </AppShell>
+      </ShellProvider>
     </RootDocument>
   );
 }
