@@ -5,6 +5,17 @@ import { AppSidebar } from "~/components/shell/app-sidebar";
 import { HinterhofNav } from "./-nav";
 
 export const Route = createFileRoute("/hinterhof")({
+  head: () => ({
+    meta: [
+      {
+        title: "Hinterhof - runde.tips",
+      },
+      {
+        name: "description",
+        content: "Verwaltung",
+      },
+    ],
+  }),
   component: RouteComponent,
 });
 
