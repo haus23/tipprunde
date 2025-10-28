@@ -10,4 +10,5 @@ routeTree.gen.ts
 .output/
 
 # Dev environment
+.zed/
 .env

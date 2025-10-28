@@ -6,6 +6,10 @@ node_modules/
 .output/
 .tanstack/
 
+# Dev enviroment
+.zed/
+.env
+
 # Git
 .git/
 .gitignore
