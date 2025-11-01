@@ -5,9 +5,10 @@ import {
 import { cva, VariantProps } from "~/utils/cva";
 
 const buttonClasses = cva({
-  base: [""],
+  base: ["data-disabled:opacity-50"],
   variants: {
     variant: {
+      primary: "px-3 py-1.5 border",
       plain: "",
     },
   },
