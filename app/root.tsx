@@ -1,6 +1,7 @@
 import { Links, Outlet, Scripts, ScrollRestoration } from "react-router";
 
 import stylesUrl from "./styles/base.css?url";
+import { AppShell } from "./components/shell/app-shell";
 
 export function links() {
   return [
@@ -28,5 +29,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <AppShell>
+      <Outlet />
+    </AppShell>
+  );
 }
