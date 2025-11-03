@@ -43,5 +43,6 @@ jobs:
             docker run -d \
               --name $CONTAINER_NAME \
               -p $PORT:3000 \
+              --env-file $DEPLOY_DIR/.env \
               --restart unless-stopped \
               tipprunde:${{ github.ref_name }}
