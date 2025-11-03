@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v0.1.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.1...v0.1.0-pre.2)
+
+### 🚀 Enhancements
+
+- Provide validated env vars. ([c095630](https://github.com/haus23/tipprunde/commit/c095630))
+- Persist sidebar-collapsed state to session. ([83e4044](https://github.com/haus23/tipprunde/commit/83e4044))
+- Load persisted sidebar state from the session. ([65f1d5a](https://github.com/haus23/tipprunde/commit/65f1d5a))
+
+### 🏡 Chore
+
+- Install valibot for runtime validation. ([d061acf](https://github.com/haus23/tipprunde/commit/d061acf))
+
 ## v0.1.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.0...v0.1.0-pre.1)
