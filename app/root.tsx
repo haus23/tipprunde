@@ -1,8 +1,12 @@
-import { Links, Outlet, Scripts, ScrollRestoration } from "react-router";
+import { data, Links, Outlet, Scripts, ScrollRestoration } from "react-router";
 
-import stylesUrl from "./styles/base.css?url";
 import { AppShell } from "./components/shell/app-shell";
 import { ShellProvider } from "./components/shell/provider";
+import { getPrefsSession } from "./lib/prefs/session";
+
+import type { Route } from "./+types/root";
+
+import stylesUrl from "./styles/base.css?url";
 
 export function links() {
   return [
@@ -12,6 +16,7 @@ export function links() {
     },
   ];
 }
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de">
@@ -27,6 +32,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </body>
     </html>
   );
+}
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const session = await getPrefsSession(request);
+  const settings = session.get("settings");
+
+  return data({ settings });
 }
 
 export default function App() {
