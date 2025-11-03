@@ -2,6 +2,7 @@ import { Links, Outlet, Scripts, ScrollRestoration } from "react-router";
 
 import stylesUrl from "./styles/base.css?url";
 import { AppShell } from "./components/shell/app-shell";
+import { ShellProvider } from "./components/shell/provider";
 
 export function links() {
   return [
@@ -30,8 +31,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <AppShell>
-      <Outlet />
-    </AppShell>
+    <ShellProvider>
+      <AppShell>
+        <Outlet />
+      </AppShell>
+    </ShellProvider>
   );
 }
