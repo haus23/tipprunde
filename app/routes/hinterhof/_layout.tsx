@@ -1,8 +1,19 @@
-import { Outlet } from "react-router";
+import { Outlet, redirect } from "react-router";
 import { HinterhofNav } from "~/components/hinterhof/nav";
 import { AppHeader } from "~/components/shell/app-header";
 import { AppInset } from "~/components/shell/app-inset";
 import { AppSidebar } from "~/components/shell/app-sidebar";
+import type { Route } from "./+types/_layout";
+import { userContext } from "~/lib/auth/user.context";
+
+export const middleware: Route.MiddlewareFunction[] = [
+  async ({ context }) => {
+    const user = context.get(userContext);
+    if (!user) {
+      throw redirect("/login");
+    }
+  },
+];
 
 export default function HinterhofLayout() {
   return (
