@@ -28,3 +28,8 @@
         color-scheme: dark;
     }
 }
+
+@theme {
+    --color-app-1: light-dark(white, black);
+    --color-app-12: light-dark(black, white);
+}

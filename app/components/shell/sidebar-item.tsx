@@ -16,7 +16,7 @@ export function SidebarItem({
       <Tooltip
         placement="right"
         className={cx(
-          "rounded-sm bg-black px-2 py-1 text-white text-sm",
+          "rounded-sm bg-app-12 px-2 py-1 text-app-1 text-sm",
           "mt-2",
         )}
       >
