@@ -1,6 +1,30 @@
 # Changelog
 
 
+## v0.1.0-pre.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.2...v0.1.0-pre.3)
+
+### 🚀 Enhancements
+
+- Add tooltip to collapsed sidebar icons. ([6b7993f](https://github.com/haus23/tipprunde/commit/6b7993f))
+- Prepare color-scheme handling. ([5a311ea](https://github.com/haus23/tipprunde/commit/5a311ea))
+- Add first hinterhof routes and the initial hinterhof layout. ([2452065](https://github.com/haus23/tipprunde/commit/2452065))
+
+### 🩹 Fixes
+
+- Update workflow to use a runtime env file. ([4880330](https://github.com/haus23/tipprunde/commit/4880330))
+
+### 💅 Refactors
+
+- Adjust colors for color-scheme handling. ([0cd6290](https://github.com/haus23/tipprunde/commit/0cd6290))
+- Remove/align paddings. ([b185c5c](https://github.com/haus23/tipprunde/commit/b185c5c))
+
+### 🏡 Chore
+
+- Install rac (React Aria Compontents) ([3a0b2bc](https://github.com/haus23/tipprunde/commit/3a0b2bc))
+- Fix node types versioning. Update them and isbot patch. ([95b496c](https://github.com/haus23/tipprunde/commit/95b496c))
+
 ## v0.1.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.1...v0.1.0-pre.2)
