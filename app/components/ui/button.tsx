@@ -1,9 +1,14 @@
+import {
+  Button as _Button,
+  type ButtonProps as _ButtonProps,
+} from "react-aria-components";
 import { cva, type VariantProps } from "~/utils/cva";
 
 const buttonClasses = cva({
-  base: [],
+  base: ["data-disabled:opacity-50"],
   variants: {
     variant: {
+      primary: "px-3 py-1.5 border",
       plain: "",
     },
   },
@@ -13,11 +18,11 @@ const buttonClasses = cva({
 });
 
 export interface ButtonProps
-  extends React.ComponentProps<"button">,
+  extends _ButtonProps,
     VariantProps<typeof buttonClasses> {}
 
 export function Button({ className, variant, ...props }: ButtonProps) {
   return (
-    <button className={buttonClasses({ className, variant })} {...props} />
+    <_Button className={buttonClasses({ className, variant })} {...props} />
   );
 }
