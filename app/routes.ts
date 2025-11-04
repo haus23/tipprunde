@@ -11,6 +11,7 @@ export default [
     index("./routes/foh/ranking.tsx"),
     route("spieler", "./routes/foh/players.tsx"),
     route("spiele", "./routes/foh/matches.tsx"),
+    route("login", "./routes/foh/(auth)/login.tsx"),
   ]),
   ...prefix("hinterhof", [
     layout("./routes/hinterhof/_layout.tsx", [
