@@ -12,6 +12,12 @@ export default [
     route("spieler", "./routes/foh/players.tsx"),
     route("spiele", "./routes/foh/matches.tsx"),
   ]),
+  ...prefix("hinterhof", [
+    layout("./routes/hinterhof/_layout.tsx", [
+      index("./routes/hinterhof/dashboard.tsx"),
+      route("spieler", "./routes/hinterhof/(entities)/players.tsx"),
+    ]),
+  ]),
   ...prefix("action", [
     route("set-settings", "./routes/actions/set-settings.ts"),
   ]),

@@ -3,7 +3,7 @@ import { Logo } from "./logo";
 
 export function AppSidebar({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-1 border-r">
+    <div className="flex flex-col gap-1 border-r pb-2">
       <div className="p-2">
         <Link
           to="/"

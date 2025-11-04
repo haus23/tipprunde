@@ -1,4 +1,4 @@
-import { DicesIcon, TableIcon, UsersIcon } from "lucide-react";
+import { DicesIcon, SettingsIcon, TableIcon, UsersIcon } from "lucide-react";
 import { NavLink } from "~/components/ui/link";
 import { SidebarItem } from "../shell/sidebar-item";
 
@@ -24,6 +24,19 @@ export function FohNav() {
             <span>Spiele</span>
           </NavLink>
         </SidebarItem>
+      </div>
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
+          <span className="text-xs uppercase group-data-[sidebar-collapsed=true]:hidden">
+            Verwaltung
+          </span>
+          <SidebarItem tooltip="Verwaltung">
+            <NavLink to="/hinterhof">
+              <SettingsIcon />
+              <span>Dashboard</span>
+            </NavLink>
+          </SidebarItem>
+        </div>
       </div>
     </div>
   );
