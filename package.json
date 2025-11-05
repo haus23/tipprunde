@@ -9,6 +9,8 @@
     "start": "react-router-serve build/server/index.js"
   },
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^6.19.0",
+    "@prisma/client": "^6.19.0",
     "@react-router/node": "~7.9.5",
     "@react-router/serve": "~7.9.5",
     "@tanstack/react-form": "^1.23.8",

@@ -4,8 +4,9 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client"
-  output   = "../app/lib/db/prisma"
+  provider   = "prisma-client"
+  engineType = "client"
+  output     = "../app/lib/db/prisma"
 }
 
 enum Role {
