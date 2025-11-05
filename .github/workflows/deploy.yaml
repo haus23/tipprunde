@@ -40,9 +40,10 @@ jobs:
             docker stop $CONTAINER_NAME || true
             docker rm $CONTAINER_NAME || true
 
-            docker run -d \
+            docker run --detach \
               --name $CONTAINER_NAME \
-              -p $PORT:3000 \
+              --publish $PORT:3000 \
               --env-file $DEPLOY_DIR/.env \
+              --volume $DEPLOY_DIR/data:/app/data \
               --restart unless-stopped \
               tipprunde:${{ github.ref_name }}
