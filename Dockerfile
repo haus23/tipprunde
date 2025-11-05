@@ -23,6 +23,7 @@ FROM base AS build
 
 ADD . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm prisma generate
 RUN pnpm build
 
 #### Prod Image
