@@ -1,6 +1,37 @@
 # Changelog
 
 
+## v0.1.0-pre.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.3...v0.1.0-pre.4)
+
+### 🚀 Enhancements
+
+- Add initial login form with client validation. ([44a1700](https://github.com/haus23/tipprunde/commit/44a1700))
+- Create user context and guard the hinterhof routes. ([b3e602b](https://github.com/haus23/tipprunde/commit/b3e602b))
+- Add prisma schema with auth related models. ([a04f83f](https://github.com/haus23/tipprunde/commit/a04f83f))
+
+### 🩹 Fixes
+
+- Change user for the running container. ([695aa25](https://github.com/haus23/tipprunde/commit/695aa25))
+
+### 💅 Refactors
+
+- Implement wrapper for rac button. Add initial primary variant. ([18bb106](https://github.com/haus23/tipprunde/commit/18bb106))
+- Add prisma client generation to build step. ([c51d4ba](https://github.com/haus23/tipprunde/commit/c51d4ba))
+
+### 🏡 Chore
+
+- Add tanstack form library ([de4a642](https://github.com/haus23/tipprunde/commit/de4a642))
+- Enable v8 future flag: middleware. ([b9d6012](https://github.com/haus23/tipprunde/commit/b9d6012))
+- Add prisma orm. ([a282843](https://github.com/haus23/tipprunde/commit/a282843))
+- Add singleton helper class. ([583d34f](https://github.com/haus23/tipprunde/commit/583d34f))
+- Configure prisma client. ([ff0ab27](https://github.com/haus23/tipprunde/commit/ff0ab27))
+- Create the auth tables migration file. ([b04c9f0](https://github.com/haus23/tipprunde/commit/b04c9f0))
+- Update deployment to create db on volume. ([821ab89](https://github.com/haus23/tipprunde/commit/821ab89))
+- Align prisma versions. ([e8bb43c](https://github.com/haus23/tipprunde/commit/e8bb43c))
+- Update vite. ([dd7f695](https://github.com/haus23/tipprunde/commit/dd7f695))
+
 ## v0.1.0-pre.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.2...v0.1.0-pre.3)
