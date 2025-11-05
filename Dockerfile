@@ -34,5 +34,8 @@ COPY --from=build /app/package.json /app/package.json
 COPY --from=build /app/build /app/build
 COPY --from=build /app/prisma /app/prisma
 
+RUN chown -R node:node /app
+USER node
+
 EXPOSE 3000
 CMD [ "sh", "-c", "pnpm prisma migrate deploy && pnpm start" ]
