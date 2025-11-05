@@ -22,7 +22,7 @@ export default function LoginRoute() {
   });
 
   return (
-    <div className="p-2 flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <title>Anmeldung - runde.tips</title>
       <meta name="description" content="Anmeldung bei der Haus23 Tipprunde" />
       <h1 className="text-2xl font-medium">Anmeldung</h1>
