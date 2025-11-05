@@ -56,6 +56,11 @@ export default function LoginRoute() {
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(code) => field.handleChange(code)}
+                  onComplete={() => {
+                    if (form.state.submissionAttempts === 0) {
+                      form.handleSubmit();
+                    }
+                  }}
                   autoFocus
                   autoComplete="one-time-code"
                 />
@@ -69,7 +74,7 @@ export default function LoginRoute() {
           }}
         />
         <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
+          selector={(state) => [state.canSubmit]}
           children={([canSubmit]) => (
             <div>
               <Button type="submit" isDisabled={!canSubmit} variant="primary">
