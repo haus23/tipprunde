@@ -1,6 +1,7 @@
 import { revalidateLogic, useForm } from "@tanstack/react-form";
 import * as v from "valibot";
 import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
 
 const emailSchema = v.pipe(
   v.string(),
@@ -10,7 +11,7 @@ const emailSchema = v.pipe(
 
 export default function LoginRoute() {
   const form = useForm({
-    defaultValues: { email: "" },
+    defaultValues: { email: "", rememberMe: false },
     validationLogic: revalidateLogic({
       mode: "submit",
       modeAfterSubmission: "change",
@@ -39,33 +40,45 @@ export default function LoginRoute() {
           validators={{
             onDynamic: emailSchema,
           }}
-          children={(field) => {
-            return (
-              <div className="flex flex-col gap-1">
-                <label htmlFor={field.name} className="text-sm font-semibold">
-                  Email
-                </label>
-                <input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  autoFocus
-                  autoComplete="email"
-                  className="px-3 py-1.5 border"
-                />
-                {field.state.meta.errors.length > 0 && (
-                  <em className="text-sm italic">
-                    {field.state.meta.errors.at(0)?.message}
-                  </em>
-                )}
-              </div>
-            );
-          }}
+          children={(field) => (
+            <div className="flex flex-col gap-1">
+              <label htmlFor={field.name} className="text-sm font-semibold">
+                Email
+              </label>
+              <input
+                id={field.name}
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(e.target.value)}
+                autoFocus
+                autoComplete="email"
+                className="px-3 py-1.5 border"
+              />
+              {field.state.meta.errors.length > 0 && (
+                <em className="text-sm italic">
+                  {field.state.meta.errors.at(0)?.message}
+                </em>
+              )}
+            </div>
+          )}
+        />
+        <form.Field
+          name="rememberMe"
+          children={(field) => (
+            <Checkbox
+              id={field.name}
+              name={field.name}
+              isSelected={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(value) => field.handleChange(value)}
+            >
+              Angemeldet bleiben
+            </Checkbox>
+          )}
         />
         <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
+          selector={(state) => [state.canSubmit]}
           children={([canSubmit]) => (
             <div>
               <Button type="submit" isDisabled={!canSubmit} variant="primary">
