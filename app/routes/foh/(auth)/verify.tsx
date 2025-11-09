@@ -1,89 +1,47 @@
-import { revalidateLogic, useForm } from "@tanstack/react-form";
-import * as v from "valibot";
+import { useSubmit } from "react-router";
 import { Button } from "~/components/ui/button";
 import { CodeInput } from "~/components/ui/code-input";
+import { Form } from "~/components/ui/form";
+import { Label } from "~/components/ui/label";
+import { TextField } from "~/components/ui/text-field";
+import { FieldError } from "~/components/ui/field-error";
 
-const codeSchema = v.pipe(
-  v.string(),
-  v.nonEmpty("Du musst Deinen Code eingeben, um fortzufahren."),
-  v.length(
-    6,
-    ({ received }) =>
-      `Ein Code hat sechs Zeichen. Du hast nur ${received} eingegeben.`,
-  ),
-);
+import type { Route } from "./+types/verify";
+import { useRef } from "react";
 
-export default function LoginRoute() {
-  const form = useForm({
-    defaultValues: { code: "" },
-    validationLogic: revalidateLogic({
-      mode: "submit",
-      modeAfterSubmission: "change",
-    }),
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.formData();
+  console.log(Object.fromEntries(formData));
+}
 
-    onSubmit: async ({ value }) => {
-      console.log(value);
-    },
-  });
+export default function VerifyRoute() {
+  const submit = useSubmit();
+  const form = useRef<HTMLFormElement>(null);
 
   return (
     <div className="flex flex-col gap-4">
       <title>Einlass - runde.tips</title>
       <meta name="description" content="Einlass bei der Haus23 Tipprunde" />
       <h1 className="text-2xl font-medium">Einlass</h1>
-      <form
+      <Form
+        method="post"
         onSubmit={(e) => {
           e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
+          submit(e.currentTarget);
         }}
-        className="flex flex-col items-center gap-4"
+        ref={form}
       >
-        <form.Field
-          name="code"
-          validators={{
-            onDynamic: codeSchema,
-          }}
-          children={(field) => {
-            return (
-              <div className="flex flex-col gap-2 items-center">
-                <label htmlFor={field.name} className="text-sm font-semibold">
-                  Login-Code
-                </label>
-                <CodeInput
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(code) => field.handleChange(code)}
-                  onComplete={() => {
-                    if (form.state.submissionAttempts === 0) {
-                      form.handleSubmit();
-                    }
-                  }}
-                  autoFocus
-                  autoComplete="one-time-code"
-                />
-                {field.state.meta.errors.length > 0 && (
-                  <em className="text-sm italic">
-                    {field.state.meta.errors.at(0)?.message}
-                  </em>
-                )}
-              </div>
-            );
-          }}
-        />
-        <form.Subscribe
-          selector={(state) => [state.canSubmit]}
-          children={([canSubmit]) => (
-            <div>
-              <Button type="submit" isDisabled={!canSubmit} variant="primary">
-                Code prüfen
-              </Button>
-            </div>
-          )}
-        />
-      </form>
+        <TextField maxLength={6} name="code" isRequired autoFocus>
+          <Label>Code</Label>
+          <CodeInput onComplete={() => form.current?.requestSubmit()} />
+          <FieldError />
+        </TextField>
+        <div>
+          <Button type="submit" variant="primary">
+            Code prüfen
+          </Button>
+        </div>
+      </Form>
     </div>
   );
 }

@@ -30,7 +30,7 @@ export default function LoginRoute() {
           submit(e.currentTarget);
         }}
       >
-        <TextField type="email" name="email" isRequired>
+        <TextField type="email" name="email" isRequired autoFocus>
           <Label>Email</Label>
           <Input />
           <FieldError />

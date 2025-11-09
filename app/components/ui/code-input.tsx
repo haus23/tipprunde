@@ -1,4 +1,5 @@
 import { OTPInput, REGEXP_ONLY_DIGITS, type OTPInputProps } from "input-otp";
+import { InputContext, useContextProps } from "react-aria-components";
 import { cva } from "~/utils/cva";
 
 const containerClasses = cva({ base: "group flex items-center" });
@@ -17,18 +18,32 @@ const slotClasses = cva({
 
 export type CodeInputProps = Omit<OTPInputProps, "children" | "maxLength"> & {
   maxLength?: number;
+  ref?: React.RefObject<HTMLInputElement | null>;
 };
 
-export function CodeInput({
-  className,
-  pattern = REGEXP_ONLY_DIGITS,
-  maxLength = 6,
-  ...props
-}: CodeInputProps) {
+export function CodeInput({ className, ref, ...localProps }: CodeInputProps) {
+  const [mergedProps, mergedRef] = useContextProps(
+    { ...localProps },
+    ref,
+    InputContext,
+  );
+
+  // Set defaults and omit controlled input props
+  const {
+    maxLength,
+    minLength,
+    pattern,
+    value: _value,
+    onChange: _onChange,
+    ...props
+  } = mergedProps;
+
   return (
     <OTPInput
-      maxLength={maxLength}
-      pattern={pattern}
+      maxLength={maxLength ?? 6}
+      minLength={minLength ?? maxLength ?? 6}
+      pattern={pattern ?? REGEXP_ONLY_DIGITS}
+      ref={mergedRef}
       containerClassName={containerClasses({ className })}
       {...props}
       render={({ slots }) => (
