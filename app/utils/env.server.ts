@@ -10,8 +10,8 @@ const envSchema = v.object({
   // Secrets
   PREFS_SESSION_SECRET: v.string(),
 
-  // Prisma DB
-  DATABASE_URL: v.string(),
+  // DB path
+  DATABASE_PATH: v.string(),
 });
 
 export const env = v.parse(envSchema, process.env);
