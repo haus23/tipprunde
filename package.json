@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "react-router build",
-    "start": "react-router-serve build/server/index.js"
+    "start": "react-router-serve build/server/index.js",
+    "db:migrate": "node db/migrate.js"
   },
   "dependencies": {
     "@react-router/node": "~7.9.5",

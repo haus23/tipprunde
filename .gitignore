@@ -8,6 +8,4 @@ build/
 # Dev Environment
 .zed/
 .env
-
-# Prisma Client
-app/lib/db/prisma
+db/dev.db
