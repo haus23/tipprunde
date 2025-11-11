@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -21,9 +20,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
   try {
     // Check if root user already exists
-    const existingRoot = db
-      .prepare("SELECT id FROM users WHERE id = 0")
-      .get();
+    const existingRoot = db.prepare("SELECT id FROM users WHERE id = 0").get();
 
     if (existingRoot) {
       console.log("✓ Root user already exists, skipping seed");
