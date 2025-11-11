@@ -3,7 +3,7 @@ import * as v from "valibot";
 const envSchema = v.object({
   // Node
   NODE_ENV: v.optional(
-    v.picklist(["development", "production"]),
+    v.picklist(["development", "test", "staging", "production"]),
     "development",
   ),
 
