@@ -9,15 +9,13 @@
     "start": "react-router-serve build/server/index.js"
   },
   "dependencies": {
-    "@prisma/adapter-better-sqlite3": "^6.19.0",
-    "@prisma/client": "^6.19.0",
     "@react-router/node": "~7.9.5",
     "@react-router/serve": "~7.9.5",
+    "better-sqlite3": "^12.4.1",
     "cva": "1.0.0-beta.4",
     "input-otp": "^1.4.2",
     "isbot": "~5.1.32",
     "lucide-react": "^0.552.0",
-    "prisma": "^6.19.0",
     "react": "~19.2.0",
     "react-aria-components": "^1.13.0",
     "react-dom": "~19.2.0",
