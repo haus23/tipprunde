@@ -1,6 +1,6 @@
 import { Form } from "react-router";
 import { LogOutIcon } from "lucide-react";
-import { useUser } from "~/lib/auth/use-user";
+import { useUser } from "~/lib/auth/user";
 import { Button } from "../ui/button";
 import { SidebarItem } from "./sidebar-item";
 
