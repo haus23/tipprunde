@@ -11,6 +11,7 @@
     "db:seed": "node db/seed.js"
   },
   "dependencies": {
+    "@epic-web/totp": "^4.0.1",
     "@react-router/node": "~7.9.5",
     "@react-router/serve": "~7.9.5",
     "better-sqlite3": "^12.4.1",
