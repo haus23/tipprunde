@@ -7,7 +7,7 @@ import {
   destroyAuthSession,
   getAuthSession,
 } from "./session.server";
-import { createSession, getSession } from "../db/sessions";
+import { createSession, deleteSession, getSession } from "../db/sessions";
 
 // Auth Flow Helpers
 //
@@ -182,6 +182,34 @@ export async function verifyOnboarding(request: Request) {
         authSession,
         rememberMe ? { expires: expiresDate } : undefined,
       ),
+    },
+  });
+}
+
+/**
+ * Logs out the current user.
+ *
+ * Deletes the session from the database, destroys the auth cookie,
+ * and redirects to the referer or home page.
+ *
+ * @param request - Request object
+ */
+export async function logout(request: Request) {
+  const authSession = await getAuthSession(request);
+  const sessionId = authSession.get("sessionId");
+
+  // Delete session from database if it exists
+  if (sessionId) {
+    deleteSession(sessionId);
+  }
+
+  // Redirect to referer or home
+  const referer = request.headers.get("Referer");
+  const redirectTo = referer ? new URL(referer).pathname : "/";
+
+  throw redirect(redirectTo, {
+    headers: {
+      "Set-Cookie": await destroyAuthSession(authSession),
     },
   });
 }
