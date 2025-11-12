@@ -85,6 +85,13 @@ async function sendMail(props: EmailProps) {
   });
 
   if (!response.ok) {
+    const errorData = await response.json().catch(() => null);
+    console.error("Resend API error:", {
+      status: response.status,
+      name: errorData?.name,
+      message: errorData?.message,
+      category: props.category,
+    });
     throw new Error("Probleme beim Email-Versand");
   }
 }
