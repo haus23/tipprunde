@@ -2,7 +2,7 @@ import { data, Links, Outlet, Scripts, ScrollRestoration } from "react-router";
 
 import { AppShell } from "./components/shell/app-shell";
 import { ShellProvider } from "./components/shell/provider";
-import { getPrefsSession } from "./lib/prefs/session";
+import { getPrefsSession } from "./lib/prefs/session.server";
 
 import type { Route } from "./+types/root";
 

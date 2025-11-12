@@ -2,7 +2,10 @@ import { data } from "react-router";
 import * as v from "valibot";
 
 import { settingsSchema } from "~/lib/prefs/settings";
-import { commitPrefsSession, getPrefsSession } from "~/lib/prefs/session";
+import {
+  commitPrefsSession,
+  getPrefsSession,
+} from "~/lib/prefs/session.server";
 
 import type { Route } from "./+types/set-settings";
 
