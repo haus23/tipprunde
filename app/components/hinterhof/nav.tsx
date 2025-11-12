@@ -1,6 +1,7 @@
 import { HomeIcon, UsersIcon } from "lucide-react";
 import { NavLink } from "~/components/ui/link";
 import { SidebarItem } from "../shell/sidebar-item";
+import { UserView } from "./user-view";
 
 export function HinterhofNav() {
   return (
@@ -25,6 +26,8 @@ export function HinterhofNav() {
             </NavLink>
           </SidebarItem>
         </div>
+        <hr />
+        <UserView />
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ export default [
     route("spiele", "./routes/foh/matches.tsx"),
     route("login", "./routes/foh/(auth)/login.tsx"),
     route("verify", "./routes/foh/(auth)/verify.tsx"),
+    route("logout", "./routes/foh/(auth)/logout.tsx"),
   ]),
   ...prefix("hinterhof", [
     layout("./routes/hinterhof/_layout.tsx", [

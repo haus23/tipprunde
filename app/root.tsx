@@ -50,11 +50,12 @@ export const middleware: Route.MiddlewareFunction[] = [
   },
 ];
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const session = await getPrefsSession(request);
   const settings = session.get("settings");
+  const user = context.get(userContext);
 
-  return data({ settings });
+  return data({ settings, user });
 }
 
 export default function App() {
