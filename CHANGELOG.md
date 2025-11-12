@@ -1,6 +1,44 @@
 # Changelog
 
 
+## v0.1.0-pre.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.4...v0.1.0-pre.5)
+
+### 🚀 Enhancements
+
+- Add code-input component. ([2e356ad](https://github.com/haus23/tipprunde/commit/2e356ad))
+- Add initial verify-code route. ([d7e906e](https://github.com/haus23/tipprunde/commit/d7e906e))
+- Add checkbox rac wrapper component. ([79fba13](https://github.com/haus23/tipprunde/commit/79fba13))
+- Add rac form component wrappers. ([38ecda8](https://github.com/haus23/tipprunde/commit/38ecda8))
+- Add DAL functions for the auth flow. ([a733089](https://github.com/haus23/tipprunde/commit/a733089))
+
+### 🩹 Fixes
+
+- Add better-sqlite3 typings. ([0afe770](https://github.com/haus23/tipprunde/commit/0afe770))
+- Remove the legacy prisma schema and migrations. ([61a095f](https://github.com/haus23/tipprunde/commit/61a095f))
+- Remove the prisma client generation. ([122a0f0](https://github.com/haus23/tipprunde/commit/122a0f0))
+
+### 💅 Refactors
+
+- Submit early after first complete code entering. ([29a407b](https://github.com/haus23/tipprunde/commit/29a407b))
+- Add remember-me checkbox field. ([1389ccd](https://github.com/haus23/tipprunde/commit/1389ccd))
+- Replace the login form with a simpler no ts-form stack. ([8c61318](https://github.com/haus23/tipprunde/commit/8c61318))
+- Drop tanstack form and use just rac validation by now. ([cdfb887](https://github.com/haus23/tipprunde/commit/cdfb887))
+- Change var name to path instead of url. ([b97c93a](https://github.com/haus23/tipprunde/commit/b97c93a))
+- Use better-sqlite instance for the db singleton. ([384f6d3](https://github.com/haus23/tipprunde/commit/384f6d3))
+- Refine auth tables. ([4710feb](https://github.com/haus23/tipprunde/commit/4710feb))
+
+### 🏡 Chore
+
+- Add better-sqlite3. Remove all prisma orm packages. ([c54b575](https://github.com/haus23/tipprunde/commit/c54b575))
+- Set up a db migration script. ([54f29f4](https://github.com/haus23/tipprunde/commit/54f29f4))
+- Add migrations scripts for the three auth tables. ([f3c8a7c](https://github.com/haus23/tipprunde/commit/f3c8a7c))
+- Add a seed script to insert the root user. ([6024d4b](https://github.com/haus23/tipprunde/commit/6024d4b))
+- Declare the types mapped to the db tables and columns. ([ed38a56](https://github.com/haus23/tipprunde/commit/ed38a56))
+- Add ulid package to generate server session ids. ([34cadc8](https://github.com/haus23/tipprunde/commit/34cadc8))
+- Update docker configuration. ([146aaa5](https://github.com/haus23/tipprunde/commit/146aaa5))
+
 ## v0.1.0-pre.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.3...v0.1.0-pre.4)
