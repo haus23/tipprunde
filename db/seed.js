@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // CLI interface
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const dbPath = process.env.DATABASE_URL || path.join(__dirname, "dev.db");
+  const dbPath = process.env.DATABASE_PATH || path.join(__dirname, "dev.db");
 
   if (!process.env.ROOT_EMAIL) {
     console.error("Error: ROOT_EMAIL environment variable is required");
