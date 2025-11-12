@@ -1,23 +1,23 @@
 -- Create sessions table
 CREATE TABLE sessions (
   id TEXT PRIMARY KEY,
-  expires_at TEXT NOT NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  user_id INTEGER NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  expiresAt TEXT NOT NULL,
+  createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  userId INTEGER NOT NULL,
+  FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Create index on user_id for faster lookups
-CREATE INDEX idx_sessions_user_id ON sessions(user_id);
+-- Create index on userId for faster lookups
+CREATE INDEX idx_sessions_userId ON sessions(userId);
 
--- Create index on expires_at for cleanup queries
-CREATE INDEX idx_sessions_expires_at ON sessions(expires_at);
+-- Create index on expiresAt for cleanup queries
+CREATE INDEX idx_sessions_expiresAt ON sessions(expiresAt);
 
--- Create trigger to automatically update updated_at timestamp
-CREATE TRIGGER update_sessions_updated_at
+-- Create trigger to automatically update updatedAt timestamp
+CREATE TRIGGER update_sessions_updatedAt
 AFTER UPDATE ON sessions
 FOR EACH ROW
 BEGIN
-  UPDATE sessions SET updated_at = CURRENT_TIMESTAMP WHERE id = OLD.id;
+  UPDATE sessions SET updatedAt = CURRENT_TIMESTAMP WHERE id = OLD.id;
 END;
