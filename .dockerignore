@@ -3,6 +3,7 @@
 
 # Git
 .git
+.github
 .gitignore
 
 # Docker files

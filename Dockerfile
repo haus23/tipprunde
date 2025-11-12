@@ -32,10 +32,10 @@ FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/package.json /app/package.json
 COPY --from=build /app/build /app/build
-COPY --from=build /app/prisma /app/prisma
+COPY --from=build /app/db /app/db
 
 RUN chown -R node:node /app
 USER node
 
 EXPOSE 3000
-CMD [ "sh", "-c", "pnpm prisma migrate deploy && pnpm start" ]
+CMD [ "sh", "-c", "pnpm db:migrate up && pnpm db:seed && pnpm start" ]
