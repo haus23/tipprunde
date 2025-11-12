@@ -176,7 +176,7 @@ export async function verifyOnboarding(request: Request) {
   const authSession = await getAuthSession(request);
   authSession.set("sessionId", sessionId);
 
-  throw redirect("/", {
+  throw redirect("/hinterhof", {
     headers: {
       "Set-Cookie": await commitAuthSession(
         authSession,
