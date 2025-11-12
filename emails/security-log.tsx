@@ -119,6 +119,7 @@ const footerText = {
 
 const linkContainer = {
   textAlign: "center" as const,
+  marginTop: "20px",
 };
 
 const linkText = {

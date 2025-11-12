@@ -1,5 +1,8 @@
 import { redirect } from "react-router";
 import { getUserByEmail } from "../db/users";
+import { createLoginCode } from "~/utils/totp.server";
+import { sendCodeMail, sendSecurityLogMail } from "~/utils/emails.server";
+import { commitAuthSession, getAuthSession } from "./session.server";
 
 // Auth Flow Helpers
 //
@@ -21,10 +24,32 @@ export async function prepareOnboarding(request: Request) {
   const user = getUserByEmail(email);
 
   if (!user) {
+    // Send security log for invalid email attempt
+    await sendSecurityLogMail(
+      email,
+      new Date().toLocaleString("de-DE", {
+        timeZone: "Europe/Berlin",
+      }),
+    );
     return {
       errors: { email: "Unbekannte Email-Adresse. Wende dich an Micha." },
     };
   }
 
-  throw redirect("/verify");
+  // Generate and store TOTP code
+  const code = await createLoginCode(user.id, email);
+
+  // Send email with code
+  await sendCodeMail({ name: user.name, email, code });
+
+  // Store identifier and rememberMe in session flash for verify page
+  const authSession = await getAuthSession(request);
+  authSession.flash("identifier", email);
+  authSession.flash("rememberMe", rememberMe);
+
+  throw redirect("/verify", {
+    headers: {
+      "Set-Cookie": await commitAuthSession(authSession),
+    },
+  });
 }
