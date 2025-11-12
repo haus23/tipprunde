@@ -5,11 +5,12 @@ import { AppInset } from "~/components/shell/app-inset";
 import { AppSidebar } from "~/components/shell/app-sidebar";
 import type { Route } from "./+types/_layout";
 import { userContext } from "~/lib/auth/user.context";
+import { isManager } from "~/lib/auth/permissions";
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ context }) => {
     const user = context.get(userContext);
-    if (!user) {
+    if (!isManager(user)) {
       throw redirect("/login");
     }
   },
