@@ -1,6 +1,26 @@
 # Changelog
 
 
+## v0.1.0-pre.7
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.6...v0.1.0-pre.7)
+
+### 🚀 Enhancements
+
+- Protect verify route to ensure an ongoing auth flow. ([f5f186c](https://github.com/haus23/tipprunde/commit/f5f186c))
+- Implement login flow ([063c1d2](https://github.com/haus23/tipprunde/commit/063c1d2))
+- Load authenticated user (or null) in the root middleware ([bc62726](https://github.com/haus23/tipprunde/commit/bc62726))
+
+### 💅 Refactors
+
+- Refine validation logic. ([8f3c3a2](https://github.com/haus23/tipprunde/commit/8f3c3a2))
+- Allow only managers and admins to enter the backend. ([145665e](https://github.com/haus23/tipprunde/commit/145665e))
+- Redirect to hinterhof after login (for now). ([2064126](https://github.com/haus23/tipprunde/commit/2064126))
+
+### 🏡 Chore
+
+- Create readme. ([9443435](https://github.com/haus23/tipprunde/commit/9443435))
+
 ## v0.1.0-pre.6
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.5...v0.1.0-pre.6)
