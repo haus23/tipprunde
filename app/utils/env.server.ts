@@ -12,6 +12,10 @@ const envSchema = v.object({
 
   // DB path
   DATABASE_PATH: v.string(),
+
+  // TOTP Settings (period the code is valid in seconds and max attempts to enter the code)
+  TOTP_PERIOD: v.pipe(v.string(), v.transform(Number)),
+  TOTP_ATTEMPTS: v.pipe(v.string(), v.transform(Number)),
 });
 
 export const env = v.parse(envSchema, process.env);
