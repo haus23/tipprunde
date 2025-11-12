@@ -1,6 +1,31 @@
 # Changelog
 
 
+## v0.1.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.7...v0.1.0)
+
+### 🚀 Enhancements
+
+- Add logout function. ([8441ac3](https://github.com/haus23/tipprunde/commit/8441ac3))
+- Added the logout feature with a claude code plan. Now onto refactoring ;-) ([18ab18d](https://github.com/haus23/tipprunde/commit/18ab18d))
+- Redirect to / after logout from hinterhof, but stay on route else. ([a87cd6e](https://github.com/haus23/tipprunde/commit/a87cd6e))
+- Display logout action for authenticated users in foh nav. ([696209b](https://github.com/haus23/tipprunde/commit/696209b))
+
+### 🩹 Fixes
+
+- Do not make the form focusable, just the button. ([17b328a](https://github.com/haus23/tipprunde/commit/17b328a))
+
+### 💅 Refactors
+
+- Move to shell folder and improve styling. ([5ecd190](https://github.com/haus23/tipprunde/commit/5ecd190))
+- Restructured hinterhof navbar styling. ([2eeb3cf](https://github.com/haus23/tipprunde/commit/2eeb3cf))
+- Naming of the client user file. ([cdf9a72](https://github.com/haus23/tipprunde/commit/cdf9a72))
+
+### 🏡 Chore
+
+- **dx:** Add claude commands for release handling and changelog generation. ([02d3136](https://github.com/haus23/tipprunde/commit/02d3136))
+
 ## v0.1.0-pre.7
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.6...v0.1.0-pre.7)
