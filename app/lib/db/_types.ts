@@ -6,28 +6,28 @@ export type User = {
   slug: string;
   email: string | null;
   role: Role;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type Session = {
   id: string;
-  expires_at: string;
-  created_at: string;
-  updated_at: string;
-  user_id: number;
+  expiresAt: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
 };
 
 export type Verification = {
-  user_id: number;
+  userId: number;
   identifier: string;
   secret: string;
   algorithm: string;
   digits: number;
   period: number;
-  char_set: string;
-  expires_at: string;
+  charSet: string;
+  expiresAt: string;
   attempts: number;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };

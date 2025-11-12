@@ -6,7 +6,7 @@ export function createSession(userId: number, expiresAt: string) {
   const id = ulid();
 
   const stmt = db.prepare(`
-    INSERT INTO sessions (id, user_id, expires_at)
+    INSERT INTO sessions (id, userId, expiresAt)
     VALUES (?, ?, ?)
   `);
 
@@ -29,7 +29,7 @@ export function deleteSession(id: string) {
 
 export function deleteExpiredSessions() {
   const stmt = db.prepare(
-    "DELETE FROM sessions WHERE expires_at < datetime('now')",
+    "DELETE FROM sessions WHERE expiresAt < datetime('now')",
   );
   stmt.run();
 }

@@ -3,34 +3,34 @@ import type { Verification } from "./_types";
 
 type CreateVerificationData = Omit<
   Verification,
-  "attempts" | "created_at" | "updated_at"
+  "attempts" | "createdAt" | "updatedAt"
 >;
 
 export function createVerification(data: CreateVerificationData) {
   const stmt = db.prepare(`
     INSERT INTO verifications (
-      user_id, identifier, secret, algorithm, digits, period, char_set, expires_at
+      userId, identifier, secret, algorithm, digits, period, charSet, expiresAt
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(user_id) DO UPDATE SET
+    ON CONFLICT(userId) DO UPDATE SET
       identifier = excluded.identifier,
       secret = excluded.secret,
       algorithm = excluded.algorithm,
       digits = excluded.digits,
       period = excluded.period,
-      char_set = excluded.char_set,
-      expires_at = excluded.expires_at,
+      charSet = excluded.charSet,
+      expiresAt = excluded.expiresAt,
       attempts = 0
   `);
 
   stmt.run(
-    data.user_id,
+    data.userId,
     data.identifier,
     data.secret,
     data.algorithm,
     data.digits,
     data.period,
-    data.char_set,
-    data.expires_at,
+    data.charSet,
+    data.expiresAt,
   );
 }
 
