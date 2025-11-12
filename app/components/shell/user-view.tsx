@@ -16,8 +16,8 @@ export function UserView() {
       <span className="text-xs uppercase group-data-[sidebar-collapsed=true]:hidden">
         {user.name}
       </span>
-      <SidebarItem tooltip="Abmelden">
-        <Form method="post" action="/logout">
+      <Form method="post" action="/logout">
+        <SidebarItem tooltip="Abmelden">
           <Button
             type="submit"
             variant="icon"
@@ -26,8 +26,8 @@ export function UserView() {
             <LogOutIcon />
             <span>Abmelden</span>
           </Button>
-        </Form>
-      </SidebarItem>
+        </SidebarItem>
+      </Form>
     </div>
   );
 }
