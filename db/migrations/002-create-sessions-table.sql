@@ -4,8 +4,8 @@ CREATE TABLE sessions (
   expires_at TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  user_id INTEGER,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+  user_id INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Create index on user_id for faster lookups
