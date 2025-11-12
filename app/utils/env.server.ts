@@ -16,6 +16,16 @@ const envSchema = v.object({
   // TOTP Settings (period the code is valid in seconds and max attempts to enter the code)
   TOTP_PERIOD: v.pipe(v.string(), v.transform(Number)),
   TOTP_ATTEMPTS: v.pipe(v.string(), v.transform(Number)),
+
+  // Root Email
+  ROOT_EMAIL: v.pipe(v.string(), v.email()),
+
+  // Email sender addresses
+  WELCOME_EMAIL: v.pipe(v.string(), v.email()),
+  SECURITY_EMAIL: v.pipe(v.string(), v.email()),
+
+  // Email SaaS token
+  RESEND_TOKEN: v.string(),
 });
 
 export const env = v.parse(envSchema, process.env);
