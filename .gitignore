@@ -6,7 +6,8 @@ node_modules/
 build/
 
 # Dev Environment
-.claude/
+.claude/*
+!.claude/commands/
 .zed/
 .env
 db/dev.db
