@@ -2,20 +2,21 @@ import { useSubmit } from "react-router";
 
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
-
-import type { Route } from "./+types/login";
 import { Form } from "~/components/ui/form";
 import { TextField } from "~/components/ui/text-field";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { FieldError } from "~/components/ui/field-error";
 
+import { prepareOnboarding } from "~/lib/auth/auth.server";
+
+import type { Route } from "./+types/login";
+
 export async function action({ request }: Route.ActionArgs) {
-  const formData = await request.formData();
-  console.log(Object.fromEntries(formData));
+  return await prepareOnboarding(request);
 }
 
-export default function LoginRoute() {
+export default function LoginRoute({ actionData }: Route.ComponentProps) {
   const submit = useSubmit();
 
   return (
@@ -29,6 +30,7 @@ export default function LoginRoute() {
           e.preventDefault();
           submit(e.currentTarget);
         }}
+        validationErrors={actionData?.errors}
       >
         <TextField type="email" name="email" isRequired autoFocus>
           <Label>Email</Label>
