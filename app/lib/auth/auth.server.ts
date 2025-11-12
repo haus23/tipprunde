@@ -53,3 +53,24 @@ export async function prepareOnboarding(request: Request) {
     },
   });
 }
+
+/**
+ * Ensures an ongoing onboarding session exists.
+ *
+ * Checks if there's flash data (identifier and rememberMe) in the auth session.
+ * If not, redirects to login page.
+ *
+ * @param request - Request object
+ * @returns The identifier and rememberMe flag from flash data
+ */
+export async function ensureOnboardingSession(request: Request) {
+  const authSession = await getAuthSession(request);
+  const identifier = authSession.get("identifier");
+  const rememberMe = authSession.get("rememberMe");
+
+  if (!identifier) {
+    throw redirect("/login");
+  }
+
+  return { identifier, rememberMe: rememberMe ?? false };
+}

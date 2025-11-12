@@ -5,16 +5,21 @@ import { Form } from "~/components/ui/form";
 import { Label } from "~/components/ui/label";
 import { TextField } from "~/components/ui/text-field";
 import { FieldError } from "~/components/ui/field-error";
+import { ensureOnboardingSession } from "~/lib/auth/auth.server";
 
 import type { Route } from "./+types/verify";
 import { useRef } from "react";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  return await ensureOnboardingSession(request);
+}
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   console.log(Object.fromEntries(formData));
 }
 
-export default function VerifyRoute() {
+export default function VerifyRoute({ loaderData }: Route.ComponentProps) {
   const submit = useSubmit();
   const form = useRef<HTMLFormElement>(null);
 
@@ -23,6 +28,10 @@ export default function VerifyRoute() {
       <title>Einlass - runde.tips</title>
       <meta name="description" content="Einlass bei der Haus23 Tipprunde" />
       <h1 className="text-2xl font-medium">Einlass</h1>
+      <p className="text-sm">
+        Gib den Code ein, den wir an <strong>{loaderData.identifier}</strong>{" "}
+        gesendet haben.
+      </p>
       <Form
         method="post"
         onSubmit={(e) => {
