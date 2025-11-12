@@ -8,15 +8,22 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { FieldError } from "~/components/ui/field-error";
 
-import { prepareOnboarding } from "~/lib/auth/auth.server";
+import { getLoginPrefillData, prepareOnboarding } from "~/lib/auth/auth.server";
 
 import type { Route } from "./+types/login";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  return await getLoginPrefillData(request);
+}
 
 export async function action({ request }: Route.ActionArgs) {
   return await prepareOnboarding(request);
 }
 
-export default function LoginRoute({ actionData }: Route.ComponentProps) {
+export default function LoginRoute({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
   const submit = useSubmit();
 
   return (
@@ -32,12 +39,23 @@ export default function LoginRoute({ actionData }: Route.ComponentProps) {
         }}
         validationErrors={actionData?.errors}
       >
-        <TextField type="email" name="email" isRequired autoFocus>
+        <TextField
+          type="email"
+          name="email"
+          defaultValue={loaderData.prefillEmail ?? ""}
+          isRequired
+          autoFocus
+        >
           <Label>Email</Label>
           <Input />
           <FieldError />
         </TextField>
-        <Checkbox name="rememberMe">Angemeldet bleiben</Checkbox>
+        <Checkbox
+          name="rememberMe"
+          defaultSelected={loaderData.prefillRememberMe ?? false}
+        >
+          Angemeldet bleiben
+        </Checkbox>
         <div>
           <Button type="submit" variant="primary">
             Code anfordern

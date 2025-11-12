@@ -5,7 +5,7 @@ import { Form } from "~/components/ui/form";
 import { Label } from "~/components/ui/label";
 import { TextField } from "~/components/ui/text-field";
 import { FieldError } from "~/components/ui/field-error";
-import { ensureOnboardingSession } from "~/lib/auth/auth.server";
+import { ensureOnboardingSession, verifyOnboarding } from "~/lib/auth/auth.server";
 
 import type { Route } from "./+types/verify";
 import { useRef } from "react";
@@ -15,11 +15,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  const formData = await request.formData();
-  console.log(Object.fromEntries(formData));
+  return await verifyOnboarding(request);
 }
 
-export default function VerifyRoute({ loaderData }: Route.ComponentProps) {
+export default function VerifyRoute({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
   const submit = useSubmit();
   const form = useRef<HTMLFormElement>(null);
 
@@ -38,6 +40,7 @@ export default function VerifyRoute({ loaderData }: Route.ComponentProps) {
           e.preventDefault();
           submit(e.currentTarget);
         }}
+        validationErrors={actionData?.errors}
         ref={form}
       >
         <TextField maxLength={6} name="code" isRequired autoFocus>

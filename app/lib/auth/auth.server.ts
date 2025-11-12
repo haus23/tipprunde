@@ -1,11 +1,27 @@
 import { redirect } from "react-router";
 import { getUserByEmail } from "../db/users";
-import { createLoginCode } from "~/utils/totp.server";
+import { createLoginCode, verifyLoginCode } from "~/utils/totp.server";
 import { sendCodeMail, sendSecurityLogMail } from "~/utils/emails.server";
 import { commitAuthSession, getAuthSession } from "./session.server";
+import { createSession } from "../db/sessions";
 
 // Auth Flow Helpers
 //
+
+/**
+ * Gets prefill data for the login form from session flash.
+ *
+ * Used when user is redirected back to login (e.g., after failed verification).
+ *
+ * @param request - Request object
+ * @returns Prefill data for email and rememberMe
+ */
+export async function getLoginPrefillData(request: Request) {
+  const authSession = await getAuthSession(request);
+  const prefillEmail = authSession.get("identifier");
+  const prefillRememberMe = authSession.get("rememberMe");
+  return { prefillEmail, prefillRememberMe };
+}
 
 /**
  * Prepares users onboarding. Expects email in request form data.
@@ -73,4 +89,63 @@ export async function ensureOnboardingSession(request: Request) {
   }
 
   return { identifier, rememberMe: rememberMe ?? false };
+}
+
+/**
+ * Verifies the onboarding code and completes authentication.
+ *
+ * Validates the TOTP code against the stored verification data.
+ * If successful, creates a session and redirects to the app.
+ * If failed, returns validation errors or redirects to login.
+ *
+ * @param request - Request object
+ */
+export async function verifyOnboarding(request: Request) {
+  // Ensure we have an ongoing onboarding session
+  const { identifier, rememberMe } = await ensureOnboardingSession(request);
+
+  const formData = await request.formData();
+  const code = String(formData.get("code")).trim();
+
+  // Verify the TOTP code
+  const result = await verifyLoginCode(identifier, code);
+
+  if (!result.success) {
+    // If no retry allowed (expired or too many attempts), redirect to login
+    if (!result.retry) {
+      // TODO: Add toast message before redirect
+      throw redirect("/login");
+    }
+    // Allow retry - return error
+    return {
+      errors: { code: result.error },
+    };
+  }
+
+  // Get user and create session
+  const user = getUserByEmail(identifier);
+  if (!user) {
+    // This shouldn't happen since we validated the email earlier
+    throw redirect("/login");
+  }
+
+  // Set expiration based on rememberMe flag
+  const expiresDate = rememberMe
+    ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days
+    : new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day
+
+  const sessionId = createSession(user.id, expiresDate.toISOString());
+
+  // Store session ID in auth cookie and redirect
+  const authSession = await getAuthSession(request);
+  authSession.set("sessionId", sessionId);
+
+  throw redirect("/", {
+    headers: {
+      "Set-Cookie": await commitAuthSession(
+        authSession,
+        rememberMe ? { expires: expiresDate } : undefined,
+      ),
+    },
+  });
 }
