@@ -113,7 +113,7 @@ class Migrator {
 // CLI interface
 if (import.meta.url === `file://${process.argv[1]}`) {
   const command = process.argv[2];
-  const dbPath = process.env.DATABASE_URL || path.join(__dirname, "dev.db");
+  const dbPath = process.env.DATABASE_PATH || path.join(__dirname, "dev.db");
 
   const migrator = new Migrator(dbPath);
 
