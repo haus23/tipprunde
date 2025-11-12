@@ -9,6 +9,7 @@ const envSchema = v.object({
 
   // Secrets
   PREFS_SESSION_SECRET: v.string(),
+  AUTH_SESSION_SECRET: v.string(),
 
   // DB path
   DATABASE_PATH: v.string(),
