@@ -19,9 +19,15 @@ const slotClasses = cva({
 export type CodeInputProps = Omit<OTPInputProps, "children" | "maxLength"> & {
   maxLength?: number;
   ref?: React.RefObject<HTMLInputElement | null>;
+  onChange?: () => void;
 };
 
-export function CodeInput({ className, ref, ...localProps }: CodeInputProps) {
+export function CodeInput({
+  className,
+  ref,
+  onChange,
+  ...localProps
+}: CodeInputProps) {
   const [mergedProps, mergedRef] = useContextProps(
     { ...localProps },
     ref,
@@ -34,7 +40,7 @@ export function CodeInput({ className, ref, ...localProps }: CodeInputProps) {
     minLength,
     pattern,
     value: _value,
-    onChange: _onChange,
+    onComplete,
     ...props
   } = mergedProps;
 
@@ -46,6 +52,12 @@ export function CodeInput({ className, ref, ...localProps }: CodeInputProps) {
       ref={mergedRef}
       containerClassName={containerClasses({ className })}
       {...props}
+      onChange={(value) => {
+        onChange?.();
+        if (value.length === (maxLength ?? 6)) {
+          onComplete?.();
+        }
+      }}
       render={({ slots }) => (
         <div className="flex gap-1">
           {slots.map((slot, ix) => (

@@ -11,6 +11,7 @@ import { FieldError } from "~/components/ui/field-error";
 import { getLoginPrefillData, prepareOnboarding } from "~/lib/auth/auth.server";
 
 import type { Route } from "./+types/login";
+import { useEffect, useState } from "react";
 
 export async function loader({ request }: Route.LoaderArgs) {
   return await getLoginPrefillData(request);
@@ -26,6 +27,14 @@ export default function LoginRoute({
 }: Route.ComponentProps) {
   const submit = useSubmit();
 
+  // Control error state
+  const [errors, setErrors] = useState(actionData?.errors);
+
+  // Update errors when new actionData arrives
+  useEffect(() => {
+    setErrors(actionData?.errors);
+  }, [actionData]);
+
   return (
     <div className="flex flex-col gap-4">
       <title>Anmeldung - runde.tips</title>
@@ -37,7 +46,7 @@ export default function LoginRoute({
           e.preventDefault();
           submit(e.currentTarget);
         }}
-        validationErrors={actionData?.errors}
+        validationErrors={errors}
       >
         <TextField
           type="email"
@@ -45,6 +54,7 @@ export default function LoginRoute({
           defaultValue={loaderData.prefillEmail ?? ""}
           isRequired
           autoFocus
+          onChange={() => setErrors(undefined)}
         >
           <Label>Email</Label>
           <Input />

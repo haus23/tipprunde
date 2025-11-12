@@ -5,10 +5,13 @@ import { Form } from "~/components/ui/form";
 import { Label } from "~/components/ui/label";
 import { TextField } from "~/components/ui/text-field";
 import { FieldError } from "~/components/ui/field-error";
-import { ensureOnboardingSession, verifyOnboarding } from "~/lib/auth/auth.server";
+import {
+  ensureOnboardingSession,
+  verifyOnboarding,
+} from "~/lib/auth/auth.server";
 
 import type { Route } from "./+types/verify";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export async function loader({ request }: Route.LoaderArgs) {
   return await ensureOnboardingSession(request);
@@ -24,6 +27,15 @@ export default function VerifyRoute({
 }: Route.ComponentProps) {
   const submit = useSubmit();
   const form = useRef<HTMLFormElement>(null);
+  const hasAutoSubmitted = useRef(false);
+
+  // Control error state
+  const [errors, setErrors] = useState(actionData?.errors);
+
+  // Update errors when new actionData arrives
+  useEffect(() => {
+    setErrors(actionData?.errors);
+  }, [actionData]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -40,12 +52,23 @@ export default function VerifyRoute({
           e.preventDefault();
           submit(e.currentTarget);
         }}
-        validationErrors={actionData?.errors}
+        validationErrors={errors}
         ref={form}
       >
         <TextField maxLength={6} name="code" isRequired autoFocus>
           <Label>Code</Label>
-          <CodeInput onComplete={() => form.current?.requestSubmit()} />
+          <CodeInput
+            onChange={() => {
+              setErrors(undefined);
+              hasAutoSubmitted.current = false; // Reset auto-submit flag
+            }}
+            onComplete={() => {
+              if (!hasAutoSubmitted.current) {
+                hasAutoSubmitted.current = true;
+                form.current?.requestSubmit();
+              }
+            }}
+          />
           <FieldError />
         </TextField>
         <div>
