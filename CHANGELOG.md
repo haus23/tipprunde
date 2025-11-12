@@ -1,6 +1,36 @@
 # Changelog
 
 
+## v0.1.0-pre.6
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.5...v0.1.0-pre.6)
+
+### 🚀 Enhancements
+
+- Add code creating and verifying login codes (TOTPs). ([ecbe5d9](https://github.com/haus23/tipprunde/commit/ecbe5d9))
+- Add email templates for login-code email and a security email. ([fd2d8f2](https://github.com/haus23/tipprunde/commit/fd2d8f2))
+- Implement sending emails via Resend. ([1fe5419](https://github.com/haus23/tipprunde/commit/1fe5419))
+- Start the onboarding flow and display server side errors in the login form. ([00e2c00](https://github.com/haus23/tipprunde/commit/00e2c00))
+- Implement onboarding preparation. ([2a29366](https://github.com/haus23/tipprunde/commit/2a29366))
+
+### 🩹 Fixes
+
+- Updated db path var name. ([a48c587](https://github.com/haus23/tipprunde/commit/a48c587))
+- Update db path var name also. ([0886b30](https://github.com/haus23/tipprunde/commit/0886b30))
+
+### 💅 Refactors
+
+- Rename columns to use camelCase everywhere. ([a8664a8](https://github.com/haus23/tipprunde/commit/a8664a8))
+- Add error logging. ([b9085c7](https://github.com/haus23/tipprunde/commit/b9085c7))
+- Align session file naming. ([5e14c30](https://github.com/haus23/tipprunde/commit/5e14c30))
+
+### 🏡 Chore
+
+- Add @epic-web/totp for login code generation. ([eeef854](https://github.com/haus23/tipprunde/commit/eeef854))
+- Update types and DAL functions to camelCase column names. ([ce726ea](https://github.com/haus23/tipprunde/commit/ce726ea))
+- Add react.email components lib. ([ecab1d7](https://github.com/haus23/tipprunde/commit/ecab1d7))
+- Add an auth session. ([7578135](https://github.com/haus23/tipprunde/commit/7578135))
+
 ## v0.1.0-pre.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.4...v0.1.0-pre.5)
