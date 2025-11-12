@@ -2,7 +2,7 @@ import { Form } from "react-router";
 import { LogOutIcon } from "lucide-react";
 import { useUser } from "~/lib/auth/use-user";
 import { Button } from "../ui/button";
-import { SidebarItem } from "../shell/sidebar-item";
+import { SidebarItem } from "./sidebar-item";
 
 export function UserView() {
   const user = useUser();
@@ -18,7 +18,11 @@ export function UserView() {
       </span>
       <SidebarItem tooltip="Abmelden">
         <Form method="post" action="/logout">
-          <Button type="submit" variant="icon" className="w-full justify-start">
+          <Button
+            type="submit"
+            variant="icon"
+            className="w-full justify-start group-data-[sidebar-collapsed=true]:w-8 overflow-hidden"
+          >
             <LogOutIcon />
             <span>Abmelden</span>
           </Button>

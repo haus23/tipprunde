@@ -5,11 +5,12 @@ import {
 import { cva, type VariantProps } from "~/utils/cva";
 
 const buttonClasses = cva({
-  base: ["data-disabled:opacity-50"],
+  base: ["flex items-center", "data-disabled:opacity-50"],
   variants: {
     variant: {
       primary: "px-3 py-1.5 border",
       plain: "",
+      icon: ["gap-2.5 px-1.5", "[&>svg]:size-5 [&>svg]:shrink-0"],
     },
   },
   defaultVariants: {
