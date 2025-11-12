@@ -5,8 +5,8 @@ import { UserView } from "../shell/user-view";
 
 export function HinterhofNav() {
   return (
-    <div className="px-2 grow flex flex-col justify-between">
-      <div className="grow flex flex-col gap-2">
+    <div className="grow flex flex-col justify-between">
+      <div className="grow flex flex-col gap-2 px-2">
         <SidebarItem tooltip="Dashboard">
           <NavLink to="/hinterhof">
             <HomeIcon />
@@ -15,7 +15,7 @@ export function HinterhofNav() {
         </SidebarItem>
       </div>
       <div className="flex flex-col gap-2">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 px-2">
           <span className="text-xs uppercase group-data-[sidebar-collapsed=true]:hidden">
             Stammdaten
           </span>
@@ -26,8 +26,10 @@ export function HinterhofNav() {
             </NavLink>
           </SidebarItem>
         </div>
-        <hr />
-        <UserView />
+        <hr className="mx-2" />
+        <div className="px-2">
+          <UserView />
+        </div>
       </div>
     </div>
   );
