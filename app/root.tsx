@@ -3,6 +3,8 @@ import { data, Links, Outlet, Scripts, ScrollRestoration } from "react-router";
 import { AppShell } from "./components/shell/app-shell";
 import { ShellProvider } from "./components/shell/provider";
 import { getPrefsSession } from "./lib/prefs/session.server";
+import { getUser } from "./lib/auth/auth.server";
+import { userContext } from "./lib/auth/user.context";
 
 import type { Route } from "./+types/root";
 
@@ -33,6 +35,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
     </html>
   );
 }
+
+export const middleware: Route.MiddlewareFunction[] = [
+  async ({ context, request }, next) => {
+    const { user, authCookieHeader } = await getUser(request);
+    context.set(userContext, user);
+
+    const response = await next();
+    if (authCookieHeader) {
+      response.headers.append("Set-Cookie", authCookieHeader);
+    }
+
+    return response;
+  },
+];
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getPrefsSession(request);

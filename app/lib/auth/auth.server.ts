@@ -1,12 +1,48 @@
 import { redirect } from "react-router";
-import { getUserByEmail } from "../db/users";
+import { getUserByEmail, getUserById } from "../db/users";
 import { createLoginCode, verifyLoginCode } from "~/utils/totp.server";
 import { sendCodeMail, sendSecurityLogMail } from "~/utils/emails.server";
-import { commitAuthSession, getAuthSession } from "./session.server";
-import { createSession } from "../db/sessions";
+import {
+  commitAuthSession,
+  destroyAuthSession,
+  getAuthSession,
+} from "./session.server";
+import { createSession, getSession } from "../db/sessions";
 
 // Auth Flow Helpers
 //
+
+/**
+ * Gets the current authenticated user from the session.
+ *
+ * If a sessionId exists but the session is invalid or expired,
+ * returns a header to destroy the client cookie.
+ *
+ * @param request - Request object
+ * @returns Object with user and optional authCookieHeader
+ */
+export async function getUser(request: Request) {
+  const authSession = await getAuthSession(request);
+  const sessionId = authSession.get("sessionId");
+
+  // No session ID - user not logged in
+  if (!sessionId) {
+    return { user: null, authCookieHeader: null };
+  }
+
+  const session = getSession(sessionId);
+
+  // Session doesn't exist or is expired - destroy client cookie
+  if (!session || new Date() > new Date(session.expiresAt)) {
+    return {
+      user: null,
+      authCookieHeader: await destroyAuthSession(authSession),
+    };
+  }
+
+  const user = getUserById(session.userId);
+  return { user, authCookieHeader: null };
+}
 
 /**
  * Gets prefill data for the login form from session flash.
