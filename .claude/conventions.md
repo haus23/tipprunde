@@ -58,7 +58,7 @@ Always use semantic color tokens, never hardcoded colors:
 --ring-color-focus         /* Keyboard focus indicator */
 
 /* Teaser Colors (1-8) - Dashboard cards and visual variety */
---color-teaser-N                  /* Icon/text color */
+--text-color-teaser-N             /* Icon/text color */
 --background-color-teaser-N       /* Icon container background */
 --background-color-teaser-N-hover /* Icon container hover state */
 
@@ -69,6 +69,8 @@ Always use semantic color tokens, never hardcoded colors:
 ```
 
 Usage: `bg-base`, `text-primary`, `border-default`, `bg-accent`, `text-on-accent`, `text-error`, `border-error`, `ring-focus`, `text-teaser-1`, `bg-teaser-2`, `bg-teaser-3-hover`
+
+**Naming Convention**: All color tokens follow the pattern `--{category}-color-{purpose}` (e.g., `--text-color-primary`, `--background-color-accent`, `--border-color-default`, `--ring-color-focus`). This makes the token type explicit and improves clarity.
 
 ### Layout
 - **Vertical spacing**: `flex flex-col gap-*` (NOT `space-y-*`)
