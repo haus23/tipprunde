@@ -8,7 +8,7 @@ export function HinterhofNav() {
     <div className="grow flex flex-col justify-between">
       <div className="grow flex flex-col gap-2 px-2">
         <SidebarItem tooltip="Dashboard">
-          <NavLink to="/hinterhof">
+          <NavLink to="/hinterhof" end>
             <HomeIcon />
             <span>Dashboard</span>
           </NavLink>

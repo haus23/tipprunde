@@ -12,7 +12,7 @@ export function FohNav() {
     <div className="grow flex flex-col justify-between">
       <div className="flex flex-col gap-2 px-2">
         <SidebarItem tooltip="Tabelle">
-          <NavLink to="/">
+          <NavLink to="/" end>
             <TableIcon />
             <span>Tabelle</span>
           </NavLink>
@@ -36,7 +36,7 @@ export function FohNav() {
             Verwaltung
           </span>
           <SidebarItem tooltip="Verwaltung">
-            <NavLink to="/hinterhof">
+            <NavLink to="/hinterhof" end>
               <SettingsIcon />
               <span>Dashboard</span>
             </NavLink>
