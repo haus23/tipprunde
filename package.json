@@ -8,7 +8,7 @@
     "build": "react-router build",
     "start": "react-router-serve build/server/index.js",
     "db:migrate": "node db/migrate.js",
-    "db:seed": "node db/seed.js"
+    "db:seed": "node db/seed/index.js"
   },
   "dependencies": {
     "@epic-web/totp": "^4.0.1",
