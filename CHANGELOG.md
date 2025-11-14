@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.2.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.1...v0.2.0-pre.2)
+
+### 🚀 Enhancements
+
+- Add semantic tokens for the greys. ([1ac34d7](https://github.com/haus23/tipprunde/commit/1ac34d7))
+
+### 💅 Refactors
+
+- Use semantic colors throughout the ui. No plain tailwind colors. ([2158ce2](https://github.com/haus23/tipprunde/commit/2158ce2))
+
+### 🏡 Chore
+
+- **dx:** Add claude instructions for the conventions i use in the project. ([1b2c71a](https://github.com/haus23/tipprunde/commit/1b2c71a))
+
 ## v0.2.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.0...v0.2.0-pre.1)
