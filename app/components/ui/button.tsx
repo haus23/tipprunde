@@ -9,11 +9,11 @@ const buttonClasses = cva({
   variants: {
     variant: {
       primary: [
-        "px-4 py-2 rounded",
+        "px-4 py-2 rounded-md",
         "bg-accent hover:bg-accent-hover text-on-accent",
       ],
       secondary: [
-        "px-4 py-2 rounded",
+        "px-4 py-2 rounded-md",
         "border border-default bg-raised hover:bg-overlay text-primary",
       ],
       plain: "",
