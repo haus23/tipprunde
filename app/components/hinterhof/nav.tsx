@@ -16,7 +16,7 @@ export function HinterhofNav() {
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-2 px-2">
-          <span className="text-xs uppercase group-data-[sidebar-collapsed=true]:hidden">
+          <span className="text-xs uppercase group-data-[sidebar-collapsed=true]/shell:hidden">
             Stammdaten
           </span>
           <SidebarItem tooltip="Spieler">
