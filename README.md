@@ -48,9 +48,13 @@ pnpm run db:migrate up
 
 ### 4. Seed the database
 
+Seeds initial data (root user and original rules):
+
 ```bash
-ROOT_EMAIL=admin@example.com pnpm run db:seed
+pnpm run db:seed
 ```
+
+The `ROOT_EMAIL` environment variable from your `.env` file will be used for the admin account.
 
 ### 5. Start the development server
 
@@ -67,7 +71,15 @@ pnpm run dev
 
 ### Seed Data
 
-- **Seed root user**: `ROOT_EMAIL=your@email.com pnpm run db:seed`
+The seed script is idempotent and can be run multiple times safely:
+
+```bash
+pnpm run db:seed
+```
+
+Seeds:
+- **Root user**: Admin account using `ROOT_EMAIL` from environment
+- **Original rules**: Initial rule set for the first championships (2002)
 
 ## Project Structure
 
@@ -77,24 +89,39 @@ tipprunde/
 │   ├── components/         # Reusable UI components
 │   ├── lib/
 │   │   ├── auth/          # Authentication logic
-│   │   └── db/            # Database layer (DAL)
+│   │   ├── db/            # Database layer (DAL)
+│   │   └── model/         # Domain type definitions
 │   ├── routes/            # React Router routes
 │   └── utils/             # Utility functions
 ├── db/
 │   ├── migrations/        # SQL migration files
-│   ├── migrate.js         # Migration script
-│   └── seed.js           # Database seeding script
+│   ├── seed/              # Database seeding scripts
+│   │   ├── index.js       # Orchestrates all seeds
+│   │   ├── users.js       # Seeds root user
+│   │   └── rules.js       # Seeds initial rules
+│   └── migrate.js         # Migration script
 ├── emails/                # Email templates (React components)
 └── public/               # Static assets
 ```
 
 ## Features
 
+### Authentication & Security
 - **Passwordless Authentication**: Login via email with time-limited codes
 - **Security Monitoring**: Automatic email notifications for invalid login attempts
 - **Session Management**: Secure cookie-based sessions with "remember me" option
+- **Role-Based Access**: Admin/Manager/User roles with permission system
+
+### Tipprunde Domain
+- **Championships**: Twice-yearly competitions with configurable rule sets
+- **Flexible Rules**: Support for different scoring systems and joker mechanics across championships
+- **Multi-League Support**: Matches from various football leagues (Bundesliga, Champions League, etc.)
+- **Database Schema**: Pure SQLite with domain-value PKs for readability
+
+### Technical
 - **Email Templates**: React-based email templates with Resend API
 - **Type-Safe Database**: TypeScript-first data access layer
+- **No ORMs**: Direct SQL queries for full control and performance
 
 ## Development
 
