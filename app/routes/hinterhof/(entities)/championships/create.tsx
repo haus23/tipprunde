@@ -1,8 +1,9 @@
 import { redirect } from "react-router";
 import { Form } from "react-router";
-import { TextField, Label } from "react-aria-components";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { TextField } from "~/components/ui/text-field";
+import { Label } from "~/components/ui/label";
 import { createChampionship } from "~/lib/db/championships";
 import type { Route } from "./+types/create";
 
@@ -29,12 +30,12 @@ export default function NewChampionship() {
 
       <Form method="post" className="flex flex-col gap-4">
         <TextField isRequired>
-          <Label className="text-primary">ID</Label>
+          <Label>ID</Label>
           <Input name="id" placeholder="z.B. hr2526" className="w-full" />
         </TextField>
 
         <TextField isRequired>
-          <Label className="text-primary">Name</Label>
+          <Label>Name</Label>
           <Input
             name="name"
             placeholder="z.B. Hinrunde 2025/26"
@@ -43,7 +44,7 @@ export default function NewChampionship() {
         </TextField>
 
         <TextField isRequired>
-          <Label className="text-primary">Nummer</Label>
+          <Label>Nummer</Label>
           <Input
             name="nr"
             type="number"
