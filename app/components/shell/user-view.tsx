@@ -21,7 +21,7 @@ export function UserView() {
           <Button
             type="submit"
             variant="plain"
-            className="w-full justify-start gap-2.5 px-2 py-1 rounded-md text-secondary hover:text-primary hover:bg-overlay group-data-[sidebar-collapsed=true]/shell:w-9 overflow-hidden [&>svg]:size-5 [&>svg]:shrink-0"
+            className="w-full justify-start gap-2.5 px-2 py-1 rounded-md text-secondary hover:text-primary hover:bg-raised-hover group-data-[sidebar-collapsed=true]/shell:w-9 overflow-hidden [&>svg]:size-5 [&>svg]:shrink-0"
           >
             <LogOutIcon />
             <span>Abmelden</span>

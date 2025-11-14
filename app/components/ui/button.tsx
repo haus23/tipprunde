@@ -20,7 +20,7 @@ const buttonClasses = cva({
         "px-4 py-2 rounded-md",
         "border border-default bg-raised hover:bg-overlay text-primary",
       ],
-      ghost: ["p-1 rounded-md text-secondary hover:text-primary hover:bg-overlay"],
+      ghost: ["p-1 rounded-md text-secondary hover:text-primary hover:bg-raised-hover"],
       plain: "",
     },
   },

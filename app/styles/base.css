@@ -40,6 +40,9 @@
     /* Raised: Cards, elevated elements - Tailwind: gray-50 / gray-900 */
     --background-color-raised: light-dark(#f9fafb, #111827);
 
+    /* Raised Hover: Hover state on raised surfaces - Tailwind: gray-200 / gray-800 */
+    --background-color-raised-hover: light-dark(#e5e7eb, #1f2937);
+
     /* Subtle: Hover states, disabled backgrounds - Tailwind: gray-50 / gray-900 */
     --background-color-subtle: light-dark(#f9fafb, #111827);
 

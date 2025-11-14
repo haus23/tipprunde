@@ -13,7 +13,8 @@ const navLinkClasses = cva({
   base: [
     "flex items-center gap-2.5 px-2 py-1 rounded-md group-data-[sidebar-collapsed=true]/shell:w-9 overflow-hidden ",
     "[&>svg]:size-5 [&>svg]:shrink-0",
-    "text-secondary hover:text-primary hover:bg-overlay",
+    "text-secondary hover:text-primary hover:bg-raised-hover",
+    "aria-[current=page]:bg-raised-hover aria-[current=page]:text-primary",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus",
   ],
 });

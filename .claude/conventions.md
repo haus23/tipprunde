@@ -40,6 +40,7 @@ Always use semantic color tokens, never hardcoded colors:
 --background-color-base          /* Main page background */
 --background-color-overlay       /* Modals, dropdowns */
 --background-color-raised        /* Cards, elevated elements */
+--background-color-raised-hover  /* Hover state on raised surfaces */
 --background-color-subtle        /* Hover states, disabled */
 --background-color-emphasis      /* High-contrast overlays (tooltips, badges, toasts) */
 --background-color-accent        /* Primary actions, CTAs */
