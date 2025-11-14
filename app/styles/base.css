@@ -65,6 +65,9 @@
     /* On-Accent: Text on accent backgrounds - Tailwind: white */
     --text-color-on-accent: #ffffff;
 
+    /* Error: Error messages, validation feedback - Tailwind: red-600 / red-400 */
+    --text-color-error: light-dark(#dc2626, #f87171);
+
     /* Accent Colors */
     /* Primary: Main accent color for primary actions - Tailwind: blue-600 */
     --background-color-accent: light-dark(#2563eb, #3b82f6);
@@ -78,6 +81,9 @@
 
     /* Subtle: Dividers, very light borders - Tailwind: gray-100 / gray-900 */
     --border-color-subtle: light-dark(#f3f4f6, #111827);
+
+    /* Error: Invalid field borders - Tailwind: red-500 / red-400 */
+    --border-color-error: light-dark(#ef4444, #f87171);
 
     /* Animations */
     @keyframes caret-blink {

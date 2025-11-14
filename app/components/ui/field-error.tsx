@@ -6,7 +6,7 @@ import {
 import { cva } from "~/utils/cva";
 
 const fieldErrorClasses = cva({
-  base: "text-sm italic",
+  base: "text-sm italic text-secondary",
 });
 
 export function FieldError({ className, ...props }: FieldErrorProps) {

@@ -2,7 +2,7 @@
 
 ## Next Up
 
-- [ ] Style field-error component
+- [x] Style field-error component (subtle text + red border on invalid, focus hides error border)
 - [ ] Add focus styling to form components
 
 ## Later
