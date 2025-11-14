@@ -30,8 +30,41 @@
 }
 
 @theme {
-    --color-app-1: light-dark(white, black);
-    --color-app-12: light-dark(black, white);
+    /* Background Colors */
+    /* Base: Main background - Tailwind: white / gray-950 */
+    --background-color-base: light-dark(#ffffff, #030712);
+
+    /* Raised: Cards, elevated elements - Tailwind: white / gray-900 */
+    --background-color-raised: light-dark(#ffffff, #111827);
+
+    /* Overlay: Modals, dropdowns - Tailwind: white / gray-800 */
+    --background-color-overlay: light-dark(#ffffff, #1f2937);
+
+    /* Subtle: Hover states, disabled backgrounds - Tailwind: gray-50 / gray-900 */
+    --background-color-subtle: light-dark(#f9fafb, #111827);
+
+    /* Emphasis: High-contrast overlays (tooltips, badges) - Tailwind: gray-950 / white */
+    --background-color-emphasis: light-dark(#030712, #ffffff);
+
+    /* Text Colors */
+    /* Primary: Main text, headings - Tailwind: gray-950 / white */
+    --text-color-primary: light-dark(#030712, #ffffff);
+
+    /* Secondary: Supporting text - Tailwind: gray-600 / gray-400 */
+    --text-color-secondary: light-dark(#4b5563, #9ca3af);
+
+    /* Tertiary: Muted text, placeholders - Tailwind: gray-400 / gray-500 */
+    --text-color-tertiary: light-dark(#9ca3af, #6b7280);
+
+    /* Emphasis: High-contrast text on emphasis backgrounds - Tailwind: white / gray-950 */
+    --text-color-emphasis: light-dark(#ffffff, #030712);
+
+    /* Border Colors */
+    /* Default: Standard borders - Tailwind: gray-200 / gray-800 */
+    --border-color-default: light-dark(#e5e7eb, #1f2937);
+
+    /* Subtle: Dividers, very light borders - Tailwind: gray-100 / gray-900 */
+    --border-color-subtle: light-dark(#f3f4f6, #111827);
 
     /* Animations */
     @keyframes caret-blink {
