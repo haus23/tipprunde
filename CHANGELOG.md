@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.2.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.0...v0.2.0-pre.1)
+
+### 🚀 Enhancements
+
+- Add DAL for creating championships. ([258d9a2](https://github.com/haus23/tipprunde/commit/258d9a2))
+- Add form to create a championship. ([753197f](https://github.com/haus23/tipprunde/commit/753197f))
+
+### 🏡 Chore
+
+- Update readme. ([cbbdbbf](https://github.com/haus23/tipprunde/commit/cbbdbbf))
+- Patch update dev toolchain. ([69cae27](https://github.com/haus23/tipprunde/commit/69cae27))
+- Updated React Router packages to 7.9.6 ([e872d34](https://github.com/haus23/tipprunde/commit/e872d34))
+- Update deps ([6629e1e](https://github.com/haus23/tipprunde/commit/6629e1e))
+
 ## v0.2.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.2.0-pre.0)
