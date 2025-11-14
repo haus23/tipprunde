@@ -10,7 +10,13 @@
 
 ## Later
 
+- [ ] Use iteration of dashboard items to reuse the styles
+- [ ] Fixed sidebar
+- [ ] Vertical dashboard gap on small devices
+
 - [ ] Can I include the manual submitting pattern in my Form wrapper?
+- [ ] Mobile nav (dialog?)
+- [ ] Finalize padding of content (desktop w/o collapsed sidebar, small device with hidden sidebar)
 
 ## Ideas / Maybe
 
