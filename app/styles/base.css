@@ -59,6 +59,19 @@
     /* Emphasis: High-contrast text on emphasis backgrounds - Tailwind: white / gray-950 */
     --text-color-emphasis: light-dark(#ffffff, #030712);
 
+    /* Accent: Text for links, icons - Tailwind: blue-600 */
+    --text-color-accent: light-dark(#2563eb, #3b82f6);
+
+    /* On-Accent: Text on accent backgrounds - Tailwind: white */
+    --text-color-on-accent: #ffffff;
+
+    /* Accent Colors */
+    /* Primary: Main accent color for primary actions - Tailwind: blue-600 */
+    --background-color-accent: light-dark(#2563eb, #3b82f6);
+
+    /* Accent Hover: Hover state for accent elements - Tailwind: blue-700 */
+    --background-color-accent-hover: light-dark(#1d4ed8, #2563eb);
+
     /* Border Colors */
     /* Default: Standard borders - Tailwind: gray-200 / gray-800 */
     --border-color-default: light-dark(#e5e7eb, #1f2937);

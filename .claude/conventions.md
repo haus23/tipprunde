@@ -37,24 +37,28 @@ Always use semantic color tokens, never hardcoded colors:
 
 ```css
 /* Background Colors */
---background-color-base      /* Main page background */
---background-color-raised    /* Cards, elevated elements */
---background-color-overlay   /* Modals, dropdowns */
---background-color-subtle    /* Hover states, disabled */
---background-color-emphasis  /* High-contrast overlays (tooltips, badges, toasts) */
+--background-color-base          /* Main page background */
+--background-color-raised        /* Cards, elevated elements */
+--background-color-overlay       /* Modals, dropdowns */
+--background-color-subtle        /* Hover states, disabled */
+--background-color-emphasis      /* High-contrast overlays (tooltips, badges, toasts) */
+--background-color-accent        /* Primary actions, CTAs */
+--background-color-accent-hover  /* Hover state for accent elements */
 
 /* Text Colors */
---text-color-primary         /* Main text, headings */
---text-color-secondary       /* Supporting text */
---text-color-tertiary        /* Muted text, placeholders */
---text-color-emphasis        /* Text on emphasis backgrounds */
+--text-color-primary       /* Main text, headings */
+--text-color-secondary     /* Supporting text */
+--text-color-tertiary      /* Muted text, placeholders */
+--text-color-emphasis      /* Text on emphasis backgrounds */
+--text-color-accent        /* Links, accent icons */
+--text-color-on-accent     /* Text on accent backgrounds */
 
 /* Border Colors */
---border-color-default       /* Standard borders */
---border-color-subtle        /* Dividers, light borders */
+--border-color-default     /* Standard borders */
+--border-color-subtle      /* Dividers, light borders */
 ```
 
-Usage: `bg-base`, `text-primary`, `border-default`
+Usage: `bg-base`, `text-primary`, `border-default`, `bg-accent`, `text-on-accent`
 
 ### Layout
 - **Vertical spacing**: `flex flex-col gap-*` (NOT `space-y-*`)
