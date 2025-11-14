@@ -81,42 +81,42 @@
 
     /* Teaser Colors - for dashboard cards and visual variety */
     /* 1: Blue - Tailwind: blue-600 / blue-400 */
-    --color-teaser-1: light-dark(#2563eb, #60a5fa);
+    --text-color-teaser-1: light-dark(#2563eb, #60a5fa);
     --background-color-teaser-1: light-dark(#eff6ff, #1e3a8a);
     --background-color-teaser-1-hover: light-dark(#dbeafe, #1e40af);
 
     /* 2: Violet - Tailwind: violet-600 / violet-400 */
-    --color-teaser-2: light-dark(#7c3aed, #a78bfa);
+    --text-color-teaser-2: light-dark(#7c3aed, #a78bfa);
     --background-color-teaser-2: light-dark(#f5f3ff, #4c1d95);
     --background-color-teaser-2-hover: light-dark(#ede9fe, #5b21b6);
 
     /* 3: Orange - Tailwind: orange-600 / orange-400 */
-    --color-teaser-3: light-dark(#ea580c, #fb923c);
+    --text-color-teaser-3: light-dark(#ea580c, #fb923c);
     --background-color-teaser-3: light-dark(#fff7ed, #7c2d12);
     --background-color-teaser-3-hover: light-dark(#ffedd5, #9a3412);
 
     /* 4: Green - Tailwind: green-600 / green-400 */
-    --color-teaser-4: light-dark(#16a34a, #4ade80);
+    --text-color-teaser-4: light-dark(#16a34a, #4ade80);
     --background-color-teaser-4: light-dark(#f0fdf4, #14532d);
     --background-color-teaser-4-hover: light-dark(#dcfce7, #166534);
 
     /* 5: Pink - Tailwind: pink-600 / pink-400 */
-    --color-teaser-5: light-dark(#db2777, #f472b6);
+    --text-color-teaser-5: light-dark(#db2777, #f472b6);
     --background-color-teaser-5: light-dark(#fdf2f8, #831843);
     --background-color-teaser-5-hover: light-dark(#fce7f3, #9f1239);
 
     /* 6: Cyan - Tailwind: cyan-600 / cyan-400 */
-    --color-teaser-6: light-dark(#0891b2, #22d3ee);
+    --text-color-teaser-6: light-dark(#0891b2, #22d3ee);
     --background-color-teaser-6: light-dark(#ecfeff, #164e63);
     --background-color-teaser-6-hover: light-dark(#cffafe, #155e75);
 
     /* 7: Amber - Tailwind: amber-600 / amber-400 */
-    --color-teaser-7: light-dark(#d97706, #fbbf24);
+    --text-color-teaser-7: light-dark(#d97706, #fbbf24);
     --background-color-teaser-7: light-dark(#fffbeb, #78350f);
     --background-color-teaser-7-hover: light-dark(#fef3c7, #92400e);
 
     /* 8: Emerald - Tailwind: emerald-600 / emerald-400 */
-    --color-teaser-8: light-dark(#059669, #34d399);
+    --text-color-teaser-8: light-dark(#059669, #34d399);
     --background-color-teaser-8: light-dark(#ecfdf5, #064e3b);
     --background-color-teaser-8-hover: light-dark(#d1fae5, #065f46);
 
