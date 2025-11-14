@@ -57,13 +57,18 @@ Always use semantic color tokens, never hardcoded colors:
 /* Ring Colors */
 --ring-color-focus         /* Keyboard focus indicator */
 
+/* Teaser Colors (1-8) - Dashboard cards and visual variety */
+--color-teaser-N                  /* Icon/text color */
+--background-color-teaser-N       /* Icon container background */
+--background-color-teaser-N-hover /* Icon container hover state */
+
 /* Border Colors */
 --border-color-default     /* Standard borders */
 --border-color-subtle      /* Dividers, light borders */
 --border-color-error       /* Invalid field borders */
 ```
 
-Usage: `bg-base`, `text-primary`, `border-default`, `bg-accent`, `text-on-accent`, `text-error`, `border-error`, `ring-focus`
+Usage: `bg-base`, `text-primary`, `border-default`, `bg-accent`, `text-on-accent`, `text-error`, `border-error`, `ring-focus`, `text-teaser-1`, `bg-teaser-2`, `bg-teaser-3-hover`
 
 ### Layout
 - **Vertical spacing**: `flex flex-col gap-*` (NOT `space-y-*`)

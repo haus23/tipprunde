@@ -6,7 +6,7 @@
 - [x] Add focus styling to form components (focus-visible with ring, combined selectors for error states)
 - [x] Add focus styling to link components
 - [ ] Hover backgrounds for the nav-items and the ghost button (visual feedback for desktop)
-- [ ] Dashboard card styling (teaser colors for the icons, primary and secondary text)
+- [x] Dashboard card styling (8 numbered teaser colors, individual card hover with named groups)
 
 ## Later
 
