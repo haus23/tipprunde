@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.2.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.2.0-pre.0)
+
+### 💅 Refactors
+
+- Add seed for original rules and create a seed folder. ([f1de908](https://github.com/haus23/tipprunde/commit/f1de908))
+
+### 🏡 Chore
+
+- Create the tipprunde tables. ([16b0ec5](https://github.com/haus23/tipprunde/commit/16b0ec5))
+
 ## v0.1.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.7...v0.1.0)
