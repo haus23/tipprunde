@@ -57,7 +57,7 @@ export default function NewChampionship() {
         <div className="flex gap-4 pt-4">
           <Button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded"
+            className="px-4 py-2 bg-accent hover:bg-accent-hover text-on-accent rounded"
           >
             Erstellen
           </Button>
