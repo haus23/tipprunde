@@ -20,45 +20,50 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function NewChampionship() {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Neues Tippturnier</h1>
+    <div>
+      <h1 className="text-2xl font-medium mb-6 text-primary">
+        Neues Tippturnier
+      </h1>
 
-      <Form method="post" className="max-w-md space-y-4">
+      <Form method="post" className="flex flex-col gap-4">
         <TextField isRequired>
-          <Label>ID</Label>
+          <Label className="text-primary">ID</Label>
           <Input
             name="id"
             placeholder="z.B. hr2526"
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border border-default rounded bg-raised text-primary placeholder:text-tertiary"
           />
         </TextField>
 
         <TextField isRequired>
-          <Label>Name</Label>
+          <Label className="text-primary">Name</Label>
           <Input
             name="name"
             placeholder="z.B. Hinrunde 2025/26"
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border border-default rounded bg-raised text-primary placeholder:text-tertiary"
           />
         </TextField>
 
         <TextField isRequired>
-          <Label>Nummer</Label>
+          <Label className="text-primary">Nummer</Label>
           <Input
             name="nr"
             type="number"
             placeholder="z.B. 58"
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border border-default rounded bg-raised text-primary placeholder:text-tertiary"
           />
         </TextField>
 
         <div className="flex gap-4 pt-4">
-          <Button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">
+          <Button
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded"
+          >
             Erstellen
           </Button>
           <Button
             type="button"
-            className="px-4 py-2 border rounded"
+            className="px-4 py-2 border border-default rounded bg-raised text-primary"
             onPress={() => window.history.back()}
           >
             Abbrechen

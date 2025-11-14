@@ -26,7 +26,7 @@ export function HinterhofNav() {
             </NavLink>
           </SidebarItem>
         </div>
-        <hr className="mx-2" />
+        <hr className="mx-2 border-default" />
         <div className="px-2">
           <UserView />
         </div>

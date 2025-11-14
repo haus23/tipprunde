@@ -44,7 +44,7 @@ export function FohNav() {
         </div>
         {isAuthenticated(user) && (
           <>
-            <hr className="mx-2" />
+            <hr className="mx-2 border-default" />
             <div className="px-2">
               <UserView />
             </div>
