@@ -5,12 +5,15 @@ import {
 } from "react-aria-components";
 import { cva } from "~/utils/cva";
 
-// TODO: focus styling
-// Currently tweaked by exluding Checkbox from tab order and setting the
-// tabindex at the checkmark box
-
 const checkboxClasses = cva({
-  base: "group flex items-center gap-2 text-sm font-semibold",
+  base: "group flex items-center gap-2 text-sm font-semibold text-primary",
+});
+const checkboxBoxClasses = cva({
+  base: [
+    "flex h-5 w-5 items-center justify-center rounded-sm",
+    "border border-default",
+    "group-data-focused:ring-2 group-data-focused:ring-focus",
+  ],
 });
 const checkmarkClasses = cva({
   base: "h-3 w-3 fill-none stroke-current stroke-0 group-data-[selected=true]:stroke-3",
@@ -19,7 +22,6 @@ const checkmarkClasses = cva({
 export function Checkbox({ className, children, ...props }: CheckboxProps) {
   return (
     <_Checkbox
-      excludeFromTabOrder
       className={composeRenderProps(className, (className, renderProps) =>
         checkboxClasses({ ...renderProps, className }),
       )}
@@ -27,10 +29,7 @@ export function Checkbox({ className, children, ...props }: CheckboxProps) {
     >
       {(renderProps) => (
         <>
-          <div
-            tabIndex={0}
-            className="flex h-5 w-5 items-center justify-center border"
-          >
+          <div className={checkboxBoxClasses()}>
             <svg
               viewBox="0 0 18 18"
               aria-hidden="true"

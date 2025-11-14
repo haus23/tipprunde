@@ -4,9 +4,10 @@ import { cva } from "~/utils/cva";
 const inputClasses = cva({
   base: [
     "px-3 py-2 rounded-md",
-    "border border-default data-invalid:border-error",
+    "border border-default data-invalid:border-error data-invalid:focus-visible:border-default",
     "bg-raised text-primary",
     "placeholder:text-tertiary",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus",
   ],
 });
 

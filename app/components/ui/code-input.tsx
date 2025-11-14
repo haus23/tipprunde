@@ -7,11 +7,12 @@ const slotClasses = cva({
   base: [
     "relative flex items-center justify-center",
     "h-14 w-10 text-3xl",
-    "border rounded-xs",
+    "border border-default rounded-sm",
+    "bg-raised text-primary",
   ],
   variants: {
     isActive: {
-      true: "[outline:auto]",
+      true: "outline-none ring-2 ring-focus",
     },
   },
 });
@@ -59,7 +60,7 @@ export function CodeInput({
         }
       }}
       render={({ slots }) => (
-        <div className="flex gap-1">
+        <div className="flex gap-1.5">
           {slots.map((slot, ix) => (
             <div key={ix} className={slotClasses({ isActive: slot.isActive })}>
               <div className="tabular-nums">

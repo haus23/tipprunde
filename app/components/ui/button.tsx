@@ -5,7 +5,11 @@ import {
 import { cva, type VariantProps } from "~/utils/cva";
 
 const buttonClasses = cva({
-  base: ["flex items-center", "data-disabled:opacity-50"],
+  base: [
+    "flex items-center",
+    "data-disabled:opacity-50",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus",
+  ],
   variants: {
     variant: {
       primary: [

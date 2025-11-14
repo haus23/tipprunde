@@ -54,13 +54,16 @@ Always use semantic color tokens, never hardcoded colors:
 --text-color-on-accent     /* Text on accent backgrounds */
 --text-color-error         /* Error messages, validation feedback */
 
+/* Ring Colors */
+--ring-color-focus         /* Keyboard focus indicator */
+
 /* Border Colors */
 --border-color-default     /* Standard borders */
 --border-color-subtle      /* Dividers, light borders */
 --border-color-error       /* Invalid field borders */
 ```
 
-Usage: `bg-base`, `text-primary`, `border-default`, `bg-accent`, `text-on-accent`, `text-error`, `border-error`
+Usage: `bg-base`, `text-primary`, `border-default`, `bg-accent`, `text-on-accent`, `text-error`, `border-error`, `ring-focus`
 
 ### Layout
 - **Vertical spacing**: `flex flex-col gap-*` (NOT `space-y-*`)
