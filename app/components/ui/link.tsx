@@ -11,7 +11,7 @@ const linkClasses = cva({
 
 const navLinkClasses = cva({
   base: [
-    "flex items-center gap-2.5 px-2 py-1 rounded-md group-data-[sidebar-collapsed=true]:w-8 overflow-hidden ",
+    "flex items-center gap-2.5 px-2 py-1 rounded-md group-data-[sidebar-collapsed=true]/shell:w-8 overflow-hidden ",
     "[&>svg]:size-5 [&>svg]:shrink-0",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus",
   ],

@@ -13,7 +13,7 @@ export function UserView() {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-xs uppercase group-data-[sidebar-collapsed=true]:hidden">
+      <span className="text-xs uppercase group-data-[sidebar-collapsed=true]/shell:hidden">
         {user.name}
       </span>
       <Form method="post" action="/logout">
@@ -21,7 +21,7 @@ export function UserView() {
           <Button
             type="submit"
             variant="plain"
-            className="w-full justify-start gap-2.5 px-2 py-1 rounded-md group-data-[sidebar-collapsed=true]:w-8 overflow-hidden [&>svg]:size-5 [&>svg]:shrink-0"
+            className="w-full justify-start gap-2.5 px-2 py-1 rounded-md group-data-[sidebar-collapsed=true]/shell:w-8 overflow-hidden [&>svg]:size-5 [&>svg]:shrink-0"
           >
             <LogOutIcon />
             <span>Abmelden</span>

@@ -16,7 +16,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         } as React.CSSProperties
       }
       className={cx(
-        "group isolate min-h-svh w-full",
+        "group/shell isolate min-h-svh w-full",
         "grid grid-cols-[var(--sidebar-width)_1fr]",
       )}
       {...(isSidebarCollapsed && { "data-sidebar-collapsed": true })}
