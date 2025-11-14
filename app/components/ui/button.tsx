@@ -8,7 +8,14 @@ const buttonClasses = cva({
   base: ["flex items-center", "data-disabled:opacity-50"],
   variants: {
     variant: {
-      primary: "px-3 py-1.5 border",
+      primary: [
+        "px-4 py-2 rounded",
+        "bg-accent hover:bg-accent-hover text-on-accent",
+      ],
+      secondary: [
+        "px-4 py-2 rounded",
+        "border border-default bg-raised hover:bg-overlay text-primary",
+      ],
       plain: "",
       icon: ["gap-2.5 px-1.5", "[&>svg]:size-5 [&>svg]:shrink-0"],
     },

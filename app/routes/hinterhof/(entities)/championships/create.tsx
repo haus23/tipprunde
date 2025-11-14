@@ -1,6 +1,7 @@
 import { redirect } from "react-router";
 import { Form } from "react-router";
-import { Button, TextField, Label, Input } from "react-aria-components";
+import { TextField, Label, Input } from "react-aria-components";
+import { Button } from "~/components/ui/button";
 import { createChampionship } from "~/lib/db/championships";
 import type { Route } from "./+types/create";
 
@@ -55,15 +56,12 @@ export default function NewChampionship() {
         </TextField>
 
         <div className="flex gap-4 pt-4">
-          <Button
-            type="submit"
-            className="px-4 py-2 bg-accent hover:bg-accent-hover text-on-accent rounded"
-          >
+          <Button type="submit" variant="primary">
             Erstellen
           </Button>
           <Button
             type="button"
-            className="px-4 py-2 border border-default rounded bg-raised text-primary"
+            variant="secondary"
             onPress={() => window.history.back()}
           >
             Abbrechen

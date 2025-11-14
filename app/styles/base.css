@@ -34,11 +34,11 @@
     /* Base: Main background - Tailwind: white / gray-950 */
     --background-color-base: light-dark(#ffffff, #030712);
 
-    /* Raised: Cards, elevated elements - Tailwind: white / gray-900 */
-    --background-color-raised: light-dark(#ffffff, #111827);
-
     /* Overlay: Modals, dropdowns - Tailwind: white / gray-800 */
     --background-color-overlay: light-dark(#ffffff, #1f2937);
+
+    /* Raised: Cards, elevated elements - Tailwind: gray-50 / gray-900 */
+    --background-color-raised: light-dark(#f9fafb, #111827);
 
     /* Subtle: Hover states, disabled backgrounds - Tailwind: gray-50 / gray-900 */
     --background-color-subtle: light-dark(#f9fafb, #111827);

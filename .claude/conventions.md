@@ -36,10 +36,10 @@ This document outlines coding standards and design principles for the tipprunde 
 Always use semantic color tokens, never hardcoded colors:
 
 ```css
-/* Background Colors */
+/* Background Colors (elevation: base < overlay < raised) */
 --background-color-base          /* Main page background */
---background-color-raised        /* Cards, elevated elements */
 --background-color-overlay       /* Modals, dropdowns */
+--background-color-raised        /* Cards, elevated elements */
 --background-color-subtle        /* Hover states, disabled */
 --background-color-emphasis      /* High-contrast overlays (tooltips, badges, toasts) */
 --background-color-accent        /* Primary actions, CTAs */
