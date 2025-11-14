@@ -8,7 +8,12 @@
 - [x] Hover backgrounds for the nav-items and the ghost button (visual feedback for desktop)
 - [x] Dashboard card styling (8 numbered teaser colors, individual card hover with named groups)
 - [x] Make hoverable nav-items (incl the ghost buttons) more greyish before hover
-- [ ] Active link styling
+- [x] Active link styling
+- [ ] Fix tooltip positioning (now to narrow due to increased padding for bg hover)
+- [ ] Logo link styling ok? (without hover as i always did)
+- [ ] Use trophy icon for ranking view
+- [ ] Shadow on dashboard cards (too much)
+- [ ] First animations: Color for hovering, Sidebar collapsing possible?
 
 ## Later
 
@@ -19,7 +24,9 @@
 - [ ] Can I include the manual submitting pattern in my Form wrapper?
 - [ ] Mobile nav (dialog?)
 - [ ] Finalize padding of content (desktop w/o collapsed sidebar, small device with hidden sidebar)
+- [ ] Use a valibot schema for server-side validation? Difficult question: use it in the model to type the model types? 
 
 ## Ideas / Maybe
 
-- [ ] Use a valibot schema for server-side validation? Difficult question: use it in the model to type the model types?
+- [ ] Chat feature
+- [ ] Let logged in players add/edit their tips
