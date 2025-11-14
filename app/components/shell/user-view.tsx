@@ -20,8 +20,8 @@ export function UserView() {
         <SidebarItem tooltip="Abmelden">
           <Button
             type="submit"
-            variant="icon"
-            className="w-full justify-start group-data-[sidebar-collapsed=true]:w-8 overflow-hidden"
+            variant="plain"
+            className="w-full justify-start gap-2.5 px-2 py-1 rounded-md group-data-[sidebar-collapsed=true]:w-8 overflow-hidden [&>svg]:size-5 [&>svg]:shrink-0"
           >
             <LogOutIcon />
             <span>Abmelden</span>

@@ -6,7 +6,7 @@ export function AppHeader({ children }: { children: React.ReactNode }) {
   const { isSidebarCollapsed, toggleSidebar } = useShell();
   return (
     <div className="h-8 flex items-center gap-4">
-      <Button onClick={toggleSidebar}>
+      <Button variant="ghost" onClick={toggleSidebar}>
         {isSidebarCollapsed ? (
           <PanelLeftOpenIcon className="size-6" />
         ) : (

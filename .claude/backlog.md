@@ -4,7 +4,7 @@
 
 - [x] Style field-error component (subtle text + red border on invalid, focus hides error border)
 - [x] Add focus styling to form components (focus-visible with ring, combined selectors for error states)
-- [ ] Add focus styling to link components
+- [x] Add focus styling to link components
 - [ ] Dashboard card styling (teaser colors for the icons, primary and secondary text)
 
 ## Later
