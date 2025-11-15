@@ -9,15 +9,15 @@
 - [x] Dashboard card styling (8 numbered teaser colors, individual card hover with named groups)
 - [x] Make hoverable nav-items (incl the ghost buttons) more greyish before hover
 - [x] Active link styling
-- [ ] Fix tooltip positioning (now to narrow due to increased padding for bg hover)
-- [ ] Logo link styling ok? (without hover as i always did)
-- [ ] Use trophy icon for ranking view
 - [ ] Shadow on dashboard cards (too much)
-- [ ] First animations: Color for hovering, Sidebar collapsing possible?
+- [ ] Fix tooltip positioning (now to narrow due to increased padding for bg hover)
 
 ## Later
 
-- [ ] Use iteration of dashboard items to reuse the styles
+- [ ] Logo link styling ok? (without hover as i always did)
+- [ ] First animations: Color for hovering, Sidebar collapsing possible?
+- [ ] Use trophy icon for ranking view
+- [x] Use iteration of dashboard items to reuse the styles
 - [ ] Fixed sidebar
 - [ ] Vertical dashboard gap on small devices
 
