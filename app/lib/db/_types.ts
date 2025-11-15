@@ -1,15 +1,3 @@
-export type Role = "USER" | "MANAGER" | "ADMIN";
-
-export type User = {
-  id: number;
-  name: string;
-  slug: string;
-  email: string | null;
-  role: Role;
-  createdAt: string;
-  updatedAt: string;
-};
-
 export type Session = {
   id: string;
   expiresAt: string;
