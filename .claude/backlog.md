@@ -10,13 +10,12 @@
 - [x] Make hoverable nav-items (incl the ghost buttons) more greyish before hover
 - [x] Active link styling
 - [x] Shadow on dashboard cards (too much)
-- [ ] Fix tooltip positioning (now to narrow due to increased padding for bg hover)
+- [x] Fix tooltip positioning (now to narrow due to increased padding for bg hover)
 
 ## Later
 
 - [ ] Logo link styling ok? (without hover as i always did)
 - [ ] First animations: Color for hovering, Sidebar collapsing possible?
-- [ ] Use trophy icon for ranking view
 - [x] Use iteration of dashboard items to reuse the styles
 - [ ] Fixed sidebar
 - [ ] Vertical dashboard gap on small devices

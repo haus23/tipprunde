@@ -15,10 +15,8 @@ export function SidebarItem({
       <Focusable>{children}</Focusable>
       <Tooltip
         placement="right"
-        className={cx(
-          "rounded-sm bg-emphasis px-2 py-1 text-emphasis text-sm",
-          "mt-2",
-        )}
+        offset={6}
+        className={cx("rounded-sm bg-emphasis px-2 py-1 text-emphasis text-sm")}
       >
         {tooltip}
       </Tooltip>
