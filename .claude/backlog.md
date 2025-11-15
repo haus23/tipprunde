@@ -11,12 +11,13 @@
 - [x] Active link styling
 - [x] Shadow on dashboard cards (too much)
 - [x] Fix tooltip positioning (now to narrow due to increased padding for bg hover)
+- [x] Use iteration of dashboard items to reuse the styles
+- [ ] Logo link styling ok? (no hover)
+- [ ] Use trophy icon for ranking view
 
 ## Later
 
-- [ ] Logo link styling ok? (without hover as i always did)
 - [ ] First animations: Color for hovering, Sidebar collapsing possible?
-- [x] Use iteration of dashboard items to reuse the styles
 - [ ] Fixed sidebar
 - [ ] Vertical dashboard gap on small devices
 
