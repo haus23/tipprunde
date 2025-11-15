@@ -34,7 +34,7 @@ export async function action({ request }: Route.ActionArgs) {
   // For now, always use original rules
   const ruleId = "original-rules";
 
-  createChampionship(id, name, nr, ruleId);
+  createChampionship({ id, name, nr, ruleId });
 
   throw redirect("/hinterhof");
 }
