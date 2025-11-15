@@ -9,7 +9,7 @@
 - [x] Dashboard card styling (8 numbered teaser colors, individual card hover with named groups)
 - [x] Make hoverable nav-items (incl the ghost buttons) more greyish before hover
 - [x] Active link styling
-- [ ] Shadow on dashboard cards (too much)
+- [x] Shadow on dashboard cards (too much)
 - [ ] Fix tooltip positioning (now to narrow due to increased padding for bg hover)
 
 ## Later

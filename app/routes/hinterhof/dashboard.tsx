@@ -138,7 +138,7 @@ export default function DashboardRoute() {
             <Link
               key={card.to}
               to={card.to}
-              className="group/card relative overflow-hidden rounded-lg border border-default bg-raised p-6 transition-all hover:shadow-lg"
+              className="group/card relative overflow-hidden rounded-lg border border-default bg-raised p-6 transition-all hover:shadow-sm"
             >
               <div className="flex items-start gap-4">
                 <div
