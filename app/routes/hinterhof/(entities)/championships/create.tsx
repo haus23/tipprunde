@@ -18,7 +18,7 @@ export async function action({ request }: Route.ActionArgs) {
   const errors: Record<string, string> = {};
 
   if (!id) {
-    errors.id = "ID ist erforderlich";
+    errors.id = "Kennung ist erforderlich";
   }
   if (!name) {
     errors.name = "Name ist erforderlich";
@@ -57,7 +57,7 @@ export default function NewChampionship({ actionData }: Route.ComponentProps) {
         validationErrors={actionData?.errors}
       >
         <TextField name="id" isRequired>
-          <Label>ID</Label>
+          <Label>Kennung</Label>
           <Input placeholder="z.B. hr2526" className="w-full" />
           <FieldError />
         </TextField>
