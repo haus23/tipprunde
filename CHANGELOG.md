@@ -1,6 +1,43 @@
 # Changelog
 
 
+## v0.2.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.2...v0.2.0)
+
+### 🚀 Enhancements
+
+- Start adding accent colors. ([a0fe5e6](https://github.com/haus23/tipprunde/commit/a0fe5e6))
+- Added focus styling for all form inputs. ([c72d7f9](https://github.com/haus23/tipprunde/commit/c72d7f9))
+- Add teaser colors and use them on the dashboard. Better styling also. ([a4b1931](https://github.com/haus23/tipprunde/commit/a4b1931))
+- Add styling for active links ([5539b1e](https://github.com/haus23/tipprunde/commit/5539b1e))
+
+### 🩹 Fixes
+
+- Hide section headers. ([b823188](https://github.com/haus23/tipprunde/commit/b823188))
+- Use end for index routes ([6ad0a7d](https://github.com/haus23/tipprunde/commit/6ad0a7d))
+- Use an iteration to create the dashboard items. ([8639d96](https://github.com/haus23/tipprunde/commit/8639d96))
+- Lowered the shadow on the cards ([4df006c](https://github.com/haus23/tipprunde/commit/4df006c))
+- Adjust the tooltip positioning. ([98bc530](https://github.com/haus23/tipprunde/commit/98bc530))
+
+### 💅 Refactors
+
+- Use accent colors for the button. ([7dd8762](https://github.com/haus23/tipprunde/commit/7dd8762))
+- Rethink surface colors. ([38a921c](https://github.com/haus23/tipprunde/commit/38a921c))
+- Use rac input wrapper ([7e3c2eb](https://github.com/haus23/tipprunde/commit/7e3c2eb))
+- Reuse existing rac wrappers for text-field and lebel. ([f164517](https://github.com/haus23/tipprunde/commit/f164517))
+- Reuse rac form wrapper. And add server-side validation. ([3a6ee28](https://github.com/haus23/tipprunde/commit/3a6ee28))
+- Style invalid fields (and the field-error). ([9737f74](https://github.com/haus23/tipprunde/commit/9737f74))
+- Apply focus and padding patterns throughout all links and remaining buttons. ([7e2c723](https://github.com/haus23/tipprunde/commit/7e2c723))
+- Use named groups for the sidebar-collapsing or introduce a shell group ([f36b374](https://github.com/haus23/tipprunde/commit/f36b374))
+- Add hovering and update teaser text colors according to conventions. ([a3906d6](https://github.com/haus23/tipprunde/commit/a3906d6))
+- Update id label. ([71fb969](https://github.com/haus23/tipprunde/commit/71fb969))
+
+### 🏡 Chore
+
+- **dx:** Added a backlog. ([e566f45](https://github.com/haus23/tipprunde/commit/e566f45))
+- **dx:** Update conventions ([9455b75](https://github.com/haus23/tipprunde/commit/9455b75))
+
 ## v0.2.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.1...v0.2.0-pre.2)
