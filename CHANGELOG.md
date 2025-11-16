@@ -1,6 +1,30 @@
 # Changelog
 
 
+## v0.3.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0...v0.3.0-pre.0)
+
+### 🚀 Enhancements
+
+- Add adding of players (users) ([fd8893e](https://github.com/haus23/tipprunde/commit/fd8893e))
+- Add server side validation of slug and email. ([3d9834c](https://github.com/haus23/tipprunde/commit/3d9834c))
+
+### 🩹 Fixes
+
+- Can now reopen form after first submission. ([86d02fb](https://github.com/haus23/tipprunde/commit/86d02fb))
+
+### 💅 Refactors
+
+- Apply the same pattern to the championship. ([2e5a3a1](https://github.com/haus23/tipprunde/commit/2e5a3a1))
+- Create separate action to make the form more reusable. ([9f3a3f0](https://github.com/haus23/tipprunde/commit/9f3a3f0))
+- Change route path ([ab6182b](https://github.com/haus23/tipprunde/commit/ab6182b))
+- Implement dialog form pattern. ([41860ea](https://github.com/haus23/tipprunde/commit/41860ea))
+
+### 🏡 Chore
+
+- Add DAL functions for user handling. ([61721a7](https://github.com/haus23/tipprunde/commit/61721a7))
+
 ## v0.2.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.2...v0.2.0)
