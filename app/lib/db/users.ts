@@ -13,6 +13,13 @@ export function getUserByEmail(email: string) {
   return stmt.get(email) ?? null;
 }
 
+export function getUserBySlug(slug: string) {
+  const stmt = db.prepare<[string], User>(
+    "SELECT * FROM users WHERE slug = ?",
+  );
+  return stmt.get(slug) ?? null;
+}
+
 export function getUsers() {
   const stmt = db.prepare<[], User>("SELECT * FROM users ORDER BY name");
   return stmt.all();

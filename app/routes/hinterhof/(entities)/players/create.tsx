@@ -1,5 +1,5 @@
 import { data } from "react-router";
-import { createUser } from "~/lib/db/users";
+import { createUser, getUserByEmail, getUserBySlug } from "~/lib/db/users";
 import type { Route } from "./+types/create";
 
 export async function action({ request }: Route.ActionArgs) {
@@ -16,6 +16,20 @@ export async function action({ request }: Route.ActionArgs) {
   }
   if (!slug) {
     errors.slug = "Slug ist erforderlich";
+  } else {
+    // Check for unique slug
+    const existingSlug = getUserBySlug(slug);
+    if (existingSlug) {
+      errors.slug = "Slug bereits vergeben";
+    }
+  }
+
+  // Check for unique email if provided
+  if (email) {
+    const existingEmail = getUserByEmail(email);
+    if (existingEmail) {
+      errors.email = "E-Mail bereits vergeben";
+    }
   }
 
   if (Object.keys(errors).length > 0) {
