@@ -46,7 +46,7 @@ export default function PlayersRoute({ loaderData }: Route.ComponentProps) {
               </DialogTitle>
               <PlayerForm
                 fetcher={fetcher}
-                action="/hinterhof/spieler/erstellen"
+                action="/hinterhof/spieler/neu"
                 errors={fetcher.data?.errors}
                 onCancel={() => setIsDialogOpen(false)}
               />
