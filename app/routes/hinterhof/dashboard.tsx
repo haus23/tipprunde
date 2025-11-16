@@ -136,7 +136,7 @@ export default function DashboardRoute() {
 
           return (
             <Link
-              key={card.to}
+              key={card.title}
               to={card.to}
               className="group/card relative overflow-hidden rounded-lg border border-default bg-raised p-6 transition-all hover:shadow-sm"
             >
