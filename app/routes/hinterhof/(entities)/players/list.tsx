@@ -1,6 +1,6 @@
 import { PlusIcon } from "lucide-react";
-import { useState } from "react";
-import { data, redirect } from "react-router";
+import { useEffect, useState } from "react";
+import { useFetcher } from "react-router";
 import { PlayerForm } from "~/components/hinterhof/player-form";
 import { Button } from "~/components/ui/button";
 import {
@@ -9,8 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { createUser, getUsers } from "~/lib/db/users";
-import type { Route } from "./+types/players";
+import { getUsers } from "~/lib/db/users";
+import type { Route } from "./+types/list";
 
 export async function loader() {
   const users = getUsers();
@@ -18,37 +18,17 @@ export async function loader() {
   return { users };
 }
 
-export async function action({ request }: Route.ActionArgs) {
-  const formData = await request.formData();
-  const name = String(formData.get("name")).trim();
-  const slug = String(formData.get("slug")).trim();
-  const email = String(formData.get("email") || "").trim() || null;
-
-  // Validation
-  const errors: Record<string, string> = {};
-
-  if (!name) {
-    errors.name = "Name ist erforderlich";
-  }
-  if (!slug) {
-    errors.slug = "Slug ist erforderlich";
-  }
-
-  if (Object.keys(errors).length > 0) {
-    return data({ errors }, { status: 400 });
-  }
-
-  createUser({ name, slug, email, role: "USER" });
-
-  throw redirect("/hinterhof/spieler");
-}
-
-export default function PlayersRoute({
-  loaderData,
-  actionData,
-}: Route.ComponentProps) {
+export default function PlayersRoute({ loaderData }: Route.ComponentProps) {
   const { users } = loaderData;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const fetcher = useFetcher();
+
+  // Close dialog after successful submission
+  useEffect(() => {
+    if (fetcher.data?.success && isDialogOpen) {
+      setIsDialogOpen(false);
+    }
+  }, [fetcher.data, isDialogOpen]);
 
   return (
     <div>
@@ -65,7 +45,9 @@ export default function PlayersRoute({
                 Neuer Spieler
               </DialogTitle>
               <PlayerForm
-                errors={actionData?.errors}
+                fetcher={fetcher}
+                action="/hinterhof/spieler/erstellen"
+                errors={fetcher.data?.errors}
                 onCancel={() => setIsDialogOpen(false)}
               />
             </Dialog>

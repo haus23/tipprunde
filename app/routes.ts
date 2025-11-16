@@ -18,7 +18,8 @@ export default [
   ...prefix("hinterhof", [
     layout("./routes/hinterhof/_layout.tsx", [
       index("./routes/hinterhof/dashboard.tsx"),
-      route("spieler", "./routes/hinterhof/(entities)/players.tsx"),
+      route("spieler", "./routes/hinterhof/(entities)/players/list.tsx"),
+      route("spieler/erstellen", "./routes/hinterhof/(entities)/players/create.tsx"),
       route("turniere/neu", "./routes/hinterhof/(entities)/championships/create.tsx"),
     ]),
   ]),

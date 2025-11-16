@@ -1,4 +1,4 @@
-import { useSubmit } from "react-router";
+import type { FetcherWithComponents } from "react-router";
 import { Button } from "~/components/ui/button";
 import { FieldError } from "~/components/ui/field-error";
 import { Form } from "~/components/ui/form";
@@ -7,19 +7,26 @@ import { Label } from "~/components/ui/label";
 import { TextField } from "~/components/ui/text-field";
 
 type PlayerFormProps = {
+  fetcher: FetcherWithComponents<any>;
+  action: string;
   errors?: Record<string, string>;
   onCancel: () => void;
 };
 
-export function PlayerForm({ errors, onCancel }: PlayerFormProps) {
-  const submit = useSubmit();
-
+export function PlayerForm({
+  fetcher,
+  action,
+  errors,
+  onCancel,
+}: PlayerFormProps) {
   return (
     <Form
       method="post"
+      action={action}
       onSubmit={(e) => {
         e.preventDefault();
-        submit(e.currentTarget);
+        const formData = new FormData(e.currentTarget);
+        fetcher.submit(formData, { method: "post", action });
       }}
       validationErrors={errors}
     >
