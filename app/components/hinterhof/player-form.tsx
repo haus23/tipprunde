@@ -1,4 +1,6 @@
-import type { FetcherWithComponents } from "react-router";
+import { useEffect } from "react";
+import { useFetcher } from "react-router";
+
 import { Button } from "~/components/ui/button";
 import { FieldError } from "~/components/ui/field-error";
 import { Form } from "~/components/ui/form";
@@ -7,28 +9,28 @@ import { Label } from "~/components/ui/label";
 import { TextField } from "~/components/ui/text-field";
 
 type PlayerFormProps = {
-  fetcher: FetcherWithComponents<any>;
-  action: string;
-  errors?: Record<string, string>;
   onCancel: () => void;
+  onSuccess: () => void;
 };
 
-export function PlayerForm({
-  fetcher,
-  action,
-  errors,
-  onCancel,
-}: PlayerFormProps) {
+export function PlayerForm({ onCancel, onSuccess }: PlayerFormProps) {
+  const fetcher = useFetcher();
+
+  useEffect(() => {
+    if (fetcher.data?.success) {
+      onSuccess();
+    }
+  }, [fetcher.data]);
+
   return (
     <Form
       method="post"
-      action={action}
+      action="/hinterhof/spieler/neu"
       onSubmit={(e) => {
         e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        fetcher.submit(formData, { method: "post", action });
+        fetcher.submit(e.currentTarget);
       }}
-      validationErrors={errors}
+      validationErrors={fetcher.data?.errors}
     >
       <TextField name="name" isRequired>
         <Label>Name</Label>

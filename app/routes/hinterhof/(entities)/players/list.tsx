@@ -1,6 +1,5 @@
 import { PlusIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { useFetcher } from "react-router";
+import { useState } from "react";
 import { PlayerForm } from "~/components/hinterhof/player-form";
 import { Button } from "~/components/ui/button";
 import {
@@ -14,29 +13,12 @@ import type { Route } from "./+types/list";
 
 export async function loader() {
   const users = getUsers();
-
   return { users };
 }
 
 export default function PlayersRoute({ loaderData }: Route.ComponentProps) {
   const { users } = loaderData;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const fetcher = useFetcher();
-  const prevStateRef = useRef(fetcher.state);
-
-  // Close dialog after successful submission
-  useEffect(() => {
-    // Only close if we just transitioned to idle with success
-    if (
-      prevStateRef.current !== "idle" &&
-      fetcher.state === "idle" &&
-      fetcher.data?.success &&
-      isDialogOpen
-    ) {
-      setIsDialogOpen(false);
-    }
-    prevStateRef.current = fetcher.state;
-  }, [fetcher.state, fetcher.data, isDialogOpen]);
 
   return (
     <div>
@@ -53,10 +35,8 @@ export default function PlayersRoute({ loaderData }: Route.ComponentProps) {
                 Neuer Spieler
               </DialogTitle>
               <PlayerForm
-                fetcher={fetcher}
-                action="/hinterhof/spieler/neu"
-                errors={fetcher.data?.errors}
                 onCancel={() => setIsDialogOpen(false)}
+                onSuccess={() => setIsDialogOpen(false)}
               />
             </Dialog>
           </DialogOverlay>

@@ -19,7 +19,7 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   if (Object.keys(errors).length > 0) {
-    return data({ errors }, { status: 400 });
+    return data({ success: false, errors }, { status: 400 });
   }
 
   createUser({ name, slug, email, role: "USER" });
