@@ -16,11 +16,14 @@ export default [
     route("logout", "./routes/foh/(auth)/logout.tsx"),
   ]),
   ...prefix("hinterhof", [
-    layout("./routes/hinterhof/_layout.tsx", [
-      index("./routes/hinterhof/dashboard.tsx"),
-      route("spieler", "./routes/hinterhof/(entities)/players/list.tsx"),
-      route("spieler/neu", "./routes/hinterhof/(entities)/players/create.tsx"),
-      route("turniere/neu", "./routes/hinterhof/(entities)/championships/create.tsx"),
+    layout("./routes/manager/_layout.tsx", [
+      index("./routes/manager/dashboard.tsx"),
+      route("spieler", "./routes/manager/(entities)/players/list.tsx"),
+      route("spieler/neu", "./routes/manager/(entities)/players/create.tsx"),
+      route(
+        "turniere/neu",
+        "./routes/manager/(entities)/championships/create.tsx",
+      ),
     ]),
   ]),
   ...prefix("action", [
