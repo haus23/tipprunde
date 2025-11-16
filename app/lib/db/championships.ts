@@ -1,5 +1,12 @@
-import type { InsertableChampionship } from "../model/championship";
+import type { Championship, InsertableChampionship } from "../model/championship";
 import { db } from "./_db.server";
+
+export function getChampionshipById(id: string) {
+  const stmt = db.prepare<[string], Championship>(
+    "SELECT * FROM championships WHERE id = ?",
+  );
+  return stmt.get(id) ?? null;
+}
 
 export function createChampionship({
   id,

@@ -5,7 +5,7 @@ import { TextField } from "~/components/ui/text-field";
 import { Label } from "~/components/ui/label";
 import { Form } from "~/components/ui/form";
 import { FieldError } from "~/components/ui/field-error";
-import { createChampionship } from "~/lib/db/championships";
+import { createChampionship, getChampionshipById } from "~/lib/db/championships";
 import type { Route } from "./+types/create";
 
 export async function action({ request }: Route.ActionArgs) {
@@ -19,6 +19,12 @@ export async function action({ request }: Route.ActionArgs) {
 
   if (!id) {
     errors.id = "Kennung ist erforderlich";
+  } else {
+    // Check for unique ID
+    const existingChampionship = getChampionshipById(id);
+    if (existingChampionship) {
+      errors.id = "Kennung bereits vergeben";
+    }
   }
   if (!name) {
     errors.name = "Name ist erforderlich";
