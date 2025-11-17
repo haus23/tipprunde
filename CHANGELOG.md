@@ -1,6 +1,25 @@
 # Changelog
 
 
+## v0.3.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.2...v0.3.0)
+
+### 🚀 Enhancements
+
+- Implement first take on the championship view. ([b7b1d9e](https://github.com/haus23/tipprunde/commit/b7b1d9e))
+- First take on managing championship players ([e0be5a6](https://github.com/haus23/tipprunde/commit/e0be5a6))
+
+### 🩹 Fixes
+
+- Wrong path - after moved the domain routes beneath prefix. ([35b7a88](https://github.com/haus23/tipprunde/commit/35b7a88))
+
+### 💅 Refactors
+
+- Exclude root user from visible user lists. ([5300fc0](https://github.com/haus23/tipprunde/commit/5300fc0))
+- Extract table components. ([1f2f40a](https://github.com/haus23/tipprunde/commit/1f2f40a))
+- Extract card components. ([7cce5fa](https://github.com/haus23/tipprunde/commit/7cce5fa))
+
 ## v0.3.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.1...v0.3.0-pre.2)
