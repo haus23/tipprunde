@@ -6,13 +6,15 @@ import { useChampionship } from "~/lib/manager/use-championship";
 
 export function ManagerNav() {
   const championship = useChampionship();
-  const championshipId = championship?.id ?? "";
+  const championshipUrl = ["/hinterhof", championship?.id]
+    .filter(Boolean)
+    .join("/");
 
   return (
     <div className="grow flex flex-col justify-between">
       <div className="grow flex flex-col gap-2 px-2">
         <SidebarItem tooltip="Dashboard">
-          <NavLink to="/hinterhof" end>
+          <NavLink to={championshipUrl} end>
             <HomeIcon />
             <span>Dashboard</span>
           </NavLink>
@@ -40,13 +42,13 @@ export function ManagerNav() {
             Stammdaten
           </span>
           <SidebarItem tooltip="Tippturniere">
-            <NavLink to="/hinterhof/turniere">
+            <NavLink to="/hinterhof/stammdaten/turniere">
               <TrophyIcon />
               <span>Turniere</span>
             </NavLink>
           </SidebarItem>
           <SidebarItem tooltip="Spieler">
-            <NavLink to="/hinterhof/spieler">
+            <NavLink to="/hinterhof/stammdaten/spieler">
               <UsersIcon />
               <span>Spieler</span>
             </NavLink>
