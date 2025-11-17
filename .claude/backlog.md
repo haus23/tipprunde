@@ -3,8 +3,9 @@
 ## Next Up
 
 - [x] User form should close, when user is added
-- [ ] Validate championship id while creating a new one
 - [ ] Empty championship list edge case
+- [ ] Validate championship id while creating a new one
+- [ ] Validate championship id in loader (id present and championship null => error)
 
 ## Later
 
