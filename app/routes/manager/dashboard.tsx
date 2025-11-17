@@ -20,7 +20,7 @@ type DashboardCard = {
 
 const dashboardCards: DashboardCard[] = [
   {
-    to: "/hinterhof/turniere/neu",
+    to: "/hinterhof/stammdaten/turniere/neu",
     icon: FolderPlusIcon,
     title: "Neues Tippturnier",
     description: "Erstelle eine neue Runde für deine Spieler",

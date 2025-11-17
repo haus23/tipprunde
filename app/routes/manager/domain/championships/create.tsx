@@ -5,7 +5,10 @@ import { TextField } from "~/components/ui/text-field";
 import { Label } from "~/components/ui/label";
 import { Form } from "~/components/ui/form";
 import { FieldError } from "~/components/ui/field-error";
-import { createChampionship, getChampionshipById } from "~/lib/db/championships";
+import {
+  createChampionship,
+  getChampionshipById,
+} from "~/lib/db/championships";
 import type { Route } from "./+types/create";
 
 export async function action({ request }: Route.ActionArgs) {

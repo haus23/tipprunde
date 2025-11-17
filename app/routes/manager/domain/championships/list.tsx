@@ -18,7 +18,7 @@ export default function ChampionshipsRoute({
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-medium text-primary">Tippturniere</h1>
         <Link
-          to="/hinterhof/turniere/neu"
+          to="/hinterhof/stammdaten/turniere/neu"
           className="flex items-center px-4 py-2 rounded-md bg-accent hover:bg-accent-hover text-on-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
         >
           <PlusIcon className="size-5" />

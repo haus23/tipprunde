@@ -17,18 +17,22 @@ export function ManagerNav() {
             <span>Dashboard</span>
           </NavLink>
         </SidebarItem>
-        <SidebarItem tooltip="Turnier">
-          <NavLink to={`/hinterhof/${championshipId}/turnier`}>
-            <TrophyIcon />
-            <span>Turnier</span>
-          </NavLink>
-        </SidebarItem>
-        <SidebarItem tooltip="Spiele">
-          <NavLink to={`/hinterhof/${championshipId}/spiele`}>
-            <CalendarIcon />
-            <span>Spiele</span>
-          </NavLink>
-        </SidebarItem>
+        {championship && (
+          <>
+            <SidebarItem tooltip="Turnier">
+              <NavLink to={`${championshipUrl}/turnier`}>
+                <TrophyIcon />
+                <span>Turnier</span>
+              </NavLink>
+            </SidebarItem>
+            <SidebarItem tooltip="Spiele">
+              <NavLink to={`${championshipUrl}/spiele`}>
+                <CalendarIcon />
+                <span>Spiele</span>
+              </NavLink>
+            </SidebarItem>
+          </>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-2 px-2">
