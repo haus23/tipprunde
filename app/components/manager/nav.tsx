@@ -2,11 +2,11 @@ import { CalendarIcon, HomeIcon, TrophyIcon, UsersIcon } from "lucide-react";
 import { NavLink } from "~/components/ui/link";
 import { SidebarItem } from "../shell/sidebar-item";
 import { UserView } from "../shell/user-view";
-import { useCurrentChampionship } from "~/lib/manager/use-current-championship";
+import { useChampionship } from "~/lib/manager/use-championship";
 
 export function ManagerNav() {
-  const { currentChampionship } = useCurrentChampionship();
-  const championshipId = currentChampionship?.id || "";
+  const championship = useChampionship();
+  const championshipId = championship?.id ?? "";
 
   return (
     <div className="grow flex flex-col justify-between">
