@@ -15,6 +15,13 @@ export function getLatestChampionship() {
   return stmt.get() ?? null;
 }
 
+export function getChampionships() {
+  const stmt = db.prepare<[], Championship>(
+    "SELECT * FROM championships ORDER BY nr DESC",
+  );
+  return stmt.all();
+}
+
 export function createChampionship({
   id,
   name,

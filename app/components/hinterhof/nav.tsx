@@ -35,6 +35,12 @@ export function HinterhofNav() {
           <span className="text-xs uppercase group-data-[sidebar-collapsed=true]/shell:hidden">
             Stammdaten
           </span>
+          <SidebarItem tooltip="Tippturniere">
+            <NavLink to="/hinterhof/turniere">
+              <TrophyIcon />
+              <span>Turniere</span>
+            </NavLink>
+          </SidebarItem>
           <SidebarItem tooltip="Spieler">
             <NavLink to="/hinterhof/spieler">
               <UsersIcon />

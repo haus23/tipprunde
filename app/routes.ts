@@ -17,10 +17,11 @@ export default [
   ]),
   ...prefix("hinterhof", [
     layout("./routes/manager/_layout.tsx", [
-      index("./routes/manager/dashboard.tsx"),
+      route(":championshipId?", "./routes/manager/dashboard.tsx"),
       route(":championshipId?/turnier", "./routes/manager/championship.tsx"),
       route(":championshipId?/spiele", "./routes/manager/matches.tsx"),
       // Master Data routes
+      route("turniere", "./routes/manager/(entities)/championships/list.tsx"),
       route(
         "turniere/neu",
         "./routes/manager/(entities)/championships/create.tsx",
