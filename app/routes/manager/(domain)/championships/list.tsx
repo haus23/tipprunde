@@ -1,5 +1,4 @@
 import { PlusIcon } from "lucide-react";
-import { Button } from "~/components/ui/button";
 import { Link } from "~/components/ui/link";
 import { getChampionships } from "~/lib/db/championships";
 import type { Route } from "./+types/list";
@@ -18,11 +17,12 @@ export default function ChampionshipsRoute({
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-medium text-primary">Tippturniere</h1>
-        <Link to="/hinterhof/turniere/neu">
-          <Button variant="primary">
-            <PlusIcon className="size-5" />
-            Neues Turnier
-          </Button>
+        <Link
+          to="/hinterhof/turniere/neu"
+          className="flex items-center px-4 py-2 rounded-md bg-accent hover:bg-accent-hover text-on-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus"
+        >
+          <PlusIcon className="size-5" />
+          Neues Turnier
         </Link>
       </div>
 
@@ -67,8 +67,11 @@ export default function ChampionshipsRoute({
                   {championship.completed ? " • Abgeschlossen" : ""}
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <Link to={`/hinterhof/${championship.id}`}>
-                    <Button variant="ghost">Auswählen</Button>
+                  <Link
+                    to={`/hinterhof/${championship.id}`}
+                    className="p-1 rounded-md text-secondary hover:text-primary hover:bg-raised-hover"
+                  >
+                    Auswählen
                   </Link>
                 </td>
               </tr>
