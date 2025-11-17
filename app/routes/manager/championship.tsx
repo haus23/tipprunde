@@ -1,5 +1,6 @@
 import { data, useFetcher } from "react-router";
 import { MinusIcon, PlusIcon } from "lucide-react";
+import { Card, CardContent, CardTitle } from "~/components/ui/card";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
 import {
@@ -94,11 +95,9 @@ export default function ChampionshipRoute({
         <p className="text-sm text-secondary">Kennung: {championship.id}</p>
       </div>
 
-      <div className="rounded-lg border border-default bg-raised p-6">
-        <h3 className="text-md font-semibold text-primary mb-4">
-          Status-Flags
-        </h3>
-        <div className="flex flex-col gap-4">
+      <Card>
+        <CardTitle>Status-Flags</CardTitle>
+        <CardContent className="flex flex-col gap-4">
           <Switch
             isSelected={!!championship.published}
             onChange={(isSelected) => handleToggle("published", isSelected)}
@@ -119,12 +118,12 @@ export default function ChampionshipRoute({
           >
             <Label>Zusatzpunkte veröffentlicht</Label>
           </Switch>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      <div className="mt-6 rounded-lg border border-default bg-raised p-6">
-        <h3 className="text-md font-semibold text-primary mb-4">Spieler</h3>
-        <div className="grid grid-cols-2 gap-6">
+      <Card className="mt-6">
+        <CardTitle>Spieler</CardTitle>
+        <CardContent className="grid grid-cols-2 gap-6">
           {/* Attending Players */}
           <div>
             <h4 className="text-sm font-medium text-secondary mb-3">
@@ -188,8 +187,8 @@ export default function ChampionshipRoute({
               )}
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
