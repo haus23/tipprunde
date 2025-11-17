@@ -127,8 +127,6 @@ function getTeaserClasses(color: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8) {
 export default function DashboardRoute() {
   return (
     <div>
-      <h1 className="text-2xl font-medium mb-8 text-primary">Dashboard</h1>
-
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {dashboardCards.map((card) => {
           const Icon = card.icon;

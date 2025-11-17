@@ -13,6 +13,7 @@ import {
 import { ChampionshipProvider } from "~/lib/manager/use-championship";
 
 import type { Route } from "./+types/_layout";
+import { ManagerHeader } from "~/components/manager/header";
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ context }) => {
@@ -40,7 +41,9 @@ export default function ManagerLayout({ loaderData }: Route.ComponentProps) {
         <ManagerNav />
       </AppSidebar>
       <AppInset>
-        <AppHeader>{null}</AppHeader>
+        <AppHeader>
+          <ManagerHeader />
+        </AppHeader>
         <Outlet />
       </AppInset>
     </ChampionshipProvider>
