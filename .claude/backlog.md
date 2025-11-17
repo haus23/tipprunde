@@ -17,7 +17,8 @@
 - [ ] Entities (Master Data/Stammdaten) add button styling
 - [ ] Entities (Master Data/Stammdaten) table styling
 - [ ] Review dialog styling
-
+- [ ] Review component styling (needs substasks - adding then: button, switch, dialog, ...)
+ 
 - [ ] Can I include the manual submitting pattern in my Form wrapper?
 - [ ] Mobile nav (dialog?)
 - [ ] Finalize padding of content (desktop w/o collapsed sidebar, small device with hidden sidebar)

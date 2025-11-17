@@ -38,3 +38,38 @@ export function createChampionship({
 
   stmt.run(id, name, nr, ruleId, published, completed, extraPointsPublished);
 }
+
+export function updateChampionshipFlags(
+  id: string,
+  flags: {
+    published?: number;
+    completed?: number;
+    extraPointsPublished?: number;
+  },
+) {
+  const updates: string[] = [];
+  const values: number[] = [];
+
+  if (flags.published !== undefined) {
+    updates.push("published = ?");
+    values.push(flags.published);
+  }
+  if (flags.completed !== undefined) {
+    updates.push("completed = ?");
+    values.push(flags.completed);
+  }
+  if (flags.extraPointsPublished !== undefined) {
+    updates.push("extraPointsPublished = ?");
+    values.push(flags.extraPointsPublished);
+  }
+
+  if (updates.length === 0) return;
+
+  const stmt = db.prepare(`
+    UPDATE championships
+    SET ${updates.join(", ")}
+    WHERE id = ?
+  `);
+
+  stmt.run(...values, id);
+}
