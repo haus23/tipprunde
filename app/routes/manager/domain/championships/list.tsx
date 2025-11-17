@@ -1,5 +1,14 @@
 import { PlusIcon } from "lucide-react";
 import { Link } from "~/components/ui/link";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
 import { getChampionships } from "~/lib/db/championships";
 import type { Route } from "./+types/list";
 
@@ -26,59 +35,46 @@ export default function ChampionshipsRoute({
         </Link>
       </div>
 
-      <div className="rounded-lg border border-default bg-raised overflow-hidden">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-default bg-subtle">
-              <th className="px-4 py-3 text-left text-sm font-medium text-secondary">
-                Kennung
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-secondary">
-                Name
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-secondary">
-                Nr
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-secondary">
-                Status
-              </th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-secondary">
-                Aktionen
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+      <TableContainer>
+        <Table>
+          <TableHeader>
+            <TableRow variant="header">
+              <TableHead>Kennung</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Nr</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead align="right">Aktionen</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {championships.map((championship) => (
-              <tr
-                key={championship.id}
-                className="border-b border-default last:border-0"
-              >
-                <td className="px-4 py-3 text-sm text-primary">
+              <TableRow key={championship.id}>
+                <TableCell className="text-primary">
                   {championship.id}
-                </td>
-                <td className="px-4 py-3 text-sm text-primary">
+                </TableCell>
+                <TableCell className="text-primary">
                   {championship.name}
-                </td>
-                <td className="px-4 py-3 text-sm text-secondary">
+                </TableCell>
+                <TableCell className="text-secondary">
                   {championship.nr}
-                </td>
-                <td className="px-4 py-3 text-sm text-secondary">
+                </TableCell>
+                <TableCell className="text-secondary">
                   {championship.published ? "Veröffentlicht" : "Entwurf"}
                   {championship.completed ? " • Abgeschlossen" : ""}
-                </td>
-                <td className="px-4 py-3 text-right">
+                </TableCell>
+                <TableCell align="right">
                   <Link
                     to={`/hinterhof/${championship.id}`}
                     className="p-1 rounded-md text-secondary hover:text-primary hover:bg-raised-hover"
                   >
                     Auswählen
                   </Link>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 }

@@ -8,6 +8,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
 import { getUsers } from "~/lib/db/users";
 import type { Route } from "./+types/list";
 
@@ -43,45 +52,32 @@ export default function PlayersRoute({ loaderData }: Route.ComponentProps) {
         </DialogTrigger>
       </div>
 
-      <div className="rounded-lg border border-default bg-raised overflow-hidden">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-default bg-subtle">
-              <th className="px-4 py-3 text-left text-sm font-medium text-secondary">
-                Name
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-secondary">
-                E-Mail
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-secondary">
-                Rolle
-              </th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-secondary">
-                Aktionen
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+      <TableContainer>
+        <Table>
+          <TableHeader>
+            <TableRow variant="header">
+              <TableHead>Name</TableHead>
+              <TableHead>E-Mail</TableHead>
+              <TableHead>Rolle</TableHead>
+              <TableHead align="right">Aktionen</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {users.map((user) => (
-              <tr
-                key={user.id}
-                className="border-b border-default last:border-0"
-              >
-                <td className="px-4 py-3 text-sm text-primary">{user.name}</td>
-                <td className="px-4 py-3 text-sm text-secondary">
+              <TableRow key={user.id}>
+                <TableCell className="text-primary">{user.name}</TableCell>
+                <TableCell className="text-secondary">
                   {user.email ?? "—"}
-                </td>
-                <td className="px-4 py-3 text-sm text-secondary">
-                  {user.role}
-                </td>
-                <td className="px-4 py-3 text-right">
+                </TableCell>
+                <TableCell className="text-secondary">{user.role}</TableCell>
+                <TableCell align="right">
                   <Button variant="ghost">Bearbeiten</Button>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 }
