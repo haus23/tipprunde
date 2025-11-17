@@ -8,6 +8,13 @@ export function getChampionshipById(id: string) {
   return stmt.get(id) ?? null;
 }
 
+export function getLatestChampionship() {
+  const stmt = db.prepare<[], Championship>(
+    "SELECT * FROM championships ORDER BY nr DESC LIMIT 1",
+  );
+  return stmt.get() ?? null;
+}
+
 export function createChampionship({
   id,
   name,
