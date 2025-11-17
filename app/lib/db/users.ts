@@ -21,7 +21,7 @@ export function getUserBySlug(slug: string) {
 }
 
 export function getUsers() {
-  const stmt = db.prepare<[], User>("SELECT * FROM users ORDER BY name");
+  const stmt = db.prepare<[], User>("SELECT * FROM users WHERE id != 0 ORDER BY name");
   return stmt.all();
 }
 

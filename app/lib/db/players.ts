@@ -34,11 +34,12 @@ export function getAvailableUsers(championshipId: string) {
   const stmt = db.prepare<[string], User>(`
     SELECT u.*
     FROM users u
-    WHERE u.id NOT IN (
-      SELECT userId
-      FROM players
-      WHERE championshipId = ?
-    )
+    WHERE u.id != 0
+      AND u.id NOT IN (
+        SELECT userId
+        FROM players
+        WHERE championshipId = ?
+      )
     ORDER BY u.name
   `);
   return stmt.all(championshipId);
