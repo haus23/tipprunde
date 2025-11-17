@@ -1,6 +1,30 @@
 # Changelog
 
 
+## v0.3.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.0...v0.3.0-pre.1)
+
+### 🚀 Enhancements
+
+- Check for unique championship id. ([b315b1c](https://github.com/haus23/tipprunde/commit/b315b1c))
+- Implement a concept of a current championship. ([51dd676](https://github.com/haus23/tipprunde/commit/51dd676))
+- Add first current roots to proof the concept of a current championship. ([52b6279](https://github.com/haus23/tipprunde/commit/52b6279))
+- Add a list view to select other championships as current. ([7a58165](https://github.com/haus23/tipprunde/commit/7a58165))
+
+### 🩹 Fixes
+
+- Update key to title - as the to prop is currently not unique. ([ea683ce](https://github.com/haus23/tipprunde/commit/ea683ce))
+- Use button-styled links. ([4074337](https://github.com/haus23/tipprunde/commit/4074337))
+
+### 💅 Refactors
+
+- Be consistent with english directory/file names ([0060be9](https://github.com/haus23/tipprunde/commit/0060be9))
+- Renamed components to match routes ([274f18b](https://github.com/haus23/tipprunde/commit/274f18b))
+- Align manager folder naming. ([851e3be](https://github.com/haus23/tipprunde/commit/851e3be))
+- Use new wording for "Stammdaten": domain. And align more names to my patterns. ([3fdfac5](https://github.com/haus23/tipprunde/commit/3fdfac5))
+- Simpler implementation of the championship context. ([81059f9](https://github.com/haus23/tipprunde/commit/81059f9))
+
 ## v0.3.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0...v0.3.0-pre.0)
