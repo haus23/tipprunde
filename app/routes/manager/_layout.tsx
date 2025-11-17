@@ -1,5 +1,5 @@
 import { Outlet, redirect } from "react-router";
-import { HinterhofNav } from "~/components/hinterhof/nav";
+import { HinterhofNav } from "~/components/manager/nav";
 import { AppHeader } from "~/components/shell/app-header";
 import { AppInset } from "~/components/shell/app-inset";
 import { AppSidebar } from "~/components/shell/app-sidebar";

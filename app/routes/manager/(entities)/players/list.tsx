@@ -1,6 +1,6 @@
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { PlayerForm } from "~/components/hinterhof/player-form";
+import { PlayerForm } from "~/components/manager/player-form";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
