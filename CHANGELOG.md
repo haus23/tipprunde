@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.3.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.1...v0.3.0-pre.2)
+
+### 🚀 Enhancements
+
+- Extract a manager title. ([9c5154c](https://github.com/haus23/tipprunde/commit/9c5154c))
+
+### 💅 Refactors
+
+- Changed domain route paths. ([33058bb](https://github.com/haus23/tipprunde/commit/33058bb))
+- Hide current links with no championship. ([3f20939](https://github.com/haus23/tipprunde/commit/3f20939))
+
+### 🏡 Chore
+
+- Patch update deps. ([64b70dc](https://github.com/haus23/tipprunde/commit/64b70dc))
+
 ## v0.3.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.0...v0.3.0-pre.1)
