@@ -25,7 +25,7 @@ export function PlayerForm({ onCancel, onSuccess }: PlayerFormProps) {
   return (
     <Form
       method="post"
-      action="/hinterhof/spieler/neu"
+      action="/hinterhof/stammdaten/spieler/neu"
       onSubmit={(e) => {
         e.preventDefault();
         fetcher.submit(e.currentTarget);
