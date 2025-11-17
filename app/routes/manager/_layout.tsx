@@ -1,5 +1,5 @@
 import { Outlet, redirect } from "react-router";
-import { HinterhofNav } from "~/components/manager/nav";
+import { ManagerNav } from "~/components/manager/nav";
 import { AppHeader } from "~/components/shell/app-header";
 import { AppInset } from "~/components/shell/app-inset";
 import { AppSidebar } from "~/components/shell/app-sidebar";
@@ -40,7 +40,7 @@ export async function loader({ context, params }: Route.LoaderArgs) {
   return { championship, hasExplicitChampionship };
 }
 
-export default function HinterhofLayout({ loaderData }: Route.ComponentProps) {
+export default function ManagerLayout({ loaderData }: Route.ComponentProps) {
   return (
     <CurrentChampionshipProvider
       championship={loaderData.championship}
@@ -49,7 +49,7 @@ export default function HinterhofLayout({ loaderData }: Route.ComponentProps) {
       <title>Hinterhof - runde.tips</title>
       <meta name="description" content="Verwaltung der Haus23 Tipprunde" />
       <AppSidebar>
-        <HinterhofNav />
+        <ManagerNav />
       </AppSidebar>
       <AppInset>
         <AppHeader>{null}</AppHeader>

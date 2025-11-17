@@ -4,7 +4,7 @@ import { SidebarItem } from "../shell/sidebar-item";
 import { UserView } from "../shell/user-view";
 import { useCurrentChampionship } from "~/lib/manager/use-current-championship";
 
-export function HinterhofNav() {
+export function ManagerNav() {
   const { currentChampionship } = useCurrentChampionship();
   const championshipId = currentChampionship?.id || "";
 

@@ -20,14 +20,14 @@ export default [
       route(":championshipId?", "./routes/manager/dashboard.tsx"),
       route(":championshipId?/turnier", "./routes/manager/championship.tsx"),
       route(":championshipId?/spiele", "./routes/manager/matches.tsx"),
-      // Master Data routes
-      route("turniere", "./routes/manager/(entities)/championships/list.tsx"),
+      // Domain routes
+      route("turniere", "./routes/manager/(domain)/championships/list.tsx"),
       route(
         "turniere/neu",
-        "./routes/manager/(entities)/championships/create.tsx",
+        "./routes/manager/(domain)/championships/create.tsx",
       ),
-      route("spieler", "./routes/manager/(entities)/players/list.tsx"),
-      route("spieler/neu", "./routes/manager/(entities)/players/create.tsx"),
+      route("spieler", "./routes/manager/(domain)/players/list.tsx"),
+      route("spieler/neu", "./routes/manager/(domain)/players/create.tsx"),
     ]),
   ]),
   ...prefix("action", [

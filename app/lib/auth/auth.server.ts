@@ -203,7 +203,7 @@ export async function logout(request: Request) {
     deleteSession(sessionId);
   }
 
-  // Redirect to referer or home (but not to hinterhof)
+  // Redirect to referer or home (but do not stay in manager area at all)
   const referer = request.headers.get("Referer");
   const pathname = referer ? new URL(referer).pathname : "/";
   const redirectTo = pathname.startsWith("/hinterhof") ? "/" : pathname;
