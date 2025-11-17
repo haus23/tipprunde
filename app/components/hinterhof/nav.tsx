@@ -1,9 +1,13 @@
-import { HomeIcon, UsersIcon } from "lucide-react";
+import { CalendarIcon, HomeIcon, TrophyIcon, UsersIcon } from "lucide-react";
 import { NavLink } from "~/components/ui/link";
 import { SidebarItem } from "../shell/sidebar-item";
 import { UserView } from "../shell/user-view";
+import { useCurrentChampionship } from "~/lib/manager/use-current-championship";
 
 export function HinterhofNav() {
+  const { currentChampionship } = useCurrentChampionship();
+  const championshipId = currentChampionship?.id || "";
+
   return (
     <div className="grow flex flex-col justify-between">
       <div className="grow flex flex-col gap-2 px-2">
@@ -11,6 +15,18 @@ export function HinterhofNav() {
           <NavLink to="/hinterhof" end>
             <HomeIcon />
             <span>Dashboard</span>
+          </NavLink>
+        </SidebarItem>
+        <SidebarItem tooltip="Turnier">
+          <NavLink to={`/hinterhof/${championshipId}/turnier`}>
+            <TrophyIcon />
+            <span>Turnier</span>
+          </NavLink>
+        </SidebarItem>
+        <SidebarItem tooltip="Spiele">
+          <NavLink to={`/hinterhof/${championshipId}/spiele`}>
+            <CalendarIcon />
+            <span>Spiele</span>
           </NavLink>
         </SidebarItem>
       </div>
