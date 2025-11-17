@@ -2,7 +2,8 @@
 
 ## Next Up
 
-- [ ] User form should close, when user is added
+- [x] User form should close, when user is added
+- [ ] Validate championship id while creating a new one
 
 ## Later
 
