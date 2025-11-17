@@ -1,4 +1,4 @@
-export default function RankingRoute() {
+export default function PlayersRoute() {
   return (
     <div>
       <title>Spieler - runde.tips</title>

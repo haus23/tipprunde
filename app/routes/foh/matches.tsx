@@ -1,4 +1,4 @@
-export default function RankingRoute() {
+export default function MatchesRoute() {
   return (
     <div>
       <title>Spiele - runde.tips</title>
