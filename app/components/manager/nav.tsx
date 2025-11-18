@@ -1,4 +1,4 @@
-import { CalendarIcon, HomeIcon, TrophyIcon, UsersIcon } from "lucide-react";
+import { CalendarIcon, HomeIcon, ShieldIcon, TrophyIcon, UsersIcon } from "lucide-react";
 import { NavLink } from "~/components/ui/link";
 import { SidebarItem } from "../shell/sidebar-item";
 import { UserView } from "../shell/user-view";
@@ -51,6 +51,12 @@ export function ManagerNav() {
             <NavLink to="/hinterhof/stammdaten/spieler">
               <UsersIcon />
               <span>Spieler</span>
+            </NavLink>
+          </SidebarItem>
+          <SidebarItem tooltip="Teams">
+            <NavLink to="/hinterhof/stammdaten/teams">
+              <ShieldIcon />
+              <span>Teams</span>
             </NavLink>
           </SidebarItem>
         </div>
