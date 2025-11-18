@@ -5,7 +5,7 @@
 - [x] Logo link styling ok? (no hover)
 - [ ] Fixed sidebar
 - [ ] Mobile nav (dialog?)
-- [ ] Finalize padding of content (desktop w/o collapsed sidebar, small device with hidden sidebar)
+- [x] Finalize padding of content (desktop w/o collapsed sidebar, small device with hidden sidebar)
 
 ## Later
 

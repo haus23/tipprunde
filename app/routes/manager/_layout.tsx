@@ -48,7 +48,9 @@ export default function ManagerLayout({ loaderData }: Route.ComponentProps) {
         <AppHeader>
           <ManagerHeader />
         </AppHeader>
-        <Outlet />
+        <div className="px-0 md:px-4">
+          <Outlet />
+        </div>
       </AppInset>
     </ChampionshipProvider>
   );
