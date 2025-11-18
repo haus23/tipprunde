@@ -7,7 +7,7 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
       <div className="px-2 py-1 sticky top-0 bg-raised z-10">
         <Link
           to="/"
-          className="flex items-center px-0.5 gap-1 group-data-[sidebar-collapsed=true]/shell:w-9 overflow-hidden"
+          className="flex items-center pl-0.5 pr-2 gap-1 group-data-[sidebar-collapsed=true]/shell:w-9 overflow-hidden"
         >
           <Logo className="size-8 shrink-0" />
           <span className="text-xl font-medium">runde.tips</span>
