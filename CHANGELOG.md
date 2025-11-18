@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.4.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.1...v0.4.0-pre.2)
+
+### 🚀 Enhancements
+
+- Add league model and DAL functions. ([ef66cb0](https://github.com/haus23/tipprunde/commit/ef66cb0))
+- Implement leagues handling. ([a5ad4c9](https://github.com/haus23/tipprunde/commit/a5ad4c9))
+
+### 💅 Refactors
+
+- Update championships icon. ([9d74985](https://github.com/haus23/tipprunde/commit/9d74985))
+
 ## v0.4.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.0...v0.4.0-pre.1)
