@@ -2,7 +2,7 @@
 
 ## Next Up
 
-- [ ] Logo link styling ok? (no hover)
+- [x] Logo link styling ok? (no hover)
 - [ ] Fixed sidebar
 - [ ] Mobile nav (dialog?)
 - [ ] Finalize padding of content (desktop w/o collapsed sidebar, small device with hidden sidebar)

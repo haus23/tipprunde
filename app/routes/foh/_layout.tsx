@@ -3,6 +3,7 @@ import { FohNav } from "~/components/foh/nav";
 import { AppHeader } from "~/components/shell/app-header";
 import { AppInset } from "~/components/shell/app-inset";
 import { AppSidebar } from "~/components/shell/app-sidebar";
+import { MobileSidebar } from "~/components/shell/mobile-sidebar";
 
 export default function FohLayout() {
   return (
@@ -10,6 +11,9 @@ export default function FohLayout() {
       <AppSidebar>
         <FohNav />
       </AppSidebar>
+      <MobileSidebar>
+        <FohNav />
+      </MobileSidebar>
       <AppInset>
         <AppHeader>{null}</AppHeader>
         <Outlet />

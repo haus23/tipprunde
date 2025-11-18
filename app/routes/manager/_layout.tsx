@@ -4,6 +4,7 @@ import { ManagerNav } from "~/components/manager/nav";
 import { AppHeader } from "~/components/shell/app-header";
 import { AppInset } from "~/components/shell/app-inset";
 import { AppSidebar } from "~/components/shell/app-sidebar";
+import { MobileSidebar } from "~/components/shell/mobile-sidebar";
 import { userContext } from "~/lib/auth/user.context";
 import { isManager } from "~/lib/auth/permissions";
 import {
@@ -40,6 +41,9 @@ export default function ManagerLayout({ loaderData }: Route.ComponentProps) {
       <AppSidebar>
         <ManagerNav />
       </AppSidebar>
+      <MobileSidebar>
+        <ManagerNav />
+      </MobileSidebar>
       <AppInset>
         <AppHeader>
           <ManagerHeader />

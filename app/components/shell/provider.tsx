@@ -4,6 +4,8 @@ import { useSettings } from "~/lib/prefs/settings";
 type ShellContextType = {
   isSidebarCollapsed: boolean;
   setSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  isMobileMenuOpen: boolean;
+  setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const ShellContext = createContext<ShellContextType>(undefined as never);
@@ -13,12 +15,15 @@ export function ShellProvider({ children }: { children: React.ReactNode }) {
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(
     settings.sidebarCollapsed,
   );
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <ShellContext
       value={{
         isSidebarCollapsed,
         setSidebarCollapsed,
+        isMobileMenuOpen,
+        setMobileMenuOpen,
       }}
     >
       {children}
@@ -34,16 +39,22 @@ export function useShell() {
     throw new Error("useShell must be used within the ShellProvider.");
   }
 
-  const { isSidebarCollapsed, setSidebarCollapsed } = context;
+  const { isSidebarCollapsed, setSidebarCollapsed, isMobileMenuOpen, setMobileMenuOpen } = context;
 
   const toggleSidebar = useCallback(async () => {
     const sidebarCollapsed = !isSidebarCollapsed;
     setSidebarCollapsed(sidebarCollapsed);
     await setSettings({ sidebarCollapsed });
-  }, [isSidebarCollapsed, setSidebarCollapsed]);
+  }, [isSidebarCollapsed, setSidebarCollapsed, setSettings]);
+
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen((prev) => !prev);
+  }, [setMobileMenuOpen]);
 
   return {
     isSidebarCollapsed,
     toggleSidebar,
+    isMobileMenuOpen,
+    toggleMobileMenu,
   };
 }
