@@ -1,4 +1,4 @@
-import { MenuIcon, PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
+import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useShell } from "./provider";
 
@@ -8,7 +8,7 @@ export function AppHeader({ children }: { children: React.ReactNode }) {
     <div className="h-8 flex items-center gap-4">
       {/* Mobile menu button */}
       <Button variant="ghost" onClick={toggleMobileMenu} className="md:hidden">
-        <MenuIcon className="size-6" />
+        <PanelLeftOpenIcon className="size-6" />
       </Button>
 
       {/* Desktop sidebar toggle */}
