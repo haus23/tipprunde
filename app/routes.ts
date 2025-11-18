@@ -31,6 +31,8 @@ export default [
         route("spieler/neu", "./routes/manager/domain/players/create.tsx"),
         route("teams", "./routes/manager/domain/teams/list.tsx"),
         route("teams/neu", "./routes/manager/domain/teams/create.tsx"),
+        route("ligen", "./routes/manager/domain/leagues/list.tsx"),
+        route("ligen/neu", "./routes/manager/domain/leagues/create.tsx"),
       ]),
     ]),
   ]),
