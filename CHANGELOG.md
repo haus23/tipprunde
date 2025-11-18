@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v0.4.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.0...v0.4.0-pre.1)
+
+### 🚀 Enhancements
+
+- Implement adding of new players while managing championship players. ([1560b5e](https://github.com/haus23/tipprunde/commit/1560b5e))
+- Add team model and DAL functions. ([9dddf42](https://github.com/haus23/tipprunde/commit/9dddf42))
+- Add managing teams feature. ([1e7026a](https://github.com/haus23/tipprunde/commit/1e7026a))
+- Add sidebar link. ([0bcab5f](https://github.com/haus23/tipprunde/commit/0bcab5f))
+
 ## v0.4.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0...v0.4.0-pre.0)
