@@ -29,6 +29,8 @@ export default [
         ),
         route("spieler", "./routes/manager/domain/players/list.tsx"),
         route("spieler/neu", "./routes/manager/domain/players/create.tsx"),
+        route("teams", "./routes/manager/domain/teams/list.tsx"),
+        route("teams/neu", "./routes/manager/domain/teams/create.tsx"),
       ]),
     ]),
   ]),
