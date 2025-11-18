@@ -55,6 +55,7 @@ export function useShell() {
     isSidebarCollapsed,
     toggleSidebar,
     isMobileMenuOpen,
+    setMobileMenuOpen,
     toggleMobileMenu,
   };
 }
