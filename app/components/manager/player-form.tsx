@@ -9,29 +9,34 @@ import { Label } from "~/components/ui/label";
 import { TextField } from "~/components/ui/text-field";
 
 type PlayerFormProps = {
+  action?: string;
+  intent?: string;
+  championshipId?: string;
   onCancel: () => void;
   onSuccess: () => void;
 };
 
-export function PlayerForm({ onCancel, onSuccess }: PlayerFormProps) {
+export function PlayerForm({ action = "/hinterhof/stammdaten/spieler/neu", intent, championshipId, onCancel, onSuccess }: PlayerFormProps) {
   const fetcher = useFetcher();
 
   useEffect(() => {
     if (fetcher.data?.success) {
       onSuccess();
     }
-  }, [fetcher.data]);
+  }, [fetcher.data, onSuccess]);
 
   return (
     <Form
       method="post"
-      action="/hinterhof/stammdaten/spieler/neu"
+      action={action}
       onSubmit={(e) => {
         e.preventDefault();
         fetcher.submit(e.currentTarget);
       }}
       validationErrors={fetcher.data?.errors}
     >
+      {intent && <input type="hidden" name="intent" value={intent} />}
+      {championshipId && <input type="hidden" name="championshipId" value={championshipId} />}
       <TextField name="name" isRequired>
         <Label>Name</Label>
         <Input placeholder="z.B. Max Mustermann" className="w-full" />

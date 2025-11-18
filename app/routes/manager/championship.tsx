@@ -1,8 +1,17 @@
 import { data, useFetcher } from "react-router";
+import { useState } from "react";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { Card, CardContent, CardTitle } from "~/components/ui/card";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
+import {
+  Dialog,
+  DialogOverlay,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import { Button } from "~/components/ui/button";
+import { PlayerForm } from "~/components/manager/player-form";
 import {
   getChampionshipById,
   getLatestChampionship,
@@ -14,6 +23,11 @@ import {
   addPlayerToChampionship,
   removePlayerFromChampionship,
 } from "~/lib/db/players";
+import {
+  createUser,
+  getUserByEmail,
+  getUserBySlug,
+} from "~/lib/db/users";
 import type { Route } from "./+types/championship";
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -50,6 +64,38 @@ export async function action({ request, params }: Route.ActionArgs) {
   } else if (intent === "removePlayer") {
     const userId = Number(formData.get("userId"));
     removePlayerFromChampionship(userId, championshipId);
+  } else if (intent === "createAndAddPlayer") {
+    const name = String(formData.get("name")).trim();
+    const slug = String(formData.get("slug")).trim();
+    const email = String(formData.get("email") || "").trim() || null;
+
+    const errors: Record<string, string> = {};
+
+    if (!slug) {
+      errors.slug = "Slug ist erforderlich";
+    } else {
+      const existingSlug = getUserBySlug(slug);
+      if (existingSlug) {
+        errors.slug = "Slug bereits vergeben";
+      }
+    }
+
+    if (email) {
+      const existingEmail = getUserByEmail(email);
+      if (existingEmail) {
+        errors.email = "E-Mail bereits vergeben";
+      }
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return data({ success: false, errors }, { status: 400 });
+    }
+
+    createUser({ name, slug, email, role: "USER" });
+    const newUser = getUserBySlug(slug);
+    if (newUser) {
+      addPlayerToChampionship(newUser.id, championshipId);
+    }
   }
 
   return data({ success: true });
@@ -60,6 +106,7 @@ export default function ChampionshipRoute({
 }: Route.ComponentProps) {
   const { championship, players, availableUsers } = loaderData;
   const fetcher = useFetcher();
+  const [isNewPlayerDialogOpen, setIsNewPlayerDialogOpen] = useState(false);
 
   const handleToggle = (flag: string, isSelected: boolean) => {
     const formData = new FormData();
@@ -159,9 +206,34 @@ export default function ChampionshipRoute({
 
           {/* Available Users */}
           <div>
-            <h4 className="text-sm font-medium text-secondary mb-3">
-              Verfügbare Spieler ({availableUsers.length})
-            </h4>
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-sm font-medium text-secondary">
+                Verfügbare Spieler ({availableUsers.length})
+              </h4>
+              <DialogTrigger
+                isOpen={isNewPlayerDialogOpen}
+                onOpenChange={setIsNewPlayerDialogOpen}
+              >
+                <Button variant="ghost" className="h-auto p-1">
+                  <PlusIcon className="size-4" />
+                  Spieler
+                </Button>
+                <DialogOverlay>
+                  <Dialog>
+                    <DialogTitle className="text-xl font-semibold text-primary">
+                      Neuer Spieler
+                    </DialogTitle>
+                    <PlayerForm
+                      action="."
+                      intent="createAndAddPlayer"
+                      championshipId={championship.id}
+                      onCancel={() => setIsNewPlayerDialogOpen(false)}
+                      onSuccess={() => setIsNewPlayerDialogOpen(false)}
+                    />
+                  </Dialog>
+                </DialogOverlay>
+              </DialogTrigger>
+            </div>
             <div className="space-y-2">
               {availableUsers.length === 0 ? (
                 <p className="text-sm text-secondary italic">
