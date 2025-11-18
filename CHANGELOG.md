@@ -1,6 +1,25 @@
 # Changelog
 
 
+## v0.4.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0...v0.4.0-pre.0)
+
+### 🚀 Enhancements
+
+- Starting the mobile view. First take, AI driven. ([416b381](https://github.com/haus23/tipprunde/commit/416b381))
+
+### 🩹 Fixes
+
+- Use one grid column on mobile devices. ([7614e46](https://github.com/haus23/tipprunde/commit/7614e46))
+- Add padding to main content on wider displays. ([1bffceb](https://github.com/haus23/tipprunde/commit/1bffceb))
+- Align icons ([feae7c6](https://github.com/haus23/tipprunde/commit/feae7c6))
+- Align paddings. ([92e26ec](https://github.com/haus23/tipprunde/commit/92e26ec))
+
+### 💅 Refactors
+
+- Turned the mobile sidebar into an rac dialog. ([01b0ff6](https://github.com/haus23/tipprunde/commit/01b0ff6))
+
 ## v0.3.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.2...v0.3.0)
