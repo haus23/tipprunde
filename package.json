@@ -1,0 +1,23 @@
+{
+  "name": "tipprunde",
+  "description": "Haus23 Tipprunde at https://runde.tips",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vinext dev",
+    "build": "vinext build",
+    "preview": "vinext start",
+    "deploy": "vinext deploy"
+  },
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "vinext": "^0.0.15"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.25.6",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "wrangler": "^4.69.0"
+  }
+}
