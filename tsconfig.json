@@ -2,11 +2,7 @@
   "compilerOptions": {
     // App
     "target": "ES2024",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2024"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ES2024"],
     "jsx": "react-jsx",
     "allowJs": false,
 
@@ -29,7 +25,12 @@
       {
         "name": "next"
       }
-    ]
+    ],
+
+    // DX
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -38,7 +39,5 @@
     "**/*.ts",
     "**/*.tsx"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
