@@ -20,6 +20,11 @@
     color(display-p3 0.129 0.126 0.111),
     color(display-p3 0.933 0.933 0.926)
   );
+  /* sand-11 */
+  --text-color-subtle: light-dark(
+    color(display-p3 0.388 0.388 0.37),
+    color(display-p3 0.707 0.703 0.68)
+  );
 }
 
 /*
