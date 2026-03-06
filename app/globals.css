@@ -25,6 +25,39 @@
     color(display-p3 0.388 0.388 0.37),
     color(display-p3 0.707 0.703 0.68)
   );
+
+  /* sand-7 — Input border default */
+  --border-color-input: light-dark(
+    color(display-p3 0.813 0.81 0.794),
+    color(display-p3 0.285 0.282 0.267)
+  );
+  /* sand-8 — Input border hovered */
+  --border-color-input-hovered: light-dark(
+    color(display-p3 0.738 0.734 0.713),
+    color(display-p3 0.384 0.378 0.357)
+  );
+
+  /* orange-8 — Focus ring */
+  --ring-color-focus: light-dark(
+    color(display-p3 0.877 0.597 0.379),
+    color(display-p3 0.601 0.359 0.201)
+  );
+
+  /* white — Button text (Radix: orange-9 is designed for white text) */
+  --text-color-btn: color(display-p3 1 1 1);
+
+  /* orange-9 — Button primary */
+  --background-color-btn: color(display-p3 0.9 0.45 0.2);
+  /* orange-10 — Button primary hovered */
+  --background-color-btn-hovered: light-dark(
+    color(display-p3 0.87 0.409 0.164),
+    color(display-p3 0.98 0.51 0.23)
+  );
+  /* orange-11 — Button primary pressed */
+  --background-color-btn-pressed: light-dark(
+    color(display-p3 0.76 0.34 0),
+    color(display-p3 1 0.63 0.38)
+  );
 }
 
 /*
