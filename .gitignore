@@ -5,5 +5,8 @@ node_modules/
 .next/
 next-env.d.ts
 
+# Local dev environment
+.env
+
 # Editor/IDE settings
 .idea/
