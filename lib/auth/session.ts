@@ -4,18 +4,16 @@ import { sessions } from '@/lib/db/schema';
 import { generateSessionId } from './cookie';
 import { SESSION_DURATION_DEFAULT, SESSION_DURATION_REMEMBER } from './config';
 
-export async function createSession(userId: string, rememberMe: boolean) {
+export async function createSession(userId: number, rememberMe: boolean) {
   const id = generateSessionId();
-  const now = new Date();
   const duration = rememberMe ? SESSION_DURATION_REMEMBER : SESSION_DURATION_DEFAULT;
-  const expiresAt = new Date(now.getTime() + duration * 1000);
+  const expiresAt = new Date(Date.now() + duration * 1000).toISOString();
 
   await db.insert(sessions).values({
     id,
     userId,
     rememberMe,
     expiresAt,
-    createdAt: now,
   });
 
   return id;
@@ -28,7 +26,7 @@ export async function getSession(sessionId: string) {
   });
 
   if (!session) return null;
-  if (session.expiresAt < new Date()) {
+  if (session.expiresAt < new Date().toISOString()) {
     await deleteSession(sessionId);
     return null;
   }
