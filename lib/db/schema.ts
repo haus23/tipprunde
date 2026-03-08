@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const users = sqliteTable('users', {
@@ -30,3 +31,16 @@ export const totpCodes = sqliteTable('totp_codes', {
   expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull(),
   attempts: integer('attempts').notNull().default(0),
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+  sessions: many(sessions),
+  totpCodes: many(totpCodes),
+}));
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, { fields: [sessions.userId], references: [users.id] }),
+}));
+
+export const totpCodesRelations = relations(totpCodes, ({ one }) => ({
+  user: one(users, { fields: [totpCodes.userId], references: [users.id] }),
+}));
