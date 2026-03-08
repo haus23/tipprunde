@@ -51,7 +51,7 @@ export async function verifyTotpCode(
   code: string,
 ): Promise<VerifyResult> {
   const record = await db.query.totpCodes.findFirst({
-    where: eq(totpCodes.userId, userId),
+    where: { userId },
   });
 
   if (!record) return 'invalid';
@@ -69,10 +69,7 @@ export async function verifyTotpCode(
       await db.delete(totpCodes).where(eq(totpCodes.id, record.id));
       return 'max_attempts';
     }
-    await db
-      .update(totpCodes)
-      .set({ attempts })
-      .where(eq(totpCodes.id, record.id));
+    await db.update(totpCodes).set({ attempts }).where(eq(totpCodes.id, record.id));
     return 'invalid';
   }
 

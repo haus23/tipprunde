@@ -23,7 +23,7 @@ export async function createSession(userId: string, rememberMe: boolean) {
 
 export async function getSession(sessionId: string) {
   const session = await db.query.sessions.findFirst({
-    where: eq(sessions.id, sessionId),
+    where: { id: sessionId },
     with: { user: true },
   });
 
