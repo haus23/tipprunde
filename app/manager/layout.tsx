@@ -1,8 +1,19 @@
 import type React from "react";
+import { headers } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Logo } from "@/components/logo";
+import { getSession } from "@/lib/auth/session";
 
-export default function ManagerLayout({ children }: { children: React.ReactNode }) {
+export default async function ManagerLayout({ children }: { children: React.ReactNode }) {
+  const headerStore = await headers();
+  const sessionId = headerStore.get("x-session-id");
+
+  if (!sessionId) redirect("/login");
+
+  const session = await getSession(sessionId);
+
+  if (!session?.user) redirect("/login");
   return (
     <div className="flex min-h-svh">
       <aside className="border-input fixed inset-y-0 left-0 flex w-64 flex-col overflow-y-auto border-r">
