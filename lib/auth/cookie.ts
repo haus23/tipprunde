@@ -1,8 +1,7 @@
 import { cookies } from "next/headers";
+import { SESSION_DURATION_REMEMBER } from './config';
 
 export const SESSION_COOKIE = "__session";
-
-const DURATION_REMEMBER = 30 * 24 * 60 * 60; // 30 Tage in Sekunden
 
 export function generateSessionId(): string {
   const bytes = new Uint8Array(32);
@@ -17,7 +16,7 @@ export async function setSessionCookie(sessionId: string, rememberMe: boolean) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    ...(rememberMe ? { maxAge: DURATION_REMEMBER } : {}),
+    ...(rememberMe ? { maxAge: SESSION_DURATION_REMEMBER } : {}),
   });
 }
 
