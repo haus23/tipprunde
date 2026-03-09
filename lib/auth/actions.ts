@@ -9,7 +9,7 @@ import { getUserByEmail } from "./users";
 
 type RequestCodeState = { success: true; email: string } | { success: false; error: string } | null;
 
-type VerifyCodeState = { error: string } | null;
+type VerifyCodeState = { error: string; fatal?: boolean } | null;
 
 export async function requestCode(
   _prevState: RequestCodeState,
@@ -54,11 +54,11 @@ export async function verifyCode(
   const result = await verifyTotpCode(user.id, code);
 
   if (result === "expired") {
-    return { error: "Der Code ist abgelaufen. Bitte fordere einen neuen an." };
+    return { error: "Der Code ist abgelaufen. Bitte fordere einen neuen an.", fatal: true };
   }
 
   if (result === "max_attempts") {
-    return { error: "Zu viele Fehlversuche. Bitte fordere einen neuen Code an." };
+    return { error: "Zu viele Fehlversuche. Bitte fordere einen neuen Code an.", fatal: true };
   }
 
   if (result === "invalid") {

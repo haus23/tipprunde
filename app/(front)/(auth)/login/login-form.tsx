@@ -10,7 +10,7 @@ export function LoginForm() {
   const [requestState, requestAction, requestPending] = useActionState(requestCode, null);
   const [verifyState, verifyAction, verifyPending] = useActionState(verifyCode, null);
 
-  if (requestState?.success) {
+  if (requestState?.success && !verifyState?.fatal) {
     return (
       <Form action={verifyAction} className="flex flex-col gap-4">
         <input type="hidden" name="email" value={requestState.email} />
@@ -32,13 +32,16 @@ export function LoginForm() {
     );
   }
 
+  const prefillEmail = verifyState?.fatal && requestState?.success ? requestState.email : undefined;
+
   return (
     <Form action={requestAction} className="flex flex-col gap-4">
-      <TextField type="email" name="email" isRequired className="flex flex-col gap-1">
+      <TextField type="email" name="email" isRequired defaultValue={prefillEmail} className="flex flex-col gap-1">
         <Label>E-Mail</Label>
         <Input placeholder="deine@email.de" autoComplete="email" />
       </TextField>
-      {requestState?.error && <p className="text-subtle text-sm">{requestState.error}</p>}
+      {verifyState?.error && <p className="text-subtle text-sm">{verifyState.error}</p>}
+      {requestState?.success === false && <p className="text-subtle text-sm">{requestState.error}</p>}
       <Button type="submit" isDisabled={requestPending}>
         Code anfordern
       </Button>
