@@ -9,7 +9,6 @@ export default async function Page() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-medium">Spieler</h1>
       <SpielerTable spieler={spieler} />
     </div>
   );

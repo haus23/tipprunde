@@ -39,7 +39,8 @@ export function SpielerTable({ spieler }: Props) {
 
   return (
     <>
-      <div className="mb-4 flex justify-end">
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-medium">Spieler</h1>
         <Button onPress={openCreate}>Neu anlegen</Button>
       </div>
 
