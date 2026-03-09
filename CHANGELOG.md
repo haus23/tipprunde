@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.3.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0...v0.3.0-pre.0)
+
+### 🚀 Enhancements
+
+- Create RAC textarea wrapper. ([9ffb59e](https://github.com/haus23/tipprunde/commit/9ffb59e))
+- Create ruleset actions, table and form. ([15f831e](https://github.com/haus23/tipprunde/commit/15f831e))
+
+### 🏡 Chore
+
+- Create rulesets table. ([cbd84b2](https://github.com/haus23/tipprunde/commit/cbd84b2))
+- Improve db:push command execution with better env handling. ([214c3fa](https://github.com/haus23/tipprunde/commit/214c3fa))
+- Create migration for rulesets table. ([255e848](https://github.com/haus23/tipprunde/commit/255e848))
+
 ## v0.2.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.2...v0.2.0)
