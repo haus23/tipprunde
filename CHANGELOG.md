@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.2.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.0...v0.2.0-pre.1)
+
+### 🚀 Enhancements
+
+- Add size variant for icon-only buttons. ([04d5cf5](https://github.com/haus23/tipprunde/commit/04d5cf5))
+- Auto-sluggify user names to slug value. ([7e98589](https://github.com/haus23/tipprunde/commit/7e98589))
+
+### 🩹 Fixes
+
+- Remove root (id=0) from players list query. ([7a7cd52](https://github.com/haus23/tipprunde/commit/7a7cd52))
+
+### 💅 Refactors
+
+- Display player ID. Provide empty data fallback. ([4290646](https://github.com/haus23/tipprunde/commit/4290646))
+- Use icons where appropriate. ([773d260](https://github.com/haus23/tipprunde/commit/773d260))
+- Omit unused anon role. Use labels for roles. ([18a0228](https://github.com/haus23/tipprunde/commit/18a0228))
+- Adjust spacing in manager layout. ([de0e585](https://github.com/haus23/tipprunde/commit/de0e585))
+
+### 🏡 Chore
+
+- Add lucide-react dependency. ([e2fa082](https://github.com/haus23/tipprunde/commit/e2fa082))
+
 ## v0.2.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.2.0-pre.0)
