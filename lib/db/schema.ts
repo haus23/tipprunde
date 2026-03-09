@@ -35,3 +35,14 @@ export const totpCodes = sqliteTable("totp_codes", {
   expiresAt: text("expires_at").notNull(),
   attempts: integer("attempts").notNull().default(0),
 });
+
+export const rulesets = sqliteTable("rulesets", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  tipRuleId: text("tip_rule_id").notNull(),
+  jokerRuleId: text("joker_rule_id").notNull(),
+  matchRuleId: text("match_rule_id").notNull(),
+  roundRuleId: text("round_rule_id").notNull(),
+  extraQuestionRuleId: text("extra_question_rule_id").notNull(),
+});
