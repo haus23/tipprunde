@@ -3,7 +3,7 @@ import { useActionState } from "react";
 import { Button } from "@/components/(ui)/button";
 import { Checkbox } from "@/components/(ui)/checkbox";
 import { Form } from "@/components/(ui)/form";
-import { Input, Label, TextField } from "@/components/(ui)/text-field";
+import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field";
 import { requestCode, verifyCode } from "@/lib/auth/actions";
 
 export function LoginForm() {
@@ -14,9 +14,14 @@ export function LoginForm() {
     return (
       <Form action={verifyAction} className="flex flex-col gap-4">
         <input type="hidden" name="email" value={requestState.email} />
-        <TextField name="code" isRequired className="flex flex-col gap-1">
+        <TextField name="code" isRequired pattern="[0-9]{6}" className="flex flex-col gap-1">
           <Label>Code</Label>
-          <Input placeholder="123456" autoComplete="one-time-code" />
+          <Input placeholder="123456" inputMode="numeric" maxLength={6} autoComplete="one-time-code" />
+          <FieldError>
+            {({ validationDetails }) =>
+              validationDetails.patternMismatch ? "Bitte genau 6 Ziffern eingeben." : "Pflichtfeld."
+            }
+          </FieldError>
         </TextField>
         <Checkbox name="rememberMe">Angemeldet bleiben</Checkbox>
         {verifyState?.error && <p className="text-subtle text-sm">{verifyState.error}</p>}
@@ -39,6 +44,13 @@ export function LoginForm() {
       <TextField type="email" name="email" isRequired defaultValue={prefillEmail} className="flex flex-col gap-1">
         <Label>E-Mail</Label>
         <Input placeholder="deine@email.de" autoComplete="email" />
+        <FieldError>
+          {({ validationDetails }) =>
+            validationDetails.valueMissing
+              ? "Pflichtfeld."
+              : "Bitte eine gültige E-Mail-Adresse eingeben."
+          }
+        </FieldError>
       </TextField>
       {verifyState?.error && <p className="text-subtle text-sm">{verifyState.error}</p>}
       {requestState?.success === false && <p className="text-subtle text-sm">{requestState.error}</p>}

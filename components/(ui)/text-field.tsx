@@ -22,11 +22,11 @@ export function Input(props: InputProps) {
   return (
     <RACInput
       {...props}
-      className="border-input data-hovered:border-input-hovered focus-visible:ring-focus rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 disabled:opacity-50"
+      className="border-input data-hovered:border-input-hovered focus-visible:ring-focus data-invalid:border-error rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 disabled:opacity-50"
     />
   );
 }
 
 export function FieldError(props: FieldErrorProps) {
-  return <RACFieldError {...props} className="text-subtle text-sm" />;
+  return <RACFieldError {...props} className="text-error text-sm" />;
 }

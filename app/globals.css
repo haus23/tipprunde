@@ -37,6 +37,17 @@
     color(display-p3 0.384 0.378 0.357)
   );
 
+  /* red-11 — Error text */
+  --text-color-error: light-dark(
+    color(display-p3 0.744 0.071 0.125),
+    color(display-p3 1 0.482 0.427)
+  );
+  /* red-7 — Error border */
+  --border-color-error: light-dark(
+    color(display-p3 0.879 0.652 0.652),
+    color(display-p3 0.465 0.211 0.211)
+  );
+
   /* orange-8 — Focus ring */
   --ring-color-focus: light-dark(
     color(display-p3 0.877 0.597 0.379),
