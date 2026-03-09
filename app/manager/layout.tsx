@@ -39,7 +39,7 @@ export default async function ManagerLayout({ children }: { children: React.Reac
           </Link>
         </nav>
       </aside>
-      <main className="flex-1 px-6 py-3 md:ml-52">{children}</main>
+      <main className="flex-1 py-3 sm:px-6 md:ml-52">{children}</main>
     </div>
   );
 }
