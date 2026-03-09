@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Button } from "@/components/(ui)/button";
 import { Form } from "@/components/(ui)/form";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field";
@@ -10,6 +10,16 @@ import type { users } from "@/lib/db/schema";
 type Spieler = typeof users.$inferSelect;
 
 const ROLES: Spieler["role"][] = ["anon", "user", "manager", "admin"];
+
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
 
 interface Props {
   spieler?: Spieler;
@@ -23,9 +33,25 @@ export function SpielerForm({ spieler, onSuccess }: Props) {
     null,
   );
 
+  const [name, setName] = useState(spieler?.name ?? "");
+  const [slug, setSlug] = useState(spieler?.slug ?? "");
+  const [slugDirty, setSlugDirty] = useState(false);
+
   useEffect(() => {
     if (state && "success" in state) onSuccess();
   }, [state, onSuccess]);
+
+  function handleNameChange(value: string) {
+    setName(value);
+    if (!spieler && !slugDirty) {
+      setSlug(slugify(value));
+    }
+  }
+
+  function handleSlugChange(value: string) {
+    setSlug(value);
+    if (!spieler) setSlugDirty(true);
+  }
 
   return (
     <Form action={formAction} className="flex flex-col gap-4">
@@ -34,7 +60,8 @@ export function SpielerForm({ spieler, onSuccess }: Props) {
       <TextField
         name="name"
         isRequired
-        defaultValue={spieler?.name}
+        value={name}
+        onChange={handleNameChange}
         className="flex flex-col gap-1"
       >
         <Label>Name</Label>
@@ -45,7 +72,8 @@ export function SpielerForm({ spieler, onSuccess }: Props) {
       <TextField
         name="slug"
         isRequired
-        defaultValue={spieler?.slug}
+        value={slug}
+        onChange={handleSlugChange}
         className="flex flex-col gap-1"
       >
         <Label>Kürzel</Label>
