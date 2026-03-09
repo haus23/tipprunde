@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.2.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.1...v0.2.0-pre.2)
+
+### 💅 Refactors
+
+- Start thinking about mobile layout. ([21413f6](https://github.com/haus23/tipprunde/commit/21413f6))
+- Move heading and button into the spieler-table to top. ([d9b21f4](https://github.com/haus23/tipprunde/commit/d9b21f4))
+- Adjust table layout and rendering on mobile devices. ([dc6db7d](https://github.com/haus23/tipprunde/commit/dc6db7d))
+- Adjust mobile styling for the dialog component. ([52df4ae](https://github.com/haus23/tipprunde/commit/52df4ae))
+
 ## v0.2.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.0...v0.2.0-pre.1)
