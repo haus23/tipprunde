@@ -27,7 +27,7 @@ export default async function ManagerLayout({ children }: { children: React.Reac
           </Link>
         </div>
         <nav className="flex-1 p-4">
-          <p className="text-subtle mb-1 px-2 text-xs font-semibold uppercase tracking-wider">
+          <p className="text-subtle mb-1 px-2 text-xs font-semibold tracking-wider uppercase">
             Stammdaten
           </p>
           <Link
@@ -39,7 +39,7 @@ export default async function ManagerLayout({ children }: { children: React.Reac
           </Link>
         </nav>
       </aside>
-      <main className="ml-64 flex-1 p-6">{children}</main>
+      <main className="ml-64 flex-1 px-6 py-3">{children}</main>
     </div>
   );
 }
