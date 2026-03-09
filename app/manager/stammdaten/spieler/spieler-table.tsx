@@ -7,6 +7,12 @@ import { Dialog } from "@/components/(ui)/dialog";
 import type { users } from "@/lib/db/schema";
 import { SpielerForm } from "./spieler-form";
 
+const ROLE_LABELS: Record<(typeof users.$inferSelect)["role"], string> = {
+  user: "Spieler",
+  manager: "Manager",
+  admin: "Admin",
+};
+
 type Spieler = typeof users.$inferSelect;
 
 interface Props {
@@ -62,7 +68,7 @@ export function SpielerTable({ spieler }: Props) {
                 <td className="py-2">{s.name}</td>
                 <td className="py-2">{s.slug}</td>
                 <td className="py-2">{s.email ?? "—"}</td>
-                <td className="py-2">{s.role}</td>
+                <td className="py-2">{ROLE_LABELS[s.role]}</td>
                 <td className="py-2 text-right">
                   <Button variant="secondary" size="icon" onPress={() => openEdit(s)} aria-label="Bearbeiten">
                     <PencilIcon size={14} />

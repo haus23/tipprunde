@@ -9,7 +9,11 @@ import type { users } from "@/lib/db/schema";
 
 type Spieler = typeof users.$inferSelect;
 
-const ROLES: Spieler["role"][] = ["anon", "user", "manager", "admin"];
+const ROLES: { value: Spieler["role"]; label: string }[] = [
+  { value: "user", label: "Spieler" },
+  { value: "manager", label: "Manager" },
+  { value: "admin", label: "Admin" },
+];
 
 function slugify(value: string): string {
   return value
@@ -102,9 +106,9 @@ export function SpielerForm({ spieler, onSuccess }: Props) {
           defaultValue={spieler?.role ?? "user"}
           className="border-input rounded-md border bg-transparent px-3 py-2 text-sm outline-none"
         >
-          {ROLES.map((r) => (
-            <option key={r} value={r}>
-              {r}
+          {ROLES.map(({ value, label }) => (
+            <option key={value} value={value}>
+              {label}
             </option>
           ))}
         </select>
