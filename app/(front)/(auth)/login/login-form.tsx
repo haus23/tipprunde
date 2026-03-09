@@ -1,5 +1,5 @@
 "use client";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Button } from "@/components/(ui)/button";
 import { Checkbox } from "@/components/(ui)/checkbox";
 import { Form } from "@/components/(ui)/form";
@@ -9,8 +9,17 @@ import { requestCode, verifyCode } from "@/lib/auth/actions";
 export function LoginForm() {
   const [requestState, requestAction, requestPending] = useActionState(requestCode, null);
   const [verifyState, verifyAction, verifyPending] = useActionState(verifyCode, null);
+  const [step, setStep] = useState<"email" | "code">("email");
 
-  if (requestState?.success && !verifyState?.fatal) {
+  useEffect(() => {
+    if (requestState?.success) setStep("code");
+  }, [requestState]);
+
+  useEffect(() => {
+    if (verifyState?.fatal) setStep("email");
+  }, [verifyState]);
+
+  if (step === "code" && requestState?.success) {
     return (
       <Form action={verifyAction} className="flex flex-col gap-4">
         <input type="hidden" name="email" value={requestState.email} />
@@ -24,12 +33,12 @@ export function LoginForm() {
           </FieldError>
         </TextField>
         <Checkbox name="rememberMe">Angemeldet bleiben</Checkbox>
-        {verifyState?.error && <p className="text-subtle text-sm">{verifyState.error}</p>}
+        {verifyState?.error && !verifyState.fatal && <p className="text-subtle text-sm">{verifyState.error}</p>}
         <div className="flex flex-col gap-2">
           <Button type="submit" isDisabled={verifyPending}>
             Einloggen
           </Button>
-          <Button variant="secondary" type="button" onPress={() => window.location.reload()}>
+          <Button variant="secondary" type="button" onPress={() => setStep("email")}>
             Andere E-Mail verwenden
           </Button>
         </div>
@@ -38,6 +47,7 @@ export function LoginForm() {
   }
 
   const prefillEmail = verifyState?.fatal && requestState?.success ? requestState.email : undefined;
+
 
   return (
     <Form action={requestAction} className="flex flex-col gap-4">
@@ -52,7 +62,7 @@ export function LoginForm() {
           }
         </FieldError>
       </TextField>
-      {verifyState?.error && <p className="text-subtle text-sm">{verifyState.error}</p>}
+      {verifyState?.fatal && <p className="text-subtle text-sm">{verifyState.error}</p>}
       {requestState?.success === false && <p className="text-subtle text-sm">{requestState.error}</p>}
       <Button type="submit" isDisabled={requestPending}>
         Code anfordern
