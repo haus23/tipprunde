@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.1.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.1...v0.1.0)
+
+### 🚀 Enhancements
+
+- Add secondary button variant and update login form. ([f967955](https://github.com/haus23/tipprunde/commit/f967955))
+- Use RAC validation. Added new error colors. ([4650973](https://github.com/haus23/tipprunde/commit/4650973))
+
+### 💅 Refactors
+
+- Restart auth flow with fatal totp error on max_attempts or expired code. ([9d351ef](https://github.com/haus23/tipprunde/commit/9d351ef))
+- Turn login-form into a two-step process for better user experience and controlling. ([f493061](https://github.com/haus23/tipprunde/commit/f493061))
+- Improve UX by handling email validation and error better. ([400f88c](https://github.com/haus23/tipprunde/commit/400f88c))
+
+### 🏡 Chore
+
+- Reorder tsconfig compiler options. ([768a4cf](https://github.com/haus23/tipprunde/commit/768a4cf))
+- Ignore agents files when formatting. ([cf598c2](https://github.com/haus23/tipprunde/commit/cf598c2))
+
 ## v0.1.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.0...v0.1.0-pre.1)
