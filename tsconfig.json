@@ -10,11 +10,11 @@
     "strict": true,
 
     // Typechecking
-    "skipLibCheck": true,
     "noEmit": true,
+    "incremental": true,
+    "skipLibCheck": true,
 
     // Bundler
-    "incremental": true,
     "module": "Preserve",
     "esModuleInterop": true,
     "resolveJsonModule": true,
