@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.2.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.2.0-pre.0)
+
+### 🚀 Enhancements
+
+- Bring auth tables to production db branch. ([5145382](https://github.com/haus23/tipprunde/commit/5145382))
+- Add Spieler management with CRUD dialog ([3d6e27c](https://github.com/haus23/tipprunde/commit/3d6e27c))
+
+### 🏡 Chore
+
+- Prepare for production. ([1e4c802](https://github.com/haus23/tipprunde/commit/1e4c802))
+
 ## v0.1.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.1...v0.1.0)
