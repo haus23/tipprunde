@@ -9,6 +9,12 @@
 @theme {
   --color-*: initial;
 
+  /* sand-3 — Subtle background (nav hover etc.) */
+  --background-color-subtle: light-dark(
+    color(display-p3 0.943 0.942 0.936),
+    color(display-p3 0.135 0.135 0.129)
+  );
+
   /* white / sand-1 */
   --background-color-base: light-dark(
     color(display-p3 1 1 1 / 1),

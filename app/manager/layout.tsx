@@ -25,7 +25,17 @@ export default async function ManagerLayout({ children }: { children: React.Reac
             <span className="text-lg font-medium">runde.tips</span>
           </Link>
         </div>
-        <nav className="flex-1 p-4">{/* nav items later */}</nav>
+        <nav className="flex-1 p-4">
+          <p className="text-subtle mb-1 px-2 text-xs font-semibold uppercase tracking-wider">
+            Stammdaten
+          </p>
+          <Link
+            href="/manager/stammdaten/spieler"
+            className="hover:bg-subtle flex rounded-md px-2 py-1.5 text-sm"
+          >
+            Spieler
+          </Link>
+        </nav>
       </aside>
       <main className="ml-64 flex-1 p-6">{children}</main>
     </div>
