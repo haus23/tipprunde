@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.2.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.2...v0.2.0)
+
+### 🚀 Enhancements
+
+- Add close button to dialog header ([d773d49](https://github.com/haus23/tipprunde/commit/d773d49))
+- Replace native select with RAC Select component ([6957ac1](https://github.com/haus23/tipprunde/commit/6957ac1))
+
+### 💅 Refactors
+
+- Replace onSuccess callback with OverlayTriggerStateContext ([35f097b](https://github.com/haus23/tipprunde/commit/35f097b))
+
 ## v0.2.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0-pre.1...v0.2.0-pre.2)
