@@ -26,7 +26,7 @@ export function LoginForm() {
           <Button type="submit" isDisabled={verifyPending}>
             Einloggen
           </Button>
-          <Button type="button" onPress={() => window.location.reload()}>
+          <Button variant="secondary" type="button" onPress={() => window.location.reload()}>
             Andere E-Mail verwenden
           </Button>
         </div>
