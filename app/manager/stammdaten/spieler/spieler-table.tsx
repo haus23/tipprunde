@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/(ui)/button";
 import { Dialog } from "@/components/(ui)/dialog";
 import type { users } from "@/lib/db/schema";
@@ -63,8 +64,8 @@ export function SpielerTable({ spieler }: Props) {
                 <td className="py-2">{s.email ?? "—"}</td>
                 <td className="py-2">{s.role}</td>
                 <td className="py-2 text-right">
-                  <Button variant="secondary" onPress={() => openEdit(s)}>
-                    Bearbeiten
+                  <Button variant="secondary" onPress={() => openEdit(s)} aria-label="Bearbeiten">
+                    <PencilIcon size={14} />
                   </Button>
                 </td>
               </tr>

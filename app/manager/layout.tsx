@@ -2,6 +2,7 @@ import type React from "react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { UsersIcon } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { getSession } from "@/lib/auth/session";
 
@@ -31,8 +32,9 @@ export default async function ManagerLayout({ children }: { children: React.Reac
           </p>
           <Link
             href="/manager/stammdaten/spieler"
-            className="hover:bg-subtle flex rounded-md px-2 py-1.5 text-sm"
+            className="hover:bg-subtle flex items-center gap-2 rounded-md px-2 py-1.5 text-sm"
           >
+            <UsersIcon size={14} />
             Spieler
           </Link>
         </nav>
