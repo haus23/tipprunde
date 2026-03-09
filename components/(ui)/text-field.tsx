@@ -6,6 +6,8 @@ import {
   type InputProps,
   Label as RACLabel,
   type LabelProps,
+  TextArea as RACTextArea,
+  type TextAreaProps,
   TextField as RACTextField,
   type TextFieldProps,
 } from "react-aria-components";
@@ -21,6 +23,15 @@ export function Label(props: LabelProps) {
 export function Input(props: InputProps) {
   return (
     <RACInput
+      {...props}
+      className="border-input data-hovered:border-input-hovered focus-visible:ring-focus data-invalid:border-error rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 disabled:opacity-50"
+    />
+  );
+}
+
+export function TextArea(props: TextAreaProps) {
+  return (
+    <RACTextArea
       {...props}
       className="border-input data-hovered:border-input-hovered focus-visible:ring-focus data-invalid:border-error rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 disabled:opacity-50"
     />
