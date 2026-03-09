@@ -6,6 +6,7 @@ import { OverlayTriggerStateContext } from "react-aria-components";
 import { Button } from "@/components/(ui)/button";
 import { Form } from "@/components/(ui)/form";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field";
+import { Select, SelectItem } from "@/components/(ui)/select";
 import { createSpieler, updateSpieler, type SpielerFormState } from "./actions";
 import type { users } from "@/lib/db/schema";
 
@@ -103,23 +104,13 @@ export function SpielerForm({ spieler }: Props) {
         <FieldError>Bitte eine gültige E-Mail-Adresse eingeben.</FieldError>
       </TextField>
 
-      <div className="flex flex-col gap-1">
-        <label className="text-subtle text-sm" htmlFor="spieler-role">
-          Rolle
-        </label>
-        <select
-          id="spieler-role"
-          name="role"
-          defaultValue={spieler?.role ?? "user"}
-          className="border-input rounded-md border bg-transparent px-3 py-2 text-sm outline-none"
-        >
-          {ROLES.map(({ value, label }) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Select label="Rolle" name="role" defaultSelectedKey={spieler?.role ?? "user"}>
+        {ROLES.map(({ value, label }) => (
+          <SelectItem key={value} id={value}>
+            {label}
+          </SelectItem>
+        ))}
+      </Select>
 
       {state && "error" in state && (
         <p className="text-error text-sm">{state.error}</p>
