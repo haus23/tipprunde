@@ -17,7 +17,7 @@ export default async function ManagerLayout({ children }: { children: React.Reac
   if (!session?.user) redirect("/login");
   return (
     <div className="flex min-h-svh">
-      <aside className="border-input fixed inset-y-0 left-0 flex w-64 flex-col overflow-y-auto border-r">
+      <aside className="border-input fixed inset-y-0 left-0 hidden w-52 flex-col overflow-y-auto border-r md:flex">
         <div className="border-input flex h-14 shrink-0 items-center border-b px-4">
           <Link href="/" className="flex items-center gap-2">
             <span className="size-10">
@@ -39,7 +39,7 @@ export default async function ManagerLayout({ children }: { children: React.Reac
           </Link>
         </nav>
       </aside>
-      <main className="ml-64 flex-1 px-6 py-3">{children}</main>
+      <main className="flex-1 px-6 py-3 md:ml-52">{children}</main>
     </div>
   );
 }
