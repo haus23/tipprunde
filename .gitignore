@@ -8,5 +8,8 @@ next-env.d.ts
 # Local dev environment
 .env
 
+# Production environment
+.env.production
+
 # Editor/IDE settings
 .idea/
