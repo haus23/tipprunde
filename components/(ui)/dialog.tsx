@@ -26,9 +26,9 @@ export function Dialog({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       isDismissable={isDismissable}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-xs"
     >
-      <Modal className="border-input bg-base w-full max-w-md rounded-xl border p-6 shadow-lg">
+      <Modal className="border-input bg-base my-auto w-full max-w-md rounded-xl border p-6 shadow-lg">
         <RACDialog className="outline-none">
           <Heading slot="title" className="mb-4 text-xl font-medium">
             {title}
