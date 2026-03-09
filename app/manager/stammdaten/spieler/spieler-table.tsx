@@ -39,6 +39,7 @@ export function SpielerTable({ spieler }: Props) {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-input border-b text-left">
+            <th className="pb-2 font-medium">#</th>
             <th className="pb-2 font-medium">Name</th>
             <th className="pb-2 font-medium">Kürzel</th>
             <th className="pb-2 font-medium">E-Mail</th>
@@ -47,19 +48,28 @@ export function SpielerTable({ spieler }: Props) {
           </tr>
         </thead>
         <tbody>
-          {spieler.map((s) => (
-            <tr key={s.id} className="border-input border-b">
-              <td className="py-2">{s.name}</td>
-              <td className="py-2">{s.slug}</td>
-              <td className="py-2">{s.email ?? "—"}</td>
-              <td className="py-2">{s.role}</td>
-              <td className="py-2 text-right">
-                <Button variant="secondary" onPress={() => openEdit(s)}>
-                  Bearbeiten
-                </Button>
+          {spieler.length === 0 ? (
+            <tr>
+              <td colSpan={6} className="text-subtle py-6 text-center text-sm">
+                Keine Spieler vorhanden.
               </td>
             </tr>
-          ))}
+          ) : (
+            spieler.map((s) => (
+              <tr key={s.id} className="border-input border-b">
+                <td className="py-2">{s.id}</td>
+                <td className="py-2">{s.name}</td>
+                <td className="py-2">{s.slug}</td>
+                <td className="py-2">{s.email ?? "—"}</td>
+                <td className="py-2">{s.role}</td>
+                <td className="py-2 text-right">
+                  <Button variant="secondary" onPress={() => openEdit(s)}>
+                    Bearbeiten
+                  </Button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
 
