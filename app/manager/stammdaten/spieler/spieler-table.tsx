@@ -64,7 +64,7 @@ export function SpielerTable({ spieler }: Props) {
                 <td className="py-2">{s.email ?? "—"}</td>
                 <td className="py-2">{s.role}</td>
                 <td className="py-2 text-right">
-                  <Button variant="secondary" onPress={() => openEdit(s)} aria-label="Bearbeiten">
+                  <Button variant="secondary" size="icon" onPress={() => openEdit(s)} aria-label="Bearbeiten">
                     <PencilIcon size={14} />
                   </Button>
                 </td>
