@@ -17,7 +17,7 @@ export default async function ManagerLayout({ children }: { children: React.Reac
   return (
     <div className="flex min-h-svh">
       <aside className="border-input fixed inset-y-0 left-0 flex w-64 flex-col overflow-y-auto border-r">
-        <div className="flex h-14 shrink-0 items-center border-b border-input px-4">
+        <div className="border-input flex h-14 shrink-0 items-center border-b px-4">
           <Link href="/" className="flex items-center gap-2">
             <span className="size-10">
               <Logo />

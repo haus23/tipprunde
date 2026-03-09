@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## v0.1.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0-pre.0...v0.1.0-pre.1)
@@ -37,7 +36,6 @@
 
 ## v0.1.0-pre.0
 
-
 ### 🚀 Enhancements
 
 - Initial landing page. ([4bad9b7](https://github.com/haus23/tipprunde/commit/4bad9b7))
@@ -51,4 +49,3 @@
 - Provide build and start scripts. ([1610682](https://github.com/haus23/tipprunde/commit/1610682))
 - Ignore local dev env. ([6bfcaca](https://github.com/haus23/tipprunde/commit/6bfcaca))
 - Update package.json with product name and version. ([c65249a](https://github.com/haus23/tipprunde/commit/c65249a))
-

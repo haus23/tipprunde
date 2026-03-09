@@ -1,8 +1,8 @@
-import { eq } from 'drizzle-orm';
-import { db } from '@/lib/db';
-import { sessions } from '@/lib/db/schema';
-import { generateSessionId } from './cookie';
-import { SESSION_DURATION_DEFAULT, SESSION_DURATION_REMEMBER } from './config';
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db";
+import { sessions } from "@/lib/db/schema";
+import { generateSessionId } from "./cookie";
+import { SESSION_DURATION_DEFAULT, SESSION_DURATION_REMEMBER } from "./config";
 
 export async function createSession(userId: number, rememberMe: boolean) {
   const id = generateSessionId();

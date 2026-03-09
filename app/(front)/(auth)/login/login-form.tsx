@@ -19,9 +19,7 @@ export function LoginForm() {
           <Input placeholder="123456" autoComplete="one-time-code" />
         </TextField>
         <Checkbox name="rememberMe">Angemeldet bleiben</Checkbox>
-        {verifyState?.error && (
-          <p className="text-sm text-subtle">{verifyState.error}</p>
-        )}
+        {verifyState?.error && <p className="text-subtle text-sm">{verifyState.error}</p>}
         <div className="flex flex-col gap-2">
           <Button type="submit" isDisabled={verifyPending}>
             Einloggen
@@ -40,9 +38,7 @@ export function LoginForm() {
         <Label>E-Mail</Label>
         <Input placeholder="deine@email.de" autoComplete="email" />
       </TextField>
-      {requestState?.error && (
-        <p className="text-sm text-subtle">{requestState.error}</p>
-      )}
+      {requestState?.error && <p className="text-subtle text-sm">{requestState.error}</p>}
       <Button type="submit" isDisabled={requestPending}>
         Code anfordern
       </Button>

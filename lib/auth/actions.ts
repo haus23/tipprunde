@@ -28,7 +28,10 @@ export async function requestCode(
   try {
     await sendTotpEmail(email, code);
   } catch {
-    return { success: false, error: "E-Mail konnte nicht gesendet werden. Bitte versuche es erneut." };
+    return {
+      success: false,
+      error: "E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
+    };
   }
 
   return { success: true, email };
