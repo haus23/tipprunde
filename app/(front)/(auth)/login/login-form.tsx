@@ -25,7 +25,12 @@ export function LoginForm() {
         <input type="hidden" name="email" value={requestState.email} />
         <TextField name="code" isRequired pattern="[0-9]{6}" className="flex flex-col gap-1">
           <Label>Code</Label>
-          <Input placeholder="123456" inputMode="numeric" maxLength={6} autoComplete="one-time-code" />
+          <Input
+            placeholder="123456"
+            inputMode="numeric"
+            maxLength={6}
+            autoComplete="one-time-code"
+          />
           <FieldError>
             {({ validationDetails }) =>
               validationDetails.patternMismatch ? "Bitte genau 6 Ziffern eingeben." : "Pflichtfeld."
@@ -33,7 +38,9 @@ export function LoginForm() {
           </FieldError>
         </TextField>
         <Checkbox name="rememberMe">Angemeldet bleiben</Checkbox>
-        {verifyState?.error && !verifyState.fatal && <p className="text-subtle text-sm">{verifyState.error}</p>}
+        {verifyState?.error && !verifyState.fatal && (
+          <p className="text-subtle text-sm">{verifyState.error}</p>
+        )}
         <div className="flex flex-col gap-2">
           <Button type="submit" isDisabled={verifyPending}>
             Einloggen
@@ -45,13 +52,17 @@ export function LoginForm() {
       </Form>
     );
   }
-
-  const prefillEmail = verifyState?.fatal && requestState?.success ? requestState.email : undefined;
-
+  const prefillEmail = requestState?.email;
 
   return (
     <Form action={requestAction} className="flex flex-col gap-4">
-      <TextField type="email" name="email" isRequired defaultValue={prefillEmail} className="flex flex-col gap-1">
+      <TextField
+        type="email"
+        name="email"
+        isRequired
+        defaultValue={prefillEmail}
+        className="flex flex-col gap-1"
+      >
         <Label>E-Mail</Label>
         <Input placeholder="deine@email.de" autoComplete="email" />
         <FieldError>
@@ -62,8 +73,12 @@ export function LoginForm() {
           }
         </FieldError>
       </TextField>
-      {verifyState?.fatal && <p className="text-subtle text-sm">{verifyState.error}</p>}
-      {requestState?.success === false && <p className="text-subtle text-sm">{requestState.error}</p>}
+      {verifyState?.fatal && requestState?.success !== false && (
+        <p className="text-subtle text-sm">{verifyState.error}</p>
+      )}
+      {requestState?.success === false && (
+        <p className="text-subtle text-sm">{requestState.error}</p>
+      )}
       <Button type="submit" isDisabled={requestPending}>
         Code anfordern
       </Button>

@@ -7,7 +7,7 @@ import { createSession } from "./session";
 import { createTotpCode, verifyTotpCode } from "./totp";
 import { getUserByEmail } from "./users";
 
-type RequestCodeState = { success: true; email: string } | { success: false; error: string } | null;
+type RequestCodeState = { success: true; email: string } | { success: false; email: string; error: string } | null;
 
 type VerifyCodeState = { error: string; fatal?: boolean } | null;
 
@@ -20,7 +20,7 @@ export async function requestCode(
   const user = await getUserByEmail(email);
 
   if (!user) {
-    return { success: false, error: "Keine Zugangsberechtigung für diese E-Mail-Adresse." };
+    return { success: false, email, error: "Unbekannte E-Mail Adresse. Frag Micha!" };
   }
 
   const code = await createTotpCode(user.id);
@@ -30,6 +30,7 @@ export async function requestCode(
   } catch {
     return {
       success: false,
+      email,
       error: "E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
     };
   }
