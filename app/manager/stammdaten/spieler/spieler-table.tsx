@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/(ui)/button";
 import { Dialog } from "@/components/(ui)/dialog";
@@ -32,10 +32,6 @@ export function SpielerTable({ spieler }: Props) {
     setEditTarget(s);
     setIsOpen(true);
   }
-
-  const handleSuccess = useCallback(() => {
-    setIsOpen(false);
-  }, []);
 
   return (
     <>
@@ -89,7 +85,6 @@ export function SpielerTable({ spieler }: Props) {
         <SpielerForm
           key={editTarget?.id ?? "new"}
           spieler={editTarget}
-          onSuccess={handleSuccess}
         />
       </Dialog>
     </>

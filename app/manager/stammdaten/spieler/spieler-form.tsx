@@ -1,6 +1,8 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useContext, useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { OverlayTriggerStateContext } from "react-aria-components";
 import { Button } from "@/components/(ui)/button";
 import { Form } from "@/components/(ui)/form";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field";
@@ -27,23 +29,28 @@ function slugify(value: string): string {
 
 interface Props {
   spieler?: Spieler;
-  onSuccess: () => void;
 }
 
-export function SpielerForm({ spieler, onSuccess }: Props) {
+export function SpielerForm({ spieler }: Props) {
   const action = spieler ? updateSpieler : createSpieler;
   const [state, formAction, pending] = useActionState<SpielerFormState, FormData>(
     action,
     null,
   );
 
+  const router = useRouter();
+  const dialog = useContext(OverlayTriggerStateContext);
+
   const [name, setName] = useState(spieler?.name ?? "");
   const [slug, setSlug] = useState(spieler?.slug ?? "");
   const [slugDirty, setSlugDirty] = useState(false);
 
   useEffect(() => {
-    if (state && "success" in state) onSuccess();
-  }, [state, onSuccess]);
+    if (state && "success" in state) {
+      router.refresh();
+      dialog?.close();
+    }
+  }, [state, router, dialog]);
 
   function handleNameChange(value: string) {
     setName(value);
