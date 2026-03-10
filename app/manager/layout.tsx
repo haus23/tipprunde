@@ -2,7 +2,7 @@ import type React from "react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { PilcrowIcon, UsersIcon } from "lucide-react";
+import { FoldersIcon, LayoutDashboardIcon, PilcrowIcon, UsersIcon } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { getSession } from "@/lib/auth/session";
 
@@ -27,6 +27,13 @@ export default async function ManagerLayout({ children }: { children: React.Reac
           </Link>
         </div>
         <nav className="flex-1 p-4">
+          <Link
+            href="/manager"
+            className="hover:bg-subtle mb-3 flex items-center gap-2 rounded-md px-2 py-1.5 text-sm"
+          >
+            <LayoutDashboardIcon size={14} />
+            Dashboard
+          </Link>
           <p className="text-subtle mb-1 px-2 text-xs font-semibold tracking-wider uppercase">
             Stammdaten
           </p>
