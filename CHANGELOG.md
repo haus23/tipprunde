@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.3.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.0...v0.3.0-pre.1)
+
+### 🚀 Enhancements
+
+- Add turniere page to shared data section. ([0e178d7](https://github.com/haus23/tipprunde/commit/0e178d7))
+- Add colors for dashboard action cards. Add dashboard link to layout. ([960fca0](https://github.com/haus23/tipprunde/commit/960fca0))
+- Add page to create championships. ([4a6c867](https://github.com/haus23/tipprunde/commit/4a6c867))
+
+### 🩹 Fixes
+
+- Remove unconditional hidden input for id when creating rulesets. ([d806eb4](https://github.com/haus23/tipprunde/commit/d806eb4))
+
+### 🏡 Chore
+
+- Create championships table. ([67e320f](https://github.com/haus23/tipprunde/commit/67e320f))
+
 ## v0.3.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0...v0.3.0-pre.0)
