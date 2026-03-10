@@ -14,9 +14,10 @@ import { Logo } from "@/components/logo";
 
 interface Props {
   currentSlug?: string;
+  currentName?: string;
 }
 
-export function Sidebar({ currentSlug }: Props) {
+export function Sidebar({ currentSlug, currentName }: Props) {
   return (
     <aside className="border-input fixed inset-y-0 left-0 hidden w-52 flex-col overflow-y-auto border-r md:flex">
       <div className="border-input flex h-14 shrink-0 items-center border-b px-4">
@@ -26,6 +27,9 @@ export function Sidebar({ currentSlug }: Props) {
           </span>
           <span className="text-lg font-medium">runde.tips</span>
         </Link>
+      </div>
+      <div className="border-input flex h-10 shrink-0 items-center border-b px-4">
+        <span className="text-subtle truncate text-sm">{currentName ?? "Manager"}</span>
       </div>
       <nav className="flex flex-1 flex-col p-4">
         {currentSlug && (

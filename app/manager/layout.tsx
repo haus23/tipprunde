@@ -1,6 +1,7 @@
 import type React from "react";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth/session";
 import { CURRENT_CHAMPIONSHIP_COOKIE } from "@/proxy";
 import { Sidebar } from "./sidebar";
@@ -18,9 +19,13 @@ export default async function ManagerLayout({ children }: { children: React.Reac
   const cookieStore = await cookies();
   const currentSlug = cookieStore.get(CURRENT_CHAMPIONSHIP_COOKIE)?.value;
 
+  const currentChampionship = currentSlug
+    ? await db.query.championships.findFirst({ where: { slug: currentSlug } })
+    : null;
+
   return (
     <div className="flex min-h-svh">
-      <Sidebar currentSlug={currentSlug} />
+      <Sidebar currentSlug={currentSlug} currentName={currentChampionship?.name} />
       <main className="flex-1 py-3 sm:px-6 md:ml-52">{children}</main>
     </div>
   );
