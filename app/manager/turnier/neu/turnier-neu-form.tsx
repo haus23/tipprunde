@@ -1,0 +1,112 @@
+"use client";
+
+import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/(ui)/button";
+import { Form } from "@/components/(ui)/form";
+import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field";
+import { Select, SelectItem } from "@/components/(ui)/select";
+import { createTurnier, type TurnierFormState } from "@/app/manager/stammdaten/turniere/actions";
+import type { rulesets } from "@/lib/db/schema";
+
+type Ruleset = typeof rulesets.$inferSelect;
+
+interface Props {
+  regelwerke: Ruleset[];
+}
+
+function deriveSlug(name: string): string {
+  const match = name.match(/^([HRWE]).*(\d{2})\/?(\d{2})$/i);
+  if (!match) return "";
+  const first = match[1].toLowerCase();
+  const second = "HR".includes(match[1].toUpperCase()) ? "r" : "m";
+  return first + second + match[2] + match[3];
+}
+
+export function TurnierNeuForm({ regelwerke }: Props) {
+  const [state, formAction, pending] = useActionState<TurnierFormState, FormData>(
+    createTurnier,
+    null,
+  );
+
+  const router = useRouter();
+
+  const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
+  const [slugDirty, setSlugDirty] = useState(false);
+
+  useEffect(() => {
+    if (state && "success" in state) {
+      router.push("/manager/stammdaten/turniere");
+    }
+  }, [state, router]);
+
+  function handleNameBlur() {
+    if (!slugDirty) {
+      const derived = deriveSlug(name);
+      if (derived) setSlug(derived);
+    }
+  }
+
+  function handleSlugChange(value: string) {
+    setSlug(value);
+    setSlugDirty(true);
+  }
+
+  return (
+    <Form action={formAction} className="flex flex-col gap-4">
+      <TextField
+        name="name"
+        isRequired
+        value={name}
+        onChange={setName}
+        onBlur={handleNameBlur}
+        className="flex flex-col gap-1"
+      >
+        <Label>Name</Label>
+        <Input />
+        <FieldError>Pflichtfeld.</FieldError>
+      </TextField>
+
+      <TextField
+        name="slug"
+        isRequired
+        value={slug}
+        onChange={handleSlugChange}
+        className="flex flex-col gap-1"
+      >
+        <Label>Kürzel</Label>
+        <Input />
+        <FieldError>Pflichtfeld.</FieldError>
+      </TextField>
+
+      <TextField name="nr" isRequired className="flex flex-col gap-1">
+        <Label>Nummer</Label>
+        <Input type="number" />
+        <FieldError>Pflichtfeld.</FieldError>
+      </TextField>
+
+      <Select
+        label="Regelwerk"
+        name="rulesetId"
+        defaultValue={regelwerke[0]?.id}
+      >
+        {regelwerke.map((r) => (
+          <SelectItem key={r.id} id={r.id}>
+            {r.name}
+          </SelectItem>
+        ))}
+      </Select>
+
+      {state && "error" in state && (
+        <p className="text-error text-sm">{state.error}</p>
+      )}
+
+      <div className="flex justify-end">
+        <Button type="submit" isDisabled={pending}>
+          Anlegen
+        </Button>
+      </div>
+    </Form>
+  );
+}

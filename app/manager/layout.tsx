@@ -31,6 +31,13 @@ export default async function ManagerLayout({ children }: { children: React.Reac
             Stammdaten
           </p>
           <Link
+            href="/manager/stammdaten/turniere"
+            className="hover:bg-subtle flex items-center gap-2 rounded-md px-2 py-1.5 text-sm"
+          >
+            <FoldersIcon size={14} />
+            Turniere
+          </Link>
+          <Link
             href="/manager/stammdaten/spieler"
             className="hover:bg-subtle flex items-center gap-2 rounded-md px-2 py-1.5 text-sm"
           >
