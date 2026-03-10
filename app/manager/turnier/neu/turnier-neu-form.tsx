@@ -13,6 +13,7 @@ type Ruleset = typeof rulesets.$inferSelect;
 
 interface Props {
   regelwerke: Ruleset[];
+  nextNr: number;
 }
 
 function deriveSlug(name: string): string {
@@ -23,7 +24,7 @@ function deriveSlug(name: string): string {
   return first + second + match[2] + match[3];
 }
 
-export function TurnierNeuForm({ regelwerke }: Props) {
+export function TurnierNeuForm({ regelwerke, nextNr }: Props) {
   const [state, formAction, pending] = useActionState<TurnierFormState, FormData>(
     createTurnier,
     null,
@@ -80,7 +81,7 @@ export function TurnierNeuForm({ regelwerke }: Props) {
         <FieldError>Pflichtfeld.</FieldError>
       </TextField>
 
-      <TextField name="nr" isRequired className="flex flex-col gap-1">
+      <TextField name="nr" isRequired defaultValue={String(nextNr)} className="flex flex-col gap-1">
         <Label>Nummer</Label>
         <Input type="number" />
         <FieldError>Pflichtfeld.</FieldError>
