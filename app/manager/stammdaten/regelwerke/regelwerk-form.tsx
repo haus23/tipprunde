@@ -64,7 +64,7 @@ export function RegelwerkForm({ regelwerk }: Props) {
 
   return (
     <Form action={formAction} className="flex flex-col gap-4">
-      <input type="hidden" name="id" value={regelwerk?.id ?? ""} />
+      {regelwerk && <input type="hidden" name="id" value={regelwerk.id} />}
 
       {!regelwerk && (
         <TextField name="id" isRequired className="flex flex-col gap-1">
