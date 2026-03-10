@@ -46,3 +46,18 @@ export const rulesets = sqliteTable("rulesets", {
   roundRuleId: text("round_rule_id").notNull(),
   extraQuestionRuleId: text("extra_question_rule_id").notNull(),
 });
+
+export const championships = sqliteTable("championships", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  nr: integer("nr").notNull().unique(),
+  rulesetId: text("ruleset_id")
+    .notNull()
+    .references(() => rulesets.id),
+  published: integer("published", { mode: "boolean" }).notNull().default(false),
+  completed: integer("completed", { mode: "boolean" }).notNull().default(false),
+  extraQuestionsPublished: integer("extra_questions_published", { mode: "boolean" })
+    .notNull()
+    .default(false),
+});
