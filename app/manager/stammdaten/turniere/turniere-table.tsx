@@ -1,5 +1,10 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/(ui)/button";
+import { Dialog } from "@/components/(ui)/dialog";
 import type { championships, rulesets } from "@/lib/db/schema";
+import { TurnierForm } from "./turnier-form";
 
 type Turnier = typeof championships.$inferSelect & {
   ruleset: typeof rulesets.$inferSelect | null;
@@ -7,19 +12,18 @@ type Turnier = typeof championships.$inferSelect & {
 
 interface Props {
   turniere: Turnier[];
+  regelwerke: typeof rulesets.$inferSelect[];
 }
 
-export function TurniereTable({ turniere }: Props) {
+export function TurniereTable({ turniere, regelwerke }: Props) {
+  const nextNr = (turniere[0]?.nr ?? 0) + 1;
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <div className="mb-6 flex items-center justify-between px-4 sm:px-0">
         <h1 className="text-2xl font-medium">Turniere</h1>
-        <Link
-          href="/manager/turnier/neu"
-          className="bg-btn text-btn data-hovered:bg-btn-hovered inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-        >
-          Neu anlegen
-        </Link>
+        <Button onPress={() => setIsOpen(true)}>Neu anlegen</Button>
       </div>
 
       <table className="w-full text-sm [border-spacing:0]">
@@ -48,6 +52,14 @@ export function TurniereTable({ turniere }: Props) {
           )}
         </tbody>
       </table>
+
+      <Dialog isOpen={isOpen} onOpenChange={setIsOpen} title="Neues Turnier anlegen">
+        <TurnierForm
+          key={isOpen ? "open" : "closed"}
+          regelwerke={regelwerke}
+          nextNr={nextNr}
+        />
+      </Dialog>
     </>
   );
 }

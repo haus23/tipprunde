@@ -1,12 +1,13 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useContext, useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { OverlayTriggerStateContext } from "react-aria-components";
 import { Button } from "@/components/(ui)/button";
 import { Form } from "@/components/(ui)/form";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field";
 import { Select, SelectItem } from "@/components/(ui)/select";
-import { createTurnier, type TurnierFormState } from "@/app/manager/stammdaten/turniere/actions";
+import { createTurnier, type TurnierFormState } from "./actions";
 import type { rulesets } from "@/lib/db/schema";
 
 type Ruleset = typeof rulesets.$inferSelect;
@@ -24,13 +25,14 @@ function deriveSlug(name: string): string {
   return first + second + match[2] + match[3];
 }
 
-export function TurnierNeuForm({ regelwerke, nextNr }: Props) {
+export function TurnierForm({ regelwerke, nextNr }: Props) {
   const [state, formAction, pending] = useActionState<TurnierFormState, FormData>(
     createTurnier,
     null,
   );
 
   const router = useRouter();
+  const dialog = useContext(OverlayTriggerStateContext);
 
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
@@ -38,9 +40,13 @@ export function TurnierNeuForm({ regelwerke, nextNr }: Props) {
 
   useEffect(() => {
     if (state && "success" in state) {
-      router.push("/manager/stammdaten/turniere");
+      if (dialog) {
+        dialog.close();
+      } else {
+        router.push(`/manager/${state.slug}`);
+      }
     }
-  }, [state, router]);
+  }, [state, router, dialog]);
 
   function handleNameBlur() {
     if (!slugDirty) {
@@ -87,11 +93,7 @@ export function TurnierNeuForm({ regelwerke, nextNr }: Props) {
         <FieldError>Pflichtfeld.</FieldError>
       </TextField>
 
-      <Select
-        label="Regelwerk"
-        name="rulesetId"
-        defaultValue={regelwerke[0]?.id}
-      >
+      <Select label="Regelwerk" name="rulesetId" defaultValue={regelwerke[0]?.id}>
         {regelwerke.map((r) => (
           <SelectItem key={r.id} id={r.id}>
             {r.name}
@@ -99,9 +101,7 @@ export function TurnierNeuForm({ regelwerke, nextNr }: Props) {
         ))}
       </Select>
 
-      {state && "error" in state && (
-        <p className="text-error text-sm">{state.error}</p>
-      )}
+      {state && "error" in state && <p className="text-error text-sm">{state.error}</p>}
 
       <div className="flex justify-end">
         <Button type="submit" isDisabled={pending}>

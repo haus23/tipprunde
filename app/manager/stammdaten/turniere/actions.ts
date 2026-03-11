@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { championships } from "@/lib/db/schema";
 
-export type TurnierFormState = { success: true } | { error: string } | null;
+export type TurnierFormState = { success: true; slug: string } | { error: string } | null;
 
 export async function createTurnier(
   _prev: TurnierFormState,
@@ -22,5 +22,5 @@ export async function createTurnier(
   }
 
   revalidatePath("/manager/stammdaten/turniere");
-  return { success: true };
+  return { success: true, slug };
 }
