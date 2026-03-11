@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { TurnierForm } from "@/app/manager/stammdaten/turniere/turnier-form";
+
+export const metadata: Metadata = { title: "Neues Turnier" };
 
 export default async function NeuTurnierPage() {
   const [regelwerke, latest] = await Promise.all([

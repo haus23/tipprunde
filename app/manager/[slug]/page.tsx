@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import type { LucideIcon } from "lucide-react";
+
+export const metadata: Metadata = { title: "Dashboard" };
 import { FolderPlusIcon } from "lucide-react";
 import Link from "next/link";
 

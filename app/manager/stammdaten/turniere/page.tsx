@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { TurniereTable } from "./turniere-table";
+
+export const metadata: Metadata = { title: "Turniere" };
 
 export default async function TurnierePage() {
   const [turniere, regelwerke] = await Promise.all([

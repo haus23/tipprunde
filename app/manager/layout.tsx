@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import type React from "react";
+
+export const metadata: Metadata = {
+  title: { template: "%s | Manager", default: "Manager" },
+};
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";

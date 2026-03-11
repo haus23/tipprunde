@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { SpielerTable } from "./spieler-table";
+
+export const metadata: Metadata = { title: "Spieler" };
 
 export default async function Page() {
   const spieler = await db.query.users.findMany({
