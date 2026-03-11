@@ -1,3 +1,4 @@
+export const SESSION_SECRET = String(process.env.SESSION_SECRET);
 export const SESSION_DURATION_DEFAULT = Number(process.env.SESSION_DURATION_DEFAULT);
 export const SESSION_DURATION_REMEMBER = Number(process.env.SESSION_DURATION_REMEMBER);
 
