@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { Logo } from "@/components/logo";
 import Link from "next/link";
+
+export const metadata: Metadata = { title: "runde.tips" };
 
 export default function Page() {
   return (
