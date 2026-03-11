@@ -33,12 +33,18 @@ export function Sidebar({ currentSlug, currentName, championships }: Props) {
           <span className="text-lg font-medium">runde.tips</span>
         </Link>
       </div>
-      <div className="border-input shrink-0 border-b px-2 py-1">
-        <ChampionshipSwitcher currentName={currentName} championships={championships} />
-      </div>
-      <nav className="flex flex-1 flex-col p-4">
+      <nav className="flex flex-1 flex-col p-4 pt-0">
         {currentSlug && (
           <>
+            {championships.length > 1 ? (
+              <div className="border-input -mx-4 mb-2 border-b px-2 py-1">
+                <ChampionshipSwitcher currentName={currentName} championships={championships} />
+              </div>
+            ) : (
+              <span className="text-subtle border-input -mx-4 mb-2 truncate border-b px-4 py-2 text-sm">
+                {currentName}
+              </span>
+            )}
             <Link
               href={`/manager/${currentSlug}`}
               className="hover:bg-subtle flex items-center gap-2 rounded-md px-2 py-1.5 text-sm"
