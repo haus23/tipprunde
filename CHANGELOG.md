@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.3.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.1...v0.3.0-pre.2)
+
+### 🚀 Enhancements
+
+- Add manager dashboard with slug-based championship context ([b9afd71](https://github.com/haus23/tipprunde/commit/b9afd71))
+- Prefill tournament number with next available nr ([367ba19](https://github.com/haus23/tipprunde/commit/367ba19))
+- Show current championship name in sidebar ([c9d5fc7](https://github.com/haus23/tipprunde/commit/c9d5fc7))
+- Implement championship switching via button in the sidebar and command. ([d8c4a7c](https://github.com/haus23/tipprunde/commit/d8c4a7c))
+
+### 🏡 Chore
+
+- Add championship migration. ([d5891a4](https://github.com/haus23/tipprunde/commit/d5891a4))
+- Add cmdk dependency. ([f1dd956](https://github.com/haus23/tipprunde/commit/f1dd956))
+
 ## v0.3.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.0...v0.3.0-pre.1)
