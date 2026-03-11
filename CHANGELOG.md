@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.3.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.2...v0.3.0)
+
+### 🚀 Enhancements
+
+- Set document titles across all manager pages ([30f6a11](https://github.com/haus23/tipprunde/commit/30f6a11))
+- Set document titles for landing and login pages ([8b183c8](https://github.com/haus23/tipprunde/commit/8b183c8))
+
+### 🩹 Fixes
+
+- Navigate to championship turnier page after creation ([9af3d94](https://github.com/haus23/tipprunde/commit/9af3d94))
+
+### 💅 Refactors
+
+- Render the switcher only if necessary for championship switching. ([39b8fb0](https://github.com/haus23/tipprunde/commit/39b8fb0))
+- Move turnier form to stammdaten, open in modal from table ([dbb077b](https://github.com/haus23/tipprunde/commit/dbb077b))
+
+### 🎨 Styles
+
+- Wrap new turnier form in a card layout ([2528e8d](https://github.com/haus23/tipprunde/commit/2528e8d))
+
 ## v0.3.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.1...v0.3.0-pre.2)
