@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ManagerRouteImport } from './routes/manager'
+import { Route as FrontRouteImport } from './routes/_front'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ManagerIndexRouteImport } from './routes/manager/index'
+import { Route as FrontauthLoginRouteImport } from './routes/_front/(auth)/login'
 
 const ManagerRoute = ManagerRouteImport.update({
   id: '/manager',
   path: '/manager',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrontRoute = FrontRouteImport.update({
+  id: '/_front',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -28,32 +34,48 @@ const ManagerIndexRoute = ManagerIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ManagerRoute,
 } as any)
+const FrontauthLoginRoute = FrontauthLoginRouteImport.update({
+  id: '/(auth)/login',
+  path: '/login',
+  getParentRoute: () => FrontRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/manager': typeof ManagerRouteWithChildren
   '/manager/': typeof ManagerIndexRoute
+  '/login': typeof FrontauthLoginRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/manager': typeof ManagerIndexRoute
+  '/login': typeof FrontauthLoginRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_front': typeof FrontRouteWithChildren
   '/manager': typeof ManagerRouteWithChildren
   '/manager/': typeof ManagerIndexRoute
+  '/_front/(auth)/login': typeof FrontauthLoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/manager' | '/manager/'
+  fullPaths: '/' | '/manager' | '/manager/' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/manager'
-  id: '__root__' | '/' | '/manager' | '/manager/'
+  to: '/' | '/manager' | '/login'
+  id:
+    | '__root__'
+    | '/'
+    | '/_front'
+    | '/manager'
+    | '/manager/'
+    | '/_front/(auth)/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FrontRoute: typeof FrontRouteWithChildren
   ManagerRoute: typeof ManagerRouteWithChildren
 }
 
@@ -64,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/manager'
       fullPath: '/manager'
       preLoaderRoute: typeof ManagerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_front': {
+      id: '/_front'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof FrontRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -80,8 +109,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManagerIndexRouteImport
       parentRoute: typeof ManagerRoute
     }
+    '/_front/(auth)/login': {
+      id: '/_front/(auth)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof FrontauthLoginRouteImport
+      parentRoute: typeof FrontRoute
+    }
   }
 }
+
+interface FrontRouteChildren {
+  FrontauthLoginRoute: typeof FrontauthLoginRoute
+}
+
+const FrontRouteChildren: FrontRouteChildren = {
+  FrontauthLoginRoute: FrontauthLoginRoute,
+}
+
+const FrontRouteWithChildren = FrontRoute._addFileChildren(FrontRouteChildren)
 
 interface ManagerRouteChildren {
   ManagerIndexRoute: typeof ManagerIndexRoute
@@ -96,6 +142,7 @@ const ManagerRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FrontRoute: FrontRouteWithChildren,
   ManagerRoute: ManagerRouteWithChildren,
 }
 export const routeTree = rootRouteImport
