@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
 function LandingPage() {
   return (
     <main className="relative grid min-h-svh place-items-center">
-      <Link className="text-subtle absolute top-4 right-4 hover:text-base" to="/">
+      <Link className="text-subtle absolute top-4 right-4 hover:text-base" to="/manager">
         Manager
       </Link>
       <div className="flex flex-col items-center landscape:flex-row">
