@@ -1,7 +1,15 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
 import { Logo } from "@/components/logo.tsx";
 
 export const Route = createFileRoute("/manager")({
+  beforeLoad: ({ context }) => {
+    const session = context.session;
+    if (!session || (session.role !== "manager" && session.role !== "admin")) {
+      throw redirect({
+        to: "/login",
+      });
+    }
+  },
   component: ManagerLayout,
 });
 

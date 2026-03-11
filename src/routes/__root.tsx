@@ -1,6 +1,7 @@
 import type React from "react";
 
 import { Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { fetchSession } from "@/utils/auth/functions.ts";
 
 import rootCss from "../styles/root.css?url";
 
@@ -17,6 +18,10 @@ export const Route = createRootRoute({
     ],
     links: [{ rel: "stylesheet", href: rootCss }],
   }),
+  beforeLoad: async () => {
+    const session = await fetchSession();
+    return { session };
+  },
   component: RootComponent,
 });
 
