@@ -1,43 +1,31 @@
 {
   "compilerOptions": {
     // App
-    "target": "ES2024",
-    "lib": ["DOM", "DOM.Iterable", "ES2024"],
     "jsx": "react-jsx",
-    "allowJs": false,
+    "target": "ES2024",
+    "types": ["vite/client"],
 
     // Strictness
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
 
     // Typechecking
     "noEmit": true,
-    "incremental": true,
     "skipLibCheck": true,
 
     // Bundler
     "module": "Preserve",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
     "isolatedModules": true,
-
-    // Next.js
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
 
     // DX
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     }
-  },
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": ["node_modules"]
+  }
 }
