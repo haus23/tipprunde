@@ -19,13 +19,20 @@ export default async function ManagerLayout({ children }: { children: React.Reac
   const cookieStore = await cookies();
   const currentSlug = cookieStore.get(CURRENT_CHAMPIONSHIP_COOKIE)?.value;
 
-  const currentChampionship = currentSlug
-    ? await db.query.championships.findFirst({ where: { slug: currentSlug } })
-    : null;
+  const [currentChampionship, championships] = await Promise.all([
+    currentSlug
+      ? db.query.championships.findFirst({ where: { slug: currentSlug } })
+      : null,
+    db.query.championships.findMany({ orderBy: { nr: "desc" } }),
+  ]);
 
   return (
     <div className="flex min-h-svh">
-      <Sidebar currentSlug={currentSlug} currentName={currentChampionship?.name} />
+      <Sidebar
+        currentSlug={currentSlug}
+        currentName={currentChampionship?.name}
+        championships={championships}
+      />
       <main className="flex-1 py-3 sm:px-6 md:ml-52">{children}</main>
     </div>
   );

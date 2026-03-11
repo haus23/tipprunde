@@ -11,13 +11,18 @@ import {
   UsersIcon,
 } from "lucide-react";
 import { Logo } from "@/components/logo";
+import { ChampionshipSwitcher } from "./championship-switcher";
+import type { championships } from "@/lib/db/schema";
+
+type Championship = typeof championships.$inferSelect;
 
 interface Props {
   currentSlug?: string;
   currentName?: string;
+  championships: Championship[];
 }
 
-export function Sidebar({ currentSlug, currentName }: Props) {
+export function Sidebar({ currentSlug, currentName, championships }: Props) {
   return (
     <aside className="border-input fixed inset-y-0 left-0 hidden w-52 flex-col overflow-y-auto border-r md:flex">
       <div className="border-input flex h-14 shrink-0 items-center border-b px-4">
@@ -28,8 +33,8 @@ export function Sidebar({ currentSlug, currentName }: Props) {
           <span className="text-lg font-medium">runde.tips</span>
         </Link>
       </div>
-      <div className="border-input flex h-10 shrink-0 items-center border-b px-4">
-        <span className="text-subtle truncate text-sm">{currentName ?? "Manager"}</span>
+      <div className="border-input shrink-0 border-b px-2 py-1">
+        <ChampionshipSwitcher currentName={currentName} championships={championships} />
       </div>
       <nav className="flex flex-1 flex-col p-4">
         {currentSlug && (
