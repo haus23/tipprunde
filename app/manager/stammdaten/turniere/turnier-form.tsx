@@ -43,7 +43,7 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
       if (dialog) {
         dialog.close();
       } else {
-        router.push(`/manager/${state.slug}`);
+        router.push(`/manager/${state.slug}/turnier`);
       }
     }
   }, [state, router, dialog]);
