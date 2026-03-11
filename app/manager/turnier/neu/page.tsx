@@ -12,7 +12,7 @@ export default async function NeuTurnierPage() {
   return (
     <div className="px-4 sm:px-0">
       <h1 className="mb-6 text-2xl font-medium">Neues Turnier</h1>
-      <div className="max-w-md">
+      <div className="border-input bg-base max-w-md rounded-xl border p-6 shadow-sm">
         <TurnierForm regelwerke={regelwerke} nextNr={nextNr} />
       </div>
     </div>
