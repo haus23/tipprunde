@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { sessions, totpCodes } from "@/lib/db/schema.ts";
 import { eq } from "drizzle-orm";
 import {
+  APP_SECRET,
   FROM_EMAIL,
   RESEND_API_KEY,
   SESSION_DURATION_DEFAULT,
@@ -37,7 +38,7 @@ async function hashCode(code: string): Promise<string> {
   const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
     "raw",
-    encoder.encode(process.env.APP_SECRET!),
+    encoder.encode(APP_SECRET),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"],
