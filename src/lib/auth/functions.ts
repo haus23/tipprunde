@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { useAppSession } from "@/utils/auth/session.ts";
+import { useAppSession } from "@/lib/auth/session.ts";
 
 export const fetchSession = createServerFn({ method: "GET" }).handler(async () => {
   const session = await useAppSession();

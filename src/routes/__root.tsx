@@ -1,7 +1,7 @@
 import type React from "react";
 
 import { Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-import { fetchSession } from "@/utils/auth/functions.ts";
+import { fetchSession } from "@/lib/auth/functions.ts";
 
 import rootCss from "../styles/root.css?url";
 
