@@ -1,14 +1,13 @@
-"use client";
-
-import { useContext, useActionState, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { useRouter } from "@tanstack/react-router";
 import { OverlayTriggerStateContext } from "react-aria-components";
-import { Button } from "@/components/(ui)/button";
-import { Form } from "@/components/(ui)/form";
-import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field";
-import { Select, SelectItem } from "@/components/(ui)/select";
-import { createSpieler, updateSpieler, type SpielerFormState } from "./actions";
-import type { users } from "@/lib/db/schema";
+import { Button } from "@/components/(ui)/button.tsx";
+import { Form } from "@/components/(ui)/form.tsx";
+import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
+import { Select, SelectItem } from "@/components/(ui)/select.tsx";
+import { useServerAction } from "@/lib/hooks/server-action.ts";
+import { createSpieler, updateSpieler } from "@/lib/players.ts";
+import type { users } from "@/lib/db/schema.ts";
 
 type Spieler = typeof users.$inferSelect;
 
@@ -33,11 +32,8 @@ interface Props {
 }
 
 export function SpielerForm({ spieler }: Props) {
-  const action = spieler ? updateSpieler : createSpieler;
-  const [state, formAction, pending] = useActionState<SpielerFormState, FormData>(
-    action,
-    null,
-  );
+  const serverAction = spieler ? updateSpieler : createSpieler;
+  const [state, formAction, pending] = useServerAction(serverAction);
 
   const router = useRouter();
   const dialog = useContext(OverlayTriggerStateContext);
@@ -48,7 +44,7 @@ export function SpielerForm({ spieler }: Props) {
 
   useEffect(() => {
     if (state && "success" in state) {
-      router.refresh();
+      router.invalidate();
       dialog?.close();
     }
   }, [state, router, dialog]);
@@ -104,7 +100,7 @@ export function SpielerForm({ spieler }: Props) {
         <FieldError>Bitte eine gültige E-Mail-Adresse eingeben.</FieldError>
       </TextField>
 
-      <Select label="Rolle" name="role" defaultSelectedKey={spieler?.role ?? "user"}>
+      <Select label="Rolle" name="role" defaultValue={spieler?.role ?? "user"}>
         {ROLES.map(({ value, label }) => (
           <SelectItem key={value} id={value}>
             {label}
@@ -112,9 +108,7 @@ export function SpielerForm({ spieler }: Props) {
         ))}
       </Select>
 
-      {state && "error" in state && (
-        <p className="text-error text-sm">{state.error}</p>
-      )}
+      {state && "error" in state && <p className="text-error text-sm">{state.error}</p>}
 
       <div className="flex justify-end">
         <Button type="submit" isDisabled={pending}>

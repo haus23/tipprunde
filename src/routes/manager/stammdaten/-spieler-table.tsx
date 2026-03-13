@@ -1,13 +1,11 @@
-"use client";
-
 import { useState } from "react";
 import { PencilIcon } from "lucide-react";
-import { Button } from "@/components/(ui)/button";
-import { Dialog } from "@/components/(ui)/dialog";
-import type { users } from "@/lib/db/schema";
-import { SpielerForm } from "./spieler-form";
+import { Button } from "@/components/(ui)/button.tsx";
+import { Dialog } from "@/components/(ui)/dialog.tsx";
+import type { users } from "@/lib/db/schema.ts";
+import { SpielerForm } from "./-spieler-form.tsx";
 
-const ROLE_LABELS: Record<(typeof users.$inferSelect)["role"], string> = {
+const ROLE_LABELS: Record<typeof users.$inferSelect["role"], string> = {
   user: "Spieler",
   manager: "Manager",
   admin: "Admin",
@@ -67,7 +65,12 @@ export function SpielerTable({ spieler }: Props) {
                 <td className="hidden px-2 py-2 sm:table-cell">{s.email ?? "—"}</td>
                 <td className="px-2 py-2">{ROLE_LABELS[s.role]}</td>
                 <td className="py-2 pl-2 pr-4 text-right">
-                  <Button variant="secondary" size="icon" onPress={() => openEdit(s)} aria-label="Bearbeiten">
+                  <Button
+                    variant="secondary"
+                    size="icon"
+                    onPress={() => openEdit(s)}
+                    aria-label="Bearbeiten"
+                  >
                     <PencilIcon size={14} />
                   </Button>
                 </td>
@@ -82,10 +85,7 @@ export function SpielerTable({ spieler }: Props) {
         onOpenChange={setIsOpen}
         title={editTarget ? "Spieler bearbeiten" : "Neuen Spieler anlegen"}
       >
-        <SpielerForm
-          key={editTarget?.id ?? "new"}
-          spieler={editTarget}
-        />
+        <SpielerForm key={editTarget?.id ?? "new"} spieler={editTarget} />
       </Dialog>
     </>
   );
