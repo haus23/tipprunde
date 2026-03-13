@@ -1,11 +1,10 @@
-import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { Logo } from "@/components/logo.tsx";
 import { requireManager } from "@/lib/auth/functions.ts";
 
 export const Route = createFileRoute("/manager")({
   beforeLoad: async () => {
     const user = await requireManager();
-    if (!user) throw redirect({ to: "/login" });
     return { user };
   },
   component: ManagerLayout,

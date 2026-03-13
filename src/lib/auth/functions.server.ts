@@ -162,3 +162,21 @@ export const getDbSession = createServerOnlyFn(async (sessionId: string) => {
 export const deleteDbSessionById = createServerOnlyFn(async (sessionId: string) => {
   await db.delete(sessions).where(eq(sessions.id, sessionId));
 });
+
+export const getSessionUser = createServerOnlyFn(async (sessionId?: string) => {
+  if (!sessionId) return null;
+
+  const session = await db.query.sessions.findFirst({
+    where: { id: sessionId },
+    with: { user: true },
+  });
+
+  if (!session) return null;
+  if (session.expiresAt < new Date().toISOString()) {
+    const session = await useAppSession();
+    await session.clear();
+    return null;
+  }
+
+  return session.user;
+});
