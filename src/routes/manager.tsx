@@ -1,14 +1,12 @@
 import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
 import { Logo } from "@/components/logo.tsx";
+import { requireManager } from "@/lib/auth/functions.ts";
 
 export const Route = createFileRoute("/manager")({
-  beforeLoad: ({ context }) => {
-    const session = context.session;
-    if (!session || (session.role !== "manager" && session.role !== "admin")) {
-      throw redirect({
-        to: "/login",
-      });
-    }
+  beforeLoad: async () => {
+    const user = await requireManager();
+    if (!user) throw redirect({ to: "/login" });
+    return { user };
   },
   component: ManagerLayout,
 });
