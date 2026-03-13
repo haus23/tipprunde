@@ -1,5 +1,33 @@
 # Changelog
 
+## v0.4.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0...v0.4.0-pre.0)
+
+### 🚀 Enhancements
+
+- Add (empty) manager dashboard page. ([4eaf3bd](https://github.com/haus23/tipprunde/commit/4eaf3bd))
+- Add initial login form. ([4c15304](https://github.com/haus23/tipprunde/commit/4c15304))
+- Protect manager routes ([cb76317](https://github.com/haus23/tipprunde/commit/cb76317))
+- Validate manager session against DB on protected routes ([9218b2b](https://github.com/haus23/tipprunde/commit/9218b2b))
+
+### 💅 Refactors
+
+- Create Tanstack Start app with landing page. ([eb0f3d2](https://github.com/haus23/tipprunde/commit/eb0f3d2))
+- Move ui components to Tanstack app. ([7896968](https://github.com/haus23/tipprunde/commit/7896968))
+- Move db/drizzle schema to src/lib/db/ ([ae712b6](https://github.com/haus23/tipprunde/commit/ae712b6))
+- Move simplified auth config to new src. ([895bfc9](https://github.com/haus23/tipprunde/commit/895bfc9))
+- Implement the auth flow with tanstack. ([f3b9535](https://github.com/haus23/tipprunde/commit/f3b9535))
+- Update auth config. ([8517f06](https://github.com/haus23/tipprunde/commit/8517f06))
+
+### 🏡 Chore
+
+- Update @tanstack/react-start version ([d3d5145](https://github.com/haus23/tipprunde/commit/d3d5145))
+- Update dev dependencies. ([cc21791](https://github.com/haus23/tipprunde/commit/cc21791))
+- Upgrade to vite 8! ([647e38c](https://github.com/haus23/tipprunde/commit/647e38c))
+- Ignore build output. ([04d2fe2](https://github.com/haus23/tipprunde/commit/04d2fe2))
+- Add nitro plugin to use nitro server for production. ([2679c2f](https://github.com/haus23/tipprunde/commit/2679c2f))
+
 ## v0.3.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0-pre.2...v0.3.0)
