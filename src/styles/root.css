@@ -64,6 +64,12 @@
     color(display-p3 0.135 0.135 0.129)
   );
 
+  /* sand-4 / sand-4 — Surface card borders */
+  --border-color-surface: light-dark(
+    color(display-p3 0.913 0.912 0.903),
+    color(display-p3 0.164 0.163 0.156)
+  );
+
   /* sand-7 — Input border default */
   --border-color-input: light-dark(
     color(display-p3 0.813 0.81 0.794),
