@@ -1,4 +1,5 @@
 import { createFileRoute, Link, Outlet, useMatches } from "@tanstack/react-router";
+import { FoldersIcon, LayoutDashboardIcon, PilcrowIcon, UsersIcon } from "lucide-react";
 import { Logo } from "@/components/logo.tsx";
 import { requireManager } from "@/lib/auth/functions.ts";
 import { fetchCurrentChampionship } from "@/lib/championships.ts";
@@ -33,6 +34,47 @@ function ManagerLayout() {
             <span className="text-lg font-medium">runde.tips</span>
           </Link>
         </div>
+        <nav className="flex flex-1 flex-col p-2">
+          <Link
+            to="/manager"
+            activeOptions={{ exact: true }}
+            activeProps={{ className: "bg-subtle" }}
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium"
+          >
+            <LayoutDashboardIcon size={16} />
+            Dashboard
+          </Link>
+
+          <div className="mt-auto flex flex-col gap-1">
+            <div className="text-subtle px-3 py-1 text-xs font-medium tracking-wide uppercase">
+              Stammdaten
+            </div>
+            <Link
+              to="/manager/stammdaten/regelwerke"
+              activeProps={{ className: "bg-subtle" }}
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm"
+            >
+              <PilcrowIcon size={16} />
+              Regelwerke
+            </Link>
+            <Link
+              to="/manager/stammdaten/turniere"
+              activeProps={{ className: "bg-subtle" }}
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm"
+            >
+              <FoldersIcon size={16} />
+              Turniere
+            </Link>
+            <Link
+              to="/manager/stammdaten/spieler"
+              activeProps={{ className: "bg-subtle" }}
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm"
+            >
+              <UsersIcon size={16} />
+              Spieler
+            </Link>
+          </div>
+        </nav>
       </aside>
       <main className="flex-1 md:ml-52">
         <header className="border-layout fixed inset-x-0 top-0 flex h-14 items-center justify-center border-b md:left-52">
