@@ -1,18 +1,13 @@
-"use client";
-
-import { useContext, useActionState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useContext, useEffect } from "react";
+import { useRouter } from "@tanstack/react-router";
 import { OverlayTriggerStateContext } from "react-aria-components";
-import { Button } from "@/components/(ui)/button";
-import { Form } from "@/components/(ui)/form";
-import { FieldError, Input, Label, TextArea, TextField } from "@/components/(ui)/text-field";
-import { Select, SelectItem } from "@/components/(ui)/select";
-import {
-  createRegelwerk,
-  updateRegelwerk,
-  type RegelwerkFormState,
-} from "./actions";
-import type { rulesets } from "@/lib/db/schema";
+import { Button } from "@/components/(ui)/button.tsx";
+import { Form } from "@/components/(ui)/form.tsx";
+import { FieldError, Input, Label, TextArea, TextField } from "@/components/(ui)/text-field.tsx";
+import { Select, SelectItem } from "@/components/(ui)/select.tsx";
+import { useServerAction } from "@/lib/hooks/server-action.ts";
+import { createRegelwerk, updateRegelwerk } from "@/lib/rulesets.ts";
+import type { rulesets } from "@/lib/db/schema.ts";
 
 type Regelwerk = typeof rulesets.$inferSelect;
 
@@ -46,18 +41,15 @@ interface Props {
 }
 
 export function RegelwerkForm({ regelwerk }: Props) {
-  const action = regelwerk ? updateRegelwerk : createRegelwerk;
-  const [state, formAction, pending] = useActionState<RegelwerkFormState, FormData>(
-    action,
-    null,
-  );
+  const serverAction = regelwerk ? updateRegelwerk : createRegelwerk;
+  const [state, formAction, pending] = useServerAction(serverAction);
 
   const router = useRouter();
   const dialog = useContext(OverlayTriggerStateContext);
 
   useEffect(() => {
     if (state && "success" in state) {
-      router.refresh();
+      router.invalidate();
       dialog?.close();
     }
   }, [state, router, dialog]);

@@ -14,6 +14,7 @@ import { Route as FrontRouteImport } from './routes/_front'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ManagerIndexRouteImport } from './routes/manager/index'
 import { Route as ManagerStammdatenSpielerRouteImport } from './routes/manager/stammdaten/spieler'
+import { Route as ManagerStammdatenRegelwerkeRouteImport } from './routes/manager/stammdaten/regelwerke'
 import { Route as FrontauthLoginRouteImport } from './routes/_front/(auth)/login'
 
 const ManagerRoute = ManagerRouteImport.update({
@@ -41,6 +42,12 @@ const ManagerStammdatenSpielerRoute =
     path: '/stammdaten/spieler',
     getParentRoute: () => ManagerRoute,
   } as any)
+const ManagerStammdatenRegelwerkeRoute =
+  ManagerStammdatenRegelwerkeRouteImport.update({
+    id: '/stammdaten/regelwerke',
+    path: '/stammdaten/regelwerke',
+    getParentRoute: () => ManagerRoute,
+  } as any)
 const FrontauthLoginRoute = FrontauthLoginRouteImport.update({
   id: '/(auth)/login',
   path: '/login',
@@ -52,12 +59,14 @@ export interface FileRoutesByFullPath {
   '/manager': typeof ManagerRouteWithChildren
   '/manager/': typeof ManagerIndexRoute
   '/login': typeof FrontauthLoginRoute
+  '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
   '/manager/stammdaten/spieler': typeof ManagerStammdatenSpielerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/manager': typeof ManagerIndexRoute
   '/login': typeof FrontauthLoginRoute
+  '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
   '/manager/stammdaten/spieler': typeof ManagerStammdatenSpielerRoute
 }
 export interface FileRoutesById {
@@ -67,6 +76,7 @@ export interface FileRoutesById {
   '/manager': typeof ManagerRouteWithChildren
   '/manager/': typeof ManagerIndexRoute
   '/_front/(auth)/login': typeof FrontauthLoginRoute
+  '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
   '/manager/stammdaten/spieler': typeof ManagerStammdatenSpielerRoute
 }
 export interface FileRouteTypes {
@@ -76,9 +86,15 @@ export interface FileRouteTypes {
     | '/manager'
     | '/manager/'
     | '/login'
+    | '/manager/stammdaten/regelwerke'
     | '/manager/stammdaten/spieler'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/manager' | '/login' | '/manager/stammdaten/spieler'
+  to:
+    | '/'
+    | '/manager'
+    | '/login'
+    | '/manager/stammdaten/regelwerke'
+    | '/manager/stammdaten/spieler'
   id:
     | '__root__'
     | '/'
@@ -86,6 +102,7 @@ export interface FileRouteTypes {
     | '/manager'
     | '/manager/'
     | '/_front/(auth)/login'
+    | '/manager/stammdaten/regelwerke'
     | '/manager/stammdaten/spieler'
   fileRoutesById: FileRoutesById
 }
@@ -132,6 +149,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManagerStammdatenSpielerRouteImport
       parentRoute: typeof ManagerRoute
     }
+    '/manager/stammdaten/regelwerke': {
+      id: '/manager/stammdaten/regelwerke'
+      path: '/stammdaten/regelwerke'
+      fullPath: '/manager/stammdaten/regelwerke'
+      preLoaderRoute: typeof ManagerStammdatenRegelwerkeRouteImport
+      parentRoute: typeof ManagerRoute
+    }
     '/_front/(auth)/login': {
       id: '/_front/(auth)/login'
       path: '/login'
@@ -154,11 +178,13 @@ const FrontRouteWithChildren = FrontRoute._addFileChildren(FrontRouteChildren)
 
 interface ManagerRouteChildren {
   ManagerIndexRoute: typeof ManagerIndexRoute
+  ManagerStammdatenRegelwerkeRoute: typeof ManagerStammdatenRegelwerkeRoute
   ManagerStammdatenSpielerRoute: typeof ManagerStammdatenSpielerRoute
 }
 
 const ManagerRouteChildren: ManagerRouteChildren = {
   ManagerIndexRoute: ManagerIndexRoute,
+  ManagerStammdatenRegelwerkeRoute: ManagerStammdatenRegelwerkeRoute,
   ManagerStammdatenSpielerRoute: ManagerStammdatenSpielerRoute,
 }
 
