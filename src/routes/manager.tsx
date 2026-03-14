@@ -34,12 +34,12 @@ function ManagerLayout() {
             <span className="text-lg font-medium">runde.tips</span>
           </Link>
         </div>
-        <nav className="flex flex-1 flex-col p-2">
+        <nav className="flex flex-1 flex-col gap-1 p-2">
           <Link
             to="/manager"
             activeOptions={{ exact: true }}
             activeProps={{ className: "bg-subtle" }}
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium"
+            className="hover:bg-subtle flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium"
           >
             <LayoutDashboardIcon size={16} />
             Dashboard
@@ -50,7 +50,7 @@ function ManagerLayout() {
               to="/manager/$slug/turnier"
               params={{ slug: currentChampionship.slug }}
               activeProps={{ className: "bg-subtle" }}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm"
+              className="hover:bg-subtle flex items-center gap-2 rounded-md px-3 py-2 text-sm"
             >
               <TrophyIcon size={16} />
               Turnier
@@ -64,7 +64,7 @@ function ManagerLayout() {
             <Link
               to="/manager/stammdaten/regelwerke"
               activeProps={{ className: "bg-subtle" }}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm"
+              className="hover:bg-subtle flex items-center gap-2 rounded-md px-3 py-2 text-sm"
             >
               <PilcrowIcon size={16} />
               Regelwerke
@@ -72,7 +72,7 @@ function ManagerLayout() {
             <Link
               to="/manager/stammdaten/turniere"
               activeProps={{ className: "bg-subtle" }}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm"
+              className="hover:bg-subtle flex items-center gap-2 rounded-md px-3 py-2 text-sm"
             >
               <FoldersIcon size={16} />
               Turniere
@@ -80,7 +80,7 @@ function ManagerLayout() {
             <Link
               to="/manager/stammdaten/spieler"
               activeProps={{ className: "bg-subtle" }}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm"
+              className="hover:bg-subtle flex items-center gap-2 rounded-md px-3 py-2 text-sm"
             >
               <UsersIcon size={16} />
               Spieler
