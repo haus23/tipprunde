@@ -33,7 +33,8 @@ export function SpielerTable({ spieler }: Props) {
 
   return (
     <>
-      <div className="mb-6 flex items-center justify-between px-4 sm:px-0">
+      <div className="bg-surface rounded-xl p-6">
+      <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-medium">Spieler</h1>
         <Button onPress={openCreate}>Neu anlegen</Button>
       </div>
@@ -79,6 +80,8 @@ export function SpielerTable({ spieler }: Props) {
           )}
         </tbody>
       </table>
+
+      </div>
 
       <Dialog
         isOpen={isOpen}

@@ -23,8 +23,15 @@ function ManagerLayout() {
           </Link>
         </div>
       </aside>
-      <main className="flex-1 py-3 sm:px-6 md:ml-52">
-        <Outlet />
+      <main className="flex-1 md:ml-52">
+        <header className="border-layout fixed inset-x-0 top-0 flex h-14 items-center justify-center border-b md:left-52">
+          <span className="text-sm font-medium">{headerTitle}</span>
+        </header>
+        <div className="pt-14">
+          <div className="p-4 md:p-8">
+            <Outlet />
+          </div>
+        </div>
       </main>
     </div>
   );
