@@ -51,8 +51,11 @@ export function SpielerForm({ spieler }: Props) {
 
   function handleNameChange(value: string) {
     setName(value);
+  }
+
+  function handleNameBlur() {
     if (!spieler && !slugDirty) {
-      setSlug(slugify(value));
+      setSlug(slugify(name));
     }
   }
 
@@ -70,6 +73,7 @@ export function SpielerForm({ spieler }: Props) {
         isRequired
         value={name}
         onChange={handleNameChange}
+        onBlur={handleNameBlur}
         className="flex flex-col gap-1"
       >
         <Label>Name</Label>
