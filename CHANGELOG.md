@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.4.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.1...v0.4.0-pre.2)
+
+### 🚀 Enhancements
+
+- Add manager dashboard with onboarding flow for empty state. ([d065484](https://github.com/haus23/tipprunde/commit/d065484))
+- Add sidebar navigation to manager layout. ([2403286](https://github.com/haus23/tipprunde/commit/2403286))
+- Add onboarding step for missing tournament to manager dashboard. ([a72caf7](https://github.com/haus23/tipprunde/commit/a72caf7))
+- Add $slug route with turnier page and sidebar navigation link. ([ac72438](https://github.com/haus23/tipprunde/commit/ac72438))
+
+### 💅 Refactors
+
+- Migrate Regelwerke feature from Next.js to TanStack Start. ([cbbedae](https://github.com/haus23/tipprunde/commit/cbbedae))
+- Migrate Turniere feature from Next.js to TanStack Start. ([e644825](https://github.com/haus23/tipprunde/commit/e644825))
+
 ## v0.4.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.0...v0.4.0-pre.1)
