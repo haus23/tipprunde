@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.4.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.0...v0.4.0-pre.1)
+
+### 🚀 Enhancements
+
+- Add SearchField component. ([3be8e1a](https://github.com/haus23/tipprunde/commit/3be8e1a))
+- Add DataTable component with pagination and filter support ([44da68d](https://github.com/haus23/tipprunde/commit/44da68d))
+- Add concept for page titles in the manager backend. ([54dd85b](https://github.com/haus23/tipprunde/commit/54dd85b))
+
+### 💅 Refactors
+
+- Simplify manager validation. ([881403d](https://github.com/haus23/tipprunde/commit/881403d))
+- Migrate/port Spieler Stammdaten feature to the Start app. ([e24e270](https://github.com/haus23/tipprunde/commit/e24e270))
+- Start changing the overall app colors. ([d5532c0](https://github.com/haus23/tipprunde/commit/d5532c0))
+- Slugify name on blur. ([b70b0a7](https://github.com/haus23/tipprunde/commit/b70b0a7))
+- Update table component with new Tanstack table implementation and columns configuration ([05d495b](https://github.com/haus23/tipprunde/commit/05d495b))
+
+### 🏡 Chore
+
+- Add authorization middleware for server functions. ([12960c7](https://github.com/haus23/tipprunde/commit/12960c7))
+- Update skills and mention skills handling in README ([25190a8](https://github.com/haus23/tipprunde/commit/25190a8))
+- Add @tanstack/react-table dependency ([688bbb8](https://github.com/haus23/tipprunde/commit/688bbb8))
+
 ## v0.4.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0...v0.4.0-pre.0)
