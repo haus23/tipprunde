@@ -1,19 +1,16 @@
-"use client";
-
-import { useContext, useActionState, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { useRouter } from "@tanstack/react-router";
 import { OverlayTriggerStateContext } from "react-aria-components";
-import { Button } from "@/components/(ui)/button";
-import { Form } from "@/components/(ui)/form";
-import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field";
-import { Select, SelectItem } from "@/components/(ui)/select";
-import { createTurnier, type TurnierFormState } from "./actions";
-import type { rulesets } from "@/lib/db/schema";
-
-type Ruleset = typeof rulesets.$inferSelect;
+import { Button } from "@/components/(ui)/button.tsx";
+import { Form } from "@/components/(ui)/form.tsx";
+import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
+import { Select, SelectItem } from "@/components/(ui)/select.tsx";
+import { useServerAction } from "@/lib/hooks/server-action.ts";
+import { createTurnier } from "@/lib/championships.ts";
+import type { rulesets } from "@/lib/db/schema.ts";
 
 interface Props {
-  regelwerke: Ruleset[];
+  regelwerke: typeof rulesets.$inferSelect[];
   nextNr: number;
 }
 
@@ -26,10 +23,7 @@ function deriveSlug(name: string): string {
 }
 
 export function TurnierForm({ regelwerke, nextNr }: Props) {
-  const [state, formAction, pending] = useActionState<TurnierFormState, FormData>(
-    createTurnier,
-    null,
-  );
+  const [state, formAction, pending] = useServerAction(createTurnier);
 
   const router = useRouter();
   const dialog = useContext(OverlayTriggerStateContext);
@@ -40,11 +34,8 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
 
   useEffect(() => {
     if (state && "success" in state) {
-      if (dialog) {
-        dialog.close();
-      } else {
-        router.push(`/manager/${state.slug}/turnier`);
-      }
+      router.invalidate();
+      dialog?.close();
     }
   }, [state, router, dialog]);
 
@@ -87,7 +78,12 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
         <FieldError>Pflichtfeld.</FieldError>
       </TextField>
 
-      <TextField name="nr" isRequired defaultValue={String(nextNr)} className="flex flex-col gap-1">
+      <TextField
+        name="nr"
+        isRequired
+        defaultValue={String(nextNr)}
+        className="flex flex-col gap-1"
+      >
         <Label>Nummer</Label>
         <Input type="number" />
         <FieldError>Pflichtfeld.</FieldError>
@@ -101,7 +97,9 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
         ))}
       </Select>
 
-      {state && "error" in state && <p className="text-error text-sm">{state.error}</p>}
+      {state && "error" in state && (
+        <p className="text-error text-sm">{state.error}</p>
+      )}
 
       <div className="flex justify-end">
         <Button type="submit" isDisabled={pending}>

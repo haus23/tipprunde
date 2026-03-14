@@ -3,9 +3,12 @@ import { getCookie, setCookie } from "@tanstack/react-start/server";
 import * as v from "valibot";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
 import {
+  createChampionship,
   getChampionshipBySlug,
+  getChampionshipsWithRulesets,
   getLatestChampionship,
 } from "@/lib/championships.server.ts";
+import { validateForm } from "@/lib/validate-form.ts";
 import type { championships } from "@/lib/db/schema.ts";
 
 export const CHAMPIONSHIP_COOKIE = "current-championship";
@@ -20,6 +23,32 @@ export const fetchCurrentChampionship = createServerFn({ method: "GET" })
       ? await getChampionshipBySlug(slug)
       : await getLatestChampionship();
     return championship ?? null;
+  });
+
+export type TurnierFormState = { success: true; slug: string } | { error: string } | null;
+
+const turnierSchema = v.object({
+  slug: v.pipe(v.string(), v.minLength(1)),
+  name: v.pipe(v.string(), v.minLength(1)),
+  nr: v.pipe(v.string(), v.transform(Number)),
+  rulesetId: v.pipe(v.string(), v.minLength(1)),
+});
+
+export const fetchTurniere = createServerFn({ method: "GET" })
+  .middleware([managerMiddleware])
+  .handler(async () => getChampionshipsWithRulesets());
+
+export const createTurnier = createServerFn({ method: "POST" })
+  .middleware([managerMiddleware])
+  .inputValidator(validateForm(turnierSchema))
+  .handler(async ({ data }): Promise<TurnierFormState> => {
+    if (!data.success) return { error: "Ungültige Eingabe." };
+    try {
+      await createChampionship(data.output);
+      return { success: true, slug: data.output.slug };
+    } catch {
+      return { error: "Turnier konnte nicht angelegt werden." };
+    }
   });
 
 export const activateChampionship = createServerFn({ method: "POST" })
