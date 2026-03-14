@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "@tanstack/react-router";
-import { OverlayTriggerStateContext } from "react-aria-components";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
@@ -26,7 +25,6 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
   const [state, formAction, pending] = useServerAction(createTurnier);
 
   const router = useRouter();
-  const dialog = useContext(OverlayTriggerStateContext);
 
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
@@ -34,10 +32,9 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
 
   useEffect(() => {
     if (state && "success" in state) {
-      router.invalidate();
-      dialog?.close();
+      router.navigate({ to: "/manager/$slug/turnier", params: { slug: state.slug } });
     }
-  }, [state, router, dialog]);
+  }, [state, router]);
 
   function handleNameBlur() {
     if (!slugDirty) {

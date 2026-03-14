@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet, useMatches } from "@tanstack/react-router";
-import { FoldersIcon, LayoutDashboardIcon, PilcrowIcon, UsersIcon } from "lucide-react";
+import { FoldersIcon, LayoutDashboardIcon, PilcrowIcon, TrophyIcon, UsersIcon } from "lucide-react";
 import { Logo } from "@/components/logo.tsx";
 import { requireManager } from "@/lib/auth/functions.ts";
 import { fetchCurrentChampionship } from "@/lib/championships.ts";
@@ -44,6 +44,18 @@ function ManagerLayout() {
             <LayoutDashboardIcon size={16} />
             Dashboard
           </Link>
+
+          {currentChampionship && (
+            <Link
+              to="/manager/$slug/turnier"
+              params={{ slug: currentChampionship.slug }}
+              activeProps={{ className: "bg-subtle" }}
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm"
+            >
+              <TrophyIcon size={16} />
+              Turnier
+            </Link>
+          )}
 
           <div className="mt-auto flex flex-col gap-1">
             <div className="text-subtle px-3 py-1 text-xs font-medium tracking-wide uppercase">
