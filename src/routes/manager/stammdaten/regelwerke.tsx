@@ -4,9 +4,9 @@ import { RegelwerkeTable } from "./-regelwerk-table.tsx";
 
 export const Route = createFileRoute("/manager/stammdaten/regelwerke")({
   head: () => ({
-    meta: [{ title: "Stammdaten - Regelwerke" }],
+    meta: [{ title: "Regelwerke | Stammdaten" }],
   }),
-  beforeLoad: () => ({ pageTitle: "Stammdaten - Regelwerke" }),
+  beforeLoad: () => ({ pageTitle: "Stammdaten | Regelwerke" }),
   loader: () => fetchRulesets(),
   component: RegelwerkePage,
 });

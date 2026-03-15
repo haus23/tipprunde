@@ -5,9 +5,9 @@ import { TurniereTable } from "./-turnier-table.tsx";
 
 export const Route = createFileRoute("/manager/stammdaten/turniere")({
   head: () => ({
-    meta: [{ title: "Stammdaten - Turniere" }],
+    meta: [{ title: "Turniere | Stammdaten" }],
   }),
-  beforeLoad: () => ({ pageTitle: "Stammdaten - Turniere" }),
+  beforeLoad: () => ({ pageTitle: "Stammdaten | Turniere" }),
   loader: async () => {
     const [turniere, regelwerke] = await Promise.all([
       fetchTurniere(),

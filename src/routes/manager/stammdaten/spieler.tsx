@@ -4,9 +4,9 @@ import { SpielerTable } from "./-spieler-table.tsx";
 
 export const Route = createFileRoute("/manager/stammdaten/spieler")({
   head: () => ({
-    meta: [{ title: "Stammdaten - Spieler" }],
+    meta: [{ title: "Spieler | Stammdaten" }],
   }),
-  beforeLoad: () => ({ pageTitle: "Stammdaten - Spieler" }),
+  beforeLoad: () => ({ pageTitle: "Stammdaten | Spieler" }),
   loader: () => fetchPlayers(),
   component: SpielerPage,
 });
