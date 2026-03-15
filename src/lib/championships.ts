@@ -4,6 +4,7 @@ import * as v from "valibot";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
 import {
   createChampionship,
+  getChampionships,
   getChampionshipBySlug,
   getChampionshipsWithRulesets,
   getLatestChampionship,
@@ -33,6 +34,10 @@ const turnierSchema = v.object({
   nr: v.pipe(v.string(), v.transform(Number)),
   rulesetId: v.pipe(v.string(), v.minLength(1)),
 });
+
+export const fetchChampionships = createServerFn({ method: "GET" })
+  .middleware([managerMiddleware])
+  .handler(async () => getChampionships());
 
 export const fetchTurniere = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])

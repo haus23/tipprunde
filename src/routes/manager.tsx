@@ -1,20 +1,34 @@
 import { createFileRoute, Link, Outlet, useMatches } from "@tanstack/react-router";
+import { ChampionshipSwitcher } from "@/components/manager/championship-switcher.tsx";
 import { FoldersIcon, LayoutDashboardIcon, PilcrowIcon, TrophyIcon, UsersIcon } from "lucide-react";
 import { Logo } from "@/components/logo.tsx";
 import { requireManager } from "@/lib/auth/functions.ts";
-import { fetchCurrentChampionship } from "@/lib/championships.ts";
+import { fetchChampionships, fetchCurrentChampionship } from "@/lib/championships.ts";
+import type { Championship } from "@/lib/championships.ts";
 
 export const Route = createFileRoute("/manager")({
   beforeLoad: async () => {
     const user = await requireManager();
-    const currentChampionship = await fetchCurrentChampionship();
-    return { user, currentChampionship };
+    const [championships, currentChampionship] = await Promise.all([
+      fetchChampionships(),
+      fetchCurrentChampionship(),
+    ]);
+    return { user, championships, currentChampionship };
   },
   component: ManagerLayout,
 });
+
 function ManagerLayout() {
-  const { currentChampionship } = Route.useRouteContext();
+  const { championships, currentChampionship: initialChampionship } = Route.useRouteContext();
   const matches = useMatches();
+
+  // Championship from active $slug route context (always fresh, takes priority)
+  const slugChampionship = matches
+    .map((m) => (m.context as { currentChampionship?: Championship }).currentChampionship)
+    .filter(Boolean)
+    .at(-1);
+
+  const currentChampionship = slugChampionship ?? initialChampionship;
 
   const pageTitle = matches
     .map((m) => (m.context as { pageTitle?: string }).pageTitle)
@@ -102,8 +116,17 @@ function ManagerLayout() {
         </nav>
       </aside>
       <main className="flex-1 md:ml-52">
-        <header className="border-layout fixed inset-x-0 top-0 flex h-14 items-center justify-center border-b md:left-52">
-          <h1 className="text-sm font-medium">{headerTitle}</h1>
+        <header className="border-layout fixed inset-x-0 top-0 grid h-14 grid-cols-3 items-center border-b px-4 md:left-52">
+          <div className="flex items-center">
+            {currentChampionship && (
+              <ChampionshipSwitcher
+                current={currentChampionship}
+                championships={championships}
+              />
+            )}
+          </div>
+          <h1 className="text-center text-sm font-medium">{headerTitle}</h1>
+          <div />
         </header>
         <div className="pt-14">
           <div className="p-4 md:p-8">

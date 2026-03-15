@@ -1,20 +1,18 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { fetchRulesets } from "@/lib/rulesets.ts";
-import { fetchTurniere } from "@/lib/championships.ts";
 
 export const Route = createFileRoute("/manager/")({
   head: () => ({
     meta: [{ title: "Dashboard | Manager" }],
   }),
-  loader: async () => {
-    const [regelwerke, turniere] = await Promise.all([
-      fetchRulesets(),
-      fetchTurniere(),
-    ]);
-    if (turniere.length > 0) {
-      throw redirect({ to: "/manager/$slug", params: { slug: turniere[0].slug } });
+  beforeLoad: ({ context }) => {
+    const { currentChampionship } = context;
+    if (currentChampionship) {
+      throw redirect({ to: "/manager/$slug", params: { slug: currentChampionship.slug } });
     }
-
+  },
+  loader: async () => {
+    const regelwerke = await fetchRulesets();
     return { hasRegelwerke: regelwerke.length > 0 };
   },
   component: DashboardRoute,

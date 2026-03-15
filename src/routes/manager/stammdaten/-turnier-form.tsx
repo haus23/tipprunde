@@ -5,7 +5,7 @@ import { Form } from "@/components/(ui)/form.tsx";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
 import { Select, SelectItem } from "@/components/(ui)/select.tsx";
 import { useServerAction } from "@/lib/hooks/server-action.ts";
-import { createTurnier } from "@/lib/championships.ts";
+import { activateChampionship, createTurnier } from "@/lib/championships.ts";
 import type { rulesets } from "@/lib/db/schema.ts";
 
 interface Props {
@@ -32,7 +32,10 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
 
   useEffect(() => {
     if (state && "success" in state) {
-      router.navigate({ to: "/manager/$slug/turnier", params: { slug: state.slug } });
+      const slug = state.slug;
+      activateChampionship({ data: slug }).then(() => {
+        router.navigate({ to: "/manager/$slug/turnier", params: { slug } });
+      });
     }
   }, [state, router]);
 
