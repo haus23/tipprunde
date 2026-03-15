@@ -20,10 +20,8 @@ export const fetchCurrentChampionship = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
   .handler(async (): Promise<Championship | null> => {
     const slug = getCookie(CHAMPIONSHIP_COOKIE);
-    const championship = slug
-      ? await getChampionshipBySlug(slug)
-      : await getLatestChampionship();
-    return championship ?? null;
+    const championship = slug ? await getChampionshipBySlug(slug) : null;
+    return championship ?? (await getLatestChampionship()) ?? null;
   });
 
 export type TurnierFormState = { success: true; slug: string } | { error: string } | null;
