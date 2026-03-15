@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { useMatches, useNavigate } from "@tanstack/react-router";
-import { ChevronsUpDownIcon } from "lucide-react";
-import {
-  Button,
-  Dialog,
-  DialogTrigger,
-  Heading,
-  Modal,
-  ModalOverlay,
-} from "react-aria-components";
+import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
+import { Button, Dialog, DialogTrigger, Heading, Modal, ModalOverlay } from "react-aria-components";
 import { Command, CommandItem } from "@/components/(ui)/command.tsx";
 import { activateChampionship } from "@/lib/championships.ts";
 import type { Championship } from "@/lib/championships.ts";
@@ -41,15 +34,13 @@ export function ChampionshipSwitcher({ current, championships }: Props) {
   }
 
   if (championships.length <= 1) {
-    return (
-      <span className="text-subtle truncate px-2 text-sm">{current.name}</span>
-    );
+    return <span className="truncate px-2 text-sm">{current.name}</span>;
   }
 
   return (
     <DialogTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
       <Button className="hover:bg-subtle flex items-center gap-2 rounded-md px-2 py-1 text-sm outline-none">
-        <span className="text-subtle truncate">{current.name}</span>
+        <span className="truncate">{current.name}</span>
         <ChevronsUpDownIcon size={14} className="text-subtle shrink-0" />
       </Button>
 
@@ -74,7 +65,10 @@ export function ChampionshipSwitcher({ current, championships }: Props) {
             >
               {(championship) => (
                 <CommandItem key={championship.slug} value={championship.slug}>
-                  {championship.name}
+                  <span className="flex-1">{championship.name}</span>
+                  {championship.slug === current.slug && (
+                    <CheckIcon size={16} className="text-subtle shrink-0" />
+                  )}
                 </CommandItem>
               )}
             </Command>
