@@ -6,8 +6,10 @@ import {
   createChampionship,
   getChampionships,
   getChampionshipBySlug,
+  getChampionshipWithRuleset,
   getChampionshipsWithRulesets,
   getLatestChampionship,
+  updateChampionshipStatus,
 } from "@/lib/championships.server.ts";
 import { validateForm } from "@/lib/validate-form.ts";
 import type { championships } from "@/lib/db/schema.ts";
@@ -53,6 +55,22 @@ export const createTurnier = createServerFn({ method: "POST" })
       return { error: "Turnier konnte nicht angelegt werden." };
     }
   });
+
+export const fetchTurnierDetails = createServerFn({ method: "GET" })
+  .middleware([managerMiddleware])
+  .inputValidator(v.string())
+  .handler(async ({ data: slug }) => getChampionshipWithRuleset(slug));
+
+const statusSchema = v.object({
+  slug: v.string(),
+  field: v.union([v.literal("published"), v.literal("extraQuestionsPublished"), v.literal("completed")]),
+  value: v.boolean(),
+});
+
+export const setTurnierStatus = createServerFn({ method: "POST" })
+  .middleware([managerMiddleware])
+  .inputValidator(statusSchema)
+  .handler(async ({ data }) => updateChampionshipStatus(data.slug, data.field, data.value));
 
 export const activateChampionship = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])

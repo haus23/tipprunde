@@ -1,19 +1,90 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Switch } from "@/components/(ui)/switch.tsx";
+import { fetchTurnierDetails, setTurnierStatus } from "@/lib/championships.ts";
 
 export const Route = createFileRoute("/manager/$slug/turnier")({
   beforeLoad: () => ({ pageTitle: "Turnier" }),
-  loader: ({ context }) => ({ championshipName: context.currentChampionship?.name }),
+  loader: ({ params }) => fetchTurnierDetails({ data: params.slug }),
   head: ({ loaderData }) => ({
-    meta: [{ title: `Turnier | ${loaderData?.championshipName}` }],
+    meta: [{ title: `Turnier | ${loaderData?.name}` }],
   }),
   component: TurnierPage,
 });
 
 function TurnierPage() {
-  const { currentChampionship } = Route.useRouteContext();
+  const championship = Route.useLoaderData();
+
+  const hasExtraQuestions =
+    championship?.ruleset?.extraQuestionRuleId === "mit-zusatzfragen";
+
+  const [published, setPublished] = useState(championship?.published ?? false);
+  const [extraQuestionsPublished, setExtraQuestionsPublished] = useState(
+    championship?.extraQuestionsPublished ?? false,
+  );
+  const [completed, setCompleted] = useState(championship?.completed ?? false);
+
+  if (!championship) return null;
+
+  async function handleChange(
+    field: "published" | "extraQuestionsPublished" | "completed",
+    value: boolean,
+  ) {
+    await setTurnierStatus({ data: { slug: championship!.slug, field, value } });
+    if (field === "published") setPublished(value);
+    if (field === "extraQuestionsPublished") setExtraQuestionsPublished(value);
+    if (field === "completed") {
+      setCompleted(value);
+      if (value) setExtraQuestionsPublished(true);
+    }
+  }
+
   return (
-    <div>
-      <p>{currentChampionship?.name}</p>
+    <div className="flex flex-col gap-6">
+      <div className="bg-surface border-surface rounded-md border p-6">
+        <h2 className="text-sm font-medium">Status</h2>
+        <div className="mt-4 flex flex-col gap-4">
+          <Switch
+            isSelected={published}
+            onChange={(v) => handleChange("published", v)}
+          >
+            <div>
+              <div className="text-sm font-medium">Veröffentlicht</div>
+              <div className="text-subtle text-xs">
+                Turnier ist für Teilnehmer sichtbar
+              </div>
+            </div>
+          </Switch>
+
+          {hasExtraQuestions && (
+            <Switch
+              isSelected={extraQuestionsPublished}
+              isDisabled={!published}
+              onChange={(v) => handleChange("extraQuestionsPublished", v)}
+            >
+              <div>
+                <div className="text-sm font-medium">Zusatzpunkte veröffentlicht</div>
+                <div className="text-subtle text-xs">
+                  Zusatzfragen sind freigeschaltet
+                </div>
+              </div>
+            </Switch>
+          )}
+
+          <Switch
+            isSelected={completed}
+            isDisabled={!published}
+            onChange={(v) => handleChange("completed", v)}
+          >
+            <div>
+              <div className="text-sm font-medium">Abgeschlossen</div>
+              <div className="text-subtle text-xs">
+                Turnier ist beendet, keine Tipps mehr möglich
+              </div>
+            </div>
+          </Switch>
+        </div>
+      </div>
     </div>
   );
 }
