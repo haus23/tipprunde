@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { fetchRulesets } from "@/lib/rulesets.ts";
 import { fetchTurniere } from "@/lib/championships.ts";
 
@@ -11,16 +11,17 @@ export const Route = createFileRoute("/manager/")({
       fetchRulesets(),
       fetchTurniere(),
     ]);
-    return {
-      hasRegelwerke: regelwerke.length > 0,
-      hasTurniere: turniere.length > 0,
-    };
+    if (turniere.length > 0) {
+      throw redirect({ to: "/manager/$slug", params: { slug: turniere[0].slug } });
+    }
+
+    return { hasRegelwerke: regelwerke.length > 0 };
   },
   component: DashboardRoute,
 });
 
 function DashboardRoute() {
-  const { hasRegelwerke, hasTurniere } = Route.useLoaderData();
+  const { hasRegelwerke } = Route.useLoaderData();
 
   if (!hasRegelwerke) {
     return (
@@ -43,24 +44,19 @@ function DashboardRoute() {
     );
   }
 
-  if (!hasTurniere) {
-    return (
-      <div className="bg-surface border-surface rounded-md border p-6">
-        <p className="text-lg font-medium">Fast geschafft!</p>
-        <p className="text-subtle mt-3 text-sm">
-          Das Regelwerk steht. Jetzt fehlt nur noch dein erstes Turnier — dann kann
-          die Tipprunde beginnen.
-        </p>
-        <Link
-          to="/manager/stammdaten/turniere"
-          className="text-btn bg-btn data-hovered:bg-btn-hovered data-pressed:bg-btn-pressed mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
-        >
-          Erstes Turnier anlegen →
-        </Link>
-      </div>
-    );
-  }
-
-  // Redirect to current championship once $slug routes exist.
-  return null;
+  return (
+    <div className="bg-surface border-surface rounded-md border p-6">
+      <p className="text-lg font-medium">Fast geschafft!</p>
+      <p className="text-subtle mt-3 text-sm">
+        Das Regelwerk steht. Jetzt fehlt nur noch dein erstes Turnier — dann kann
+        die Tipprunde beginnen.
+      </p>
+      <Link
+        to="/manager/stammdaten/turniere"
+        className="text-btn bg-btn data-hovered:bg-btn-hovered data-pressed:bg-btn-pressed mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium"
+      >
+        Erstes Turnier anlegen →
+      </Link>
+    </div>
+  );
 }

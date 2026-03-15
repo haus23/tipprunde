@@ -14,6 +14,7 @@ import { Route as FrontRouteImport } from './routes/_front'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ManagerIndexRouteImport } from './routes/manager/index'
 import { Route as ManagerSlugRouteImport } from './routes/manager/$slug'
+import { Route as ManagerSlugIndexRouteImport } from './routes/manager/$slug/index'
 import { Route as ManagerStammdatenTurniereRouteImport } from './routes/manager/stammdaten/turniere'
 import { Route as ManagerStammdatenSpielerRouteImport } from './routes/manager/stammdaten/spieler'
 import { Route as ManagerStammdatenRegelwerkeRouteImport } from './routes/manager/stammdaten/regelwerke'
@@ -43,6 +44,11 @@ const ManagerSlugRoute = ManagerSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => ManagerRoute,
+} as any)
+const ManagerSlugIndexRoute = ManagerSlugIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ManagerSlugRoute,
 } as any)
 const ManagerStammdatenTurniereRoute =
   ManagerStammdatenTurniereRouteImport.update({
@@ -83,16 +89,17 @@ export interface FileRoutesByFullPath {
   '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
   '/manager/stammdaten/spieler': typeof ManagerStammdatenSpielerRoute
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
+  '/manager/$slug/': typeof ManagerSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/manager/$slug': typeof ManagerSlugRouteWithChildren
   '/manager': typeof ManagerIndexRoute
   '/login': typeof FrontauthLoginRoute
   '/manager/$slug/turnier': typeof ManagerSlugTurnierRoute
   '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
   '/manager/stammdaten/spieler': typeof ManagerStammdatenSpielerRoute
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
+  '/manager/$slug': typeof ManagerSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,6 +113,7 @@ export interface FileRoutesById {
   '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
   '/manager/stammdaten/spieler': typeof ManagerStammdatenSpielerRoute
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
+  '/manager/$slug/': typeof ManagerSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,16 +127,17 @@ export interface FileRouteTypes {
     | '/manager/stammdaten/regelwerke'
     | '/manager/stammdaten/spieler'
     | '/manager/stammdaten/turniere'
+    | '/manager/$slug/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/manager/$slug'
     | '/manager'
     | '/login'
     | '/manager/$slug/turnier'
     | '/manager/stammdaten/regelwerke'
     | '/manager/stammdaten/spieler'
     | '/manager/stammdaten/turniere'
+    | '/manager/$slug'
   id:
     | '__root__'
     | '/'
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/manager/stammdaten/regelwerke'
     | '/manager/stammdaten/spieler'
     | '/manager/stammdaten/turniere'
+    | '/manager/$slug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -185,6 +195,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/manager/$slug'
       preLoaderRoute: typeof ManagerSlugRouteImport
       parentRoute: typeof ManagerRoute
+    }
+    '/manager/$slug/': {
+      id: '/manager/$slug/'
+      path: '/'
+      fullPath: '/manager/$slug/'
+      preLoaderRoute: typeof ManagerSlugIndexRouteImport
+      parentRoute: typeof ManagerSlugRoute
     }
     '/manager/stammdaten/turniere': {
       id: '/manager/stammdaten/turniere'
@@ -236,10 +253,12 @@ const FrontRouteWithChildren = FrontRoute._addFileChildren(FrontRouteChildren)
 
 interface ManagerSlugRouteChildren {
   ManagerSlugTurnierRoute: typeof ManagerSlugTurnierRoute
+  ManagerSlugIndexRoute: typeof ManagerSlugIndexRoute
 }
 
 const ManagerSlugRouteChildren: ManagerSlugRouteChildren = {
   ManagerSlugTurnierRoute: ManagerSlugTurnierRoute,
+  ManagerSlugIndexRoute: ManagerSlugIndexRoute,
 }
 
 const ManagerSlugRouteWithChildren = ManagerSlugRoute._addFileChildren(
