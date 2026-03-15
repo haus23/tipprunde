@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.4.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.2...v0.4.0)
+
+### 🚀 Enhancements
+
+- Add championship dashboard route and complete onboarding flow. ([cb72cf3](https://github.com/haus23/tipprunde/commit/cb72cf3))
+- Implement championship switcher with stable context ([cc25db5](https://github.com/haus23/tipprunde/commit/cc25db5))
+
+### 🏡 Chore
+
+- Polish sidebar navigation hover styles and spacing. ([e13ff94](https://github.com/haus23/tipprunde/commit/e13ff94))
+- Align page and meta titles across manager routes ([6b9c66f](https://github.com/haus23/tipprunde/commit/6b9c66f))
+- Improve championship switcher styling ([5262d2f](https://github.com/haus23/tipprunde/commit/5262d2f))
+
 ## v0.4.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.1...v0.4.0-pre.2)
