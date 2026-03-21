@@ -1,10 +1,13 @@
-import { useMemo, useState } from "react";
-import { useRouter } from "@tanstack/react-router";
+import { useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { SpielerForm } from "@/routes/manager/stammdaten/-spieler-form.tsx";
-import { addTurnierSpieler, removeTurnierSpieler } from "@/lib/participants.ts";
+import { addTurnierSpieler, fetchTurnierSpieler, removeTurnierSpieler } from "@/lib/participants.ts";
+import { fetchPlayers } from "@/lib/players.ts";
+import { queryClient } from "@/lib/query-client.ts";
+import { queryKeys } from "@/lib/query-keys.ts";
 import type { players, users } from "@/lib/db/schema.ts";
 
 type TournamentPlayer = typeof players.$inferSelect & {
@@ -15,45 +18,103 @@ type User = typeof users.$inferSelect;
 interface Props {
   championshipId: number;
   initialPlayers: TournamentPlayer[];
-  allUsers: User[];
+  initialUsers: User[];
 }
 
 const DRAG_TYPE = "application/x-player-id";
 
-export function SpielerManagement({ championshipId, initialPlayers, allUsers }: Props) {
-  const router = useRouter();
+export function SpielerManagement({ championshipId, initialPlayers, initialUsers }: Props) {
   const [filter, setFilter] = useState("");
   const [isNewSpielerOpen, setIsNewSpielerOpen] = useState(false);
 
-  const tournamentPlayers = useMemo(
-    () => initialPlayers.map((p) => p.user).filter(Boolean) as User[],
-    [initialPlayers],
+  const { data: allUsers } = useQuery({
+    queryKey: queryKeys.users.all,
+    queryFn: () => fetchPlayers(),
+    initialData: initialUsers,
+  });
+
+  const { data: tournamentPlayers } = useQuery({
+    queryKey: queryKeys.players.byChampionship(championshipId),
+    queryFn: () => fetchTurnierSpieler({ data: championshipId }),
+    initialData: initialPlayers,
+    select: (data) => data.map((p) => p.user).filter(Boolean) as User[],
+  });
+
+  const tournamentUserIdSet = new Set(tournamentPlayers.map((u) => u.id));
+
+  const availablePlayers = allUsers.filter(
+    (u) =>
+      !tournamentUserIdSet.has(u.id) &&
+      (filter === "" || u.name.toLowerCase().includes(filter.toLowerCase())),
   );
 
-  const tournamentUserIdSet = useMemo(
-    () => new Set(initialPlayers.map((p) => p.userId)),
-    [initialPlayers],
-  );
+  const addMutation = useMutation({
+    mutationFn: (userId: number) =>
+      addTurnierSpieler({ data: { championshipId, userId } }),
+    onMutate: async (userId) => {
+      await queryClient.cancelQueries({
+        queryKey: queryKeys.players.byChampionship(championshipId),
+      });
+      const previous = queryClient.getQueryData<TournamentPlayer[]>(
+        queryKeys.players.byChampionship(championshipId),
+      );
+      const user = allUsers.find((u) => u.id === userId);
+      if (user) {
+        queryClient.setQueryData<TournamentPlayer[]>(
+          queryKeys.players.byChampionship(championshipId),
+          (old = []) => [
+            ...old,
+            { id: old.length + 1, championshipId, userId, nr: old.length + 1, user },
+          ],
+        );
+      }
+      return { previous };
+    },
+    onError: (_err, _userId, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(
+          queryKeys.players.byChampionship(championshipId),
+          context.previous,
+        );
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.players.byChampionship(championshipId),
+      });
+    },
+  });
 
-  const availablePlayers = useMemo(
-    () =>
-      allUsers.filter(
-        (u) =>
-          !tournamentUserIdSet.has(u.id) &&
-          (filter === "" || u.name.toLowerCase().includes(filter.toLowerCase())),
-      ),
-    [allUsers, tournamentUserIdSet, filter],
-  );
-
-  async function handleAdd(userId: number) {
-    await addTurnierSpieler({ data: { championshipId, userId } });
-    router.invalidate();
-  }
-
-  async function handleRemove(userId: number) {
-    await removeTurnierSpieler({ data: { championshipId, userId } });
-    router.invalidate();
-  }
+  const removeMutation = useMutation({
+    mutationFn: (userId: number) =>
+      removeTurnierSpieler({ data: { championshipId, userId } }),
+    onMutate: async (userId) => {
+      await queryClient.cancelQueries({
+        queryKey: queryKeys.players.byChampionship(championshipId),
+      });
+      const previous = queryClient.getQueryData<TournamentPlayer[]>(
+        queryKeys.players.byChampionship(championshipId),
+      );
+      queryClient.setQueryData<TournamentPlayer[]>(
+        queryKeys.players.byChampionship(championshipId),
+        (old = []) => old.filter((p) => p.userId !== userId),
+      );
+      return { previous };
+    },
+    onError: (_err, _userId, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(
+          queryKeys.players.byChampionship(championshipId),
+          context.previous,
+        );
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.players.byChampionship(championshipId),
+      });
+    },
+  });
 
   async function extractUserId(items: Parameters<Parameters<typeof useDragAndDrop>[0]["onRootDrop"] & {}>[0]["items"]) {
     const results: number[] = [];
@@ -70,10 +131,10 @@ export function SpielerManagement({ championshipId, initialPlayers, allUsers }: 
       [...keys].map((key) => ({ [DRAG_TYPE]: String(key), "text/plain": String(key) })),
     acceptedDragTypes: [DRAG_TYPE],
     async onItemDrop({ items }) {
-      for (const id of await extractUserId(items)) await handleAdd(id);
+      for (const id of await extractUserId(items)) addMutation.mutate(id);
     },
     async onRootDrop({ items }) {
-      for (const id of await extractUserId(items)) await handleAdd(id);
+      for (const id of await extractUserId(items)) addMutation.mutate(id);
     },
   });
 
@@ -82,10 +143,10 @@ export function SpielerManagement({ championshipId, initialPlayers, allUsers }: 
       [...keys].map((key) => ({ [DRAG_TYPE]: String(key), "text/plain": String(key) })),
     acceptedDragTypes: [DRAG_TYPE],
     async onItemDrop({ items }) {
-      for (const id of await extractUserId(items)) await handleRemove(id);
+      for (const id of await extractUserId(items)) removeMutation.mutate(id);
     },
     async onRootDrop({ items }) {
-      for (const id of await extractUserId(items)) await handleRemove(id);
+      for (const id of await extractUserId(items)) removeMutation.mutate(id);
     },
   });
 

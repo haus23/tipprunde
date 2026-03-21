@@ -20,9 +20,10 @@ export const getPlayers = createServerOnlyFn(async () =>
   }),
 );
 
-export const createPlayer = createServerOnlyFn(async (data: PlayerData) =>
-  db.insert(users).values(data),
-);
+export const createPlayer = createServerOnlyFn(async (data: PlayerData) => {
+  const [newUser] = await db.insert(users).values(data).returning();
+  return newUser;
+});
 
 export const updatePlayer = createServerOnlyFn(async (data: PlayerData & { id: number }) => {
   const { id, ...rest } = data;

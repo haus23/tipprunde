@@ -99,7 +99,7 @@ function TurnierPage() {
           <SpielerManagement
             championshipId={championship.id}
             initialPlayers={tournamentPlayers}
-            allUsers={allUsers}
+            initialUsers={allUsers}
           />
         </div>
       </div>
