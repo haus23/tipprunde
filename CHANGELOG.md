@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.5.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0...v0.5.0-pre.0)
+
+### 🚀 Enhancements
+
+- Add tournament status switches on Turnier page ([cfe3189](https://github.com/haus23/tipprunde/commit/cfe3189))
+
+### 🩹 Fixes
+
+- Fall back to latest championship on invalid cookie slug ([2c46a15](https://github.com/haus23/tipprunde/commit/2c46a15))
+
+### 🏡 Chore
+
+- Update drizzle and turso libsql client. ([66c8d37](https://github.com/haus23/tipprunde/commit/66c8d37))
+- Update tanstack and valibot. ([f66ccf6](https://github.com/haus23/tipprunde/commit/f66ccf6))
+- Update dev dependencies. ([b5975da](https://github.com/haus23/tipprunde/commit/b5975da))
+
 ## v0.4.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0-pre.2...v0.4.0)
