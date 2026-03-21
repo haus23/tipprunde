@@ -1,5 +1,8 @@
 import { useMemo, useState } from "react";
 import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
+import { Button } from "@/components/(ui)/button.tsx";
+import { Dialog } from "@/components/(ui)/dialog.tsx";
+import { SpielerForm } from "@/routes/manager/stammdaten/-spieler-form.tsx";
 import { addTurnierSpieler, removeTurnierSpieler } from "@/lib/participants.ts";
 import type { players, users } from "@/lib/db/schema.ts";
 
@@ -22,6 +25,7 @@ export function SpielerManagement({ championshipId, initialPlayers, allUsers }: 
     () => initialPlayers.map((p) => p.userId),
   );
   const [filter, setFilter] = useState("");
+  const [isNewSpielerOpen, setIsNewSpielerOpen] = useState(false);
 
   const userById = useMemo(() => new Map(allUsers.map((u) => [u.id, u])), [allUsers]);
 
@@ -87,6 +91,7 @@ export function SpielerManagement({ championshipId, initialPlayers, allUsers }: 
   });
 
   return (
+    <>
     <div className="grid grid-cols-2 gap-4">
       <div className="flex flex-col gap-2">
         <p className="text-sm font-medium">
@@ -117,7 +122,12 @@ export function SpielerManagement({ championshipId, initialPlayers, allUsers }: 
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="text-sm font-medium">Alle Spieler</p>
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium">Alle Spieler</p>
+          <Button onPress={() => setIsNewSpielerOpen(true)}>
+            Neuer Spieler
+          </Button>
+        </div>
         <input
           type="search"
           placeholder="Spieler suchen …"
@@ -148,5 +158,14 @@ export function SpielerManagement({ championshipId, initialPlayers, allUsers }: 
         </ListBox>
       </div>
     </div>
+
+    <Dialog
+      isOpen={isNewSpielerOpen}
+      onOpenChange={setIsNewSpielerOpen}
+      title="Neuen Spieler anlegen"
+    >
+      <SpielerForm key={isNewSpielerOpen ? "open" : "closed"} />
+    </Dialog>
+    </>
   );
 }
