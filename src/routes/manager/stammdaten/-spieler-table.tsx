@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/(ui)/button.tsx";
 import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
+import { fetchPlayers } from "@/lib/players.ts";
+import { queryKeys } from "@/lib/query-keys.ts";
 import type { users } from "@/lib/db/schema.ts";
 import { createSpielerColumns } from "./-spieler-columns.tsx";
 import { SpielerForm } from "./-spieler-form.tsx";
@@ -9,12 +12,18 @@ import { SpielerForm } from "./-spieler-form.tsx";
 type Spieler = typeof users.$inferSelect;
 
 interface Props {
-  spieler: Spieler[];
+  initialSpieler: Spieler[];
 }
 
-export function SpielerTable({ spieler }: Props) {
+export function SpielerTable({ initialSpieler }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Spieler | undefined>(undefined);
+
+  const { data: spieler } = useQuery({
+    queryKey: queryKeys.users.all,
+    queryFn: () => fetchPlayers(),
+    initialData: initialSpieler,
+  });
 
   function openCreate() {
     setEditTarget(undefined);

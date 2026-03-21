@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { useRouter } from "@tanstack/react-router";
 import { OverlayTriggerStateContext } from "react-aria-components";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
@@ -37,7 +36,6 @@ export function SpielerForm({ spieler }: Props) {
   const serverAction = spieler ? updateSpieler : createSpieler;
   const [state, formAction, pending] = useServerAction(serverAction);
 
-  const router = useRouter();
   const dialog = useContext(OverlayTriggerStateContext);
 
   const [name, setName] = useState(spieler?.name ?? "");
@@ -53,10 +51,9 @@ export function SpielerForm({ spieler }: Props) {
       } else {
         queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
       }
-      router.invalidate();
       dialog?.close();
     }
-  }, [state, router, dialog]);
+  }, [state, dialog]);
 
   function handleNameChange(value: string) {
     setName(value);

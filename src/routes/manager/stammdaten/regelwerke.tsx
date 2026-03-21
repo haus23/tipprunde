@@ -12,6 +12,6 @@ export const Route = createFileRoute("/manager/stammdaten/regelwerke")({
 });
 
 function RegelwerkePage() {
-  const regelwerke = Route.useLoaderData();
-  return <RegelwerkeTable regelwerke={regelwerke} />;
+  const initialRegelwerke = Route.useLoaderData();
+  return <RegelwerkeTable initialRegelwerke={initialRegelwerke} />;
 }

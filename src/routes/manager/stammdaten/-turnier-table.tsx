@@ -1,7 +1,11 @@
 import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/(ui)/button.tsx";
 import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
+import { fetchRulesets } from "@/lib/rulesets.ts";
+import { fetchTurniere } from "@/lib/championships.ts";
+import { queryKeys } from "@/lib/query-keys.ts";
 import type { championships, rulesets } from "@/lib/db/schema.ts";
 import { createTurnierColumns } from "./-turnier-columns.tsx";
 import { TurnierForm } from "./-turnier-form.tsx";
@@ -11,12 +15,25 @@ type Turnier = typeof championships.$inferSelect & {
 };
 
 interface Props {
-  turniere: Turnier[];
-  regelwerke: typeof rulesets.$inferSelect[];
+  initialTurniere: Turnier[];
+  initialRegelwerke: typeof rulesets.$inferSelect[];
 }
 
-export function TurniereTable({ turniere, regelwerke }: Props) {
+export function TurniereTable({ initialTurniere, initialRegelwerke }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { data: turniere } = useQuery({
+    queryKey: queryKeys.turniere.all,
+    queryFn: () => fetchTurniere(),
+    initialData: initialTurniere,
+  });
+
+  const { data: regelwerke } = useQuery({
+    queryKey: queryKeys.rulesets.all,
+    queryFn: () => fetchRulesets(),
+    initialData: initialRegelwerke,
+  });
+
   const nextNr = (turniere[0]?.nr ?? 0) + 1;
   const columns = useMemo(() => createTurnierColumns(), []);
 

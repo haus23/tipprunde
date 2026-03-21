@@ -6,6 +6,8 @@ import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-fiel
 import { Select, SelectItem } from "@/components/(ui)/select.tsx";
 import { useServerAction } from "@/lib/hooks/server-action.ts";
 import { activateChampionship, createTurnier } from "@/lib/championships.ts";
+import { queryClient } from "@/lib/query-client.ts";
+import { queryKeys } from "@/lib/query-keys.ts";
 import type { rulesets } from "@/lib/db/schema.ts";
 
 interface Props {
@@ -33,6 +35,7 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
   useEffect(() => {
     if (state && "success" in state) {
       const slug = state.slug;
+      queryClient.invalidateQueries({ queryKey: queryKeys.turniere.all });
       activateChampionship({ data: slug }).then(() => {
         router.navigate({ to: "/manager/$slug/turnier", params: { slug } });
       });

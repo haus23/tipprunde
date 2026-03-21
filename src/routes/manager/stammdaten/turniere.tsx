@@ -20,5 +20,5 @@ export const Route = createFileRoute("/manager/stammdaten/turniere")({
 
 function TurnierePage() {
   const { turniere, regelwerke } = Route.useLoaderData();
-  return <TurniereTable turniere={turniere} regelwerke={regelwerke} />;
+  return <TurniereTable initialTurniere={turniere} initialRegelwerke={regelwerke} />;
 }

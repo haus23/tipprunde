@@ -12,6 +12,6 @@ export const Route = createFileRoute("/manager/stammdaten/spieler")({
 });
 
 function SpielerPage() {
-  const spieler = Route.useLoaderData();
-  return <SpielerTable spieler={spieler} />;
+  const initialSpieler = Route.useLoaderData();
+  return <SpielerTable initialSpieler={initialSpieler} />;
 }

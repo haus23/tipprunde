@@ -1,5 +1,4 @@
 import { useContext, useEffect } from "react";
-import { useRouter } from "@tanstack/react-router";
 import { OverlayTriggerStateContext } from "react-aria-components";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
@@ -7,6 +6,8 @@ import { FieldError, Input, Label, TextArea, TextField } from "@/components/(ui)
 import { Select, SelectItem } from "@/components/(ui)/select.tsx";
 import { useServerAction } from "@/lib/hooks/server-action.ts";
 import { createRegelwerk, updateRegelwerk } from "@/lib/rulesets.ts";
+import { queryClient } from "@/lib/query-client.ts";
+import { queryKeys } from "@/lib/query-keys.ts";
 import type { rulesets } from "@/lib/db/schema.ts";
 
 type Regelwerk = typeof rulesets.$inferSelect;
@@ -44,15 +45,14 @@ export function RegelwerkForm({ regelwerk }: Props) {
   const serverAction = regelwerk ? updateRegelwerk : createRegelwerk;
   const [state, formAction, pending] = useServerAction(serverAction);
 
-  const router = useRouter();
   const dialog = useContext(OverlayTriggerStateContext);
 
   useEffect(() => {
     if (state && "success" in state) {
-      router.invalidate();
+      queryClient.invalidateQueries({ queryKey: queryKeys.rulesets.all });
       dialog?.close();
     }
-  }, [state, router, dialog]);
+  }, [state, dialog]);
 
   return (
     <Form action={formAction} className="flex flex-col gap-4">

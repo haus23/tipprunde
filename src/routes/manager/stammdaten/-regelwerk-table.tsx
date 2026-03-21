@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/(ui)/button.tsx";
 import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
+import { fetchRulesets } from "@/lib/rulesets.ts";
+import { queryKeys } from "@/lib/query-keys.ts";
 import type { rulesets } from "@/lib/db/schema.ts";
 import { createRegelwerkColumns } from "./-regelwerk-columns.tsx";
 import { RegelwerkForm } from "./-regelwerk-form.tsx";
@@ -9,12 +12,18 @@ import { RegelwerkForm } from "./-regelwerk-form.tsx";
 type Regelwerk = typeof rulesets.$inferSelect;
 
 interface Props {
-  regelwerke: Regelwerk[];
+  initialRegelwerke: Regelwerk[];
 }
 
-export function RegelwerkeTable({ regelwerke }: Props) {
+export function RegelwerkeTable({ initialRegelwerke }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Regelwerk | undefined>(undefined);
+
+  const { data: regelwerke } = useQuery({
+    queryKey: queryKeys.rulesets.all,
+    queryFn: () => fetchRulesets(),
+    initialData: initialRegelwerke,
+  });
 
   function openCreate() {
     setEditTarget(undefined);
