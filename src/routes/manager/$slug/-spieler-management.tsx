@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useRouter } from "@tanstack/react-router";
 import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
@@ -20,21 +21,19 @@ interface Props {
 const DRAG_TYPE = "application/x-player-id";
 
 export function SpielerManagement({ championshipId, initialPlayers, allUsers }: Props) {
-  // Ordered array of userIds — preserves nr-order, new players appended at end
-  const [orderedUserIds, setOrderedUserIds] = useState(
-    () => initialPlayers.map((p) => p.userId),
-  );
+  const router = useRouter();
   const [filter, setFilter] = useState("");
   const [isNewSpielerOpen, setIsNewSpielerOpen] = useState(false);
 
-  const userById = useMemo(() => new Map(allUsers.map((u) => [u.id, u])), [allUsers]);
-
   const tournamentPlayers = useMemo(
-    () => orderedUserIds.map((id) => userById.get(id)).filter(Boolean) as User[],
-    [orderedUserIds, userById],
+    () => initialPlayers.map((p) => p.user).filter(Boolean) as User[],
+    [initialPlayers],
   );
 
-  const tournamentUserIdSet = useMemo(() => new Set(orderedUserIds), [orderedUserIds]);
+  const tournamentUserIdSet = useMemo(
+    () => new Set(initialPlayers.map((p) => p.userId)),
+    [initialPlayers],
+  );
 
   const availablePlayers = useMemo(
     () =>
@@ -47,13 +46,13 @@ export function SpielerManagement({ championshipId, initialPlayers, allUsers }: 
   );
 
   async function handleAdd(userId: number) {
-    setOrderedUserIds((prev) => [...prev, userId]);
     await addTurnierSpieler({ data: { championshipId, userId } });
+    router.invalidate();
   }
 
   async function handleRemove(userId: number) {
-    setOrderedUserIds((prev) => prev.filter((id) => id !== userId));
     await removeTurnierSpieler({ data: { championshipId, userId } });
+    router.invalidate();
   }
 
   async function extractUserId(items: Parameters<Parameters<typeof useDragAndDrop>[0]["onRootDrop"] & {}>[0]["items"]) {
@@ -71,10 +70,10 @@ export function SpielerManagement({ championshipId, initialPlayers, allUsers }: 
       [...keys].map((key) => ({ [DRAG_TYPE]: String(key), "text/plain": String(key) })),
     acceptedDragTypes: [DRAG_TYPE],
     async onItemDrop({ items }) {
-      for (const id of await extractUserId(items)) handleAdd(id);
+      for (const id of await extractUserId(items)) await handleAdd(id);
     },
     async onRootDrop({ items }) {
-      for (const id of await extractUserId(items)) handleAdd(id);
+      for (const id of await extractUserId(items)) await handleAdd(id);
     },
   });
 
@@ -83,10 +82,10 @@ export function SpielerManagement({ championshipId, initialPlayers, allUsers }: 
       [...keys].map((key) => ({ [DRAG_TYPE]: String(key), "text/plain": String(key) })),
     acceptedDragTypes: [DRAG_TYPE],
     async onItemDrop({ items }) {
-      for (const id of await extractUserId(items)) handleRemove(id);
+      for (const id of await extractUserId(items)) await handleRemove(id);
     },
     async onRootDrop({ items }) {
-      for (const id of await extractUserId(items)) handleRemove(id);
+      for (const id of await extractUserId(items)) await handleRemove(id);
     },
   });
 
