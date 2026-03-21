@@ -17,37 +17,38 @@ interface Props {
 const DRAG_TYPE = "application/x-player-id";
 
 export function SpielerManagement({ championshipId, initialPlayers, allUsers }: Props) {
-  const [tournamentUserIds, setTournamentUserIds] = useState(
-    () => new Set(initialPlayers.map((p) => p.userId)),
+  // Ordered array of userIds — preserves nr-order, new players appended at end
+  const [orderedUserIds, setOrderedUserIds] = useState(
+    () => initialPlayers.map((p) => p.userId),
   );
   const [filter, setFilter] = useState("");
 
+  const userById = useMemo(() => new Map(allUsers.map((u) => [u.id, u])), [allUsers]);
+
   const tournamentPlayers = useMemo(
-    () => allUsers.filter((u) => tournamentUserIds.has(u.id)),
-    [allUsers, tournamentUserIds],
+    () => orderedUserIds.map((id) => userById.get(id)).filter(Boolean) as User[],
+    [orderedUserIds, userById],
   );
+
+  const tournamentUserIdSet = useMemo(() => new Set(orderedUserIds), [orderedUserIds]);
 
   const availablePlayers = useMemo(
     () =>
       allUsers.filter(
         (u) =>
-          !tournamentUserIds.has(u.id) &&
+          !tournamentUserIdSet.has(u.id) &&
           (filter === "" || u.name.toLowerCase().includes(filter.toLowerCase())),
       ),
-    [allUsers, tournamentUserIds, filter],
+    [allUsers, tournamentUserIdSet, filter],
   );
 
   async function handleAdd(userId: number) {
-    setTournamentUserIds((prev) => new Set([...prev, userId]));
+    setOrderedUserIds((prev) => [...prev, userId]);
     await addTurnierSpieler({ data: { championshipId, userId } });
   }
 
   async function handleRemove(userId: number) {
-    setTournamentUserIds((prev) => {
-      const next = new Set(prev);
-      next.delete(userId);
-      return next;
-    });
+    setOrderedUserIds((prev) => prev.filter((id) => id !== userId));
     await removeTurnierSpieler({ data: { championshipId, userId } });
   }
 
