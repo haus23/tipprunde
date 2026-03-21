@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.5.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.5.0-pre.2...v0.5.0)
+
+### 🚀 Enhancements
+
+- Add TanStack Query for optimistic player management ([d340b4c](https://github.com/haus23/tipprunde/commit/d340b4c))
+- Extend TanStack Query to all Stammdaten pages ([5c2dcf4](https://github.com/haus23/tipprunde/commit/5c2dcf4))
+
+### 🩹 Fixes
+
+- Avoid duplicate entry after creating a new Spieler ([154b334](https://github.com/haus23/tipprunde/commit/154b334))
+
 ## v0.5.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.5.0-pre.1...v0.5.0-pre.2)
