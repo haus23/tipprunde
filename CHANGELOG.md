@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.5.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.5.0-pre.1...v0.5.0-pre.2)
+
+### 🚀 Enhancements
+
+- Add new player dialog to Spieler management ([fe13353](https://github.com/haus23/tipprunde/commit/fe13353))
+
+### 🩹 Fixes
+
+- Use router.invalidate() as source of truth for player lists ([9fdcab5](https://github.com/haus23/tipprunde/commit/9fdcab5))
+
 ## v0.5.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.5.0-pre.0...v0.5.0-pre.1)
