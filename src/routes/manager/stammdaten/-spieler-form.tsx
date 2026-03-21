@@ -44,13 +44,7 @@ export function SpielerForm({ spieler }: Props) {
 
   useEffect(() => {
     if (state && "success" in state) {
-      if (!spieler) {
-        queryClient.setQueryData<Spieler[]>(queryKeys.users.all, (old = []) =>
-          [...old, state.user].sort((a, b) => a.name.localeCompare(b.name)),
-        );
-      } else {
-        queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-      }
+      queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
       dialog?.close();
     }
   }, [state, dialog]);

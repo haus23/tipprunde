@@ -4,10 +4,7 @@ import { validateForm } from "@/lib/validate-form.ts";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
 import { createPlayer, getPlayers, updatePlayer } from "./players.server.ts";
 
-export type SpielerFormState =
-  | { success: true; user: typeof import("@/lib/db/schema.ts").users.$inferSelect }
-  | { error: string }
-  | null;
+export type SpielerFormState = { success: true } | { error: string } | null;
 
 const spielerSchema = v.object({
   name: v.pipe(v.string(), v.minLength(1)),
@@ -36,8 +33,8 @@ export const createSpieler = createServerFn({ method: "POST" })
     if (!data.success) return { error: "Ungültige Eingabe." };
     const { email, ...rest } = data.output;
     try {
-      const user = await createPlayer({ ...rest, email: email ?? null });
-      return { success: true, user };
+      await createPlayer({ ...rest, email: email ?? null });
+      return { success: true };
     } catch {
       return { error: "Fehler beim Anlegen. Kürzel oder E-Mail bereits vergeben?" };
     }
