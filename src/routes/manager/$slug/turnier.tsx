@@ -2,18 +2,29 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Switch } from "@/components/(ui)/switch.tsx";
 import { fetchTurnierDetails, setTurnierStatus } from "@/lib/championships.ts";
+import { fetchPlayers } from "@/lib/players.ts";
+import { fetchTurnierSpieler } from "@/lib/participants.ts";
+import { SpielerManagement } from "./-spieler-management.tsx";
 
 export const Route = createFileRoute("/manager/$slug/turnier")({
   beforeLoad: () => ({ pageTitle: "Turnier" }),
-  loader: ({ params }) => fetchTurnierDetails({ data: params.slug }),
+  loader: async ({ params }) => {
+    const championship = await fetchTurnierDetails({ data: params.slug });
+    if (!championship) return { championship: null, tournamentPlayers: [], allUsers: [] };
+    const [tournamentPlayers, allUsers] = await Promise.all([
+      fetchTurnierSpieler({ data: championship.id }),
+      fetchPlayers(),
+    ]);
+    return { championship, tournamentPlayers, allUsers };
+  },
   head: ({ loaderData }) => ({
-    meta: [{ title: `Turnier | ${loaderData?.name}` }],
+    meta: [{ title: `Turnier | ${loaderData?.championship?.name}` }],
   }),
   component: TurnierPage,
 });
 
 function TurnierPage() {
-  const championship = Route.useLoaderData();
+  const { championship, tournamentPlayers, allUsers } = Route.useLoaderData();
 
   const hasExtraQuestions =
     championship?.ruleset?.extraQuestionRuleId === "mit-zusatzfragen";
@@ -50,9 +61,7 @@ function TurnierPage() {
           >
             <div>
               <div className="text-sm font-medium">Veröffentlicht</div>
-              <div className="text-subtle text-xs">
-                Turnier ist für Teilnehmer sichtbar
-              </div>
+              <div className="text-subtle text-xs">Turnier ist für Teilnehmer sichtbar</div>
             </div>
           </Switch>
 
@@ -64,9 +73,7 @@ function TurnierPage() {
             >
               <div>
                 <div className="text-sm font-medium">Zusatzpunkte veröffentlicht</div>
-                <div className="text-subtle text-xs">
-                  Zusatzfragen sind freigeschaltet
-                </div>
+                <div className="text-subtle text-xs">Zusatzfragen sind freigeschaltet</div>
               </div>
             </Switch>
           )}
@@ -83,6 +90,17 @@ function TurnierPage() {
               </div>
             </div>
           </Switch>
+        </div>
+      </div>
+
+      <div className="bg-surface border-surface rounded-md border p-6">
+        <h2 className="text-sm font-medium">Spieler</h2>
+        <div className="mt-4">
+          <SpielerManagement
+            championshipId={championship.id}
+            initialPlayers={tournamentPlayers}
+            allUsers={allUsers}
+          />
         </div>
       </div>
     </div>

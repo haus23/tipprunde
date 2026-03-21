@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -61,3 +61,20 @@ export const championships = sqliteTable("championships", {
     .notNull()
     .default(false),
 });
+
+export const players = sqliteTable(
+  "players",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    championshipId: integer("championship_id")
+      .notNull()
+      .references(() => championships.id),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    nr: integer("nr").notNull(),
+  },
+  (table) => ({
+    uniq: unique().on(table.championshipId, table.userId),
+  }),
+);
