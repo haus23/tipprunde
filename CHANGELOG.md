@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.5.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.5.0-pre.0...v0.5.0-pre.1)
+
+### 🚀 Enhancements
+
+- Add player management to Turnier page ([316744e](https://github.com/haus23/tipprunde/commit/316744e))
+
+### 🩹 Fixes
+
+- Sort tournament players by nr instead of alphabetically ([3e7612e](https://github.com/haus23/tipprunde/commit/3e7612e))
+
+### 🏡 Chore
+
+- Add migration for players table ([c932e34](https://github.com/haus23/tipprunde/commit/c932e34))
+
 ## v0.5.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0...v0.5.0-pre.0)
