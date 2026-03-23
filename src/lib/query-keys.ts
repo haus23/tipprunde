@@ -5,6 +5,9 @@ export const queryKeys = {
   leagues: {
     all: ["leagues"] as const,
   },
+  teams: {
+    all: ["teams"] as const,
+  },
   rulesets: {
     all: ["rulesets"] as const,
   },

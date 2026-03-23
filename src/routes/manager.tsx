@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, useMatches } from "@tanstack/react-router";
 import { ChampionshipSwitcher } from "@/components/manager/championship-switcher.tsx";
-import { FoldersIcon, LayoutDashboardIcon, PilcrowIcon, ShieldIcon, TrophyIcon, UsersIcon } from "lucide-react";
+import { FoldersIcon, LayoutDashboardIcon, PilcrowIcon, ShieldIcon, ShirtIcon, TrophyIcon, UsersIcon } from "lucide-react";
 import { Logo } from "@/components/logo.tsx";
 import { requireManager } from "@/lib/auth/functions.ts";
 import { fetchChampionships, fetchCurrentChampionship } from "@/lib/championships.ts";
@@ -111,6 +111,14 @@ function ManagerLayout() {
             >
               <ShieldIcon size={16} />
               Ligen
+            </Link>
+            <Link
+              to="/manager/stammdaten/teams"
+              activeProps={{ className: "bg-subtle" }}
+              className="hover:bg-subtle flex items-center gap-2 rounded-md px-3 py-2 text-sm"
+            >
+              <ShirtIcon size={16} />
+              Teams
             </Link>
             <Link
               to="/manager/stammdaten/spieler"
