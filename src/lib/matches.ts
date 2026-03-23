@@ -1,0 +1,40 @@
+import { createServerFn } from "@tanstack/react-start";
+import * as v from "valibot";
+import { managerMiddleware } from "@/lib/auth/middleware.ts";
+import {
+  createMatch,
+  deleteMatch,
+  getMatchesForRound,
+  updateMatch,
+} from "./matches.server.ts";
+
+export const fetchMatchesForRound = createServerFn({ method: "GET" })
+  .middleware([managerMiddleware])
+  .inputValidator(v.number())
+  .handler(({ data }) => getMatchesForRound(data));
+
+const matchDataSchema = v.object({
+  roundId: v.number(),
+  date: v.nullable(v.string()),
+  leagueId: v.nullable(v.string()),
+  hometeamId: v.nullable(v.string()),
+  awayteamId: v.nullable(v.string()),
+  result: v.nullable(v.string()),
+});
+
+export const createMatchFn = createServerFn({ method: "POST" })
+  .middleware([managerMiddleware])
+  .inputValidator(matchDataSchema)
+  .handler(({ data }) => createMatch(data));
+
+export const updateMatchFn = createServerFn({ method: "POST" })
+  .middleware([managerMiddleware])
+  .inputValidator(
+    v.object({ id: v.number(), ...v.omit(matchDataSchema, ["roundId"]).entries }),
+  )
+  .handler(({ data }) => updateMatch(data));
+
+export const deleteMatchFn = createServerFn({ method: "POST" })
+  .middleware([managerMiddleware])
+  .inputValidator(v.number())
+  .handler(({ data }) => deleteMatch(data));

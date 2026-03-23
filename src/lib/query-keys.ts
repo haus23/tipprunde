@@ -19,4 +19,7 @@ export const queryKeys = {
     byChampionship: (championshipId: number) =>
       ["players", "championship", championshipId] as const,
   },
+  matches: {
+    byRound: (roundId: number) => ["matches", "round", roundId] as const,
+  },
 };

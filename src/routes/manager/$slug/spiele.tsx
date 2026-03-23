@@ -1,16 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { MatchesTable } from "./-matches-table.tsx";
 import * as v from "valibot";
 import { fetchTurnierDetails } from "@/lib/championships.ts";
+import { fetchLeagues } from "@/lib/leagues.ts";
 import { fetchChampionshipRounds } from "@/lib/rounds.ts";
+import { fetchTeams } from "@/lib/teams.ts";
 
 export const Route = createFileRoute("/manager/$slug/spiele")({
   beforeLoad: () => ({ pageTitle: "Spiele" }),
   validateSearch: v.object({ nr: v.optional(v.number(), 1) }),
   loader: async ({ params }) => {
     const championship = await fetchTurnierDetails({ data: params.slug });
-    if (!championship) return { championship: null, rounds: [] };
-    const rounds = await fetchChampionshipRounds({ data: championship.id });
-    return { championship, rounds };
+    if (!championship) return { championship: null, rounds: [], leagues: [], teams: [] };
+    const [rounds, leagues, teams] = await Promise.all([
+      fetchChampionshipRounds({ data: championship.id }),
+      fetchLeagues(),
+      fetchTeams(),
+    ]);
+    return { championship, rounds, leagues, teams };
   },
   head: ({ loaderData }) => ({
     meta: [{ title: `Spiele | ${loaderData?.championship?.name}` }],
@@ -19,7 +26,7 @@ export const Route = createFileRoute("/manager/$slug/spiele")({
 });
 
 function SpielePage() {
-  const { championship, rounds } = Route.useLoaderData();
+  const { championship, rounds, leagues, teams } = Route.useLoaderData();
   const { nr } = Route.useSearch();
   const navigate = Route.useNavigate();
 
@@ -57,12 +64,8 @@ function SpielePage() {
 
       {activeRound && (
         <div className="bg-surface border-surface rounded-md border p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-medium">Runde {activeRound.nr}</h2>
-          </div>
-          <p className="text-subtle mt-4 text-sm">
-            Spiele werden hier eingetragen.
-          </p>
+          <h2 className="mb-4 text-sm font-medium">Runde {activeRound.nr}</h2>
+          <MatchesTable roundId={activeRound.id} leagues={leagues} teams={teams} />
         </div>
       )}
     </div>
