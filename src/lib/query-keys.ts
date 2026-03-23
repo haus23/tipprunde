@@ -2,6 +2,9 @@ export const queryKeys = {
   users: {
     all: ["users"] as const,
   },
+  leagues: {
+    all: ["leagues"] as const,
+  },
   rulesets: {
     all: ["rulesets"] as const,
   },

@@ -18,6 +18,7 @@ import { Route as ManagerSlugIndexRouteImport } from './routes/manager/$slug/ind
 import { Route as ManagerStammdatenTurniereRouteImport } from './routes/manager/stammdaten/turniere'
 import { Route as ManagerStammdatenSpielerRouteImport } from './routes/manager/stammdaten/spieler'
 import { Route as ManagerStammdatenRegelwerkeRouteImport } from './routes/manager/stammdaten/regelwerke'
+import { Route as ManagerStammdatenLigenRouteImport } from './routes/manager/stammdaten/ligen'
 import { Route as ManagerSlugTurnierRouteImport } from './routes/manager/$slug/turnier'
 import { Route as FrontauthLoginRouteImport } from './routes/_front/(auth)/login'
 
@@ -68,6 +69,11 @@ const ManagerStammdatenRegelwerkeRoute =
     path: '/stammdaten/regelwerke',
     getParentRoute: () => ManagerRoute,
   } as any)
+const ManagerStammdatenLigenRoute = ManagerStammdatenLigenRouteImport.update({
+  id: '/stammdaten/ligen',
+  path: '/stammdaten/ligen',
+  getParentRoute: () => ManagerRoute,
+} as any)
 const ManagerSlugTurnierRoute = ManagerSlugTurnierRouteImport.update({
   id: '/turnier',
   path: '/turnier',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/manager/': typeof ManagerIndexRoute
   '/login': typeof FrontauthLoginRoute
   '/manager/$slug/turnier': typeof ManagerSlugTurnierRoute
+  '/manager/stammdaten/ligen': typeof ManagerStammdatenLigenRoute
   '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
   '/manager/stammdaten/spieler': typeof ManagerStammdatenSpielerRoute
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/manager': typeof ManagerIndexRoute
   '/login': typeof FrontauthLoginRoute
   '/manager/$slug/turnier': typeof ManagerSlugTurnierRoute
+  '/manager/stammdaten/ligen': typeof ManagerStammdatenLigenRoute
   '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
   '/manager/stammdaten/spieler': typeof ManagerStammdatenSpielerRoute
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/manager/': typeof ManagerIndexRoute
   '/_front/(auth)/login': typeof FrontauthLoginRoute
   '/manager/$slug/turnier': typeof ManagerSlugTurnierRoute
+  '/manager/stammdaten/ligen': typeof ManagerStammdatenLigenRoute
   '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
   '/manager/stammdaten/spieler': typeof ManagerStammdatenSpielerRoute
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
     | '/manager/'
     | '/login'
     | '/manager/$slug/turnier'
+    | '/manager/stammdaten/ligen'
     | '/manager/stammdaten/regelwerke'
     | '/manager/stammdaten/spieler'
     | '/manager/stammdaten/turniere'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
     | '/manager'
     | '/login'
     | '/manager/$slug/turnier'
+    | '/manager/stammdaten/ligen'
     | '/manager/stammdaten/regelwerke'
     | '/manager/stammdaten/spieler'
     | '/manager/stammdaten/turniere'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
     | '/manager/'
     | '/_front/(auth)/login'
     | '/manager/$slug/turnier'
+    | '/manager/stammdaten/ligen'
     | '/manager/stammdaten/regelwerke'
     | '/manager/stammdaten/spieler'
     | '/manager/stammdaten/turniere'
@@ -224,6 +236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManagerStammdatenRegelwerkeRouteImport
       parentRoute: typeof ManagerRoute
     }
+    '/manager/stammdaten/ligen': {
+      id: '/manager/stammdaten/ligen'
+      path: '/stammdaten/ligen'
+      fullPath: '/manager/stammdaten/ligen'
+      preLoaderRoute: typeof ManagerStammdatenLigenRouteImport
+      parentRoute: typeof ManagerRoute
+    }
     '/manager/$slug/turnier': {
       id: '/manager/$slug/turnier'
       path: '/turnier'
@@ -268,6 +287,7 @@ const ManagerSlugRouteWithChildren = ManagerSlugRoute._addFileChildren(
 interface ManagerRouteChildren {
   ManagerSlugRoute: typeof ManagerSlugRouteWithChildren
   ManagerIndexRoute: typeof ManagerIndexRoute
+  ManagerStammdatenLigenRoute: typeof ManagerStammdatenLigenRoute
   ManagerStammdatenRegelwerkeRoute: typeof ManagerStammdatenRegelwerkeRoute
   ManagerStammdatenSpielerRoute: typeof ManagerStammdatenSpielerRoute
   ManagerStammdatenTurniereRoute: typeof ManagerStammdatenTurniereRoute
@@ -276,6 +296,7 @@ interface ManagerRouteChildren {
 const ManagerRouteChildren: ManagerRouteChildren = {
   ManagerSlugRoute: ManagerSlugRouteWithChildren,
   ManagerIndexRoute: ManagerIndexRoute,
+  ManagerStammdatenLigenRoute: ManagerStammdatenLigenRoute,
   ManagerStammdatenRegelwerkeRoute: ManagerStammdatenRegelwerkeRoute,
   ManagerStammdatenSpielerRoute: ManagerStammdatenSpielerRoute,
   ManagerStammdatenTurniereRoute: ManagerStammdatenTurniereRoute,

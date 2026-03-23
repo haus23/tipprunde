@@ -36,6 +36,12 @@ export const totpCodes = sqliteTable("totp_codes", {
   attempts: integer("attempts").notNull().default(0),
 });
 
+export const leagues = sqliteTable("leagues", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  shortName: text("short_name").notNull(),
+});
+
 export const rulesets = sqliteTable("rulesets", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
