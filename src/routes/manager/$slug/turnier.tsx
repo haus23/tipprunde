@@ -4,18 +4,21 @@ import { Switch } from "@/components/(ui)/switch.tsx";
 import { fetchTurnierDetails, setTurnierStatus } from "@/lib/championships.ts";
 import { fetchPlayers } from "@/lib/players.ts";
 import { fetchTurnierSpieler } from "@/lib/participants.ts";
+import { fetchChampionshipRounds } from "@/lib/rounds.ts";
+import { RundenManagement } from "./-runden-management.tsx";
 import { SpielerManagement } from "./-spieler-management.tsx";
 
 export const Route = createFileRoute("/manager/$slug/turnier")({
   beforeLoad: () => ({ pageTitle: "Turnier" }),
   loader: async ({ params }) => {
     const championship = await fetchTurnierDetails({ data: params.slug });
-    if (!championship) return { championship: null, tournamentPlayers: [], allUsers: [] };
-    const [tournamentPlayers, allUsers] = await Promise.all([
+    if (!championship) return { championship: null, rounds: [], tournamentPlayers: [], allUsers: [] };
+    const [rounds, tournamentPlayers, allUsers] = await Promise.all([
+      fetchChampionshipRounds({ data: championship.id }),
       fetchTurnierSpieler({ data: championship.id }),
       fetchPlayers(),
     ]);
-    return { championship, tournamentPlayers, allUsers };
+    return { championship, rounds, tournamentPlayers, allUsers };
   },
   head: ({ loaderData }) => ({
     meta: [{ title: `Turnier | ${loaderData?.championship?.name}` }],
@@ -24,7 +27,7 @@ export const Route = createFileRoute("/manager/$slug/turnier")({
 });
 
 function TurnierPage() {
-  const { championship, tournamentPlayers, allUsers } = Route.useLoaderData();
+  const { championship, rounds, tournamentPlayers, allUsers } = Route.useLoaderData();
 
   const hasExtraQuestions =
     championship?.ruleset?.extraQuestionRuleId === "mit-zusatzfragen";
@@ -90,6 +93,17 @@ function TurnierPage() {
               </div>
             </div>
           </Switch>
+        </div>
+      </div>
+
+      <div className="bg-surface border-surface rounded-md border p-6">
+        <h2 className="text-sm font-medium">Runden</h2>
+        <div className="mt-4">
+          <RundenManagement
+            championshipId={championship.id}
+            slug={championship.slug}
+            initialRounds={rounds}
+          />
         </div>
       </div>
 

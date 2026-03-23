@@ -21,6 +21,7 @@ import { Route as ManagerStammdatenSpielerRouteImport } from './routes/manager/s
 import { Route as ManagerStammdatenRegelwerkeRouteImport } from './routes/manager/stammdaten/regelwerke'
 import { Route as ManagerStammdatenLigenRouteImport } from './routes/manager/stammdaten/ligen'
 import { Route as ManagerSlugTurnierRouteImport } from './routes/manager/$slug/turnier'
+import { Route as ManagerSlugSpieleRouteImport } from './routes/manager/$slug/spiele'
 import { Route as FrontauthLoginRouteImport } from './routes/_front/(auth)/login'
 
 const ManagerRoute = ManagerRouteImport.update({
@@ -85,6 +86,11 @@ const ManagerSlugTurnierRoute = ManagerSlugTurnierRouteImport.update({
   path: '/turnier',
   getParentRoute: () => ManagerSlugRoute,
 } as any)
+const ManagerSlugSpieleRoute = ManagerSlugSpieleRouteImport.update({
+  id: '/spiele',
+  path: '/spiele',
+  getParentRoute: () => ManagerSlugRoute,
+} as any)
 const FrontauthLoginRoute = FrontauthLoginRouteImport.update({
   id: '/(auth)/login',
   path: '/login',
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/manager/$slug': typeof ManagerSlugRouteWithChildren
   '/manager/': typeof ManagerIndexRoute
   '/login': typeof FrontauthLoginRoute
+  '/manager/$slug/spiele': typeof ManagerSlugSpieleRoute
   '/manager/$slug/turnier': typeof ManagerSlugTurnierRoute
   '/manager/stammdaten/ligen': typeof ManagerStammdatenLigenRoute
   '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/manager': typeof ManagerIndexRoute
   '/login': typeof FrontauthLoginRoute
+  '/manager/$slug/spiele': typeof ManagerSlugSpieleRoute
   '/manager/$slug/turnier': typeof ManagerSlugTurnierRoute
   '/manager/stammdaten/ligen': typeof ManagerStammdatenLigenRoute
   '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/manager/$slug': typeof ManagerSlugRouteWithChildren
   '/manager/': typeof ManagerIndexRoute
   '/_front/(auth)/login': typeof FrontauthLoginRoute
+  '/manager/$slug/spiele': typeof ManagerSlugSpieleRoute
   '/manager/$slug/turnier': typeof ManagerSlugTurnierRoute
   '/manager/stammdaten/ligen': typeof ManagerStammdatenLigenRoute
   '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeRoute
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/manager/$slug'
     | '/manager/'
     | '/login'
+    | '/manager/$slug/spiele'
     | '/manager/$slug/turnier'
     | '/manager/stammdaten/ligen'
     | '/manager/stammdaten/regelwerke'
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/'
     | '/manager'
     | '/login'
+    | '/manager/$slug/spiele'
     | '/manager/$slug/turnier'
     | '/manager/stammdaten/ligen'
     | '/manager/stammdaten/regelwerke'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/manager/$slug'
     | '/manager/'
     | '/_front/(auth)/login'
+    | '/manager/$slug/spiele'
     | '/manager/$slug/turnier'
     | '/manager/stammdaten/ligen'
     | '/manager/stammdaten/regelwerke'
@@ -269,6 +281,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManagerSlugTurnierRouteImport
       parentRoute: typeof ManagerSlugRoute
     }
+    '/manager/$slug/spiele': {
+      id: '/manager/$slug/spiele'
+      path: '/spiele'
+      fullPath: '/manager/$slug/spiele'
+      preLoaderRoute: typeof ManagerSlugSpieleRouteImport
+      parentRoute: typeof ManagerSlugRoute
+    }
     '/_front/(auth)/login': {
       id: '/_front/(auth)/login'
       path: '/login'
@@ -290,11 +309,13 @@ const FrontRouteChildren: FrontRouteChildren = {
 const FrontRouteWithChildren = FrontRoute._addFileChildren(FrontRouteChildren)
 
 interface ManagerSlugRouteChildren {
+  ManagerSlugSpieleRoute: typeof ManagerSlugSpieleRoute
   ManagerSlugTurnierRoute: typeof ManagerSlugTurnierRoute
   ManagerSlugIndexRoute: typeof ManagerSlugIndexRoute
 }
 
 const ManagerSlugRouteChildren: ManagerSlugRouteChildren = {
+  ManagerSlugSpieleRoute: ManagerSlugSpieleRoute,
   ManagerSlugTurnierRoute: ManagerSlugTurnierRoute,
   ManagerSlugIndexRoute: ManagerSlugIndexRoute,
 }

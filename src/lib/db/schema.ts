@@ -74,6 +74,37 @@ export const championships = sqliteTable("championships", {
     .default(false),
 });
 
+export const rounds = sqliteTable(
+  "rounds",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    championshipId: integer("championship_id")
+      .notNull()
+      .references(() => championships.id),
+    nr: integer("nr").notNull(),
+    published: integer("published", { mode: "boolean" }).notNull().default(false),
+    tipsPublished: integer("tips_published", { mode: "boolean" }).notNull().default(false),
+    completed: integer("completed", { mode: "boolean" }).notNull().default(false),
+    isDoubleRound: integer("is_double_round", { mode: "boolean" }),
+  },
+  (table) => ({
+    uniq: unique().on(table.championshipId, table.nr),
+  }),
+);
+
+export const matches = sqliteTable("matches", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  roundId: integer("round_id")
+    .notNull()
+    .references(() => rounds.id),
+  nr: integer("nr").notNull(),
+  date: text("date"),
+  leagueId: text("league_id").references(() => leagues.id),
+  hometeamId: text("hometeam_id").references(() => teams.id),
+  awayteamId: text("awayteam_id").references(() => teams.id),
+  result: text("result"),
+});
+
 export const players = sqliteTable(
   "players",
   {
