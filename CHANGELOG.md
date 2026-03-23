@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.6.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.5.0...v0.6.0-pre.0)
+
+### 🚀 Enhancements
+
+- Add Ligen Stammdaten page ([b8aaf3d](https://github.com/haus23/tipprunde/commit/b8aaf3d))
+
+### 💅 Refactors
+
+- Replace slug/Kürzel with Kennung across Stammdaten ([6064ab4](https://github.com/haus23/tipprunde/commit/6064ab4))
+
 ## v0.5.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.5.0-pre.2...v0.5.0)
