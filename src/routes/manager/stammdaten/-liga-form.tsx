@@ -34,7 +34,7 @@ export function LigaForm({ liga }: Props) {
 
       {!liga && (
         <TextField name="id" isRequired className="flex flex-col gap-1">
-          <Label>ID (Slug)</Label>
+          <Label>Kennung (eindeutig)</Label>
           <Input />
           <FieldError>Pflichtfeld.</FieldError>
         </TextField>

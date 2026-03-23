@@ -76,7 +76,7 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
         onChange={handleSlugChange}
         className="flex flex-col gap-1"
       >
-        <Label>Kürzel</Label>
+        <Label>Kennung (eindeutig)</Label>
         <Input />
         <FieldError>Pflichtfeld.</FieldError>
       </TextField>

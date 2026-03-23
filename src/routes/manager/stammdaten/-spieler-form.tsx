@@ -88,7 +88,7 @@ export function SpielerForm({ spieler }: Props) {
         onChange={handleSlugChange}
         className="flex flex-col gap-1"
       >
-        <Label>Kürzel</Label>
+        <Label>Kennung</Label>
         <Input />
         <FieldError>Pflichtfeld.</FieldError>
       </TextField>

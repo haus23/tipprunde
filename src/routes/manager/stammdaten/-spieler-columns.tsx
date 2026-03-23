@@ -21,7 +21,7 @@ export function createSpielerColumns(
     },
     {
       accessorKey: "slug",
-      header: "Kürzel",
+      header: "Kennung",
       meta: { className: "hidden sm:table-cell" },
     },
     {
