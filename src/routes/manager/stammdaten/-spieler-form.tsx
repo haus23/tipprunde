@@ -8,6 +8,7 @@ import { useServerAction } from "@/lib/hooks/server-action.ts";
 import { createSpieler, updateSpieler } from "@/lib/players.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
+import { slugify } from "@/lib/slugify.ts";
 import type { users } from "@/lib/db/schema.ts";
 
 type Spieler = typeof users.$inferSelect;
@@ -17,16 +18,6 @@ const ROLES: { value: Spieler["role"]; label: string }[] = [
   { value: "manager", label: "Manager" },
   { value: "admin", label: "Admin" },
 ];
-
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .replace(/ä/g, "ae")
-    .replace(/ö/g, "oe")
-    .replace(/ü/g, "ue")
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
 
 interface Props {
   spieler?: Spieler;

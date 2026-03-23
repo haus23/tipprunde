@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { OverlayTriggerStateContext } from "react-aria-components";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
@@ -7,6 +7,7 @@ import { useServerAction } from "@/lib/hooks/server-action.ts";
 import { createTeamFn, updateTeamFn } from "@/lib/teams.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
+import { slugify } from "@/lib/slugify.ts";
 import type { teams } from "@/lib/db/schema.ts";
 
 type Team = typeof teams.$inferSelect;
@@ -20,6 +21,11 @@ export function TeamForm({ team }: Props) {
   const [state, formAction, pending] = useServerAction(serverAction);
 
   const dialog = useContext(OverlayTriggerStateContext);
+  const [name, setName] = useState(team?.name ?? "");
+  const [shortName, setShortName] = useState(team?.shortName ?? "");
+  const [shortNameDirty, setShortNameDirty] = useState(false);
+  const [id, setId] = useState(team?.id ?? "");
+  const [idDirty, setIdDirty] = useState(false);
 
   useEffect(() => {
     if (state && "success" in state) {
@@ -28,22 +34,24 @@ export function TeamForm({ team }: Props) {
     }
   }, [state, dialog]);
 
+  function handleNameBlur() {
+    if (!team && !shortNameDirty) setShortName(name);
+  }
+
+  function handleShortNameBlur() {
+    if (!team && !idDirty) setId(slugify(shortName));
+  }
+
   return (
     <Form action={formAction} className="flex flex-col gap-4">
       {team && <input type="hidden" name="id" value={team.id} />}
 
-      {!team && (
-        <TextField name="id" isRequired className="flex flex-col gap-1">
-          <Label>Kennung (eindeutig)</Label>
-          <Input />
-          <FieldError>Pflichtfeld.</FieldError>
-        </TextField>
-      )}
-
       <TextField
         name="name"
         isRequired
-        defaultValue={team?.name ?? ""}
+        value={name}
+        onChange={setName}
+        onBlur={handleNameBlur}
         className="flex flex-col gap-1"
       >
         <Label>Name</Label>
@@ -54,13 +62,29 @@ export function TeamForm({ team }: Props) {
       <TextField
         name="shortName"
         isRequired
-        defaultValue={team?.shortName ?? ""}
+        value={shortName}
+        onChange={(v) => { setShortName(v); setShortNameDirty(true); }}
+        onBlur={handleShortNameBlur}
         className="flex flex-col gap-1"
       >
         <Label>Kurzname</Label>
         <Input />
         <FieldError>Pflichtfeld.</FieldError>
       </TextField>
+
+      {!team && (
+        <TextField
+          name="id"
+          isRequired
+          value={id}
+          onChange={(v) => { setId(v); setIdDirty(true); }}
+          className="flex flex-col gap-1"
+        >
+          <Label>Kennung (eindeutig)</Label>
+          <Input />
+          <FieldError>Pflichtfeld.</FieldError>
+        </TextField>
+      )}
 
       {state && "error" in state && (
         <p className="text-error text-sm">{state.error}</p>

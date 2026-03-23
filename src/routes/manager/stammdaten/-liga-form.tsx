@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { OverlayTriggerStateContext } from "react-aria-components";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
@@ -7,6 +7,7 @@ import { useServerAction } from "@/lib/hooks/server-action.ts";
 import { createLiga, updateLiga } from "@/lib/leagues.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
+import { slugify } from "@/lib/slugify.ts";
 import type { leagues } from "@/lib/db/schema.ts";
 
 type Liga = typeof leagues.$inferSelect;
@@ -20,6 +21,11 @@ export function LigaForm({ liga }: Props) {
   const [state, formAction, pending] = useServerAction(serverAction);
 
   const dialog = useContext(OverlayTriggerStateContext);
+  const [name, setName] = useState(liga?.name ?? "");
+  const [shortName, setShortName] = useState(liga?.shortName ?? "");
+  const [shortNameDirty, setShortNameDirty] = useState(false);
+  const [id, setId] = useState(liga?.id ?? "");
+  const [idDirty, setIdDirty] = useState(false);
 
   useEffect(() => {
     if (state && "success" in state) {
@@ -28,22 +34,24 @@ export function LigaForm({ liga }: Props) {
     }
   }, [state, dialog]);
 
+  function handleNameBlur() {
+    if (!liga && !shortNameDirty) setShortName(name);
+  }
+
+  function handleShortNameBlur() {
+    if (!liga && !idDirty) setId(slugify(shortName));
+  }
+
   return (
     <Form action={formAction} className="flex flex-col gap-4">
       {liga && <input type="hidden" name="id" value={liga.id} />}
 
-      {!liga && (
-        <TextField name="id" isRequired className="flex flex-col gap-1">
-          <Label>Kennung (eindeutig)</Label>
-          <Input />
-          <FieldError>Pflichtfeld.</FieldError>
-        </TextField>
-      )}
-
       <TextField
         name="name"
         isRequired
-        defaultValue={liga?.name ?? ""}
+        value={name}
+        onChange={setName}
+        onBlur={handleNameBlur}
         className="flex flex-col gap-1"
       >
         <Label>Name</Label>
@@ -54,13 +62,29 @@ export function LigaForm({ liga }: Props) {
       <TextField
         name="shortName"
         isRequired
-        defaultValue={liga?.shortName ?? ""}
+        value={shortName}
+        onChange={(v) => { setShortName(v); setShortNameDirty(true); }}
+        onBlur={handleShortNameBlur}
         className="flex flex-col gap-1"
       >
         <Label>Kurzname</Label>
         <Input />
         <FieldError>Pflichtfeld.</FieldError>
       </TextField>
+
+      {!liga && (
+        <TextField
+          name="id"
+          isRequired
+          value={id}
+          onChange={(v) => { setId(v); setIdDirty(true); }}
+          className="flex flex-col gap-1"
+        >
+          <Label>Kennung (eindeutig)</Label>
+          <Input />
+          <FieldError>Pflichtfeld.</FieldError>
+        </TextField>
+      )}
 
       {state && "error" in state && (
         <p className="text-error text-sm">{state.error}</p>
