@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.6.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.0...v0.6.0-pre.1)
+
+### 🚀 Enhancements
+
+- Add Teams Stammdaten page ([f90a795](https://github.com/haus23/tipprunde/commit/f90a795))
+- Auto-derive Kennung from name in Stammdaten forms ([bad56d1](https://github.com/haus23/tipprunde/commit/bad56d1))
+
+### 💅 Refactors
+
+- Remove Kennung column from Spieler table ([4cbed7a](https://github.com/haus23/tipprunde/commit/4cbed7a))
+
 ## v0.6.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.5.0...v0.6.0-pre.0)
