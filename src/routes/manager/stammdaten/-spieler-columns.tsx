@@ -16,15 +16,6 @@ export function createSpielerColumns(
 ): ColumnDef<Spieler>[] {
   return [
     {
-      accessorKey: "id",
-      header: "#",
-    },
-    {
-      accessorKey: "slug",
-      header: "Kennung",
-      meta: { className: "hidden sm:table-cell" },
-    },
-    {
       accessorKey: "name",
       header: "Name",
       meta: { className: "w-full" },
