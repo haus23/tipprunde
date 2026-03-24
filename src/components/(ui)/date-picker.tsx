@@ -14,6 +14,7 @@ import {
   DatePicker as RACDatePicker,
   DateSegment,
   Dialog,
+  Group,
   Heading,
   Popover,
 } from "react-aria-components";
@@ -36,7 +37,7 @@ export function DatePicker({ label, value, onChange, className }: Props) {
       className={`flex flex-col gap-1 ${className ?? ""}`}
     >
       {label && <Label>{label}</Label>}
-      <div className="border-input data-hovered:border-input-hovered focus-within:ring-focus flex items-center rounded-md border bg-transparent px-3 py-2 text-sm focus-within:ring-2">
+      <Group className="border-input data-hovered:border-input-hovered focus-within:ring-focus flex items-center rounded-md border bg-transparent px-3 py-2 text-sm focus-within:ring-2">
         <DateInput className="flex flex-1 items-center gap-px">
           {(segment) => (
             <DateSegment
@@ -48,7 +49,7 @@ export function DatePicker({ label, value, onChange, className }: Props) {
         <Button className="text-subtle data-hovered:text-base ml-2 outline-none">
           <CalendarIcon size={14} />
         </Button>
-      </div>
+      </Group>
       <Popover className="border-input bg-base rounded-md border shadow-md">
         <Dialog className="p-3 outline-none">
           <Calendar className="flex flex-col gap-3">
