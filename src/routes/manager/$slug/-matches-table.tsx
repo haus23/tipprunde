@@ -60,7 +60,7 @@ export function MatchesTable({ roundId, leagues, teams }: Props) {
             className="grid grid-cols-[2rem_7rem_5rem_1fr_2rem_1fr_2rem] items-center gap-2 rounded px-2 py-1 text-sm hover:bg-subtle/50"
           >
             <span className="text-right text-subtle">{m.nr}.</span>
-            <span className="text-subtle">{m.date ?? "—"}</span>
+            <span className="text-subtle">{m.date ? m.date.split("-").reverse().join(".") : "—"}</span>
             <span className="truncate text-subtle">{m.leagueId ? (leagueById[m.leagueId]?.shortName ?? "—") : "—"}</span>
             <span className="truncate">{m.hometeamId ? (teamById[m.hometeamId]?.shortName ?? "—") : "—"}</span>
             <span className="text-center text-subtle">vs</span>
