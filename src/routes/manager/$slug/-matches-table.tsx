@@ -10,11 +10,7 @@ import { MatchForm } from "./-match-form.tsx";
 
 type League = typeof leagues.$inferSelect;
 type Team = typeof teams.$inferSelect;
-type Match = typeof matches.$inferSelect & {
-  league: League | null;
-  hometeam: Team | null;
-  awayteam: Team | null;
-};
+type Match = typeof matches.$inferSelect;
 
 interface Props {
   roundId: number;
@@ -25,6 +21,9 @@ interface Props {
 export function MatchesTable({ roundId, leagues, teams }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Match | undefined>(undefined);
+
+  const leagueById = Object.fromEntries(leagues.map((l) => [l.id, l]));
+  const teamById = Object.fromEntries(teams.map((t) => [t.id, t]));
 
   const { data: matchList = [] } = useQuery({
     queryKey: queryKeys.matches.byRound(roundId),
@@ -45,33 +44,31 @@ export function MatchesTable({ roundId, leagues, teams }: Props) {
     <>
       <div className="flex flex-col gap-1">
         {matchList.length > 0 && (
-          <div className="mb-1 grid grid-cols-[2rem_7rem_5rem_1fr_2rem_1fr_5rem_2rem] gap-2 px-2 text-xs font-medium text-subtle">
+          <div className="mb-1 grid grid-cols-[2rem_7rem_5rem_1fr_2rem_1fr_2rem] gap-2 px-2 text-xs font-medium text-subtle">
             <span className="text-right">#</span>
             <span>Datum</span>
             <span>Liga</span>
             <span>Heim</span>
             <span />
             <span>Auswärts</span>
-            <span className="text-center">Erg.</span>
             <span />
           </div>
         )}
         {matchList.map((m) => (
           <div
             key={m.id}
-            className="grid grid-cols-[2rem_7rem_5rem_1fr_2rem_1fr_5rem_2rem] items-center gap-2 rounded px-2 py-1 text-sm hover:bg-subtle/50"
+            className="grid grid-cols-[2rem_7rem_5rem_1fr_2rem_1fr_2rem] items-center gap-2 rounded px-2 py-1 text-sm hover:bg-subtle/50"
           >
             <span className="text-right text-subtle">{m.nr}.</span>
             <span className="text-subtle">{m.date ?? "—"}</span>
-            <span className="truncate text-subtle">{m.league?.shortName ?? "—"}</span>
-            <span className="truncate">{m.hometeam?.shortName ?? "—"}</span>
+            <span className="truncate text-subtle">{m.leagueId ? (leagueById[m.leagueId]?.shortName ?? "—") : "—"}</span>
+            <span className="truncate">{m.hometeamId ? (teamById[m.hometeamId]?.shortName ?? "—") : "—"}</span>
             <span className="text-center text-subtle">vs</span>
-            <span className="truncate">{m.awayteam?.shortName ?? "—"}</span>
-            <span className="text-center">{m.result ?? "—"}</span>
+            <span className="truncate">{m.awayteamId ? (teamById[m.awayteamId]?.shortName ?? "—") : "—"}</span>
             <Button
               variant="secondary"
               size="icon"
-              onPress={() => openEdit(m as Match)}
+              onPress={() => openEdit(m)}
               aria-label="Spiel bearbeiten"
             >
               <PencilIcon size={13} />

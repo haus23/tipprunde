@@ -5,7 +5,6 @@ import { Button } from "@/components/(ui)/button.tsx";
 import { ComboBox } from "@/components/(ui)/combobox.tsx";
 import { DatePicker } from "@/components/(ui)/date-picker.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
-import { Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
 import { createMatchFn, updateMatchFn } from "@/lib/matches.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
@@ -13,11 +12,7 @@ import type { leagues, matches, teams } from "@/lib/db/schema.ts";
 
 type League = typeof leagues.$inferSelect;
 type Team = typeof teams.$inferSelect;
-type Match = typeof matches.$inferSelect & {
-  league: League | null;
-  hometeam: Team | null;
-  awayteam: Team | null;
-};
+type Match = typeof matches.$inferSelect;
 
 interface Props {
   match?: Match;
@@ -35,7 +30,6 @@ export function MatchForm({ match, roundId, leagues, teams }: Props) {
   const [leagueId, setLeagueId] = useState<string | null>(match?.leagueId ?? null);
   const [hometeamId, setHometeamId] = useState<string | null>(match?.hometeamId ?? null);
   const [awayteamId, setAwayteamId] = useState<string | null>(match?.awayteamId ?? null);
-  const [result, setResult] = useState(match?.result ?? "");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -44,18 +38,11 @@ export function MatchForm({ match, roundId, leagues, teams }: Props) {
     try {
       if (match) {
         await updateMatchFn({
-          data: {
-            id: match.id,
-            date,
-            leagueId,
-            hometeamId,
-            awayteamId,
-            result: result || null,
-          },
+          data: { id: match.id, date, leagueId, hometeamId, awayteamId, result: null },
         });
       } else {
         await createMatchFn({
-          data: { roundId, date, leagueId, hometeamId, awayteamId, result: result || null },
+          data: { roundId, date, leagueId, hometeamId, awayteamId, result: null },
         });
       }
       queryClient.invalidateQueries({ queryKey: queryKeys.matches.byRound(roundId) });
@@ -93,15 +80,6 @@ export function MatchForm({ match, roundId, leagues, teams }: Props) {
         onSelectionChange={(key) => setAwayteamId(key as string | null)}
         placeholder="Team wählen …"
       />
-
-      <TextField
-        value={result}
-        onChange={setResult}
-        className="flex flex-col gap-1"
-      >
-        <Label>Ergebnis</Label>
-        <Input placeholder="z.B. 2:1" />
-      </TextField>
 
       {error && <p className="text-error text-sm">{error}</p>}
 

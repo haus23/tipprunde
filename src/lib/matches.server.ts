@@ -18,9 +18,8 @@ interface UpdateMatchInput extends Omit<MatchInput, "roundId"> {
 
 export const getMatchesForRound = createServerOnlyFn(async (roundId: number) =>
   db.query.matches.findMany({
-    where: eq(matches.roundId, roundId),
+    where: { roundId },
     orderBy: { nr: "asc" },
-    with: { league: true, hometeam: true, awayteam: true },
   }),
 );
 
