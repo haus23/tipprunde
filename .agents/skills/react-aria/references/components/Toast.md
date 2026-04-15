@@ -35,14 +35,14 @@ import {
   UNSTABLE_Toast as Toast,
   UNSTABLE_ToastQueue as ToastQueue,
   UNSTABLE_ToastContent as ToastContent,
-  ToastProps,
-  Text
-} from 'react-aria-components';
+  type ToastProps,
+  Text,
+} from 'react-aria-components/Toast';
 import {Button} from './Button';
 import {X} from 'lucide-react';
 import './Toast.css';
 import {flushSync} from 'react-dom';
-import { CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 
 // Define the type for your toast content. This interface defines the properties of your toast content, affecting what you
 // pass to the queue calls as arguments.
@@ -232,16 +232,16 @@ function Example(props) {
 
 ```tsx
 'use client';
-import React, { CSSProperties } from 'react';
+import React, { type CSSProperties } from 'react';
 import {
   UNSTABLE_ToastRegion as ToastRegion,
   UNSTABLE_Toast as Toast,
   UNSTABLE_ToastQueue as ToastQueue,
   UNSTABLE_ToastContent as ToastContent,
-  ToastProps,
+  type ToastProps,
   Button,
-  Text
-} from 'react-aria-components';
+  Text,
+} from 'react-aria-components/Toast';
 import {XIcon} from 'lucide-react';
 import {composeTailwindRenderProps} from './utils';
 import {flushSync} from 'react-dom';

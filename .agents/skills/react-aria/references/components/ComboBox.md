@@ -23,18 +23,17 @@ import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 'use client';
 import {
   ComboBox as AriaComboBox,
-  ComboBoxProps as AriaComboBoxProps,
+  type ComboBoxProps as AriaComboBoxProps,
   ComboBoxValue,
   Input,
-  ListBoxItemProps,
-  ListBoxProps,
-  ValidationResult
-} from 'react-aria-components';
+  type ListBoxItemProps,
+  type ListBoxProps,
+  type ValidationResult,
+} from 'react-aria-components/ComboBox';
 import {Label, FieldError, FieldButton, Description} from './Form';
 import {DropdownItem, DropdownListBox} from './ListBox';
 import {Popover} from './Popover';
 import {ChevronDown} from 'lucide-react';
-
 import './ComboBox.css';
 
 export interface ComboBoxProps<T extends object, M extends 'single' | 'multiple'>
@@ -137,14 +136,14 @@ import { ChevronDown } from 'lucide-react';
 import React from 'react';
 import {
   ComboBox as AriaComboBox,
-  ComboBoxProps as AriaComboBoxProps,
+  type ComboBoxProps as AriaComboBoxProps,
   ComboBoxValue,
   ListBox,
-  ListBoxItemProps,
-  ValidationResult
-} from 'react-aria-components';
+  type ListBoxItemProps,
+  type ValidationResult,
+} from 'react-aria-components/ComboBox';
 import { Description, FieldError, FieldGroup, Input, Label } from './Field';
-import { DropdownItem, DropdownSection, DropdownSectionProps } from './ListBox';
+import { DropdownItem, DropdownSection, type DropdownSectionProps } from './ListBox';
 import { Popover } from './Popover';
 import { composeTailwindRenderProps } from './utils';
 import { FieldButton } from './FieldButton';
@@ -199,7 +198,8 @@ The following example shows a dynamic collection of items, grouped into sections
 
 ```tsx
 import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
-import {ListBoxSection, Collection, Header} from 'react-aria-components';
+import {ListBoxSection, Header} from 'vanilla-starter/ListBox';
+import {Collection} from 'react-aria-components/Collection';
 
 function Example() {
   /*- begin collapse -*/
@@ -252,7 +252,7 @@ function Example() {
 Use the `ComboBoxValue` render prop function to display the selected items as a [TagGroup](TagGroup.md).
 
 ```tsx
-import {ComboBox, ComboBoxValue, Input} from 'react-aria-components';
+import {ComboBox, ComboBoxValue, Input} from 'react-aria-components/ComboBox';
 import {ComboBoxListBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 import {Label, FieldButton} from 'vanilla-starter/Form';
 import {Popover} from 'vanilla-starter/Popover';
@@ -355,7 +355,7 @@ Use the `defaultValue` or `value` prop to set the selected item. The value corre
 ```tsx
 import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 import {useState} from 'react';
-import type {Key} from 'react-aria-components';
+import type {Key} from 'react-aria-components/ComboBox';
 
 function Example() {
   let [animal, setAnimal] = useState<Key | null>("bison");
@@ -422,7 +422,7 @@ function Example(props) {
 Both `inputValue` and `value` can be controlled simultaneously. However, each interaction will only trigger either `onInputChange` or `onChange`, not both. When controlling both props, you must update both values accordingly.
 
 ```tsx
-import type {Key} from 'react-aria-components';
+import type {Key} from 'react-aria-components/ComboBox';
 import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 import {useState} from 'react';
 
@@ -554,9 +554,9 @@ import {Form} from 'vanilla-starter/Form';;
 
 Use the `menuTrigger` prop to control when the popover opens:
 
-* `input` (default): popover opens when the user edits the input text.
-* `focus`: popover opens when the user focuses the input.
-* `manual`: popover only opens when the user presses the trigger button or uses the arrow keys.
+- `input` (default): popover opens when the user edits the input text.
+- `focus`: popover opens when the user focuses the input.
+- `manual`: popover only opens when the user presses the trigger button or uses the arrow keys.
 
 Use `allowsEmptyCollection` to keep the popover open when there are no items available in the list.
 
@@ -605,7 +605,6 @@ import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 | `defaultFilter` | `((textValue: string, inputValue: string) => boolean) | undefined` | — | The filter function used to determine if a option should be included in the combo box list. |
 | `defaultInputValue` | `string | undefined` | — | The default value of the ComboBox input (uncontrolled). |
 | `defaultItems` | `Iterable<T> | undefined` | — | The list of ComboBox items (uncontrolled). |
-| `defaultSelectedKey` | `Key | null | undefined` | — | The initial selected key in the collection (uncontrolled). |
 | `defaultValue` | `ValueType<M> | undefined` | — | The default value (uncontrolled). |
 | `dir` | `string | undefined` | — |  |
 | `disabledKeys` | `Iterable<Key> | undefined` | — | The item keys that are disabled. These items cannot be selected, focused, or otherwise interacted with. |
@@ -632,7 +631,7 @@ import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 | `onAuxClick` | `React.MouseEventHandler<HTMLDivElement> | undefined` | — |  |
 | `onAuxClickCapture` | `React.MouseEventHandler<HTMLDivElement> | undefined` | — |  |
 | `onBlur` | `((e: React.FocusEvent<HTMLInputElement, Element>) => void) | undefined` | — | Handler that is called when the element loses focus. |
-| `onChange` | `((value: ValueType<M>) => void) | undefined` | — | Handler that is called when the value changes. |
+| `onChange` | `((value: ChangeValueType<M>) => void) | undefined` | — | Handler that is called when the value changes. |
 | `onClick` | `React.MouseEventHandler<HTMLDivElement> | undefined` | — |  |
 | `onClickCapture` | `React.MouseEventHandler<HTMLDivElement> | undefined` | — |  |
 | `onContextMenu` | `React.MouseEventHandler<HTMLDivElement> | undefined` | — |  |
@@ -677,7 +676,6 @@ import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 | `onPointerUpCapture` | `React.PointerEventHandler<HTMLDivElement> | undefined` | — |  |
 | `onScroll` | `React.UIEventHandler<HTMLDivElement> | undefined` | — |  |
 | `onScrollCapture` | `React.UIEventHandler<HTMLDivElement> | undefined` | — |  |
-| `onSelectionChange` | `((key: Key | null) => void) | undefined` | — | Handler that is called when the selection changes. |
 | `onTouchCancel` | `React.TouchEventHandler<HTMLDivElement> | undefined` | — |  |
 | `onTouchCancelCapture` | `React.TouchEventHandler<HTMLDivElement> | undefined` | — |  |
 | `onTouchEnd` | `React.TouchEventHandler<HTMLDivElement> | undefined` | — |  |
@@ -697,13 +695,12 @@ import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 | `onWheel` | `React.WheelEventHandler<HTMLDivElement> | undefined` | — |  |
 | `onWheelCapture` | `React.WheelEventHandler<HTMLDivElement> | undefined` | — |  |
 | `render` | `DOMRenderFunction<"div", ComboBoxRenderProps> | undefined` | — | Overrides the default DOM element with a custom render function. This allows rendering existing components with built-in styles and behaviors such as router links, animation libraries, and pre-styled components. Requirements: \* You must render the expected element type (e.g. if `<button>` is expected, you cannot render an `<a>`). \* Only a single root DOM element can be rendered (no fragments). \* You must pass through props and ref to the underlying DOM element, merging with your own prop as appropriate. |
-| `selectedKey` | `Key | null | undefined` | — | The currently selected key in the collection (controlled). |
 | `selectionMode` | `M | undefined` | 'single' | Whether single or multiple selection is enabled. |
 | `shouldFocusWrap` | `boolean | undefined` | — | Whether keyboard navigation is circular. |
 | `slot` | `string | null | undefined` | — | A slot name for the component. Slots allow the component to receive props from a parent component. An explicit `null` value indicates that the local props completely override all props received from a parent. |
 | `style` | `(React.CSSProperties | ((values: ComboBoxRenderProps & { defaultStyle: React.CSSProperties; }) => React.CSSProperties | undefined)) | undefined` | — | The inline [style](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style) for the element. A function may be provided to compute the style based on component state. |
 | `translate` | `"yes" | "no" | undefined` | — |  |
-| `validate` | `((value: ComboBoxValidationValue<"single">) => ValidationError | true | null | undefined) | undefined` | — | A function that returns an error message if a given value is invalid. Validation errors are displayed to the user when the form is submitted if `validationBehavior="native"`. For realtime validation, use the `isInvalid` prop instead. |
+| `validate` | `((value: ComboBoxValidationValue<M>) => ValidationError | true | null | undefined) | undefined` | — | A function that returns an error message if a given value is invalid. Validation errors are displayed to the user when the form is submitted if `validationBehavior="native"`. For realtime validation, use the `isInvalid` prop instead. |
 | `validationBehavior` | `"native" | "aria" | undefined` | 'native' | Whether to use native HTML form validation to prevent form submission when the value is missing or invalid, or mark the field as required or invalid via ARIA. |
 | `value` | `ValueType<M> | undefined` | — | The current value (controlled). |
 
@@ -725,17 +722,15 @@ import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 | `aria-colindextext` | `string | undefined` | — | Defines a human readable text alternative of aria-colindex. |
 | `aria-colspan` | `number | undefined` | — | Defines the number of columns spanned by a cell or gridcell within a table, grid, or treegrid. |
 | `aria-controls` | `string | undefined` | — | Identifies the element (or elements) whose contents or presence are controlled by the current element. |
-| `aria-current` | `boolean | "step" | "true" | "false" | "page" | "location" | "date" | "time" | undefined` | — | Indicates the element that represents the current item within a container or set of related elements. |
+| `aria-current` | `boolean | "true" | "false" | "page" | "step" | "location" | "date" | "time" | undefined` | — | Indicates the element that represents the current item within a container or set of related elements. |
 | `aria-describedby` | `string | undefined` | — | Identifies the element (or elements) that describes the object. |
 | `aria-description` | `string | undefined` | — | Defines a string value that describes or annotates the current element. |
 | `aria-details` | `string | undefined` | — | Identifies the element that provides a detailed, extended description for the object. |
 | `aria-disabled` | `(boolean | "true" | "false") | undefined` | — | Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable. |
-| `aria-dropeffect` | `"none" | "link" | "copy" | "execute" | "move" | "popup" | undefined` | — | Indicates what functions can be performed when a dragged object is released on the drop target. |
 | `aria-errormessage` | `string | undefined` | — | Identifies the element that provides an error message for the object. |
 | `aria-expanded` | `(boolean | "true" | "false") | undefined` | — | Indicates whether the element, or another grouping element it controls, is currently expanded or collapsed. |
 | `aria-flowto` | `string | undefined` | — | Identifies the next element (or elements) in an alternate reading order of content which, at the user's discretion, allows assistive technology to override the general default of reading in document source order. |
-| `aria-grabbed` | `(boolean | "true" | "false") | undefined` | — | Indicates an element's "grabbed" state in a drag-and-drop operation. |
-| `aria-haspopup` | `boolean | "grid" | "true" | "false" | "dialog" | "listbox" | "menu" | "tree" | undefined` | — | Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element. |
+| `aria-haspopup` | `boolean | "true" | "false" | "dialog" | "grid" | "listbox" | "menu" | "tree" | undefined` | — | Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element. |
 | `aria-hidden` | `(boolean | "true" | "false") | undefined` | — | Indicates whether the element is exposed to an accessibility API. |
 | `aria-invalid` | `boolean | "true" | "false" | "grammar" | "spelling" | undefined` | — | Indicates the entered value does not conform to the format expected by the application. |
 | `aria-keyshortcuts` | `string | undefined` | — | Indicates keyboard shortcuts that an author has implemented to activate or give focus to an element. |
@@ -766,7 +761,7 @@ import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 | `aria-valuemin` | `number | undefined` | — | Defines the minimum allowed value for a range widget. |
 | `aria-valuenow` | `number | undefined` | — | Defines the current value for a range widget. |
 | `aria-valuetext` | `string | undefined` | — | Defines the human readable text alternative of aria-valuenow for a range widget. |
-| `autoCapitalize` | `"none" | "off" | "on" | "sentences" | "words" | "characters" | (string & {}) | undefined` | — |  |
+| `autoCapitalize` | `"off" | "none" | "on" | "sentences" | "words" | "characters" | (string & {}) | undefined` | — |  |
 | `autoCorrect` | `string | undefined` | — |  |
 | `autoFocus` | `boolean | undefined` | — |  |
 | `autoSave` | `string | undefined` | — |  |
@@ -782,13 +777,13 @@ import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 | `defaultValue` | `string | number | readonly string[] | undefined` | — |  |
 | `dir` | `string | undefined` | — |  |
 | `draggable` | `(boolean | "true" | "false") | undefined` | — |  |
-| `enterKeyHint` | `"search" | "enter" | "done" | "go" | "next" | "previous" | "send" | undefined` | — |  |
+| `enterKeyHint` | `"enter" | "done" | "go" | "next" | "previous" | "search" | "send" | undefined` | — |  |
 | `exportparts` | `string | undefined` | — |  |
 | `hidden` | `boolean | undefined` | — |  |
 | `id` | `string | undefined` | — |  |
 | `inert` | `boolean | undefined` | — |  |
 | `inlist` | `any` | — |  |
-| `inputMode` | `"text" | "none" | "tel" | "url" | "email" | "numeric" | "decimal" | "search" | undefined` | — | Hints at the type of data that might be entered by the user while editing the element or its contents |
+| `inputMode` | `"text" | "none" | "search" | "tel" | "url" | "email" | "numeric" | "decimal" | undefined` | — | Hints at the type of data that might be entered by the user while editing the element or its contents |
 | `is` | `string | undefined` | — | Specify that a standard HTML element should behave like a defined custom built-in element |
 | `itemID` | `string | undefined` | — |  |
 | `itemProp` | `string | undefined` | — |  |
@@ -870,8 +865,6 @@ import {ComboBox, ComboBoxItem} from 'vanilla-starter/ComboBox';
 | `onInvalidCapture` | `React.FormEventHandler<HTMLElement> | undefined` | — |  |
 | `onKeyDown` | `React.KeyboardEventHandler<HTMLElement> | undefined` | — |  |
 | `onKeyDownCapture` | `React.KeyboardEventHandler<HTMLElement> | undefined` | — |  |
-| `onKeyPress` | `React.KeyboardEventHandler<HTMLElement> | undefined` | — |  |
-| `onKeyPressCapture` | `React.KeyboardEventHandler<HTMLElement> | undefined` | — |  |
 | `onKeyUp` | `React.KeyboardEventHandler<HTMLElement> | undefined` | — |  |
 | `onKeyUpCapture` | `React.KeyboardEventHandler<HTMLElement> | undefined` | — |  |
 | `onLoad` | `React.ReactEventHandler<HTMLElement> | undefined` | — |  |

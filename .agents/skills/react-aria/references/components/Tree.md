@@ -32,15 +32,15 @@ import {
   Tree as AriaTree,
   TreeItem as AriaTreeItem,
   TreeItemContent as AriaTreeItemContent,
-  TreeItemContentProps,
-  TreeItemContentRenderProps,
-  TreeItemProps as AriaTreeItemProps,
-  TreeProps,
+  type TreeItemContentProps,
+  type TreeItemContentRenderProps,
+  type TreeItemProps as AriaTreeItemProps,
+  type TreeProps,
   TreeLoadMoreItem as AriaTreeLoadMoreItem,
-  TreeLoadMoreItemProps,
+  type TreeLoadMoreItemProps,
   TreeSection as AriaTreeSection,
-  TreeHeader as AriaTreeHeader
-} from 'react-aria-components';
+  TreeHeader as AriaTreeHeader,
+} from 'react-aria-components/Tree';
 import {ChevronRight, GripVertical} from 'lucide-react';
 import {Checkbox} from './Checkbox';
 import {ProgressCircle} from './ProgressCircle';
@@ -361,9 +361,9 @@ import {
   TreeItem as AriaTreeItem,
   TreeItemContent as AriaTreeItemContent,
   Button,
-  TreeItemProps as AriaTreeItemProps,
-  TreeProps
-} from 'react-aria-components';
+  type TreeItemProps as AriaTreeItemProps,
+  type TreeProps,
+} from 'react-aria-components/Tree';
 import { ChevronRight } from "lucide-react";
 import { tv } from 'tailwind-variants';
 import { Checkbox } from './Checkbox';
@@ -451,7 +451,7 @@ export function TreeItem(props: TreeItemProps) {
 
 ```tsx
 import {Tree, TreeItem} from 'vanilla-starter/Tree';
-import {Collection} from 'react-aria-components';
+import {Collection} from 'react-aria-components/Collection';
 
 let items = [
   {id: 1, title: 'Documents', type: 'directory', children: [
@@ -493,7 +493,8 @@ Use [renderEmptyState](#empty-state) to display a spinner during initial load. T
 ```tsx
 import {Tree, TreeItem, TreeLoadMoreItem} from 'vanilla-starter/Tree';
 import {ProgressCircle} from 'vanilla-starter/ProgressCircle';
-import {Collection, useAsyncList} from 'react-aria-components';
+import {Collection} from 'react-aria-components/Collection';
+import {useAsyncList} from 'react-aria-components/useAsyncList';
 
 interface Character {
   name: string
@@ -654,7 +655,7 @@ import {Tree, TreeHeader, TreeItem, TreeSection} from 'vanilla-starter/Tree';
 Use the `selectionMode` prop to enable single or multiple selection. The selected items can be controlled via the `selectedKeys` prop, matching the `id` prop of the items. The `onAction` event handles item actions. Items can be disabled with the `isDisabled` prop. See the [selection guide](selection.md?component=Tree) for more details.
 
 ```tsx
-import type {Selection} from 'react-aria-components';
+import type {Selection} from 'react-aria-components/Tree';
 import {Tree, TreeItem} from 'vanilla-starter/Tree';
 import {useState} from 'react';
 
@@ -701,7 +702,9 @@ Tree supports drag and drop interactions when the `dragAndDropHooks` prop is pro
 
 ```tsx
 import {Tree, TreeItem} from 'vanilla-starter/Tree';
-import {useDragAndDrop, Collection, useTreeData} from 'react-aria-components';
+import {useDragAndDrop} from 'react-aria-components/useDragAndDrop';
+import {Collection} from 'react-aria-components/Collection';
+import {useTreeData} from 'react-aria-components/useTreeData';
 
 function Example() {
   let tree = useTreeData({
@@ -802,14 +805,14 @@ function Example() {
 | `children` | `React.ReactNode | ((item: T) => ReactNode)` | — | The contents of the collection. |
 | `className` | `ClassNameOrFunction<TreeRenderProps> | undefined` | 'react-aria-Tree' | The CSS [className](https://developer.mozilla.org/en-US/docs/Web/API/Element/className) for the element. A function may be provided to compute the class based on component state. |
 | `defaultExpandedKeys` | `Iterable<Key> | undefined` | — | The initial expanded keys in the collection (uncontrolled). |
-| `defaultSelectedKeys` | `Iterable<Key> | "all" | undefined` | — | The initial selected keys in the collection (uncontrolled). |
+| `defaultSelectedKeys` | `"all" | Iterable<Key> | undefined` | — | The initial selected keys in the collection (uncontrolled). |
 | `dependencies` | `readonly any[] | undefined` | — | Values that should invalidate the item cache when using dynamic collections. |
 | `dir` | `string | undefined` | — |  |
 | `disabledBehavior` | `DisabledBehavior | undefined` | 'all' | Whether `disabledKeys` applies to all interactions, or only selection. |
 | `disabledKeys` | `Iterable<Key> | undefined` | — | The item keys that are disabled. These items cannot be selected, focused, or otherwise interacted with. |
 | `disallowEmptySelection` | `boolean | undefined` | — | Whether the collection allows empty selection. |
 | `dragAndDropHooks` | `DragAndDropHooks<NoInfer<T>> | undefined` | — | The drag and drop hooks returned by `useDragAndDrop` used to enable drag and drop behavior for the Tree. |
-| `escapeKeyBehavior` | `"none" | "clearSelection" | undefined` | 'clearSelection' | Whether pressing the escape key should clear selection in the grid list or not. Most experiences should not modify this option as it eliminates a keyboard user's ability to easily clear selection. Only use if the escape key is being handled externally or should not trigger selection clearing contextually. |
+| `escapeKeyBehavior` | `"clearSelection" | "none" | undefined` | 'clearSelection' | Whether pressing the escape key should clear selection in the grid list or not. Most experiences should not modify this option as it eliminates a keyboard user's ability to easily clear selection. Only use if the escape key is being handled externally or should not trigger selection clearing contextually. |
 | `expandedKeys` | `Iterable<Key> | undefined` | — | The currently expanded keys in the collection (controlled). |
 | `hidden` | `boolean | undefined` | — |  |
 | `id` | `string | undefined` | — | The element's unique identifier. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id). |
@@ -885,7 +888,7 @@ function Example() {
 | `onWheelCapture` | `React.WheelEventHandler<HTMLDivElement> | undefined` | — |  |
 | `render` | `DOMRenderFunction<"div", TreeRenderProps> | undefined` | — | Overrides the default DOM element with a custom render function. This allows rendering existing components with built-in styles and behaviors such as router links, animation libraries, and pre-styled components. Requirements: \* You must render the expected element type (e.g. if `<button>` is expected, you cannot render an `<a>`). \* Only a single root DOM element can be rendered (no fragments). \* You must pass through props and ref to the underlying DOM element, merging with your own prop as appropriate. |
 | `renderEmptyState` | `((props: TreeEmptyStateRenderProps) => ReactNode) | undefined` | — | Provides content to display when there are no items in the list. |
-| `selectedKeys` | `Iterable<Key> | "all" | undefined` | — | The currently selected keys in the collection (controlled). |
+| `selectedKeys` | `"all" | Iterable<Key> | undefined` | — | The currently selected keys in the collection (controlled). |
 | `selectionBehavior` | `SelectionBehavior | undefined` | "toggle" | How multiple selection should behave in the tree. |
 | `selectionMode` | `SelectionMode | undefined` | — | The type of selection that is allowed in the collection. |
 | `shouldSelectOnPressUp` | `boolean | undefined` | — | Whether selection should occur on press up instead of press down. |
