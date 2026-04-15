@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.6.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.1...v0.6.0-pre.2)
+
+### 🚀 Enhancements
+
+- Add Runden and Spiele foundation ([2971dd8](https://github.com/haus23/tipprunde/commit/2971dd8))
+- Add Spieltabelle with DatePicker and ComboBox components ([c479d7e](https://github.com/haus23/tipprunde/commit/c479d7e))
+
+### 🩹 Fixes
+
+- Correct match query, void returns and remove result field ([573502e](https://github.com/haus23/tipprunde/commit/573502e))
+- Fix DatePicker positioning and set German locale for RAC ([386116c](https://github.com/haus23/tipprunde/commit/386116c))
+- Display date in German format (DD.MM.YYYY) in matches table ([fc0e90c](https://github.com/haus23/tipprunde/commit/fc0e90c))
+
 ## v0.6.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.0...v0.6.0-pre.1)
