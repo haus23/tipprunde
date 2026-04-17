@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/libsql/web";
-import { relations } from "./relations";
+import { relations } from "@/lib/db/relations";
 
 export const db = drizzle({
   connection: {

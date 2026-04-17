@@ -1,6 +1,6 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { and, eq, max } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { db } from "#db";
 import { players } from "@/lib/db/schema.ts";
 
 export const getChampionshipPlayers = createServerOnlyFn(

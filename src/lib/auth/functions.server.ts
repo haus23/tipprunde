@@ -1,5 +1,5 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
-import { db } from "@/lib/db";
+import { db } from "#db";
 import { sessions, totpCodes } from "@/lib/db/schema.ts";
 import { eq } from "drizzle-orm";
 import {

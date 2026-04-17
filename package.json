@@ -2,6 +2,11 @@
   "name": "tipprunde",
   "version": "0.6.0-pre.2",
   "type": "module",
+  "imports": {
+    "#/*": "./src/*",
+    "#db": "./db/index.ts",
+    "#db/*": "./db/*"
+  },
   "scripts": {
     "dev": "vite dev --port 3000",
     "build": "vite build",

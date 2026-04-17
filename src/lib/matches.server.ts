@@ -1,6 +1,6 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { eq, max } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { db } from "#db";
 import { matches } from "@/lib/db/schema.ts";
 
 interface MatchInput {

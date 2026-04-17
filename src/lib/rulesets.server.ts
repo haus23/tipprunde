@@ -1,6 +1,6 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { db } from "#db";
 import { rulesets } from "@/lib/db/schema.ts";
 import type { rulesets as rulesetsSchema } from "@/lib/db/schema.ts";
 

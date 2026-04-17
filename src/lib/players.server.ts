@@ -1,6 +1,6 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { db } from "#db";
 import { users } from "@/lib/db/schema.ts";
 import type { users as usersSchema } from "@/lib/db/schema.ts";
 
