@@ -11,15 +11,17 @@ export const getRounds = createServerOnlyFn(async (championshipId: number) =>
 );
 
 export const createRound = createServerOnlyFn(async (championshipId: number) => {
-  const result = await db
+  const [result] = await db
     .select({ maxNr: max(rounds.nr) })
     .from(rounds)
     .where(eq(rounds.championshipId, championshipId));
-  const nextNr = (result[0]?.maxNr ?? 0) + 1;
+  const nextNr = (result.maxNr ?? 0) + 1;
   return db.insert(rounds).values({ championshipId, nr: nextNr });
 });
 
-export const updateRound = createServerOnlyFn(async (data: Partial<typeof rounds.$inferInsert> & { id: number }) => {
-  const { id, ...rest } = data;
-  return db.update(rounds).set(rest).where(eq(rounds.id, id));
-});
+export const updateRound = createServerOnlyFn(
+  async (data: Partial<typeof rounds.$inferInsert> & { id: number }) => {
+    const { id, ...rest } = data;
+    return db.update(rounds).set(rest).where(eq(rounds.id, id));
+  },
+);
