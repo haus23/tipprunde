@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 import { validateForm } from "@/lib/validate-form.ts";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
-import { getPlayers, createPlayer, updatePlayer } from "#db/dal/players.ts";
+import { getUsers, createUser, updateUser } from "#db/dal/users.ts";
 
 export type SpielerFormState = { success: true } | { error: string } | null;
 
@@ -24,7 +24,7 @@ const updateSpielerSchema = v.object({
 
 export const fetchPlayers = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
-  .handler(async () => getPlayers());
+  .handler(async () => getUsers());
 
 export const createSpieler = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
@@ -33,7 +33,7 @@ export const createSpieler = createServerFn({ method: "POST" })
     if (!data.success) return { error: "Ungültige Eingabe." };
     const { email, ...rest } = data.output;
     try {
-      await createPlayer({ ...rest, email: email ?? null });
+      await createUser({ ...rest, email: email ?? null });
       return { success: true };
     } catch {
       return { error: "Fehler beim Anlegen. Kürzel oder E-Mail bereits vergeben?" };
@@ -47,7 +47,7 @@ export const updateSpieler = createServerFn({ method: "POST" })
     if (!data.success) return { error: "Ungültige Eingabe." };
     const { id, email, ...rest } = data.output;
     try {
-      await updatePlayer({ id, ...rest, email: email ?? null });
+      await updateUser({ id, ...rest, email: email ?? null });
       return { success: true };
     } catch {
       return { error: "Fehler beim Speichern. Kürzel oder E-Mail bereits vergeben?" };

@@ -1,21 +1,30 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
-import { eq } from "drizzle-orm";
-
+import { and, eq, max } from "drizzle-orm";
 import { db } from "#db";
-import { users } from "../schema/tables.ts";
+import { players } from "../schema/tables.ts";
 
-export const getPlayers = createServerOnlyFn(async () =>
-  db.query.users.findMany({
-    where: { id: { gt: 0 } },
-    orderBy: { name: "asc" },
+export const getPlayers = createServerOnlyFn(async (championshipId: number) =>
+  db.query.players.findMany({
+    where: { championshipId },
+    with: { user: true },
+    orderBy: { nr: "asc" },
   }),
 );
 
-export const createPlayer = createServerOnlyFn(async (data: typeof users.$inferInsert) =>
-  db.insert(users).values(data),
+export const createPlayer = createServerOnlyFn(
+  async (championshipId: number, userId: number) => {
+    const [{ maxNr }] = await db
+      .select({ maxNr: max(players.nr) })
+      .from(players)
+      .where(eq(players.championshipId, championshipId));
+    const nextNr = (maxNr ?? 0) + 1;
+    return db.insert(players).values({ championshipId, userId, nr: nextNr });
+  },
 );
 
-export const updatePlayer = createServerOnlyFn(async (data: typeof users.$inferInsert & { id: number }) => {
-  const { id, ...rest } = data;
-  return db.update(users).set(rest).where(eq(users.id, id));
-});
+export const deletePlayer = createServerOnlyFn(
+  async (championshipId: number, userId: number) =>
+    db
+      .delete(players)
+      .where(and(eq(players.championshipId, championshipId), eq(players.userId, userId))),
+);
