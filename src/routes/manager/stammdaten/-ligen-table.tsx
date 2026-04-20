@@ -8,7 +8,7 @@ import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { fetchLeaguesFn } from "#/app/manager/leagues.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 
-import { createLeagueFnColumns } from "./-liga-columns.tsx";
+import { createLigaColumns } from "./-liga-columns.tsx";
 import { LigaForm } from "./-liga-form.tsx";
 
 type Liga = League;
@@ -37,7 +37,7 @@ export function LigenTable({ initialLigen }: Props) {
     setIsOpen(true);
   }
 
-  const columns = useMemo(() => createLeagueFnColumns(openEdit), []);
+  const columns = useMemo(() => createLigaColumns(openEdit), []);
 
   return (
     <>

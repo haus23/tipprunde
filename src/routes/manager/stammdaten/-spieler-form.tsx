@@ -7,7 +7,7 @@ import { Form } from "@/components/(ui)/form.tsx";
 import { Select, SelectItem } from "@/components/(ui)/select.tsx";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
 import { useServerAction } from "@/lib/hooks/server-action.ts";
-import { createSpieler, updateSpieler } from "@/lib/players.ts";
+import { createUserFn, updateUserFn } from "#/app/manager/users.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
@@ -25,7 +25,7 @@ interface Props {
 }
 
 export function SpielerForm({ spieler }: Props) {
-  const serverAction = spieler ? updateSpieler : createSpieler;
+  const serverAction = spieler ? updateUserFn : createUserFn;
   const [state, formAction, pending] = useServerAction(serverAction);
 
   const dialog = useContext(OverlayTriggerStateContext);

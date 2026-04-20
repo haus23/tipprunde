@@ -11,7 +11,7 @@ import {
   fetchTurnierSpieler,
   removeTurnierSpieler,
 } from "@/lib/participants.ts";
-import { fetchPlayers } from "@/lib/players.ts";
+import { fetchUsersFn } from "#/app/manager/users.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { SpielerForm } from "@/routes/manager/stammdaten/-spieler-form.tsx";
@@ -32,7 +32,7 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
 
   const { data: allUsers } = useQuery({
     queryKey: queryKeys.users.all,
-    queryFn: () => fetchPlayers(),
+    queryFn: () => fetchUsersFn(),
     initialData: initialUsers,
   });
 
