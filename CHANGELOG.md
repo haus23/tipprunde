@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.6.0-pre.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.4...v0.6.0-pre.5)
+
+### 💅 Refactors
+
+- Move getUserByEmail to db/dal/users ([2e0a90c](https://github.com/haus23/tipprunde/commit/2e0a90c))
+- Extract TOTP DB operations to db/dal/totps ([4e33bcf](https://github.com/haus23/tipprunde/commit/4e33bcf))
+- Extract session DB operations to db/dal/sessions ([95b0516](https://github.com/haus23/tipprunde/commit/95b0516))
+- Centralize domain types in DAL files ([d74dc3e](https://github.com/haus23/tipprunde/commit/d74dc3e))
+- Sort imports when formatting. ([f37a141](https://github.com/haus23/tipprunde/commit/f37a141))
+
+### 🏡 Chore
+
+- Update deps. ([8e0f467](https://github.com/haus23/tipprunde/commit/8e0f467))
+- Updating formatting config. ([12b8c10](https://github.com/haus23/tipprunde/commit/12b8c10))
+- Update drizzle to 1.0.0-beta.22 ([8566516](https://github.com/haus23/tipprunde/commit/8566516))
+- Update drizzle-kit config and scripts. ([3ddd901](https://github.com/haus23/tipprunde/commit/3ddd901))
+
 ## v0.6.0-pre.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.3...v0.6.0-pre.4)
