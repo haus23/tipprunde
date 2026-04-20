@@ -1,8 +1,7 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
-import { db } from "#db";
-import { sessions, totpCodes } from "#db/schema/tables.ts";
 import { eq } from "drizzle-orm";
-import { getUserByEmail as dbGetUserByEmail } from "#db/dal/users.ts";
+import { db } from "#db";
+import { sessions } from "#db/schema/tables.ts";
 import {
   APP_SECRET,
   FROM_EMAIL,
@@ -13,6 +12,14 @@ import {
   TOTP_MAX_ATTEMPTS,
 } from "@/lib/auth/config.ts";
 import { useAppSession } from "@/lib/auth/session.ts";
+import { getUserByEmail as dbGetUserByEmail } from "#db/dal/users.ts";
+import {
+  createTotpCode as dbCreateTotpCode,
+  deleteTotpCode,
+  deleteTotpCodes,
+  getTotpCode,
+  updateTotpCode,
+} from "#db/dal/totps.ts";
 
 // TODO: Simplify
 
@@ -47,14 +54,13 @@ async function hashCode(code: string): Promise<string> {
 }
 
 export const createTotpCode = createServerOnlyFn(async (userId: number) => {
-  // Bestehenden Code löschen (nur ein aktiver Code pro User)
-  await db.delete(totpCodes).where(eq(totpCodes.userId, userId));
+  await deleteTotpCodes(userId);
 
   const code = generateCode();
   const codeHash = await hashCode(code);
   const expiresAt = new Date(Date.now() + TOTP_EXPIRES_IN * 1000).toISOString();
 
-  await db.insert(totpCodes).values({
+  await dbCreateTotpCode({
     id: crypto.randomUUID(),
     userId,
     codeHash,
@@ -67,14 +73,12 @@ export const createTotpCode = createServerOnlyFn(async (userId: number) => {
 
 export const verifyTotpCode = createServerOnlyFn(
   async (userId: number, code: string): Promise<VerifyResult> => {
-    const record = await db.query.totpCodes.findFirst({
-      where: { userId },
-    });
+    const record = await getTotpCode(userId);
 
     if (!record) return "invalid";
 
     if (record.expiresAt < new Date().toISOString()) {
-      await db.delete(totpCodes).where(eq(totpCodes.id, record.id));
+      await deleteTotpCode(record.id);
       return "expired";
     }
 
@@ -83,14 +87,14 @@ export const verifyTotpCode = createServerOnlyFn(
     if (hash !== record.codeHash) {
       const attempts = record.attempts + 1;
       if (attempts >= TOTP_MAX_ATTEMPTS) {
-        await db.delete(totpCodes).where(eq(totpCodes.id, record.id));
+        await deleteTotpCode(record.id);
         return "max_attempts";
       }
-      await db.update(totpCodes).set({ attempts }).where(eq(totpCodes.id, record.id));
+      await updateTotpCode({ id: record.id, attempts });
       return "invalid";
     }
 
-    await db.delete(totpCodes).where(eq(totpCodes.id, record.id));
+    await deleteTotpCode(record.id);
     return "valid";
   },
 );
