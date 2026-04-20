@@ -1,7 +1,4 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
-import { eq } from "drizzle-orm";
-import { db } from "#db";
-import { sessions } from "#db/schema/tables.ts";
 import {
   APP_SECRET,
   FROM_EMAIL,
@@ -20,8 +17,7 @@ import {
   getTotpCode,
   updateTotpCode,
 } from "#db/dal/totps.ts";
-
-// TODO: Simplify
+import { createSession, deleteSession, getSession } from "#db/dal/sessions.ts";
 
 /*
  * Validate Email
@@ -135,51 +131,33 @@ export const createDbSession = createServerOnlyFn(async (userId: number, remembe
   const id = generateSessionId();
   const duration = rememberMe ? SESSION_DURATION_REMEMBER : SESSION_DURATION_DEFAULT;
   const expiresAt = new Date(Date.now() + duration * 1000).toISOString();
-
-  await db.insert(sessions).values({
-    id,
-    userId,
-    rememberMe,
-    expiresAt,
-  });
-
+  await createSession({ id, userId, rememberMe, expiresAt });
   return id;
 });
 
 export const getDbSession = createServerOnlyFn(async (sessionId: string) => {
-  const session = await db.query.sessions.findFirst({
-    where: { id: sessionId },
-    with: { user: true },
-  });
-
+  const session = await getSession(sessionId);
   if (!session) return null;
   if (session.expiresAt < new Date().toISOString()) {
-    const session = await useAppSession();
-    await session.clear();
+    const appSession = await useAppSession();
+    await appSession.clear();
     return null;
   }
-
   return session;
 });
 
-export const deleteDbSessionById = createServerOnlyFn(async (sessionId: string) => {
-  await db.delete(sessions).where(eq(sessions.id, sessionId));
-});
+export const deleteDbSessionById = createServerOnlyFn(async (sessionId: string) =>
+  deleteSession(sessionId),
+);
 
 export const getSessionUser = createServerOnlyFn(async (sessionId?: string) => {
   if (!sessionId) return null;
-
-  const session = await db.query.sessions.findFirst({
-    where: { id: sessionId },
-    with: { user: true },
-  });
-
+  const session = await getSession(sessionId);
   if (!session) return null;
   if (session.expiresAt < new Date().toISOString()) {
-    const session = await useAppSession();
-    await session.clear();
+    const appSession = await useAppSession();
+    await appSession.clear();
     return null;
   }
-
   return session.user;
 });
