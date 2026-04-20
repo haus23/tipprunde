@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.6.0-pre.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.3...v0.6.0-pre.4)
+
+### 💅 Refactors
+
+- Move migrations to db folder as well. ([469d3a8](https://github.com/haus23/tipprunde/commit/469d3a8))
+- Move leagues DAL to db/dal folder ([0bc0bde](https://github.com/haus23/tipprunde/commit/0bc0bde))
+- Move teams and rulesets DAL to db/dal folder ([b8218a9](https://github.com/haus23/tipprunde/commit/b8218a9))
+- Move rounds DAL to db/dal folder ([e70cf76](https://github.com/haus23/tipprunde/commit/e70cf76))
+- Align update signatures across DAL functions ([991bd1b](https://github.com/haus23/tipprunde/commit/991bd1b))
+- Simplify maxNr retrieval ([f29df13](https://github.com/haus23/tipprunde/commit/f29df13))
+- Move matches DAL to db/dal folder ([48c56f6](https://github.com/haus23/tipprunde/commit/48c56f6))
+- Simplify maxNr extraction. ([4a5042d](https://github.com/haus23/tipprunde/commit/4a5042d))
+- Move participants DAL to db/dal folder ([14b78d4](https://github.com/haus23/tipprunde/commit/14b78d4))
+- Move championships DAL to db/dal folder ([188d942](https://github.com/haus23/tipprunde/commit/188d942))
+
 ## v0.6.0-pre.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.2...v0.6.0-pre.3)
