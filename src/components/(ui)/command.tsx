@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useCallback } from "react";
-
 import { CommandRoot, CommandItem as _CommandItem, CommandInput, CommandList } from "cmdk";
+import React, { useCallback } from "react";
 import { createContext, use } from "react";
 
 type KeyProp<T> = {

@@ -1,7 +1,8 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { PencilIcon } from "lucide-react";
-import { Button } from "@/components/(ui)/button.tsx";
+
 import type { League } from "#db/dal/leagues.ts";
+import { Button } from "@/components/(ui)/button.tsx";
 
 type Liga = League;
 

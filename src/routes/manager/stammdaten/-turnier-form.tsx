@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+
+import type { rulesets } from "#db/schema/tables.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
-import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
 import { Select, SelectItem } from "@/components/(ui)/select.tsx";
-import { useServerAction } from "@/lib/hooks/server-action.ts";
+import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
 import { activateChampionship, createTurnier } from "@/lib/championships.ts";
+import { useServerAction } from "@/lib/hooks/server-action.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { rulesets } from "#db/schema/tables.ts";
 
 interface Props {
   regelwerke: (typeof rulesets.$inferSelect)[];

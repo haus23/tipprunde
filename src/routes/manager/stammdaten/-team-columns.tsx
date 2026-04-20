@@ -1,7 +1,8 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { PencilIcon } from "lucide-react";
-import { Button } from "@/components/(ui)/button.tsx";
+
 import type { Team } from "#db/dal/teams.ts";
+import { Button } from "@/components/(ui)/button.tsx";
 
 export function createTeamColumns(onEdit: (t: Team) => void): ColumnDef<Team>[] {
   return [

@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { OverlayTriggerStateContext } from "react-aria-components";
+
+import type { League } from "#db/dal/leagues.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
@@ -8,7 +10,6 @@ import { createLiga, updateLiga } from "@/lib/leagues.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
-import type { League } from "#db/dal/leagues.ts";
 
 type Liga = League;
 

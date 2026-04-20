@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+
 import { activateChampionship } from "@/lib/championships.ts";
 
 export const Route = createFileRoute("/manager/$slug")({

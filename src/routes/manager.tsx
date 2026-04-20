@@ -1,5 +1,4 @@
 import { createFileRoute, Link, Outlet, useMatches } from "@tanstack/react-router";
-import { ChampionshipSwitcher } from "@/components/manager/championship-switcher.tsx";
 import {
   CalendarIcon,
   FoldersIcon,
@@ -10,7 +9,9 @@ import {
   TrophyIcon,
   UsersIcon,
 } from "lucide-react";
+
 import { Logo } from "@/components/logo.tsx";
+import { ChampionshipSwitcher } from "@/components/manager/championship-switcher.tsx";
 import { requireManager } from "@/lib/auth/functions.ts";
 import { fetchChampionships, fetchCurrentChampionship } from "@/lib/championships.ts";
 import type { Championship } from "@/lib/championships.ts";

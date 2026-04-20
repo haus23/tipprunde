@@ -1,5 +1,6 @@
-import type { UserRole } from "#db/dal/users.ts";
 import { updateSession, useSession } from "@tanstack/react-start/server";
+
+import type { UserRole } from "#db/dal/users.ts";
 import { SESSION_SECRET } from "@/lib/auth/config.ts";
 
 // Extract the type from useSession's parameter

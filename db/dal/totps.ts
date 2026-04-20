@@ -1,6 +1,8 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
+
 import { db } from "#db";
+
 import { totpCodes } from "../schema/tables.ts";
 
 export const createTotpCode = createServerOnlyFn(async (data: typeof totpCodes.$inferInsert) =>

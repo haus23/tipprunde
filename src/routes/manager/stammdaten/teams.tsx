@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import { fetchTeams } from "@/lib/teams.ts";
+
 import { TeamsTable } from "./-teams-table.tsx";
 
 export const Route = createFileRoute("/manager/stammdaten/teams")({

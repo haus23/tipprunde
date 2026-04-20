@@ -1,4 +1,14 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
+
+import { createSession, deleteSession, getSession } from "#db/dal/sessions.ts";
+import {
+  createTotpCode as dbCreateTotpCode,
+  deleteTotpCode,
+  deleteTotpCodes,
+  getTotpCode,
+  updateTotpCode,
+} from "#db/dal/totps.ts";
+import { getUserByEmail as dbGetUserByEmail } from "#db/dal/users.ts";
 import {
   APP_SECRET,
   FROM_EMAIL,
@@ -9,15 +19,6 @@ import {
   TOTP_MAX_ATTEMPTS,
 } from "@/lib/auth/config.ts";
 import { useAppSession } from "@/lib/auth/session.ts";
-import { getUserByEmail as dbGetUserByEmail } from "#db/dal/users.ts";
-import {
-  createTotpCode as dbCreateTotpCode,
-  deleteTotpCode,
-  deleteTotpCodes,
-  getTotpCode,
-  updateTotpCode,
-} from "#db/dal/totps.ts";
-import { createSession, deleteSession, getSession } from "#db/dal/sessions.ts";
 
 /*
  * Validate Email

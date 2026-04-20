@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MatchesTable } from "./-matches-table.tsx";
 import * as v from "valibot";
+
 import { fetchTurnierDetails } from "@/lib/championships.ts";
 import { fetchLeagues } from "@/lib/leagues.ts";
 import { fetchChampionshipRounds } from "@/lib/rounds.ts";
 import { fetchTeams } from "@/lib/teams.ts";
+
+import { MatchesTable } from "./-matches-table.tsx";
 
 export const Route = createFileRoute("/manager/$slug/spiele")({
   beforeLoad: () => ({ pageTitle: "Spiele" }),

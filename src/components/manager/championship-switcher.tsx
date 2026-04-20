@@ -1,7 +1,8 @@
-import { useState } from "react";
 import { useMatches, useNavigate } from "@tanstack/react-router";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
+import { useState } from "react";
 import { Button, Dialog, DialogTrigger, Heading, Modal, ModalOverlay } from "react-aria-components";
+
 import { Command, CommandItem } from "@/components/(ui)/command.tsx";
 import { activateChampionship } from "@/lib/championships.ts";
 import type { Championship } from "@/lib/championships.ts";

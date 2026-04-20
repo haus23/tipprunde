@@ -1,7 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
-import { managerMiddleware } from "@/lib/auth/middleware.ts";
+
 import { getPlayers, createPlayer, deletePlayer } from "#db/dal/players.ts";
+import { managerMiddleware } from "@/lib/auth/middleware.ts";
 
 const participantSchema = v.object({
   championshipId: v.number(),

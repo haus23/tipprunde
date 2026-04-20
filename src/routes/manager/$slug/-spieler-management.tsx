@@ -1,9 +1,11 @@
-import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
+
+import type { Player } from "#db/dal/players.ts";
+import type { User } from "#db/dal/users.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
-import { SpielerForm } from "@/routes/manager/stammdaten/-spieler-form.tsx";
 import {
   addTurnierSpieler,
   fetchTurnierSpieler,
@@ -12,8 +14,7 @@ import {
 import { fetchPlayers } from "@/lib/players.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { Player } from "#db/dal/players.ts";
-import type { User } from "#db/dal/users.ts";
+import { SpielerForm } from "@/routes/manager/stammdaten/-spieler-form.tsx";
 
 type TournamentPlayer = Player;
 

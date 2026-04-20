@@ -1,4 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
+
 import type { Championship } from "#db/dal/championships.ts";
 
 type Turnier = Championship;

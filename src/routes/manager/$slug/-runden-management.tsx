@@ -1,10 +1,11 @@
-import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { CalendarIcon } from "lucide-react";
-import { Switch } from "@/components/(ui)/switch.tsx";
-import { Button } from "@/components/(ui)/button.tsx";
-import { createRound, fetchChampionshipRounds, setRoundStatus } from "@/lib/rounds.ts";
+import { useState } from "react";
+
 import type { Round } from "#db/dal/rounds.ts";
+import { Button } from "@/components/(ui)/button.tsx";
+import { Switch } from "@/components/(ui)/switch.tsx";
+import { createRound, fetchChampionshipRounds, setRoundStatus } from "@/lib/rounds.ts";
 
 interface Props {
   championshipId: number;

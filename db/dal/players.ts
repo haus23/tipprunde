@@ -1,8 +1,10 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { and, eq, max } from "drizzle-orm";
+
 import { db } from "#db";
-import { players } from "../schema/tables.ts";
 import type { User } from "#db/dal/users.ts";
+
+import { players } from "../schema/tables.ts";
 
 export type Player = typeof players.$inferSelect & {
   user: User | null;

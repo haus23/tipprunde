@@ -1,6 +1,8 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
+
 import { db } from "#db";
+
 import { leagues } from "../schema/tables.ts";
 
 export type League = typeof leagues.$inferSelect;

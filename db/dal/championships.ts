@@ -1,8 +1,10 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
+
 import { db } from "#db";
-import { championships } from "../schema/tables.ts";
 import type { Ruleset } from "#db/dal/rulesets.ts";
+
+import { championships } from "../schema/tables.ts";
 
 export type Championship = typeof championships.$inferSelect & {
   ruleset: Ruleset | null;

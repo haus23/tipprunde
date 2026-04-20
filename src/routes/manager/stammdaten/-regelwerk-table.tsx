@@ -1,11 +1,13 @@
-import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+
+import type { Ruleset } from "#db/dal/rulesets.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
-import { fetchRulesets } from "@/lib/rulesets.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { Ruleset } from "#db/dal/rulesets.ts";
+import { fetchRulesets } from "@/lib/rulesets.ts";
+
 import { createRegelwerkColumns } from "./-regelwerk-columns.tsx";
 import { RegelwerkForm } from "./-regelwerk-form.tsx";
 

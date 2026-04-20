@@ -1,7 +1,8 @@
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { useAppSession } from "@/lib/auth/session.ts";
+
 import { getSessionUser } from "@/lib/auth/functions.server.ts";
+import { useAppSession } from "@/lib/auth/session.ts";
 
 export const fetchSession = createServerFn({ method: "GET" }).handler(async () => {
   const session = await useAppSession();

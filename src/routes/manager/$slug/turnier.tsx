@@ -1,10 +1,12 @@
-import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+
 import { Switch } from "@/components/(ui)/switch.tsx";
 import { fetchTurnierDetails, setTurnierStatus } from "@/lib/championships.ts";
-import { fetchPlayers } from "@/lib/players.ts";
 import { fetchTurnierSpieler } from "@/lib/participants.ts";
+import { fetchPlayers } from "@/lib/players.ts";
 import { fetchChampionshipRounds } from "@/lib/rounds.ts";
+
 import { RundenManagement } from "./-runden-management.tsx";
 import { SpielerManagement } from "./-spieler-management.tsx";
 

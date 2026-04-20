@@ -1,7 +1,8 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { PencilIcon } from "lucide-react";
-import { Button } from "@/components/(ui)/button.tsx";
+
 import type { User } from "#db/dal/users.ts";
+import { Button } from "@/components/(ui)/button.tsx";
 
 type Spieler = User;
 

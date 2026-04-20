@@ -1,11 +1,13 @@
-import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+
+import type { Team } from "#db/dal/teams.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
-import { fetchTeams } from "@/lib/teams.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { Team } from "#db/dal/teams.ts";
+import { fetchTeams } from "@/lib/teams.ts";
+
 import { createTeamColumns } from "./-team-columns.tsx";
 import { TeamForm } from "./-team-form.tsx";
 

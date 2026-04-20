@@ -1,14 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { OverlayTriggerStateContext } from "react-aria-components";
+
+import type { Team } from "#db/dal/teams.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
 import { useServerAction } from "@/lib/hooks/server-action.ts";
-import { createTeamFn, updateTeamFn } from "@/lib/teams.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
-import type { Team } from "#db/dal/teams.ts";
+import { createTeamFn, updateTeamFn } from "@/lib/teams.ts";
 
 interface Props {
   team?: Team;

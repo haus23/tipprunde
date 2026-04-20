@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie, setCookie } from "@tanstack/react-start/server";
 import * as v from "valibot";
-import { managerMiddleware } from "@/lib/auth/middleware.ts";
+
 import {
   getChampionships,
   getChampionship,
@@ -10,6 +10,7 @@ import {
   updateChampionship,
   type Championship,
 } from "#db/dal/championships.ts";
+import { managerMiddleware } from "@/lib/auth/middleware.ts";
 import { validateForm } from "@/lib/validate-form.ts";
 
 export const CHAMPIONSHIP_COOKIE = "current-championship";

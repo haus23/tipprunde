@@ -1,11 +1,13 @@
-import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+
+import type { League } from "#db/dal/leagues.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { fetchLeagues } from "@/lib/leagues.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { League } from "#db/dal/leagues.ts";
+
 import { createLigaColumns } from "./-liga-columns.tsx";
 import { LigaForm } from "./-liga-form.tsx";
 

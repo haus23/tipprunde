@@ -1,7 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
-import { managerMiddleware } from "@/lib/auth/middleware.ts";
+
 import { getMatches, createMatch, updateMatch } from "#db/dal/matches.ts";
+import { managerMiddleware } from "@/lib/auth/middleware.ts";
 
 export const fetchMatchesForRound = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])

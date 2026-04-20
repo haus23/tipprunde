@@ -1,15 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { OverlayTriggerStateContext } from "react-aria-components";
+
+import type { User } from "#db/dal/users.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
-import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
 import { Select, SelectItem } from "@/components/(ui)/select.tsx";
+import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
 import { useServerAction } from "@/lib/hooks/server-action.ts";
 import { createSpieler, updateSpieler } from "@/lib/players.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
-import type { User } from "#db/dal/users.ts";
 
 type Spieler = User;
 

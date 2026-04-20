@@ -1,6 +1,8 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
+
 import { db } from "#db";
+
 import { sessions } from "../schema/tables.ts";
 
 export const createSession = createServerOnlyFn(async (data: typeof sessions.$inferInsert) =>

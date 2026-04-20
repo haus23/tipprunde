@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { fetchRulesets } from "@/lib/rulesets.ts";
+
 import { fetchTurniere } from "@/lib/championships.ts";
+import { fetchRulesets } from "@/lib/rulesets.ts";
+
 import { TurniereTable } from "./-turnier-table.tsx";
 
 export const Route = createFileRoute("/manager/stammdaten/turniere")({

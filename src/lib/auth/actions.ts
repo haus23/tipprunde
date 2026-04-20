@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
-import { validateForm } from "@/lib/validate-form.ts";
+
+import { SESSION_DURATION_REMEMBER } from "@/lib/auth/config.ts";
 import {
   createDbSession,
   createTotpCode,
@@ -9,7 +10,7 @@ import {
   verifyTotpCode,
 } from "@/lib/auth/functions.server.ts";
 import { updateAppSession } from "@/lib/auth/session.ts";
-import { SESSION_DURATION_REMEMBER } from "@/lib/auth/config.ts";
+import { validateForm } from "@/lib/validate-form.ts";
 
 const requestSchema = v.object({
   email: v.pipe(v.string(), v.email()),
