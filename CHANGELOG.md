@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.6.0-pre.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.2...v0.6.0-pre.3)
+
+### 💅 Refactors
+
+- Start using package.json subpath imports. ([c580599](https://github.com/haus23/tipprunde/commit/c580599))
+- Start extracting DAL server-only code and db instantiation to separate db folder. ([4d133da](https://github.com/haus23/tipprunde/commit/4d133da))
+
+### 🏡 Chore
+
+- Update dependencies ([af87de1](https://github.com/haus23/tipprunde/commit/af87de1))
+- Update TypeScript to 6.0 ([f4ee032](https://github.com/haus23/tipprunde/commit/f4ee032))
+- Update React Aria skills ([dcb8856](https://github.com/haus23/tipprunde/commit/dcb8856))
+- Update drizzle to latest beta. ([a185860](https://github.com/haus23/tipprunde/commit/a185860))
+
 ## v0.6.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.1...v0.6.0-pre.2)
