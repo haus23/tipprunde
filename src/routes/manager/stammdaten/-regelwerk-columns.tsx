@@ -5,9 +5,7 @@ import type { Ruleset } from "#db/dal/rulesets.ts";
 
 type Regelwerk = Ruleset;
 
-export function createRegelwerkColumns(
-  onEdit: (r: Regelwerk) => void,
-): ColumnDef<Regelwerk>[] {
+export function createRegelwerkColumns(onEdit: (r: Regelwerk) => void): ColumnDef<Regelwerk>[] {
   return [
     {
       accessorKey: "name",

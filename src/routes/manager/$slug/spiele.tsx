@@ -45,7 +45,7 @@ function SpielePage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex gap-1 border-b border-layout">
+      <div className="border-layout flex gap-1 border-b">
         {rounds.map((round) => (
           <button
             key={round.id}
@@ -53,7 +53,7 @@ function SpielePage() {
             onClick={() => navigate({ search: { nr: round.nr } })}
             className={`px-4 py-2 text-sm font-medium transition-colors ${
               round.nr === activeRound?.nr
-                ? "border-b-2 border-current -mb-px"
+                ? "-mb-px border-b-2 border-current"
                 : "text-subtle hover:text-base"
             }`}
           >

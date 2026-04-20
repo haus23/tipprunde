@@ -3,9 +3,8 @@ import { eq } from "drizzle-orm";
 import { db } from "#db";
 import { totpCodes } from "../schema/tables.ts";
 
-export const createTotpCode = createServerOnlyFn(
-  async (data: typeof totpCodes.$inferInsert) =>
-    db.insert(totpCodes).values(data),
+export const createTotpCode = createServerOnlyFn(async (data: typeof totpCodes.$inferInsert) =>
+  db.insert(totpCodes).values(data),
 );
 
 export const getTotpCode = createServerOnlyFn(async (userId: number) =>

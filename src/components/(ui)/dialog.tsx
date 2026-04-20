@@ -10,19 +10,12 @@ import {
 } from "react-aria-components";
 import { Button } from "@/components/(ui)/button";
 
-interface Props
-  extends Pick<ModalOverlayProps, "isOpen" | "onOpenChange" | "isDismissable"> {
+interface Props extends Pick<ModalOverlayProps, "isOpen" | "onOpenChange" | "isDismissable"> {
   title: string;
   children: React.ReactNode;
 }
 
-export function Dialog({
-  isOpen,
-  onOpenChange,
-  isDismissable = true,
-  title,
-  children,
-}: Props) {
+export function Dialog({ isOpen, onOpenChange, isDismissable = true, title, children }: Props) {
   return (
     <ModalOverlay
       isOpen={isOpen}
@@ -43,7 +36,7 @@ export function Dialog({
                 size="icon"
                 onPress={close}
                 aria-label="Schließen"
-                className="absolute right-0 top-0"
+                className="absolute top-0 right-0"
               >
                 <XIcon size={16} />
               </Button>

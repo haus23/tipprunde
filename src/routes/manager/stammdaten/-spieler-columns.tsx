@@ -11,9 +11,7 @@ const ROLE_LABELS: Record<Spieler["role"], string> = {
   admin: "Admin",
 };
 
-export function createSpielerColumns(
-  onEdit: (s: Spieler) => void,
-): ColumnDef<Spieler>[] {
+export function createSpielerColumns(onEdit: (s: Spieler) => void): ColumnDef<Spieler>[] {
   return [
     {
       accessorKey: "name",
@@ -23,7 +21,7 @@ export function createSpielerColumns(
     {
       accessorKey: "email",
       header: "E-Mail",
-      cell: ({ getValue }) => (getValue<string | null>() ?? "—"),
+      cell: ({ getValue }) => getValue<string | null>() ?? "—",
       meta: { className: "hidden sm:table-cell whitespace-nowrap" },
     },
     {

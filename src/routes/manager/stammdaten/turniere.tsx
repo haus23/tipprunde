@@ -9,10 +9,7 @@ export const Route = createFileRoute("/manager/stammdaten/turniere")({
   }),
   beforeLoad: () => ({ pageTitle: "Stammdaten | Turniere" }),
   loader: async () => {
-    const [turniere, regelwerke] = await Promise.all([
-      fetchTurniere(),
-      fetchRulesets(),
-    ]);
+    const [turniere, regelwerke] = await Promise.all([fetchTurniere(), fetchRulesets()]);
     return { turniere, regelwerke };
   },
   component: TurnierePage,

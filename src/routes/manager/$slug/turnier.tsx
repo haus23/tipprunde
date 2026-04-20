@@ -12,7 +12,8 @@ export const Route = createFileRoute("/manager/$slug/turnier")({
   beforeLoad: () => ({ pageTitle: "Turnier" }),
   loader: async ({ params }) => {
     const championship = await fetchTurnierDetails({ data: params.slug });
-    if (!championship) return { championship: null, rounds: [], tournamentPlayers: [], allUsers: [] };
+    if (!championship)
+      return { championship: null, rounds: [], tournamentPlayers: [], allUsers: [] };
     const [rounds, tournamentPlayers, allUsers] = await Promise.all([
       fetchChampionshipRounds({ data: championship.id }),
       fetchTurnierSpieler({ data: championship.id }),
@@ -29,8 +30,7 @@ export const Route = createFileRoute("/manager/$slug/turnier")({
 function TurnierPage() {
   const { championship, rounds, tournamentPlayers, allUsers } = Route.useLoaderData();
 
-  const hasExtraQuestions =
-    championship?.ruleset?.extraQuestionRuleId === "mit-zusatzfragen";
+  const hasExtraQuestions = championship?.ruleset?.extraQuestionRuleId === "mit-zusatzfragen";
 
   const [published, setPublished] = useState(championship?.published ?? false);
   const [extraQuestionsPublished, setExtraQuestionsPublished] = useState(
@@ -58,10 +58,7 @@ function TurnierPage() {
       <div className="bg-surface border-surface rounded-md border p-6">
         <h2 className="text-sm font-medium">Status</h2>
         <div className="mt-4 flex flex-col gap-4">
-          <Switch
-            isSelected={published}
-            onChange={(v) => handleChange("published", v)}
-          >
+          <Switch isSelected={published} onChange={(v) => handleChange("published", v)}>
             <div>
               <div className="text-sm font-medium">Veröffentlicht</div>
               <div className="text-subtle text-xs">Turnier ist für Teilnehmer sichtbar</div>

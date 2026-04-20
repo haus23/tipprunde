@@ -21,9 +21,7 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
   }
 
   async function handlePublishedChange(round: Round, value: boolean) {
-    setRunden((prev) =>
-      prev.map((r) => (r.id === round.id ? { ...r, published: value } : r)),
-    );
+    setRunden((prev) => prev.map((r) => (r.id === round.id ? { ...r, published: value } : r)));
     await setRoundStatus({ data: { roundId: round.id, published: value } });
   }
 
@@ -34,17 +32,14 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
       ) : (
         runden.map((round) => (
           <div key={round.id} className="flex items-center justify-between gap-4">
-            <Switch
-              isSelected={round.published}
-              onChange={(v) => handlePublishedChange(round, v)}
-            >
+            <Switch isSelected={round.published} onChange={(v) => handlePublishedChange(round, v)}>
               <span className="text-sm">Runde {round.nr}</span>
             </Switch>
             <Link
               to="/manager/$slug/spiele"
               params={{ slug }}
               search={{ nr: round.nr }}
-              className="text-subtle hover:text-base flex items-center gap-1.5 text-xs"
+              className="text-subtle flex items-center gap-1.5 text-xs hover:text-base"
             >
               <CalendarIcon size={13} />
               Spiele
@@ -53,9 +48,7 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
         ))
       )}
       <div className="mt-1">
-        <Button onPress={handleAddRound}>
-          Neue Runde
-        </Button>
+        <Button onPress={handleAddRound}>Neue Runde</Button>
       </div>
     </div>
   );

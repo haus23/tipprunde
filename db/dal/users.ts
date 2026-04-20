@@ -21,7 +21,9 @@ export const createUser = createServerOnlyFn(async (data: typeof users.$inferIns
   db.insert(users).values(data),
 );
 
-export const updateUser = createServerOnlyFn(async (data: typeof users.$inferInsert & { id: number }) => {
-  const { id, ...rest } = data;
-  return db.update(users).set(rest).where(eq(users.id, id));
-});
+export const updateUser = createServerOnlyFn(
+  async (data: typeof users.$inferInsert & { id: number }) => {
+    const { id, ...rest } = data;
+    return db.update(users).set(rest).where(eq(users.id, id));
+  },
+);

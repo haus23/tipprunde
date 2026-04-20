@@ -9,7 +9,6 @@ import type { Team } from "#db/dal/teams.ts";
 import { createTeamColumns } from "./-team-columns.tsx";
 import { TeamForm } from "./-team-form.tsx";
 
-
 interface Props {
   initialTeams: Team[];
 }

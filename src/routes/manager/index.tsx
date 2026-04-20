@@ -29,8 +29,8 @@ function DashboardRoute() {
           Starte deine erste Tipprunde — dein erstes Tippturnier wartet schon auf dich.
         </p>
         <p className="text-subtle mt-2 text-sm">
-          Bevor es losgeht, brauchen wir ein Regelwerk: es legt fest, wie Punkte vergeben
-          werden, ob es Joker gibt und was sonst noch bei deinem Turnier gelten soll.
+          Bevor es losgeht, brauchen wir ein Regelwerk: es legt fest, wie Punkte vergeben werden, ob
+          es Joker gibt und was sonst noch bei deinem Turnier gelten soll.
         </p>
         <Link
           to="/manager/stammdaten/regelwerke"
@@ -46,8 +46,8 @@ function DashboardRoute() {
     <div className="bg-surface border-surface rounded-md border p-6">
       <p className="text-lg font-medium">Fast geschafft!</p>
       <p className="text-subtle mt-3 text-sm">
-        Das Regelwerk steht. Jetzt fehlt nur noch dein erstes Turnier — dann kann
-        die Tipprunde beginnen.
+        Das Regelwerk steht. Jetzt fehlt nur noch dein erstes Turnier — dann kann die Tipprunde
+        beginnen.
       </p>
       <Link
         to="/manager/stammdaten/turniere"

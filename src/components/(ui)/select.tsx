@@ -26,9 +26,7 @@ export function Select<T extends object>({ label, children, ...props }: Props<T>
         <ChevronDownIcon size={14} className="text-subtle shrink-0" />
       </Button>
       <Popover className="border-input bg-base w-[var(--trigger-width)] rounded-md border shadow-md">
-        <ListBox className="p-1 outline-none">
-          {children}
-        </ListBox>
+        <ListBox className="p-1 outline-none">{children}</ListBox>
       </Popover>
     </RACSelect>
   );

@@ -33,7 +33,9 @@ export const createTeamFn = createServerFn({ method: "POST" })
 
 export const updateTeamFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
-  .inputValidator(validateForm(v.object({ id: v.pipe(v.string(), v.minLength(1)), ...updateTeamSchema.entries })))
+  .inputValidator(
+    validateForm(v.object({ id: v.pipe(v.string(), v.minLength(1)), ...updateTeamSchema.entries })),
+  )
   .handler(async ({ data }): Promise<TeamFormState> => {
     if (!data.success) return { error: "Ungültige Eingabe." };
     try {

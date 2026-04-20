@@ -42,11 +42,11 @@ export function DatePicker({ label, value, onChange, className }: Props) {
           {(segment) => (
             <DateSegment
               segment={segment}
-              className="rounded px-0.5 outline-none data-placeholder:text-subtle data-focused:bg-accent data-focused:text-accent-foreground"
+              className="data-placeholder:text-subtle data-focused:bg-accent data-focused:text-accent-foreground rounded px-0.5 outline-none"
             />
           )}
         </DateInput>
-        <Button className="text-subtle data-hovered:text-base ml-2 outline-none">
+        <Button className="text-subtle ml-2 outline-none data-hovered:text-base">
           <CalendarIcon size={14} />
         </Button>
       </Group>
@@ -80,7 +80,7 @@ export function DatePicker({ label, value, onChange, className }: Props) {
                 {(date) => (
                   <CalendarCell
                     date={date}
-                    className="flex size-8 cursor-default items-center justify-center rounded text-sm outline-none data-outside-month:text-subtle data-selected:bg-accent data-selected:text-accent-foreground data-hovered:bg-subtle data-focus-visible:ring-2 data-focus-visible:ring-focus"
+                    className="data-outside-month:text-subtle data-selected:bg-accent data-selected:text-accent-foreground data-hovered:bg-subtle data-focus-visible:ring-focus flex size-8 cursor-default items-center justify-center rounded text-sm outline-none data-focus-visible:ring-2"
                   />
                 )}
               </CalendarGridBody>

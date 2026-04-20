@@ -16,7 +16,7 @@ type Turnier = typeof championships.$inferSelect & {
 
 interface Props {
   initialTurniere: Turnier[];
-  initialRegelwerke: typeof rulesets.$inferSelect[];
+  initialRegelwerke: (typeof rulesets.$inferSelect)[];
 }
 
 export function TurniereTable({ initialTurniere, initialRegelwerke }: Props) {
@@ -42,17 +42,11 @@ export function TurniereTable({ initialTurniere, initialRegelwerke }: Props) {
       <DataTable
         columns={columns}
         data={turniere}
-        toolbar={
-          <Button onPress={() => setIsOpen(true)}>Neu anlegen</Button>
-        }
+        toolbar={<Button onPress={() => setIsOpen(true)}>Neu anlegen</Button>}
       />
 
       <Dialog isOpen={isOpen} onOpenChange={setIsOpen} title="Neues Turnier anlegen">
-        <TurnierForm
-          key={isOpen ? "open" : "closed"}
-          regelwerke={regelwerke}
-          nextNr={nextNr}
-        />
+        <TurnierForm key={isOpen ? "open" : "closed"} regelwerke={regelwerke} nextNr={nextNr} />
       </Dialog>
     </>
   );

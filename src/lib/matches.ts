@@ -26,9 +26,7 @@ export const createMatchFn = createServerFn({ method: "POST" })
 
 export const updateMatchFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
-  .inputValidator(
-    v.object({ id: v.number(), ...v.omit(matchDataSchema, ["roundId"]).entries }),
-  )
+  .inputValidator(v.object({ id: v.number(), ...v.omit(matchDataSchema, ["roundId"]).entries }))
   .handler(async ({ data }): Promise<void> => {
     await updateMatch(data);
   });

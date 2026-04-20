@@ -24,5 +24,7 @@ const button = tv({
 interface Props extends ButtonProps, VariantProps<typeof button> {}
 
 export function Button({ variant, size, className, ...props }: Props) {
-  return <RACButton {...props} className={button({ variant, size, className: className as string })} />;
+  return (
+    <RACButton {...props} className={button({ variant, size, className: className as string })} />
+  );
 }

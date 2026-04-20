@@ -38,7 +38,11 @@ export const createRegelwerk = createServerFn({ method: "POST" })
 
 export const updateRegelwerk = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
-  .inputValidator(validateForm(v.object({ id: v.pipe(v.string(), v.minLength(1)), ...updateRulesetSchema.entries })))
+  .inputValidator(
+    validateForm(
+      v.object({ id: v.pipe(v.string(), v.minLength(1)), ...updateRulesetSchema.entries }),
+    ),
+  )
   .handler(async ({ data }): Promise<RegelwerkFormState> => {
     if (!data.success) return { error: "Ungültige Eingabe." };
     try {

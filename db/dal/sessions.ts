@@ -3,9 +3,8 @@ import { eq } from "drizzle-orm";
 import { db } from "#db";
 import { sessions } from "../schema/tables.ts";
 
-export const createSession = createServerOnlyFn(
-  async (data: typeof sessions.$inferInsert) =>
-    db.insert(sessions).values(data),
+export const createSession = createServerOnlyFn(async (data: typeof sessions.$inferInsert) =>
+  db.insert(sessions).values(data),
 );
 
 export const getSession = createServerOnlyFn(async (id: string) =>

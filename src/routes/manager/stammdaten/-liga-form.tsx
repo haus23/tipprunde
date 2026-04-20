@@ -63,7 +63,10 @@ export function LigaForm({ liga }: Props) {
         name="shortName"
         isRequired
         value={shortName}
-        onChange={(v) => { setShortName(v); setShortNameDirty(true); }}
+        onChange={(v) => {
+          setShortName(v);
+          setShortNameDirty(true);
+        }}
         onBlur={handleShortNameBlur}
         className="flex flex-col gap-1"
       >
@@ -77,7 +80,10 @@ export function LigaForm({ liga }: Props) {
           name="id"
           isRequired
           value={id}
-          onChange={(v) => { setId(v); setIdDirty(true); }}
+          onChange={(v) => {
+            setId(v);
+            setIdDirty(true);
+          }}
           className="flex flex-col gap-1"
         >
           <Label>Kennung (eindeutig)</Label>
@@ -86,9 +92,7 @@ export function LigaForm({ liga }: Props) {
         </TextField>
       )}
 
-      {state && "error" in state && (
-        <p className="text-error text-sm">{state.error}</p>
-      )}
+      {state && "error" in state && <p className="text-error text-sm">{state.error}</p>}
 
       <div className="flex justify-end">
         <Button type="submit" isDisabled={pending}>

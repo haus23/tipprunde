@@ -44,7 +44,7 @@ export function MatchesTable({ roundId, leagues, teams }: Props) {
     <>
       <div className="flex flex-col gap-1">
         {matchList.length > 0 && (
-          <div className="mb-1 grid grid-cols-[2rem_7rem_5rem_1fr_2rem_1fr_2rem] gap-2 px-2 text-xs font-medium text-subtle">
+          <div className="text-subtle mb-1 grid grid-cols-[2rem_7rem_5rem_1fr_2rem_1fr_2rem] gap-2 px-2 text-xs font-medium">
             <span className="text-right">#</span>
             <span>Datum</span>
             <span>Liga</span>
@@ -57,14 +57,22 @@ export function MatchesTable({ roundId, leagues, teams }: Props) {
         {matchList.map((m) => (
           <div
             key={m.id}
-            className="grid grid-cols-[2rem_7rem_5rem_1fr_2rem_1fr_2rem] items-center gap-2 rounded px-2 py-1 text-sm hover:bg-subtle/50"
+            className="hover:bg-subtle/50 grid grid-cols-[2rem_7rem_5rem_1fr_2rem_1fr_2rem] items-center gap-2 rounded px-2 py-1 text-sm"
           >
-            <span className="text-right text-subtle">{m.nr}.</span>
-            <span className="text-subtle">{m.date ? m.date.split("-").reverse().join(".") : "—"}</span>
-            <span className="truncate text-subtle">{m.leagueId ? (leagueById[m.leagueId]?.shortName ?? "—") : "—"}</span>
-            <span className="truncate">{m.hometeamId ? (teamById[m.hometeamId]?.shortName ?? "—") : "—"}</span>
-            <span className="text-center text-subtle">vs</span>
-            <span className="truncate">{m.awayteamId ? (teamById[m.awayteamId]?.shortName ?? "—") : "—"}</span>
+            <span className="text-subtle text-right">{m.nr}.</span>
+            <span className="text-subtle">
+              {m.date ? m.date.split("-").reverse().join(".") : "—"}
+            </span>
+            <span className="text-subtle truncate">
+              {m.leagueId ? (leagueById[m.leagueId]?.shortName ?? "—") : "—"}
+            </span>
+            <span className="truncate">
+              {m.hometeamId ? (teamById[m.hometeamId]?.shortName ?? "—") : "—"}
+            </span>
+            <span className="text-subtle text-center">vs</span>
+            <span className="truncate">
+              {m.awayteamId ? (teamById[m.awayteamId]?.shortName ?? "—") : "—"}
+            </span>
             <Button
               variant="secondary"
               size="icon"

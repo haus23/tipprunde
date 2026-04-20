@@ -1,6 +1,15 @@
 import { createFileRoute, Link, Outlet, useMatches } from "@tanstack/react-router";
 import { ChampionshipSwitcher } from "@/components/manager/championship-switcher.tsx";
-import { CalendarIcon, FoldersIcon, LayoutDashboardIcon, PilcrowIcon, ShieldIcon, ShirtIcon, TrophyIcon, UsersIcon } from "lucide-react";
+import {
+  CalendarIcon,
+  FoldersIcon,
+  LayoutDashboardIcon,
+  PilcrowIcon,
+  ShieldIcon,
+  ShirtIcon,
+  TrophyIcon,
+  UsersIcon,
+} from "lucide-react";
 import { Logo } from "@/components/logo.tsx";
 import { requireManager } from "@/lib/auth/functions.ts";
 import { fetchChampionships, fetchCurrentChampionship } from "@/lib/championships.ts";
@@ -147,10 +156,7 @@ function ManagerLayout() {
         <header className="border-layout fixed inset-x-0 top-0 grid h-14 grid-cols-3 items-center border-b px-4 md:left-52">
           <div className="flex items-center">
             {currentChampionship && (
-              <ChampionshipSwitcher
-                current={currentChampionship}
-                championships={championships}
-              />
+              <ChampionshipSwitcher current={currentChampionship} championships={championships} />
             )}
           </div>
           <h1 className="text-center text-sm font-medium">{headerTitle}</h1>

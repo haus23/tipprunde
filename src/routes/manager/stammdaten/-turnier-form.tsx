@@ -11,7 +11,7 @@ import { queryKeys } from "@/lib/query-keys.ts";
 import type { rulesets } from "#db/schema/tables.ts";
 
 interface Props {
-  regelwerke: typeof rulesets.$inferSelect[];
+  regelwerke: (typeof rulesets.$inferSelect)[];
   nextNr: number;
 }
 
@@ -81,12 +81,7 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
         <FieldError>Pflichtfeld.</FieldError>
       </TextField>
 
-      <TextField
-        name="nr"
-        isRequired
-        defaultValue={String(nextNr)}
-        className="flex flex-col gap-1"
-      >
+      <TextField name="nr" isRequired defaultValue={String(nextNr)} className="flex flex-col gap-1">
         <Label>Nummer</Label>
         <Input type="number" />
         <FieldError>Pflichtfeld.</FieldError>
@@ -100,9 +95,7 @@ export function TurnierForm({ regelwerke, nextNr }: Props) {
         ))}
       </Select>
 
-      {state && "error" in state && (
-        <p className="text-error text-sm">{state.error}</p>
-      )}
+      {state && "error" in state && <p className="text-error text-sm">{state.error}</p>}
 
       <div className="flex justify-end">
         <Button type="submit" isDisabled={pending}>

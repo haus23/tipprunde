@@ -33,7 +33,9 @@ export const createLiga = createServerFn({ method: "POST" })
 
 export const updateLiga = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
-  .inputValidator(validateForm(v.object({ id: v.pipe(v.string(), v.minLength(1)), ...updateLigaSchema.entries })))
+  .inputValidator(
+    validateForm(v.object({ id: v.pipe(v.string(), v.minLength(1)), ...updateLigaSchema.entries })),
+  )
   .handler(async ({ data }): Promise<LigaFormState> => {
     if (!data.success) return { error: "Ungültige Eingabe." };
     try {

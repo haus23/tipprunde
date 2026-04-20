@@ -4,7 +4,11 @@ import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { SpielerForm } from "@/routes/manager/stammdaten/-spieler-form.tsx";
-import { addTurnierSpieler, fetchTurnierSpieler, removeTurnierSpieler } from "@/lib/participants.ts";
+import {
+  addTurnierSpieler,
+  fetchTurnierSpieler,
+  removeTurnierSpieler,
+} from "@/lib/participants.ts";
 import { fetchPlayers } from "@/lib/players.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
@@ -47,8 +51,7 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
   );
 
   const addMutation = useMutation({
-    mutationFn: (userId: number) =>
-      addTurnierSpieler({ data: { championshipId, userId } }),
+    mutationFn: (userId: number) => addTurnierSpieler({ data: { championshipId, userId } }),
     onMutate: async (userId) => {
       await queryClient.cancelQueries({
         queryKey: queryKeys.players.byChampionship(championshipId),
@@ -84,8 +87,7 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
   });
 
   const removeMutation = useMutation({
-    mutationFn: (userId: number) =>
-      removeTurnierSpieler({ data: { championshipId, userId } }),
+    mutationFn: (userId: number) => removeTurnierSpieler({ data: { championshipId, userId } }),
     onMutate: async (userId) => {
       await queryClient.cancelQueries({
         queryKey: queryKeys.players.byChampionship(championshipId),
@@ -114,7 +116,9 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
     },
   });
 
-  async function extractUserId(items: Parameters<Parameters<typeof useDragAndDrop>[0]["onRootDrop"] & {}>[0]["items"]) {
+  async function extractUserId(
+    items: Parameters<Parameters<typeof useDragAndDrop>[0]["onRootDrop"] & {}>[0]["items"],
+  ) {
     const results: number[] = [];
     for (const item of items) {
       if (item.kind === "text" && item.types.has(DRAG_TYPE)) {
@@ -150,80 +154,77 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
 
   return (
     <>
-    <div className="grid grid-cols-2 gap-4">
-      <div className="flex flex-col gap-2">
-        <p className="text-sm font-medium">
-          Im Turnier{" "}
-          <span className="text-subtle font-normal">({tournamentPlayers.length})</span>
-        </p>
-        <ListBox
-          aria-label="Spieler im Turnier"
-          items={tournamentPlayers}
-          dragAndDropHooks={tournamentDnD}
-          className="bg-surface border-surface min-h-48 rounded-md border p-1"
-          renderEmptyState={() => (
-            <p className="text-subtle p-6 text-center text-sm">
-              Spieler von rechts hierher ziehen
-            </p>
-          )}
-        >
-          {(user) => (
-            <ListBoxItem
-              id={user.id}
-              textValue={user.name}
-              className="flex cursor-grab items-center rounded px-3 py-1.5 text-sm outline-none data-[dragging]:opacity-40 data-[focused]:bg-subtle"
-            >
-              {user.name}
-            </ListBoxItem>
-          )}
-        </ListBox>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-medium">Alle Spieler</p>
-          <Button onPress={() => setIsNewSpielerOpen(true)}>
-            Neuer Spieler
-          </Button>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium">
+            Im Turnier <span className="text-subtle font-normal">({tournamentPlayers.length})</span>
+          </p>
+          <ListBox
+            aria-label="Spieler im Turnier"
+            items={tournamentPlayers}
+            dragAndDropHooks={tournamentDnD}
+            className="bg-surface border-surface min-h-48 rounded-md border p-1"
+            renderEmptyState={() => (
+              <p className="text-subtle p-6 text-center text-sm">
+                Spieler von rechts hierher ziehen
+              </p>
+            )}
+          >
+            {(user) => (
+              <ListBoxItem
+                id={user.id}
+                textValue={user.name}
+                className="data-[focused]:bg-subtle flex cursor-grab items-center rounded px-3 py-1.5 text-sm outline-none data-[dragging]:opacity-40"
+              >
+                {user.name}
+              </ListBoxItem>
+            )}
+          </ListBox>
         </div>
-        <input
-          type="search"
-          placeholder="Spieler suchen …"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="border-input rounded-md border px-3 py-1.5 text-sm outline-none placeholder:opacity-40"
-        />
-        <ListBox
-          aria-label="Verfügbare Spieler"
-          items={availablePlayers}
-          dragAndDropHooks={availableDnD}
-          className="bg-surface border-surface min-h-48 rounded-md border p-1"
-          renderEmptyState={() => (
-            <p className="text-subtle p-6 text-center text-sm">
-              {filter ? "Keine Treffer" : "Alle Spieler sind im Turnier"}
-            </p>
-          )}
-        >
-          {(user) => (
-            <ListBoxItem
-              id={user.id}
-              textValue={user.name}
-              className="flex cursor-grab items-center rounded px-3 py-1.5 text-sm outline-none data-[dragging]:opacity-40 data-[focused]:bg-subtle"
-            >
-              {user.name}
-            </ListBoxItem>
-          )}
-        </ListBox>
-      </div>
-    </div>
 
-    <Dialog
-      isOpen={isNewSpielerOpen}
-      onOpenChange={setIsNewSpielerOpen}
-      title="Neuen Spieler anlegen"
-    >
-      <SpielerForm key={isNewSpielerOpen ? "open" : "closed"} />
-    </Dialog>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium">Alle Spieler</p>
+            <Button onPress={() => setIsNewSpielerOpen(true)}>Neuer Spieler</Button>
+          </div>
+          <input
+            type="search"
+            placeholder="Spieler suchen …"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="border-input rounded-md border px-3 py-1.5 text-sm outline-none placeholder:opacity-40"
+          />
+          <ListBox
+            aria-label="Verfügbare Spieler"
+            items={availablePlayers}
+            dragAndDropHooks={availableDnD}
+            className="bg-surface border-surface min-h-48 rounded-md border p-1"
+            renderEmptyState={() => (
+              <p className="text-subtle p-6 text-center text-sm">
+                {filter ? "Keine Treffer" : "Alle Spieler sind im Turnier"}
+              </p>
+            )}
+          >
+            {(user) => (
+              <ListBoxItem
+                id={user.id}
+                textValue={user.name}
+                className="data-[focused]:bg-subtle flex cursor-grab items-center rounded px-3 py-1.5 text-sm outline-none data-[dragging]:opacity-40"
+              >
+                {user.name}
+              </ListBoxItem>
+            )}
+          </ListBox>
+        </div>
+      </div>
+
+      <Dialog
+        isOpen={isNewSpielerOpen}
+        onOpenChange={setIsNewSpielerOpen}
+        title="Neuen Spieler anlegen"
+      >
+        <SpielerForm key={isNewSpielerOpen ? "open" : "closed"} />
+      </Dialog>
     </>
   );
 }

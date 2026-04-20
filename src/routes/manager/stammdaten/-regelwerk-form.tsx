@@ -14,7 +14,10 @@ import type { Ruleset } from "#db/dal/rulesets.ts";
 type Regelwerk = Ruleset;
 
 const TIP_RULES: { value: string; label: string }[] = [
-  { value: "drei-zwei-oder-ein-punkt-joker-verdoppelt", label: "3, 2 oder 1 Punkt, Joker verdoppelt" },
+  {
+    value: "drei-zwei-oder-ein-punkt-joker-verdoppelt",
+    label: "3, 2 oder 1 Punkt, Joker verdoppelt",
+  },
   { value: "drei-oder-ein-punkt-joker-verdoppelt", label: "3 oder 1 Punkt, Joker verdoppelt" },
 ];
 
@@ -84,7 +87,10 @@ export function RegelwerkForm({ regelwerk }: Props) {
           name="id"
           isRequired
           value={id}
-          onChange={(v) => { setId(v); setIdDirty(true); }}
+          onChange={(v) => {
+            setId(v);
+            setIdDirty(true);
+          }}
           className="flex flex-col gap-1"
         >
           <Label>Kennung (eindeutig)</Label>
@@ -164,9 +170,7 @@ export function RegelwerkForm({ regelwerk }: Props) {
         ))}
       </Select>
 
-      {state && "error" in state && (
-        <p className="text-error text-sm">{state.error}</p>
-      )}
+      {state && "error" in state && <p className="text-error text-sm">{state.error}</p>}
 
       <div className="flex justify-end">
         <Button type="submit" isDisabled={pending}>
