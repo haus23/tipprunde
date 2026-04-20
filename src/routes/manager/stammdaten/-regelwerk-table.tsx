@@ -6,9 +6,9 @@ import { Button } from "@/components/(ui)/button.tsx";
 import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { queryKeys } from "@/lib/query-keys.ts";
-import { fetchRulesets } from "@/lib/rulesets.ts";
+import { fetchRulesetsFn } from "#/app/manager/rulesets.ts";
 
-import { createRegelwerkColumns } from "./-regelwerk-columns.tsx";
+import { createRulesetFnColumns } from "./-regelwerk-columns.tsx";
 import { RegelwerkForm } from "./-regelwerk-form.tsx";
 
 type Regelwerk = Ruleset;
@@ -23,7 +23,7 @@ export function RegelwerkeTable({ initialRegelwerke }: Props) {
 
   const { data: regelwerke } = useQuery({
     queryKey: queryKeys.rulesets.all,
-    queryFn: () => fetchRulesets(),
+    queryFn: () => fetchRulesetsFn(),
     initialData: initialRegelwerke,
   });
 
@@ -37,7 +37,7 @@ export function RegelwerkeTable({ initialRegelwerke }: Props) {
     setIsOpen(true);
   }
 
-  const columns = useMemo(() => createRegelwerkColumns(openEdit), []);
+  const columns = useMemo(() => createRulesetFnColumns(openEdit), []);
 
   return (
     <>

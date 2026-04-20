@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { fetchTurniere } from "@/lib/championships.ts";
-import { fetchRulesets } from "@/lib/rulesets.ts";
+import { fetchRulesetsFn } from "#/app/manager/rulesets.ts";
 
 import { TurniereTable } from "./-turnier-table.tsx";
 
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/manager/stammdaten/turniere")({
   }),
   beforeLoad: () => ({ pageTitle: "Stammdaten | Turniere" }),
   loader: async () => {
-    const [turniere, regelwerke] = await Promise.all([fetchTurniere(), fetchRulesets()]);
+    const [turniere, regelwerke] = await Promise.all([fetchTurniere(), fetchRulesetsFn()]);
     return { turniere, regelwerke };
   },
   component: TurnierePage,

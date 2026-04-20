@@ -7,7 +7,7 @@ import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { fetchTurniere } from "@/lib/championships.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import { fetchRulesets } from "@/lib/rulesets.ts";
+import { fetchRulesetsFn } from "#/app/manager/rulesets.ts";
 
 import { createTurnierColumns } from "./-turnier-columns.tsx";
 import { TurnierForm } from "./-turnier-form.tsx";
@@ -32,7 +32,7 @@ export function TurniereTable({ initialTurniere, initialRegelwerke }: Props) {
 
   const { data: regelwerke } = useQuery({
     queryKey: queryKeys.rulesets.all,
-    queryFn: () => fetchRulesets(),
+    queryFn: () => fetchRulesetsFn(),
     initialData: initialRegelwerke,
   });
 

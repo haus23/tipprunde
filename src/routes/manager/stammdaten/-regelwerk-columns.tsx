@@ -6,7 +6,7 @@ import { Button } from "@/components/(ui)/button.tsx";
 
 type Regelwerk = Ruleset;
 
-export function createRegelwerkColumns(onEdit: (r: Regelwerk) => void): ColumnDef<Regelwerk>[] {
+export function createRulesetFnColumns(onEdit: (r: Regelwerk) => void): ColumnDef<Regelwerk>[] {
   return [
     {
       accessorKey: "name",

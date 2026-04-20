@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { fetchRulesets } from "@/lib/rulesets.ts";
+import { fetchRulesetsFn } from "#/app/manager/rulesets.ts";
 
 import { RegelwerkeTable } from "./-regelwerk-table.tsx";
 
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/manager/stammdaten/regelwerke")({
     meta: [{ title: "Regelwerke | Stammdaten" }],
   }),
   beforeLoad: () => ({ pageTitle: "Stammdaten | Regelwerke" }),
-  loader: () => fetchRulesets(),
+  loader: () => fetchRulesetsFn(),
   component: RegelwerkePage,
 });
 

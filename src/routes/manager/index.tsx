@@ -1,6 +1,6 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 
-import { fetchRulesets } from "@/lib/rulesets.ts";
+import { fetchRulesetsFn } from "#/app/manager/rulesets.ts";
 
 export const Route = createFileRoute("/manager/")({
   head: () => ({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/manager/")({
     }
   },
   loader: async () => {
-    const regelwerke = await fetchRulesets();
+    const regelwerke = await fetchRulesetsFn();
     return { hasRegelwerke: regelwerke.length > 0 };
   },
   component: DashboardRoute,

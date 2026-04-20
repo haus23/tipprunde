@@ -5,29 +5,27 @@ import { createRuleset, getRulesets, updateRuleset } from "#db/dal/rulesets.ts";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
 import { validateForm } from "@/lib/validate-form.ts";
 
-export type RegelwerkFormState = { success: true } | { error: string } | null;
+export type RulesetFormState = { success: true } | { error: string } | null;
 
 const rulesetSchema = v.object({
-  id: v.pipe(v.string(), v.minLength(1)),
-  name: v.pipe(v.string(), v.minLength(1)),
-  description: v.pipe(v.string(), v.minLength(1)),
-  tipRuleId: v.pipe(v.string(), v.minLength(1)),
-  jokerRuleId: v.pipe(v.string(), v.minLength(1)),
-  matchRuleId: v.pipe(v.string(), v.minLength(1)),
-  roundRuleId: v.pipe(v.string(), v.minLength(1)),
-  extraQuestionRuleId: v.pipe(v.string(), v.minLength(1)),
+  id: v.string(),
+  name: v.string(),
+  description: v.string(),
+  tipRuleId: v.string(),
+  jokerRuleId: v.string(),
+  matchRuleId: v.string(),
+  roundRuleId: v.string(),
+  extraQuestionRuleId: v.string(),
 });
 
-const updateRulesetSchema = v.omit(rulesetSchema, ["id"]);
-
-export const fetchRulesets = createServerFn({ method: "GET" })
+export const fetchRulesetsFn = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
   .handler(async () => getRulesets());
 
-export const createRegelwerk = createServerFn({ method: "POST" })
+export const createRulesetFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
   .inputValidator(validateForm(rulesetSchema))
-  .handler(async ({ data }): Promise<RegelwerkFormState> => {
+  .handler(async ({ data }): Promise<RulesetFormState> => {
     if (!data.success) return { error: "Ungültige Eingabe." };
     try {
       await createRuleset(data.output);
@@ -37,14 +35,10 @@ export const createRegelwerk = createServerFn({ method: "POST" })
     }
   });
 
-export const updateRegelwerk = createServerFn({ method: "POST" })
+export const updateRulesetFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
-  .inputValidator(
-    validateForm(
-      v.object({ id: v.pipe(v.string(), v.minLength(1)), ...updateRulesetSchema.entries }),
-    ),
-  )
-  .handler(async ({ data }): Promise<RegelwerkFormState> => {
+  .inputValidator(validateForm(rulesetSchema))
+  .handler(async ({ data }): Promise<RulesetFormState> => {
     if (!data.success) return { error: "Ungültige Eingabe." };
     try {
       await updateRuleset(data.output);

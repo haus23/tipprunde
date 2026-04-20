@@ -9,7 +9,7 @@ import { FieldError, Input, Label, TextArea, TextField } from "@/components/(ui)
 import { useServerAction } from "@/lib/hooks/server-action.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import { createRegelwerk, updateRegelwerk } from "@/lib/rulesets.ts";
+import { createRulesetFn, updateRulesetFn } from "#/app/manager/rulesets.ts";
 import { slugify } from "@/lib/slugify.ts";
 
 type Regelwerk = Ruleset;
@@ -47,7 +47,7 @@ interface Props {
 }
 
 export function RegelwerkForm({ regelwerk }: Props) {
-  const serverAction = regelwerk ? updateRegelwerk : createRegelwerk;
+  const serverAction = regelwerk ? updateRulesetFn : createRulesetFn;
   const [state, formAction, pending] = useServerAction(serverAction);
 
   const dialog = useContext(OverlayTriggerStateContext);
