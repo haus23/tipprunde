@@ -5,10 +5,10 @@ import type { League } from "#db/dal/leagues.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
-import { fetchLeagues } from "@/lib/leagues.ts";
+import { fetchLeaguesFn } from "#/app/manager/leagues.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 
-import { createLigaColumns } from "./-liga-columns.tsx";
+import { createLeagueFnColumns } from "./-liga-columns.tsx";
 import { LigaForm } from "./-liga-form.tsx";
 
 type Liga = League;
@@ -23,7 +23,7 @@ export function LigenTable({ initialLigen }: Props) {
 
   const { data: ligen } = useQuery({
     queryKey: queryKeys.leagues.all,
-    queryFn: () => fetchLeagues(),
+    queryFn: () => fetchLeaguesFn(),
     initialData: initialLigen,
   });
 
@@ -37,7 +37,7 @@ export function LigenTable({ initialLigen }: Props) {
     setIsOpen(true);
   }
 
-  const columns = useMemo(() => createLigaColumns(openEdit), []);
+  const columns = useMemo(() => createLeagueFnColumns(openEdit), []);
 
   return (
     <>

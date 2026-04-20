@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import * as v from "valibot";
 
 import { fetchTurnierDetails } from "@/lib/championships.ts";
-import { fetchLeagues } from "@/lib/leagues.ts";
+import { fetchLeaguesFn } from "#/app/manager/leagues.ts";
 import { fetchChampionshipRounds } from "@/lib/rounds.ts";
 import { fetchTeamsFn } from "#/app/manager/teams.ts";
 
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/manager/$slug/spiele")({
     if (!championship) return { championship: null, rounds: [], leagues: [], teams: [] };
     const [rounds, leagues, teams] = await Promise.all([
       fetchChampionshipRounds({ data: championship.id }),
-      fetchLeagues(),
+      fetchLeaguesFn(),
       fetchTeamsFn(),
     ]);
     return { championship, rounds, leagues, teams };

@@ -5,24 +5,22 @@ import { createLeague, getLeagues, updateLeague } from "#db/dal/leagues.ts";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
 import { validateForm } from "@/lib/validate-form.ts";
 
-export type LigaFormState = { success: true } | { error: string } | null;
+export type LeagueFormState = { success: true } | { error: string } | null;
 
-const ligaSchema = v.object({
-  id: v.pipe(v.string(), v.minLength(1)),
-  name: v.pipe(v.string(), v.minLength(1)),
-  shortName: v.pipe(v.string(), v.minLength(1)),
+const leagueSchema = v.object({
+  id: v.string(),
+  name: v.string(),
+  shortName: v.string(),
 });
 
-const updateLigaSchema = v.omit(ligaSchema, ["id"]);
-
-export const fetchLeagues = createServerFn({ method: "GET" })
+export const fetchLeaguesFn = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
   .handler(async () => getLeagues());
 
-export const createLiga = createServerFn({ method: "POST" })
+export const createLeagueFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
-  .inputValidator(validateForm(ligaSchema))
-  .handler(async ({ data }): Promise<LigaFormState> => {
+  .inputValidator(validateForm(leagueSchema))
+  .handler(async ({ data }): Promise<LeagueFormState> => {
     if (!data.success) return { error: "Ungültige Eingabe." };
     try {
       await createLeague(data.output);
@@ -32,12 +30,10 @@ export const createLiga = createServerFn({ method: "POST" })
     }
   });
 
-export const updateLiga = createServerFn({ method: "POST" })
+export const updateLeagueFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
-  .inputValidator(
-    validateForm(v.object({ id: v.pipe(v.string(), v.minLength(1)), ...updateLigaSchema.entries })),
-  )
-  .handler(async ({ data }): Promise<LigaFormState> => {
+  .inputValidator(validateForm(leagueSchema))
+  .handler(async ({ data }): Promise<LeagueFormState> => {
     if (!data.success) return { error: "Ungültige Eingabe." };
     try {
       await updateLeague(data.output);

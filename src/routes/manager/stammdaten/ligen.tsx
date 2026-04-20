@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { fetchLeagues } from "@/lib/leagues.ts";
+import { fetchLeaguesFn } from "#/app/manager/leagues.ts";
 
 import { LigenTable } from "./-ligen-table.tsx";
 
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/manager/stammdaten/ligen")({
     meta: [{ title: "Ligen | Stammdaten" }],
   }),
   beforeLoad: () => ({ pageTitle: "Stammdaten | Ligen" }),
-  loader: () => fetchLeagues(),
+  loader: () => fetchLeaguesFn(),
   component: LigenPage,
 });
 

@@ -6,7 +6,7 @@ import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
 import { useServerAction } from "@/lib/hooks/server-action.ts";
-import { createLiga, updateLiga } from "@/lib/leagues.ts";
+import { createLeagueFn, updateLeagueFn } from "#/app/manager/leagues.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export function LigaForm({ liga }: Props) {
-  const serverAction = liga ? updateLiga : createLiga;
+  const serverAction = liga ? updateLeagueFn : createLeagueFn;
   const [state, formAction, pending] = useServerAction(serverAction);
 
   const dialog = useContext(OverlayTriggerStateContext);
