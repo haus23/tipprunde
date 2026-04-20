@@ -13,6 +13,7 @@
     "preview": "vite preview",
     "lint": "oxlint",
     "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "db:migrate": "drizzle-kit migrate",
     "db:migrate:prod": "bun --env-file=.env.production run drizzle-kit migrate",
     "db:push": "bun --env-file=.env run drizzle-kit push",

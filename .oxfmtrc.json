@@ -1,5 +1,5 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [".agents/**", ".claude/*"],
+  "ignorePatterns": [".agents/**", ".claude/**", "db/migrations/**", "src/**/*.gen.ts"],
   "sortTailwindcss": {}
 }
