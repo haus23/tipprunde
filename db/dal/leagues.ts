@@ -1,23 +1,17 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
 import { db } from "#db";
-import { leagues } from "#db/schema/tables.ts";
-
-interface LeagueData {
-  id: string;
-  name: string;
-  shortName: string;
-}
+import { leagues } from "../schema/tables.ts";
 
 export const getLeagues = createServerOnlyFn(async () =>
   db.query.leagues.findMany({ orderBy: { name: "asc" } }),
 );
 
-export const createLeague = createServerOnlyFn(async (data: LeagueData) =>
+export const createLeague = createServerOnlyFn(async (data: typeof leagues.$inferInsert) =>
   db.insert(leagues).values(data),
 );
 
-export const updateLeague = createServerOnlyFn(async (data: LeagueData) => {
+export const updateLeague = createServerOnlyFn(async (data: typeof leagues.$inferInsert) => {
   const { id, ...rest } = data;
   return db.update(leagues).set(rest).where(eq(leagues.id, id));
 });
