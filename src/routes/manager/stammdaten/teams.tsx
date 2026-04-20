@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { fetchTeams } from "@/lib/teams.ts";
+import { fetchTeamsFn } from "#/app/manager/teams.ts";
 
 import { TeamsTable } from "./-teams-table.tsx";
 
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/manager/stammdaten/teams")({
     meta: [{ title: "Teams | Stammdaten" }],
   }),
   beforeLoad: () => ({ pageTitle: "Stammdaten | Teams" }),
-  loader: () => fetchTeams(),
+  loader: () => fetchTeamsFn(),
   component: TeamsPage,
 });
 

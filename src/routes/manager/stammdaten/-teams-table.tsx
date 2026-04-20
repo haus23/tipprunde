@@ -6,7 +6,7 @@ import { Button } from "@/components/(ui)/button.tsx";
 import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { queryKeys } from "@/lib/query-keys.ts";
-import { fetchTeams } from "@/lib/teams.ts";
+import { fetchTeamsFn } from "#/app/manager/teams.ts";
 
 import { createTeamColumns } from "./-team-columns.tsx";
 import { TeamForm } from "./-team-form.tsx";
@@ -21,7 +21,7 @@ export function TeamsTable({ initialTeams }: Props) {
 
   const { data: teams } = useQuery({
     queryKey: queryKeys.teams.all,
-    queryFn: () => fetchTeams(),
+    queryFn: () => fetchTeamsFn(),
     initialData: initialTeams,
   });
 

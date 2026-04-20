@@ -9,7 +9,7 @@ import { useServerAction } from "@/lib/hooks/server-action.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
-import { createTeamFn, updateTeamFn } from "@/lib/teams.ts";
+import { createTeamFn, updateTeamFn } from "#/app/manager/teams.ts";
 
 interface Props {
   team?: Team;
