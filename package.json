@@ -14,10 +14,11 @@
     "lint": "oxlint",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "db:migrate": "drizzle-kit migrate",
-    "db:migrate:prod": "bun --env-file=.env.production run drizzle-kit migrate",
     "db:push": "bun --env-file=.env run drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:migrate": "bun --env-file=.env run drizzle-kit migrate",
+    "db:migrate:prod": "bun --env-file=.env.production run drizzle-kit migrate",
+    "db:studio": "bun --env-file=.env run drizzle-kit studio",
+    "db:studio:prod": "bun --env-file=.env.production run drizzle-kit studio"
   },
   "dependencies": {
     "@libsql/client": "^0.17.2",
