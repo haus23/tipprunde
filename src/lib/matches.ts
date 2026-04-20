@@ -1,17 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
-import {
-  createMatch,
-  deleteMatch,
-  getMatchesForRound,
-  updateMatch,
-} from "./matches.server.ts";
+import { getMatches, createMatch, updateMatch } from "#db/dal/matches.ts";
 
 export const fetchMatchesForRound = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
   .inputValidator(v.number())
-  .handler(({ data }) => getMatchesForRound(data));
+  .handler(({ data }) => getMatches(data));
 
 const matchDataSchema = v.object({
   roundId: v.number(),
@@ -36,11 +31,4 @@ export const updateMatchFn = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }): Promise<void> => {
     await updateMatch(data);
-  });
-
-export const deleteMatchFn = createServerFn({ method: "POST" })
-  .middleware([managerMiddleware])
-  .inputValidator(v.number())
-  .handler(async ({ data }): Promise<void> => {
-    await deleteMatch(data);
   });
