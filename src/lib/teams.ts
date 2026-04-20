@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 import { validateForm } from "@/lib/validate-form.ts";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
-import { createTeam, getTeams, updateTeam } from "./teams.server.ts";
+import { createTeam, getTeams, updateTeam } from "#db/dal/teams.ts";
 
 export type TeamFormState = { success: true } | { error: string } | null;
 

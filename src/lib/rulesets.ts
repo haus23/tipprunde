@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 import { validateForm } from "@/lib/validate-form.ts";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
-import { createRuleset, getRulesets, updateRuleset } from "./rulesets.server.ts";
+import { createRuleset, getRulesets, updateRuleset } from "#db/dal/rulesets.ts";
 
 export type RegelwerkFormState = { success: true } | { error: string } | null;
 
