@@ -11,11 +11,11 @@ export const getRounds = createServerOnlyFn(async (championshipId: number) =>
 );
 
 export const createRound = createServerOnlyFn(async (championshipId: number) => {
-  const [result] = await db
+  const [{ maxNr }] = await db
     .select({ maxNr: max(rounds.nr) })
     .from(rounds)
     .where(eq(rounds.championshipId, championshipId));
-  const nextNr = (result.maxNr ?? 0) + 1;
+  const nextNr = (maxNr ?? 0) + 1;
   return db.insert(rounds).values({ championshipId, nr: nextNr });
 });
 

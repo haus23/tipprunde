@@ -12,11 +12,11 @@ export const getMatches = createServerOnlyFn(async (roundId: number) =>
 
 export const createMatch = createServerOnlyFn(
   async (data: Omit<typeof matches.$inferInsert, "id" | "nr">) => {
-    const [result] = await db
+    const [{ maxNr }] = await db
       .select({ maxNr: max(matches.nr) })
       .from(matches)
       .where(eq(matches.roundId, data.roundId));
-    const nr = (result.maxNr ?? 0) + 1;
+    const nr = (maxNr ?? 0) + 1;
     return db.insert(matches).values({ ...data, nr });
   },
 );
