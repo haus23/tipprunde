@@ -2,6 +2,7 @@ import { createServerOnlyFn } from "@tanstack/react-start";
 import { db } from "#db";
 import { sessions, totpCodes } from "#db/schema/tables.ts";
 import { eq } from "drizzle-orm";
+import { getUserByEmail as dbGetUserByEmail } from "#db/dal/users.ts";
 import {
   APP_SECRET,
   FROM_EMAIL,
@@ -13,14 +14,12 @@ import {
 } from "@/lib/auth/config.ts";
 import { useAppSession } from "@/lib/auth/session.ts";
 
+// TODO: Simplify
+
 /*
  * Validate Email
  */
-export const getUserByEmail = createServerOnlyFn(async (email: string) =>
-  db.query.users.findFirst({
-    where: { email },
-  }),
-);
+export const getUserByEmail = dbGetUserByEmail;
 
 /*
  * TOTP Codes

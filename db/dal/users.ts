@@ -3,6 +3,10 @@ import { eq } from "drizzle-orm";
 import { db } from "#db";
 import { users } from "../schema/tables.ts";
 
+export const getUserByEmail = createServerOnlyFn(async (email: string) =>
+  db.query.users.findFirst({ where: { email } }),
+);
+
 export const getUsers = createServerOnlyFn(async () =>
   db.query.users.findMany({
     where: { id: { gt: 0 } },
