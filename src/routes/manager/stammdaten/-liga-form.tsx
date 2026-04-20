@@ -8,7 +8,7 @@ import { createLiga, updateLiga } from "@/lib/leagues.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
-import type { leagues } from "@/lib/db/schema.ts";
+import type { leagues } from "#db/schema/tables.ts";
 
 type Liga = typeof leagues.$inferSelect;
 

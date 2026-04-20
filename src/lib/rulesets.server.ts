@@ -1,8 +1,8 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
 import { db } from "#db";
-import { rulesets } from "@/lib/db/schema.ts";
-import type { rulesets as rulesetsSchema } from "@/lib/db/schema.ts";
+import { rulesets } from "#db/schema/tables.ts";
+import type { rulesets as rulesetsSchema } from "#db/schema/tables.ts";
 
 type RulesetData = Omit<typeof rulesetsSchema.$inferSelect, never>;
 
@@ -14,9 +14,7 @@ export const createRuleset = createServerOnlyFn(async (data: RulesetData) =>
   db.insert(rulesets).values(data),
 );
 
-export const updateRuleset = createServerOnlyFn(
-  async (data: RulesetData) => {
-    const { id, ...rest } = data;
-    return db.update(rulesets).set(rest).where(eq(rulesets.id, id));
-  },
-);
+export const updateRuleset = createServerOnlyFn(async (data: RulesetData) => {
+  const { id, ...rest } = data;
+  return db.update(rulesets).set(rest).where(eq(rulesets.id, id));
+});

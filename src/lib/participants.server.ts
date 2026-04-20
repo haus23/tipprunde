@@ -1,15 +1,14 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { and, eq, max } from "drizzle-orm";
 import { db } from "#db";
-import { players } from "@/lib/db/schema.ts";
+import { players } from "#db/schema/tables.ts";
 
-export const getChampionshipPlayers = createServerOnlyFn(
-  async (championshipId: number) =>
-    db.query.players.findMany({
-      where: { championshipId },
-      with: { user: true },
-      orderBy: { nr: "asc" },
-    }),
+export const getChampionshipPlayers = createServerOnlyFn(async (championshipId: number) =>
+  db.query.players.findMany({
+    where: { championshipId },
+    with: { user: true },
+    orderBy: { nr: "asc" },
+  }),
 );
 
 export const addPlayerToChampionship = createServerOnlyFn(

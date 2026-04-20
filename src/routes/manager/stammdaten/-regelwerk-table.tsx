@@ -5,7 +5,7 @@ import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { fetchRulesets } from "@/lib/rulesets.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { rulesets } from "@/lib/db/schema.ts";
+import type { rulesets } from "#db/schema/tables.ts";
 import { createRegelwerkColumns } from "./-regelwerk-columns.tsx";
 import { RegelwerkForm } from "./-regelwerk-form.tsx";
 

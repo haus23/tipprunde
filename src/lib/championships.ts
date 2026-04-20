@@ -12,7 +12,7 @@ import {
   updateChampionshipStatus,
 } from "@/lib/championships.server.ts";
 import { validateForm } from "@/lib/validate-form.ts";
-import type { championships } from "@/lib/db/schema.ts";
+import type { championships } from "#db/schema/tables.ts";
 
 export const CHAMPIONSHIP_COOKIE = "current-championship";
 

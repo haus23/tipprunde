@@ -5,7 +5,7 @@ import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { fetchLeagues } from "@/lib/leagues.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { leagues } from "@/lib/db/schema.ts";
+import type { leagues } from "#db/schema/tables.ts";
 import { createLigaColumns } from "./-liga-columns.tsx";
 import { LigaForm } from "./-liga-form.tsx";
 

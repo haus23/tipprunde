@@ -5,7 +5,7 @@ import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { fetchTeams } from "@/lib/teams.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { teams } from "@/lib/db/schema.ts";
+import type { teams } from "#db/schema/tables.ts";
 import { createTeamColumns } from "./-team-columns.tsx";
 import { TeamForm } from "./-team-form.tsx";
 

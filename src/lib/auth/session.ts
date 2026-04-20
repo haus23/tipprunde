@@ -1,4 +1,4 @@
-import type { users } from "@/lib/db/schema.ts";
+import type { users } from "#db/schema/tables.ts";
 import { updateSession, useSession } from "@tanstack/react-start/server";
 import { SESSION_SECRET } from "@/lib/auth/config.ts";
 

@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/(ui)/button.tsx";
-import type { rulesets } from "@/lib/db/schema.ts";
+import type { rulesets } from "#db/schema/tables.ts";
 
 type Regelwerk = typeof rulesets.$inferSelect;
 

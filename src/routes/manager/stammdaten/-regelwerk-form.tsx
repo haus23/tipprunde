@@ -9,7 +9,7 @@ import { createRegelwerk, updateRegelwerk } from "@/lib/rulesets.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
-import type { rulesets } from "@/lib/db/schema.ts";
+import type { rulesets } from "#db/schema/tables.ts";
 
 type Regelwerk = typeof rulesets.$inferSelect;
 

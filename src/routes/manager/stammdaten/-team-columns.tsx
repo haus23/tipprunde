@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/(ui)/button.tsx";
-import type { teams } from "@/lib/db/schema.ts";
+import type { teams } from "#db/schema/tables.ts";
 
 type Team = typeof teams.$inferSelect;
 

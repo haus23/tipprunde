@@ -6,7 +6,7 @@ import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { fetchRulesets } from "@/lib/rulesets.ts";
 import { fetchTurniere } from "@/lib/championships.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { championships, rulesets } from "@/lib/db/schema.ts";
+import type { championships, rulesets } from "#db/schema/tables.ts";
 import { createTurnierColumns } from "./-turnier-columns.tsx";
 import { TurnierForm } from "./-turnier-form.tsx";
 

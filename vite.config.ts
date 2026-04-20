@@ -6,7 +6,18 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 export default {
-  plugins: [tailwindcss(), tanstackStart(), nitro(), react()],
+  plugins: [
+    tailwindcss(),
+    tanstackStart({
+      importProtection: {
+        client: {
+          files: ["**/db/dal/**"],
+        },
+      },
+    }),
+    nitro(),
+    react(),
+  ],
   resolve: {
     tsconfigPaths: true,
   },

@@ -5,7 +5,7 @@ import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { fetchPlayers } from "@/lib/players.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { users } from "@/lib/db/schema.ts";
+import type { users } from "#db/schema/tables.ts";
 import { createSpielerColumns } from "./-spieler-columns.tsx";
 import { SpielerForm } from "./-spieler-form.tsx";
 

@@ -8,7 +8,7 @@ import { addTurnierSpieler, fetchTurnierSpieler, removeTurnierSpieler } from "@/
 import { fetchPlayers } from "@/lib/players.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { players, users } from "@/lib/db/schema.ts";
+import type { players, users } from "#db/schema/tables.ts";
 
 type TournamentPlayer = typeof players.$inferSelect & {
   user: typeof users.$inferSelect | null;

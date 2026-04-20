@@ -9,7 +9,7 @@ import { createSpieler, updateSpieler } from "@/lib/players.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
-import type { users } from "@/lib/db/schema.ts";
+import type { users } from "#db/schema/tables.ts";
 
 type Spieler = typeof users.$inferSelect;
 

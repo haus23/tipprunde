@@ -1,7 +1,7 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
 import { db } from "#db";
-import { leagues } from "@/lib/db/schema.ts";
+import { leagues } from "#db/schema/tables.ts";
 
 interface LeagueData {
   id: string;

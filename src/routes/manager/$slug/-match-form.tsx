@@ -8,7 +8,7 @@ import { Form } from "@/components/(ui)/form.tsx";
 import { createMatchFn, updateMatchFn } from "@/lib/matches.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { leagues, matches, teams } from "@/lib/db/schema.ts";
+import type { leagues, matches, teams } from "#db/schema/tables.ts";
 
 type League = typeof leagues.$inferSelect;
 type Team = typeof teams.$inferSelect;

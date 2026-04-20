@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 import { validateForm } from "@/lib/validate-form.ts";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
-import { createPlayer, getPlayers, updatePlayer } from "./players.server.ts";
+import { getPlayers, createPlayer, updatePlayer } from "#db/dal/players.ts";
 
 export type SpielerFormState = { success: true } | { error: string } | null;
 
@@ -47,7 +47,7 @@ export const updateSpieler = createServerFn({ method: "POST" })
     if (!data.success) return { error: "Ungültige Eingabe." };
     const { id, email, ...rest } = data.output;
     try {
-      await updatePlayer({ id, ...rest, email: email ?? null });
+      await updatePlayer(id, { ...rest, email: email ?? null });
       return { success: true };
     } catch {
       return { error: "Fehler beim Speichern. Kürzel oder E-Mail bereits vergeben?" };
