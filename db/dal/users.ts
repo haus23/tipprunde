@@ -3,6 +3,9 @@ import { eq } from "drizzle-orm";
 import { db } from "#db";
 import { users } from "../schema/tables.ts";
 
+export type User = typeof users.$inferSelect;
+export type UserRole = User["role"];
+
 export const getUserByEmail = createServerOnlyFn(async (email: string) =>
   db.query.users.findFirst({ where: { email } }),
 );

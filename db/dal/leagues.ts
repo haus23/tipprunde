@@ -3,6 +3,8 @@ import { eq } from "drizzle-orm";
 import { db } from "#db";
 import { leagues } from "../schema/tables.ts";
 
+export type League = typeof leagues.$inferSelect;
+
 export const getLeagues = createServerOnlyFn(async () =>
   db.query.leagues.findMany({ orderBy: { name: "asc" } }),
 );

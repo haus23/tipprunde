@@ -8,9 +8,8 @@ import { createTeamFn, updateTeamFn } from "@/lib/teams.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
-import type { teams } from "#db/schema/tables.ts";
+import type { Team } from "#db/dal/teams.ts";
 
-type Team = typeof teams.$inferSelect;
 
 interface Props {
   team?: Team;

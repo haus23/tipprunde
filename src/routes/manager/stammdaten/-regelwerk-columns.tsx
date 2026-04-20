@@ -1,9 +1,9 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/(ui)/button.tsx";
-import type { rulesets } from "#db/schema/tables.ts";
+import type { Ruleset } from "#db/dal/rulesets.ts";
 
-type Regelwerk = typeof rulesets.$inferSelect;
+type Regelwerk = Ruleset;
 
 export function createRegelwerkColumns(
   onEdit: (r: Regelwerk) => void,

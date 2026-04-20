@@ -8,13 +8,13 @@ import {
   getLatestChampionship,
   createChampionship,
   updateChampionship,
+  type Championship,
 } from "#db/dal/championships.ts";
 import { validateForm } from "@/lib/validate-form.ts";
-import type { championships } from "#db/schema/tables.ts";
 
 export const CHAMPIONSHIP_COOKIE = "current-championship";
 
-export type Championship = typeof championships.$inferSelect;
+export type { Championship };
 
 export const fetchCurrentChampionship = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])

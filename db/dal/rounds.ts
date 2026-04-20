@@ -3,6 +3,8 @@ import { eq, max } from "drizzle-orm";
 import { db } from "#db";
 import { rounds } from "../schema/tables.ts";
 
+export type Round = typeof rounds.$inferSelect;
+
 export const getRounds = createServerOnlyFn(async (championshipId: number) =>
   db.query.rounds.findMany({
     where: { championshipId },

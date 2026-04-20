@@ -1,9 +1,9 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/(ui)/button.tsx";
-import type { users } from "#db/schema/tables.ts";
+import type { User } from "#db/dal/users.ts";
 
-type Spieler = typeof users.$inferSelect;
+type Spieler = User;
 
 const ROLE_LABELS: Record<Spieler["role"], string> = {
   user: "Spieler",

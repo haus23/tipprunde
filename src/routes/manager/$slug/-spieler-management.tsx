@@ -8,12 +8,10 @@ import { addTurnierSpieler, fetchTurnierSpieler, removeTurnierSpieler } from "@/
 import { fetchPlayers } from "@/lib/players.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { players, users } from "#db/schema/tables.ts";
+import type { Player } from "#db/dal/players.ts";
+import type { User } from "#db/dal/users.ts";
 
-type TournamentPlayer = typeof players.$inferSelect & {
-  user: typeof users.$inferSelect | null;
-};
-type User = typeof users.$inferSelect;
+type TournamentPlayer = Player;
 
 interface Props {
   championshipId: number;

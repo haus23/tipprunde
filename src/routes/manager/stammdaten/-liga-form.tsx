@@ -8,9 +8,9 @@ import { createLiga, updateLiga } from "@/lib/leagues.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
-import type { leagues } from "#db/schema/tables.ts";
+import type { League } from "#db/dal/leagues.ts";
 
-type Liga = typeof leagues.$inferSelect;
+type Liga = League;
 
 interface Props {
   liga?: Liga;

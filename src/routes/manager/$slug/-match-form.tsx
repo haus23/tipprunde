@@ -8,11 +8,9 @@ import { Form } from "@/components/(ui)/form.tsx";
 import { createMatchFn, updateMatchFn } from "@/lib/matches.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { leagues, matches, teams } from "#db/schema/tables.ts";
-
-type League = typeof leagues.$inferSelect;
-type Team = typeof teams.$inferSelect;
-type Match = typeof matches.$inferSelect;
+import type { League } from "#db/dal/leagues.ts";
+import type { Match } from "#db/dal/matches.ts";
+import type { Team } from "#db/dal/teams.ts";
 
 interface Props {
   match?: Match;

@@ -1,9 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import type { championships, rulesets } from "#db/schema/tables.ts";
+import type { Championship } from "#db/dal/championships.ts";
 
-type Turnier = typeof championships.$inferSelect & {
-  ruleset: typeof rulesets.$inferSelect | null;
-};
+type Turnier = Championship;
 
 export function createTurnierColumns(): ColumnDef<Turnier>[] {
   return [

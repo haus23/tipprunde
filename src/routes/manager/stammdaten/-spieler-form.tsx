@@ -9,9 +9,9 @@ import { createSpieler, updateSpieler } from "@/lib/players.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 import { slugify } from "@/lib/slugify.ts";
-import type { users } from "#db/schema/tables.ts";
+import type { User } from "#db/dal/users.ts";
 
-type Spieler = typeof users.$inferSelect;
+type Spieler = User;
 
 const ROLES: { value: Spieler["role"]; label: string }[] = [
   { value: "user", label: "Spieler" },

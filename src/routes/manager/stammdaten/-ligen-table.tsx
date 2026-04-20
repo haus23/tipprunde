@@ -5,11 +5,11 @@ import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { fetchLeagues } from "@/lib/leagues.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { leagues } from "#db/schema/tables.ts";
+import type { League } from "#db/dal/leagues.ts";
 import { createLigaColumns } from "./-liga-columns.tsx";
 import { LigaForm } from "./-liga-form.tsx";
 
-type Liga = typeof leagues.$inferSelect;
+type Liga = League;
 
 interface Props {
   initialLigen: Liga[];

@@ -1,9 +1,8 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/(ui)/button.tsx";
-import type { teams } from "#db/schema/tables.ts";
+import type { Team } from "#db/dal/teams.ts";
 
-type Team = typeof teams.$inferSelect;
 
 export function createTeamColumns(onEdit: (t: Team) => void): ColumnDef<Team>[] {
   return [

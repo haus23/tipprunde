@@ -1,11 +1,11 @@
-import type { users } from "#db/schema/tables.ts";
+import type { UserRole } from "#db/dal/users.ts";
 import { updateSession, useSession } from "@tanstack/react-start/server";
 import { SESSION_SECRET } from "@/lib/auth/config.ts";
 
 // Extract the type from useSession's parameter
 type SessionConfig = Parameters<typeof useSession>[0];
 
-type Role = (typeof users.$inferSelect)["role"];
+type Role = UserRole;
 
 type SessionData = {
   sessionId: string;

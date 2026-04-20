@@ -1,9 +1,9 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/(ui)/button.tsx";
-import type { leagues } from "#db/schema/tables.ts";
+import type { League } from "#db/dal/leagues.ts";
 
-type Liga = typeof leagues.$inferSelect;
+type Liga = League;
 
 export function createLigaColumns(onEdit: (l: Liga) => void): ColumnDef<Liga>[] {
   return [

@@ -4,9 +4,7 @@ import { CalendarIcon } from "lucide-react";
 import { Switch } from "@/components/(ui)/switch.tsx";
 import { Button } from "@/components/(ui)/button.tsx";
 import { createRound, fetchChampionshipRounds, setRoundStatus } from "@/lib/rounds.ts";
-import type { rounds } from "#db/schema/tables.ts";
-
-type Round = typeof rounds.$inferSelect;
+import type { Round } from "#db/dal/rounds.ts";
 
 interface Props {
   championshipId: number;

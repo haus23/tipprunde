@@ -5,11 +5,11 @@ import { DataTable } from "@/components/(ui)/data-table.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import { fetchRulesets } from "@/lib/rulesets.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
-import type { rulesets } from "#db/schema/tables.ts";
+import type { Ruleset } from "#db/dal/rulesets.ts";
 import { createRegelwerkColumns } from "./-regelwerk-columns.tsx";
 import { RegelwerkForm } from "./-regelwerk-form.tsx";
 
-type Regelwerk = typeof rulesets.$inferSelect;
+type Regelwerk = Ruleset;
 
 interface Props {
   initialRegelwerke: Regelwerk[];
