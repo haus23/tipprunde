@@ -19,7 +19,7 @@ export const createRound = createServerOnlyFn(async (championshipId: number) => 
   return db.insert(rounds).values({ championshipId, nr: nextNr });
 });
 
-export const updateRound = createServerOnlyFn(
-  async (id: number, data: Partial<Omit<typeof rounds.$inferInsert, "id">>) =>
-    db.update(rounds).set(data).where(eq(rounds.id, id)),
-);
+export const updateRound = createServerOnlyFn(async (data: Partial<typeof rounds.$inferInsert> & { id: number }) => {
+  const { id, ...rest } = data;
+  return db.update(rounds).set(rest).where(eq(rounds.id, id));
+});

@@ -19,5 +19,5 @@ export const setRoundStatus = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
   .inputValidator(v.object({ roundId: v.number(), published: v.boolean() }))
   .handler(async ({ data }): Promise<void> => {
-    await updateRound(data.roundId, { published: data.published });
+    await updateRound({ id: data.roundId, published: data.published });
   });

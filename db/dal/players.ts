@@ -15,7 +15,7 @@ export const createPlayer = createServerOnlyFn(async (data: typeof users.$inferI
   db.insert(users).values(data),
 );
 
-export const updatePlayer = createServerOnlyFn(
-  async (id: number, data: typeof users.$inferInsert) =>
-    db.update(users).set(data).where(eq(users.id, id)),
-);
+export const updatePlayer = createServerOnlyFn(async (data: typeof users.$inferInsert & { id: number }) => {
+  const { id, ...rest } = data;
+  return db.update(users).set(rest).where(eq(users.id, id));
+});

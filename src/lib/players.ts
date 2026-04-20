@@ -47,7 +47,7 @@ export const updateSpieler = createServerFn({ method: "POST" })
     if (!data.success) return { error: "Ungültige Eingabe." };
     const { id, email, ...rest } = data.output;
     try {
-      await updatePlayer(id, { ...rest, email: email ?? null });
+      await updatePlayer({ id, ...rest, email: email ?? null });
       return { success: true };
     } catch {
       return { error: "Fehler beim Speichern. Kürzel oder E-Mail bereits vergeben?" };
