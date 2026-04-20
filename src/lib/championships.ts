@@ -3,14 +3,12 @@ import { getCookie, setCookie } from "@tanstack/react-start/server";
 import * as v from "valibot";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
 import {
-  createChampionship,
   getChampionships,
-  getChampionshipBySlug,
-  getChampionshipWithRuleset,
-  getChampionshipsWithRulesets,
+  getChampionship,
   getLatestChampionship,
-  updateChampionshipStatus,
-} from "@/lib/championships.server.ts";
+  createChampionship,
+  updateChampionship,
+} from "#db/dal/championships.ts";
 import { validateForm } from "@/lib/validate-form.ts";
 import type { championships } from "#db/schema/tables.ts";
 
@@ -22,7 +20,7 @@ export const fetchCurrentChampionship = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
   .handler(async (): Promise<Championship | null> => {
     const slug = getCookie(CHAMPIONSHIP_COOKIE);
-    const championship = slug ? await getChampionshipBySlug(slug) : null;
+    const championship = slug ? await getChampionship(slug) : null;
     return championship ?? (await getLatestChampionship()) ?? null;
   });
 
@@ -41,7 +39,7 @@ export const fetchChampionships = createServerFn({ method: "GET" })
 
 export const fetchTurniere = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
-  .handler(async () => getChampionshipsWithRulesets());
+  .handler(async () => getChampionships());
 
 export const createTurnier = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
@@ -59,24 +57,38 @@ export const createTurnier = createServerFn({ method: "POST" })
 export const fetchTurnierDetails = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
   .inputValidator(v.string())
-  .handler(async ({ data: slug }) => getChampionshipWithRuleset(slug));
+  .handler(async ({ data: slug }) => getChampionship(slug));
 
 const statusSchema = v.object({
   slug: v.string(),
-  field: v.union([v.literal("published"), v.literal("extraQuestionsPublished"), v.literal("completed")]),
+  field: v.union([
+    v.literal("published"),
+    v.literal("extraQuestionsPublished"),
+    v.literal("completed"),
+  ]),
   value: v.boolean(),
 });
 
 export const setTurnierStatus = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
   .inputValidator(statusSchema)
-  .handler(async ({ data }) => updateChampionshipStatus(data.slug, data.field, data.value));
+  .handler(async ({ data }) => {
+    const championship = await getChampionship(data.slug);
+    if (!championship) return;
+    const updates: Record<string, boolean> = { [data.field]: data.value };
+    if (data.field === "completed" && data.value === true) {
+      if (championship.ruleset?.extraQuestionRuleId === "mit-zusatzfragen") {
+        updates.extraQuestionsPublished = true;
+      }
+    }
+    await updateChampionship({ id: championship.id, ...updates });
+  });
 
 export const activateChampionship = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
   .inputValidator(v.string())
   .handler(async ({ data }): Promise<Championship | null> => {
     setCookie(CHAMPIONSHIP_COOKIE, data, { path: "/" });
-    const championship = await getChampionshipBySlug(data);
+    const championship = await getChampionship(data);
     return championship ?? null;
   });
