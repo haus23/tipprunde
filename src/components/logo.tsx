@@ -1,4 +1,4 @@
-import logoUrl from "@/assets/logo.svg?no-inline";
+import logoUrl from "#/assets/logo.svg?no-inline";
 
 export function Logo() {
   return (

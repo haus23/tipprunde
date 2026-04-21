@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { Logo } from "@/components/logo";
+import { Logo } from "#/components/logo.tsx";
 
 export const Route = createFileRoute("/")({
   head: () => ({

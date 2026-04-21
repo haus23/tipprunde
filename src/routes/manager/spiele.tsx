@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_front/(auth)/login")({
+export const Route = createFileRoute("/manager/spiele")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <div>Login Seite</div>;
+  return <div>Spieleseite</div>;
 }

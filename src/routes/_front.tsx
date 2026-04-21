@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 
-import { Logo } from "@/components/logo.tsx";
+import { Logo } from "#/components/logo.tsx";
 
 export const Route = createFileRoute("/_front")({
   component: FrontLayout,
