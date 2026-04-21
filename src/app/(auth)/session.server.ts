@@ -1,7 +1,7 @@
 import { updateSession, useSession } from "@tanstack/react-start/server";
 
+import { env } from "#/utils/env.server.ts";
 import type { UserRole } from "#db/dal/users.ts";
-import { SESSION_SECRET } from "#/app/(auth)/config.ts";
 
 type SessionConfig = Parameters<typeof useSession>[0];
 
@@ -14,23 +14,23 @@ type SessionData = {
 
 export const sessionConfig = {
   name: "__session",
-  password: SESSION_SECRET,
+  password: env.SESSION_SECRET,
   cookie: {
-    secure: process.env.NODE_ENV === "production",
+    secure: env.NODE_ENV === "production",
     sameSite: "lax" as const,
     httpOnly: true,
   },
 } satisfies SessionConfig;
 
-export async function useAppSession() {
+export async function getCookieSession() {
   return useSession<SessionData>(sessionConfig);
 }
 
-export async function updateAppSession(
+export async function updateCookieSession(
   update: SessionData,
   cookieConfig?: Partial<SessionConfig["cookie"]>,
 ) {
-  const newSessionConfig = {
+  const config = {
     ...sessionConfig,
     cookie: {
       ...sessionConfig.cookie,
@@ -38,5 +38,5 @@ export async function updateAppSession(
     },
   };
 
-  return updateSession(newSessionConfig, update);
+  return updateSession(config, update);
 }

@@ -9,7 +9,7 @@ import {
   sendTotpEmail,
   verifyTotpCode,
 } from "#/app/(auth)/functions.server.ts";
-import { updateAppSession } from "#/app/(auth)/session.ts";
+import { updateCookieSession } from "#/app/(auth)/session.server.ts";
 import { validateForm } from "@/lib/validate-form.ts";
 
 const requestSchema = v.object({
@@ -93,7 +93,7 @@ export const verifyCode = createServerFn({ method: "POST" })
     }
 
     const sessionId = await createDbSession(user.id, !!rememberMe);
-    await updateAppSession(
+    await updateCookieSession(
       { sessionId, role: user.role },
       rememberMe && { maxAge: SESSION_DURATION_REMEMBER },
     );

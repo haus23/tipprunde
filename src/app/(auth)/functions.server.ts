@@ -18,7 +18,7 @@ import {
   TOTP_EXPIRES_IN,
   TOTP_MAX_ATTEMPTS,
 } from "#/app/(auth)/config.ts";
-import { useAppSession } from "#/app/(auth)/session.ts";
+import { getCookieSession } from "#/app/(auth)/session.server.ts";
 
 /*
  * Validate Email
@@ -140,7 +140,7 @@ export const getDbSession = createServerOnlyFn(async (sessionId: string) => {
   const session = await getSession(sessionId);
   if (!session) return null;
   if (session.expiresAt < new Date().toISOString()) {
-    const appSession = await useAppSession();
+    const appSession = await getCookieSession();
     await appSession.clear();
     return null;
   }
@@ -156,7 +156,7 @@ export const getSessionUser = createServerOnlyFn(async (sessionId?: string) => {
   const session = await getSession(sessionId);
   if (!session) return null;
   if (session.expiresAt < new Date().toISOString()) {
-    const appSession = await useAppSession();
+    const appSession = await getCookieSession();
     await appSession.clear();
     return null;
   }
