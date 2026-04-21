@@ -12,7 +12,7 @@ import {
 
 import { Logo } from "@/components/logo.tsx";
 import { ChampionshipSwitcher } from "@/components/manager/championship-switcher.tsx";
-import { requireManager } from "@/lib/auth/functions.ts";
+import { requireManager } from "#/app/(auth)/functions.ts";
 import { fetchChampionshipsFn } from "#/app/manager/championships.ts";
 import { fetchCurrentChampionship, type Championship } from "@/lib/championships.ts";
 

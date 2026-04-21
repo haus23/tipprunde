@@ -3,7 +3,7 @@ import { getCookie, setCookie } from "@tanstack/react-start/server";
 import * as v from "valibot";
 
 import { getChampionship, getLatestChampionship, type Championship } from "#db/dal/championships.ts";
-import { managerMiddleware } from "@/lib/auth/middleware.ts";
+import { managerMiddleware } from "#/app/(auth)/middleware.ts";
 
 export type { Championship };
 

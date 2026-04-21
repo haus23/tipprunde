@@ -5,7 +5,7 @@ import { Button } from "@/components/(ui)/button.tsx";
 import { Checkbox } from "@/components/(ui)/checkbox.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
-import { requestCode, verifyCode } from "@/lib/auth/actions.ts";
+import { requestCode, verifyCode } from "#/app/(auth)/actions.ts";
 import { useServerAction } from "@/lib/hooks/server-action.ts";
 
 export function LoginForm() {

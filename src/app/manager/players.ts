@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
 import { createPlayer, deletePlayer, getPlayers } from "#db/dal/players.ts";
-import { managerMiddleware } from "@/lib/auth/middleware.ts";
+import { managerMiddleware } from "#/app/(auth)/middleware.ts";
 
 const playerSchema = v.object({
   championshipId: v.number(),

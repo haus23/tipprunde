@@ -17,8 +17,8 @@ import {
   SESSION_DURATION_REMEMBER,
   TOTP_EXPIRES_IN,
   TOTP_MAX_ATTEMPTS,
-} from "@/lib/auth/config.ts";
-import { useAppSession } from "@/lib/auth/session.ts";
+} from "#/app/(auth)/config.ts";
+import { useAppSession } from "#/app/(auth)/session.ts";
 
 /*
  * Validate Email

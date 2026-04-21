@@ -4,7 +4,7 @@ import { Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-r
 import type React from "react";
 import { I18nProvider } from "react-aria-components";
 
-import { fetchSession } from "@/lib/auth/functions.ts";
+import { fetchSession } from "#/app/(auth)/functions.ts";
 import { queryClient } from "@/lib/query-client.ts";
 
 import rootCss from "../styles/root.css?url";
