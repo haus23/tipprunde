@@ -6,7 +6,8 @@ import { Button } from "@/components/(ui)/button.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
 import { Select, SelectItem } from "@/components/(ui)/select.tsx";
 import { FieldError, Input, Label, TextField } from "@/components/(ui)/text-field.tsx";
-import { activateChampionship, createTurnier } from "@/lib/championships.ts";
+import { createChampionshipFn } from "#/app/manager/championships.ts";
+import { activateChampionship } from "@/lib/championships.ts";
 import { useServerAction } from "@/lib/hooks/server-action.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
@@ -25,7 +26,7 @@ function deriveSlug(name: string): string {
 }
 
 export function TurnierForm({ regelwerke, nextNr }: Props) {
-  const [state, formAction, pending] = useServerAction(createTurnier);
+  const [state, formAction, pending] = useServerAction(createChampionshipFn);
 
   const router = useRouter();
 

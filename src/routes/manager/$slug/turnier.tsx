@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { Switch } from "@/components/(ui)/switch.tsx";
-import { fetchTurnierDetails, setTurnierStatus } from "@/lib/championships.ts";
+import { fetchChampionshipFn, updateChampionshipFn } from "#/app/manager/championships.ts";
 import { fetchPlayersFn } from "#/app/manager/players.ts";
 import { fetchUsersFn } from "#/app/manager/users.ts";
 import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
@@ -13,7 +13,7 @@ import { SpielerManagement } from "./-spieler-management.tsx";
 export const Route = createFileRoute("/manager/$slug/turnier")({
   beforeLoad: () => ({ pageTitle: "Turnier" }),
   loader: async ({ params }) => {
-    const championship = await fetchTurnierDetails({ data: params.slug });
+    const championship = await fetchChampionshipFn({ data: params.slug });
     if (!championship)
       return { championship: null, rounds: [], tournamentPlayers: [], allUsers: [] };
     const [rounds, tournamentPlayers, allUsers] = await Promise.all([
@@ -46,7 +46,11 @@ function TurnierPage() {
     field: "published" | "extraQuestionsPublished" | "completed",
     value: boolean,
   ) {
-    await setTurnierStatus({ data: { slug: championship!.slug, field, value } });
+    const updates: Record<string, boolean> = { [field]: value };
+    if (field === "completed" && value && hasExtraQuestions) {
+      updates.extraQuestionsPublished = true;
+    }
+    await updateChampionshipFn({ data: { id: championship!.id, ...updates } });
     if (field === "published") setPublished(value);
     if (field === "extraQuestionsPublished") setExtraQuestionsPublished(value);
     if (field === "completed") {
