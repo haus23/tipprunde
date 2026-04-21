@@ -5,7 +5,7 @@ import type React from "react";
 import { I18nProvider } from "react-aria-components";
 
 import { fetchUser } from "#/app/(auth)/session.ts";
-import { queryClient } from "@/lib/query-client.ts";
+import { queryClient } from "#/utils/query-client.ts";
 
 import rootCss from "../styles/root.css?url";
 
