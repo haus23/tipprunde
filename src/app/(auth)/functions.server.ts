@@ -1,14 +1,7 @@
+// TODO: Cleanup
+
 import { createServerOnlyFn } from "@tanstack/react-start";
 
-import { createSession, deleteSession, getSession } from "#db/dal/sessions.ts";
-import {
-  createTotpCode as dbCreateTotpCode,
-  deleteTotpCode,
-  deleteTotpCodes,
-  getTotpCode,
-  updateTotpCode,
-} from "#db/dal/totps.ts";
-import { getUserByEmail as dbGetUserByEmail } from "#db/dal/users.ts";
 import {
   APP_SECRET,
   FROM_EMAIL,
@@ -19,6 +12,15 @@ import {
   TOTP_MAX_ATTEMPTS,
 } from "#/app/(auth)/config.ts";
 import { getCookieSession } from "#/app/(auth)/session.server.ts";
+import { createSession, deleteSession, getSession } from "#db/dal/sessions.ts";
+import {
+  createTotpCode as dbCreateTotpCode,
+  deleteTotpCode,
+  deleteTotpCodes,
+  getTotpCode,
+  updateTotpCode,
+} from "#db/dal/totps.ts";
+import { getUserByEmail as dbGetUserByEmail } from "#db/dal/users.ts";
 
 /*
  * Validate Email
