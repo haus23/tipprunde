@@ -5,7 +5,7 @@ import { useState } from "react";
 import type { Round } from "#db/dal/rounds.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Switch } from "@/components/(ui)/switch.tsx";
-import { createRound, fetchChampionshipRounds, setRoundStatus } from "@/lib/rounds.ts";
+import { createRoundFn, fetchChampionshipRoundsFn, updateRoundFn } from "#/app/manager/rounds.ts";
 
 interface Props {
   championshipId: number;
@@ -17,13 +17,13 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
   const [runden, setRunden] = useState(initialRounds);
 
   async function handleAddRound() {
-    await createRound({ data: championshipId });
-    setRunden(await fetchChampionshipRounds({ data: championshipId }));
+    await createRoundFn({ data: championshipId });
+    setRunden(await fetchChampionshipRoundsFn({ data: championshipId }));
   }
 
   async function handlePublishedChange(round: Round, value: boolean) {
     setRunden((prev) => prev.map((r) => (r.id === round.id ? { ...r, published: value } : r)));
-    await setRoundStatus({ data: { roundId: round.id, published: value } });
+    await updateRoundFn({ data: { id: round.id, published: value } });
   }
 
   return (

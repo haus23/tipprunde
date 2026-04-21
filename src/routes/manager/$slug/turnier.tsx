@@ -5,7 +5,7 @@ import { Switch } from "@/components/(ui)/switch.tsx";
 import { fetchTurnierDetails, setTurnierStatus } from "@/lib/championships.ts";
 import { fetchTurnierSpieler } from "@/lib/participants.ts";
 import { fetchUsersFn } from "#/app/manager/users.ts";
-import { fetchChampionshipRounds } from "@/lib/rounds.ts";
+import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
 
 import { RundenManagement } from "./-runden-management.tsx";
 import { SpielerManagement } from "./-spieler-management.tsx";
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/manager/$slug/turnier")({
     if (!championship)
       return { championship: null, rounds: [], tournamentPlayers: [], allUsers: [] };
     const [rounds, tournamentPlayers, allUsers] = await Promise.all([
-      fetchChampionshipRounds({ data: championship.id }),
+      fetchChampionshipRoundsFn({ data: championship.id }),
       fetchTurnierSpieler({ data: championship.id }),
       fetchUsersFn(),
     ]);

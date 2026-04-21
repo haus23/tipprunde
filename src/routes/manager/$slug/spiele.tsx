@@ -3,7 +3,7 @@ import * as v from "valibot";
 
 import { fetchTurnierDetails } from "@/lib/championships.ts";
 import { fetchLeaguesFn } from "#/app/manager/leagues.ts";
-import { fetchChampionshipRounds } from "@/lib/rounds.ts";
+import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
 import { fetchTeamsFn } from "#/app/manager/teams.ts";
 
 import { MatchesTable } from "./-matches-table.tsx";
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/manager/$slug/spiele")({
     const championship = await fetchTurnierDetails({ data: params.slug });
     if (!championship) return { championship: null, rounds: [], leagues: [], teams: [] };
     const [rounds, leagues, teams] = await Promise.all([
-      fetchChampionshipRounds({ data: championship.id }),
+      fetchChampionshipRoundsFn({ data: championship.id }),
       fetchLeaguesFn(),
       fetchTeamsFn(),
     ]);
