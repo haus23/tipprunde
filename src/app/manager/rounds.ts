@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
 import { createRound, getRounds, updateRound } from "#db/dal/rounds.ts";
-import { managerMiddleware } from "#/app/(auth)/middleware.ts";
+import { managerMiddleware } from "#/app/(auth)/guards.ts";
 
 const updateRoundSchema = v.object({
   id: v.number(),

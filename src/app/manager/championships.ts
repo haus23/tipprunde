@@ -7,7 +7,7 @@ import {
   getChampionships,
   updateChampionship,
 } from "#db/dal/championships.ts";
-import { managerMiddleware } from "#/app/(auth)/middleware.ts";
+import { managerMiddleware } from "#/app/(auth)/guards.ts";
 import { validateForm } from "@/lib/validate-form.ts";
 
 export type ChampionshipFormState = { success: true; slug: string } | { error: string } | null;

@@ -4,7 +4,7 @@ import { Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-r
 import type React from "react";
 import { I18nProvider } from "react-aria-components";
 
-import { fetchSession } from "#/app/(auth)/functions.ts";
+import { fetchUser } from "#/app/(auth)/session.ts";
 import { queryClient } from "@/lib/query-client.ts";
 
 import rootCss from "../styles/root.css?url";
@@ -23,8 +23,8 @@ export const Route = createRootRoute({
     links: [{ rel: "stylesheet", href: rootCss }],
   }),
   beforeLoad: async () => {
-    const session = await fetchSession();
-    return { session };
+    const user = await fetchUser();
+    return { user };
   },
   component: RootComponent,
 });

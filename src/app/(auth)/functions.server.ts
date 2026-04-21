@@ -150,15 +150,3 @@ export const getDbSession = createServerOnlyFn(async (sessionId: string) => {
 export const deleteDbSessionById = createServerOnlyFn(async (sessionId: string) =>
   deleteSession(sessionId),
 );
-
-export const getSessionUser = createServerOnlyFn(async (sessionId?: string) => {
-  if (!sessionId) return null;
-  const session = await getSession(sessionId);
-  if (!session) return null;
-  if (session.expiresAt < new Date().toISOString()) {
-    const appSession = await getCookieSession();
-    await appSession.clear();
-    return null;
-  }
-  return session.user;
-});

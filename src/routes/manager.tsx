@@ -12,18 +12,18 @@ import {
 
 import { Logo } from "@/components/logo.tsx";
 import { ChampionshipSwitcher } from "@/components/manager/championship-switcher.tsx";
-import { requireManager } from "#/app/(auth)/functions.ts";
+import { requireManager } from "#/app/(auth)/guards.ts";
 import { fetchChampionshipsFn } from "#/app/manager/championships.ts";
 import { fetchCurrentChampionship, type Championship } from "@/lib/championships.ts";
 
 export const Route = createFileRoute("/manager")({
   beforeLoad: async () => {
-    const user = await requireManager();
+    await requireManager();
     const [championships, currentChampionship] = await Promise.all([
       fetchChampionshipsFn(),
       fetchCurrentChampionship(),
     ]);
-    return { user, championships, currentChampionship };
+    return { championships, currentChampionship };
   },
   component: ManagerLayout,
 });
