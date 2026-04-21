@@ -1,14 +1,15 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
+import { managerMiddleware } from "#/app/(auth)/guards.ts";
+import { validateForm } from "#/utils/validate-form.ts";
 import {
   createChampionship,
   getChampionship,
   getChampionships,
+  getLatestChampionship,
   updateChampionship,
 } from "#db/dal/championships.ts";
-import { managerMiddleware } from "#/app/(auth)/guards.ts";
-import { validateForm } from "@/lib/validate-form.ts";
 
 export type ChampionshipFormState = { success: true; slug: string } | { error: string } | null;
 
@@ -30,10 +31,10 @@ export const fetchChampionshipsFn = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
   .handler(async () => getChampionships());
 
-export const fetchChampionshipFn = createServerFn({ method: "GET" })
+export const fetchCurrentChampionshipFn = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
-  .inputValidator(v.string())
-  .handler(async ({ data: slug }) => getChampionship(slug));
+  .inputValidator(v.optional(v.string()))
+  .handler(async ({ data: slug }) => (slug ? getChampionship(slug) : getLatestChampionship()));
 
 export const createChampionshipFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
