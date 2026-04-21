@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.6.0-pre.6
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.5...v0.6.0-pre.6)
+
+### 🩹 Fixes
+
+- Move items to ListBox. Solves type error. ([035c14c](https://github.com/haus23/tipprunde/commit/035c14c))
+
+### 💅 Refactors
+
+- Move rulesets server functions to src/app/manager ([e21693d](https://github.com/haus23/tipprunde/commit/e21693d))
+- Move teams server functions to src/app/manager ([12ddbb7](https://github.com/haus23/tipprunde/commit/12ddbb7))
+- Move leagues server functions to src/app/manager ([b282062](https://github.com/haus23/tipprunde/commit/b282062))
+- Move players/users server functions to src/app/manager ([f4af5e3](https://github.com/haus23/tipprunde/commit/f4af5e3))
+- Move rounds server functions to src/app/manager ([4cd6a4c](https://github.com/haus23/tipprunde/commit/4cd6a4c))
+- Move matches server functions to src/app/manager ([6600b4c](https://github.com/haus23/tipprunde/commit/6600b4c))
+- Move participants server functions to src/app/manager/players ([92e0643](https://github.com/haus23/tipprunde/commit/92e0643))
+- Move championships server functions to src/app/manager ([d5027b1](https://github.com/haus23/tipprunde/commit/d5027b1))
+
 ## v0.6.0-pre.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.4...v0.6.0-pre.5)
