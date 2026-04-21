@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.7.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0...v0.7.0-pre.0)
+
+### 🚀 Enhancements
+
+- Add env validation via valibot. ([72a7f78](https://github.com/haus23/tipprunde/commit/72a7f78))
+
+### 💅 Refactors
+
+- Move auth code from src/lib/auth to src/app/(auth) ([568e08d](https://github.com/haus23/tipprunde/commit/568e08d))
+- Rename and clean up session helpers in app/(auth) ([a08318f](https://github.com/haus23/tipprunde/commit/a08318f))
+- Simplify auth guards and consolidate session handling ([3df0133](https://github.com/haus23/tipprunde/commit/3df0133))
+
 ## v0.6.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0-pre.6...v0.6.0)
