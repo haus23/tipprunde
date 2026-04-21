@@ -7,10 +7,10 @@ import type { User } from "#db/dal/users.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
 import {
-  addTurnierSpieler,
-  fetchTurnierSpieler,
-  removeTurnierSpieler,
-} from "@/lib/participants.ts";
+  addPlayerFn,
+  fetchPlayersFn,
+  removePlayerFn,
+} from "#/app/manager/players.ts";
 import { fetchUsersFn } from "#/app/manager/users.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
@@ -38,7 +38,7 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
 
   const { data: tournamentPlayers } = useQuery({
     queryKey: queryKeys.players.byChampionship(championshipId),
-    queryFn: () => fetchTurnierSpieler({ data: championshipId }),
+    queryFn: () => fetchPlayersFn({ data: championshipId }),
     initialData: initialPlayers,
     select: (data) => data.map((p) => p.user).filter(Boolean) as User[],
   });
@@ -52,7 +52,7 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
   );
 
   const addMutation = useMutation({
-    mutationFn: (userId: number) => addTurnierSpieler({ data: { championshipId, userId } }),
+    mutationFn: (userId: number) => addPlayerFn({ data: { championshipId, userId } }),
     onMutate: async (userId) => {
       await queryClient.cancelQueries({
         queryKey: queryKeys.players.byChampionship(championshipId),
@@ -88,7 +88,7 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
   });
 
   const removeMutation = useMutation({
-    mutationFn: (userId: number) => removeTurnierSpieler({ data: { championshipId, userId } }),
+    mutationFn: (userId: number) => removePlayerFn({ data: { championshipId, userId } }),
     onMutate: async (userId) => {
       await queryClient.cancelQueries({
         queryKey: queryKeys.players.byChampionship(championshipId),

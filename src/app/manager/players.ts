@@ -1,29 +1,29 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
-import { getPlayers, createPlayer, deletePlayer } from "#db/dal/players.ts";
+import { createPlayer, deletePlayer, getPlayers } from "#db/dal/players.ts";
 import { managerMiddleware } from "@/lib/auth/middleware.ts";
 
-const participantSchema = v.object({
+const playerSchema = v.object({
   championshipId: v.number(),
   userId: v.number(),
 });
 
-export const fetchTurnierSpieler = createServerFn({ method: "GET" })
+export const fetchPlayersFn = createServerFn({ method: "GET" })
   .middleware([managerMiddleware])
   .inputValidator(v.number())
   .handler(async ({ data: championshipId }) => getPlayers(championshipId));
 
-export const addTurnierSpieler = createServerFn({ method: "POST" })
+export const addPlayerFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
-  .inputValidator(participantSchema)
+  .inputValidator(playerSchema)
   .handler(async ({ data }): Promise<void> => {
     await createPlayer(data.championshipId, data.userId);
   });
 
-export const removeTurnierSpieler = createServerFn({ method: "POST" })
+export const removePlayerFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
-  .inputValidator(participantSchema)
+  .inputValidator(playerSchema)
   .handler(async ({ data }): Promise<void> => {
     await deletePlayer(data.championshipId, data.userId);
   });

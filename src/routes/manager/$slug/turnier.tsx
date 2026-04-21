@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Switch } from "@/components/(ui)/switch.tsx";
 import { fetchTurnierDetails, setTurnierStatus } from "@/lib/championships.ts";
-import { fetchTurnierSpieler } from "@/lib/participants.ts";
+import { fetchPlayersFn } from "#/app/manager/players.ts";
 import { fetchUsersFn } from "#/app/manager/users.ts";
 import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
 
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/manager/$slug/turnier")({
       return { championship: null, rounds: [], tournamentPlayers: [], allUsers: [] };
     const [rounds, tournamentPlayers, allUsers] = await Promise.all([
       fetchChampionshipRoundsFn({ data: championship.id }),
-      fetchTurnierSpieler({ data: championship.id }),
+      fetchPlayersFn({ data: championship.id }),
       fetchUsersFn(),
     ]);
     return { championship, rounds, tournamentPlayers, allUsers };
