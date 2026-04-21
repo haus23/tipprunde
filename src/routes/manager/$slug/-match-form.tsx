@@ -9,7 +9,7 @@ import { Button } from "@/components/(ui)/button.tsx";
 import { ComboBox } from "@/components/(ui)/combobox.tsx";
 import { DatePicker } from "@/components/(ui)/date-picker.tsx";
 import { Form } from "@/components/(ui)/form.tsx";
-import { createMatchFn, updateMatchFn } from "@/lib/matches.ts";
+import { createMatchFn, updateMatchFn } from "#/app/manager/matches.ts";
 import { queryClient } from "@/lib/query-client.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 

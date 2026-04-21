@@ -5,7 +5,7 @@ import { useState } from "react";
 import type { leagues, matches, teams } from "#db/schema/tables.ts";
 import { Button } from "@/components/(ui)/button.tsx";
 import { Dialog } from "@/components/(ui)/dialog.tsx";
-import { fetchMatchesForRound } from "@/lib/matches.ts";
+import { fetchMatchesForRoundFn } from "#/app/manager/matches.ts";
 import { queryKeys } from "@/lib/query-keys.ts";
 
 import { MatchForm } from "./-match-form.tsx";
@@ -29,7 +29,7 @@ export function MatchesTable({ roundId, leagues, teams }: Props) {
 
   const { data: matchList = [] } = useQuery({
     queryKey: queryKeys.matches.byRound(roundId),
-    queryFn: () => fetchMatchesForRound({ data: roundId }),
+    queryFn: () => fetchMatchesForRoundFn({ data: roundId }),
   });
 
   function openCreate() {
