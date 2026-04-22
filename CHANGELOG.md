@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.7.0-pre.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0-pre.2...v0.7.0-pre.3)
+
+### 🚀 Enhancements
+
+- Add collapsed sidebar tooltips via RAC TooltipTrigger ([cfd8ee8](https://github.com/haus23/tipprunde/commit/cfd8ee8))
+- Add fade+slide animation to collapsed sidebar tooltips ([cf6d1b2](https://github.com/haus23/tipprunde/commit/cf6d1b2))
+- Add mobile navigation drawer (md breakpoint) ([ae0e905](https://github.com/haus23/tipprunde/commit/ae0e905))
+- Add blurred backdrop to mobile nav drawer ([cd10d2a](https://github.com/haus23/tipprunde/commit/cd10d2a))
+
+### 🩹 Fixes
+
+- Call DAL functions directly in getManagerLayout ([d588444](https://github.com/haus23/tipprunde/commit/d588444))
+- Provide current championship via slug layout route context ([6d8cd37](https://github.com/haus23/tipprunde/commit/6d8cd37))
+- Replace MenuIcon with PanelLeftOpenIcon on mobile, remove Focusable wrapper ([ff8697f](https://github.com/haus23/tipprunde/commit/ff8697f))
+- Always close mobile nav on nav click, including current route ([e99c5ec](https://github.com/haus23/tipprunde/commit/e99c5ec))
+
+### 💅 Refactors
+
+- Rename getManagerLayout/Shell to getServerShell/ServerShell ([0850a49](https://github.com/haus23/tipprunde/commit/0850a49))
+
 ## v0.7.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0-pre.1...v0.7.0-pre.2)
