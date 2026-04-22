@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.7.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0-pre.1...v0.7.0-pre.2)
+
+### 🚀 Enhancements
+
+- Add settings cookie infrastructure ([cc61310](https://github.com/haus23/tipprunde/commit/cc61310))
+- Read ui cookie and set color-scheme. ([9112733](https://github.com/haus23/tipprunde/commit/9112733))
+- Add reusable Button component ([caa60a8](https://github.com/haus23/tipprunde/commit/caa60a8))
+- Add color scheme switch with persistent cookie ([0a3bb9d](https://github.com/haus23/tipprunde/commit/0a3bb9d))
+- Add ShellProvider for manager layout state ([396e26d](https://github.com/haus23/tipprunde/commit/396e26d))
+- Manager shell layout with animated sidebar ([d32096e](https://github.com/haus23/tipprunde/commit/d32096e))
+
+### 🩹 Fixes
+
+- Add "use client" directives and extract Providers component ([66a3afc](https://github.com/haus23/tipprunde/commit/66a3afc))
+
+### 🏡 Chore
+
+- Drop teaser colors. No use-case anymore. ([7a6e679](https://github.com/haus23/tipprunde/commit/7a6e679))
+
 ## v0.7.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0-pre.0...v0.7.0-pre.1)
