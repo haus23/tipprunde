@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { createServerFn } from "@tanstack/react-start";
 import { CompositeComponent, createCompositeComponent } from "@tanstack/react-start/rsc";
-import { MenuIcon, PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
+import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
 import { motion } from "motion/react";
 
 import { requireManager } from "#/app/(auth)/guards.ts";
@@ -101,13 +101,13 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
           className="border-layout fixed top-0 right-0 z-10 flex h-14 items-center justify-between border-b px-4"
         >
           <div className="flex items-center gap-3">
-            {/* Mobile: hamburger */}
+            {/* Mobile: open drawer */}
             <button
               onClick={toggleMobileMenu}
               className="hover:bg-subtle text-subtle focus-visible:ring-focus rounded-md p-1 outline-none focus-visible:ring-2 md:hidden"
               aria-label="Navigation öffnen"
             >
-              <MenuIcon size={16} />
+              <PanelLeftOpenIcon size={16} />
             </button>
             {/* Desktop: collapse toggle */}
             <button
