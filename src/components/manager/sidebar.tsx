@@ -32,7 +32,7 @@ interface NavItemProps extends Partial<LinkProps> {
 }
 
 const tooltipClass =
-  "rounded-sm bg-inverted px-2 py-1 text-inverted text-sm";
+  "rounded-sm bg-inverted px-2 py-1 text-inverted text-sm data-[entering]:animate-[tooltip-enter_120ms_ease-out] data-[exiting]:animate-[tooltip-exit_100ms_ease-in]";
 
 function NavItem({ icon, label, to, ...linkProps }: NavItemProps) {
   const { isSidebarCollapsed } = useShell();
