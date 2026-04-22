@@ -1,6 +1,7 @@
 "use client";
 
 import { Link, type LinkProps } from "@tanstack/react-router";
+import { Focusable, Tooltip, TooltipTrigger } from "react-aria-components";
 import {
   CalendarIcon,
   DicesIcon,
@@ -30,6 +31,9 @@ interface NavItemProps extends Partial<LinkProps> {
   label: string;
 }
 
+const tooltipClass =
+  "rounded-sm bg-inverted px-2 py-1 text-inverted text-sm";
+
 function NavItem({ icon, label, to, ...linkProps }: NavItemProps) {
   const { isSidebarCollapsed } = useShell();
 
@@ -49,14 +53,21 @@ function NavItem({ icon, label, to, ...linkProps }: NavItemProps) {
     </>
   );
 
-  if (!to) {
-    return <span className={`${className} text-subtle cursor-default`}>{content}</span>;
-  }
-
-  return (
+  const element = !to ? (
+    <span className={`${className} text-subtle cursor-default`}>{content}</span>
+  ) : (
     <Link {...linkProps} to={to} activeProps={{ className: "bg-subtle" }} className={className}>
       {content}
     </Link>
+  );
+
+  return (
+    <TooltipTrigger delay={750} isDisabled={!isSidebarCollapsed}>
+      <Focusable>{element}</Focusable>
+      <Tooltip placement="right" offset={6} className={tooltipClass}>
+        {label}
+      </Tooltip>
+    </TooltipTrigger>
   );
 }
 
@@ -133,22 +144,29 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
 
       {/* Footer */}
       <div className="border-layout shrink-0 border-t p-2">
-        <button
-          onClick={() => logoutFn()}
-          className="hover:bg-subtle focus-visible:ring-focus flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm outline-none focus-visible:ring-2"
-        >
-          <LogOutIcon size={16} className="shrink-0" />
-          <motion.span
-            animate={{
-              opacity: isSidebarCollapsed ? 0 : 1,
-              width: isSidebarCollapsed ? 0 : "auto",
-            }}
-            transition={transition}
-            className="overflow-hidden whitespace-nowrap"
-          >
+        <TooltipTrigger delay={750} isDisabled={!isSidebarCollapsed}>
+          <Focusable>
+            <button
+              onClick={() => logoutFn()}
+              className="hover:bg-subtle focus-visible:ring-focus flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm outline-none focus-visible:ring-2"
+            >
+              <LogOutIcon size={16} className="shrink-0" />
+              <motion.span
+                animate={{
+                  opacity: isSidebarCollapsed ? 0 : 1,
+                  width: isSidebarCollapsed ? 0 : "auto",
+                }}
+                transition={transition}
+                className="overflow-hidden whitespace-nowrap"
+              >
+                Abmelden
+              </motion.span>
+            </button>
+          </Focusable>
+          <Tooltip placement="right" offset={6} className={tooltipClass}>
             Abmelden
-          </motion.span>
-        </button>
+          </Tooltip>
+        </TooltipTrigger>
       </div>
     </motion.aside>
   );
