@@ -1,3 +1,5 @@
+"use client";
+
 import { Button as RACButton, type ButtonProps } from "react-aria-components";
 import { tv, type VariantProps } from "tailwind-variants";
 

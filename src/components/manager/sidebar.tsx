@@ -1,3 +1,5 @@
+"use client";
+
 import { Link, type LinkProps } from "@tanstack/react-router";
 import {
   CalendarIcon,

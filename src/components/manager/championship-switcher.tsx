@@ -1,3 +1,5 @@
+"use client";
+
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";

@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouteContext } from "@tanstack/react-router";
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";

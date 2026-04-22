@@ -1,12 +1,9 @@
-import { QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import type React from "react";
-import { I18nProvider } from "react-aria-components";
 
 import { fetchUser } from "#/app/(auth)/session.ts";
 import { getUISettingsFn } from "#/app/settings/ui.ts";
-import { queryClient } from "#/utils/query-client.ts";
+import { Providers } from "#/components/providers.tsx";
 
 import rootCss from "../styles/root.css?url";
 
@@ -32,14 +29,11 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <I18nProvider locale="de-DE">
-      <QueryClientProvider client={queryClient}>
-        <RootDocument>
-          <Outlet />
-        </RootDocument>
-        <ReactQueryDevtools />
-      </QueryClientProvider>
-    </I18nProvider>
+    <Providers>
+      <RootDocument>
+        <Outlet />
+      </RootDocument>
+    </Providers>
   );
 }
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { use, useCallback, useEffect, useState } from "react";
 import { createContext } from "react";
 
