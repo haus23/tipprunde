@@ -21,16 +21,16 @@ type ShellProps = {
   children?: React.ReactNode;
 };
 
-const getManagerLayout = createServerFn()
+const getServerShell = createServerFn()
   .inputValidator((data: { slug: string | undefined }) => data)
   .handler(async ({ data: { slug } }) => {
     const championship = slug ? await getChampionship(slug) : await getLatestChampionship();
 
     const src = await createCompositeComponent(
-      (props: { Shell: React.ComponentType<ShellProps>; children?: React.ReactNode }) => (
-        <props.Shell currentChampionship={championship} slug={slug}>
+      (props: { ServerShell: React.ComponentType<ShellProps>; children?: React.ReactNode }) => (
+        <props.ServerShell currentChampionship={championship} slug={slug}>
           {props.children}
-        </props.Shell>
+        </props.ServerShell>
       ),
     );
 
@@ -54,11 +54,11 @@ export const Route = createFileRoute("/manager")({
     return { championships, slug };
   },
   loader: async ({ context: { slug } }) => {
-    const [Layout, shellSettings] = await Promise.all([
-      getManagerLayout({ data: { slug } }),
+    const [serverShell, shellSettings] = await Promise.all([
+      getServerShell({ data: { slug } }),
       getManagerShellSettingsFn(),
     ]);
-    return { Layout, shellSettings };
+    return { serverShell, shellSettings };
   },
   component: RouteComponent,
 });
@@ -122,10 +122,10 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
 }
 
 function RouteComponent() {
-  const { Layout, shellSettings } = Route.useLoaderData();
+  const { serverShell, shellSettings } = Route.useLoaderData();
   return (
     <ShellProvider initialSidebarCollapsed={shellSettings.sidebarCollapsed}>
-      <CompositeComponent src={Layout.src} Shell={ManagerShell}>
+      <CompositeComponent src={serverShell.src} ServerShell={ManagerShell}>
         <Outlet />
       </CompositeComponent>
     </ShellProvider>
