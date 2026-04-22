@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.7.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0-pre.0...v0.7.0-pre.1)
+
+### 🚀 Enhancements
+
+- RSC-based manager layout with championship switcher ([8c3bed2](https://github.com/haus23/tipprunde/commit/8c3bed2))
+- Add animated championship switcher ([aa4bc80](https://github.com/haus23/tipprunde/commit/aa4bc80))
+
+### 💅 Refactors
+
+- Restart routes, ui and components refactoring. ([2076072](https://github.com/haus23/tipprunde/commit/2076072))
+- Move query client initialization to utils directory ([cc3a86e](https://github.com/haus23/tipprunde/commit/cc3a86e))
+- Drop path alias. Now only subpath imports usage. ([0392f5f](https://github.com/haus23/tipprunde/commit/0392f5f))
+
+### 🏡 Chore
+
+- Add (experimental) rsc support. ([718968c](https://github.com/haus23/tipprunde/commit/718968c))
+- Update dev dependencies. ([9920128](https://github.com/haus23/tipprunde/commit/9920128))
+- Add motion library. ([3bc273c](https://github.com/haus23/tipprunde/commit/3bc273c))
+- Add design skills. ([7fb0977](https://github.com/haus23/tipprunde/commit/7fb0977))
+
 ## v0.7.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0...v0.7.0-pre.0)
