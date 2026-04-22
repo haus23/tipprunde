@@ -1,4 +1,4 @@
-import { use, useCallback, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import { createContext } from "react";
 
 import { updateManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
@@ -17,14 +17,23 @@ interface Props {
   children: React.ReactNode;
 }
 
+const SIDEBAR_KEY = "manager-sidebar-collapsed";
+
 export function ShellProvider({ initialSidebarCollapsed, children }: Props) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(initialSidebarCollapsed);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  useEffect(() => {
+    const stored = localStorage.getItem(SIDEBAR_KEY);
+    if (stored !== null) setIsSidebarCollapsed(stored === "true");
+  }, []);
+
   const toggleSidebar = useCallback(() => {
     setIsSidebarCollapsed((prev) => {
-      updateManagerShellSettingsFn({ data: { sidebarCollapsed: !prev } });
-      return !prev;
+      const next = !prev;
+      localStorage.setItem(SIDEBAR_KEY, String(next));
+      updateManagerShellSettingsFn({ data: { sidebarCollapsed: next } });
+      return next;
     });
   }, []);
 
