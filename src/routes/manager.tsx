@@ -5,10 +5,7 @@ import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
 import { motion } from "motion/react";
 
 import { requireManager } from "#/app/(auth)/guards.ts";
-import {
-  fetchChampionshipsFn,
-  fetchCurrentChampionshipFn,
-} from "#/app/manager/championships.ts";
+import { getChampionship, getChampionships, getLatestChampionship } from "#db/dal/championships.ts";
 import { getManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
 import { ColorSchemeSwitch } from "#/components/color-scheme-switch.tsx";
 import { ChampionshipSwitcher } from "#/components/manager/championship-switcher.tsx";
@@ -28,8 +25,8 @@ const getManagerLayout = createServerFn()
   .inputValidator((data: { slug: string | undefined }) => data)
   .handler(async ({ data: { slug } }) => {
     const [championship, championships] = await Promise.all([
-      fetchCurrentChampionshipFn({ data: slug }),
-      fetchChampionshipsFn(),
+      slug ? getChampionship(slug) : getLatestChampionship(),
+      getChampionships(),
     ]);
 
     const src = await createCompositeComponent(
