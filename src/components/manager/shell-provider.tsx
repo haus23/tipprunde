@@ -10,6 +10,7 @@ interface ShellContextType {
   isMobileMenuOpen: boolean;
   toggleSidebar: () => void;
   toggleMobileMenu: () => void;
+  closeMobileMenu: () => void;
 }
 
 const ShellContext = createContext<ShellContextType | null>(null);
@@ -43,8 +44,12 @@ export function ShellProvider({ initialSidebarCollapsed, children }: Props) {
     setIsMobileMenuOpen((prev) => !prev);
   }, []);
 
+  const closeMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(false);
+  }, []);
+
   return (
-    <ShellContext value={{ isSidebarCollapsed, isMobileMenuOpen, toggleSidebar, toggleMobileMenu }}>
+    <ShellContext value={{ isSidebarCollapsed, isMobileMenuOpen, toggleSidebar, toggleMobileMenu, closeMobileMenu }}>
       {children}
     </ShellContext>
   );

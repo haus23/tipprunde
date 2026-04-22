@@ -1,7 +1,8 @@
 import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { createServerFn } from "@tanstack/react-start";
 import { CompositeComponent, createCompositeComponent } from "@tanstack/react-start/rsc";
-import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
+import { MenuIcon, PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
 import { motion } from "motion/react";
 
 import { requireManager } from "#/app/(auth)/guards.ts";
@@ -10,7 +11,7 @@ import { getManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
 import { ColorSchemeSwitch } from "#/components/color-scheme-switch.tsx";
 import { ChampionshipSwitcher } from "#/components/manager/championship-switcher.tsx";
 import { ShellProvider, useShell } from "#/components/manager/shell-provider.tsx";
-import { Sidebar, SIDEBAR_WIDTH, SIDEBAR_WIDTH_COLLAPSED } from "#/components/manager/sidebar.tsx";
+import { MobileNav, Sidebar, SIDEBAR_WIDTH, SIDEBAR_WIDTH_COLLAPSED } from "#/components/manager/sidebar.tsx";
 import { getChampionship, getLatestChampionship } from "#db/dal/championships.ts";
 
 const transition = { type: "spring", bounce: 0, duration: 0.3 } as const;
@@ -66,31 +67,52 @@ export const Route = createFileRoute("/manager")({
 function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
   const { championships } = Route.useRouteContext();
   const matches = useMatches();
-  const { isSidebarCollapsed, toggleSidebar } = useShell();
+  const { isSidebarCollapsed, toggleSidebar, toggleMobileMenu } = useShell();
+
+  const [isMd, setIsMd] = useState(true);
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 768px)");
+    setIsMd(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMd(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   const pageTitle = matches
     .map((m) => (m.context as { pageTitle?: string }).pageTitle)
     .filter(Boolean)
     .at(-1);
 
+  const sidebarOffset = isMd ? (isSidebarCollapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH) : 0;
+
   return (
     <div className="flex min-h-svh">
       <Sidebar slug={slug} />
+      <MobileNav slug={slug} />
 
       <motion.div
-        animate={{ marginLeft: isSidebarCollapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH }}
+        animate={{ marginLeft: sidebarOffset }}
         transition={transition}
         className="flex flex-1 flex-col"
       >
         <motion.header
-          animate={{ left: isSidebarCollapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH }}
+          animate={{ left: sidebarOffset }}
           transition={transition}
           className="border-layout fixed top-0 right-0 z-10 flex h-14 items-center justify-between border-b px-4"
         >
           <div className="flex items-center gap-3">
+            {/* Mobile: hamburger */}
+            <button
+              onClick={toggleMobileMenu}
+              className="hover:bg-subtle text-subtle focus-visible:ring-focus rounded-md p-1 outline-none focus-visible:ring-2 md:hidden"
+              aria-label="Navigation öffnen"
+            >
+              <MenuIcon size={16} />
+            </button>
+            {/* Desktop: collapse toggle */}
             <button
               onClick={toggleSidebar}
-              className="hover:bg-subtle text-subtle focus-visible:ring-focus rounded-md p-1 outline-none focus-visible:ring-2"
+              className="hover:bg-subtle text-subtle focus-visible:ring-focus hidden rounded-md p-1 outline-none focus-visible:ring-2 md:block"
               aria-label={isSidebarCollapsed ? "Sidebar ausklappen" : "Sidebar einklappen"}
             >
               {isSidebarCollapsed ? (
