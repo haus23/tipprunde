@@ -5,37 +5,30 @@ import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
 import { motion } from "motion/react";
 
 import { requireManager } from "#/app/(auth)/guards.ts";
-import { getChampionship, getChampionships, getLatestChampionship } from "#db/dal/championships.ts";
+import { fetchChampionshipsFn } from "#/app/manager/championships.ts";
 import { getManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
 import { ColorSchemeSwitch } from "#/components/color-scheme-switch.tsx";
 import { ChampionshipSwitcher } from "#/components/manager/championship-switcher.tsx";
-import { Sidebar, SIDEBAR_WIDTH, SIDEBAR_WIDTH_COLLAPSED } from "#/components/manager/sidebar.tsx";
 import { ShellProvider, useShell } from "#/components/manager/shell-provider.tsx";
+import { Sidebar, SIDEBAR_WIDTH, SIDEBAR_WIDTH_COLLAPSED } from "#/components/manager/sidebar.tsx";
+import { getChampionship, getLatestChampionship } from "#db/dal/championships.ts";
 
 const transition = { type: "spring", bounce: 0, duration: 0.3 } as const;
 
 type ShellProps = {
-  name: string;
   slug: string | undefined;
-  championships: { slug: string; name: string }[];
+  currentChampionship: Awaited<ReturnType<typeof getChampionship>>;
   children?: React.ReactNode;
 };
 
 const getManagerLayout = createServerFn()
   .inputValidator((data: { slug: string | undefined }) => data)
   .handler(async ({ data: { slug } }) => {
-    const [championship, championships] = await Promise.all([
-      slug ? getChampionship(slug) : getLatestChampionship(),
-      getChampionships(),
-    ]);
+    const championship = slug ? await getChampionship(slug) : await getLatestChampionship();
 
     const src = await createCompositeComponent(
       (props: { Shell: React.ComponentType<ShellProps>; children?: React.ReactNode }) => (
-        <props.Shell
-          name={championship?.name ?? ""}
-          slug={slug}
-          championships={championships}
-        >
+        <props.Shell currentChampionship={championship} slug={slug}>
           {props.children}
         </props.Shell>
       ),
@@ -44,14 +37,21 @@ const getManagerLayout = createServerFn()
     return { src };
   });
 
+type RouteContext = {
+  slug: string | undefined;
+  championships: Awaited<ReturnType<typeof fetchChampionshipsFn>>;
+};
+
 export const Route = createFileRoute("/manager")({
-  beforeLoad: async ({ matches }): Promise<{ slug: string | undefined }> => {
+  beforeLoad: async ({ matches }): Promise<RouteContext> => {
     await requireManager();
 
     const params = matches.at(-1)?.params;
     const slug = params && "slug" in params ? params.slug : undefined;
 
-    return { slug };
+    const championships = await fetchChampionshipsFn();
+
+    return { championships, slug };
   },
   loader: async ({ context: { slug } }) => {
     const [Layout, shellSettings] = await Promise.all([
@@ -63,9 +63,10 @@ export const Route = createFileRoute("/manager")({
   component: RouteComponent,
 });
 
-function ManagerShell({ name, slug, championships, children }: ShellProps) {
-  const { isSidebarCollapsed, toggleSidebar } = useShell();
+function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
+  const { championships } = Route.useRouteContext();
   const matches = useMatches();
+  const { isSidebarCollapsed, toggleSidebar } = useShell();
 
   const pageTitle = matches
     .map((m) => (m.context as { pageTitle?: string }).pageTitle)
@@ -89,12 +90,18 @@ function ManagerShell({ name, slug, championships, children }: ShellProps) {
           <div className="flex items-center gap-3">
             <button
               onClick={toggleSidebar}
-              className="hover:bg-subtle text-subtle rounded-md p-1 outline-none focus-visible:ring-2 focus-visible:ring-focus"
+              className="hover:bg-subtle text-subtle focus-visible:ring-focus rounded-md p-1 outline-none focus-visible:ring-2"
               aria-label={isSidebarCollapsed ? "Sidebar ausklappen" : "Sidebar einklappen"}
             >
-              {isSidebarCollapsed ? <PanelLeftOpenIcon size={16} /> : <PanelLeftCloseIcon size={16} />}
+              {isSidebarCollapsed ? (
+                <PanelLeftOpenIcon size={16} />
+              ) : (
+                <PanelLeftCloseIcon size={16} />
+              )}
             </button>
-            <ChampionshipSwitcher current={{ name, slug }} championships={championships} />
+            {currentChampionship && (
+              <ChampionshipSwitcher current={currentChampionship} championships={championships} />
+            )}
           </div>
 
           {pageTitle && (
