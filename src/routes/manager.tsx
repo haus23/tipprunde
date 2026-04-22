@@ -1,14 +1,9 @@
-import {
-  createFileRoute,
-  Link,
-  Outlet,
-  useNavigate,
-  useRouter,
-} from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { CompositeComponent, createCompositeComponent } from "@tanstack/react-start/rsc";
 
 import { requireManager } from "#/app/(auth)/guards.ts";
+import { ChampionshipSwitcher } from "#/components/manager/championship-switcher.tsx";
 import {
   fetchChampionshipsFn,
   fetchCurrentChampionshipFn,
@@ -70,25 +65,12 @@ function ManagerNav({
   slug: string | undefined;
   championships: { slug: string; name: string }[];
 }) {
-  const router = useRouter();
-  const navigate = useNavigate();
-
-  const switchChampionship = async (targetSlug: string) => {
-    router.invalidate();
-    await navigate({ to: "/manager/{-$slug}", params: { slug: targetSlug } });
-  };
-
   return (
     <nav>
       <ul>
         <li>
-          {championships.map((c) => (
-            <button key={c.slug} onClick={() => switchChampionship(c.slug)}>
-              {c.name}
-            </button>
-          ))}
+          <ChampionshipSwitcher current={{ name, slug }} championships={championships} />
         </li>
-        <li>{name}</li>
         <li>
           <Link to="/manager/{-$slug}" params={slug ? { slug } : {}}>
             Turnier
