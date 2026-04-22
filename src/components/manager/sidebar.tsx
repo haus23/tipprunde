@@ -226,7 +226,9 @@ export function MobileNav({ slug }: { slug: string | undefined }) {
                 </Link>
               </div>
 
-              <NavContent slug={slug} collapsed={false} />
+              <div className="flex flex-1 flex-col" onClick={closeMobileMenu}>
+                <NavContent slug={slug} collapsed={false} />
+              </div>
 
               {/* Footer */}
               <div className="border-layout shrink-0 border-t p-2">
