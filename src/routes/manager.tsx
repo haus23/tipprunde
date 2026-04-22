@@ -3,11 +3,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { CompositeComponent, createCompositeComponent } from "@tanstack/react-start/rsc";
 
 import { requireManager } from "#/app/(auth)/guards.ts";
-import { ChampionshipSwitcher } from "#/components/manager/championship-switcher.tsx";
 import {
   fetchChampionshipsFn,
   fetchCurrentChampionshipFn,
 } from "#/app/manager/championships.ts";
+import { getManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
+import { ChampionshipSwitcher } from "#/components/manager/championship-switcher.tsx";
+import { ShellProvider } from "#/components/manager/shell-provider.tsx";
 
 const getManagerLayout = createServerFn()
   .inputValidator((data: { slug: string | undefined }) => data)
@@ -50,9 +52,13 @@ export const Route = createFileRoute("/manager")({
 
     return { slug };
   },
-  loader: async ({ context: { slug } }) => ({
-    Layout: await getManagerLayout({ data: { slug } }),
-  }),
+  loader: async ({ context: { slug } }) => {
+    const [Layout, shellSettings] = await Promise.all([
+      getManagerLayout({ data: { slug } }),
+      getManagerShellSettingsFn(),
+    ]);
+    return { Layout, shellSettings };
+  },
   component: RouteComponent,
 });
 
@@ -90,10 +96,12 @@ function ManagerNav({
 }
 
 function RouteComponent() {
-  const { Layout } = Route.useLoaderData();
+  const { Layout, shellSettings } = Route.useLoaderData();
   return (
-    <CompositeComponent src={Layout.src} Nav={ManagerNav}>
-      <Outlet />
-    </CompositeComponent>
+    <ShellProvider initialSidebarCollapsed={shellSettings.sidebarCollapsed}>
+      <CompositeComponent src={Layout.src} Nav={ManagerNav}>
+        <Outlet />
+      </CompositeComponent>
+    </ShellProvider>
   );
 }
