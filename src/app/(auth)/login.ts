@@ -11,6 +11,8 @@ import {
 import { env } from "#/utils/env.server.ts";
 import { validateForm } from "#/utils/validate-form.ts";
 
+type FieldErrors = Record<string, string[]>;
+
 const requestSchema = v.object({
   email: v.pipe(v.string(), v.email()),
 });
@@ -19,10 +21,11 @@ export const requestCode = createServerFn({ method: "POST" })
   .inputValidator(validateForm(requestSchema))
   .handler(async ({ data }) => {
     if (!data.success) {
+      const email = String(data.issues[0].input);
       return {
-        success: false,
-        email: String(data.issues[0].input),
-        errors: { email: ["Ungültige E-Mail Adresse"] },
+        success: false as const,
+        errors: { email: ["Ungültige E-Mail Adresse"] } satisfies FieldErrors,
+        values: { email },
       };
     }
 
@@ -31,9 +34,9 @@ export const requestCode = createServerFn({ method: "POST" })
 
     if (!user) {
       return {
-        success: false,
-        email,
-        errors: { email: ["Unbekannte E-Mail Adresse. Frag Micha!"] },
+        success: false as const,
+        errors: { email: ["Unbekannte E-Mail Adresse. Frag Micha!"] } satisfies FieldErrors,
+        values: { email },
       };
     }
 
@@ -43,13 +46,13 @@ export const requestCode = createServerFn({ method: "POST" })
       await sendTotpEmail(email, code);
     } catch {
       return {
-        success: false,
-        email,
-        errors: { email: ["E-Mail konnte nicht gesendet werden. Bitte versuche es erneut."] },
+        success: false as const,
+        errors: { email: ["E-Mail konnte nicht gesendet werden. Bitte versuche es erneut."] } satisfies FieldErrors,
+        values: { email },
       };
     }
 
-    return { success: true, email };
+    return { success: true as const, values: { email } };
   });
 
 const verifySchema = v.object({
@@ -58,48 +61,60 @@ const verifySchema = v.object({
   rememberMe: v.optional(v.string()),
 });
 
+type VerifyValues = { email: string; code: string; rememberMe: string | undefined };
+
 export const verifyCode = createServerFn({ method: "POST" })
   .inputValidator(validateForm(verifySchema))
   .handler(async ({ data }) => {
     if (!data.success) {
-      return { errors: { email: [], code: ["Ungültige Anfrage"] } };
+      return {
+        errors: { email: [], code: ["Ungültige Anfrage"] } satisfies FieldErrors,
+        values: { email: "", code: "", rememberMe: undefined } satisfies VerifyValues,
+      };
     }
-    const { email, code } = data.output;
-    const rememberMe = data.output.rememberMe === "on";
+    const { email, code, rememberMe } = data.output;
+    const values: VerifyValues = { email, code, rememberMe };
+    const remember = rememberMe === "on";
 
     const user = await getUserByEmail(email);
 
     if (!user) {
-      return { errors: { email: [], code: ["Ungültige Anfrage"] }, rememberMe };
+      return {
+        errors: { email: [], code: ["Ungültige Anfrage"] } satisfies FieldErrors,
+        values,
+      };
     }
 
     const result = await verifyTotpCode(user.id, code);
 
     if (result === "expired") {
       return {
-        errors: { email: ["Der Code ist abgelaufen. Bitte fordere einen neuen an."], code: [] },
-        rememberMe,
-        fatal: true,
+        errors: { email: ["Der Code ist abgelaufen. Bitte fordere einen neuen an."], code: [] } satisfies FieldErrors,
+        values,
+        fatal: true as const,
       };
     }
 
     if (result === "max_attempts") {
       return {
-        errors: { email: ["Zu viele Fehlversuche. Bitte fordere einen neuen Code an."], code: [] },
-        rememberMe,
-        fatal: true,
+        errors: { email: ["Zu viele Fehlversuche. Bitte fordere einen neuen Code an."], code: [] } satisfies FieldErrors,
+        values,
+        fatal: true as const,
       };
     }
 
     if (result === "invalid") {
-      return { errors: { email: [], code: ["Falscher Code. Bitte versuche es erneut."] }, rememberMe };
+      return {
+        errors: { email: [], code: ["Falscher Code. Bitte versuche es erneut."] } satisfies FieldErrors,
+        values,
+      };
     }
 
-    const sessionId = await createDbSession(user.id, rememberMe);
+    const sessionId = await createDbSession(user.id, remember);
     await updateCookieSession(
       { sessionId, role: user.role },
-      rememberMe ? { maxAge: env.SESSION_DURATION_REMEMBER } : undefined,
+      remember ? { maxAge: env.SESSION_DURATION_REMEMBER } : undefined,
     );
 
-    return { success: true };
+    return { success: true as const };
   });

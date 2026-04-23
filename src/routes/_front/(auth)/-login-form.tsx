@@ -34,7 +34,7 @@ export function LoginForm() {
         action={verifyCodeAction}
         className="flex flex-col gap-4"
       >
-        <input type="hidden" name="email" value={requestState.email} />
+        <input type="hidden" name="email" value={requestState.values.email} />
         <TextField name="code" isRequired pattern="[0-9]{6}" className="flex flex-col gap-1">
           <Label>Code</Label>
           <Input
@@ -53,7 +53,7 @@ export function LoginForm() {
             }
           </FieldError>
         </TextField>
-        <Checkbox name="rememberMe" defaultSelected={verifyState?.rememberMe ?? false}>
+        <Checkbox name="rememberMe" defaultSelected={verifyState?.values?.rememberMe === "on"}>
           Angemeldet bleiben
         </Checkbox>
         <div className="flex flex-col gap-2">
@@ -78,7 +78,7 @@ export function LoginForm() {
         type="email"
         name="email"
         isRequired
-        defaultValue={requestState?.email || ""}
+        defaultValue={requestState?.values?.email ?? ""}
         className="flex flex-col gap-1"
       >
         <Label>E-Mail</Label>
