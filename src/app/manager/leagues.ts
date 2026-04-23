@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
-import { createLeague, getLeagues, updateLeague } from "#db/dal/leagues.ts";
 import { managerMiddleware } from "#/app/(auth)/guards.ts";
-import { validateForm } from "@/lib/validate-form.ts";
+import { validateForm } from "#/utils/validate-form.ts";
+import { createLeague, getLeagues, updateLeague } from "#db/dal/leagues.ts";
 
 export type LeagueFormState = { success: true } | { error: string } | null;
 
