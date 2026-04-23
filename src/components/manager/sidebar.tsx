@@ -21,6 +21,7 @@ import { Dialog, Modal, ModalOverlay, Tooltip, TooltipTrigger } from "react-aria
 import { logout } from "#/app/(auth)/logout.ts";
 import { Logo } from "#/components/logo.tsx";
 import { useShell } from "#/components/manager/shell-provider.tsx";
+import { cn } from "#/utils/cn.ts";
 
 export const SIDEBAR_WIDTH = 208;
 export const SIDEBAR_WIDTH_COLLAPSED = 56;
@@ -74,9 +75,9 @@ function NavItem({ icon, label, to, collapsed: collapsedProp, ...linkProps }: Na
   );
 }
 
-function NavContent({ slug, collapsed }: { slug: string | undefined; collapsed: boolean }) {
+function NavContent({ slug, collapsed, scroll = true }: { slug: string | undefined; collapsed: boolean; scroll?: boolean }) {
   return (
-    <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
+    <nav className={cn("flex flex-1 flex-col gap-1 p-2", scroll && "overflow-y-auto")}>
       <NavItem
         collapsed={collapsed}
         icon={<TrophyIcon size={16} />}
@@ -96,7 +97,7 @@ function NavContent({ slug, collapsed }: { slug: string | undefined; collapsed: 
       <NavItem collapsed={collapsed} icon={<ListChecksIcon size={16} />} label="Ergebnisse" />
       <NavItem collapsed={collapsed} icon={<StarIcon size={16} />} label="Zusatzpunkte" />
 
-      <div className="mt-auto flex flex-col gap-1">
+      <div className="mt-auto flex flex-col gap-1 pt-4">
         <motion.div
           animate={{ opacity: collapsed ? 0 : 1, height: collapsed ? 0 : "auto" }}
           transition={transition}
@@ -153,10 +154,11 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
         </Link>
       </div>
 
-      <NavContent slug={slug} collapsed={isSidebarCollapsed} />
+      <div className="flex flex-1 flex-col overflow-y-auto">
+        <NavContent slug={slug} collapsed={isSidebarCollapsed} scroll={false} />
 
-      {/* Footer */}
-      <div className="border-layout shrink-0 border-t p-2">
+        {/* Footer */}
+        <div className="border-layout border-t p-2 mt-auto">
         <TooltipTrigger delay={750} isDisabled={!isSidebarCollapsed}>
           <button
             onClick={handleLogout}
@@ -178,6 +180,7 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
             Abmelden
           </Tooltip>
         </TooltipTrigger>
+        </div>
       </div>
     </motion.aside>
   );
@@ -238,19 +241,19 @@ export function MobileNav({ slug }: { slug: string | undefined }) {
                 </Link>
               </div>
 
-              <div className="flex flex-1 flex-col" onClick={closeMobileMenu}>
-                <NavContent slug={slug} collapsed={false} />
-              </div>
+              <div className="flex min-h-0 flex-1 flex-col overflow-y-auto" onClick={closeMobileMenu}>
+                <NavContent slug={slug} collapsed={false} scroll={false} />
 
-              {/* Footer */}
-              <div className="border-layout shrink-0 border-t p-2">
-                <button
-                  onClick={handleLogout}
-                  className="hover:bg-subtle focus-visible:ring-focus flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm outline-none focus-visible:ring-2"
-                >
-                  <LogOutIcon size={16} className="shrink-0" />
-                  <span className="whitespace-nowrap">Abmelden</span>
-                </button>
+                {/* Footer */}
+                <div className="border-layout mt-auto border-t p-2">
+                  <button
+                    onClick={handleLogout}
+                    className="hover:bg-subtle focus-visible:ring-focus flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm outline-none focus-visible:ring-2"
+                  >
+                    <LogOutIcon size={16} className="shrink-0" />
+                    <span className="whitespace-nowrap">Abmelden</span>
+                  </button>
+                </div>
               </div>
             </Dialog>
           </MotionModal>
