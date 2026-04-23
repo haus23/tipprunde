@@ -68,7 +68,7 @@ export function LoginForm() {
 
   return (
     <Form
-      validationErrors={requestState?.errors ?? verifyState?.errors ?? {}}
+      validationErrors={requestState?.errors ?? {}}
       action={requestCodeAction}
       className="flex flex-col gap-4"
     >
@@ -91,6 +91,9 @@ export function LoginForm() {
           }
         </FieldError>
       </TextField>
+      {verifyState?.fatal && (
+        <p className="text-error -translate-y-2 text-sm">{verifyState.errors.email[0]}</p>
+      )}
       <Button type="submit" isDisabled={requestPending}>
         Code anfordern
       </Button>

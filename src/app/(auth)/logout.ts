@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { redirect } from "@tanstack/react-router";
 
 import { getCookieSession } from "#/app/(auth)/session.server.ts";
 import { deleteSession } from "#db/dal/sessions.ts";
@@ -13,5 +12,4 @@ export const logout = createServerFn({ method: "POST" }).handler(async () => {
   }
 
   await session.clear();
-  throw redirect({ to: "/" });
 });

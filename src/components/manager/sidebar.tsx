@@ -1,6 +1,6 @@
 "use client";
 
-import { Link, type LinkProps, useRouterState } from "@tanstack/react-router";
+import { Link, type LinkProps, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -121,6 +121,12 @@ function NavContent({ slug, collapsed }: { slug: string | undefined; collapsed: 
 
 export function Sidebar({ slug }: { slug: string | undefined }) {
   const { isSidebarCollapsed } = useShell();
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await logout();
+    navigate({ to: "/" });
+  }
 
   return (
     <motion.aside
@@ -153,7 +159,7 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
       <div className="border-layout shrink-0 border-t p-2">
         <TooltipTrigger delay={750} isDisabled={!isSidebarCollapsed}>
           <button
-            onClick={() => logout()}
+            onClick={handleLogout}
             className="hover:bg-subtle focus-visible:ring-focus flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm outline-none focus-visible:ring-2"
           >
             <LogOutIcon size={16} className="shrink-0" />
@@ -184,6 +190,12 @@ const drawerTransition = { type: "spring", bounce: 0, duration: 0.3 } as const;
 
 export function MobileNav({ slug }: { slug: string | undefined }) {
   const { isMobileMenuOpen, closeMobileMenu } = useShell();
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await logout();
+    navigate({ to: "/" });
+  }
   const pathname = useRouterState({ select: (s) => s.resolvedLocation?.pathname });
   const mounted = useRef(false);
 
@@ -233,7 +245,7 @@ export function MobileNav({ slug }: { slug: string | undefined }) {
               {/* Footer */}
               <div className="border-layout shrink-0 border-t p-2">
                 <button
-                  onClick={() => logout()}
+                  onClick={handleLogout}
                   className="hover:bg-subtle focus-visible:ring-focus flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm outline-none focus-visible:ring-2"
                 >
                   <LogOutIcon size={16} className="shrink-0" />
