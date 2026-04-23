@@ -98,7 +98,7 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
         <motion.header
           animate={{ left: sidebarOffset }}
           transition={transition}
-          className="border-layout fixed top-0 right-0 z-10 flex h-14 items-center justify-between border-b px-4"
+          className="border-layout bg-base fixed top-0 right-0 z-10 flex h-14 items-center justify-between border-b px-4"
         >
           <div className="flex items-center gap-3">
             {/* Mobile: open drawer */}

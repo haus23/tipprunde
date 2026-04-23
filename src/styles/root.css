@@ -132,6 +132,9 @@
     color(display-p3 1 0.63 0.38)
   );
 
+  /* green-9 — Success background (same in light and dark, designed for white text) */
+  --background-color-success: color(srgb 0.188 0.643 0.424);
+
   /* red-11 — Error text */
   --text-color-error: light-dark(
     color(display-p3 0.744 0.071 0.125),
@@ -142,6 +145,24 @@
     color(display-p3 0.879 0.652 0.652),
     color(display-p3 0.465 0.211 0.211)
   );
+}
+
+::view-transition-new(.toast):only-child {
+  animation: toast-enter 300ms ease-out;
+}
+
+::view-transition-old(.toast):only-child {
+  animation: toast-exit 200ms ease-in forwards;
+}
+
+@keyframes toast-enter {
+  from { translate: 100% 0; opacity: 0; }
+  to   { translate: 0 0;    opacity: 1; }
+}
+
+@keyframes toast-exit {
+  from { translate: 0 0;    opacity: 1; }
+  to   { translate: 100% 0; opacity: 0; }
 }
 
 @keyframes tooltip-enter {

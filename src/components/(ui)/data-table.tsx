@@ -33,6 +33,8 @@ export interface DataTableProps<TData, TValue> {
   data: TData[];
   withFilter?: boolean;
   filterPlaceholder?: string;
+  filter?: string;
+  onFilterChange?: (value: string) => void;
   withPagination?: boolean;
   toolbar?: ReactNode;
 }
@@ -42,9 +44,13 @@ export function DataTable<TData, TValue>({
   data,
   withFilter = false,
   filterPlaceholder = "Suchen …",
+  filter: controlledFilter,
+  onFilterChange,
   withPagination = false,
   toolbar,
 }: DataTableProps<TData, TValue>) {
+  const isControlled = controlledFilter !== undefined;
+
   const shouldResetPageIndexRef = useRef(false);
   const autoResetPageIndex = shouldResetPageIndexRef.current;
 
@@ -56,13 +62,18 @@ export function DataTable<TData, TValue>({
     if (autoResetPageIndex) shouldResetPageIndexRef.current = false;
   }, [autoResetPageIndex]);
 
-  const [globalFilter, setInternalGlobalFilter] = useState("");
+  const [internalFilter, setInternalFilter] = useState("");
+  const globalFilter = isControlled ? controlledFilter : internalFilter;
   const setGlobalFilter = useCallback(
     (value: string) => {
       resetPageIndex();
-      setInternalGlobalFilter(value);
+      if (isControlled) {
+        onFilterChange?.(value);
+      } else {
+        setInternalFilter(value);
+      }
     },
-    [resetPageIndex],
+    [resetPageIndex, isControlled, onFilterChange],
   );
 
   const table = useReactTable({

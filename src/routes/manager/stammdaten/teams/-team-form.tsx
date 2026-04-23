@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { OverlayTriggerStateContext } from "react-aria-components";
 
 import type { Team } from "#db/dal/teams.ts";
@@ -15,13 +15,15 @@ import { useServerAction } from "#/utils/hooks/server-action.ts";
 
 interface Props {
   team?: Team;
+  onSuccess?: (shortName: string) => void;
 }
 
-export function TeamForm({ team }: Props) {
+export function TeamForm({ team, onSuccess }: Props) {
   const serverAction = team ? updateTeamFn : createTeamFn;
   const [state, formAction, pending] = useServerAction(serverAction);
 
   const dialog = useContext(OverlayTriggerStateContext);
+  const successHandled = useRef(false);
   const [name, setName] = useState(team?.name ?? "");
   const [shortName, setShortName] = useState(team?.shortName ?? "");
   const [shortNameDirty, setShortNameDirty] = useState(false);
@@ -29,8 +31,10 @@ export function TeamForm({ team }: Props) {
   const [idDirty, setIdDirty] = useState(false);
 
   useEffect(() => {
-    if (state && "success" in state) {
+    if (state && "success" in state && !successHandled.current) {
+      successHandled.current = true;
       queryClient.invalidateQueries({ queryKey: queryKeys.teams.all });
+      if (!team) onSuccess?.(shortName);
       dialog?.close();
     }
   }, [state, dialog]);
