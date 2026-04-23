@@ -7,21 +7,29 @@ export const Route = createFileRoute("/_front")({
   component: FrontLayout,
 });
 
+const navLinkClass =
+  "rounded-md px-3 py-1.5 text-sm font-medium text-subtle transition-colors hover:bg-subtle hover:text-base";
+
 function FrontLayout() {
   return (
     <div className="flex min-h-svh flex-col">
-      <header className="border-input fixed inset-x-0 top-0 h-14 border-b px-4">
-        <nav className="flex h-full items-center justify-between">
+      <header className="border-layout sticky top-0 z-10 h-14 border-b bg-base">
+        <div className="mx-auto flex h-full max-w-5xl items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2">
-            <span className="size-10">
+            <span className="size-8 text-accent">
               <Logo />
             </span>
-            <span className="text-lg font-medium">runde.tips</span>
+            <span className="hidden text-sm font-semibold tracking-tight sm:block">runde.tips</span>
           </Link>
+          <nav className="flex items-center gap-1">
+            <a href="/tabelle" className={navLinkClass}>Tabelle</a>
+            <a href="/spieler" className={navLinkClass}>Spieler</a>
+            <a href="/spiele" className={navLinkClass}>Spiele</a>
+          </nav>
           <ColorSchemeSwitch />
-        </nav>
+        </div>
       </header>
-      <main className="flex flex-1 flex-col pt-14">
+      <main className="flex flex-1 flex-col">
         <Outlet />
       </main>
     </div>

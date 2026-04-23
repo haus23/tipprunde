@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ManagerRouteImport } from './routes/manager'
 import { Route as FrontRouteImport } from './routes/_front'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as FrontIndexRouteImport } from './routes/_front/index'
 import { Route as ManagerChar123SlugChar125RouteImport } from './routes/manager/{-$slug}'
 import { Route as ManagerChar123SlugChar125IndexRouteImport } from './routes/manager/{-$slug}/index'
 import { Route as ManagerChar123SlugChar125SpieleRouteImport } from './routes/manager/{-$slug}/spiele'
@@ -27,10 +27,10 @@ const FrontRoute = FrontRouteImport.update({
   id: '/_front',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const FrontIndexRoute = FrontIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => FrontRoute,
 } as any)
 const ManagerChar123SlugChar125Route =
   ManagerChar123SlugChar125RouteImport.update({
@@ -63,7 +63,7 @@ const FrontauthLoginRoute = FrontauthLoginRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof FrontIndexRoute
   '/manager': typeof ManagerRouteWithChildren
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125RouteWithChildren
   '/login': typeof FrontauthLoginRoute
@@ -72,8 +72,8 @@ export interface FileRoutesByFullPath {
   '/manager/{-$slug}/': typeof ManagerChar123SlugChar125IndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/manager': typeof ManagerRouteWithChildren
+  '/': typeof FrontIndexRoute
   '/login': typeof FrontauthLoginRoute
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
   '/manager/{-$slug}/spiele': typeof ManagerChar123SlugChar125SpieleRoute
@@ -81,10 +81,10 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_front': typeof FrontRouteWithChildren
   '/manager': typeof ManagerRouteWithChildren
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125RouteWithChildren
+  '/_front/': typeof FrontIndexRoute
   '/_front/(auth)/login': typeof FrontauthLoginRoute
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
   '/manager/{-$slug}/spiele': typeof ManagerChar123SlugChar125SpieleRoute
@@ -102,18 +102,18 @@ export interface FileRouteTypes {
     | '/manager/{-$slug}/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/manager'
+    | '/'
     | '/login'
     | '/manager/stammdaten/turniere'
     | '/manager/{-$slug}/spiele'
     | '/manager/{-$slug}'
   id:
     | '__root__'
-    | '/'
     | '/_front'
     | '/manager'
     | '/manager/{-$slug}'
+    | '/_front/'
     | '/_front/(auth)/login'
     | '/manager/stammdaten/turniere'
     | '/manager/{-$slug}/spiele'
@@ -121,7 +121,6 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   FrontRoute: typeof FrontRouteWithChildren
   ManagerRoute: typeof ManagerRouteWithChildren
 }
@@ -142,12 +141,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FrontRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_front/': {
+      id: '/_front/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof FrontIndexRouteImport
+      parentRoute: typeof FrontRoute
     }
     '/manager/{-$slug}': {
       id: '/manager/{-$slug}'
@@ -188,10 +187,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface FrontRouteChildren {
+  FrontIndexRoute: typeof FrontIndexRoute
   FrontauthLoginRoute: typeof FrontauthLoginRoute
 }
 
 const FrontRouteChildren: FrontRouteChildren = {
+  FrontIndexRoute: FrontIndexRoute,
   FrontauthLoginRoute: FrontauthLoginRoute,
 }
 
@@ -227,7 +228,6 @@ const ManagerRouteWithChildren =
   ManagerRoute._addFileChildren(ManagerRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   FrontRoute: FrontRouteWithChildren,
   ManagerRoute: ManagerRouteWithChildren,
 }
