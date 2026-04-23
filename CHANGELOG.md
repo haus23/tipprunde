@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.7.0-pre.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0-pre.3...v0.7.0-pre.4)
+
+### 🚀 Enhancements
+
+- **front:** New front layout with nav and landing page ([d3f22e6](https://github.com/haus23/tipprunde/commit/d3f22e6))
+- **ui:** Add form components and utils for login flow ([6a04ae2](https://github.com/haus23/tipprunde/commit/6a04ae2))
+- **auth:** Add login route with two-step form ([c475339](https://github.com/haus23/tipprunde/commit/c475339))
+
+### 🩹 Fixes
+
+- **auth:** Client-side logout redirect and fatal error display ([1b9ad82](https://github.com/haus23/tipprunde/commit/1b9ad82))
+
+### 💅 Refactors
+
+- **auth:** Restructure auth flow into focused modules ([cbb77f9](https://github.com/haus23/tipprunde/commit/cbb77f9))
+
 ## v0.7.0-pre.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0-pre.2...v0.7.0-pre.3)
