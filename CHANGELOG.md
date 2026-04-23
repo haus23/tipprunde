@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.7.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0-pre.4...v0.7.0)
+
+### 🩹 Fixes
+
+- **login:** Add horizontal padding on mobile ([f798233](https://github.com/haus23/tipprunde/commit/f798233))
+- **auth:** Preserve rememberMe checkbox state across failed verify attempts ([d596ea5](https://github.com/haus23/tipprunde/commit/d596ea5))
+- Update import paths. ([c58e3de](https://github.com/haus23/tipprunde/commit/c58e3de))
+- **manager:** Fix sidebar and mobile nav scrolling in landscape mode ([f6b4c81](https://github.com/haus23/tipprunde/commit/f6b4c81))
+
+### 💅 Refactors
+
+- **auth:** Return values alongside errors in all action returns ([f1d2c0a](https://github.com/haus23/tipprunde/commit/f1d2c0a))
+
+### 🏡 Chore
+
+- Update deps. ([323ba49](https://github.com/haus23/tipprunde/commit/323ba49))
+
 ## v0.7.0-pre.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0-pre.3...v0.7.0-pre.4)
