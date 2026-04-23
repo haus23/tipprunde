@@ -15,18 +15,14 @@ const requestSchema = v.object({
   email: v.pipe(v.string(), v.email()),
 });
 
-type RequestState =
-  | { success: true; email: string }
-  | { success: false; email: string; error: string };
-
 export const requestCode = createServerFn({ method: "POST" })
   .inputValidator(validateForm(requestSchema))
-  .handler(async ({ data }): Promise<RequestState> => {
+  .handler(async ({ data }) => {
     if (!data.success) {
       return {
         success: false,
         email: String(data.issues[0].input),
-        error: "Ungültige E-Mail Adresse",
+        errors: { email: ["Ungültige E-Mail Adresse"] },
       };
     }
 
@@ -34,7 +30,11 @@ export const requestCode = createServerFn({ method: "POST" })
     const user = await getUserByEmail(email);
 
     if (!user) {
-      return { success: false, email, error: "Unbekannte E-Mail Adresse. Frag Micha!" };
+      return {
+        success: false,
+        email,
+        errors: { email: ["Unbekannte E-Mail Adresse. Frag Micha!"] },
+      };
     }
 
     const code = await createTotpCode(user.id);
@@ -45,7 +45,7 @@ export const requestCode = createServerFn({ method: "POST" })
       return {
         success: false,
         email,
-        error: "E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
+        errors: { email: ["E-Mail konnte nicht gesendet werden. Bitte versuche es erneut."] },
       };
     }
 
@@ -62,7 +62,7 @@ export const verifyCode = createServerFn({ method: "POST" })
   .inputValidator(validateForm(verifySchema))
   .handler(async ({ data }) => {
     if (!data.success) {
-      return { error: "Ungültige Anfrage" };
+      return { errors: { email: [], code: ["Ungültige Anfrage"] } };
     }
     const { email, code } = data.output;
     const rememberMe = data.output.rememberMe === "on";
@@ -70,21 +70,27 @@ export const verifyCode = createServerFn({ method: "POST" })
     const user = await getUserByEmail(email);
 
     if (!user) {
-      return { error: "Ungültige Anfrage." };
+      return { errors: { email: [], code: ["Ungültige Anfrage"] } };
     }
 
     const result = await verifyTotpCode(user.id, code);
 
     if (result === "expired") {
-      return { error: "Der Code ist abgelaufen. Bitte fordere einen neuen an.", fatal: true };
+      return {
+        errors: { email: ["Der Code ist abgelaufen. Bitte fordere einen neuen an."], code: [] },
+        fatal: true,
+      };
     }
 
     if (result === "max_attempts") {
-      return { error: "Zu viele Fehlversuche. Bitte fordere einen neuen Code an.", fatal: true };
+      return {
+        errors: { email: ["Zu viele Fehlversuche. Bitte fordere einen neuen Code an."], code: [] },
+        fatal: true,
+      };
     }
 
     if (result === "invalid") {
-      return { error: "Falscher Code. Bitte versuche es erneut." };
+      return { errors: { email: [], code: ["Falscher Code. Bitte versuche es erneut."] } };
     }
 
     const sessionId = await createDbSession(user.id, rememberMe);
