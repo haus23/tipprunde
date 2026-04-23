@@ -127,7 +127,7 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
           </div>
 
           {pageTitle && (
-            <span className="absolute left-1/2 -translate-x-1/2 text-sm font-medium">
+            <span className="absolute left-1/2 -translate-x-1/2 hidden text-sm font-medium md:block">
               {pageTitle}
             </span>
           )}
