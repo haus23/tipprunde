@@ -53,7 +53,9 @@ export function LoginForm() {
             }
           </FieldError>
         </TextField>
-        <Checkbox name="rememberMe">Angemeldet bleiben</Checkbox>
+        <Checkbox name="rememberMe" defaultSelected={verifyState?.rememberMe ?? false}>
+          Angemeldet bleiben
+        </Checkbox>
         <div className="flex flex-col gap-2">
           <Button type="submit" isDisabled={verifyPending}>
             Einloggen

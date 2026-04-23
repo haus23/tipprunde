@@ -70,7 +70,7 @@ export const verifyCode = createServerFn({ method: "POST" })
     const user = await getUserByEmail(email);
 
     if (!user) {
-      return { errors: { email: [], code: ["Ungültige Anfrage"] } };
+      return { errors: { email: [], code: ["Ungültige Anfrage"] }, rememberMe };
     }
 
     const result = await verifyTotpCode(user.id, code);
@@ -78,6 +78,7 @@ export const verifyCode = createServerFn({ method: "POST" })
     if (result === "expired") {
       return {
         errors: { email: ["Der Code ist abgelaufen. Bitte fordere einen neuen an."], code: [] },
+        rememberMe,
         fatal: true,
       };
     }
@@ -85,12 +86,13 @@ export const verifyCode = createServerFn({ method: "POST" })
     if (result === "max_attempts") {
       return {
         errors: { email: ["Zu viele Fehlversuche. Bitte fordere einen neuen Code an."], code: [] },
+        rememberMe,
         fatal: true,
       };
     }
 
     if (result === "invalid") {
-      return { errors: { email: [], code: ["Falscher Code. Bitte versuche es erneut."] } };
+      return { errors: { email: [], code: ["Falscher Code. Bitte versuche es erneut."] }, rememberMe };
     }
 
     const sessionId = await createDbSession(user.id, rememberMe);
