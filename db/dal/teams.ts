@@ -8,7 +8,7 @@ import { teams } from "../schema/tables.ts";
 export type Team = typeof teams.$inferSelect;
 
 export const getTeams = createServerOnlyFn(async () =>
-  db.query.teams.findMany({ orderBy: { name: "asc" } }),
+  db.query.teams.findMany({ orderBy: { shortName: "asc" } }),
 );
 
 export const createTeam = createServerOnlyFn(async (data: typeof teams.$inferInsert) =>

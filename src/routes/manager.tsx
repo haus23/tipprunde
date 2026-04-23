@@ -136,7 +136,7 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
         </motion.header>
 
         <main className="flex-1 pt-14">
-          <div className="p-8">{children}</div>
+          <div className="px-2 py-4 xs:px-4 xs:py-6 sm:p-8">{children}</div>
         </main>
       </motion.div>
     </div>

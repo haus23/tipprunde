@@ -7,6 +7,8 @@ import {
   type InputProps,
   Label as RACLabel,
   type LabelProps,
+  SearchField as RACSearchField,
+  type SearchFieldProps,
   TextField as RACTextField,
   type TextFieldProps,
 } from "react-aria-components";
@@ -36,4 +38,8 @@ export function Input({ className, ...props }: InputComponentProps) {
 
 export function FieldError(props: FieldErrorProps) {
   return <RACFieldError {...props} className="text-error text-sm" />;
+}
+
+export function SearchField(props: SearchFieldProps) {
+  return <RACSearchField {...props} />;
 }

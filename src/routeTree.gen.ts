@@ -17,6 +17,7 @@ import { Route as ManagerChar123SlugChar125IndexRouteImport } from './routes/man
 import { Route as ManagerChar123SlugChar125SpieleRouteImport } from './routes/manager/{-$slug}/spiele'
 import { Route as ManagerStammdatenTurniereRouteImport } from './routes/manager/stammdaten/turniere'
 import { Route as FrontauthLoginRouteImport } from './routes/_front/(auth)/login'
+import { Route as ManagerStammdatenTeamsIndexRouteImport } from './routes/manager/stammdaten/teams/index'
 
 const ManagerRoute = ManagerRouteImport.update({
   id: '/manager',
@@ -61,6 +62,12 @@ const FrontauthLoginRoute = FrontauthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => FrontRoute,
 } as any)
+const ManagerStammdatenTeamsIndexRoute =
+  ManagerStammdatenTeamsIndexRouteImport.update({
+    id: '/stammdaten/teams/',
+    path: '/stammdaten/teams/',
+    getParentRoute: () => ManagerRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof FrontIndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
   '/manager/{-$slug}/spiele': typeof ManagerChar123SlugChar125SpieleRoute
   '/manager/{-$slug}/': typeof ManagerChar123SlugChar125IndexRoute
+  '/manager/stammdaten/teams/': typeof ManagerStammdatenTeamsIndexRoute
 }
 export interface FileRoutesByTo {
   '/manager': typeof ManagerRouteWithChildren
@@ -78,6 +86,7 @@ export interface FileRoutesByTo {
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
   '/manager/{-$slug}/spiele': typeof ManagerChar123SlugChar125SpieleRoute
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125IndexRoute
+  '/manager/stammdaten/teams': typeof ManagerStammdatenTeamsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +98,7 @@ export interface FileRoutesById {
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereRoute
   '/manager/{-$slug}/spiele': typeof ManagerChar123SlugChar125SpieleRoute
   '/manager/{-$slug}/': typeof ManagerChar123SlugChar125IndexRoute
+  '/manager/stammdaten/teams/': typeof ManagerStammdatenTeamsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/manager/stammdaten/turniere'
     | '/manager/{-$slug}/spiele'
     | '/manager/{-$slug}/'
+    | '/manager/stammdaten/teams/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/manager'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/manager/stammdaten/turniere'
     | '/manager/{-$slug}/spiele'
     | '/manager/{-$slug}'
+    | '/manager/stammdaten/teams'
   id:
     | '__root__'
     | '/_front'
@@ -118,6 +130,7 @@ export interface FileRouteTypes {
     | '/manager/stammdaten/turniere'
     | '/manager/{-$slug}/spiele'
     | '/manager/{-$slug}/'
+    | '/manager/stammdaten/teams/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -183,6 +196,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FrontauthLoginRouteImport
       parentRoute: typeof FrontRoute
     }
+    '/manager/stammdaten/teams/': {
+      id: '/manager/stammdaten/teams/'
+      path: '/stammdaten/teams'
+      fullPath: '/manager/stammdaten/teams/'
+      preLoaderRoute: typeof ManagerStammdatenTeamsIndexRouteImport
+      parentRoute: typeof ManagerRoute
+    }
   }
 }
 
@@ -217,11 +237,13 @@ const ManagerChar123SlugChar125RouteWithChildren =
 interface ManagerRouteChildren {
   ManagerChar123SlugChar125Route: typeof ManagerChar123SlugChar125RouteWithChildren
   ManagerStammdatenTurniereRoute: typeof ManagerStammdatenTurniereRoute
+  ManagerStammdatenTeamsIndexRoute: typeof ManagerStammdatenTeamsIndexRoute
 }
 
 const ManagerRouteChildren: ManagerRouteChildren = {
   ManagerChar123SlugChar125Route: ManagerChar123SlugChar125RouteWithChildren,
   ManagerStammdatenTurniereRoute: ManagerStammdatenTurniereRoute,
+  ManagerStammdatenTeamsIndexRoute: ManagerStammdatenTeamsIndexRoute,
 }
 
 const ManagerRouteWithChildren =

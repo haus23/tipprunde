@@ -112,7 +112,12 @@ function NavContent({ slug, collapsed, scroll = true }: { slug: string | undefin
           to="/manager/stammdaten/turniere"
         />
         <NavItem collapsed={collapsed} icon={<UsersIcon size={16} />} label="Spieler" />
-        <NavItem collapsed={collapsed} icon={<ShirtIcon size={16} />} label="Teams" />
+        <NavItem
+          collapsed={collapsed}
+          icon={<ShirtIcon size={16} />}
+          label="Teams"
+          to="/manager/stammdaten/teams"
+        />
         <NavItem collapsed={collapsed} icon={<ShieldIcon size={16} />} label="Ligen" />
         <NavItem collapsed={collapsed} icon={<PilcrowIcon size={16} />} label="Regelwerke" />
       </div>

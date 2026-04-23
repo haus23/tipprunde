@@ -35,6 +35,8 @@
 @theme {
   --color-*: initial;
 
+  --breakpoint-xs: 480px;
+
   /* sand-1 / black */
   --background-color-base: light-dark(color(display-p3 0.992 0.992 0.989), color(display-p3 0 0 0));
 
