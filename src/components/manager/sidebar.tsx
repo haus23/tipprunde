@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { Dialog, Modal, ModalOverlay, Tooltip, TooltipTrigger } from "react-aria-components";
 
-import { logoutFn } from "#/app/(auth)/session.ts";
+import { logout } from "#/app/(auth)/logout.ts";
 import { Logo } from "#/components/logo.tsx";
 import { useShell } from "#/components/manager/shell-provider.tsx";
 
@@ -153,7 +153,7 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
       <div className="border-layout shrink-0 border-t p-2">
         <TooltipTrigger delay={750} isDisabled={!isSidebarCollapsed}>
           <button
-            onClick={() => logoutFn()}
+            onClick={() => logout()}
             className="hover:bg-subtle focus-visible:ring-focus flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm outline-none focus-visible:ring-2"
           >
             <LogOutIcon size={16} className="shrink-0" />
@@ -233,7 +233,7 @@ export function MobileNav({ slug }: { slug: string | undefined }) {
               {/* Footer */}
               <div className="border-layout shrink-0 border-t p-2">
                 <button
-                  onClick={() => logoutFn()}
+                  onClick={() => logout()}
                   className="hover:bg-subtle focus-visible:ring-focus flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm outline-none focus-visible:ring-2"
                 >
                   <LogOutIcon size={16} className="shrink-0" />

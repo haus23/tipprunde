@@ -1,18 +1,15 @@
-// TODO: Cleanup
-
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
-import { SESSION_DURATION_REMEMBER } from "#/app/(auth)/config.ts";
+import { createDbSession, updateCookieSession } from "#/app/(auth)/session.server.ts";
 import {
-  createDbSession,
   createTotpCode,
   getUserByEmail,
   sendTotpEmail,
   verifyTotpCode,
-} from "#/app/(auth)/functions.server.ts";
-import { updateCookieSession } from "#/app/(auth)/session.server.ts";
-import { validateForm } from "@/lib/validate-form.ts";
+} from "#/app/(auth)/totp.server.ts";
+import { env } from "#/utils/env.server.ts";
+import { validateForm } from "#/utils/validate-form.ts";
 
 const requestSchema = v.object({
   email: v.pipe(v.string(), v.email()),
@@ -58,21 +55,17 @@ export const requestCode = createServerFn({ method: "POST" })
 const verifySchema = v.object({
   email: v.pipe(v.string(), v.email()),
   code: v.pipe(v.string(), v.length(6)),
-  rememberMe: v.pipe(
-    v.optional(v.string()),
-    v.transform((input) => input === "on"),
-  ),
+  rememberMe: v.optional(v.string()),
 });
 
 export const verifyCode = createServerFn({ method: "POST" })
   .inputValidator(validateForm(verifySchema))
   .handler(async ({ data }) => {
     if (!data.success) {
-      return {
-        error: "Ungültige Anfrage",
-      };
+      return { error: "Ungültige Anfrage" };
     }
-    const { email, code, rememberMe } = data.output;
+    const { email, code } = data.output;
+    const rememberMe = data.output.rememberMe === "on";
 
     const user = await getUserByEmail(email);
 
@@ -94,10 +87,10 @@ export const verifyCode = createServerFn({ method: "POST" })
       return { error: "Falscher Code. Bitte versuche es erneut." };
     }
 
-    const sessionId = await createDbSession(user.id, !!rememberMe);
+    const sessionId = await createDbSession(user.id, rememberMe);
     await updateCookieSession(
       { sessionId, role: user.role },
-      rememberMe && { maxAge: SESSION_DURATION_REMEMBER },
+      rememberMe ? { maxAge: env.SESSION_DURATION_REMEMBER } : undefined,
     );
 
     return { success: true };
