@@ -130,7 +130,12 @@ function NavContent({
           label="Teams"
           to="/manager/stammdaten/teams"
         />
-        <NavItem collapsed={collapsed} icon={<ShieldIcon size={16} />} label="Ligen" />
+        <NavItem
+          collapsed={collapsed}
+          icon={<ShieldIcon size={16} />}
+          label="Ligen"
+          to="/manager/stammdaten/ligen"
+        />
         <NavItem collapsed={collapsed} icon={<PilcrowIcon size={16} />} label="Regelwerke" />
       </div>
     </nav>
