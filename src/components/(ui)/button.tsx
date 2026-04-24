@@ -4,11 +4,11 @@ import { Button as RACButton, type ButtonProps } from "react-aria-components";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const button = tv({
-  base: "inline-flex cursor-default items-center justify-center rounded-md text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:opacity-50",
+  base: "inline-flex cursor-default items-center justify-center rounded-md text-sm font-medium outline-none transition-[transform,background-color,border-color,opacity] duration-150 ease-out focus-visible:ring-2 focus-visible:ring-focus disabled:opacity-50 data-pressed:scale-[0.97]",
   variants: {
     variant: {
       primary: "bg-btn text-btn data-hovered:bg-btn-hovered data-pressed:bg-btn-pressed",
-      secondary: "border border-input data-hovered:border-input-hovered data-pressed:opacity-70",
+      secondary: "border border-input data-hovered:border-input-hovered data-hovered:bg-subtle data-pressed:opacity-70",
       plain: "data-hovered:bg-subtle data-pressed:opacity-70",
     },
     size: {
