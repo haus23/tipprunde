@@ -18,7 +18,7 @@ function TeamsPage() {
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-medium md:hidden">Teams</h1>
-      <TeamsTable initialTeams={initialTeams} />
+      <TeamsTable teams={initialTeams} />
     </div>
   );
 }

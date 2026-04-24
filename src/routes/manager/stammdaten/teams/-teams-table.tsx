@@ -1,33 +1,24 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 
 import type { Team } from "#db/dal/teams.ts";
-import { fetchTeamsFn } from "#/app/manager/teams.ts";
 import { Button } from "#/components/(ui)/button.tsx";
 import { DataTable } from "#/components/(ui)/data-table.tsx";
 import { Dialog } from "#/components/(ui)/dialog.tsx";
 import { toastQueue } from "#/components/(ui)/toast.tsx";
-import { queryKeys } from "#/utils/query-keys.ts";
 
 import { createTeamColumns } from "./-team-columns.tsx";
 import { TeamForm } from "./-team-form.tsx";
 
 interface Props {
-  initialTeams: Team[];
+  teams: Team[];
 }
 
-export function TeamsTable({ initialTeams }: Props) {
+export function TeamsTable({ teams }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Team | undefined>(undefined);
   const [filter, setFilter] = useState("");
-
-  const { data: teams } = useQuery({
-    queryKey: queryKeys.teams.all,
-    queryFn: () => fetchTeamsFn(),
-    initialData: initialTeams,
-  });
 
   function handleCreateSuccess(shortName: string) {
     setFilter(shortName);

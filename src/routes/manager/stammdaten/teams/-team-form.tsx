@@ -1,6 +1,7 @@
 "use client";
 
 import { useContext, useEffect, useRef, useState } from "react";
+import { useRouter } from "@tanstack/react-router";
 import { OverlayTriggerStateContext } from "react-aria-components";
 
 import type { Team } from "#db/dal/teams.ts";
@@ -8,8 +9,6 @@ import { createTeamFn, updateTeamFn } from "#/app/manager/teams.ts";
 import { Button } from "#/components/(ui)/button.tsx";
 import { Form } from "#/components/(ui)/form.tsx";
 import { FieldError, Input, Label, TextField } from "#/components/(ui)/text-field.tsx";
-import { queryClient } from "#/utils/query-client.ts";
-import { queryKeys } from "#/utils/query-keys.ts";
 import { slugify } from "#/utils/slugify.ts";
 import { useServerAction } from "#/utils/hooks/server-action.ts";
 
@@ -21,6 +20,7 @@ interface Props {
 export function TeamForm({ team, onSuccess }: Props) {
   const serverAction = team ? updateTeamFn : createTeamFn;
   const [state, formAction, pending] = useServerAction(serverAction);
+  const router = useRouter();
 
   const dialog = useContext(OverlayTriggerStateContext);
   const successHandled = useRef(false);
@@ -33,7 +33,7 @@ export function TeamForm({ team, onSuccess }: Props) {
   useEffect(() => {
     if (state && "success" in state && !successHandled.current) {
       successHandled.current = true;
-      queryClient.invalidateQueries({ queryKey: queryKeys.teams.all });
+      router.invalidate();
       if (!team) onSuccess?.(shortName);
       dialog?.close();
     }
