@@ -1,6 +1,6 @@
 "use client";
 
-import type { ColumnDef, Table as TableType } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import type { ReactNode } from "react";
 
 declare module "@tanstack/react-table" {
@@ -13,19 +13,11 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronsLeftIcon,
-  ChevronsRightIcon,
-  SearchIcon,
-} from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { SearchIcon } from "lucide-react";
+import { useCallback, useState } from "react";
 
-import { Button } from "#/components/(ui)/button.tsx";
 import { SearchField, Input } from "#/components/(ui)/text-field.tsx";
 
 export interface DataTableProps<TData, TValue> {
@@ -35,7 +27,6 @@ export interface DataTableProps<TData, TValue> {
   filterPlaceholder?: string;
   filter?: string;
   onFilterChange?: (value: string) => void;
-  withPagination?: boolean;
   toolbar?: ReactNode;
 }
 
@@ -46,34 +37,21 @@ export function DataTable<TData, TValue>({
   filterPlaceholder = "Suchen …",
   filter: controlledFilter,
   onFilterChange,
-  withPagination = false,
   toolbar,
 }: DataTableProps<TData, TValue>) {
   const isControlled = controlledFilter !== undefined;
-
-  const shouldResetPageIndexRef = useRef(false);
-  const autoResetPageIndex = shouldResetPageIndexRef.current;
-
-  const resetPageIndex = useCallback(() => {
-    shouldResetPageIndexRef.current = true;
-  }, []);
-
-  useEffect(() => {
-    if (autoResetPageIndex) shouldResetPageIndexRef.current = false;
-  }, [autoResetPageIndex]);
 
   const [internalFilter, setInternalFilter] = useState("");
   const globalFilter = isControlled ? controlledFilter : internalFilter;
   const setGlobalFilter = useCallback(
     (value: string) => {
-      resetPageIndex();
       if (isControlled) {
         onFilterChange?.(value);
       } else {
         setInternalFilter(value);
       }
     },
-    [resetPageIndex, isControlled, onFilterChange],
+    [isControlled, onFilterChange],
   );
 
   const table = useReactTable({
@@ -81,8 +59,6 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: withFilter ? getFilteredRowModel() : undefined,
-    getPaginationRowModel: withPagination ? getPaginationRowModel() : undefined,
-    autoResetPageIndex,
     globalFilterFn: "includesString",
     onGlobalFilterChange: setGlobalFilter,
     state: { globalFilter },
@@ -151,56 +127,6 @@ export function DataTable<TData, TValue>({
             )}
           </tbody>
         </table>
-      </div>
-
-      {withPagination && <DataTablePagination table={table} />}
-    </div>
-  );
-}
-
-function DataTablePagination<TData>({ table }: { table: TableType<TData> }) {
-  return (
-    <div className="text-subtle flex items-center justify-center gap-4 text-sm">
-      <span className="font-medium">
-        Seite {table.getState().pagination.pageIndex + 1} von {table.getPageCount()}
-      </span>
-      <div className="flex gap-1">
-        <Button
-          variant="secondary"
-          size="icon"
-          onPress={() => table.setPageIndex(0)}
-          isDisabled={!table.getCanPreviousPage()}
-          aria-label="Erste Seite"
-        >
-          <ChevronsLeftIcon size={14} />
-        </Button>
-        <Button
-          variant="secondary"
-          size="icon"
-          onPress={() => table.previousPage()}
-          isDisabled={!table.getCanPreviousPage()}
-          aria-label="Vorherige Seite"
-        >
-          <ChevronLeftIcon size={14} />
-        </Button>
-        <Button
-          variant="secondary"
-          size="icon"
-          onPress={() => table.nextPage()}
-          isDisabled={!table.getCanNextPage()}
-          aria-label="Nächste Seite"
-        >
-          <ChevronRightIcon size={14} />
-        </Button>
-        <Button
-          variant="secondary"
-          size="icon"
-          onPress={() => table.setPageIndex(table.getPageCount() - 1)}
-          isDisabled={!table.getCanNextPage()}
-          aria-label="Letzte Seite"
-        >
-          <ChevronsRightIcon size={14} />
-        </Button>
       </div>
     </div>
   );
