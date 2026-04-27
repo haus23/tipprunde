@@ -16,7 +16,14 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef } from "react";
-import { Dialog, Focusable, Modal, ModalOverlay, Tooltip, TooltipTrigger } from "react-aria-components";
+import {
+  Dialog,
+  Focusable,
+  Modal,
+  ModalOverlay,
+  Tooltip,
+  TooltipTrigger,
+} from "react-aria-components";
 
 import { logout } from "#/app/(auth)/logout.ts";
 import { Logo } from "#/components/logo.tsx";
@@ -136,7 +143,12 @@ function NavContent({
           label="Ligen"
           to="/manager/stammdaten/ligen"
         />
-        <NavItem collapsed={collapsed} icon={<PilcrowIcon size={16} />} label="Regelwerke" />
+        <NavItem
+          collapsed={collapsed}
+          icon={<PilcrowIcon size={16} />}
+          label="Regelwerke"
+          to="/manager/stammdaten/regelwerke"
+        />
       </div>
     </nav>
   );
@@ -182,27 +194,27 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
         {/* Footer */}
         <div className="border-layout mt-auto border-t p-2">
           <TooltipTrigger delay={750} isDisabled={!isSidebarCollapsed}>
-          <Focusable>
-            <button
-              onClick={handleLogout}
-              className="hover:bg-subtle focus-visible:ring-focus flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm outline-none focus-visible:ring-2"
-            >
-              <LogOutIcon size={16} className="shrink-0" />
-              <motion.span
-                animate={{
-                  opacity: isSidebarCollapsed ? 0 : 1,
-                  width: isSidebarCollapsed ? 0 : "auto",
-                }}
-                transition={transition}
-                className="overflow-hidden whitespace-nowrap"
+            <Focusable>
+              <button
+                onClick={handleLogout}
+                className="hover:bg-subtle focus-visible:ring-focus flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm outline-none focus-visible:ring-2"
               >
-                Abmelden
-              </motion.span>
-            </button>
-          </Focusable>
-          <Tooltip placement="right" offset={6} className={tooltipClass}>
-            Abmelden
-          </Tooltip>
+                <LogOutIcon size={16} className="shrink-0" />
+                <motion.span
+                  animate={{
+                    opacity: isSidebarCollapsed ? 0 : 1,
+                    width: isSidebarCollapsed ? 0 : "auto",
+                  }}
+                  transition={transition}
+                  className="overflow-hidden whitespace-nowrap"
+                >
+                  Abmelden
+                </motion.span>
+              </button>
+            </Focusable>
+            <Tooltip placement="right" offset={6} className={tooltipClass}>
+              Abmelden
+            </Tooltip>
           </TooltipTrigger>
         </div>
       </div>
