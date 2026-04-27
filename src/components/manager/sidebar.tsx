@@ -130,7 +130,12 @@ function NavContent({
           label="Turniere"
           to="/manager/stammdaten/turniere"
         />
-        <NavItem collapsed={collapsed} icon={<UsersIcon size={16} />} label="Spieler" />
+        <NavItem
+          collapsed={collapsed}
+          icon={<UsersIcon size={16} />}
+          label="Spieler"
+          to="/manager/stammdaten/spieler"
+        />
         <NavItem
           collapsed={collapsed}
           icon={<ShirtIcon size={16} />}
