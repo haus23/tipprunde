@@ -4,6 +4,8 @@ import { useRouter, useRouterState } from "@tanstack/react-router";
 import { CheckIcon, ChevronsUpDownIcon, SearchIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+
+import { updateManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
 import {
   Autocomplete,
   Button,
@@ -39,12 +41,19 @@ export function ChampionshipSwitcher({ current, championships }: Props) {
 
   async function handleSelect(slug: string) {
     setIsOpen(false);
-    const slugBase = current.slug ? `/manager/${current.slug}` : null;
-    const to =
-      slugBase && pathname.startsWith(slugBase)
-        ? pathname.replace(slugBase, `/manager/${slug}`)
-        : `/manager/${slug}`;
-    await router.navigate({ to });
+    const isLatest = slug === championships[0].slug;
+
+    if (isLatest) {
+      await updateManagerShellSettingsFn({ data: { activeSlug: undefined } });
+      await router.navigate({ to: "/manager" });
+    } else {
+      const slugBase = current.slug ? `/manager/${current.slug}` : null;
+      const to =
+        slugBase && pathname.startsWith(slugBase)
+          ? pathname.replace(slugBase, `/manager/${slug}`)
+          : `/manager/${slug}`;
+      await router.navigate({ to });
+    }
     await router.invalidate();
   }
 

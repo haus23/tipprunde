@@ -5,6 +5,7 @@ import { env } from "#/utils/env.server.ts";
 
 export type ManagerShellSettings = {
   sidebarCollapsed: boolean;
+  activeSlug?: string;
 };
 
 const defaultManagerShellSettings: ManagerShellSettings = {

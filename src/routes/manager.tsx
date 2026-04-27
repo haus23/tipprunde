@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useMatches } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { CompositeComponent, createCompositeComponent } from "@tanstack/react-start/rsc";
 import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
@@ -46,6 +46,7 @@ const getServerShell = createServerFn()
 type RouteContext = {
   slug: string | undefined;
   championships: Awaited<ReturnType<typeof fetchChampionshipsFn>>;
+  shellSettings: Awaited<ReturnType<typeof getManagerShellSettingsFn>>;
 };
 
 export const Route = createFileRoute("/manager")({
@@ -53,17 +54,24 @@ export const Route = createFileRoute("/manager")({
     await requireManager();
 
     const params = matches.at(-1)?.params;
-    const slug = params && "slug" in params ? params.slug : undefined;
+    const urlSlug = params && "slug" in params ? params.slug : undefined;
 
-    const championships = await fetchChampionshipsFn();
-
-    return { championships, slug };
-  },
-  loader: async ({ context: { slug } }) => {
-    const [serverShell, shellSettings] = await Promise.all([
-      getServerShell({ data: { slug } }),
+    const [championships, shellSettings] = await Promise.all([
+      fetchChampionshipsFn(),
       getManagerShellSettingsFn(),
     ]);
+
+    const { activeSlug } = shellSettings;
+    if (!urlSlug && activeSlug && activeSlug !== championships[0]?.slug) {
+      throw redirect({ to: "/manager/{-$slug}", params: { slug: activeSlug } });
+    }
+
+    const slug = urlSlug ?? activeSlug;
+
+    return { championships, slug, shellSettings };
+  },
+  loader: async ({ context: { slug, shellSettings } }) => {
+    const serverShell = await getServerShell({ data: { slug } });
     return { serverShell, shellSettings };
   },
   component: RouteComponent,
