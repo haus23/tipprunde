@@ -8,7 +8,8 @@ const button = tv({
   variants: {
     variant: {
       primary: "bg-btn text-btn data-hovered:bg-btn-hovered data-pressed:bg-btn-pressed",
-      secondary: "border border-input data-hovered:border-input-hovered data-hovered:bg-subtle data-pressed:opacity-70",
+      secondary:
+        "border border-input data-hovered:border-input-hovered data-hovered:bg-subtle data-pressed:opacity-70",
       plain: "data-hovered:bg-subtle data-pressed:opacity-70",
     },
     size: {

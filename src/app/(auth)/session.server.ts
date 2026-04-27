@@ -56,4 +56,3 @@ export const createDbSession = createServerOnlyFn(async (userId: number, remembe
   await createSession({ id, userId, rememberMe, expiresAt });
   return id;
 });
-

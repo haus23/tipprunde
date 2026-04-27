@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react";
 
-import type { League } from "#db/dal/leagues.ts";
 import { Button } from "#/components/(ui)/button.tsx";
 import { DataTable } from "#/components/(ui)/data-table.tsx";
 import { Dialog } from "#/components/(ui)/dialog.tsx";
 import { toastQueue } from "#/components/(ui)/toast.tsx";
+import type { League } from "#db/dal/leagues.ts";
 
 import { createLigaColumns } from "./-liga-columns.tsx";
 import { LigaForm } from "./-liga-form.tsx";

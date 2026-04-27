@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react";
 
-import type { Team } from "#db/dal/teams.ts";
 import { Button } from "#/components/(ui)/button.tsx";
 import { DataTable } from "#/components/(ui)/data-table.tsx";
 import { Dialog } from "#/components/(ui)/dialog.tsx";
 import { toastQueue } from "#/components/(ui)/toast.tsx";
+import type { Team } from "#db/dal/teams.ts";
 
 import { createTeamColumns } from "./-team-columns.tsx";
 import { TeamForm } from "./-team-form.tsx";

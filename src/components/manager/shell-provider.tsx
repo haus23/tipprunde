@@ -49,7 +49,15 @@ export function ShellProvider({ initialSidebarCollapsed, children }: Props) {
   }, []);
 
   return (
-    <ShellContext value={{ isSidebarCollapsed, isMobileMenuOpen, toggleSidebar, toggleMobileMenu, closeMobileMenu }}>
+    <ShellContext
+      value={{
+        isSidebarCollapsed,
+        isMobileMenuOpen,
+        toggleSidebar,
+        toggleMobileMenu,
+        closeMobileMenu,
+      }}
+    >
       {children}
     </ShellContext>
   );

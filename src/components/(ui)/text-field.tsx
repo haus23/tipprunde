@@ -31,7 +31,10 @@ export function Input({ className, ...props }: InputComponentProps) {
   return (
     <RACInput
       {...props}
-      className={cn("border-input data-hovered:border-input-hovered focus-visible:ring-focus data-invalid:border-error rounded-md border bg-transparent px-3 py-2 text-sm outline-none transition-colors duration-150 ease-out focus-visible:ring-2 disabled:opacity-50", className)}
+      className={cn(
+        "border-input data-hovered:border-input-hovered focus-visible:ring-focus data-invalid:border-error rounded-md border bg-transparent px-3 py-2 text-sm outline-none transition-colors duration-150 ease-out focus-visible:ring-2 disabled:opacity-50",
+        className,
+      )}
     />
   );
 }

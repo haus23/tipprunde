@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 
-import { deleteSession, getSession } from "#db/dal/sessions.ts";
 import { getCookieSession } from "#/app/(auth)/session.server.ts";
+import { deleteSession, getSession } from "#db/dal/sessions.ts";
 
 export const fetchUser = createServerFn({ method: "GET" }).handler(async () => {
   const cookieSession = await getCookieSession();

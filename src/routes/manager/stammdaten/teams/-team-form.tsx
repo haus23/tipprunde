@@ -1,16 +1,16 @@
 "use client";
 
-import { useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "@tanstack/react-router";
+import { useContext, useEffect, useRef, useState } from "react";
 import { OverlayTriggerStateContext } from "react-aria-components";
 
-import type { Team } from "#db/dal/teams.ts";
 import { createTeamFn, updateTeamFn } from "#/app/manager/teams.ts";
 import { Button } from "#/components/(ui)/button.tsx";
 import { Form } from "#/components/(ui)/form.tsx";
 import { FieldError, Input, Label, TextField } from "#/components/(ui)/text-field.tsx";
-import { slugify } from "#/utils/slugify.ts";
 import { useServerAction } from "#/utils/hooks/server-action.ts";
+import { slugify } from "#/utils/slugify.ts";
+import type { Team } from "#db/dal/teams.ts";
 
 interface Props {
   team?: Team;

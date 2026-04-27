@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
-import { createMatch, getMatches, updateMatch } from "#db/dal/matches.ts";
 import { managerMiddleware } from "#/app/(auth)/guards.ts";
+import { createMatch, getMatches, updateMatch } from "#db/dal/matches.ts";
 
 const matchSchema = v.object({
   roundId: v.number(),

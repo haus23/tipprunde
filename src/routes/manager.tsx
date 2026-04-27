@@ -1,9 +1,9 @@
 import { createFileRoute, Outlet, useMatches } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import { createServerFn } from "@tanstack/react-start";
 import { CompositeComponent, createCompositeComponent } from "@tanstack/react-start/rsc";
 import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
 import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 
 import { requireManager } from "#/app/(auth)/guards.ts";
 import { fetchChampionshipsFn } from "#/app/manager/championships.ts";
@@ -11,7 +11,12 @@ import { getManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
 import { ColorSchemeSwitch } from "#/components/color-scheme-switch.tsx";
 import { ChampionshipSwitcher } from "#/components/manager/championship-switcher.tsx";
 import { ShellProvider, useShell } from "#/components/manager/shell-provider.tsx";
-import { MobileNav, Sidebar, SIDEBAR_WIDTH, SIDEBAR_WIDTH_COLLAPSED } from "#/components/manager/sidebar.tsx";
+import {
+  MobileNav,
+  Sidebar,
+  SIDEBAR_WIDTH,
+  SIDEBAR_WIDTH_COLLAPSED,
+} from "#/components/manager/sidebar.tsx";
 import { getChampionship, getLatestChampionship } from "#db/dal/championships.ts";
 
 const transition = { type: "spring", bounce: 0, duration: 0.3 } as const;
@@ -127,7 +132,7 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
           </div>
 
           {pageTitle && (
-            <span className="absolute left-1/2 -translate-x-1/2 hidden text-sm font-medium md:block">
+            <span className="absolute left-1/2 hidden -translate-x-1/2 text-sm font-medium md:block">
               {pageTitle}
             </span>
           )}
@@ -136,7 +141,7 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
         </motion.header>
 
         <main className="flex-1 pt-14">
-          <div className="px-2 py-4 xs:px-4 xs:py-6 sm:p-8">{children}</div>
+          <div className="xs:px-4 xs:py-6 px-2 py-4 sm:p-8">{children}</div>
         </main>
       </motion.div>
     </div>

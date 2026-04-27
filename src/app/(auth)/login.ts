@@ -47,7 +47,9 @@ export const requestCode = createServerFn({ method: "POST" })
     } catch {
       return {
         success: false as const,
-        errors: { email: ["E-Mail konnte nicht gesendet werden. Bitte versuche es erneut."] } satisfies FieldErrors,
+        errors: {
+          email: ["E-Mail konnte nicht gesendet werden. Bitte versuche es erneut."],
+        } satisfies FieldErrors,
         values: { email },
       };
     }
@@ -89,7 +91,10 @@ export const verifyCode = createServerFn({ method: "POST" })
 
     if (result === "expired") {
       return {
-        errors: { email: ["Der Code ist abgelaufen. Bitte fordere einen neuen an."], code: [] } satisfies FieldErrors,
+        errors: {
+          email: ["Der Code ist abgelaufen. Bitte fordere einen neuen an."],
+          code: [],
+        } satisfies FieldErrors,
         values,
         fatal: true as const,
       };
@@ -97,7 +102,10 @@ export const verifyCode = createServerFn({ method: "POST" })
 
     if (result === "max_attempts") {
       return {
-        errors: { email: ["Zu viele Fehlversuche. Bitte fordere einen neuen Code an."], code: [] } satisfies FieldErrors,
+        errors: {
+          email: ["Zu viele Fehlversuche. Bitte fordere einen neuen Code an."],
+          code: [],
+        } satisfies FieldErrors,
         values,
         fatal: true as const,
       };
@@ -105,7 +113,10 @@ export const verifyCode = createServerFn({ method: "POST" })
 
     if (result === "invalid") {
       return {
-        errors: { email: [], code: ["Falscher Code. Bitte versuche es erneut."] } satisfies FieldErrors,
+        errors: {
+          email: [],
+          code: ["Falscher Code. Bitte versuche es erneut."],
+        } satisfies FieldErrors,
         values,
       };
     }

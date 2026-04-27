@@ -94,7 +94,7 @@ export function DataTable<TData, TValue>({
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className={`text-subtle px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase first:pl-2 first:xs:pl-4 last:pr-2 last:xs:pr-4 ${header.column.columnDef.meta?.className ?? ""}`}
+                    className={`text-subtle first:xs:pl-4 last:xs:pr-4 px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase first:pl-2 last:pr-2 ${header.column.columnDef.meta?.className ?? ""}`}
                   >
                     {header.isPlaceholder
                       ? null
@@ -111,7 +111,7 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      className={`px-2 py-2 first:pl-2 first:xs:pl-4 last:pr-2 last:xs:pr-4 ${cell.column.columnDef.meta?.className ?? ""}`}
+                      className={`first:xs:pl-4 last:xs:pr-4 px-2 py-2 first:pl-2 last:pr-2 ${cell.column.columnDef.meta?.className ?? ""}`}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
