@@ -9,6 +9,8 @@ import {
   type LabelProps,
   SearchField as RACSearchField,
   type SearchFieldProps,
+  TextArea as RACTextArea,
+  type TextAreaProps,
   TextField as RACTextField,
   type TextFieldProps,
 } from "react-aria-components";
@@ -35,6 +37,15 @@ export function Input({ className, ...props }: InputComponentProps) {
         "border-input data-hovered:border-input-hovered focus-visible:ring-focus data-invalid:border-error rounded-md border bg-transparent px-3 py-2 text-sm outline-none transition-colors duration-150 ease-out focus-visible:ring-2 disabled:opacity-50",
         className,
       )}
+    />
+  );
+}
+
+export function TextArea(props: TextAreaProps) {
+  return (
+    <RACTextArea
+      {...props}
+      className="border-input data-hovered:border-input-hovered focus-visible:ring-focus data-invalid:border-error rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 disabled:opacity-50"
     />
   );
 }
