@@ -33,7 +33,6 @@ const MATCH_RULES: { value: string; label: string }[] = [
 
 const ROUND_RULES: { value: string; label: string }[] = [
   { value: "keine-besonderheiten", label: "Keine Besonderheiten" },
-  { value: "alles-verdoppelt", label: "Alles verdoppelt" },
 ];
 
 const EXTRA_QUESTION_RULES: { value: string; label: string }[] = [
