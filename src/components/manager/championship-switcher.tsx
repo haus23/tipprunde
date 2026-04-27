@@ -1,6 +1,6 @@
 "use client";
 
-import { useNavigate, useRouter } from "@tanstack/react-router";
+import { useRouter, useRouterState } from "@tanstack/react-router";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
@@ -22,12 +22,17 @@ interface Props {
 export function ChampionshipSwitcher({ current, championships }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const navigate = useNavigate();
+  const pathname = useRouterState({ select: (s) => s.resolvedLocation?.pathname ?? "" });
 
   async function handleSelect(championship: Championship) {
     setIsOpen(false);
-    await navigate({ to: "/manager/{-$slug}", params: { slug: championship.slug } });
-    router.invalidate();
+    const slugBase = current.slug ? `/manager/${current.slug}` : null;
+    const to =
+      slugBase && pathname.startsWith(slugBase)
+        ? pathname.replace(slugBase, `/manager/${championship.slug}`)
+        : `/manager/${championship.slug}`;
+    await router.navigate({ to });
+    await router.invalidate();
   }
 
   if (championships.length <= 1) {
