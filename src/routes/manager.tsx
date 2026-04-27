@@ -1,12 +1,13 @@
 import { createFileRoute, Outlet, redirect, useMatches } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { CompositeComponent, createCompositeComponent } from "@tanstack/react-start/rsc";
 import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 import { requireManager } from "#/app/(auth)/guards.ts";
-import { fetchChampionshipsFn } from "#/app/manager/championships.ts";
+import {
+  fetchChampionshipsFn,
+  fetchCurrentChampionshipFn,
+} from "#/app/manager/championships.ts";
 import { getManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
 import { ColorSchemeSwitch } from "#/components/color-scheme-switch.tsx";
 import { ChampionshipSwitcher } from "#/components/manager/championship-switcher.tsx";
@@ -17,31 +18,14 @@ import {
   SIDEBAR_WIDTH,
   SIDEBAR_WIDTH_COLLAPSED,
 } from "#/components/manager/sidebar.tsx";
-import { getChampionship, getLatestChampionship } from "#db/dal/championships.ts";
 
 const transition = { type: "spring", bounce: 0, duration: 0.3 } as const;
 
 type ShellProps = {
   slug: string | undefined;
-  currentChampionship: Awaited<ReturnType<typeof getChampionship>>;
+  currentChampionship: Awaited<ReturnType<typeof fetchCurrentChampionshipFn>>;
   children?: React.ReactNode;
 };
-
-const getServerShell = createServerFn()
-  .inputValidator((data: { slug: string | undefined }) => data)
-  .handler(async ({ data: { slug } }) => {
-    const championship = slug ? await getChampionship(slug) : await getLatestChampionship();
-
-    const src = await createCompositeComponent(
-      (props: { ServerShell: React.ComponentType<ShellProps>; children?: React.ReactNode }) => (
-        <props.ServerShell currentChampionship={championship} slug={slug}>
-          {props.children}
-        </props.ServerShell>
-      ),
-    );
-
-    return { src };
-  });
 
 type RouteContext = {
   slug: string | undefined;
@@ -71,8 +55,8 @@ export const Route = createFileRoute("/manager")({
     return { championships, slug, shellSettings };
   },
   loader: async ({ context: { slug, shellSettings } }) => {
-    const serverShell = await getServerShell({ data: { slug } });
-    return { serverShell, shellSettings };
+    const currentChampionship = await fetchCurrentChampionshipFn({ data: slug });
+    return { currentChampionship, shellSettings };
   },
   component: RouteComponent,
 });
@@ -114,7 +98,6 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
           className="border-layout bg-base fixed top-0 right-0 z-10 flex h-14 items-center justify-between border-b px-4"
         >
           <div className="flex items-center gap-3">
-            {/* Mobile: open drawer */}
             <button
               onClick={toggleMobileMenu}
               className="hover:bg-subtle text-subtle focus-visible:ring-focus rounded-md p-1 outline-none focus-visible:ring-2 md:hidden"
@@ -122,7 +105,6 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
             >
               <PanelLeftOpenIcon size={16} />
             </button>
-            {/* Desktop: collapse toggle */}
             <button
               onClick={toggleSidebar}
               className="hover:bg-subtle text-subtle focus-visible:ring-focus hidden rounded-md p-1 outline-none focus-visible:ring-2 md:block"
@@ -157,12 +139,13 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
 }
 
 function RouteComponent() {
-  const { serverShell, shellSettings } = Route.useLoaderData();
+  const { slug } = Route.useRouteContext();
+  const { currentChampionship, shellSettings } = Route.useLoaderData();
   return (
     <ShellProvider initialSidebarCollapsed={shellSettings.sidebarCollapsed}>
-      <CompositeComponent src={serverShell.src} ServerShell={ManagerShell}>
+      <ManagerShell currentChampionship={currentChampionship} slug={slug}>
         <Outlet />
-      </CompositeComponent>
+      </ManagerShell>
     </ShellProvider>
   );
 }
