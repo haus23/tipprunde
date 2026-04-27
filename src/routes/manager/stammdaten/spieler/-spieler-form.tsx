@@ -73,7 +73,7 @@ export function SpielerForm({ spieler }: Props) {
         }}
         className="flex flex-col gap-1"
       >
-        <Label>Kennung</Label>
+        <Label>Kennung (eindeutig)</Label>
         <Input />
         <FieldError>Pflichtfeld.</FieldError>
       </TextField>

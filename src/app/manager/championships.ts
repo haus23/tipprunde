@@ -49,6 +49,29 @@ export const createChampionshipFn = createServerFn({ method: "POST" })
     }
   });
 
+const updateChampionshipDetailsSchema = v.object({
+  id: v.pipe(v.string(), v.toNumber()),
+  name: v.string(),
+  slug: v.string(),
+  nr: v.pipe(v.string(), v.toNumber()),
+  rulesetId: v.string(),
+});
+
+export type ChampionshipDetailsFormState = { success: true } | { error: string } | null;
+
+export const updateChampionshipDetailsFn = createServerFn({ method: "POST" })
+  .middleware([managerMiddleware])
+  .inputValidator(validateForm(updateChampionshipDetailsSchema))
+  .handler(async ({ data }): Promise<ChampionshipDetailsFormState> => {
+    if (!data.success) return { error: "Ungültige Eingabe." };
+    try {
+      await updateChampionship(data.output);
+      return { success: true };
+    } catch {
+      return { error: "Turnier konnte nicht gespeichert werden." };
+    }
+  });
+
 export const updateChampionshipFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
   .inputValidator(updateChampionshipSchema)

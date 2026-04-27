@@ -17,22 +17,37 @@ interface Props {
 }
 
 export function TurniereTable({ turniere, regelwerke }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editTurnier, setEditTurnier] = useState<Championship | null>(null);
 
   const nextNr = (turniere[0]?.nr ?? 0) + 1;
-  const columns = useMemo(() => createTurnierColumns(), []);
+  const columns = useMemo(() => createTurnierColumns(setEditTurnier), []);
 
   return (
     <>
       <DataTable
         columns={columns}
         data={turniere}
-        toolbar={<Button onPress={() => setIsOpen(true)}>Neu anlegen</Button>}
+        toolbar={<Button onPress={() => setIsCreateOpen(true)}>Neu anlegen</Button>}
       />
 
-      <Dialog isOpen={isOpen} onOpenChange={setIsOpen} title="Neues Turnier anlegen">
-        <TurnierForm key={isOpen ? "open" : "closed"} regelwerke={regelwerke} nextNr={nextNr} />
+      <Dialog isOpen={isCreateOpen} onOpenChange={setIsCreateOpen} title="Neues Turnier anlegen">
+        <TurnierForm
+          key={isCreateOpen ? "open" : "closed"}
+          regelwerke={regelwerke}
+          nextNr={nextNr}
+        />
       </Dialog>
+
+      {editTurnier && (
+        <Dialog
+          isOpen
+          onOpenChange={(open) => !open && setEditTurnier(null)}
+          title="Turnier bearbeiten"
+        >
+          <TurnierForm key={editTurnier.id} regelwerke={regelwerke} turnier={editTurnier} />
+        </Dialog>
+      )}
     </>
   );
 }
