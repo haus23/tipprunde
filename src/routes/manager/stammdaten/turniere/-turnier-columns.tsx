@@ -12,8 +12,10 @@ export function createTurnierColumns(onEdit: (t: Championship) => void): ColumnD
       meta: { className: "whitespace-nowrap" },
     },
     {
-      accessorKey: "name",
+      id: "name",
       header: "Name",
+      accessorFn: (row) => `${row.name} ${row.slug}`,
+      cell: ({ row }) => row.original.name,
       meta: { className: "w-full" },
     },
     {
