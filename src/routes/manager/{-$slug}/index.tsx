@@ -63,7 +63,7 @@ function TurnierPage() {
             >
               <div>
                 <div className="text-sm font-medium">Zusatzpunkte veröffentlicht</div>
-                <div className="text-subtle text-xs">Zusatzfragen sind freigeschaltet</div>
+                <div className="text-subtle text-xs">Punkte sind berücksichtigt</div>
               </div>
             </Switch>
           )}
@@ -75,9 +75,7 @@ function TurnierPage() {
           >
             <div>
               <div className="text-sm font-medium">Abgeschlossen</div>
-              <div className="text-subtle text-xs">
-                Turnier ist beendet, keine Tipps mehr möglich
-              </div>
+              <div className="text-subtle text-xs">Turnier ist beendet</div>
             </div>
           </Switch>
         </div>
