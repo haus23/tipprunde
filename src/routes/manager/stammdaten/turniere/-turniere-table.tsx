@@ -19,6 +19,7 @@ interface Props {
 export function TurniereTable({ turniere, regelwerke }: Props) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editTurnier, setEditTurnier] = useState<Championship | null>(null);
+  const [filter, setFilter] = useState("");
 
   const nextNr = (turniere[0]?.nr ?? 0) + 1;
   const columns = useMemo(() => createTurnierColumns(setEditTurnier), []);
@@ -28,6 +29,10 @@ export function TurniereTable({ turniere, regelwerke }: Props) {
       <DataTable
         columns={columns}
         data={turniere}
+        withFilter
+        filterPlaceholder="Turnier suchen …"
+        filter={filter}
+        onFilterChange={setFilter}
         toolbar={<Button onPress={() => setIsCreateOpen(true)}>Neu anlegen</Button>}
       />
 
