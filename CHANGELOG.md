@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.8.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0...v0.8.0-pre.0)
+
+### 🚀 Enhancements
+
+- **manager:** Add Teams stammdaten page with mobile-first layout ([78aca56](https://github.com/haus23/tipprunde/commit/78aca56))
+- **manager:** Add Toast component with success styling and filter integration ([19bb659](https://github.com/haus23/tipprunde/commit/19bb659))
+- **ui:** Add dialog animations and fix tooltip rendering ([5b3a530](https://github.com/haus23/tipprunde/commit/5b3a530))
+- **manager:** Add Ligen stammdaten page ([7b64696](https://github.com/haus23/tipprunde/commit/7b64696))
+
+### 🩹 Fixes
+
+- **manager:** Hide header title on mobile, show h1 in page content instead ([b595662](https://github.com/haus23/tipprunde/commit/b595662))
+- **ui:** Improve button press feedback and hover states per Emil's guidelines ([978f6d2](https://github.com/haus23/tipprunde/commit/978f6d2))
+
+### 💅 Refactors
+
+- Remove TanStack Query, use router.invalidate() for data refresh ([bfc370a](https://github.com/haus23/tipprunde/commit/bfc370a))
+- **ui:** Remove pagination from DataTable ([640d274](https://github.com/haus23/tipprunde/commit/640d274))
+
 ## v0.7.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0-pre.4...v0.7.0)
