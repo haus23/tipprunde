@@ -61,9 +61,9 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
                 >
                   <TooltipTrigger delay={500}>
                     <Focusable>
-                      <span className="cursor-default underline decoration-dotted underline-offset-2">
+                      <button tabIndex={-1} className="cursor-default uppercase tracking-wide underline decoration-dotted underline-offset-2 outline-none">
                         {label}
-                      </span>
+                      </button>
                     </Focusable>
                     <Tooltip placement="top" offset={6} className={tooltipClass}>
                       {
