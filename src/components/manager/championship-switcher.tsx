@@ -117,7 +117,7 @@ export function ChampionshipSwitcher({ current, championships }: Props) {
                     {(c) => (
                       <MenuItem
                         id={c.slug}
-                        textValue={c.name}
+                        textValue={`${c.name} ${c.slug}`}
                         className="data-focused:bg-subtle flex cursor-default items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-150 outline-none"
                       >
                         <span className="flex-1">{c.name}</span>
