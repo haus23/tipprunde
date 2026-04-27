@@ -115,7 +115,7 @@ export function RegelwerkForm({ regelwerk }: Props) {
       <Select
         label="Tipp-Regel"
         name="tipRuleId"
-        defaultSelectedKey={regelwerk?.tipRuleId ?? "drei-zwei-oder-ein-punkt-joker-verdoppelt"}
+        defaultValue={regelwerk?.tipRuleId ?? "drei-zwei-oder-ein-punkt-joker-verdoppelt"}
       >
         {TIP_RULES.map(({ value, label }) => (
           <SelectItem key={value} id={value}>
@@ -127,7 +127,7 @@ export function RegelwerkForm({ regelwerk }: Props) {
       <Select
         label="Joker-Regel"
         name="jokerRuleId"
-        defaultSelectedKey={regelwerk?.jokerRuleId ?? "einmal-pro-runde"}
+        defaultValue={regelwerk?.jokerRuleId ?? "einmal-pro-runde"}
       >
         {JOKER_RULES.map(({ value, label }) => (
           <SelectItem key={value} id={value}>
@@ -139,7 +139,7 @@ export function RegelwerkForm({ regelwerk }: Props) {
       <Select
         label="Spiel-Regel"
         name="matchRuleId"
-        defaultSelectedKey={regelwerk?.matchRuleId ?? "keine-besonderheiten"}
+        defaultValue={regelwerk?.matchRuleId ?? "keine-besonderheiten"}
       >
         {MATCH_RULES.map(({ value, label }) => (
           <SelectItem key={value} id={value}>
@@ -151,7 +151,7 @@ export function RegelwerkForm({ regelwerk }: Props) {
       <Select
         label="Runden-Regel"
         name="roundRuleId"
-        defaultSelectedKey={regelwerk?.roundRuleId ?? "keine-besonderheiten"}
+        defaultValue={regelwerk?.roundRuleId ?? "keine-besonderheiten"}
       >
         {ROUND_RULES.map(({ value, label }) => (
           <SelectItem key={value} id={value}>
@@ -163,7 +163,7 @@ export function RegelwerkForm({ regelwerk }: Props) {
       <Select
         label="Zusatzfragen-Regel"
         name="extraQuestionRuleId"
-        defaultSelectedKey={regelwerk?.extraQuestionRuleId ?? "mit-zusatzfragen"}
+        defaultValue={regelwerk?.extraQuestionRuleId ?? "mit-zusatzfragen"}
       >
         {EXTRA_QUESTION_RULES.map(({ value, label }) => (
           <SelectItem key={value} id={value}>
