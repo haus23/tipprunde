@@ -3,11 +3,15 @@
 import { Link, useRouter } from "@tanstack/react-router";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
+import { Focusable, Tooltip, TooltipTrigger } from "react-aria-components";
 
 import { createRoundFn, fetchChampionshipRoundsFn, updateRoundFn } from "#/app/manager/rounds.ts";
 import { Button } from "#/components/(ui)/button.tsx";
 import { Switch } from "#/components/(ui)/switch.tsx";
 import type { Round } from "#db/dal/rounds.ts";
+
+const tooltipClass =
+  "rounded-sm bg-inverted px-2 py-1 text-inverted text-sm data-[entering]:animate-[tooltip-enter_120ms_ease-out_backwards] data-[exiting]:animate-[tooltip-exit_100ms_ease-in_forwards]";
 
 interface Props {
   championshipId: number;
@@ -50,15 +54,29 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
               <th className="text-subtle w-px px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide">
                 #
               </th>
-              <th className="text-subtle w-px px-4 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
-                Frei
-              </th>
-              <th className="text-subtle w-px px-4 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
-                Tipps
-              </th>
-              <th className="text-subtle w-px px-4 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
-                Fertig
-              </th>
+              {(["Frei", "Tipps", "Fertig"] as const).map((label, i) => (
+                <th
+                  key={label}
+                  className="text-subtle w-px px-4 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide"
+                >
+                  <TooltipTrigger delay={500}>
+                    <Focusable>
+                      <span className="cursor-default underline decoration-dotted underline-offset-2">
+                        {label}
+                      </span>
+                    </Focusable>
+                    <Tooltip placement="top" offset={6} className={tooltipClass}>
+                      {
+                        [
+                          "Runde mit Spielen ist veröffentlicht",
+                          "Tipps aller Spieler sind öffentlich",
+                          "Runde ist abgeschlossen und berechnet",
+                        ][i]
+                      }
+                    </Tooltip>
+                  </TooltipTrigger>
+                </th>
+              ))}
               <th />
               <th className="text-subtle w-px px-2 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
                 Spiele
@@ -101,7 +119,7 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
                     <Link
                       to="/manager/{-$slug}/spiele"
                       params={slug ? { slug } : {}}
-                      className="text-subtle hover:text-base inline-flex items-center justify-center"
+                      className="text-subtle hover:bg-subtle inline-flex rounded-md p-1.5"
                     >
                       <CalendarIcon size={16} />
                     </Link>
