@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -17,10 +17,12 @@ interface Props {
 
 export function RundenManagement({ championshipId, slug, initialRounds }: Props) {
   const [runden, setRunden] = useState(initialRounds);
+  const router = useRouter();
 
   async function handleAddRound() {
     await createRoundFn({ data: championshipId });
     setRunden(await fetchChampionshipRoundsFn({ data: championshipId }));
+    router.invalidate();
   }
 
   async function handleChange(
