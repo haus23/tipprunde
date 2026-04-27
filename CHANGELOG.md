@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.8.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.1...v0.8.0-pre.2)
+
+### 🚀 Enhancements
+
+- **ui:** Add animations and chevron rotation to Select component ([d3a6555](https://github.com/haus23/tipprunde/commit/d3a6555))
+- **manager:** Add Spieler stammdaten page ([f0f3c78](https://github.com/haus23/tipprunde/commit/f0f3c78))
+- **manager:** Add Turniere stammdaten page ([05c06df](https://github.com/haus23/tipprunde/commit/05c06df))
+- **manager:** Preserve sub-route when switching championship ([f9c1cd0](https://github.com/haus23/tipprunde/commit/f9c1cd0))
+- **manager:** Replace cmdk with RAC Autocomplete in championship switcher ([c209936](https://github.com/haus23/tipprunde/commit/c209936))
+
+### 🏡 Chore
+
+- Remove obsolete src/lib files ([2291a18](https://github.com/haus23/tipprunde/commit/2291a18))
+
 ## v0.8.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.0...v0.8.0-pre.1)
