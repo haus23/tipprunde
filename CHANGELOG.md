@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.8.0-pre.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.2...v0.8.0-pre.3)
+
+### 🚀 Enhancements
+
+- **ui:** Add RAC Switch component ([5072d20](https://github.com/haus23/tipprunde/commit/5072d20))
+- **manager:** Add Turnier status page with Switch toggles ([cc75799](https://github.com/haus23/tipprunde/commit/cc75799))
+- **manager:** Add Runden management with per-round switches ([0b0b186](https://github.com/haus23/tipprunde/commit/0b0b186))
+- **manager:** Refine Runden table layout and Switch interactions ([64662a5](https://github.com/haus23/tipprunde/commit/64662a5))
+- **manager:** Add column header tooltips and icon button for Spiele link ([92dfb0d](https://github.com/haus23/tipprunde/commit/92dfb0d))
+- **manager:** Add edit mode to Turnier form and fix Spieler slug label ([5dfc4e5](https://github.com/haus23/tipprunde/commit/5dfc4e5))
+
+### 🩹 Fixes
+
+- Update label descriptions. ([304aba2](https://github.com/haus23/tipprunde/commit/304aba2))
+- **manager:** Invalidate router cache after adding a round ([2ea2e70](https://github.com/haus23/tipprunde/commit/2ea2e70))
+- **manager:** Fix column header tooltips and remove from tab order ([27c6efc](https://github.com/haus23/tipprunde/commit/27c6efc))
+- **manager:** Remount slug routes on championship change via keyed layout ([6fde8a4](https://github.com/haus23/tipprunde/commit/6fde8a4))
+- **manager:** Persist active championship slug in cookie ([68f2a93](https://github.com/haus23/tipprunde/commit/68f2a93))
+- **manager:** Scope activeSlug redirect to /manager root only ([d622f2d](https://github.com/haus23/tipprunde/commit/d622f2d))
+
+### 💅 Refactors
+
+- **manager:** Remove RSC composite component from shell ([f851894](https://github.com/haus23/tipprunde/commit/f851894))
+
 ## v0.8.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.1...v0.8.0-pre.2)
