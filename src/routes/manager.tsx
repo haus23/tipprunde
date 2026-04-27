@@ -34,7 +34,7 @@ type RouteContext = {
 };
 
 export const Route = createFileRoute("/manager")({
-  beforeLoad: async ({ matches }): Promise<RouteContext> => {
+  beforeLoad: async ({ matches, location }): Promise<RouteContext> => {
     await requireManager();
 
     const params = matches.at(-1)?.params;
@@ -46,7 +46,7 @@ export const Route = createFileRoute("/manager")({
     ]);
 
     const { activeSlug } = shellSettings;
-    if (!urlSlug && activeSlug && activeSlug !== championships[0]?.slug) {
+    if (location.pathname === "/manager" && activeSlug && activeSlug !== championships[0]?.slug) {
       throw redirect({ to: "/manager/{-$slug}", params: { slug: activeSlug } });
     }
 
