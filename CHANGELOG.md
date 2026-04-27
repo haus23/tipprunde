@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.8.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.0...v0.8.0-pre.1)
+
+### 🚀 Enhancements
+
+- **manager:** Add Regelwerke stammdaten page ([cd18bd9](https://github.com/haus23/tipprunde/commit/cd18bd9))
+- **ui:** Add TextArea to text-field component ([4562520](https://github.com/haus23/tipprunde/commit/4562520))
+
+### 🩹 Fixes
+
+- Doubling round points is no championship feature. ([d4922a5](https://github.com/haus23/tipprunde/commit/d4922a5))
+- **manager:** Use defaultValue instead of defaultSelectedKey for RAC Select ([46259bb](https://github.com/haus23/tipprunde/commit/46259bb))
+
+### 🏡 Chore
+
+- Update dependencies. ([7a4a945](https://github.com/haus23/tipprunde/commit/7a4a945))
+
 ## v0.8.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0...v0.8.0-pre.0)
