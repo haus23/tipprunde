@@ -52,6 +52,7 @@ function TurnierPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      <h1 className="text-2xl font-medium md:hidden">Turnier</h1>
       <div className="bg-surface border-surface rounded-md border p-6">
         <h2 className="text-sm font-medium">Status</h2>
         <div className="mt-4 flex flex-col gap-4">
@@ -88,16 +89,11 @@ function TurnierPage() {
         </div>
       </div>
 
-      <div className="bg-surface border-surface rounded-md border p-6">
-        <h2 className="text-sm font-medium">Runden</h2>
-        <div className="mt-4">
-          <RundenManagement
-            championshipId={championship.id}
-            slug={championship.slug}
-            initialRounds={rounds}
-          />
-        </div>
-      </div>
+      <RundenManagement
+        championshipId={championship.id}
+        slug={championship.slug}
+        initialRounds={rounds}
+      />
     </div>
   );
 }
