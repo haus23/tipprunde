@@ -2,19 +2,26 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { fetchCurrentChampionshipFn, updateChampionshipFn } from "#/app/manager/championships.ts";
+import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
 import { Switch } from "#/components/(ui)/switch.tsx";
+
+import { RundenManagement } from "./-runden-management.tsx";
 
 export const Route = createFileRoute("/manager/{-$slug}/")({
   beforeLoad: () => ({ pageTitle: "Turnier" }),
-  loader: async ({ context: { slug } }) => fetchCurrentChampionshipFn({ data: slug }),
+  loader: async ({ context: { slug } }) => {
+    const championship = await fetchCurrentChampionshipFn({ data: slug });
+    const rounds = championship ? await fetchChampionshipRoundsFn({ data: championship.id }) : [];
+    return { championship, rounds };
+  },
   head: ({ loaderData }) => ({
-    meta: [{ title: `Turnier | ${loaderData?.name}` }],
+    meta: [{ title: `Turnier | ${loaderData?.championship?.name}` }],
   }),
   component: TurnierPage,
 });
 
 function TurnierPage() {
-  const championship = Route.useLoaderData();
+  const { championship, rounds } = Route.useLoaderData();
 
   const hasExtraQuestions = championship?.ruleset?.extraQuestionRuleId === "mit-zusatzfragen";
 
@@ -78,6 +85,17 @@ function TurnierPage() {
               <div className="text-subtle text-xs">Turnier ist beendet</div>
             </div>
           </Switch>
+        </div>
+      </div>
+
+      <div className="bg-surface border-surface rounded-md border p-6">
+        <h2 className="text-sm font-medium">Runden</h2>
+        <div className="mt-4">
+          <RundenManagement
+            championshipId={championship.id}
+            slug={championship.slug}
+            initialRounds={rounds}
+          />
         </div>
       </div>
     </div>
