@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.8.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.5...v0.8.0)
+
+### 🚀 Enhancements
+
+- **manager:** Add start wizard for empty state ([de48e4b](https://github.com/haus23/tipprunde/commit/de48e4b))
+
+### 🩹 Fixes
+
+- Optimistic championship switches and missing focus-visible styles ([d4ff7f1](https://github.com/haus23/tipprunde/commit/d4ff7f1))
+- **manager:** Optimistic championship switcher name update ([#7](https://github.com/haus23/tipprunde/pull/7))
+
 ## v0.8.0-pre.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.4...v0.8.0-pre.5)
