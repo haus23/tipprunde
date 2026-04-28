@@ -30,7 +30,7 @@ export function ComboBox({ label, placeholder, items, ...props }: Props) {
         placeholder={placeholder}
         className="border-input data-hovered:border-input-hovered focus-visible:ring-focus w-full rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 disabled:opacity-50"
       />
-      <Popover className="border-input bg-base w-[var(--trigger-width)] rounded-md border shadow-md data-[entering]:animate-[popover-enter_150ms_ease-out] data-[exiting]:animate-[popover-exit_100ms_ease-in_forwards]">
+      <Popover className="border-input bg-base w-(--trigger-width) rounded-md border shadow-md data-entering:animate-[popover-enter_150ms_ease-out] data-exiting:animate-[popover-exit_100ms_ease-in_forwards]">
         <ListBox items={items} className="max-h-60 overflow-y-auto p-1 outline-none">
           {(item) => (
             <ListBoxItem

@@ -36,7 +36,7 @@ export function Select<T extends object>({ label, children, ...props }: Props<T>
               )}
             />
           </Button>
-          <Popover className="border-input bg-base w-[var(--trigger-width)] rounded-md border shadow-md data-[entering]:animate-[popover-enter_150ms_ease-out] data-[exiting]:animate-[popover-exit_100ms_ease-in_forwards]">
+          <Popover className="border-input bg-base w-(--trigger-width) rounded-md border shadow-md data-entering:animate-[popover-enter_150ms_ease-out] data-exiting:animate-[popover-exit_100ms_ease-in_forwards]">
             <ListBox className="p-1 outline-none">{children}</ListBox>
           </Popover>
         </>

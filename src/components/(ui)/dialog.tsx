@@ -22,9 +22,9 @@ export function Dialog({ isOpen, onOpenChange, isDismissable = true, title, chil
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       isDismissable={isDismissable}
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[black]/50 p-4 backdrop-blur-xs data-[entering]:animate-[dialog-overlay-enter_150ms_ease-out] data-[exiting]:animate-[dialog-overlay-exit_150ms_ease-in_forwards]"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[black]/50 p-4 backdrop-blur-xs data-entering:animate-[dialog-overlay-enter_150ms_ease-out] data-exiting:animate-[dialog-overlay-exit_150ms_ease-in_forwards]"
     >
-      <Modal className="border-input bg-base my-auto w-full max-w-md rounded-xl border p-6 shadow-lg data-[entering]:animate-[dialog-enter_200ms_ease-out] data-[exiting]:animate-[dialog-exit_150ms_ease-in_forwards]">
+      <Modal className="border-input bg-base my-auto w-full max-w-md rounded-xl border p-6 shadow-lg data-entering:animate-[dialog-enter_200ms_ease-out] data-exiting:animate-[dialog-exit_150ms_ease-in_forwards]">
         <RACDialog className="relative outline-none">
           {({ close }) => (
             <>

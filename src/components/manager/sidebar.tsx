@@ -36,7 +36,7 @@ export const SIDEBAR_WIDTH_COLLAPSED = 56;
 const transition = { type: "spring", bounce: 0, duration: 0.3 } as const;
 
 const tooltipClass =
-  "rounded-sm bg-inverted px-2 py-1 text-inverted text-sm data-[entering]:animate-[tooltip-enter_120ms_ease-out_backwards] data-[exiting]:animate-[tooltip-exit_100ms_ease-in_forwards]";
+  "rounded-sm bg-inverted px-2 py-1 text-inverted text-sm data-entering:animate-[tooltip-enter_120ms_ease-out_backwards] data-exiting:animate-[tooltip-exit_100ms_ease-in_forwards]";
 
 interface NavItemProps extends Partial<LinkProps> {
   icon: React.ReactNode;

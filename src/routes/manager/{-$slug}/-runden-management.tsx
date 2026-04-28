@@ -11,7 +11,7 @@ import { Switch } from "#/components/(ui)/switch.tsx";
 import type { Round } from "#db/dal/rounds.ts";
 
 const tooltipClass =
-  "rounded-sm bg-inverted px-2 py-1 text-inverted text-sm data-[entering]:animate-[tooltip-enter_120ms_ease-out_backwards] data-[exiting]:animate-[tooltip-exit_100ms_ease-in_forwards]";
+  "rounded-sm bg-inverted px-2 py-1 text-inverted text-sm data-entering:animate-[tooltip-enter_120ms_ease-out_backwards] data-exiting:animate-[tooltip-exit_100ms_ease-in_forwards]";
 
 interface Props {
   championshipId: number;
