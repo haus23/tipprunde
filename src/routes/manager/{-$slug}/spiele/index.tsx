@@ -1,5 +1,4 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 import * as v from "valibot";
 
@@ -9,6 +8,8 @@ import { fetchMatchesForRoundFn } from "#/app/manager/matches.ts";
 import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
 import { fetchTeamsFn } from "#/app/manager/teams.ts";
 import type { Match } from "#db/dal/matches.ts";
+
+import { RundenNavigator } from "#/components/manager/runden-navigator.tsx";
 
 import { SpielForm } from "./-spiel-form.tsx";
 import { SpieleList } from "./-spiele-list.tsx";
@@ -68,27 +69,11 @@ function RouteComponent() {
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-medium md:hidden">Spiele</h1>
 
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => goToRound(currentIndex - 1)}
-          disabled={currentIndex === 0}
-          className="hover:bg-subtle focus-visible:ring-focus rounded-md p-1 outline-none focus-visible:ring-2 disabled:opacity-40"
-          aria-label="Vorherige Runde"
-        >
-          <ChevronLeftIcon size={16} />
-        </button>
-        <span className="text-sm font-medium">
-          Runde {currentRound.nr} von {rounds.length}
-        </span>
-        <button
-          onClick={() => goToRound(currentIndex + 1)}
-          disabled={currentIndex === rounds.length - 1}
-          className="hover:bg-subtle focus-visible:ring-focus rounded-md p-1 outline-none focus-visible:ring-2 disabled:opacity-40"
-          aria-label="Nächste Runde"
-        >
-          <ChevronRightIcon size={16} />
-        </button>
-      </div>
+      <RundenNavigator
+        rounds={rounds}
+        currentIndex={currentIndex}
+        onNavigate={goToRound}
+      />
 
       <SpielForm
         roundId={currentRound.id}

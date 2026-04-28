@@ -112,7 +112,13 @@ function NavContent({
         to="/manager/{-$slug}/spiele"
         params={slug ? { slug } : {}}
       />
-      <NavItem collapsed={collapsed} icon={<DicesIcon size={16} />} label="Tipps" />
+      <NavItem
+        collapsed={collapsed}
+        icon={<DicesIcon size={16} />}
+        label="Tipps"
+        to="/manager/{-$slug}/tipps"
+        params={slug ? { slug } : {}}
+      />
       <NavItem collapsed={collapsed} icon={<ListChecksIcon size={16} />} label="Ergebnisse" />
       <NavItem collapsed={collapsed} icon={<StarIcon size={16} />} label="Zusatzpunkte" />
 
