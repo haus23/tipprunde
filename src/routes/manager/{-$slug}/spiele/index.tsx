@@ -17,6 +17,9 @@ import { SpieleList } from "./-spiele-list.tsx";
 export const Route = createFileRoute("/manager/{-$slug}/spiele/")({
   validateSearch: v.object({ runde: v.optional(v.number()) }),
   beforeLoad: () => ({ pageTitle: "Spiele" }),
+  head: ({ loaderData }) => ({
+    meta: [{ title: `Spiele | ${loaderData?.championship?.name}` }],
+  }),
   loader: async ({ context: { slug } }) => {
     const championship = await fetchCurrentChampionshipFn({ data: slug });
     const rounds = championship ? await fetchChampionshipRoundsFn({ data: championship.id }) : [];

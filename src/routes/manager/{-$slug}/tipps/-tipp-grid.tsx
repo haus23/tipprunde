@@ -67,7 +67,7 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
             <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide">
               Spiel
             </th>
-            <th className="text-subtle w-28 px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide">
+            <th className="text-subtle w-28 px-2 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
               Tipp
             </th>
             <th className="text-subtle w-px px-2 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
@@ -89,7 +89,7 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
                 <td className="px-2 py-2">
                   {teamName(teams, match.hometeamId)} – {teamName(teams, match.awayteamId)}
                 </td>
-                <td className="px-2 py-1.5">
+                <td className="px-2 py-1.5 text-center">
                   <input
                     type="text"
                     value={tipState[match.id]?.tip ?? ""}
@@ -100,8 +100,7 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
                       }))
                     }
                     onBlur={() => handleBlur(match.id)}
-                    placeholder="z.B. 2:1"
-                    className="border-input focus-visible:ring-focus w-full rounded-md border bg-transparent px-2 py-1 text-sm outline-none focus-visible:ring-2"
+                    className="border-input focus-visible:ring-focus w-full rounded-md border bg-transparent px-2 py-1 text-center text-sm outline-none focus-visible:ring-2"
                   />
                 </td>
                 <td className="w-px px-2 py-2 text-center">

@@ -17,9 +17,12 @@ export const Route = createFileRoute("/manager/{-$slug}/tipps/")({
   validateSearch: v.object({ runde: v.optional(v.number()) }),
   loaderDeps: ({ search: { runde } }) => ({ runde }),
   beforeLoad: () => ({ pageTitle: "Tipps" }),
+  head: ({ loaderData }) => ({
+    meta: [{ title: `Tipps | ${loaderData?.championship?.name}` }],
+  }),
   loader: async ({ context: { slug }, deps: { runde } }) => {
     const championship = await fetchCurrentChampionshipFn({ data: slug });
-    if (!championship) return { rounds: [], players: [], matches: [], teams: [] };
+    if (!championship) return { championship: null, rounds: [], players: [], matches: [], teams: [] };
 
     const [rounds, players, teams] = await Promise.all([
       fetchChampionshipRoundsFn({ data: championship.id }),
@@ -34,7 +37,7 @@ export const Route = createFileRoute("/manager/{-$slug}/tipps/")({
       ? await fetchMatchesForRoundFn({ data: rounds[currentIndex].id })
       : [];
 
-    return { rounds, players, teams, matches };
+    return { championship, rounds, players, teams, matches };
   },
   component: RouteComponent,
 });
