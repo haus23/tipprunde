@@ -105,6 +105,25 @@ export const matches = sqliteTable("matches", {
   result: text("result"),
 });
 
+export const tips = sqliteTable(
+  "tips",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    matchId: integer("match_id")
+      .notNull()
+      .references(() => matches.id),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    tip: text("tip"),
+    points: integer("points"),
+    joker: integer("joker", { mode: "boolean" }),
+  },
+  (table) => ({
+    uniq: unique().on(table.matchId, table.userId),
+  }),
+);
+
 export const players = sqliteTable(
   "players",
   {
