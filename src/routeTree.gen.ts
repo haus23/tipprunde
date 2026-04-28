@@ -14,8 +14,8 @@ import { Route as FrontRouteImport } from './routes/_front'
 import { Route as FrontIndexRouteImport } from './routes/_front/index'
 import { Route as ManagerChar123SlugChar125RouteImport } from './routes/manager/{-$slug}'
 import { Route as ManagerChar123SlugChar125IndexRouteImport } from './routes/manager/{-$slug}/index'
-import { Route as ManagerChar123SlugChar125SpieleRouteImport } from './routes/manager/{-$slug}/spiele'
 import { Route as FrontauthLoginRouteImport } from './routes/_front/(auth)/login'
+import { Route as ManagerChar123SlugChar125SpieleIndexRouteImport } from './routes/manager/{-$slug}/spiele/index'
 import { Route as ManagerStammdatenTurniereIndexRouteImport } from './routes/manager/stammdaten/turniere/index'
 import { Route as ManagerStammdatenTeamsIndexRouteImport } from './routes/manager/stammdaten/teams/index'
 import { Route as ManagerStammdatenSpielerIndexRouteImport } from './routes/manager/stammdaten/spieler/index'
@@ -48,17 +48,17 @@ const ManagerChar123SlugChar125IndexRoute =
     path: '/',
     getParentRoute: () => ManagerChar123SlugChar125Route,
   } as any)
-const ManagerChar123SlugChar125SpieleRoute =
-  ManagerChar123SlugChar125SpieleRouteImport.update({
-    id: '/spiele',
-    path: '/spiele',
-    getParentRoute: () => ManagerChar123SlugChar125Route,
-  } as any)
 const FrontauthLoginRoute = FrontauthLoginRouteImport.update({
   id: '/(auth)/login',
   path: '/login',
   getParentRoute: () => FrontRoute,
 } as any)
+const ManagerChar123SlugChar125SpieleIndexRoute =
+  ManagerChar123SlugChar125SpieleIndexRouteImport.update({
+    id: '/spiele/',
+    path: '/spiele/',
+    getParentRoute: () => ManagerChar123SlugChar125Route,
+  } as any)
 const ManagerStammdatenTurniereIndexRoute =
   ManagerStammdatenTurniereIndexRouteImport.update({
     id: '/stammdaten/turniere/',
@@ -95,25 +95,25 @@ export interface FileRoutesByFullPath {
   '/manager': typeof ManagerRouteWithChildren
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125RouteWithChildren
   '/login': typeof FrontauthLoginRoute
-  '/manager/{-$slug}/spiele': typeof ManagerChar123SlugChar125SpieleRoute
   '/manager/{-$slug}/': typeof ManagerChar123SlugChar125IndexRoute
   '/manager/stammdaten/ligen/': typeof ManagerStammdatenLigenIndexRoute
   '/manager/stammdaten/regelwerke/': typeof ManagerStammdatenRegelwerkeIndexRoute
   '/manager/stammdaten/spieler/': typeof ManagerStammdatenSpielerIndexRoute
   '/manager/stammdaten/teams/': typeof ManagerStammdatenTeamsIndexRoute
   '/manager/stammdaten/turniere/': typeof ManagerStammdatenTurniereIndexRoute
+  '/manager/{-$slug}/spiele/': typeof ManagerChar123SlugChar125SpieleIndexRoute
 }
 export interface FileRoutesByTo {
   '/manager': typeof ManagerRouteWithChildren
   '/': typeof FrontIndexRoute
   '/login': typeof FrontauthLoginRoute
-  '/manager/{-$slug}/spiele': typeof ManagerChar123SlugChar125SpieleRoute
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125IndexRoute
   '/manager/stammdaten/ligen': typeof ManagerStammdatenLigenIndexRoute
   '/manager/stammdaten/regelwerke': typeof ManagerStammdatenRegelwerkeIndexRoute
   '/manager/stammdaten/spieler': typeof ManagerStammdatenSpielerIndexRoute
   '/manager/stammdaten/teams': typeof ManagerStammdatenTeamsIndexRoute
   '/manager/stammdaten/turniere': typeof ManagerStammdatenTurniereIndexRoute
+  '/manager/{-$slug}/spiele': typeof ManagerChar123SlugChar125SpieleIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,13 +122,13 @@ export interface FileRoutesById {
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125RouteWithChildren
   '/_front/': typeof FrontIndexRoute
   '/_front/(auth)/login': typeof FrontauthLoginRoute
-  '/manager/{-$slug}/spiele': typeof ManagerChar123SlugChar125SpieleRoute
   '/manager/{-$slug}/': typeof ManagerChar123SlugChar125IndexRoute
   '/manager/stammdaten/ligen/': typeof ManagerStammdatenLigenIndexRoute
   '/manager/stammdaten/regelwerke/': typeof ManagerStammdatenRegelwerkeIndexRoute
   '/manager/stammdaten/spieler/': typeof ManagerStammdatenSpielerIndexRoute
   '/manager/stammdaten/teams/': typeof ManagerStammdatenTeamsIndexRoute
   '/manager/stammdaten/turniere/': typeof ManagerStammdatenTurniereIndexRoute
+  '/manager/{-$slug}/spiele/': typeof ManagerChar123SlugChar125SpieleIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -137,25 +137,25 @@ export interface FileRouteTypes {
     | '/manager'
     | '/manager/{-$slug}'
     | '/login'
-    | '/manager/{-$slug}/spiele'
     | '/manager/{-$slug}/'
     | '/manager/stammdaten/ligen/'
     | '/manager/stammdaten/regelwerke/'
     | '/manager/stammdaten/spieler/'
     | '/manager/stammdaten/teams/'
     | '/manager/stammdaten/turniere/'
+    | '/manager/{-$slug}/spiele/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/manager'
     | '/'
     | '/login'
-    | '/manager/{-$slug}/spiele'
     | '/manager/{-$slug}'
     | '/manager/stammdaten/ligen'
     | '/manager/stammdaten/regelwerke'
     | '/manager/stammdaten/spieler'
     | '/manager/stammdaten/teams'
     | '/manager/stammdaten/turniere'
+    | '/manager/{-$slug}/spiele'
   id:
     | '__root__'
     | '/_front'
@@ -163,13 +163,13 @@ export interface FileRouteTypes {
     | '/manager/{-$slug}'
     | '/_front/'
     | '/_front/(auth)/login'
-    | '/manager/{-$slug}/spiele'
     | '/manager/{-$slug}/'
     | '/manager/stammdaten/ligen/'
     | '/manager/stammdaten/regelwerke/'
     | '/manager/stammdaten/spieler/'
     | '/manager/stammdaten/teams/'
     | '/manager/stammdaten/turniere/'
+    | '/manager/{-$slug}/spiele/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -214,19 +214,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManagerChar123SlugChar125IndexRouteImport
       parentRoute: typeof ManagerChar123SlugChar125Route
     }
-    '/manager/{-$slug}/spiele': {
-      id: '/manager/{-$slug}/spiele'
-      path: '/spiele'
-      fullPath: '/manager/{-$slug}/spiele'
-      preLoaderRoute: typeof ManagerChar123SlugChar125SpieleRouteImport
-      parentRoute: typeof ManagerChar123SlugChar125Route
-    }
     '/_front/(auth)/login': {
       id: '/_front/(auth)/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof FrontauthLoginRouteImport
       parentRoute: typeof FrontRoute
+    }
+    '/manager/{-$slug}/spiele/': {
+      id: '/manager/{-$slug}/spiele/'
+      path: '/spiele'
+      fullPath: '/manager/{-$slug}/spiele/'
+      preLoaderRoute: typeof ManagerChar123SlugChar125SpieleIndexRouteImport
+      parentRoute: typeof ManagerChar123SlugChar125Route
     }
     '/manager/stammdaten/turniere/': {
       id: '/manager/stammdaten/turniere/'
@@ -279,14 +279,15 @@ const FrontRouteChildren: FrontRouteChildren = {
 const FrontRouteWithChildren = FrontRoute._addFileChildren(FrontRouteChildren)
 
 interface ManagerChar123SlugChar125RouteChildren {
-  ManagerChar123SlugChar125SpieleRoute: typeof ManagerChar123SlugChar125SpieleRoute
   ManagerChar123SlugChar125IndexRoute: typeof ManagerChar123SlugChar125IndexRoute
+  ManagerChar123SlugChar125SpieleIndexRoute: typeof ManagerChar123SlugChar125SpieleIndexRoute
 }
 
 const ManagerChar123SlugChar125RouteChildren: ManagerChar123SlugChar125RouteChildren =
   {
-    ManagerChar123SlugChar125SpieleRoute: ManagerChar123SlugChar125SpieleRoute,
     ManagerChar123SlugChar125IndexRoute: ManagerChar123SlugChar125IndexRoute,
+    ManagerChar123SlugChar125SpieleIndexRoute:
+      ManagerChar123SlugChar125SpieleIndexRoute,
   }
 
 const ManagerChar123SlugChar125RouteWithChildren =

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/manager/{-$slug}/spiele")({
+export const Route = createFileRoute("/manager/{-$slug}/spiele/")({
   beforeLoad: () => ({ pageTitle: "Spiele" }),
   component: RouteComponent,
 });
