@@ -21,7 +21,7 @@ const ROLES: { value: User["role"]; label: string }[] = [
 
 interface Props {
   spieler?: User;
-  onSuccess?: () => void;
+  onSuccess?: (name: string) => void;
 }
 
 export function SpielerForm({ spieler, onSuccess }: Props) {
@@ -40,7 +40,7 @@ export function SpielerForm({ spieler, onSuccess }: Props) {
       successHandled.current = true;
       router.invalidate();
       dialog?.close();
-      onSuccess?.();
+      onSuccess?.(name);
     }
   }, [state, dialog]);
 

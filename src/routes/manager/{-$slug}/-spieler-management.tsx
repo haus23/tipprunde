@@ -42,6 +42,7 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
     const user = allUsers.find((u) => u.id === userId);
     if (!user) return;
     setTournamentUsers((prev) => [...prev, user]);
+    setFilter("");
     await addPlayerFn({ data: { championshipId, userId } });
     router.invalidate();
   }
@@ -102,7 +103,7 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
             aria-label="Spieler im Turnier"
             items={tournamentUsers}
             dragAndDropHooks={tournamentDnD}
-            className="bg-surface border-input min-h-48 rounded-md border p-1"
+            className="bg-surface border-input max-h-80 overflow-y-auto rounded-md border p-1"
             renderEmptyState={() => (
               <p className="text-subtle p-6 text-center text-sm">
                 Spieler von rechts hierher ziehen
@@ -127,7 +128,7 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
             aria-label="Verfügbare Spieler"
             items={availableUsers}
             dragAndDropHooks={availableDnD}
-            className="bg-surface border-input min-h-48 rounded-md border p-1"
+            className="bg-surface border-input h-80 overflow-y-auto rounded-md border p-1"
             renderEmptyState={() => (
               <p className="text-subtle p-6 text-center text-sm">
                 {filter ? "Keine Treffer" : "Alle Spieler sind im Turnier"}
@@ -171,7 +172,10 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
       >
         <SpielerForm
           key={isNewSpielerOpen ? "open" : "closed"}
-          onSuccess={async () => setAllUsers(await fetchUsersFn())}
+          onSuccess={async (name) => {
+            setAllUsers(await fetchUsersFn());
+            setFilter(name);
+          }}
         />
       </Dialog>
     </div>
