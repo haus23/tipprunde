@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { fetchTipsFn, saveTipFn } from "#/app/manager/tips.ts";
+import { Checkbox } from "#/components/(ui)/checkbox.tsx";
 import type { Tip } from "#db/dal/tips.ts";
 import type { Match } from "#db/dal/matches.ts";
 import type { Team } from "#db/dal/teams.ts";
@@ -16,16 +17,18 @@ interface Props {
 
 type TipState = Record<number, { tip: string; joker: boolean }>;
 
+function teamShortName(teams: Team[], id: string | null) {
+  return teams.find((t) => t.id === id)?.shortName ?? "—";
+}
+
 function teamName(teams: Team[], id: string | null) {
   return teams.find((t) => t.id === id)?.name ?? "—";
 }
 
 export function TippGrid({ roundId, userId, matches, teams }: Props) {
   const [tipState, setTipState] = useState<TipState>({});
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     fetchTipsFn({ data: { roundId, userId } }).then((tips: Tip[]) => {
       const state: TipState = {};
       for (const m of matches) {
@@ -36,7 +39,6 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
         };
       }
       setTipState(state);
-      setLoading(false);
     });
   }, [roundId, userId]);
 
@@ -52,10 +54,6 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
     });
   }
 
-  if (loading) {
-    return <p className="text-subtle text-sm">Lade Tipps …</p>;
-  }
-
   return (
     <div className="bg-surface border-surface rounded-md border px-4 py-2">
       <table className="w-full text-sm">
@@ -67,10 +65,10 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
             <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide">
               Spiel
             </th>
-            <th className="text-subtle w-28 px-2 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
+            <th className="text-subtle w-px px-1 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
               Tipp
             </th>
-            <th className="text-subtle w-px px-2 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
+            <th className="text-subtle w-px px-1 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
               Joker
             </th>
           </tr>
@@ -87,9 +85,10 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
               <tr key={match.id} className="border-input border-b last:border-b-0">
                 <td className="w-px px-2 py-2">{match.nr}</td>
                 <td className="px-2 py-2">
-                  {teamName(teams, match.hometeamId)} – {teamName(teams, match.awayteamId)}
+                  <span className="md:hidden">{teamShortName(teams, match.hometeamId)} – {teamShortName(teams, match.awayteamId)}</span>
+                  <span className="hidden md:inline">{teamName(teams, match.hometeamId)} – {teamName(teams, match.awayteamId)}</span>
                 </td>
-                <td className="px-2 py-1.5 text-center">
+                <td className="px-1 py-1.5 text-center">
                   <input
                     type="text"
                     value={tipState[match.id]?.tip ?? ""}
@@ -100,29 +99,29 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
                       }))
                     }
                     onBlur={() => handleBlur(match.id)}
-                    className="border-input focus-visible:ring-focus w-full rounded-md border bg-transparent px-2 py-1 text-center text-sm outline-none focus-visible:ring-2"
+                    className="border-input focus-visible:ring-focus w-12 rounded-md border bg-transparent px-2 py-1 text-center text-sm outline-none focus-visible:ring-2"
                   />
                 </td>
-                <td className="w-px px-2 py-2 text-center">
-                  <input
-                    type="checkbox"
-                    checked={tipState[match.id]?.joker ?? false}
-                    onChange={(e) => {
+                <td className="w-px px-1 py-2">
+                  <div className="flex justify-center">
+                  <Checkbox
+                    isSelected={tipState[match.id]?.joker ?? false}
+                    onChange={(checked) => {
                       setTipState((prev) => ({
                         ...prev,
-                        [match.id]: { ...prev[match.id], joker: e.target.checked },
+                        [match.id]: { ...prev[match.id], joker: checked },
                       }));
                       saveTipFn({
                         data: {
                           matchId: match.id,
                           userId,
                           tip: tipState[match.id]?.tip || null,
-                          joker: e.target.checked || null,
+                          joker: checked || null,
                         },
                       });
                     }}
-                    className="accent-btn size-4 cursor-pointer"
                   />
+                  </div>
                 </td>
               </tr>
             ))
