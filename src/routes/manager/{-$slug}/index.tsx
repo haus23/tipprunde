@@ -3,25 +3,29 @@ import { useState } from "react";
 
 import { fetchCurrentChampionshipFn, updateChampionshipFn } from "#/app/manager/championships.ts";
 import { fetchPlayersFn } from "#/app/manager/players.ts";
+import { fetchRulesetsFn } from "#/app/manager/rulesets.ts";
 import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
 import { fetchUsersFn } from "#/app/manager/users.ts";
 import { Switch } from "#/components/(ui)/switch.tsx";
 
 import { RundenManagement } from "./-runden-management.tsx";
 import { SpielerManagement } from "./-spieler-management.tsx";
+import { StartWizard } from "./-start-wizard.tsx";
 
 export const Route = createFileRoute("/manager/{-$slug}/")({
   beforeLoad: () => ({ pageTitle: "Turnier" }),
   loader: async ({ context: { slug } }) => {
     const championship = await fetchCurrentChampionshipFn({ data: slug });
-    const [rounds, players, allUsers] = championship
-      ? await Promise.all([
-          fetchChampionshipRoundsFn({ data: championship.id }),
-          fetchPlayersFn({ data: championship.id }),
-          fetchUsersFn(),
-        ])
-      : [[], [], []];
-    return { championship, rounds, players, allUsers };
+    if (!championship) {
+      const rulesets = await fetchRulesetsFn();
+      return { championship, rounds: [], players: [], allUsers: [], hasRegelwerke: rulesets.length > 0 };
+    }
+    const [rounds, players, allUsers] = await Promise.all([
+      fetchChampionshipRoundsFn({ data: championship.id }),
+      fetchPlayersFn({ data: championship.id }),
+      fetchUsersFn(),
+    ]);
+    return { championship, rounds, players, allUsers, hasRegelwerke: true };
   },
   head: ({ loaderData }) => ({
     meta: [{ title: `Turnier | ${loaderData?.championship?.name}` }],
@@ -30,7 +34,7 @@ export const Route = createFileRoute("/manager/{-$slug}/")({
 });
 
 function TurnierPage() {
-  const { championship, rounds, players, allUsers } = Route.useLoaderData();
+  const { championship, rounds, players, allUsers, hasRegelwerke } = Route.useLoaderData();
 
   const hasExtraQuestions = championship?.ruleset?.extraQuestionRuleId === "mit-zusatzfragen";
 
@@ -40,7 +44,7 @@ function TurnierPage() {
   );
   const [completed, setCompleted] = useState(championship?.completed ?? false);
 
-  if (!championship) return null;
+  if (!championship) return <StartWizard hasRegelwerke={hasRegelwerke} />;
 
   async function handleChange(
     field: "published" | "extraQuestionsPublished" | "completed",
