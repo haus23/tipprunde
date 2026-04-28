@@ -104,16 +104,11 @@ function TurnierPage() {
         initialRounds={rounds}
       />
 
-      <div className="bg-surface border-surface rounded-md border p-6">
-        <h2 className="text-sm font-medium">Spieler</h2>
-        <div className="mt-4">
-          <SpielerManagement
-            championshipId={championship.id}
-            initialPlayers={players}
-            initialUsers={allUsers}
-          />
-        </div>
-      </div>
+      <SpielerManagement
+        championshipId={championship.id}
+        initialPlayers={players}
+        initialUsers={allUsers}
+      />
     </div>
   );
 }

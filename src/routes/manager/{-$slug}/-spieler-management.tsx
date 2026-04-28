@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "@tanstack/react-router";
+import { UserPlusIcon } from "lucide-react";
 import { useState } from "react";
 import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
 
@@ -88,7 +89,9 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
   });
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
+      <h2 className="text-sm font-medium">Spieler</h2>
+      <div className="bg-surface border-surface rounded-md border p-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <p className="text-sm font-medium">
@@ -119,17 +122,7 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
         </div>
 
         <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium">Alle Spieler</p>
-            <Button onPress={() => setIsNewSpielerOpen(true)}>Neuer Spieler</Button>
-          </div>
-          <input
-            type="search"
-            placeholder="Spieler suchen …"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="border-input rounded-md border px-3 py-1.5 text-sm outline-none placeholder:opacity-40"
-          />
+          <p className="text-sm font-medium">Alle Spieler</p>
           <ListBox
             aria-label="Verfügbare Spieler"
             items={availableUsers}
@@ -151,7 +144,24 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
               </ListBoxItem>
             )}
           </ListBox>
+          <div className="flex gap-2">
+            <input
+              type="search"
+              placeholder="Spieler suchen …"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="border-input min-w-0 flex-1 rounded-md border px-3 py-1.5 text-sm outline-none placeholder:opacity-40"
+            />
+            <Button
+              size="icon"
+              onPress={() => setIsNewSpielerOpen(true)}
+              aria-label="Neuen Spieler anlegen"
+            >
+              <UserPlusIcon size={16} />
+            </Button>
+          </div>
         </div>
+      </div>
       </div>
 
       <Dialog
@@ -164,6 +174,6 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
           onSuccess={async () => setAllUsers(await fetchUsersFn())}
         />
       </Dialog>
-    </>
+    </div>
   );
 }
