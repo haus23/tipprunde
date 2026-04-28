@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.8.0-pre.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.3...v0.8.0-pre.4)
+
+### 🚀 Enhancements
+
+- **stammdaten:** Add filter to Turniere table ([3654bdd](https://github.com/haus23/tipprunde/commit/3654bdd))
+- **manager:** Include slug in championship switcher filter ([6c2a075](https://github.com/haus23/tipprunde/commit/6c2a075))
+- **stammdaten:** Include slug in Turniere table filter ([3b6e6f2](https://github.com/haus23/tipprunde/commit/3b6e6f2))
+- **manager:** Add Spieler-Management to Turnier page ([d605b8d](https://github.com/haus23/tipprunde/commit/d605b8d))
+- **manager:** Add Spieler-Management to Turnier page ([74189b4](https://github.com/haus23/tipprunde/commit/74189b4))
+- **manager:** Improve Spieler-Management UX ([d47dd9e](https://github.com/haus23/tipprunde/commit/d47dd9e))
+
+### 🩹 Fixes
+
+- **manager:** Invalidate router cache after player add/remove ([64193de](https://github.com/haus23/tipprunde/commit/64193de))
+
 ## v0.8.0-pre.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.2...v0.8.0-pre.3)
