@@ -50,17 +50,17 @@ function TurnierPage() {
     field: "published" | "extraQuestionsPublished" | "completed",
     value: boolean,
   ) {
-    const updates: Record<string, boolean> = { [field]: value };
-    if (field === "completed" && value && hasExtraQuestions) {
-      updates.extraQuestionsPublished = true;
-    }
-    await updateChampionshipFn({ data: { id: championship!.id, ...updates } });
     if (field === "published") setPublished(value);
     if (field === "extraQuestionsPublished") setExtraQuestionsPublished(value);
     if (field === "completed") {
       setCompleted(value);
       if (value && hasExtraQuestions) setExtraQuestionsPublished(true);
     }
+    const updates: Record<string, boolean> = { [field]: value };
+    if (field === "completed" && value && hasExtraQuestions) {
+      updates.extraQuestionsPublished = true;
+    }
+    await updateChampionshipFn({ data: { id: championship!.id, ...updates } });
   }
 
   return (

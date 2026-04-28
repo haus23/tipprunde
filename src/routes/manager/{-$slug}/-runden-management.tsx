@@ -120,7 +120,7 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
                       to="/manager/{-$slug}/spiele"
                       params={slug ? { slug } : {}}
                       search={{ runde: round.nr }}
-                      className="text-subtle hover:bg-subtle inline-flex rounded-md p-1.5"
+                      className="text-subtle hover:bg-subtle focus-visible:ring-focus inline-flex rounded-md p-1.5 outline-none focus-visible:ring-2"
                     >
                       <CalendarIcon size={16} />
                     </Link>

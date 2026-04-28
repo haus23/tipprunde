@@ -175,8 +175,8 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
       className="border-layout fixed inset-y-0 left-0 hidden flex-col border-r md:flex"
     >
       {/* Logo */}
-      <div className="flex h-14 shrink-0 items-center px-3">
-        <Link to="/" className="flex items-center gap-3 overflow-hidden">
+      <div className="flex h-14 shrink-0 items-center p-2">
+        <Link to="/" className="flex w-full items-center gap-2 overflow-hidden rounded-md px-2 py-1 outline-none focus-visible:ring-2 focus-visible:ring-focus">
           <span className="size-8 shrink-0">
             <Logo />
           </span>
@@ -275,8 +275,8 @@ export function MobileNav({ slug }: { slug: string | undefined }) {
           >
             <Dialog aria-label="Navigation" className="flex h-full flex-col outline-none">
               {/* Logo */}
-              <div className="flex h-14 shrink-0 items-center px-3">
-                <Link to="/" className="flex items-center gap-3">
+              <div className="flex h-14 shrink-0 items-center p-2">
+                <Link to="/" className="flex w-full items-center gap-2 rounded-md px-2 py-1 outline-none focus-visible:ring-2 focus-visible:ring-focus">
                   <span className="size-8 shrink-0">
                     <Logo />
                   </span>
