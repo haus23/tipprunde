@@ -2,17 +2,26 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { fetchCurrentChampionshipFn, updateChampionshipFn } from "#/app/manager/championships.ts";
+import { fetchPlayersFn } from "#/app/manager/players.ts";
 import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
+import { fetchUsersFn } from "#/app/manager/users.ts";
 import { Switch } from "#/components/(ui)/switch.tsx";
 
 import { RundenManagement } from "./-runden-management.tsx";
+import { SpielerManagement } from "./-spieler-management.tsx";
 
 export const Route = createFileRoute("/manager/{-$slug}/")({
   beforeLoad: () => ({ pageTitle: "Turnier" }),
   loader: async ({ context: { slug } }) => {
     const championship = await fetchCurrentChampionshipFn({ data: slug });
-    const rounds = championship ? await fetchChampionshipRoundsFn({ data: championship.id }) : [];
-    return { championship, rounds };
+    const [rounds, players, allUsers] = championship
+      ? await Promise.all([
+          fetchChampionshipRoundsFn({ data: championship.id }),
+          fetchPlayersFn({ data: championship.id }),
+          fetchUsersFn(),
+        ])
+      : [[], [], []];
+    return { championship, rounds, players, allUsers };
   },
   head: ({ loaderData }) => ({
     meta: [{ title: `Turnier | ${loaderData?.championship?.name}` }],
@@ -21,7 +30,7 @@ export const Route = createFileRoute("/manager/{-$slug}/")({
 });
 
 function TurnierPage() {
-  const { championship, rounds } = Route.useLoaderData();
+  const { championship, rounds, players, allUsers } = Route.useLoaderData();
 
   const hasExtraQuestions = championship?.ruleset?.extraQuestionRuleId === "mit-zusatzfragen";
 
@@ -94,6 +103,17 @@ function TurnierPage() {
         slug={championship.slug}
         initialRounds={rounds}
       />
+
+      <div className="bg-surface border-surface rounded-md border p-6">
+        <h2 className="text-sm font-medium">Spieler</h2>
+        <div className="mt-4">
+          <SpielerManagement
+            championshipId={championship.id}
+            initialPlayers={players}
+            initialUsers={allUsers}
+          />
+        </div>
+      </div>
     </div>
   );
 }

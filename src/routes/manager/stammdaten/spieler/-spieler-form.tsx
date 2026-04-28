@@ -21,9 +21,10 @@ const ROLES: { value: User["role"]; label: string }[] = [
 
 interface Props {
   spieler?: User;
+  onSuccess?: () => void;
 }
 
-export function SpielerForm({ spieler }: Props) {
+export function SpielerForm({ spieler, onSuccess }: Props) {
   const serverAction = spieler ? updateUserFn : createUserFn;
   const [state, formAction, pending] = useServerAction(serverAction);
   const router = useRouter();
@@ -39,6 +40,7 @@ export function SpielerForm({ spieler }: Props) {
       successHandled.current = true;
       router.invalidate();
       dialog?.close();
+      onSuccess?.();
     }
   }, [state, dialog]);
 
