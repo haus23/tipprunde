@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.8.0-pre.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.4...v0.8.0-pre.5)
+
+### 🚀 Enhancements
+
+- **ui:** Add ComboBox component ([18fdc95](https://github.com/haus23/tipprunde/commit/18fdc95))
+- **spiele:** Add round navigator with search param support ([376db36](https://github.com/haus23/tipprunde/commit/376db36))
+- **spiele:** Add match form and list with round navigator ([2c9901a](https://github.com/haus23/tipprunde/commit/2c9901a))
+
+### 🩹 Fixes
+
+- **spiele:** Pre-fill date from last match and use current ComboBox API ([738f2ae](https://github.com/haus23/tipprunde/commit/738f2ae))
+
+### 💅 Refactors
+
+- **manager:** Convert spiele route to directory structure ([0141fb3](https://github.com/haus23/tipprunde/commit/0141fb3))
+- **ui:** Use Tailwind v4 shorthand syntax ([48d1255](https://github.com/haus23/tipprunde/commit/48d1255))
+
 ## v0.8.0-pre.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.3...v0.8.0-pre.4)
