@@ -3,7 +3,7 @@
 import { useRouter, useRouterState } from "@tanstack/react-router";
 import { CheckIcon, ChevronsUpDownIcon, SearchIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { updateManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
 import {
@@ -35,12 +35,22 @@ interface Props {
 
 export function ChampionshipSwitcher({ current, championships }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [pendingSlug, setPendingSlug] = useState<string | null>(null);
   const router = useRouter();
   const pathname = useRouterState({ select: (s) => s.resolvedLocation?.pathname ?? "" });
   const { contains } = useFilter({ sensitivity: "base" });
 
+  const displayName = pendingSlug
+    ? (championships.find((c) => c.slug === pendingSlug)?.name ?? current.name)
+    : current.name;
+
+  useEffect(() => {
+    setPendingSlug(null);
+  }, [current.name]);
+
   async function handleSelect(slug: string) {
     setIsOpen(false);
+    setPendingSlug(slug);
     const isLatest = slug === championships[0].slug;
 
     if (isLatest) {
@@ -67,7 +77,7 @@ export function ChampionshipSwitcher({ current, championships }: Props) {
         onPress={() => setIsOpen(true)}
         className="hover:bg-subtle focus-visible:ring-focus flex items-center gap-2 rounded-md px-2 py-1 text-sm outline-none focus-visible:ring-2"
       >
-        <span className="truncate">{current.name}</span>
+        <span className="truncate">{displayName}</span>
         <ChevronsUpDownIcon size={14} className="text-subtle shrink-0" />
       </Button>
 
