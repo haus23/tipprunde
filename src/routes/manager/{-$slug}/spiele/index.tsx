@@ -43,6 +43,8 @@ function RouteComponent() {
   const [matches, setMatches] = useState<Match[][]>(matchesByRound);
   const [editMatch, setEditMatch] = useState<Match | null>(null);
 
+  const defaultDate = matches.flat().findLast((m) => m.date)?.date ?? undefined;
+
   function goToRound(index: number) {
     navigate({ search: { runde: rounds[index].nr }, replace: true });
     setEditMatch(null);
@@ -91,6 +93,7 @@ function RouteComponent() {
       <SpielForm
         roundId={currentRound.id}
         editMatch={editMatch}
+        defaultDate={defaultDate}
         leagues={leagues}
         teams={teams}
         onSaved={handleSaved}
