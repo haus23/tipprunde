@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
 
@@ -20,6 +21,7 @@ interface Props {
 const DRAG_TYPE = "application/x-player-id";
 
 export function SpielerManagement({ championshipId, initialPlayers, initialUsers }: Props) {
+  const router = useRouter();
   const [isNewSpielerOpen, setIsNewSpielerOpen] = useState(false);
   const [filter, setFilter] = useState("");
 
@@ -40,11 +42,13 @@ export function SpielerManagement({ championshipId, initialPlayers, initialUsers
     if (!user) return;
     setTournamentUsers((prev) => [...prev, user]);
     await addPlayerFn({ data: { championshipId, userId } });
+    router.invalidate();
   }
 
   async function handleRemove(userId: number) {
     setTournamentUsers((prev) => prev.filter((u) => u.id !== userId));
     await removePlayerFn({ data: { championshipId, userId } });
+    router.invalidate();
   }
 
   async function extractUserIds(
