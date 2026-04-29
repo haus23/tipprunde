@@ -1,6 +1,8 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { and, count, eq } from "drizzle-orm";
 
+import type { TipRuleId } from "#/domain/rules.ts";
+import { scoreTip } from "#/domain/scoring.ts";
 import { db } from "#db";
 
 import { matches, rounds, tips } from "../schema/tables.ts";
@@ -47,3 +49,26 @@ export const upsertTip = createServerOnlyFn(
       });
   },
 );
+
+export const scoreMatchTips = createServerOnlyFn(async (matchId: number) => {
+  const match = await db.query.matches.findFirst({
+    where: { id: matchId },
+    with: { round: { with: { championship: { with: { ruleset: true } } } } },
+  });
+  if (!match?.round?.championship?.ruleset) return;
+
+  const tipRuleId = match.round.championship.ruleset.tipRuleId as TipRuleId;
+  const result = match.result;
+
+  const matchTips = await db.query.tips.findMany({ where: { matchId } });
+
+  await Promise.all(
+    matchTips.map((tip) => {
+      const points = result ? scoreTip(result, tip.tip, tip.joker ?? false, tipRuleId) : null;
+      return db
+        .update(tips)
+        .set({ points })
+        .where(and(eq(tips.matchId, matchId), eq(tips.userId, tip.userId)));
+    }),
+  );
+});

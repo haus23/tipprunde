@@ -3,6 +3,7 @@ import * as v from "valibot";
 
 import { managerMiddleware } from "#/app/(auth)/guards.ts";
 import { createMatch, getMatches, updateMatch } from "#db/dal/matches.ts";
+import { scoreMatchTips } from "#db/dal/tips.ts";
 
 const matchSchema = v.object({
   roundId: v.number(),
@@ -35,4 +36,5 @@ export const updateMatchFn = createServerFn({ method: "POST" })
   .inputValidator(updateMatchSchema)
   .handler(async ({ data }): Promise<void> => {
     await updateMatch(data);
+    await scoreMatchTips(data.id);
   });
