@@ -30,12 +30,15 @@ function RouteComponent() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">
-        {championship.name} – {championship.completed ? "Abschlusstabelle" : "Aktuelle Tabelle"}
-      </h1>
-      <div className="bg-surface border-surface rounded-md border px-4 py-2">
-        <table className="w-full text-sm">
+    <div className="xs:px-4 mx-auto w-full max-w-5xl py-8">
+      <div className="xs:px-0 mb-6 flex flex-col gap-1 px-4">
+        <h1 className="text-2xl font-semibold tracking-tight">{championship.name}</h1>
+        <p className="text-subtle text-sm">
+          {championship.completed ? "Abschlusstabelle" : "Aktuelle Tabelle"}
+        </p>
+      </div>
+      <div className="bg-surface border-surface xs:rounded-md xs:border border-y px-4 py-2">
+        <table className="w-full text-base">
           <thead>
             <tr className="border-input border-b text-left">
               <th className="text-subtle w-px px-2 pt-2 pb-3 text-right text-xs font-medium tracking-wide uppercase">
