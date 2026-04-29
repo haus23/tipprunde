@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.9.0-pre.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0-pre.3...v0.9.0-pre.4)
+
+### 🚀 Enhancements
+
+- **domain:** Add scoreTip with unit tests ([e6aba45](https://github.com/haus23/tipprunde/commit/e6aba45))
+- **scoring:** Score tips when match result is saved ([de48ecb](https://github.com/haus23/tipprunde/commit/de48ecb))
+- **domain:** Add computeRanking with standard competition ranking ([90936db](https://github.com/haus23/tipprunde/commit/90936db))
+
+### 💅 Refactors
+
+- **domain:** Consolidate rule ID types into domain/rules.ts ([51f5fab](https://github.com/haus23/tipprunde/commit/51f5fab))
+- **scoring:** Move orchestration from DAL into server action ([6697107](https://github.com/haus23/tipprunde/commit/6697107))
+- **players:** Drop nr column ([f66cb92](https://github.com/haus23/tipprunde/commit/f66cb92))
+
+### 🏡 Chore
+
+- Migrate toolchain to vite+ ([cffd176](https://github.com/haus23/tipprunde/commit/cffd176))
+- Add zed configuration file. ([4633cf5](https://github.com/haus23/tipprunde/commit/4633cf5))
+- Migrate toolchain to vite+ ([5d06692](https://github.com/haus23/tipprunde/commit/5d06692))
+
 ## v0.9.0-pre.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0-pre.2...v0.9.0-pre.3)
