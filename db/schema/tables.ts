@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { integer, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
+import { integer, primaryKey, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -108,7 +108,6 @@ export const matches = sqliteTable("matches", {
 export const tips = sqliteTable(
   "tips",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
     matchId: integer("match_id")
       .notNull()
       .references(() => matches.id),
@@ -120,7 +119,7 @@ export const tips = sqliteTable(
     joker: integer("joker", { mode: "boolean" }),
   },
   (table) => ({
-    uniq: unique().on(table.matchId, table.userId),
+    pk: primaryKey({ columns: [table.matchId, table.userId] }),
   }),
 );
 

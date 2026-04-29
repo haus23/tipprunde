@@ -15,7 +15,16 @@ interface Props {
   teams: Team[];
 }
 
-type TipState = Record<number, { tip: string; joker: boolean }>;
+type TipState = Record<number, { tip: string; joker: boolean; invalid?: boolean }>;
+
+const TIP_PATTERN = /^\d{1,2}:\d{1,2}$/;
+
+function normalizeTip(raw: string): string {
+  return raw
+    .replace(/\s+/g, "")
+    .replace(/[-.]/g, ":")
+    .replace(/:+/g, ":");
+}
 
 function teamShortName(teams: Team[], id: string | null) {
   return teams.find((t) => t.id === id)?.shortName ?? "—";
@@ -48,11 +57,15 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
 
   async function handleBlur(matchId: number) {
     const { tip, joker } = tipState[matchId] ?? { tip: "", joker: false };
+    const normalized = normalizeTip(tip);
+    const invalid = normalized !== "" && !TIP_PATTERN.test(normalized);
+    setTipState((prev) => ({ ...prev, [matchId]: { ...prev[matchId], tip: normalized, invalid } }));
+    if (invalid) return;
     await saveTipFn({
       data: {
         matchId,
         userId,
-        tip: tip || null,
+        tip: normalized || null,
         joker: joker || null,
       },
     });
@@ -99,11 +112,12 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
                     onChange={(e) =>
                       setTipState((prev) => ({
                         ...prev,
-                        [match.id]: { ...prev[match.id], tip: e.target.value },
+                        [match.id]: { ...prev[match.id], tip: e.target.value, invalid: false },
                       }))
                     }
                     onBlur={() => handleBlur(match.id)}
-                    className="border-input focus-visible:ring-focus w-12 rounded-md border bg-transparent px-2 py-1 text-center text-sm outline-none focus-visible:ring-2"
+                    aria-invalid={tipState[match.id]?.invalid}
+                    className="border-input focus-visible:ring-focus w-12 rounded-md border bg-transparent px-2 py-1 text-center text-sm outline-none focus-visible:ring-2 aria-invalid:border-error aria-invalid:text-error"
                   />
                 </td>
                 <td className="w-px px-1 py-2">
