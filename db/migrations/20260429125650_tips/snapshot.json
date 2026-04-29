@@ -1,9 +1,9 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "0d95ae9f-9351-4877-a1cb-159917c1d5d9",
+  "id": "c73b0f6f-fc98-478a-9bea-eef55f94f985",
   "prevIds": [
-    "909d443d-12fa-486f-9aca-60ae6c1e79af"
+    "953b3fdf-b0ba-4d17-a500-1105cc9c5eb4"
   ],
   "ddl": [
     {
@@ -855,7 +855,7 @@
         "match_id",
         "user_id"
       ],
-      "nameExplicit": true,
+      "nameExplicit": false,
       "name": "tips_pk",
       "entityType": "pks",
       "table": "tips"
@@ -955,8 +955,8 @@
         "championship_id",
         "user_id"
       ],
-      "nameExplicit": true,
-      "name": "players_championship_user_uniq",
+      "nameExplicit": false,
+      "name": "players_championship_id_user_id_unique",
       "entityType": "uniques",
       "table": "players"
     },
@@ -965,8 +965,8 @@
         "championship_id",
         "nr"
       ],
-      "nameExplicit": true,
-      "name": "rounds_championship_nr_uniq",
+      "nameExplicit": false,
+      "name": "rounds_championship_id_nr_unique",
       "entityType": "uniques",
       "table": "rounds"
     },
