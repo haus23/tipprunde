@@ -1,5 +1,30 @@
 # Changelog
 
+## v0.9.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0-pre.0...v0.9.0-pre.1)
+
+### 🚀 Enhancements
+
+- **tipps:** Add tip normalization/validation and use composite PK for tips ([549dc0c](https://github.com/haus23/tipprunde/commit/549dc0c))
+- **tipps:** Add bulk paste for tip entry ([04a3095](https://github.com/haus23/tipprunde/commit/04a3095))
+- **tipps:** Add clipboard button to paste all tips from first match ([ea6c8fe](https://github.com/haus23/tipprunde/commit/ea6c8fe))
+
+### 🩹 Fixes
+
+- **tipps:** Show empty state when no players in championship ([84f1b80](https://github.com/haus23/tipprunde/commit/84f1b80))
+- **manager:** Fix tooltip positioning in runden table header ([e665dfd](https://github.com/haus23/tipprunde/commit/e665dfd))
+
+### 💅 Refactors
+
+- **db:** Use array syntax for extraConfig and name all constraints ([ce9ae30](https://github.com/haus23/tipprunde/commit/ce9ae30))
+
+### 🏡 Chore
+
+- Provide generate migrations script. ([bbd718b](https://github.com/haus23/tipprunde/commit/bbd718b))
+- Add tips table migration. ([50fd02c](https://github.com/haus23/tipprunde/commit/50fd02c))
+- Modify tips table migration to use composite key. ([a8a9a1c](https://github.com/haus23/tipprunde/commit/a8a9a1c))
+
 ## v0.9.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0...v0.9.0-pre.0)
