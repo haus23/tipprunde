@@ -3,7 +3,7 @@
 import { Link, useRouter } from "@tanstack/react-router";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
-import { Focusable, Tooltip, TooltipTrigger } from "react-aria-components";
+import { Button as AriaButton, Tooltip, TooltipTrigger } from "react-aria-components";
 
 import { createRoundFn, fetchChampionshipRoundsFn, updateRoundFn } from "#/app/manager/rounds.ts";
 import { Button } from "#/components/(ui)/button.tsx";
@@ -51,21 +51,19 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
         <table className="w-full [border-spacing:0] text-sm">
           <thead>
             <tr className="border-input border-b text-left">
-              <th className="text-subtle w-px px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide">
+              <th className="text-subtle w-px px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
                 #
               </th>
               {(["Frei", "Tipps", "Fertig"] as const).map((label, i) => (
                 <th
                   key={label}
-                  className="text-subtle w-px px-4 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide"
+                  className="text-subtle w-px px-4 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase"
                 >
                   <TooltipTrigger delay={500}>
-                    <Focusable>
-                      <button tabIndex={-1} className="cursor-default uppercase tracking-wide underline decoration-dotted underline-offset-2 outline-none">
-                        {label}
-                      </button>
-                    </Focusable>
-                    <Tooltip placement="top" offset={6} className={tooltipClass}>
+                    <AriaButton className="cursor-default tracking-wide uppercase underline decoration-dotted underline-offset-2 outline-none">
+                      {label}
+                    </AriaButton>
+                    <Tooltip placement="bottom" offset={6} className={tooltipClass}>
                       {
                         [
                           "Runde mit Spielen ist veröffentlicht",
@@ -78,7 +76,7 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
                 </th>
               ))}
               <th />
-              <th className="text-subtle w-px px-2 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
+              <th className="text-subtle w-px px-2 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
                 Spiele
               </th>
             </tr>
