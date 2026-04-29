@@ -2,12 +2,17 @@ import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
 import { managerMiddleware } from "#/app/(auth)/guards.ts";
-import { getTipsByRoundAndUser, upsertTip } from "#db/dal/tips.ts";
+import { getJokerCount, getTipsByRoundAndUser, upsertTip } from "#db/dal/tips.ts";
 
 export const fetchTipsFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
   .inputValidator(v.object({ roundId: v.number(), userId: v.number() }))
   .handler(({ data }) => getTipsByRoundAndUser(data));
+
+export const fetchJokerCountFn = createServerFn({ method: "POST" })
+  .middleware([managerMiddleware])
+  .inputValidator(v.object({ userId: v.number(), championshipId: v.number() }))
+  .handler(({ data }) => getJokerCount(data));
 
 export const saveTipFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])

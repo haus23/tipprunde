@@ -1,8 +1,9 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
+import { and, count, eq } from "drizzle-orm";
 
 import { db } from "#db";
 
-import { tips } from "../schema/tables.ts";
+import { matches, rounds, tips } from "../schema/tables.ts";
 
 export type Tip = typeof tips.$inferSelect;
 
@@ -14,6 +15,18 @@ export const getTipsByRoundAndUser = createServerOnlyFn(
     return db.query.tips.findMany({
       where: { userId, matchId: { in: matchIds } },
     });
+  },
+);
+
+export const getJokerCount = createServerOnlyFn(
+  async ({ userId, championshipId }: { userId: number; championshipId: number }) => {
+    const result = await db
+      .select({ count: count() })
+      .from(tips)
+      .innerJoin(matches, eq(tips.matchId, matches.id))
+      .innerJoin(rounds, eq(matches.roundId, rounds.id))
+      .where(and(eq(tips.userId, userId), eq(rounds.championshipId, championshipId), eq(tips.joker, true)));
+    return result[0]?.count ?? 0;
   },
 );
 

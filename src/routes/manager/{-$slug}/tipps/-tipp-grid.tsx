@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ClipboardPasteIcon } from "lucide-react";
 
 import { fetchTipsFn, saveTipFn } from "#/app/manager/tips.ts";
+import { isJokerFieldDisabled, type JokerRuleId } from "#/app/rules.ts";
 import { Checkbox } from "#/components/(ui)/checkbox.tsx";
 import type { Match } from "#db/dal/matches.ts";
 import type { Team } from "#db/dal/teams.ts";
@@ -15,6 +16,9 @@ interface Props {
   userId: number;
   matches: Match[];
   teams: Team[];
+  jokerRuleId: JokerRuleId;
+  initialTotalJokers: number;
+  onJokerChange: (total: number) => void;
 }
 
 type TipState = Record<number, { tip: string; joker: boolean; invalid?: boolean }>;
@@ -33,8 +37,9 @@ function teamName(teams: Team[], id: string | null) {
   return teams.find((t) => t.id === id)?.name ?? "—";
 }
 
-export function TippGrid({ roundId, userId, matches, teams }: Props) {
+export function TippGrid({ roundId, userId, matches, teams, jokerRuleId, initialTotalJokers, onJokerChange }: Props) {
   const [tipState, setTipState] = useState<TipState>({});
+  const jokersInOtherRounds = useRef(0);
 
   useEffect(() => {
     setTipState({});
@@ -49,6 +54,8 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
           joker: existing?.joker ?? false,
         };
       }
+      const roundJokers = Object.values(state).filter((t) => t.joker).length;
+      jokersInOtherRounds.current = initialTotalJokers - roundJokers;
       setTipState(state);
     });
     return () => {
@@ -186,11 +193,19 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
                   <div className="flex justify-center">
                     <Checkbox
                       isSelected={tipState[match.id]?.joker ?? false}
+                      isDisabled={isJokerFieldDisabled(
+                        jokerRuleId,
+                        tipState[match.id]?.joker ?? false,
+                        jokersInOtherRounds.current + Object.values(tipState).filter((t) => t.joker).length,
+                        Object.values(tipState).filter((t) => t.joker).length,
+                      )}
                       onChange={(checked) => {
                         setTipState((prev) => ({
                           ...prev,
                           [match.id]: { ...prev[match.id], joker: checked },
                         }));
+                        const roundJokers = Object.values(tipState).filter((t) => t.joker).length + (checked ? 1 : -1);
+                        onJokerChange(jokersInOtherRounds.current + roundJokers);
                         saveTipFn({
                           data: {
                             matchId: match.id,

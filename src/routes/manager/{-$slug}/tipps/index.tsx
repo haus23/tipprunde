@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as v from "valibot";
 
 import { fetchCurrentChampionshipFn } from "#/app/manager/championships.ts";
@@ -7,6 +7,8 @@ import { fetchMatchesForRoundFn } from "#/app/manager/matches.ts";
 import { fetchPlayersFn } from "#/app/manager/players.ts";
 import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
 import { fetchTeamsFn } from "#/app/manager/teams.ts";
+import { fetchJokerCountFn } from "#/app/manager/tips.ts";
+import type { JokerRuleId } from "#/app/rules.ts";
 import { Select, SelectItem } from "#/components/(ui)/select.tsx";
 import { RundenNavigator } from "#/components/manager/runden-navigator.tsx";
 import type { Player } from "#db/dal/players.ts";
@@ -38,7 +40,8 @@ export const Route = createFileRoute("/manager/{-$slug}/tipps/")({
       ? await fetchMatchesForRoundFn({ data: rounds[currentIndex].id })
       : [];
 
-    return { championship, rounds, players, teams, matches };
+    const jokerRuleId = (championship.ruleset?.jokerRuleId ?? "zwei-pro-turnier") as JokerRuleId;
+    return { championship, rounds, players, teams, matches, jokerRuleId };
   },
   head: ({ loaderData }) => ({
     meta: [{ title: `Tipps | ${loaderData?.championship?.name}` }],
@@ -47,7 +50,7 @@ export const Route = createFileRoute("/manager/{-$slug}/tipps/")({
 });
 
 function RouteComponent() {
-  const { rounds, players, teams, matches } = Route.useLoaderData();
+  const { championship, rounds, players, teams, matches, jokerRuleId } = Route.useLoaderData();
   const { runde } = Route.useSearch();
   const navigate = useNavigate({ from: "/manager/{-$slug}/tipps/" });
 
@@ -61,6 +64,13 @@ function RouteComponent() {
   const currentRound = rounds[currentIndex];
 
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(players[0] ?? null);
+  const [totalJokers, setTotalJokers] = useState(0);
+
+  useEffect(() => {
+    if (!selectedPlayer || !championship) return;
+    fetchJokerCountFn({ data: { userId: selectedPlayer.userId, championshipId: championship.id } })
+      .then(setTotalJokers);
+  }, [selectedPlayer, championship]);
 
   function goToRound(index: number) {
     navigate({ search: { runde: rounds[index].nr }, replace: true });
@@ -110,6 +120,9 @@ function RouteComponent() {
           userId={selectedPlayer.userId}
           matches={matches}
           teams={teams}
+          jokerRuleId={jokerRuleId!}
+          initialTotalJokers={totalJokers}
+          onJokerChange={setTotalJokers}
         />
       )}
     </div>
