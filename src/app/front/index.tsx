@@ -70,16 +70,9 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
         })
       : [];
 
-  const today = new Date().toISOString().slice(0, 10);
-  let anchorIndex = -1;
-  for (let i = datedMatches.length - 1; i >= 0; i--) {
-    if (datedMatches[i].date! <= today) {
-      anchorIndex = i;
-      break;
-    }
-  }
-  if (anchorIndex === -1) anchorIndex = 0;
-  const currentMatches = datedMatches.slice(Math.max(0, anchorIndex - 1), anchorIndex + 3);
+  const withResult = datedMatches.filter((m) => m.result !== null);
+  const withoutResult = datedMatches.filter((m) => m.result === null);
+  const currentMatches = [...withResult.slice(-2), ...withoutResult.slice(0, 2)];
 
   const IndexView = () => (
     <div className="mx-auto w-full max-w-5xl px-4 py-8">
