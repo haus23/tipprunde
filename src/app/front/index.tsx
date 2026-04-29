@@ -10,11 +10,11 @@ import { getPlayers } from "#db/dal/players.ts";
 import { matches, rounds, tips } from "#db/schema/tables.ts";
 
 function formatDate(date: string) {
-  return new Date(date).toLocaleDateString("de-DE", {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-  });
+  const d = new Date(date);
+  if (d.getFullYear() === new Date().getFullYear()) {
+    return d.toLocaleDateString("de-DE", { day: "numeric", month: "short" });
+  }
+  return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "2-digit" });
 }
 
 export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () => {
@@ -109,22 +109,28 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
           {currentMatches.length === 0 ? (
             <p className="text-subtle text-sm">Keine Spiele verfügbar.</p>
           ) : (
-            <ul className="flex flex-col gap-2 text-sm">
-              {currentMatches.map((match) => (
-                <li key={match.id} className="flex items-center justify-between gap-2">
-                  <span className="text-subtle shrink-0 text-xs">{formatDate(match.date!)}</span>
-                  <span className="min-w-0 truncate text-center">
-                    <span className="hidden sm:inline">
-                      {match.hometeam?.name ?? "—"} – {match.awayteam?.name ?? "—"}
-                    </span>
-                    <span className="sm:hidden">
-                      {match.hometeam?.shortName ?? "—"} – {match.awayteam?.shortName ?? "—"}
-                    </span>
-                  </span>
-                  <span className="text-subtle shrink-0 tabular-nums">{match.result ?? "–:–"}</span>
-                </li>
-              ))}
-            </ul>
+            <table className="w-full text-sm">
+              <tbody>
+                {currentMatches.map((match) => (
+                  <tr key={match.id} className="border-input border-b last:border-b-0">
+                    <td className="text-subtle w-px py-2 pr-3 text-xs whitespace-nowrap tabular-nums">
+                      {formatDate(match.date!)}
+                    </td>
+                    <td className="py-2">
+                      <span className="hidden md:inline">
+                        {match.hometeam?.name ?? "—"} – {match.awayteam?.name ?? "—"}
+                      </span>
+                      <span className="md:hidden">
+                        {match.hometeam?.shortName ?? "—"} – {match.awayteam?.shortName ?? "—"}
+                      </span>
+                    </td>
+                    <td className="text-subtle w-px py-2 pl-3 text-right whitespace-nowrap tabular-nums">
+                      {match.result ?? "–:–"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </Card>
 
