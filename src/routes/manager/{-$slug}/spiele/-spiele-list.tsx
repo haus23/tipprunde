@@ -23,6 +23,10 @@ export function SpieleList({ matches, leagues, teams, onEdit }: Props) {
     return teams.find((t) => t.id === id)?.name ?? "—";
   }
 
+  function teamShortName(id: string | null) {
+    return teams.find((t) => t.id === id)?.shortName ?? "—";
+  }
+
   return (
     <div className="bg-surface border-surface rounded-md border px-4 py-2">
       <table className="w-full text-sm">
@@ -64,7 +68,12 @@ export function SpieleList({ matches, leagues, teams, onEdit }: Props) {
                     : "—"}
                 </td>
                 <td className="px-2 py-2">
-                  {teamName(match.hometeamId)} – {teamName(match.awayteamId)}
+                  <span className="md:hidden">
+                    {teamShortName(match.hometeamId)} – {teamShortName(match.awayteamId)}
+                  </span>
+                  <span className="hidden md:inline">
+                    {teamName(match.hometeamId)} – {teamName(match.awayteamId)}
+                  </span>
                 </td>
                 <td className="hidden px-2 py-2 sm:table-cell">{leagueName(match.leagueId)}</td>
                 <td className="w-px px-2 py-2 text-right">
