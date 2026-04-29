@@ -8,14 +8,17 @@ export const Route = createFileRoute("/_front")({
 });
 
 const navLinkClass =
-  "rounded-md px-3 py-1.5 text-sm font-medium text-subtle transition-colors hover:bg-subtle hover:text-base";
+  "rounded-md px-3 py-1.5 text-sm font-medium text-subtle outline-none transition-colors hover:bg-subtle hover:text-base focus-visible:ring-2 focus-visible:ring-focus";
 
 function FrontLayout() {
   return (
     <div className="flex min-h-svh flex-col">
       <header className="border-layout bg-base sticky top-0 z-10 h-14 border-b">
         <div className="mx-auto flex h-full max-w-5xl items-center justify-between px-4">
-          <Link to="/" className="flex items-center gap-2">
+          <Link
+            to="/"
+            className="focus-visible:ring-focus flex items-center gap-2 rounded-md pr-3 pl-1 outline-none focus-visible:ring-2"
+          >
             <span className="text-accent size-8">
               <Logo />
             </span>
