@@ -30,7 +30,7 @@ export function ColorSchemeSwitch() {
     const next = schemes[(schemes.indexOf(scheme) + 1) % schemes.length];
     setScheme(next);
     document.documentElement.dataset.colorScheme = next;
-    updateUISettingsFn({ data: { colorScheme: next } });
+    void updateUISettingsFn({ data: { colorScheme: next } });
   }
 
   return (

@@ -1,9 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
-  "ignoreDependencies": [
-    "@libsql/client",
-    "nitro"
-  ],
+  "ignoreDependencies": ["@libsql/client", "nitro"],
   "rules": {
     "code-duplication": "warn"
   },

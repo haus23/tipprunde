@@ -3,8 +3,8 @@ import { useState } from "react";
 
 import { fetchCurrentChampionshipFn, updateChampionshipFn } from "#/app/manager/championships.ts";
 import { fetchPlayersFn } from "#/app/manager/players.ts";
-import { fetchRulesetsFn } from "#/app/manager/rulesets.ts";
 import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
+import { fetchRulesetsFn } from "#/app/manager/rulesets.ts";
 import { fetchUsersFn } from "#/app/manager/users.ts";
 import { Switch } from "#/components/(ui)/switch.tsx";
 
@@ -18,7 +18,13 @@ export const Route = createFileRoute("/manager/{-$slug}/")({
     const championship = await fetchCurrentChampionshipFn({ data: slug });
     if (!championship) {
       const rulesets = await fetchRulesetsFn();
-      return { championship, rounds: [], players: [], allUsers: [], hasRegelwerke: rulesets.length > 0 };
+      return {
+        championship,
+        rounds: [],
+        players: [],
+        allUsers: [],
+        hasRegelwerke: rulesets.length > 0,
+      };
     }
     const [rounds, players, allUsers] = await Promise.all([
       fetchChampionshipRoundsFn({ data: championship.id }),

@@ -183,7 +183,7 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
 
   async function handleLogout() {
     await logout();
-    navigate({ to: "/" });
+    void navigate({ to: "/" });
   }
 
   return (
@@ -194,7 +194,10 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
     >
       {/* Logo */}
       <div className="flex h-14 shrink-0 items-center p-2">
-        <Link to="/" className="flex w-full items-center gap-2 overflow-hidden rounded-md px-2 py-1 outline-none focus-visible:ring-2 focus-visible:ring-focus">
+        <Link
+          to="/"
+          className="focus-visible:ring-focus flex w-full items-center gap-2 overflow-hidden rounded-md px-2 py-1 outline-none focus-visible:ring-2"
+        >
           <span className="size-8 shrink-0">
             <Logo />
           </span>
@@ -256,7 +259,7 @@ export function MobileNav({ slug }: { slug: string | undefined }) {
 
   async function handleLogout() {
     await logout();
-    navigate({ to: "/" });
+    void navigate({ to: "/" });
   }
   const pathname = useRouterState({ select: (s) => s.resolvedLocation?.pathname });
   const mounted = useRef(false);
@@ -294,7 +297,10 @@ export function MobileNav({ slug }: { slug: string | undefined }) {
             <Dialog aria-label="Navigation" className="flex h-full flex-col outline-none">
               {/* Logo */}
               <div className="flex h-14 shrink-0 items-center p-2">
-                <Link to="/" className="flex w-full items-center gap-2 rounded-md px-2 py-1 outline-none focus-visible:ring-2 focus-visible:ring-focus">
+                <Link
+                  to="/"
+                  className="focus-visible:ring-focus flex w-full items-center gap-2 rounded-md px-2 py-1 outline-none focus-visible:ring-2"
+                >
                   <span className="size-8 shrink-0">
                     <Logo />
                   </span>

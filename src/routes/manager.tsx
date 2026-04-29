@@ -4,10 +4,7 @@ import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 import { requireManager } from "#/app/(auth)/guards.ts";
-import {
-  fetchChampionshipsFn,
-  fetchCurrentChampionshipFn,
-} from "#/app/manager/championships.ts";
+import { fetchChampionshipsFn, fetchCurrentChampionshipFn } from "#/app/manager/championships.ts";
 import { getManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
 import { ColorSchemeSwitch } from "#/components/color-scheme-switch.tsx";
 import { ChampionshipSwitcher } from "#/components/manager/championship-switcher.tsx";

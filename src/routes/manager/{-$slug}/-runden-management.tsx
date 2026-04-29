@@ -26,7 +26,7 @@ export function RundenManagement({ championshipId, slug, initialRounds }: Props)
   async function handleAddRound() {
     await createRoundFn({ data: championshipId });
     setRunden(await fetchChampionshipRoundsFn({ data: championshipId }));
-    router.invalidate();
+    void router.invalidate();
   }
 
   async function handleChange(

@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
 import { ClipboardPasteIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import { fetchTipsFn, saveTipFn } from "#/app/manager/tips.ts";
 import { isJokerFieldDisabled, type JokerRuleId } from "#/app/rules.ts";
@@ -37,14 +36,22 @@ function teamName(teams: Team[], id: string | null) {
   return teams.find((t) => t.id === id)?.name ?? "—";
 }
 
-export function TippGrid({ roundId, userId, matches, teams, jokerRuleId, initialTotalJokers, onJokerChange }: Props) {
+export function TippGrid({
+  roundId,
+  userId,
+  matches,
+  teams,
+  jokerRuleId,
+  initialTotalJokers,
+  onJokerChange,
+}: Props) {
   const [tipState, setTipState] = useState<TipState>({});
   const jokersInOtherRounds = useRef(0);
 
   useEffect(() => {
     setTipState({});
     let cancelled = false;
-    fetchTipsFn({ data: { roundId, userId } }).then((tips: Tip[]) => {
+    void fetchTipsFn({ data: { roundId, userId } }).then((tips: Tip[]) => {
       if (cancelled) return;
       const state: TipState = {};
       for (const m of matches) {
@@ -196,7 +203,8 @@ export function TippGrid({ roundId, userId, matches, teams, jokerRuleId, initial
                       isDisabled={isJokerFieldDisabled(
                         jokerRuleId,
                         tipState[match.id]?.joker ?? false,
-                        jokersInOtherRounds.current + Object.values(tipState).filter((t) => t.joker).length,
+                        jokersInOtherRounds.current +
+                          Object.values(tipState).filter((t) => t.joker).length,
                         Object.values(tipState).filter((t) => t.joker).length,
                       )}
                       onChange={(checked) => {
@@ -204,9 +212,11 @@ export function TippGrid({ roundId, userId, matches, teams, jokerRuleId, initial
                           ...prev,
                           [match.id]: { ...prev[match.id], joker: checked },
                         }));
-                        const roundJokers = Object.values(tipState).filter((t) => t.joker).length + (checked ? 1 : -1);
+                        const roundJokers =
+                          Object.values(tipState).filter((t) => t.joker).length +
+                          (checked ? 1 : -1);
                         onJokerChange(jokersInOtherRounds.current + roundJokers);
-                        saveTipFn({
+                        void saveTipFn({
                           data: {
                             matchId: match.id,
                             userId,

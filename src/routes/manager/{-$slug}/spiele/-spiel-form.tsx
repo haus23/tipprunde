@@ -85,7 +85,7 @@ export function SpielForm({
       setLeagueId(null);
       setHometeamId(null);
       setAwayteamId(null);
-      router.invalidate();
+      void router.invalidate();
     } catch {
       setError("Spiel konnte nicht gespeichert werden.");
     } finally {

@@ -33,7 +33,7 @@ export function TeamForm({ team, onSuccess }: Props) {
   useEffect(() => {
     if (state && "success" in state && !successHandled.current) {
       successHandled.current = true;
-      router.invalidate();
+      void router.invalidate();
       if (!team) onSuccess?.(shortName);
       dialog?.close();
     }

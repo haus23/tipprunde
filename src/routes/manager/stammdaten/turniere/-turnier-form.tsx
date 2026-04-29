@@ -4,10 +4,7 @@ import { useRouter } from "@tanstack/react-router";
 import { useContext, useEffect, useRef, useState } from "react";
 import { OverlayTriggerStateContext } from "react-aria-components";
 
-import {
-  createChampionshipFn,
-  updateChampionshipDetailsFn,
-} from "#/app/manager/championships.ts";
+import { createChampionshipFn, updateChampionshipDetailsFn } from "#/app/manager/championships.ts";
 import { Button } from "#/components/(ui)/button.tsx";
 import { Form } from "#/components/(ui)/form.tsx";
 import { Select, SelectItem } from "#/components/(ui)/select.tsx";
@@ -45,12 +42,12 @@ export function TurnierForm({ regelwerke, nextNr, turnier }: Props) {
     if (state && "success" in state && !successHandled.current) {
       successHandled.current = true;
       if (turnier) {
-        router.invalidate();
+        void router.invalidate();
         dialog?.close();
       } else if ("slug" in state && typeof state.slug === "string") {
         const { slug } = state;
-        router.navigate({ to: "/manager/{-$slug}", params: { slug } }).then(() => {
-          router.invalidate();
+        void router.navigate({ to: "/manager/{-$slug}", params: { slug } }).then(() => {
+          void router.invalidate();
         });
       }
     }

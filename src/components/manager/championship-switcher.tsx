@@ -4,8 +4,6 @@ import { useRouter, useRouterState } from "@tanstack/react-router";
 import { CheckIcon, ChevronsUpDownIcon, SearchIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-
-import { updateManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
 import {
   Autocomplete,
   Button,
@@ -19,6 +17,8 @@ import {
   SearchField,
   useFilter,
 } from "react-aria-components";
+
+import { updateManagerShellSettingsFn } from "#/app/settings/manager-shell.ts";
 
 const MotionOverlay = motion.create(ModalOverlay);
 const MotionModal = motion.create(Modal);

@@ -23,7 +23,7 @@ export function LoginForm() {
 
   useEffect(() => {
     if (verifyState?.success) {
-      navigate({ to: "/manager" });
+      void navigate({ to: "/manager" });
     } else if (verifyState?.fatal) setStep("email");
   }, [verifyState]);
 

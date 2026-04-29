@@ -32,7 +32,8 @@ export const Route = createFileRoute("/manager/{-$slug}/ergebnisse/")({
   beforeLoad: () => ({ pageTitle: "Ergebnisse" }),
   loader: async ({ context: { slug }, deps: { runde } }) => {
     const championship = await fetchCurrentChampionshipFn({ data: slug });
-    if (!championship) return { championship: null, rounds: [], matches: [], teams: [], currentIndex: -1 };
+    if (!championship)
+      return { championship: null, rounds: [], matches: [], teams: [], currentIndex: -1 };
 
     const [rounds, teams] = await Promise.all([
       fetchChampionshipRoundsFn({ data: championship.id }),
@@ -40,7 +41,10 @@ export const Route = createFileRoute("/manager/{-$slug}/ergebnisse/")({
     ]);
 
     const currentIndex = runde
-      ? Math.max(rounds.findIndex((r) => r.nr === runde), 0)
+      ? Math.max(
+          rounds.findIndex((r) => r.nr === runde),
+          0,
+        )
       : rounds.length - 1;
 
     const matches = rounds[currentIndex]
@@ -66,7 +70,7 @@ function RouteComponent() {
   );
 
   function goToRound(index: number) {
-    navigate({ search: { runde: rounds[index].nr }, replace: true });
+    void navigate({ search: { runde: rounds[index].nr }, replace: true });
   }
 
   async function handleBlur(match: Match) {

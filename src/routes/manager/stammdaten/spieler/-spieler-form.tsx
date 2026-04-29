@@ -38,7 +38,7 @@ export function SpielerForm({ spieler, onSuccess }: Props) {
   useEffect(() => {
     if (state && "success" in state && !successHandled.current) {
       successHandled.current = true;
-      router.invalidate();
+      void router.invalidate();
       dialog?.close();
       onSuccess?.(name);
     }

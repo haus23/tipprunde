@@ -25,7 +25,13 @@ export const getJokerCount = createServerOnlyFn(
       .from(tips)
       .innerJoin(matches, eq(tips.matchId, matches.id))
       .innerJoin(rounds, eq(matches.roundId, rounds.id))
-      .where(and(eq(tips.userId, userId), eq(rounds.championshipId, championshipId), eq(tips.joker, true)));
+      .where(
+        and(
+          eq(tips.userId, userId),
+          eq(rounds.championshipId, championshipId),
+          eq(tips.joker, true),
+        ),
+      );
     return result[0]?.count ?? 0;
   },
 );

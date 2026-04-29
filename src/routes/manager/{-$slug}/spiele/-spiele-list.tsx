@@ -32,16 +32,16 @@ export function SpieleList({ matches, leagues, teams, onEdit }: Props) {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-input border-b text-left">
-            <th className="text-subtle w-px px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide">
+            <th className="text-subtle w-px px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
               #
             </th>
-            <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide">
+            <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
               Datum
             </th>
-            <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide">
+            <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
               Spiel
             </th>
-            <th className="text-subtle hidden px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide sm:table-cell">
+            <th className="text-subtle hidden px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase sm:table-cell">
               Liga
             </th>
             <th className="w-px" />

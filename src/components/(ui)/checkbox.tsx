@@ -9,7 +9,10 @@ interface Props extends Omit<CheckboxProps, "children" | "className"> {
 
 export function Checkbox({ children, ...props }: Props) {
   return (
-    <RACCheckbox {...props} className="group flex cursor-default items-center gap-2 text-sm data-disabled:opacity-40">
+    <RACCheckbox
+      {...props}
+      className="group flex cursor-default items-center gap-2 text-sm data-disabled:opacity-40"
+    >
       <span className="border-input group-data-selected:bg-btn group-data-selected:border-btn group-data-selected:text-btn group-data-focus-visible:ring-focus flex size-4 shrink-0 items-center justify-center rounded border transition-colors duration-150 ease-out group-data-focus-visible:ring-2">
         <svg
           viewBox="0 0 10 10"

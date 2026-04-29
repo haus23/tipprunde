@@ -53,7 +53,7 @@ function RouteComponent() {
   const defaultDate = matches.flat().findLast((m) => m.date)?.date ?? undefined;
 
   function goToRound(index: number) {
-    navigate({ search: { runde: rounds[index].nr }, replace: true });
+    void navigate({ search: { runde: rounds[index].nr }, replace: true });
     setEditMatch(null);
   }
 

@@ -68,12 +68,13 @@ function RouteComponent() {
 
   useEffect(() => {
     if (!selectedPlayer || !championship) return;
-    fetchJokerCountFn({ data: { userId: selectedPlayer.userId, championshipId: championship.id } })
-      .then(setTotalJokers);
+    void fetchJokerCountFn({
+      data: { userId: selectedPlayer.userId, championshipId: championship.id },
+    }).then(setTotalJokers);
   }, [selectedPlayer, championship]);
 
   function goToRound(index: number) {
-    navigate({ search: { runde: rounds[index].nr }, replace: true });
+    void navigate({ search: { runde: rounds[index].nr }, replace: true });
   }
 
   if (rounds.length === 0) {

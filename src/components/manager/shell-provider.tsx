@@ -35,7 +35,7 @@ export function ShellProvider({ initialSidebarCollapsed, children }: Props) {
     setIsSidebarCollapsed((prev) => {
       const next = !prev;
       localStorage.setItem(SIDEBAR_KEY, String(next));
-      updateManagerShellSettingsFn({ data: { sidebarCollapsed: next } });
+      void updateManagerShellSettingsFn({ data: { sidebarCollapsed: next } });
       return next;
     });
   }, []);

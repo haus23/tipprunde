@@ -58,7 +58,7 @@ export function RegelwerkForm({ regelwerk }: Props) {
   useEffect(() => {
     if (state && "success" in state && !successHandled.current) {
       successHandled.current = true;
-      router.invalidate();
+      void router.invalidate();
       dialog?.close();
     }
   }, [state, dialog]);

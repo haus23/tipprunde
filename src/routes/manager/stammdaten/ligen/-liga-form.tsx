@@ -33,7 +33,7 @@ export function LigaForm({ liga, onSuccess }: Props) {
   useEffect(() => {
     if (state && "success" in state && !successHandled.current) {
       successHandled.current = true;
-      router.invalidate();
+      void router.invalidate();
       if (!liga) onSuccess?.(shortName);
       dialog?.close();
     }
