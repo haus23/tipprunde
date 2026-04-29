@@ -38,13 +38,13 @@ function RouteComponent() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-input border-b text-left">
-              <th className="text-subtle w-px px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
+              <th className="text-subtle w-px px-2 pt-2 pb-3 text-right text-xs font-medium tracking-wide uppercase">
                 Platz
               </th>
-              <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
+              <th className="text-subtle px-2 pt-2 pb-3 text-left text-xs font-medium tracking-wide uppercase">
                 Spieler
               </th>
-              <th className="text-subtle w-px px-2 pt-2 pb-3 text-right text-xs font-medium tracking-wide uppercase">
+              <th className="text-subtle w-px px-2 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
                 Punkte
               </th>
             </tr>
@@ -59,11 +59,11 @@ function RouteComponent() {
             ) : (
               ranking.map((entry, index) => (
                 <tr key={entry.userId} className="border-input border-b last:border-b-0">
-                  <td className="w-px px-2 py-3 tabular-nums">
+                  <td className="w-px px-2 py-3 text-right tabular-nums">
                     {index === 0 || ranking[index - 1].rank !== entry.rank ? entry.rank : ""}
                   </td>
-                  <td className="px-2 py-3">{entry.name}</td>
-                  <td className="px-2 py-3 text-right font-medium tabular-nums">{entry.points}</td>
+                  <td className="px-2 py-3 text-left">{entry.name}</td>
+                  <td className="px-2 py-3 text-center font-medium tabular-nums">{entry.points}</td>
                 </tr>
               ))
             )}
