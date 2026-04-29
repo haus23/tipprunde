@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.9.0-pre.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0-pre.2...v0.9.0-pre.3)
+
+### 🚀 Enhancements
+
+- **zusatzpunkte:** Add route with no-op UI based on extraQuestionRuleId ([a79f6c4](https://github.com/haus23/tipprunde/commit/a79f6c4))
+- **ergebnisse:** Add route with runden-navigator ([0cefc3a](https://github.com/haus23/tipprunde/commit/0cefc3a))
+- **ergebnisse:** Add match result table with inline editing ([00d76ed](https://github.com/haus23/tipprunde/commit/00d76ed))
+
+### 🩹 Fixes
+
+- **spiele:** Use team short names on mobile view ([329bb03](https://github.com/haus23/tipprunde/commit/329bb03))
+
+### 💅 Refactors
+
+- **auth:** Add Fn suffix to totp server exports ([7b0ec13](https://github.com/haus23/tipprunde/commit/7b0ec13))
+
+### 🏡 Chore
+
+- Provide typecheck script. ([aa1c822](https://github.com/haus23/tipprunde/commit/aa1c822))
+- Adopt Fallow for dead-code and complexity analysis ([d89b5c6](https://github.com/haus23/tipprunde/commit/d89b5c6))
+
 ## v0.9.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0-pre.1...v0.9.0-pre.2)
