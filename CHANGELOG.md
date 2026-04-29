@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.0.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.1...v1.0.0-pre.2)
+
+### 🚀 Enhancements
+
+- **front:** Landing page with teaser and three cards (RSC) ([6d53c2f](https://github.com/haus23/tipprunde/commit/6d53c2f))
+- **front:** Show championship name in teaser, dynamic table card title ([37f298b](https://github.com/haus23/tipprunde/commit/37f298b))
+
+### 🩹 Fixes
+
+- **front:** Select current matches by result, not by date anchor ([5c25a9b](https://github.com/haus23/tipprunde/commit/5c25a9b))
+
+### 💅 Refactors
+
+- **front:** Migrate Tabelle route to RSC ([453857a](https://github.com/haus23/tipprunde/commit/453857a))
+
+### 🎨 Styles
+
+- **front:** Table layout for Aktuelle Spiele, smarter date format ([4f2c276](https://github.com/haus23/tipprunde/commit/4f2c276))
+
 ## v1.0.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/vv1.0.0-pre.0-9-g96fdb7691affd2886d9d4e17e634171836c4e6c6...v1.0.0-pre.1)
