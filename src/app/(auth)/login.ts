@@ -3,10 +3,10 @@ import * as v from "valibot";
 
 import { createDbSession, updateCookieSession } from "#/app/(auth)/session.server.ts";
 import {
-  createTotpCode,
-  getUserByEmail,
-  sendTotpEmail,
-  verifyTotpCode,
+  createTotpCodeFn,
+  getUserByEmailFn,
+  sendTotpEmailFn,
+  verifyTotpCodeFn,
 } from "#/app/(auth)/totp.server.ts";
 import { env } from "#/utils/env.server.ts";
 import { validateForm } from "#/utils/validate-form.ts";
@@ -30,7 +30,7 @@ export const requestCode = createServerFn({ method: "POST" })
     }
 
     const { email } = data.output;
-    const user = await getUserByEmail(email);
+    const user = await getUserByEmailFn(email);
 
     if (!user) {
       return {
@@ -40,10 +40,10 @@ export const requestCode = createServerFn({ method: "POST" })
       };
     }
 
-    const code = await createTotpCode(user.id);
+    const code = await createTotpCodeFn(user.id);
 
     try {
-      await sendTotpEmail(email, code);
+      await sendTotpEmailFn(email, code);
     } catch {
       return {
         success: false as const,
@@ -78,7 +78,7 @@ export const verifyCode = createServerFn({ method: "POST" })
     const values: VerifyValues = { email, code, rememberMe };
     const remember = rememberMe === "on";
 
-    const user = await getUserByEmail(email);
+    const user = await getUserByEmailFn(email);
 
     if (!user) {
       return {
@@ -87,7 +87,7 @@ export const verifyCode = createServerFn({ method: "POST" })
       };
     }
 
-    const result = await verifyTotpCode(user.id, code);
+    const result = await verifyTotpCodeFn(user.id, code);
 
     if (result === "expired") {
       return {

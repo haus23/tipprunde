@@ -1,17 +1,16 @@
-// fallow-ignore-file duplicate-export
 import { createServerOnlyFn } from "@tanstack/react-start";
 
 import { env } from "#/utils/env.server.ts";
 import {
-  createTotpCode as dbCreateTotpCode,
+  createTotpCode,
   deleteTotpCode,
   deleteTotpCodes,
   getTotpCode,
   updateTotpCode,
 } from "#db/dal/totps.ts";
-import { getUserByEmail as dbGetUserByEmail } from "#db/dal/users.ts";
+import { getUserByEmail } from "#db/dal/users.ts";
 
-export const getUserByEmail = dbGetUserByEmail;
+export const getUserByEmailFn = getUserByEmail;
 
 type VerifyResult = "valid" | "invalid" | "expired" | "max_attempts";
 
@@ -35,14 +34,14 @@ async function hashCode(code: string): Promise<string> {
   return Array.from(new Uint8Array(signature), (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-export const createTotpCode = createServerOnlyFn(async (userId: number) => {
+export const createTotpCodeFn = createServerOnlyFn(async (userId: number) => {
   await deleteTotpCodes(userId);
 
   const code = generateCode();
   const codeHash = await hashCode(code);
   const expiresAt = new Date(Date.now() + env.TOTP_EXPIRES_IN * 1000).toISOString();
 
-  await dbCreateTotpCode({
+  await createTotpCode({
     id: crypto.randomUUID(),
     userId,
     codeHash,
@@ -53,7 +52,7 @@ export const createTotpCode = createServerOnlyFn(async (userId: number) => {
   return code;
 });
 
-export const verifyTotpCode = createServerOnlyFn(
+export const verifyTotpCodeFn = createServerOnlyFn(
   async (userId: number, code: string): Promise<VerifyResult> => {
     const record = await getTotpCode(userId);
 
@@ -81,7 +80,7 @@ export const verifyTotpCode = createServerOnlyFn(
   },
 );
 
-export const sendTotpEmail = createServerOnlyFn(async (to: string, code: string) => {
+export const sendTotpEmailFn = createServerOnlyFn(async (to: string, code: string) => {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
