@@ -1,24 +1,19 @@
 import { createServerOnlyFn } from "@tanstack/react-start";
-import { and, eq, inArray } from "drizzle-orm";
 
 import { db } from "#db";
 
-import { matches, tips } from "../schema/tables.ts";
+import { tips } from "../schema/tables.ts";
 
 export type Tip = typeof tips.$inferSelect;
 
 export const getTipsByRoundAndUser = createServerOnlyFn(
   async ({ roundId, userId }: { roundId: number; userId: number }) => {
-    const roundMatches = await db
-      .select({ id: matches.id })
-      .from(matches)
-      .where(eq(matches.roundId, roundId));
+    const roundMatches = await db.query.matches.findMany({ where: { roundId } });
     const matchIds = roundMatches.map((m) => m.id);
     if (matchIds.length === 0) return [];
-    return db
-      .select()
-      .from(tips)
-      .where(and(inArray(tips.matchId, matchIds), eq(tips.userId, userId)));
+    return db.query.tips.findMany({
+      where: { userId, matchId: { in: matchIds } },
+    });
   },
 );
 
