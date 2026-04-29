@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.9.0-pre.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0-pre.1...v0.9.0-pre.2)
+
+### 🚀 Enhancements
+
+- **tipps:** Enforce joker rules per championship ruleset ([b600aef](https://github.com/haus23/tipprunde/commit/b600aef))
+
+### 💅 Refactors
+
+- **db:** Remove explicit constraint names from schema ([a75bb09](https://github.com/haus23/tipprunde/commit/a75bb09))
+
+### 🏡 Chore
+
+- Cleanup and merge migrations for tips table. ([f51a20d](https://github.com/haus23/tipprunde/commit/f51a20d))
+
 ## v0.9.0-pre.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0-pre.0...v0.9.0-pre.1)
