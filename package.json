@@ -14,6 +14,7 @@
     "lint": "oxlint",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
+    "db:generate": "drizzle-kit generate",
     "db:push": "bun --env-file=.env run drizzle-kit push",
     "db:migrate": "bun --env-file=.env run drizzle-kit migrate",
     "db:migrate:prod": "bun --env-file=.env.production run drizzle-kit migrate",
