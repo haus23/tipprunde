@@ -33,6 +33,14 @@ export const getLatestChampionship = createServerOnlyFn(async () =>
   }),
 );
 
+export const getLatestPublishedChampionship = createServerOnlyFn(async () =>
+  db.query.championships.findFirst({
+    where: { published: true },
+    orderBy: { nr: "desc" },
+    with: withRuleset,
+  }),
+);
+
 export const createChampionship = createServerOnlyFn(
   async (data: Omit<typeof championships.$inferInsert, "id">) =>
     db.insert(championships).values(data),
