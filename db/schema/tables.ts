@@ -129,7 +129,6 @@ export const players = sqliteTable(
     userId: integer("user_id")
       .notNull()
       .references(() => users.id),
-    nr: integer("nr").notNull(),
   },
   (table) => [unique().on(table.championshipId, table.userId)],
 );

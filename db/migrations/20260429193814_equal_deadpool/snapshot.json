@@ -1,0 +1,1001 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "id": "086f448c-ccb9-49f2-98e5-369f3cd309ab",
+  "prevIds": [
+    "c73b0f6f-fc98-478a-9bea-eef55f94f985"
+  ],
+  "ddl": [
+    {
+      "name": "championships",
+      "entityType": "tables"
+    },
+    {
+      "name": "leagues",
+      "entityType": "tables"
+    },
+    {
+      "name": "matches",
+      "entityType": "tables"
+    },
+    {
+      "name": "players",
+      "entityType": "tables"
+    },
+    {
+      "name": "rounds",
+      "entityType": "tables"
+    },
+    {
+      "name": "rulesets",
+      "entityType": "tables"
+    },
+    {
+      "name": "sessions",
+      "entityType": "tables"
+    },
+    {
+      "name": "teams",
+      "entityType": "tables"
+    },
+    {
+      "name": "tips",
+      "entityType": "tables"
+    },
+    {
+      "name": "totp_codes",
+      "entityType": "tables"
+    },
+    {
+      "name": "users",
+      "entityType": "tables"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "championships"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "slug",
+      "entityType": "columns",
+      "table": "championships"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "championships"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "nr",
+      "entityType": "columns",
+      "table": "championships"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "ruleset_id",
+      "entityType": "columns",
+      "table": "championships"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "published",
+      "entityType": "columns",
+      "table": "championships"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "completed",
+      "entityType": "columns",
+      "table": "championships"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "extra_questions_published",
+      "entityType": "columns",
+      "table": "championships"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "leagues"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "leagues"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "short_name",
+      "entityType": "columns",
+      "table": "leagues"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "matches"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "round_id",
+      "entityType": "columns",
+      "table": "matches"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "nr",
+      "entityType": "columns",
+      "table": "matches"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "date",
+      "entityType": "columns",
+      "table": "matches"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "league_id",
+      "entityType": "columns",
+      "table": "matches"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "hometeam_id",
+      "entityType": "columns",
+      "table": "matches"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "awayteam_id",
+      "entityType": "columns",
+      "table": "matches"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "result",
+      "entityType": "columns",
+      "table": "matches"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "players"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "championship_id",
+      "entityType": "columns",
+      "table": "players"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "user_id",
+      "entityType": "columns",
+      "table": "players"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "rounds"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "championship_id",
+      "entityType": "columns",
+      "table": "rounds"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "nr",
+      "entityType": "columns",
+      "table": "rounds"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "published",
+      "entityType": "columns",
+      "table": "rounds"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "tips_published",
+      "entityType": "columns",
+      "table": "rounds"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "completed",
+      "entityType": "columns",
+      "table": "rounds"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "is_double_round",
+      "entityType": "columns",
+      "table": "rounds"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "rulesets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "rulesets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "description",
+      "entityType": "columns",
+      "table": "rulesets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "tip_rule_id",
+      "entityType": "columns",
+      "table": "rulesets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "joker_rule_id",
+      "entityType": "columns",
+      "table": "rulesets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "match_rule_id",
+      "entityType": "columns",
+      "table": "rulesets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "round_rule_id",
+      "entityType": "columns",
+      "table": "rulesets"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "extra_question_rule_id",
+      "entityType": "columns",
+      "table": "rulesets"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "sessions"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "user_id",
+      "entityType": "columns",
+      "table": "sessions"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "remember_me",
+      "entityType": "columns",
+      "table": "sessions"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "expires_at",
+      "entityType": "columns",
+      "table": "sessions"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "sessions"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "teams"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "teams"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "short_name",
+      "entityType": "columns",
+      "table": "teams"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "match_id",
+      "entityType": "columns",
+      "table": "tips"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "user_id",
+      "entityType": "columns",
+      "table": "tips"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "tip",
+      "entityType": "columns",
+      "table": "tips"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "points",
+      "entityType": "columns",
+      "table": "tips"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "joker",
+      "entityType": "columns",
+      "table": "tips"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "totp_codes"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "user_id",
+      "entityType": "columns",
+      "table": "totp_codes"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "code_hash",
+      "entityType": "columns",
+      "table": "totp_codes"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "expires_at",
+      "entityType": "columns",
+      "table": "totp_codes"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "0",
+      "generated": null,
+      "name": "attempts",
+      "entityType": "columns",
+      "table": "totp_codes"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "slug",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "email",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "'user'",
+      "generated": null,
+      "name": "role",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "CURRENT_TIMESTAMP",
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "columns": [
+        "ruleset_id"
+      ],
+      "tableTo": "rulesets",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_championships_ruleset_id_rulesets_id_fk",
+      "entityType": "fks",
+      "table": "championships"
+    },
+    {
+      "columns": [
+        "round_id"
+      ],
+      "tableTo": "rounds",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_matches_round_id_rounds_id_fk",
+      "entityType": "fks",
+      "table": "matches"
+    },
+    {
+      "columns": [
+        "league_id"
+      ],
+      "tableTo": "leagues",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_matches_league_id_leagues_id_fk",
+      "entityType": "fks",
+      "table": "matches"
+    },
+    {
+      "columns": [
+        "hometeam_id"
+      ],
+      "tableTo": "teams",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_matches_hometeam_id_teams_id_fk",
+      "entityType": "fks",
+      "table": "matches"
+    },
+    {
+      "columns": [
+        "awayteam_id"
+      ],
+      "tableTo": "teams",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_matches_awayteam_id_teams_id_fk",
+      "entityType": "fks",
+      "table": "matches"
+    },
+    {
+      "columns": [
+        "championship_id"
+      ],
+      "tableTo": "championships",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_players_championship_id_championships_id_fk",
+      "entityType": "fks",
+      "table": "players"
+    },
+    {
+      "columns": [
+        "user_id"
+      ],
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_players_user_id_users_id_fk",
+      "entityType": "fks",
+      "table": "players"
+    },
+    {
+      "columns": [
+        "championship_id"
+      ],
+      "tableTo": "championships",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_rounds_championship_id_championships_id_fk",
+      "entityType": "fks",
+      "table": "rounds"
+    },
+    {
+      "columns": [
+        "user_id"
+      ],
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "nameExplicit": false,
+      "name": "fk_sessions_user_id_users_id_fk",
+      "entityType": "fks",
+      "table": "sessions"
+    },
+    {
+      "columns": [
+        "match_id"
+      ],
+      "tableTo": "matches",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_tips_match_id_matches_id_fk",
+      "entityType": "fks",
+      "table": "tips"
+    },
+    {
+      "columns": [
+        "user_id"
+      ],
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_tips_user_id_users_id_fk",
+      "entityType": "fks",
+      "table": "tips"
+    },
+    {
+      "columns": [
+        "user_id"
+      ],
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "nameExplicit": false,
+      "name": "fk_totp_codes_user_id_users_id_fk",
+      "entityType": "fks",
+      "table": "totp_codes"
+    },
+    {
+      "columns": [
+        "match_id",
+        "user_id"
+      ],
+      "nameExplicit": false,
+      "name": "tips_pk",
+      "entityType": "pks",
+      "table": "tips"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "championships_pk",
+      "table": "championships",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "leagues_pk",
+      "table": "leagues",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "matches_pk",
+      "table": "matches",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "players_pk",
+      "table": "players",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "rounds_pk",
+      "table": "rounds",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "rulesets_pk",
+      "table": "rulesets",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "sessions_pk",
+      "table": "sessions",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "teams_pk",
+      "table": "teams",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "totp_codes_pk",
+      "table": "totp_codes",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "users_pk",
+      "table": "users",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "championship_id",
+        "user_id"
+      ],
+      "nameExplicit": false,
+      "name": "players_championship_id_user_id_unique",
+      "entityType": "uniques",
+      "table": "players"
+    },
+    {
+      "columns": [
+        "championship_id",
+        "nr"
+      ],
+      "nameExplicit": false,
+      "name": "rounds_championship_id_nr_unique",
+      "entityType": "uniques",
+      "table": "rounds"
+    },
+    {
+      "columns": [
+        "slug"
+      ],
+      "nameExplicit": false,
+      "name": "championships_slug_unique",
+      "entityType": "uniques",
+      "table": "championships"
+    },
+    {
+      "columns": [
+        "nr"
+      ],
+      "nameExplicit": false,
+      "name": "championships_nr_unique",
+      "entityType": "uniques",
+      "table": "championships"
+    },
+    {
+      "columns": [
+        "slug"
+      ],
+      "nameExplicit": false,
+      "name": "users_slug_unique",
+      "entityType": "uniques",
+      "table": "users"
+    },
+    {
+      "columns": [
+        "email"
+      ],
+      "nameExplicit": false,
+      "name": "users_email_unique",
+      "entityType": "uniques",
+      "table": "users"
+    }
+  ],
+  "renames": []
+}
