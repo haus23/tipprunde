@@ -13,6 +13,7 @@ import { Route as ManagerRouteImport } from './routes/manager'
 import { Route as FrontRouteImport } from './routes/_front'
 import { Route as FrontIndexRouteImport } from './routes/_front/index'
 import { Route as ManagerChar123SlugChar125RouteImport } from './routes/manager/{-$slug}'
+import { Route as FrontTabelleRouteImport } from './routes/_front/tabelle'
 import { Route as ManagerChar123SlugChar125IndexRouteImport } from './routes/manager/{-$slug}/index'
 import { Route as FrontauthLoginRouteImport } from './routes/_front/(auth)/login'
 import { Route as ManagerChar123SlugChar125ZusatzpunkteIndexRouteImport } from './routes/manager/{-$slug}/zusatzpunkte/index'
@@ -45,6 +46,11 @@ const ManagerChar123SlugChar125Route =
     path: '/{-$slug}',
     getParentRoute: () => ManagerRoute,
   } as any)
+const FrontTabelleRoute = FrontTabelleRouteImport.update({
+  id: '/tabelle',
+  path: '/tabelle',
+  getParentRoute: () => FrontRoute,
+} as any)
 const ManagerChar123SlugChar125IndexRoute =
   ManagerChar123SlugChar125IndexRouteImport.update({
     id: '/',
@@ -114,6 +120,7 @@ const ManagerStammdatenLigenIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof FrontIndexRoute
   '/manager': typeof ManagerRouteWithChildren
+  '/tabelle': typeof FrontTabelleRoute
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125RouteWithChildren
   '/login': typeof FrontauthLoginRoute
   '/manager/{-$slug}/': typeof ManagerChar123SlugChar125IndexRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/manager': typeof ManagerRouteWithChildren
+  '/tabelle': typeof FrontTabelleRoute
   '/': typeof FrontIndexRoute
   '/login': typeof FrontauthLoginRoute
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125IndexRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_front': typeof FrontRouteWithChildren
   '/manager': typeof ManagerRouteWithChildren
+  '/_front/tabelle': typeof FrontTabelleRoute
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125RouteWithChildren
   '/_front/': typeof FrontIndexRoute
   '/_front/(auth)/login': typeof FrontauthLoginRoute
@@ -165,6 +174,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/manager'
+    | '/tabelle'
     | '/manager/{-$slug}'
     | '/login'
     | '/manager/{-$slug}/'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/manager'
+    | '/tabelle'
     | '/'
     | '/login'
     | '/manager/{-$slug}'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_front'
     | '/manager'
+    | '/_front/tabelle'
     | '/manager/{-$slug}'
     | '/_front/'
     | '/_front/(auth)/login'
@@ -245,6 +257,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/manager/{-$slug}'
       preLoaderRoute: typeof ManagerChar123SlugChar125RouteImport
       parentRoute: typeof ManagerRoute
+    }
+    '/_front/tabelle': {
+      id: '/_front/tabelle'
+      path: '/tabelle'
+      fullPath: '/tabelle'
+      preLoaderRoute: typeof FrontTabelleRouteImport
+      parentRoute: typeof FrontRoute
     }
     '/manager/{-$slug}/': {
       id: '/manager/{-$slug}/'
@@ -327,11 +346,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface FrontRouteChildren {
+  FrontTabelleRoute: typeof FrontTabelleRoute
   FrontIndexRoute: typeof FrontIndexRoute
   FrontauthLoginRoute: typeof FrontauthLoginRoute
 }
 
 const FrontRouteChildren: FrontRouteChildren = {
+  FrontTabelleRoute: FrontTabelleRoute,
   FrontIndexRoute: FrontIndexRoute,
   FrontauthLoginRoute: FrontauthLoginRoute,
 }
