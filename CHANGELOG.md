@@ -1,5 +1,13 @@
 # Changelog
 
+## vv1.0.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0-pre.4...vv1.0.0-pre.0)
+
+### 🚀 Enhancements
+
+- **front:** Add Tabelle route with public ranking ([ce3e454](https://github.com/haus23/tipprunde/commit/ce3e454))
+
 ## v0.9.0-pre.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0-pre.3...v0.9.0-pre.4)
