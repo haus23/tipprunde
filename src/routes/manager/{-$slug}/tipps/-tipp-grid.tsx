@@ -29,7 +29,10 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
   const [tipState, setTipState] = useState<TipState>({});
 
   useEffect(() => {
+    setTipState({});
+    let cancelled = false;
     fetchTipsFn({ data: { roundId, userId } }).then((tips: Tip[]) => {
+      if (cancelled) return;
       const state: TipState = {};
       for (const m of matches) {
         const existing = tips.find((t) => t.matchId === m.id);
@@ -40,6 +43,7 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
       }
       setTipState(state);
     });
+    return () => { cancelled = true; };
   }, [roundId, userId]);
 
   async function handleBlur(matchId: number) {

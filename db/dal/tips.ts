@@ -9,12 +9,16 @@ export type Tip = typeof tips.$inferSelect;
 
 export const getTipsByRoundAndUser = createServerOnlyFn(
   async ({ roundId, userId }: { roundId: number; userId: number }) => {
-    const roundMatches = await db.query.matches.findMany({ where: { roundId } });
+    const roundMatches = await db
+      .select({ id: matches.id })
+      .from(matches)
+      .where(eq(matches.roundId, roundId));
     const matchIds = roundMatches.map((m) => m.id);
     if (matchIds.length === 0) return [];
-    return db.query.tips.findMany({
-      where: (t) => and(inArray(t.matchId, matchIds), eq(t.userId, userId)),
-    });
+    return db
+      .select()
+      .from(tips)
+      .where(and(inArray(tips.matchId, matchIds), eq(tips.userId, userId)));
   },
 );
 
