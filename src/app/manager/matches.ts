@@ -2,8 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
 import { managerMiddleware } from "#/app/(auth)/guards.ts";
-import { createMatch, getMatches, updateMatch } from "#db/dal/matches.ts";
-import { scoreMatchTips } from "#db/dal/tips.ts";
+import type { TipRuleId } from "#/domain/rules.ts";
+import { scoreTip } from "#/domain/scoring.ts";
+import { createMatch, getMatches, getMatchWithRuleset, updateMatch } from "#db/dal/matches.ts";
+import { getTipsByMatch, setTipPoints } from "#db/dal/tips.ts";
 
 const matchSchema = v.object({
   roundId: v.number(),
@@ -36,5 +38,18 @@ export const updateMatchFn = createServerFn({ method: "POST" })
   .inputValidator(updateMatchSchema)
   .handler(async ({ data }): Promise<void> => {
     await updateMatch(data);
-    await scoreMatchTips(data.id);
+
+    const match = await getMatchWithRuleset(data.id);
+    if (!match?.round?.championship?.ruleset) return;
+
+    const tipRuleId = match.round.championship.ruleset.tipRuleId as TipRuleId;
+    const result = match.result;
+    const matchTips = await getTipsByMatch(data.id);
+
+    await Promise.all(
+      matchTips.map((tip) => {
+        const points = result ? scoreTip(result, tip.tip, tip.joker ?? false, tipRuleId) : null;
+        return setTipPoints({ matchId: data.id, userId: tip.userId, points });
+      }),
+    );
   });

@@ -31,3 +31,10 @@ export const updateMatch = createServerOnlyFn(
     return db.update(matches).set(rest).where(eq(matches.id, id));
   },
 );
+
+export const getMatchWithRuleset = createServerOnlyFn(async (matchId: number) =>
+  db.query.matches.findFirst({
+    where: { id: matchId },
+    with: { round: { with: { championship: { with: { ruleset: true } } } } },
+  }),
+);
