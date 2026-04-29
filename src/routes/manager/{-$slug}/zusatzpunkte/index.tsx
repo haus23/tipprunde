@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { fetchCurrentChampionshipFn } from "#/app/manager/championships.ts";
+import type { ExtraQuestionRuleId } from "#/domain/rules.ts";
 
 export const Route = createFileRoute("/manager/{-$slug}/zusatzpunkte/")({
   beforeLoad: () => ({ pageTitle: "Zusatzpunkte" }),
@@ -17,7 +18,8 @@ export const Route = createFileRoute("/manager/{-$slug}/zusatzpunkte/")({
 function RouteComponent() {
   const { championship } = Route.useLoaderData();
 
-  const extraQuestionRuleId = championship?.ruleset?.extraQuestionRuleId ?? null;
+  const extraQuestionRuleId =
+    (championship?.ruleset?.extraQuestionRuleId as ExtraQuestionRuleId | null) ?? null;
 
   if (extraQuestionRuleId === "keine-zusatzfragen") {
     return (

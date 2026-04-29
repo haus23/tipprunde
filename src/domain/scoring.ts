@@ -1,6 +1,4 @@
-export type TipRuleId =
-  | "drei-oder-ein-punkt-joker-verdoppelt"
-  | "drei-zwei-oder-ein-punkt-joker-verdoppelt";
+import type { TipRuleId } from "./rules.ts";
 
 function parse(score: string): [number, number] {
   const [home, away] = score.split(":").map(Number);

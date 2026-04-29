@@ -9,11 +9,18 @@ import { Button } from "#/components/(ui)/button.tsx";
 import { Form } from "#/components/(ui)/form.tsx";
 import { Select, SelectItem } from "#/components/(ui)/select.tsx";
 import { FieldError, Input, Label, TextArea, TextField } from "#/components/(ui)/text-field.tsx";
+import type {
+  ExtraQuestionRuleId,
+  JokerRuleId,
+  MatchRuleId,
+  RoundRuleId,
+  TipRuleId,
+} from "#/domain/rules.ts";
 import { useServerAction } from "#/utils/hooks/server-action.ts";
 import { slugify } from "#/utils/slugify.ts";
 import type { Ruleset } from "#db/dal/rulesets.ts";
 
-const TIP_RULES: { value: string; label: string }[] = [
+const TIP_RULES: { value: TipRuleId; label: string }[] = [
   {
     value: "drei-zwei-oder-ein-punkt-joker-verdoppelt",
     label: "3, 2 oder 1 Punkt, Joker verdoppelt",
@@ -21,21 +28,21 @@ const TIP_RULES: { value: string; label: string }[] = [
   { value: "drei-oder-ein-punkt-joker-verdoppelt", label: "3 oder 1 Punkt, Joker verdoppelt" },
 ];
 
-const JOKER_RULES: { value: string; label: string }[] = [
+const JOKER_RULES: { value: JokerRuleId; label: string }[] = [
   { value: "einmal-pro-runde", label: "Genau einmal pro Runde" },
   { value: "zwei-pro-turnier", label: "Genau zwei im gesamten Turnier" },
 ];
 
-const MATCH_RULES: { value: string; label: string }[] = [
+const MATCH_RULES: { value: MatchRuleId; label: string }[] = [
   { value: "keine-besonderheiten", label: "Keine Besonderheiten" },
   { value: "alleiniger-treffer-drei-punkte", label: "Alleiniger Treffer: 3 Punkte extra" },
 ];
 
-const ROUND_RULES: { value: string; label: string }[] = [
+const ROUND_RULES: { value: RoundRuleId; label: string }[] = [
   { value: "keine-besonderheiten", label: "Keine Besonderheiten" },
 ];
 
-const EXTRA_QUESTION_RULES: { value: string; label: string }[] = [
+const EXTRA_QUESTION_RULES: { value: ExtraQuestionRuleId; label: string }[] = [
   { value: "mit-zusatzfragen", label: "Mit Zusatzfragen" },
   { value: "keine-zusatzfragen", label: "Keine Zusatzfragen" },
 ];

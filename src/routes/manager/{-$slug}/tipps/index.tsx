@@ -8,9 +8,9 @@ import { fetchPlayersFn } from "#/app/manager/players.ts";
 import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
 import { fetchTeamsFn } from "#/app/manager/teams.ts";
 import { fetchJokerCountFn } from "#/app/manager/tips.ts";
-import type { JokerRuleId } from "#/app/rules.ts";
 import { Select, SelectItem } from "#/components/(ui)/select.tsx";
 import { RundenNavigator } from "#/components/manager/runden-navigator.tsx";
+import type { JokerRuleId } from "#/domain/rules.ts";
 import type { Player } from "#db/dal/players.ts";
 
 import { TippGrid } from "./-tipp-grid.tsx";

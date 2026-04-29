@@ -4,8 +4,8 @@ import { ClipboardPasteIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { fetchTipsFn, saveTipFn } from "#/app/manager/tips.ts";
-import { isJokerFieldDisabled, type JokerRuleId } from "#/app/rules.ts";
 import { Checkbox } from "#/components/(ui)/checkbox.tsx";
+import { isJokerFieldDisabled, type JokerRuleId } from "#/domain/rules.ts";
 import type { Match } from "#db/dal/matches.ts";
 import type { Team } from "#db/dal/teams.ts";
 import type { Tip } from "#db/dal/tips.ts";
