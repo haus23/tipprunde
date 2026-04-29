@@ -8,19 +8,20 @@
     "#db/*": "./db/*"
   },
   "scripts": {
-    "dev": "vite dev --port 3000",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "oxlint",
-    "format": "oxfmt",
-    "format:check": "oxfmt --check",
+    "dev": "vp dev --port 3000",
+    "build": "vp build",
+    "preview": "vp preview",
+    "lint": "vp lint",
+    "format": "vp fmt",
+    "format:check": "vp fmt --check",
     "typecheck": "tsc",
     "db:generate": "drizzle-kit generate",
     "db:push": "bun --env-file=.env run drizzle-kit push",
     "db:migrate": "bun --env-file=.env run drizzle-kit migrate",
     "db:migrate:prod": "bun --env-file=.env.production run drizzle-kit migrate",
     "db:studio": "bun --env-file=.env run drizzle-kit studio",
-    "db:studio:prod": "bun --env-file=.env.production run drizzle-kit studio"
+    "db:studio:prod": "bun --env-file=.env.production run drizzle-kit studio",
+    "prepare": "vp config"
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",
@@ -46,10 +47,14 @@
     "@vitejs/plugin-react": "^6.0.1",
     "@vitejs/plugin-rsc": "^0.5.25",
     "drizzle-kit": "1.0.0-beta.22",
-    "oxfmt": "^0.47.0",
-    "oxlint": "^1.62.0",
     "tailwindcss": "^4.2.4",
     "typescript": "~6.0.3",
-    "vite": "^8.0.10"
-  }
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vite-plus": "latest"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
+  },
+  "packageManager": "bun@1.3.13"
 }
