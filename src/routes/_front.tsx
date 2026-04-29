@@ -22,9 +22,9 @@ function FrontLayout() {
             <span className="hidden text-sm font-semibold tracking-tight sm:block">runde.tips</span>
           </Link>
           <nav className="flex items-center gap-1">
-            <a href="/tabelle" className={navLinkClass}>
+            <Link to="/tabelle" className={navLinkClass}>
               Tabelle
-            </a>
+            </Link>
             <a href="/spieler" className={navLinkClass}>
               Spieler
             </a>
