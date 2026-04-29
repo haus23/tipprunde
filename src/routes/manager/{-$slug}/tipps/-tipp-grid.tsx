@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 import { fetchTipsFn, saveTipFn } from "#/app/manager/tips.ts";
 import { Checkbox } from "#/components/(ui)/checkbox.tsx";
-import type { Tip } from "#db/dal/tips.ts";
 import type { Match } from "#db/dal/matches.ts";
 import type { Team } from "#db/dal/teams.ts";
+import type { Tip } from "#db/dal/tips.ts";
 
 interface Props {
   roundId: number;
@@ -20,10 +20,7 @@ type TipState = Record<number, { tip: string; joker: boolean; invalid?: boolean 
 const TIP_PATTERN = /^\d{1,2}:\d{1,2}$/;
 
 function normalizeTip(raw: string): string {
-  return raw
-    .replace(/\s+/g, "")
-    .replace(/[-.]/g, ":")
-    .replace(/:+/g, ":");
+  return raw.replace(/\s+/g, "").replace(/[-.]/g, ":").replace(/:+/g, ":");
 }
 
 function teamShortName(teams: Team[], id: string | null) {
@@ -52,8 +49,46 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
       }
       setTipState(state);
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [roundId, userId]);
+
+  async function handlePaste(e: React.ClipboardEvent<HTMLInputElement>, matchId: number) {
+    e.preventDefault();
+    const rawTips = e.clipboardData.getData("text").trimEnd().split(/\r?\n/);
+    const startIndex = matches.findIndex((m) => m.id === matchId);
+    const affected = matches.slice(startIndex, startIndex + rawTips.length);
+
+    const updates = affected.map((match, i) => {
+      const normalized = normalizeTip(rawTips[i]);
+      const invalid = normalized !== "" && !TIP_PATTERN.test(normalized);
+      return { matchId: match.id, normalized, invalid };
+    });
+
+    setTipState((prev) => {
+      const next = { ...prev };
+      for (const { matchId, normalized, invalid } of updates) {
+        next[matchId] = { ...next[matchId], tip: normalized, invalid };
+      }
+      return next;
+    });
+
+    await Promise.all(
+      updates
+        .filter((u) => !u.invalid)
+        .map((u) =>
+          saveTipFn({
+            data: {
+              matchId: u.matchId,
+              userId,
+              tip: u.normalized || null,
+              joker: tipState[u.matchId]?.joker || null,
+            },
+          }),
+        ),
+    );
+  }
 
   async function handleBlur(matchId: number) {
     const { tip, joker } = tipState[matchId] ?? { tip: "", joker: false };
@@ -76,16 +111,16 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-input border-b text-left">
-            <th className="text-subtle w-px px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide">
+            <th className="text-subtle w-px px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
               #
             </th>
-            <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium uppercase tracking-wide">
+            <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
               Spiel
             </th>
-            <th className="text-subtle w-px px-1 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
+            <th className="text-subtle w-px px-1 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
               Tipp
             </th>
-            <th className="text-subtle w-px px-1 pt-2 pb-3 text-center text-xs font-medium uppercase tracking-wide">
+            <th className="text-subtle w-px px-1 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
               Joker
             </th>
           </tr>
@@ -102,8 +137,13 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
               <tr key={match.id} className="border-input border-b last:border-b-0">
                 <td className="w-px px-2 py-2">{match.nr}</td>
                 <td className="px-2 py-2">
-                  <span className="md:hidden">{teamShortName(teams, match.hometeamId)} – {teamShortName(teams, match.awayteamId)}</span>
-                  <span className="hidden md:inline">{teamName(teams, match.hometeamId)} – {teamName(teams, match.awayteamId)}</span>
+                  <span className="md:hidden">
+                    {teamShortName(teams, match.hometeamId)} –{" "}
+                    {teamShortName(teams, match.awayteamId)}
+                  </span>
+                  <span className="hidden md:inline">
+                    {teamName(teams, match.hometeamId)} – {teamName(teams, match.awayteamId)}
+                  </span>
                 </td>
                 <td className="px-1 py-1.5 text-center">
                   <input
@@ -115,30 +155,31 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
                         [match.id]: { ...prev[match.id], tip: e.target.value, invalid: false },
                       }))
                     }
+                    onPaste={(e) => handlePaste(e, match.id)}
                     onBlur={() => handleBlur(match.id)}
                     aria-invalid={tipState[match.id]?.invalid}
-                    className="border-input focus-visible:ring-focus w-12 rounded-md border bg-transparent px-2 py-1 text-center text-sm outline-none focus-visible:ring-2 aria-invalid:border-error aria-invalid:text-error"
+                    className="border-input focus-visible:ring-focus aria-invalid:border-error aria-invalid:text-error w-12 rounded-md border bg-transparent px-2 py-1 text-center text-sm outline-none focus-visible:ring-2"
                   />
                 </td>
                 <td className="w-px px-1 py-2">
                   <div className="flex justify-center">
-                  <Checkbox
-                    isSelected={tipState[match.id]?.joker ?? false}
-                    onChange={(checked) => {
-                      setTipState((prev) => ({
-                        ...prev,
-                        [match.id]: { ...prev[match.id], joker: checked },
-                      }));
-                      saveTipFn({
-                        data: {
-                          matchId: match.id,
-                          userId,
-                          tip: tipState[match.id]?.tip || null,
-                          joker: checked || null,
-                        },
-                      });
-                    }}
-                  />
+                    <Checkbox
+                      isSelected={tipState[match.id]?.joker ?? false}
+                      onChange={(checked) => {
+                        setTipState((prev) => ({
+                          ...prev,
+                          [match.id]: { ...prev[match.id], joker: checked },
+                        }));
+                        saveTipFn({
+                          data: {
+                            matchId: match.id,
+                            userId,
+                            tip: tipState[match.id]?.tip || null,
+                            joker: checked || null,
+                          },
+                        });
+                      }}
+                    />
                   </div>
                 </td>
               </tr>
