@@ -120,7 +120,13 @@ function NavContent({
         params={slug ? { slug } : {}}
       />
       <NavItem collapsed={collapsed} icon={<ListChecksIcon size={16} />} label="Ergebnisse" />
-      <NavItem collapsed={collapsed} icon={<StarIcon size={16} />} label="Zusatzpunkte" />
+      <NavItem
+        collapsed={collapsed}
+        icon={<StarIcon size={16} />}
+        label="Zusatzpunkte"
+        to="/manager/{-$slug}/zusatzpunkte"
+        params={slug ? { slug } : {}}
+      />
 
       <div className="mt-auto flex flex-col gap-1 pt-4">
         <motion.div
