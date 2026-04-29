@@ -3,7 +3,7 @@ import { updateSession, useSession } from "@tanstack/react-start/server";
 
 import { env } from "#/utils/env.server.ts";
 
-export type ManagerShellSettings = {
+type ManagerShellSettings = {
   sidebarCollapsed: boolean;
   activeSlug?: string;
 };

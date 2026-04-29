@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "ignoreDependencies": [
+    "@libsql/client",
+    "nitro"
+  ],
+  "rules": {
+    "code-duplication": "warn"
+  },
+  "health": {
+    "maxCyclomatic": 30,
+    "maxCognitive": 20,
+    "maxCrap": 99999
+  }
+}

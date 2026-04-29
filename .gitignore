@@ -16,7 +16,4 @@ node_modules/
 # Editor/IDE settings
 .idea/
 
-# TODO: remove the below lines
-# Temporary legacy code folders
-legacy-components/
-legacy-routes/
+.fallow/

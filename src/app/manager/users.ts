@@ -5,7 +5,7 @@ import { managerMiddleware } from "#/app/(auth)/guards.ts";
 import { validateForm } from "#/utils/validate-form.ts";
 import { createUser, getUsers, updateUser } from "#db/dal/users.ts";
 
-export type UserFormState = { success: true } | { error: string } | null;
+type UserFormState = { success: true } | { error: string } | null;
 
 const userSchema = v.object({
   name: v.pipe(v.string(), v.nonEmpty()),

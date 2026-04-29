@@ -5,7 +5,7 @@ import { managerMiddleware } from "#/app/(auth)/guards.ts";
 import { validateForm } from "#/utils/validate-form.ts";
 import { createRuleset, getRulesets, updateRuleset } from "#db/dal/rulesets.ts";
 
-export type RulesetFormState = { success: true } | { error: string } | null;
+type RulesetFormState = { success: true } | { error: string } | null;
 
 const rulesetSchema = v.object({
   id: v.string(),

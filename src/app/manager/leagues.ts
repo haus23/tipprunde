@@ -5,7 +5,7 @@ import { managerMiddleware } from "#/app/(auth)/guards.ts";
 import { validateForm } from "#/utils/validate-form.ts";
 import { createLeague, getLeagues, updateLeague } from "#db/dal/leagues.ts";
 
-export type LeagueFormState = { success: true } | { error: string } | null;
+type LeagueFormState = { success: true } | { error: string } | null;
 
 const leagueSchema = v.object({
   id: v.string(),

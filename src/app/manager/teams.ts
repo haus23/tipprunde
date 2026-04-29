@@ -5,7 +5,7 @@ import { managerMiddleware } from "#/app/(auth)/guards.ts";
 import { validateForm } from "#/utils/validate-form.ts";
 import { createTeam, getTeams, updateTeam } from "#db/dal/teams.ts";
 
-export type TeamFormState = { success: true } | { error: string } | null;
+type TeamFormState = { success: true } | { error: string } | null;
 
 const teamSchema = v.object({
   id: v.string(),

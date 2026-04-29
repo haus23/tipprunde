@@ -14,7 +14,7 @@ type SessionData = {
   role: Role;
 };
 
-export const sessionConfig = {
+const sessionConfig = {
   name: "__session",
   password: env.SESSION_SECRET,
   cookie: {

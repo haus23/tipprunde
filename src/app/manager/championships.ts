@@ -11,7 +11,7 @@ import {
   updateChampionship,
 } from "#db/dal/championships.ts";
 
-export type ChampionshipFormState = { success: true; slug: string } | { error: string } | null;
+type ChampionshipFormState = { success: true; slug: string } | { error: string } | null;
 
 const championshipSchema = v.object({
   slug: v.string(),
@@ -57,7 +57,7 @@ const updateChampionshipDetailsSchema = v.object({
   rulesetId: v.string(),
 });
 
-export type ChampionshipDetailsFormState = { success: true } | { error: string } | null;
+type ChampionshipDetailsFormState = { success: true } | { error: string } | null;
 
 export const updateChampionshipDetailsFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])

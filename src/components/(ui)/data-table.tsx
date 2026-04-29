@@ -20,7 +20,7 @@ import { useCallback, useState } from "react";
 
 import { SearchField, Input } from "#/components/(ui)/text-field.tsx";
 
-export interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   withFilter?: boolean;
