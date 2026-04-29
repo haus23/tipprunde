@@ -87,9 +87,7 @@ export const rounds = sqliteTable(
     completed: integer("completed", { mode: "boolean" }).notNull().default(false),
     isDoubleRound: integer("is_double_round", { mode: "boolean" }),
   },
-  (table) => ({
-    uniq: unique().on(table.championshipId, table.nr),
-  }),
+  (table) => [unique("rounds_championship_nr_uniq").on(table.championshipId, table.nr)],
 );
 
 export const matches = sqliteTable("matches", {
@@ -118,9 +116,7 @@ export const tips = sqliteTable(
     points: integer("points"),
     joker: integer("joker", { mode: "boolean" }),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.matchId, table.userId] }),
-  }),
+  (table) => [primaryKey({ name: "tips_pk", columns: [table.matchId, table.userId] })],
 );
 
 export const players = sqliteTable(
@@ -135,7 +131,5 @@ export const players = sqliteTable(
       .references(() => users.id),
     nr: integer("nr").notNull(),
   },
-  (table) => ({
-    uniq: unique().on(table.championshipId, table.userId),
-  }),
+  (table) => [unique("players_championship_user_uniq").on(table.championshipId, table.userId)],
 );
