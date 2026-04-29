@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.9.0-pre.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0...v0.9.0-pre.0)
+
+### 🚀 Enhancements
+
+- **db:** Add tips table ([39d2401](https://github.com/haus23/tipprunde/commit/39d2401))
+- **tipps:** Add tipps route with round navigator ([366a13e](https://github.com/haus23/tipprunde/commit/366a13e))
+- **tipps:** Add tip entry with player select and match grid ([d77660b](https://github.com/haus23/tipprunde/commit/d77660b))
+- **tipps:** Polish TippGrid — compact input, short team names on mobile, tight columns ([31845bb](https://github.com/haus23/tipprunde/commit/31845bb))
+
+### 🩹 Fixes
+
+- **tipps:** Center tip column, remove placeholder, add document titles ([435bc06](https://github.com/haus23/tipprunde/commit/435bc06))
+- **tipps:** Fix player switch showing stale tips ([3e2814d](https://github.com/haus23/tipprunde/commit/3e2814d))
+
+### 💅 Refactors
+
+- **tipps:** Migrate tips DAL to Drizzle RQB v2 and fix route prop order ([0864a7e](https://github.com/haus23/tipprunde/commit/0864a7e))
+
+### 🏡 Chore
+
+- Update dependencies. ([513856e](https://github.com/haus23/tipprunde/commit/513856e))
+
 ## v0.8.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0-pre.5...v0.8.0)
