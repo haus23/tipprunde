@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.0-pre.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/vv1.0.0-pre.0-9-g96fdb7691affd2886d9d4e17e634171836c4e6c6...v1.0.0-pre.1)
+
 ## vv1.0.0-pre.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0-pre.4...vv1.0.0-pre.0)
