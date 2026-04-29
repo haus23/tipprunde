@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { ClipboardPasteIcon } from "lucide-react";
+
 import { fetchTipsFn, saveTipFn } from "#/app/manager/tips.ts";
 import { Checkbox } from "#/components/(ui)/checkbox.tsx";
 import type { Match } from "#db/dal/matches.ts";
@@ -54,10 +56,9 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
     };
   }, [roundId, userId]);
 
-  async function handlePaste(e: React.ClipboardEvent<HTMLInputElement>, matchId: number) {
-    e.preventDefault();
-    const rawTips = e.clipboardData.getData("text").trimEnd().split(/\r?\n/);
-    const startIndex = matches.findIndex((m) => m.id === matchId);
+  async function applyPastedTips(text: string, startMatchId: number) {
+    const rawTips = text.trimEnd().split(/\r?\n/);
+    const startIndex = matches.findIndex((m) => m.id === startMatchId);
     const affected = matches.slice(startIndex, startIndex + rawTips.length);
 
     const updates = affected.map((match, i) => {
@@ -90,6 +91,16 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
     );
   }
 
+  async function handlePaste(e: React.ClipboardEvent<HTMLInputElement>, matchId: number) {
+    e.preventDefault();
+    await applyPastedTips(e.clipboardData.getData("text"), matchId);
+  }
+
+  async function handleClipboardButton() {
+    const text = await navigator.clipboard.readText();
+    if (text && matches[0]) await applyPastedTips(text, matches[0].id);
+  }
+
   async function handleBlur(matchId: number) {
     const { tip, joker } = tipState[matchId] ?? { tip: "", joker: false };
     const normalized = normalizeTip(tip);
@@ -108,6 +119,16 @@ export function TippGrid({ roundId, userId, matches, teams }: Props) {
 
   return (
     <div className="bg-surface border-surface rounded-md border px-4 py-2">
+      <div className="flex justify-end py-1">
+        <button
+          type="button"
+          onClick={handleClipboardButton}
+          title="Tipps aus Zwischenablage einfügen"
+          className="text-subtle hover:bg-subtle focus-visible:ring-focus rounded-md p-1.5 outline-none focus-visible:ring-2"
+        >
+          <ClipboardPasteIcon size={16} />
+        </button>
+      </div>
       <table className="w-full text-sm">
         <thead>
           <tr className="border-input border-b text-left">
