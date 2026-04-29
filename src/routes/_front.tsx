@@ -28,12 +28,12 @@ function FrontLayout() {
             <Link to="/tabelle" className={navLinkClass}>
               Tabelle
             </Link>
-            <a href="/spieler" className={navLinkClass}>
+            <Link to="/spieler" className={navLinkClass}>
               Spieler
-            </a>
-            <a href="/spiele" className={navLinkClass}>
+            </Link>
+            <Link to="/spiele" className={navLinkClass}>
               Spiele
-            </a>
+            </Link>
           </nav>
           <ColorSchemeSwitch />
         </div>
