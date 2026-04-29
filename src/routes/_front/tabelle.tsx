@@ -31,7 +31,9 @@ function RouteComponent() {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">{championship.name}</h1>
+      <h1 className="mb-6 text-2xl font-semibold tracking-tight">
+        {championship.name} – {championship.completed ? "Abschlusstabelle" : "Aktuelle Tabelle"}
+      </h1>
       <div className="bg-surface border-surface rounded-md border px-4 py-2">
         <table className="w-full text-sm">
           <thead>
