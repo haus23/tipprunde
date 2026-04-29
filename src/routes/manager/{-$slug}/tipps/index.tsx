@@ -75,6 +75,15 @@ function RouteComponent() {
     );
   }
 
+  if (players.length === 0) {
+    return (
+      <div className="flex flex-col gap-6">
+        <h1 className="text-2xl font-medium md:hidden">Tipps</h1>
+        <p className="text-subtle text-sm">Noch keine Spieler im Turnier.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-medium md:hidden">Tipps</h1>
