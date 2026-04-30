@@ -85,11 +85,13 @@ function ManagerShell({ currentChampionship, slug, children }: ShellProps) {
       <MobileNav slug={slug} />
 
       <motion.div
+        initial={false}
         animate={{ marginLeft: sidebarOffset }}
         transition={transition}
         className="flex flex-1 flex-col"
       >
         <motion.header
+          initial={false}
           animate={{ left: sidebarOffset }}
           transition={transition}
           className="border-layout bg-base fixed top-0 right-0 z-10 flex h-14 items-center justify-between border-b px-4"

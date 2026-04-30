@@ -55,6 +55,7 @@ function NavItem({ icon, label, to, collapsed: collapsedProp, ...linkProps }: Na
     <>
       <span className="shrink-0">{icon}</span>
       <motion.span
+        initial={false}
         animate={{ opacity: isCollapsed ? 0 : 1, width: isCollapsed ? 0 : "auto" }}
         transition={transition}
         className="overflow-hidden whitespace-nowrap"
@@ -136,6 +137,7 @@ function NavContent({
 
       <div className="mt-auto flex flex-col gap-1 pt-4">
         <motion.div
+          initial={false}
           animate={{ opacity: collapsed ? 0 : 1, height: collapsed ? 0 : "auto" }}
           transition={transition}
           className="text-subtle overflow-hidden px-3 py-1 text-xs font-medium tracking-wide uppercase"
@@ -188,6 +190,7 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
 
   return (
     <motion.aside
+      initial={false}
       animate={{ width: isSidebarCollapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH }}
       transition={transition}
       className="border-layout fixed inset-y-0 left-0 hidden flex-col border-r md:flex"
@@ -196,12 +199,13 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
       <div className="flex h-14 shrink-0 items-center p-2">
         <Link
           to="/"
-          className="focus-visible:ring-focus flex w-full items-center gap-2 overflow-hidden rounded-md px-2 py-1 outline-none focus-visible:ring-2"
+          className="focus-visible:ring-focus flex w-full items-center gap-2 overflow-hidden rounded-md p-1 outline-none focus-visible:ring-2"
         >
           <span className="size-8 shrink-0">
             <Logo />
           </span>
           <motion.span
+            initial={false}
             animate={{
               opacity: isSidebarCollapsed ? 0 : 1,
               width: isSidebarCollapsed ? 0 : "auto",
@@ -227,6 +231,7 @@ export function Sidebar({ slug }: { slug: string | undefined }) {
               >
                 <LogOutIcon size={16} className="shrink-0" />
                 <motion.span
+                  initial={false}
                   animate={{
                     opacity: isSidebarCollapsed ? 0 : 1,
                     width: isSidebarCollapsed ? 0 : "auto",
