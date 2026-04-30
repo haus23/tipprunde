@@ -144,6 +144,24 @@
   );
 }
 
+@supports selector(::details-content) and (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  ::details-content {
+    transition:
+      height 0.3s ease,
+      content-visibility 0.3s allow-discrete;
+    height: 0;
+    overflow: clip;
+  }
+
+  [open]::details-content {
+    height: auto;
+  }
+}
+
 ::view-transition-new(.toast):only-child {
   animation: toast-enter 300ms ease-out;
 }

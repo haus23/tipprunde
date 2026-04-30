@@ -86,7 +86,7 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
           </p>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-0.5">
           {publishedRounds.length === 0 ? (
             <p className="text-subtle px-4 text-sm">Noch keine Runden gespielt.</p>
           ) : (
@@ -95,7 +95,7 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                 key={round.id}
                 name="runden"
                 open={i === publishedRounds.length - 1}
-                className="group bg-surface border-surface xs:rounded-md xs:border border-y"
+                className="group bg-surface border-surface xs:rounded-md xs:border border-y transition-[margin] duration-300 ease-out open:my-3 open:first:mt-0 open:last:mb-0"
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 select-none">
                   <span className="text-sm font-medium">Runde {round.nr}</span>
