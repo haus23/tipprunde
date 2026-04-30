@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.0.0-pre.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.2...v1.0.0-pre.3)
+
+### 🚀 Enhancements
+
+- **manager:** Add "Neue Runde" button to matches page ([e9922ff](https://github.com/haus23/tipprunde/commit/e9922ff))
+- **front:** Add link to full table on landing page ([d278917](https://github.com/haus23/tipprunde/commit/d278917))
+- **front:** Spieler-Seite mit Tipps nach Runden gruppiert ([25bab2d](https://github.com/haus23/tipprunde/commit/25bab2d))
+
+### 🩹 Fixes
+
+- **front:** Only show matches from published rounds in Aktuelle Spiele ([b77f458](https://github.com/haus23/tipprunde/commit/b77f458))
+- **manager:** New matches in a round now appear immediately after creation ([210c850](https://github.com/haus23/tipprunde/commit/210c850))
+- **manager:** Match nr now increments championship-wide, not per round ([34201cf](https://github.com/haus23/tipprunde/commit/34201cf))
+- **manager:** Suppress mount animations in shell and sidebar ([3d45855](https://github.com/haus23/tipprunde/commit/3d45855))
+
 ## v1.0.0-pre.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.1...v1.0.0-pre.2)
