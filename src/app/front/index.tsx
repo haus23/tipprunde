@@ -73,7 +73,12 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
 
   const withResult = datedMatches.filter((m) => m.result !== null);
   const withoutResult = datedMatches.filter((m) => m.result === null);
-  const currentMatches = [...withResult.slice(-2), ...withoutResult.slice(0, 2)];
+  const openCount = Math.min(withoutResult.length, 4 - Math.min(withResult.length, 2));
+  const closedCount = Math.min(withResult.length, 4 - openCount);
+  const currentMatches = [
+    ...withResult.slice(withResult.length - closedCount),
+    ...withoutResult.slice(0, openCount),
+  ].sort((a, b) => a.date!.localeCompare(b.date!));
 
   const IndexView = () => (
     <div className="mx-auto w-full max-w-5xl px-4 py-8">
