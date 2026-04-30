@@ -1,12 +1,13 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import * as v from "valibot";
 
 import { fetchCurrentChampionshipFn } from "#/app/manager/championships.ts";
 import { fetchLeaguesFn } from "#/app/manager/leagues.ts";
 import { fetchMatchesForRoundFn } from "#/app/manager/matches.ts";
-import { fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
+import { createRoundFn, fetchChampionshipRoundsFn } from "#/app/manager/rounds.ts";
 import { fetchTeamsFn } from "#/app/manager/teams.ts";
+import { Button } from "#/components/(ui)/button.tsx";
 import { RundenNavigator } from "#/components/manager/runden-navigator.tsx";
 import type { Match } from "#db/dal/matches.ts";
 
@@ -37,6 +38,7 @@ function RouteComponent() {
   const { championship, rounds, matchesByRound, leagues, teams } = Route.useLoaderData();
   const { runde } = Route.useSearch();
   const navigate = useNavigate({ from: "/manager/{-$slug}/spiele/" });
+  const router = useRouter();
 
   const currentIndex = runde
     ? Math.max(
@@ -62,11 +64,21 @@ function RouteComponent() {
     setEditMatch(null);
   }
 
+  async function handleAddRound() {
+    if (!championship) return;
+    await createRoundFn({ data: championship.id });
+    void navigate({ search: (prev) => ({ ...prev, runde: undefined }), replace: true });
+    void router.invalidate();
+  }
+
   if (rounds.length === 0) {
     return (
       <div className="flex flex-col gap-6">
         <h1 className="text-2xl font-medium md:hidden">Spiele</h1>
-        <p className="text-subtle text-sm">Noch keine Runden angelegt.</p>
+        <div className="flex items-center gap-4">
+          <p className="text-subtle text-sm">Noch keine Runden angelegt.</p>
+          {championship && <Button onPress={handleAddRound}>Neue Runde</Button>}
+        </div>
       </div>
     );
   }
@@ -75,7 +87,10 @@ function RouteComponent() {
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-medium md:hidden">Spiele</h1>
 
-      <RundenNavigator rounds={rounds} currentIndex={currentIndex} onNavigate={goToRound} />
+      <div className="flex items-center justify-between">
+        <RundenNavigator rounds={rounds} currentIndex={currentIndex} onNavigate={goToRound} />
+        <Button onPress={handleAddRound}>Neue Runde</Button>
+      </div>
 
       <SpielForm
         championshipId={championship!.id}
