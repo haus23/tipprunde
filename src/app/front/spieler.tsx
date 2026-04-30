@@ -106,30 +106,30 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                 open={i === defaultOpenIndex}
                 className="group bg-surface border-surface xs:rounded-md xs:border border-y transition-[margin] duration-300 ease-out open:my-3 open:first:mt-0 open:last:mb-0"
               >
-                <summary className="focus-visible:ring-focus xs:rounded-md flex cursor-pointer list-none items-center justify-between px-4 py-3 outline-none select-none focus-visible:ring-2 focus-visible:ring-inset">
+                <summary className="focus-visible:ring-focus xs:rounded-md xs:px-4 flex cursor-pointer list-none items-center justify-between px-2 py-3 outline-none select-none focus-visible:ring-2 focus-visible:ring-inset">
                   <span className="text-sm font-medium">Runde {round.nr}</span>
                   <ChevronDownIcon
                     size={14}
                     className="text-subtle transition-transform duration-200 group-open:rotate-180"
                   />
                 </summary>
-                <div className="border-input border-t px-4 py-2">
+                <div className="border-input xs:px-4 border-t px-2 py-2">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-input border-b text-left">
-                        <th className="text-subtle w-px px-2 pt-2 pb-3 text-right text-xs font-medium tracking-wide uppercase">
+                        <th className="text-subtle xs:px-2 w-px px-1 pt-2 pb-3 text-right text-xs font-medium tracking-wide uppercase">
                           #
                         </th>
-                        <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
+                        <th className="text-subtle xs:px-2 px-1 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
                           Paarung
                         </th>
-                        <th className="text-subtle w-px px-2 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
+                        <th className="text-subtle xs:px-2 w-px px-1 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
                           Erg.
                         </th>
-                        <th className="text-subtle w-px px-2 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
+                        <th className="text-subtle xs:px-2 w-px px-1 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
                           Tipp
                         </th>
-                        <th className="text-subtle w-px px-2 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
+                        <th className="text-subtle xs:px-2 w-px px-1 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
                           Pkt
                         </th>
                       </tr>
@@ -140,8 +140,10 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                         const showTip = round.tipsPublished && tip?.tip;
                         return (
                           <tr key={match.id} className="border-input border-b last:border-b-0">
-                            <td className="w-px px-2 py-3 text-right tabular-nums">{match.nr}</td>
-                            <td className="px-2 py-3">
+                            <td className="xs:px-2 w-px px-1 py-3 text-right tabular-nums">
+                              {match.nr}
+                            </td>
+                            <td className="xs:px-2 px-1 py-3">
                               <span className="hidden sm:inline">
                                 {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
                               </span>
@@ -150,18 +152,18 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                                 {match.awayteam?.shortName ?? "–"}
                               </span>
                             </td>
-                            <td className="w-px px-2 py-3 text-center tabular-nums">
+                            <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                               {match.result ?? "–:–"}
                             </td>
-                            <td className="relative w-px px-6 py-3 text-center tabular-nums">
+                            <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
                               {showTip ? tip.tip : "–"}
                               {showTip && tip.joker && (
-                                <span className="text-accent absolute top-1/2 right-1 -translate-y-1/2">
+                                <span className="text-accent xs:right-1 absolute top-1/2 -right-1.25 -translate-y-1/2">
                                   ★
                                 </span>
                               )}
                             </td>
-                            <td className="w-px px-2 py-3 text-center tabular-nums">
+                            <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                               {tip?.points != null ? tip.points : "–"}
                             </td>
                           </tr>
