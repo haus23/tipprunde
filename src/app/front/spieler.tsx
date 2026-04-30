@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { eq, sum } from "drizzle-orm";
+import { ChevronDownIcon } from "lucide-react";
 import * as v from "valibot";
 
 import { computeRanking } from "#/domain/ranking.ts";
@@ -89,12 +90,21 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
           {publishedRounds.length === 0 ? (
             <p className="text-subtle px-4 text-sm">Noch keine Runden gespielt.</p>
           ) : (
-            publishedRounds.map((round) => (
-              <div key={round.id}>
-                <div className="xs:px-0 mb-2 px-4">
-                  <h2 className="text-sm font-medium">Runde {round.nr}</h2>
-                </div>
-                <div className="bg-surface border-surface xs:rounded-md xs:border border-y px-4 py-2">
+            publishedRounds.map((round, i) => (
+              <details
+                key={round.id}
+                name="runden"
+                open={i === publishedRounds.length - 1}
+                className="group bg-surface border-surface xs:rounded-md xs:border border-y"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 select-none">
+                  <span className="text-sm font-medium">Runde {round.nr}</span>
+                  <ChevronDownIcon
+                    size={14}
+                    className="text-subtle transition-transform duration-200 group-open:rotate-180"
+                  />
+                </summary>
+                <div className="border-input border-t px-4 py-2">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-input border-b text-left">
@@ -154,7 +164,7 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                     </tbody>
                   </table>
                 </div>
-              </div>
+              </details>
             ))
           )}
         </div>
