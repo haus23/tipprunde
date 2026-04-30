@@ -56,7 +56,7 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
   // Aktuelle Spiele
   const roundIds = (
     await db.query.rounds.findMany({
-      where: { championshipId: championship.id },
+      where: { championshipId: championship.id, published: true },
       columns: { id: true },
     })
   ).map((r) => r.id);
