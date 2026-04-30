@@ -61,17 +61,10 @@ export const Route = createFileRoute("/manager/{-$slug}/ergebnisse/")({
 
 type ResultState = Record<number, { result: string; invalid?: boolean }>;
 
-function RouteComponent() {
-  const { rounds, matches, teams, currentIndex } = Route.useLoaderData();
-  const navigate = useNavigate({ from: "/manager/{-$slug}/ergebnisse/" });
-
+function ResultTable({ matches, teams }: { matches: Match[]; teams: Team[] }) {
   const [resultState, setResultState] = useState<ResultState>(() =>
     Object.fromEntries(matches.map((m) => [m.id, { result: m.result ?? "" }])),
   );
-
-  function goToRound(index: number) {
-    void navigate({ search: { runde: rounds[index].nr }, replace: true });
-  }
 
   async function handleBlur(match: Match) {
     const raw = resultState[match.id]?.result ?? "";
@@ -91,6 +84,74 @@ function RouteComponent() {
     });
   }
 
+  return (
+    <div className="bg-surface border-surface rounded-md border px-4 py-2">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-input border-b text-left">
+            <th className="text-subtle w-px px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
+              #
+            </th>
+            <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
+              Spiel
+            </th>
+            <th className="text-subtle w-px px-1 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
+              Ergebnis
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {matches.length === 0 ? (
+            <tr>
+              <td colSpan={3} className="text-subtle px-2 py-6 text-center">
+                Noch keine Spiele in dieser Runde.
+              </td>
+            </tr>
+          ) : (
+            matches.map((match) => (
+              <tr key={match.id} className="border-input border-b last:border-b-0">
+                <td className="w-px px-2 py-2">{match.nr}</td>
+                <td className="px-2 py-2">
+                  <span className="md:hidden">
+                    {teamShortName(teams, match.hometeamId)} –{" "}
+                    {teamShortName(teams, match.awayteamId)}
+                  </span>
+                  <span className="hidden md:inline">
+                    {teamName(teams, match.hometeamId)} – {teamName(teams, match.awayteamId)}
+                  </span>
+                </td>
+                <td className="px-1 py-1.5 text-center">
+                  <input
+                    type="text"
+                    value={resultState[match.id]?.result ?? ""}
+                    onChange={(e) =>
+                      setResultState((prev) => ({
+                        ...prev,
+                        [match.id]: { result: e.target.value, invalid: false },
+                      }))
+                    }
+                    onBlur={() => handleBlur(match)}
+                    aria-invalid={resultState[match.id]?.invalid}
+                    className="border-input focus-visible:ring-focus aria-invalid:border-error aria-invalid:text-error w-12 rounded-md border bg-transparent px-2 py-1 text-center text-sm outline-none focus-visible:ring-2"
+                  />
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function RouteComponent() {
+  const { rounds, matches, teams, currentIndex } = Route.useLoaderData();
+  const navigate = useNavigate({ from: "/manager/{-$slug}/ergebnisse/" });
+
+  function goToRound(index: number) {
+    void navigate({ search: { runde: rounds[index].nr }, replace: true });
+  }
+
   if (rounds.length === 0) {
     return (
       <div className="flex flex-col gap-6">
@@ -104,62 +165,7 @@ function RouteComponent() {
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-medium md:hidden">Ergebnisse</h1>
       <RundenNavigator rounds={rounds} currentIndex={currentIndex} onNavigate={goToRound} />
-      <div className="bg-surface border-surface rounded-md border px-4 py-2">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-input border-b text-left">
-              <th className="text-subtle w-px px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
-                #
-              </th>
-              <th className="text-subtle px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
-                Spiel
-              </th>
-              <th className="text-subtle w-px px-1 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
-                Ergebnis
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {matches.length === 0 ? (
-              <tr>
-                <td colSpan={3} className="text-subtle px-2 py-6 text-center">
-                  Noch keine Spiele in dieser Runde.
-                </td>
-              </tr>
-            ) : (
-              matches.map((match) => (
-                <tr key={match.id} className="border-input border-b last:border-b-0">
-                  <td className="w-px px-2 py-2">{match.nr}</td>
-                  <td className="px-2 py-2">
-                    <span className="md:hidden">
-                      {teamShortName(teams, match.hometeamId)} –{" "}
-                      {teamShortName(teams, match.awayteamId)}
-                    </span>
-                    <span className="hidden md:inline">
-                      {teamName(teams, match.hometeamId)} – {teamName(teams, match.awayteamId)}
-                    </span>
-                  </td>
-                  <td className="px-1 py-1.5 text-center">
-                    <input
-                      type="text"
-                      value={resultState[match.id]?.result ?? ""}
-                      onChange={(e) =>
-                        setResultState((prev) => ({
-                          ...prev,
-                          [match.id]: { result: e.target.value, invalid: false },
-                        }))
-                      }
-                      onBlur={() => handleBlur(match)}
-                      aria-invalid={resultState[match.id]?.invalid}
-                      className="border-input focus-visible:ring-focus aria-invalid:border-error aria-invalid:text-error w-12 rounded-md border bg-transparent px-2 py-1 text-center text-sm outline-none focus-visible:ring-2"
-                    />
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      <ResultTable key={rounds[currentIndex].id} matches={matches} teams={teams} />
     </div>
   );
 }
