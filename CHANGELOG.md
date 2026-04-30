@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.0.0-pre.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.3...v1.0.0-pre.4)
+
+### 🚀 Enhancements
+
+- **front:** Runden als exklusives Akkordion auf Spieler-Seite ([23ce26f](https://github.com/haus23/tipprunde/commit/23ce26f))
+- **spieler:** Animate details accordion with spacing effect ([0a42e43](https://github.com/haus23/tipprunde/commit/0a42e43))
+- **spieler:** Add player switcher and focus styles ([3e66a1a](https://github.com/haus23/tipprunde/commit/3e66a1a))
+- **spieler:** Open last round with results by default ([bcb3df6](https://github.com/haus23/tipprunde/commit/bcb3df6))
+- **index:** Show up to 4 current matches with 2+2 target split ([5b07a27](https://github.com/haus23/tipprunde/commit/5b07a27))
+- **spieler:** Position joker star absolutely to the right of tip ([1d08e24](https://github.com/haus23/tipprunde/commit/1d08e24))
+- **spieler:** Tighten horizontal padding below xs breakpoint ([2938ce6](https://github.com/haus23/tipprunde/commit/2938ce6))
+- **spieler:** Add TipFlag component with tooltip for joker marker ([306549a](https://github.com/haus23/tipprunde/commit/306549a))
+
+### 🩹 Fixes
+
+- **manager:** Ergebnisse-Ansicht zeigt Spiele nach Rundenwechsel korrekt ([7fdeda5](https://github.com/haus23/tipprunde/commit/7fdeda5))
+
 ## v1.0.0-pre.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.2...v1.0.0-pre.3)
