@@ -19,6 +19,7 @@ export function SpielerSelect({ players, currentSlug }: Props) {
 
   return (
     <Select
+      name="spieler-switch"
       value={currentSlug}
       onChange={(slug) => {
         void navigate({ to: "/spieler", search: { name: String(slug) } });

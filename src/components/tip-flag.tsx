@@ -1,23 +1,52 @@
 "use client";
 
-import { Button, Tooltip, TooltipTrigger } from "react-aria-components";
+import { useLayoutEffect, useRef, useState } from "react";
+import { Button, Popover } from "react-aria-components";
 
 interface Props {
   label: string;
 }
 
 export function TipFlag({ label }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const popoverRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+    function handleOutsideClick(ev: PointerEvent) {
+      if (
+        buttonRef.current?.contains(ev.target as Node) ||
+        popoverRef.current?.contains(ev.target as Node)
+      )
+        return;
+      setIsOpen(false);
+    }
+    window.addEventListener("pointerdown", handleOutsideClick, { capture: true });
+    return () => window.removeEventListener("pointerdown", handleOutsideClick, { capture: true });
+  }, [isOpen]);
+
   return (
-    <TooltipTrigger delay={300}>
-      <Button className="text-accent focus-visible:ring-focus xs:right-1 absolute top-1/2 -right-1.25 -translate-y-1/2 cursor-default rounded outline-none focus-visible:ring-1">
+    <>
+      <Button
+        ref={buttonRef}
+        onPress={() => setIsOpen((v) => !v)}
+        aria-label="Zusatzinfos zum Tipp"
+        className="text-accent focus-visible:ring-focus xs:right-1 absolute top-1/2 -right-1.25 -translate-y-1/2 cursor-default rounded outline-none focus-visible:ring-1"
+      >
         ★
       </Button>
-      <Tooltip
-        placement="top"
-        className="bg-inverted text-inverted rounded px-2 py-1 text-xs data-entering:animate-[tooltip-enter_150ms_ease-out] data-exiting:animate-[tooltip-exit_100ms_ease-in_forwards]"
+      <Popover
+        ref={popoverRef}
+        triggerRef={buttonRef}
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        isNonModal
+        placement="bottom"
+        className="bg-inverted text-inverted rounded px-2 py-1 text-xs data-entering:animate-[popover-enter_150ms_ease-out] data-exiting:animate-[popover-exit_100ms_ease-in_forwards]"
       >
         {label}
-      </Tooltip>
-    </TooltipTrigger>
+      </Popover>
+    </>
   );
 }
