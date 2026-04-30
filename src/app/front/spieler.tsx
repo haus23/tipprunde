@@ -78,6 +78,11 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
       },
     });
 
+    const lastResultIndex = publishedRounds.findLastIndex((r) =>
+      r.matches.some((m) => m.result !== null),
+    );
+    const defaultOpenIndex = lastResultIndex >= 0 ? lastResultIndex : 0;
+
     const SpielerView = () => (
       <div className="xs:px-4 mx-auto w-full max-w-5xl py-8">
         <div className="xs:px-0 mb-6 flex flex-col gap-2 px-4">
@@ -98,7 +103,7 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
               <details
                 key={round.id}
                 name="runden"
-                open={i === publishedRounds.length - 1}
+                open={i === defaultOpenIndex}
                 className="group bg-surface border-surface xs:rounded-md xs:border border-y transition-[margin] duration-300 ease-out open:my-3 open:first:mt-0 open:last:mb-0"
               >
                 <summary className="focus-visible:ring-focus xs:rounded-md flex cursor-pointer list-none items-center justify-between px-4 py-3 outline-none select-none focus-visible:ring-2 focus-visible:ring-inset">
