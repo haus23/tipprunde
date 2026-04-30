@@ -5,18 +5,11 @@ import { eq, sum } from "drizzle-orm";
 
 import { Card } from "#/components/card.tsx";
 import { computeRanking } from "#/domain/ranking.ts";
+import { formatDate } from "#/utils/format-date.ts";
 import { db } from "#db";
 import { getLatestPublishedChampionship } from "#db/dal/championships.ts";
 import { getPlayers } from "#db/dal/players.ts";
 import { matches, rounds, tips } from "#db/schema/tables.ts";
-
-function formatDate(date: string) {
-  const d = new Date(date);
-  if (d.getFullYear() === new Date().getFullYear()) {
-    return d.toLocaleDateString("de-DE", { day: "numeric", month: "short" });
-  }
-  return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "2-digit" });
-}
 
 export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () => {
   const championship = await getLatestPublishedChampionship();

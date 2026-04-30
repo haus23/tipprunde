@@ -7,6 +7,7 @@ import * as v from "valibot";
 import { SpielerSelect } from "#/components/spieler-select.tsx";
 import { TipFlag } from "#/components/tip-flag.tsx";
 import { computeRanking } from "#/domain/ranking.ts";
+import { formatDate } from "#/utils/format-date.ts";
 import { db } from "#db";
 import { getLatestPublishedChampionship } from "#db/dal/championships.ts";
 import { getPlayers } from "#db/dal/players.ts";
@@ -121,6 +122,9 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                         <th className="text-subtle xs:px-2 w-px px-1 pt-2 pb-3 text-right text-xs font-medium tracking-wide uppercase">
                           #
                         </th>
+                        <th className="text-subtle hidden w-px px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase md:table-cell">
+                          Datum
+                        </th>
                         <th className="text-subtle xs:px-2 px-1 pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
                           Paarung
                         </th>
@@ -143,6 +147,9 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                           <tr key={match.id} className="border-input border-b last:border-b-0">
                             <td className="xs:px-2 w-px px-1 py-3 text-right tabular-nums">
                               {match.nr}
+                            </td>
+                            <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
+                              {match.date ? formatDate(match.date) : "–"}
                             </td>
                             <td className="xs:px-2 px-1 py-3">
                               <span className="hidden sm:inline">
