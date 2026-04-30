@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
 import { createMatchFn, fetchMatchesForRoundFn, updateMatchFn } from "#/app/manager/matches.ts";
@@ -30,7 +29,6 @@ export function SpielForm({
   onSaved,
   onCancel,
 }: Props) {
-  const router = useRouter();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -85,7 +83,6 @@ export function SpielForm({
       setLeagueId(null);
       setHometeamId(null);
       setAwayteamId(null);
-      void router.invalidate();
     } catch {
       setError("Spiel konnte nicht gespeichert werden.");
     } finally {
