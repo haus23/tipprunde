@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { eq, sum } from "drizzle-orm";
@@ -181,19 +182,31 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                           return (
                             <tr key={match.id} className="border-input border-b last:border-b-0">
                               <td className="xs:px-2 w-px px-1 py-3 text-right tabular-nums">
-                                {match.nr}
+                                <Link
+                                  to="/spiele"
+                                  search={{ nr: match.nr }}
+                                  className="focus-visible:ring-focus hover:text-foreground text-subtle rounded transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                                >
+                                  {match.nr}
+                                </Link>
                               </td>
                               <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
                                 {match.date ? formatDate(match.date) : "–"}
                               </td>
                               <td className="xs:px-2 px-1 py-3">
-                                <span className="hidden sm:inline">
-                                  {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
-                                </span>
-                                <span className="sm:hidden">
-                                  {match.hometeam?.shortName ?? "–"} –{" "}
-                                  {match.awayteam?.shortName ?? "–"}
-                                </span>
+                                <Link
+                                  to="/spiele"
+                                  search={{ nr: match.nr }}
+                                  className="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                                >
+                                  <span className="hidden sm:inline">
+                                    {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
+                                  </span>
+                                  <span className="sm:hidden">
+                                    {match.hometeam?.shortName ?? "–"} –{" "}
+                                    {match.awayteam?.shortName ?? "–"}
+                                  </span>
+                                </Link>
                               </td>
                               <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                                 {match.result ?? "–:–"}

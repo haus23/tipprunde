@@ -1,14 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
+import * as v from "valibot";
+
+import { fetchSpieleFn } from "#/app/front/spiele.tsx";
 
 export const Route = createFileRoute("/_front/spiele")({
-  head: () => ({ meta: [{ title: "Spiele" }] }),
+  validateSearch: v.object({ nr: v.optional(v.number()) }),
+  loaderDeps: ({ search: { nr } }) => ({ nr }),
+  loader: ({ deps }) => fetchSpieleFn({ data: { nr: deps.nr } }),
+  head: ({ loaderData }) => ({
+    meta: [{ title: loaderData?.title ?? "Spiele" }],
+  }),
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8">
-      <h1 className="text-2xl font-semibold tracking-tight">Spiele</h1>
-    </div>
-  );
+  const { Renderable } = Route.useLoaderData();
+  return <>{Renderable}</>;
 }
