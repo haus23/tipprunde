@@ -153,15 +153,12 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                             <td className="w-px px-2 py-3 text-center tabular-nums">
                               {match.result ?? "–:–"}
                             </td>
-                            <td className="w-px px-2 py-3 text-center tabular-nums">
-                              {showTip ? (
-                                tip.joker ? (
-                                  <span className="font-medium">{tip.tip} ★</span>
-                                ) : (
-                                  tip.tip
-                                )
-                              ) : (
-                                "–"
+                            <td className="relative w-px px-6 py-3 text-center tabular-nums">
+                              {showTip ? tip.tip : "–"}
+                              {showTip && tip.joker && (
+                                <span className="text-accent absolute top-1/2 right-1 -translate-y-1/2">
+                                  ★
+                                </span>
                               )}
                             </td>
                             <td className="w-px px-2 py-3 text-center tabular-nums">
