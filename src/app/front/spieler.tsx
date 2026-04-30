@@ -4,6 +4,7 @@ import { eq, sum } from "drizzle-orm";
 import { ChevronDownIcon } from "lucide-react";
 import * as v from "valibot";
 
+import { SpielerSelect } from "#/components/spieler-select.tsx";
 import { computeRanking } from "#/domain/ranking.ts";
 import { db } from "#db";
 import { getLatestPublishedChampionship } from "#db/dal/championships.ts";
@@ -79,8 +80,11 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
 
     const SpielerView = () => (
       <div className="xs:px-4 mx-auto w-full max-w-5xl py-8">
-        <div className="xs:px-0 mb-6 flex flex-col gap-1 px-4">
-          <h1 className="text-2xl font-semibold tracking-tight">{player.name}</h1>
+        <div className="xs:px-0 mb-6 flex flex-col gap-2 px-4">
+          <SpielerSelect
+            players={ranking.map((e) => ({ slug: e.slug, name: e.name }))}
+            currentSlug={player.slug}
+          />
           <p className="text-subtle text-sm">
             {championship.name} · Platz {player.rank} · {player.points} Punkte
           </p>
@@ -97,7 +101,7 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                 open={i === publishedRounds.length - 1}
                 className="group bg-surface border-surface xs:rounded-md xs:border border-y transition-[margin] duration-300 ease-out open:my-3 open:first:mt-0 open:last:mb-0"
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 select-none">
+                <summary className="focus-visible:ring-focus xs:rounded-md flex cursor-pointer list-none items-center justify-between px-4 py-3 outline-none select-none focus-visible:ring-2 focus-visible:ring-inset">
                   <span className="text-sm font-medium">Runde {round.nr}</span>
                   <ChevronDownIcon
                     size={14}

@@ -45,7 +45,7 @@ export const fetchTabelleFn = createServerFn({ method: "GET" }).handler(async ()
 
   const TabelleView = () => (
     <div className="xs:px-4 mx-auto w-full max-w-5xl py-8">
-      <div className="xs:px-0 mb-6 flex flex-col gap-1 px-4">
+      <div className="xs:px-0 mb-6 flex flex-col gap-2 px-4">
         <h1 className="text-2xl font-semibold tracking-tight">{championship.name}</h1>
         <p className="text-subtle text-sm">{subtitle}</p>
       </div>
