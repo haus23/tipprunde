@@ -4,10 +4,17 @@ import * as v from "valibot";
 import { managerMiddleware } from "#/app/(auth)/guards.ts";
 import type { TipRuleId } from "#/domain/rules.ts";
 import { scoreTip } from "#/domain/scoring.ts";
-import { createMatch, getMatches, getMatchWithRuleset, updateMatch } from "#db/dal/matches.ts";
+import {
+  createMatch,
+  getMatches,
+  getMatchWithRuleset,
+  getMaxMatchNr,
+  updateMatch,
+} from "#db/dal/matches.ts";
 import { getTipsByMatch, setTipPoints } from "#db/dal/tips.ts";
 
 const matchSchema = v.object({
+  championshipId: v.number(),
   roundId: v.number(),
   date: v.nullable(v.string()),
   leagueId: v.nullable(v.string()),
@@ -18,7 +25,7 @@ const matchSchema = v.object({
 
 const updateMatchSchema = v.object({
   id: v.number(),
-  ...v.omit(matchSchema, ["roundId"]).entries,
+  ...v.omit(matchSchema, ["championshipId", "roundId"]).entries,
 });
 
 export const fetchMatchesForRoundFn = createServerFn({ method: "GET" })
@@ -30,7 +37,9 @@ export const createMatchFn = createServerFn({ method: "POST" })
   .middleware([managerMiddleware])
   .inputValidator(matchSchema)
   .handler(async ({ data }): Promise<void> => {
-    await createMatch(data);
+    const { championshipId, ...matchData } = data;
+    const maxNr = await getMaxMatchNr(championshipId);
+    await createMatch({ ...matchData, nr: maxNr + 1 });
   });
 
 export const updateMatchFn = createServerFn({ method: "POST" })

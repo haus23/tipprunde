@@ -3,7 +3,7 @@ import { eq, max } from "drizzle-orm";
 
 import { db } from "#db";
 
-import { matches } from "../schema/tables.ts";
+import { matches, rounds } from "../schema/tables.ts";
 
 export type Match = typeof matches.$inferSelect;
 
@@ -14,14 +14,18 @@ export const getMatches = createServerOnlyFn(async (roundId: number) =>
   }),
 );
 
+export const getMaxMatchNr = createServerOnlyFn(async (championshipId: number) => {
+  const [{ maxNr }] = await db
+    .select({ maxNr: max(matches.nr) })
+    .from(matches)
+    .innerJoin(rounds, eq(matches.roundId, rounds.id))
+    .where(eq(rounds.championshipId, championshipId));
+  return maxNr ?? 0;
+});
+
 export const createMatch = createServerOnlyFn(
-  async (data: Omit<typeof matches.$inferInsert, "id" | "nr">) => {
-    const [{ maxNr }] = await db
-      .select({ maxNr: max(matches.nr) })
-      .from(matches)
-      .where(eq(matches.roundId, data.roundId));
-    const nr = (maxNr ?? 0) + 1;
-    return db.insert(matches).values({ ...data, nr });
+  async (data: Omit<typeof matches.$inferInsert, "id">) => {
+    return db.insert(matches).values(data);
   },
 );
 

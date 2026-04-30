@@ -34,7 +34,7 @@ export const Route = createFileRoute("/manager/{-$slug}/spiele/")({
 });
 
 function RouteComponent() {
-  const { rounds, matchesByRound, leagues, teams } = Route.useLoaderData();
+  const { championship, rounds, matchesByRound, leagues, teams } = Route.useLoaderData();
   const { runde } = Route.useSearch();
   const navigate = useNavigate({ from: "/manager/{-$slug}/spiele/" });
 
@@ -78,6 +78,7 @@ function RouteComponent() {
       <RundenNavigator rounds={rounds} currentIndex={currentIndex} onNavigate={goToRound} />
 
       <SpielForm
+        championshipId={championship!.id}
         roundId={currentRound.id}
         editMatch={editMatch}
         defaultDate={defaultDate}

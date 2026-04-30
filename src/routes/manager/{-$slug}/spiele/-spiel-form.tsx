@@ -11,6 +11,7 @@ import type { Match } from "#db/dal/matches.ts";
 import type { Team } from "#db/dal/teams.ts";
 
 interface Props {
+  championshipId: number;
   roundId: number;
   editMatch: Match | null;
   defaultDate?: string;
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export function SpielForm({
+  championshipId,
   roundId,
   editMatch,
   defaultDate,
@@ -74,7 +76,15 @@ export function SpielForm({
         });
       } else {
         await createMatchFn({
-          data: { roundId, date: date || null, leagueId, hometeamId, awayteamId, result: null },
+          data: {
+            championshipId,
+            roundId,
+            date: date || null,
+            leagueId,
+            hometeamId,
+            awayteamId,
+            result: null,
+          },
         });
       }
       const updated = await fetchMatchesForRoundFn({ data: roundId });
