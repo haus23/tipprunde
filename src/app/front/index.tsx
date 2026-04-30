@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { eq, sum } from "drizzle-orm";
@@ -88,19 +89,28 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
             {top3.length === 0 ? (
               <p className="text-subtle text-sm">Noch keine Tipps gewertet.</p>
             ) : (
-              <table className="w-full text-sm">
-                <tbody>
-                  {top3.map((entry, index) => (
-                    <tr key={entry.userId} className="border-input border-b last:border-b-0">
-                      <td className="w-px py-2 pr-3 text-right tabular-nums">
-                        {index === 0 || top3[index - 1].rank !== entry.rank ? entry.rank : ""}
-                      </td>
-                      <td className="py-2">{entry.name}</td>
-                      <td className="py-2 text-right font-medium tabular-nums">{entry.points}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <>
+                <table className="w-full text-sm">
+                  <tbody>
+                    {top3.map((entry, index) => (
+                      <tr key={entry.userId} className="border-input border-b last:border-b-0">
+                        <td className="w-px py-2 pr-3 text-right tabular-nums">
+                          {index === 0 || top3[index - 1].rank !== entry.rank ? entry.rank : ""}
+                        </td>
+                        <td className="py-2">{entry.name}</td>
+                        <td className="py-2 text-right font-medium tabular-nums">{entry.points}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <Link
+                  preload="intent"
+                  to="/tabelle"
+                  className="text-subtle hover:text-foreground mt-3 flex items-center justify-end gap-1 text-xs"
+                >
+                  Vollständige Tabelle →
+                </Link>
+              </>
             )}
           </Card>
         </div>
