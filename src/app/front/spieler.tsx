@@ -5,6 +5,7 @@ import { ChevronDownIcon } from "lucide-react";
 import * as v from "valibot";
 
 import { SpielerSelect } from "#/components/spieler-select.tsx";
+import { TipFlag } from "#/components/tip-flag.tsx";
 import { computeRanking } from "#/domain/ranking.ts";
 import { db } from "#db";
 import { getLatestPublishedChampionship } from "#db/dal/championships.ts";
@@ -157,11 +158,7 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                             </td>
                             <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
                               {showTip ? tip.tip : "–"}
-                              {showTip && tip.joker && (
-                                <span className="text-accent xs:right-1 absolute top-1/2 -right-1.25 -translate-y-1/2">
-                                  ★
-                                </span>
-                              )}
+                              {showTip && tip.joker && <TipFlag label="Joker-Tipp" />}
                             </td>
                             <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                               {tip?.points != null ? tip.points : "–"}
