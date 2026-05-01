@@ -13,6 +13,7 @@ import { Route as ManagerRouteImport } from './routes/manager'
 import { Route as FrontRouteImport } from './routes/_front'
 import { Route as FrontIndexRouteImport } from './routes/_front/index'
 import { Route as ManagerChar123SlugChar125RouteImport } from './routes/manager/{-$slug}'
+import { Route as FrontVerlaufRouteImport } from './routes/_front/verlauf'
 import { Route as FrontTabelleRouteImport } from './routes/_front/tabelle'
 import { Route as FrontSpielerRouteImport } from './routes/_front/spieler'
 import { Route as FrontSpielRouteImport } from './routes/_front/spiel'
@@ -48,6 +49,11 @@ const ManagerChar123SlugChar125Route =
     path: '/{-$slug}',
     getParentRoute: () => ManagerRoute,
   } as any)
+const FrontVerlaufRoute = FrontVerlaufRouteImport.update({
+  id: '/verlauf',
+  path: '/verlauf',
+  getParentRoute: () => FrontRoute,
+} as any)
 const FrontTabelleRoute = FrontTabelleRouteImport.update({
   id: '/tabelle',
   path: '/tabelle',
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/spiel': typeof FrontSpielRoute
   '/spieler': typeof FrontSpielerRoute
   '/tabelle': typeof FrontTabelleRoute
+  '/verlauf': typeof FrontVerlaufRoute
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125RouteWithChildren
   '/login': typeof FrontauthLoginRoute
   '/manager/{-$slug}/': typeof ManagerChar123SlugChar125IndexRoute
@@ -153,6 +160,7 @@ export interface FileRoutesByTo {
   '/spiel': typeof FrontSpielRoute
   '/spieler': typeof FrontSpielerRoute
   '/tabelle': typeof FrontTabelleRoute
+  '/verlauf': typeof FrontVerlaufRoute
   '/': typeof FrontIndexRoute
   '/login': typeof FrontauthLoginRoute
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125IndexRoute
@@ -173,6 +181,7 @@ export interface FileRoutesById {
   '/_front/spiel': typeof FrontSpielRoute
   '/_front/spieler': typeof FrontSpielerRoute
   '/_front/tabelle': typeof FrontTabelleRoute
+  '/_front/verlauf': typeof FrontVerlaufRoute
   '/manager/{-$slug}': typeof ManagerChar123SlugChar125RouteWithChildren
   '/_front/': typeof FrontIndexRoute
   '/_front/(auth)/login': typeof FrontauthLoginRoute
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/spiel'
     | '/spieler'
     | '/tabelle'
+    | '/verlauf'
     | '/manager/{-$slug}'
     | '/login'
     | '/manager/{-$slug}/'
@@ -213,6 +223,7 @@ export interface FileRouteTypes {
     | '/spiel'
     | '/spieler'
     | '/tabelle'
+    | '/verlauf'
     | '/'
     | '/login'
     | '/manager/{-$slug}'
@@ -232,6 +243,7 @@ export interface FileRouteTypes {
     | '/_front/spiel'
     | '/_front/spieler'
     | '/_front/tabelle'
+    | '/_front/verlauf'
     | '/manager/{-$slug}'
     | '/_front/'
     | '/_front/(auth)/login'
@@ -281,6 +293,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/manager/{-$slug}'
       preLoaderRoute: typeof ManagerChar123SlugChar125RouteImport
       parentRoute: typeof ManagerRoute
+    }
+    '/_front/verlauf': {
+      id: '/_front/verlauf'
+      path: '/verlauf'
+      fullPath: '/verlauf'
+      preLoaderRoute: typeof FrontVerlaufRouteImport
+      parentRoute: typeof FrontRoute
     }
     '/_front/tabelle': {
       id: '/_front/tabelle'
@@ -387,6 +406,7 @@ interface FrontRouteChildren {
   FrontSpielRoute: typeof FrontSpielRoute
   FrontSpielerRoute: typeof FrontSpielerRoute
   FrontTabelleRoute: typeof FrontTabelleRoute
+  FrontVerlaufRoute: typeof FrontVerlaufRoute
   FrontIndexRoute: typeof FrontIndexRoute
   FrontauthLoginRoute: typeof FrontauthLoginRoute
 }
@@ -395,6 +415,7 @@ const FrontRouteChildren: FrontRouteChildren = {
   FrontSpielRoute: FrontSpielRoute,
   FrontSpielerRoute: FrontSpielerRoute,
   FrontTabelleRoute: FrontTabelleRoute,
+  FrontVerlaufRoute: FrontVerlaufRoute,
   FrontIndexRoute: FrontIndexRoute,
   FrontauthLoginRoute: FrontauthLoginRoute,
 }
