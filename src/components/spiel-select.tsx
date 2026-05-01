@@ -16,6 +16,7 @@ import {
 interface Match {
   nr: number;
   paarung: string;
+  paarungShort: string;
   points: number | null;
 }
 
@@ -48,10 +49,7 @@ export function SpielSelect({ rounds, currentNr }: Props) {
       <Popover className="border-input bg-base w-[28rem] max-w-[calc(100vw-2rem)] rounded-md border shadow-md data-entering:animate-[popover-enter_150ms_ease-out] data-exiting:animate-[popover-exit_100ms_ease-in_forwards]">
         <ListBox className="max-h-96 overflow-auto p-1 outline-none">
           {rounds.map((round) => (
-            <ListBoxSection
-              key={round.nr}
-              className="[&:not(:first-child)]:border-input [&:not(:first-child)]:mt-1 [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-1"
-            >
+            <ListBoxSection key={round.nr} className="[&:not(:first-child)]:mt-1">
               <Header className="text-subtle px-2 py-1.5 text-xs font-medium tracking-wide uppercase">
                 Runde {round.nr}
               </Header>
@@ -60,10 +58,13 @@ export function SpielSelect({ rounds, currentNr }: Props) {
                   key={match.nr}
                   id={match.nr}
                   textValue={match.paarung}
-                  className="data-focused:bg-subtle cursor-default rounded px-2 py-1.5 text-sm transition-colors duration-150 outline-none"
+                  className="data-focused:bg-subtle cursor-default rounded px-4 py-1.5 text-sm transition-colors duration-150 outline-none"
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <span>{match.paarung}</span>
+                    <span>
+                      <span className="xs:hidden">{match.paarungShort}</span>
+                      <span className="xs:inline hidden">{match.paarung}</span>
+                    </span>
                     {match.points !== null && (
                       <span className="text-subtle shrink-0 text-xs group-[.select-value]:hidden">
                         {match.points} Pkt

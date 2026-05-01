@@ -80,6 +80,7 @@ export const fetchSpieleFn = createServerFn({ method: "GET" })
       matches: r.matches.map((m) => ({
         nr: m.nr,
         paarung: `${m.hometeam?.name ?? "–"} – ${m.awayteam?.name ?? "–"}`,
+        paarungShort: `${m.hometeam?.shortName ?? "–"} – ${m.awayteam?.shortName ?? "–"}`,
         points: m.result !== null ? m.tips.reduce((sum, t) => sum + (t.points ?? 0), 0) : null,
       })),
     }));

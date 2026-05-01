@@ -37,7 +37,7 @@ export function SpielerSelect({ players, currentSlug }: Props) {
               key={p.slug}
               id={p.slug}
               textValue={p.name}
-              className="data-focused:bg-subtle cursor-default rounded px-2 py-1.5 text-sm transition-colors duration-150 outline-none"
+              className="data-focused:bg-subtle cursor-default rounded px-4 py-1.5 text-sm transition-colors duration-150 outline-none"
             >
               {p.name}
             </ListBoxItem>
