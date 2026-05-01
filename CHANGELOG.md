@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.0.0-pre.7
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.6...v1.0.0-pre.7)
+
+### 🚀 Enhancements
+
+- **front:** Link ranking players and matches on start page ([6e06094](https://github.com/haus23/tipprunde/commit/6e06094))
+- **front:** Show current user's rank below top 3 on start page ([41792f4](https://github.com/haus23/tipprunde/commit/41792f4))
+- **domain:** Centralize rule constants with descriptions, render on start page ([7354eab](https://github.com/haus23/tipprunde/commit/7354eab))
+
 ## v1.0.0-pre.6
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.5...v1.0.0-pre.6)
