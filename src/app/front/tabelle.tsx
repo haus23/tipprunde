@@ -47,7 +47,15 @@ export const fetchTabelleFn = createServerFn({ method: "GET" }).handler(async ()
     <div className="xs:px-4 mx-auto w-full max-w-5xl py-8">
       <div className="xs:px-0 mb-6 flex flex-col gap-2 px-4">
         <h1 className="text-2xl font-semibold tracking-tight">{championship.name}</h1>
-        <p className="text-subtle text-sm">{subtitle}</p>
+        <div className="flex items-center gap-4 text-sm">
+          <span className="font-medium">{subtitle}</span>
+          <Link
+            to="/verlauf"
+            className="focus-visible:ring-focus text-subtle hover:text-foreground rounded transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          >
+            Punkteverlauf
+          </Link>
+        </div>
       </div>
       <div className="bg-surface border-surface xs:rounded-md xs:border border-y px-4 py-2">
         <table className="w-full text-sm">

@@ -148,13 +148,21 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
                     )}
                   </tbody>
                 </table>
-                <Link
-                  preload="intent"
-                  to="/tabelle"
-                  className="text-subtle hover:text-foreground mt-3 flex items-center justify-end gap-1 text-xs"
-                >
-                  Vollständige Tabelle →
-                </Link>
+                <div className="mt-3 flex items-center justify-end gap-4">
+                  <Link
+                    to="/verlauf"
+                    className="text-subtle hover:text-foreground flex items-center gap-1 text-xs"
+                  >
+                    Verlauf →
+                  </Link>
+                  <Link
+                    preload="intent"
+                    to="/tabelle"
+                    className="text-subtle hover:text-foreground flex items-center gap-1 text-xs"
+                  >
+                    Vollständige Tabelle →
+                  </Link>
+                </div>
               </>
             )}
           </Card>

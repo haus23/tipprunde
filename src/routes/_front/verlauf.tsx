@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { inArray } from "drizzle-orm";
 
@@ -74,7 +74,12 @@ const fetchVerlaufFn = createServerFn({ method: "GET" }).handler(async () => {
     return ra - rb;
   });
 
-  return { championshipName: championship.name, sortedPlayers, snapshots };
+  return {
+    championshipName: championship.name,
+    completed: championship.completed,
+    sortedPlayers,
+    snapshots,
+  };
 });
 
 export const Route = createFileRoute("/_front/verlauf")({
@@ -87,13 +92,22 @@ function VerlaufComponent() {
 
   if (!data) return <p className="p-4">Kein aktives Turnier.</p>;
 
-  const { championshipName, sortedPlayers, snapshots } = data;
+  const { championshipName, completed, sortedPlayers, snapshots } = data;
+  const tabelleLabel = completed ? "Abschlusstabelle" : "Aktuelle Tabelle";
 
   return (
     <div className="xs:px-4 mx-auto w-full max-w-5xl py-8">
       <div className="xs:px-0 mb-6 flex flex-col gap-2 px-4">
         <h1 className="text-2xl font-semibold tracking-tight">{championshipName}</h1>
-        <p className="text-subtle text-sm">Punkteverlauf</p>
+        <div className="flex items-center gap-4 text-sm">
+          <Link
+            to="/tabelle"
+            className="focus-visible:ring-focus text-subtle hover:text-foreground rounded transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          >
+            {tabelleLabel}
+          </Link>
+          <span className="font-medium">Punkteverlauf</span>
+        </div>
       </div>
       <PunkteverlaufChart players={sortedPlayers} snapshots={snapshots} />
     </div>
