@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.0.0-pre.6
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.5...v1.0.0-pre.6)
+
+### 🚀 Enhancements
+
+- **front:** Add sortable tips table to Spiel-View ([c4e061b](https://github.com/haus23/tipprunde/commit/c4e061b))
+
+### 🩹 Fixes
+
+- **front:** Correct tip sort algorithm goal difference criterion ([8809c0c](https://github.com/haus23/tipprunde/commit/8809c0c))
+
+### 🎨 Styles
+
+- **front:** Apply design polish — easing, transform-origin, press feedback ([a39ce0e](https://github.com/haus23/tipprunde/commit/a39ce0e))
+
 ## v1.0.0-pre.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.4...v1.0.0-pre.5)
