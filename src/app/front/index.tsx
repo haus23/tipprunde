@@ -37,14 +37,15 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
 
   const playerPoints = allPlayers.map((p) => ({
     userId: p.userId,
+    slug: p.user?.slug ?? "",
     name: p.user?.name ?? "",
     points: Number(pointRows.find((r) => r.userId === p.userId)?.points ?? 0),
   }));
   const top3 = computeRanking(playerPoints)
-    .map((entry) => ({
-      ...entry,
-      name: playerPoints.find((p) => p.userId === entry.userId)!.name,
-    }))
+    .map((entry) => {
+      const player = playerPoints.find((p) => p.userId === entry.userId)!;
+      return { ...entry, name: player.name, slug: player.slug };
+    })
     .slice(0, 3);
 
   // Aktuelle Spiele
@@ -95,7 +96,15 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
                         <td className="w-px py-2 pr-3 text-right tabular-nums">
                           {index === 0 || top3[index - 1].rank !== entry.rank ? entry.rank : ""}
                         </td>
-                        <td className="py-2">{entry.name}</td>
+                        <td className="py-2">
+                          <Link
+                            to="/spieler"
+                            search={{ name: entry.slug }}
+                            className="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                          >
+                            {entry.name}
+                          </Link>
+                        </td>
                         <td className="py-2 text-right font-medium tabular-nums">{entry.points}</td>
                       </tr>
                     ))}
@@ -125,12 +134,18 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
                       {formatDate(match.date!)}
                     </td>
                     <td className="py-2">
-                      <span className="hidden md:inline">
-                        {match.hometeam?.name ?? "—"} – {match.awayteam?.name ?? "—"}
-                      </span>
-                      <span className="md:hidden">
-                        {match.hometeam?.shortName ?? "—"} – {match.awayteam?.shortName ?? "—"}
-                      </span>
+                      <Link
+                        to="/spiel"
+                        search={{ nr: match.nr }}
+                        className="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                      >
+                        <span className="hidden md:inline">
+                          {match.hometeam?.name ?? "—"} – {match.awayteam?.name ?? "—"}
+                        </span>
+                        <span className="md:hidden">
+                          {match.hometeam?.shortName ?? "—"} – {match.awayteam?.shortName ?? "—"}
+                        </span>
+                      </Link>
                     </td>
                     <td className="text-subtle w-px py-2 pl-3 text-right whitespace-nowrap tabular-nums">
                       {match.result ?? "–:–"}
