@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import * as v from "valibot";
 
-import { fetchSpieleFn } from "#/app/front/spiele.tsx";
+import { fetchSpieleFn } from "#/app/front/spiel.tsx";
 
-export const Route = createFileRoute("/_front/spiele")({
+export const Route = createFileRoute("/_front/spiel")({
   validateSearch: v.object({ nr: v.optional(v.number()) }),
   loaderDeps: ({ search: { nr } }) => ({ nr }),
   loader: ({ deps }) => fetchSpieleFn({ data: { nr: deps.nr } }),

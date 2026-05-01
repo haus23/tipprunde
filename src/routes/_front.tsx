@@ -31,7 +31,7 @@ function FrontLayout() {
             <Link to="/spieler" className={navLinkClass}>
               Spieler
             </Link>
-            <Link to="/spiele" className={navLinkClass}>
+            <Link to="/spiel" className={navLinkClass}>
               Spiele
             </Link>
           </nav>

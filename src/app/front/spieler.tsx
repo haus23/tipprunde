@@ -183,7 +183,7 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                             <tr key={match.id} className="border-input border-b last:border-b-0">
                               <td className="xs:px-2 w-px px-1 py-3 text-right tabular-nums">
                                 <Link
-                                  to="/spiele"
+                                  to="/spiel"
                                   search={{ nr: match.nr }}
                                   className="focus-visible:ring-focus hover:text-foreground text-subtle rounded transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                                 >
@@ -195,7 +195,7 @@ export const fetchSpielerFn = createServerFn({ method: "GET" })
                               </td>
                               <td className="xs:px-2 px-1 py-3">
                                 <Link
-                                  to="/spiele"
+                                  to="/spiel"
                                   search={{ nr: match.nr }}
                                   className="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                                 >

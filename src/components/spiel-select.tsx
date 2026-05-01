@@ -37,7 +37,7 @@ export function SpielSelect({ rounds, currentNr }: Props) {
       name="spiel-switch"
       value={currentNr}
       onChange={(nr) => {
-        void navigate({ to: "/spiele", search: { nr: Number(nr) } });
+        void navigate({ to: "/spiel", search: { nr: Number(nr) } });
       }}
       aria-label="Spiel wechseln"
     >
