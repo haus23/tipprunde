@@ -3,6 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { eq, sum } from "drizzle-orm";
 
+import { fetchUser } from "#/app/(auth)/session.ts";
 import { Card } from "#/components/card.tsx";
 import { computeRanking } from "#/domain/ranking.ts";
 import { formatDate } from "#/utils/format-date.ts";
@@ -25,8 +26,8 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
     return { Renderable };
   }
 
-  // Ranking — top 3
-  const allPlayers = await getPlayers(championship.id);
+  // Ranking
+  const [allPlayers, currentUser] = await Promise.all([getPlayers(championship.id), fetchUser()]);
   const pointRows = await db
     .select({ userId: tips.userId, points: sum(tips.points) })
     .from(tips)
@@ -41,12 +42,20 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
     name: p.user?.name ?? "",
     points: Number(pointRows.find((r) => r.userId === p.userId)?.points ?? 0),
   }));
-  const top3 = computeRanking(playerPoints)
-    .map((entry) => {
-      const player = playerPoints.find((p) => p.userId === entry.userId)!;
-      return { ...entry, name: player.name, slug: player.slug };
-    })
-    .slice(0, 3);
+
+  const fullRanking = computeRanking(playerPoints).map((entry) => {
+    const player = playerPoints.find((p) => p.userId === entry.userId)!;
+    return { ...entry, name: player.name, slug: player.slug };
+  });
+
+  const top3 = fullRanking.slice(0, 3);
+
+  const currentUserEntry = currentUser
+    ? (fullRanking.find((e) => e.userId === currentUser.id) ?? null)
+    : null;
+  const userBelowTop3 =
+    currentUserEntry && !top3.includes(currentUserEntry) ? currentUserEntry : null;
+  const userIndex = userBelowTop3 ? fullRanking.indexOf(userBelowTop3) : -1;
 
   // Aktuelle Spiele
   const roundIds = (
@@ -108,6 +117,34 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
                         <td className="py-2 text-right font-medium tabular-nums">{entry.points}</td>
                       </tr>
                     ))}
+                    {userBelowTop3 && (
+                      <>
+                        {userIndex > 3 && (
+                          <tr>
+                            <td colSpan={3} className="text-subtle py-1.5 text-center text-xs">
+                              ⋮
+                            </td>
+                          </tr>
+                        )}
+                        <tr className="border-input border-b last:border-b-0">
+                          <td className="w-px py-2 pr-3 text-right tabular-nums">
+                            {userBelowTop3.rank}
+                          </td>
+                          <td className="py-2">
+                            <Link
+                              to="/spieler"
+                              search={{ name: userBelowTop3.slug }}
+                              className="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                            >
+                              {userBelowTop3.name}
+                            </Link>
+                          </td>
+                          <td className="py-2 text-right font-medium tabular-nums">
+                            {userBelowTop3.points}
+                          </td>
+                        </tr>
+                      </>
+                    )}
                   </tbody>
                 </table>
                 <Link
