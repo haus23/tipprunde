@@ -1,5 +1,25 @@
 # Changelog
 
+## v1.0.0-pre.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.4...v1.0.0-pre.5)
+
+### 🚀 Enhancements
+
+- **spieler:** TipFlag with non-modal popover, no scroll blocking ([4020a64](https://github.com/haus23/tipprunde/commit/4020a64))
+- **spieler:** Add date column (md+) and extract formatDate utility ([86ba441](https://github.com/haus23/tipprunde/commit/86ba441))
+- **spieler:** Add player and round stats (Spiele, Avg) ([4503e27](https://github.com/haus23/tipprunde/commit/4503e27))
+- **front:** Add Spiel-View with match header and links from Spieler ([2f54fb0](https://github.com/haus23/tipprunde/commit/2f54fb0))
+- **front:** Add SpielSelect with grouped rounds and points ([6132fef](https://github.com/haus23/tipprunde/commit/6132fef))
+
+### 💅 Refactors
+
+- **front:** Rename route /spiele to /spiel ([627741b](https://github.com/haus23/tipprunde/commit/627741b))
+
+### 🎨 Styles
+
+- **front:** Improve select popovers with short names mobile, more spacing ([39a5202](https://github.com/haus23/tipprunde/commit/39a5202))
+
 ## v1.0.0-pre.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.3...v1.0.0-pre.4)
