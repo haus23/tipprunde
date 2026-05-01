@@ -61,14 +61,17 @@ export function TippGrid({
           joker: existing?.joker ?? false,
         };
       }
-      const roundJokers = Object.values(state).filter((t) => t.joker).length;
-      jokersInOtherRounds.current = initialTotalJokers - roundJokers;
       setTipState(state);
     });
     return () => {
       cancelled = true;
     };
   }, [roundId, userId]);
+
+  useEffect(() => {
+    const roundJokers = Object.values(tipState).filter((t) => t.joker).length;
+    jokersInOtherRounds.current = initialTotalJokers - roundJokers;
+  }, [initialTotalJokers, tipState]);
 
   async function applyPastedTips(text: string, startMatchId: number) {
     const rawTips = text.trimEnd().split(/\r?\n/);
