@@ -199,8 +199,8 @@ function Chart({
           top={tooltipTop}
           style={{
             position: "absolute",
-            background: "var(--color-base, #fff)",
-            border: "1px solid var(--color-input, #e2e8f0)",
+            background: "var(--background-color-base)",
+            border: "1px solid var(--border-color-input)",
             borderRadius: 6,
             padding: "8px 10px",
             fontSize: 12,
@@ -235,7 +235,7 @@ interface PunkteverlaufChartProps {
 export function PunkteverlaufChart({ players, snapshots }: PunkteverlaufChartProps) {
   return (
     <div className="w-full">
-      <div className="mb-3 flex flex-wrap gap-x-4 gap-y-1.5">
+      <div className="xs:mx-0 mx-4 mb-3 flex flex-wrap gap-x-4 gap-y-1.5">
         {players.map((p, i) => (
           <div key={p.userId} className="flex items-center gap-1.5 text-xs">
             <span
