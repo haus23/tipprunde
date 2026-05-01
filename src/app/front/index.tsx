@@ -168,7 +168,7 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
           </Card>
         </div>
 
-        <Card title="Aktuelle Spiele">
+        <Card title={championship.completed ? "Letzte Spiele" : "Aktuelle Spiele"}>
           {currentMatches.length === 0 ? (
             <p className="text-subtle text-sm">Keine Spiele verfügbar.</p>
           ) : (
