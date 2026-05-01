@@ -21,7 +21,7 @@ function RouteComponent() {
   const extraQuestionRuleId =
     (championship?.ruleset?.extraQuestionRuleId as ExtraQuestionRuleId | null) ?? null;
 
-  if (extraQuestionRuleId === "keine-zusatzfragen") {
+  if (extraQuestionRuleId === "keine-besonderheiten") {
     return (
       <div className="flex flex-col gap-6">
         <h1 className="text-2xl font-medium md:hidden">Zusatzpunkte</h1>
