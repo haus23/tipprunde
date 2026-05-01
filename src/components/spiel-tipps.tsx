@@ -69,9 +69,6 @@ export function SpielTipps({ tips, tipsPublished }: Props) {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-input border-b text-left">
-            <th className="text-subtle w-px pt-2 pr-3 pb-3 text-right text-xs font-medium tracking-wide uppercase">
-              Platz
-            </th>
             <th className="text-subtle pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
               <button
                 onClick={() => handleSort("name")}
@@ -108,7 +105,6 @@ export function SpielTipps({ tips, tipsPublished }: Props) {
         <tbody>
           {sorted.map((tip) => (
             <tr key={tip.userId} className="border-input border-b last:border-b-0">
-              <td className="w-px py-3 pr-3 text-right tabular-nums">{tip.rank}</td>
               <td className="py-3">{tip.userName}</td>
               {tipsPublished && (
                 <>
