@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_front")({
 });
 
 const navLinkClass =
-  "rounded-md px-3 py-1.5 text-sm font-medium text-subtle outline-none transition-colors hover:bg-subtle hover:text-base focus-visible:ring-2 focus-visible:ring-focus";
+  "rounded-md px-3 py-1.5 text-sm font-medium text-subtle outline-none transition hover:bg-subtle hover:text-base active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-focus";
 
 function FrontLayout() {
   return (

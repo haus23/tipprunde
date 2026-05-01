@@ -42,14 +42,14 @@ export function SpielSelect({ rounds, currentNr }: Props) {
       }}
       aria-label="Spiel wechseln"
     >
-      <Button className="focus-visible:ring-focus flex items-center gap-2 rounded text-2xl font-semibold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
+      <Button className="focus-visible:ring-focus flex items-center gap-2 rounded text-2xl font-semibold tracking-tight transition-transform outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.97]">
         <SelectValue className="group select-value" />
         <ChevronDownIcon size={18} className="text-subtle shrink-0" />
       </Button>
-      <Popover className="border-input bg-base w-[28rem] max-w-[calc(100vw-2rem)] rounded-md border shadow-md data-entering:animate-[popover-enter_150ms_ease-out] data-exiting:animate-[popover-exit_100ms_ease-in_forwards]">
+      <Popover className="border-input bg-base w-md max-w-[calc(100vw-2rem)] rounded-md border shadow-md data-entering:animate-[popover-enter_150ms_var(--ease-out)] data-exiting:animate-[popover-exit_100ms_var(--ease-out)_forwards] data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom">
         <ListBox className="max-h-96 overflow-auto p-1 outline-none">
           {rounds.map((round) => (
-            <ListBoxSection key={round.nr} className="[&:not(:first-child)]:mt-1">
+            <ListBoxSection key={round.nr} className="not-first:mt-1">
               <Header className="text-subtle px-2 py-1.5 text-xs font-medium tracking-wide uppercase">
                 Runde {round.nr}
               </Header>

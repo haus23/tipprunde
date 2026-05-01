@@ -32,7 +32,7 @@ export function TipFlag({ label }: Props) {
         ref={buttonRef}
         onPress={() => setIsOpen((v) => !v)}
         aria-label="Zusatzinfos zum Tipp"
-        className="text-accent focus-visible:ring-focus xs:right-1 absolute top-1/2 -right-1.25 -translate-y-1/2 cursor-default rounded outline-none focus-visible:ring-1"
+        className="text-accent focus-visible:ring-focus xs:right-1 absolute top-1/2 -right-1.25 -translate-y-1/2 cursor-default rounded transition-transform outline-none focus-visible:ring-1 active:scale-[0.97]"
       >
         ★
       </Button>
@@ -43,7 +43,7 @@ export function TipFlag({ label }: Props) {
         onOpenChange={setIsOpen}
         isNonModal
         placement="bottom"
-        className="bg-inverted text-inverted rounded px-2 py-1 text-xs data-entering:animate-[popover-enter_150ms_ease-out] data-exiting:animate-[popover-exit_100ms_ease-in_forwards]"
+        className="bg-inverted text-inverted rounded px-2 py-1 text-xs data-entering:animate-[popover-enter_150ms_var(--ease-out)] data-exiting:animate-[popover-exit_100ms_var(--ease-out)_forwards] data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
       >
         {label}
       </Popover>

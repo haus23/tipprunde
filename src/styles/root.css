@@ -18,6 +18,10 @@
 }
 
 @layer base {
+  :root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
   :root:not([data-color-scheme]),
   [data-color-scheme="system"] {
     color-scheme: light dark;
@@ -151,7 +155,7 @@
 
   ::details-content {
     transition:
-      height 0.3s ease,
+      height 0.3s var(--ease-out),
       content-visibility 0.3s allow-discrete;
     height: 0;
     overflow: clip;
@@ -163,11 +167,11 @@
 }
 
 ::view-transition-new(.toast):only-child {
-  animation: toast-enter 300ms ease-out;
+  animation: toast-enter 300ms var(--ease-out);
 }
 
 ::view-transition-old(.toast):only-child {
-  animation: toast-exit 200ms ease-in forwards;
+  animation: toast-exit 200ms var(--ease-out) forwards;
 }
 
 @keyframes toast-enter {

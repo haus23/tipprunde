@@ -75,7 +75,7 @@ export function SpielTipps({ tips, tipsPublished }: Props) {
             <th className="text-subtle pt-2 pb-3 text-xs font-medium tracking-wide uppercase">
               <button
                 onClick={() => handleSort("name")}
-                className="focus-visible:ring-focus flex items-center gap-1 rounded uppercase outline-none focus-visible:ring-2"
+                className="focus-visible:ring-focus flex items-center gap-1 rounded uppercase transition-transform outline-none focus-visible:ring-2 active:scale-[0.97]"
               >
                 Spieler
                 <SortIcon col="name" sort={sort} />
@@ -86,7 +86,7 @@ export function SpielTipps({ tips, tipsPublished }: Props) {
                 <th className="text-subtle w-px pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
                   <button
                     onClick={() => handleSort("tip")}
-                    className="focus-visible:ring-focus mx-auto flex items-center gap-1 rounded uppercase outline-none focus-visible:ring-2"
+                    className="focus-visible:ring-focus mx-auto flex items-center gap-1 rounded uppercase transition-transform outline-none focus-visible:ring-2 active:scale-[0.97]"
                   >
                     Tipp
                     <SortIcon col="tip" sort={sort} />
@@ -95,7 +95,7 @@ export function SpielTipps({ tips, tipsPublished }: Props) {
                 <th className="text-subtle w-px pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase">
                   <button
                     onClick={() => handleSort("points")}
-                    className="focus-visible:ring-focus mx-auto flex items-center gap-1 rounded uppercase outline-none focus-visible:ring-2"
+                    className="focus-visible:ring-focus mx-auto flex items-center gap-1 rounded uppercase transition-transform outline-none focus-visible:ring-2 active:scale-[0.97]"
                   >
                     Pkt
                     <SortIcon col="points" sort={sort} />
