@@ -60,7 +60,7 @@ export function SpielTipps({ tips, tipsPublished }: Props) {
       }
       const [ao, ah, aa] = parseTip(a.tip);
       const [bo, bh, ba] = parseTip(b.tip);
-      return factor * (ao - bo || ah - bh || aa - ba);
+      return factor * (ao - bo || bh - ba - (ah - aa) || ah - bh);
     });
   }, [tips, sort]);
 
