@@ -1,11 +1,16 @@
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
+import { eq, sum } from "drizzle-orm";
 import * as v from "valibot";
 
 import { SpielSelect } from "#/components/spiel-select.tsx";
+import { SpielTipps } from "#/components/spiel-tipps.tsx";
+import { computeRanking } from "#/domain/ranking.ts";
 import { formatDate } from "#/utils/format-date.ts";
 import { db } from "#db";
 import { getLatestPublishedChampionship } from "#db/dal/championships.ts";
+import { getPlayers } from "#db/dal/players.ts";
+import { matches, rounds, tips } from "#db/schema/tables.ts";
 
 export const fetchSpieleFn = createServerFn({ method: "GET" })
   .inputValidator(v.object({ nr: v.optional(v.number()) }))
@@ -85,6 +90,43 @@ export const fetchSpieleFn = createServerFn({ method: "GET" })
       })),
     }));
 
+    const allPlayers = await getPlayers(championship.id);
+    const pointRows = await db
+      .select({ userId: tips.userId, points: sum(tips.points) })
+      .from(tips)
+      .innerJoin(matches, eq(tips.matchId, matches.id))
+      .innerJoin(rounds, eq(matches.roundId, rounds.id))
+      .where(eq(rounds.championshipId, championship.id))
+      .groupBy(tips.userId);
+
+    const playerPoints = allPlayers.map((p) => ({
+      userId: p.userId,
+      name: p.user?.name ?? "",
+      slug: p.user?.slug ?? "",
+      points: Number(pointRows.find((r) => r.userId === p.userId)?.points ?? 0),
+    }));
+    const ranking = computeRanking(playerPoints).map((entry) => ({
+      ...entry,
+      ...playerPoints.find((p) => p.userId === entry.userId)!,
+    }));
+
+    const matchRound = allRounds.find((r) => r.id === match.roundId);
+    const tipsPublished = matchRound?.tipsPublished ?? false;
+
+    const rankedTips = ranking
+      .map((entry) => {
+        const tip = match.tips.find((t) => t.userId === entry.userId);
+        return {
+          rank: entry.rank,
+          userId: entry.userId,
+          userName: entry.name,
+          tip: tipsPublished ? (tip?.tip ?? null) : null,
+          points: tipsPublished ? (tip?.points ?? null) : null,
+          joker: tipsPublished ? (tip?.joker ?? null) : null,
+        };
+      })
+      .filter((t) => t.userId !== undefined);
+
     const paarung = `${match.hometeam?.name ?? "–"} – ${match.awayteam?.name ?? "–"}`;
     const totalPoints = match.result
       ? match.tips.reduce((sum, t) => sum + (t.points ?? 0), 0)
@@ -101,6 +143,7 @@ export const fetchSpieleFn = createServerFn({ method: "GET" })
             {totalPoints !== null && ` · ${totalPoints} Pkt`}
           </p>
         </div>
+        <SpielTipps tips={rankedTips} tipsPublished={tipsPublished} />
       </div>
     );
 
