@@ -6,6 +6,7 @@ import { eq, sum } from "drizzle-orm";
 import { fetchUser } from "#/app/(auth)/session.ts";
 import { Card } from "#/components/card.tsx";
 import { computeRanking } from "#/domain/ranking.ts";
+import { RULE_CATEGORIES } from "#/domain/rules.ts";
 import { formatDate } from "#/utils/format-date.ts";
 import { db } from "#db";
 import { getLatestPublishedChampionship } from "#db/dal/championships.ts";
@@ -195,7 +196,21 @@ export const fetchIndexFn = createServerFn({ method: "GET" }).handler(async () =
         </Card>
 
         <Card title="Regelwerk">
-          <p className="text-subtle text-sm">{championship.ruleset?.description}</p>
+          <div className="flex flex-col gap-3">
+            <p className="text-subtle text-sm">{championship.ruleset?.description}</p>
+            {RULE_CATEGORIES.map(({ field, label, rules }) => {
+              const ruleId = championship.ruleset?.[field];
+              if (!ruleId || ruleId === "keine-besonderheiten") return null;
+              const rule = rules.find((r) => r.value === ruleId);
+              if (!rule) return null;
+              return (
+                <div key={field}>
+                  <p className="text-sm font-medium">{label}</p>
+                  <p className="text-subtle text-sm">{rule.description}</p>
+                </div>
+              );
+            })}
+          </div>
         </Card>
       </div>
     </div>
