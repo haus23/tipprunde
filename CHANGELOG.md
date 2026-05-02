@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.0.0-pre.8
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.7...v1.0.0-pre.8)
+
+### 🚀 Enhancements
+
+- **front:** Add Punkteverlauf scratch route with multi-line chart ([9e3135d](https://github.com/haus23/tipprunde/commit/9e3135d))
+- **front:** Link Tabelle and Punkteverlauf views (Option B+D) ([05654ef](https://github.com/haus23/tipprunde/commit/05654ef))
+- **spiel:** Remove rank column from tips table ([355fcaf](https://github.com/haus23/tipprunde/commit/355fcaf))
+
+### 🩹 Fixes
+
+- Update extraQuestionRuleId to the new not-notable id. ([c77c8a5](https://github.com/haus23/tipprunde/commit/c77c8a5))
+- **front:** Fix CSS variable names in chart tooltip, add mobile legend spacing ([bb2a37b](https://github.com/haus23/tipprunde/commit/bb2a37b))
+- **front:** Show "Letzte Spiele" on start page for completed championships ([7974c2f](https://github.com/haus23/tipprunde/commit/7974c2f))
+- **tipps:** Recompute jokersInOtherRounds when initialTotalJokers or tipState changes ([8616f13](https://github.com/haus23/tipprunde/commit/8616f13))
+
+### 🏡 Chore
+
+- Add @visx packages, update route tree ([84a5b3a](https://github.com/haus23/tipprunde/commit/84a5b3a))
+
 ## v1.0.0-pre.7
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0-pre.6...v1.0.0-pre.7)
