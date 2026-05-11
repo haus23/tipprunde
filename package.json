@@ -1,0 +1,12 @@
+{
+  "name": "tipprunde",
+  "description": "Haus23 Tipprunde",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "vp config"
+  },
+  "devDependencies": {
+    "vite-plus": "catalog:"
+  },
+  "packageManager": "pnpm@11.0.9"
+}
