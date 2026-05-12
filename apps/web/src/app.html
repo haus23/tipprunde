@@ -4,6 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="text-scale" content="scale" />
+    <script>
+      const scheme = localStorage.getItem("color-scheme") || "system";
+      document.documentElement.setAttribute("data-color-scheme", scheme);
+    </script>
     %sveltekit.head%
   </head>
   <body class="bg-base relative text-base">

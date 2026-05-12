@@ -2,6 +2,7 @@
     import "./layout.css";
     import favicon from "$lib/assets/favicon.ico";
     import Logo from "$ui/logo.svelte";
+    import UserMenu from "$ui/user-menu.svelte";
 
     const { children } = $props();
 
@@ -36,6 +37,9 @@
                 <a href="/spieler" class={navLinkClasses}>Spieler</a>
                 <a href="/spiel" class={navLinkClasses}>Spiele</a>
             </nav>
+            <div class="flex items-center justify-end">
+                <UserMenu />
+            </div>
         </div>
     </header>
     <main>{@render children()}</main>
