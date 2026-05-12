@@ -7,11 +7,11 @@
 <div class="mx-auto w-full max-w-5xl py-8">
     <div class="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
         <h1 class="text-2xl font-semibold tracking-tight">
-            {data.championship?.name}
+            {data.championship.name}
         </h1>
         <div class="flex items-center gap-4 text-sm">
             <span class="font-medium">
-                {data.championship?.completed
+                {data.championship.completed
                     ? "Abschlusstabelle"
                     : "Aktuelle Tabelle"}</span
             >
