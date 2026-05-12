@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Dev toolchain secrets
+.env
+
 # Svelte Apps
 .svelte-kit/
 
