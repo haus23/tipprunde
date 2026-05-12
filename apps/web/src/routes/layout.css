@@ -34,26 +34,49 @@
 
 @theme {
   --color-*: initial;
-
-  /***** Layout base colors */
-
-  /* sand-1 / black */
-  --background-color-base: light-dark(color(display-p3 0.992 0.992 0.989), color(display-p3 0 0 0));
-
-  /***** Text colors */
-
   --text-white: color(display-p3 1 1 1);
 
-  /* sand-12 */
-  --text-color-base: light-dark(
-    color(display-p3 0.129 0.126 0.111),
-    color(display-p3 0.933 0.933 0.926)
+  /* sand-1 / black - Base/App background */
+  --background-color-base: light-dark(color(display-p3 0.992 0.992 0.989), color(display-p3 0 0 0));
+
+  /* white / sand-1 - Raise backgrounds */
+  --background-color-surface: light-dark(
+    color(display-p3 1 1 1),
+    color(display-p3 0.067 0.067 0.063)
   );
-  /* sand-11 */
+
+  /* sand-3 — Subtle background (nav hover etc.) */
+  --background-color-subtle: light-dark(
+    color(display-p3 0.943 0.942 0.936),
+    color(display-p3 0.135 0.135 0.129)
+  );
+
+  /* sand-3 — Layout chrome borders (sidebar, header) */
+  --border-color-layout: light-dark(
+    color(display-p3 0.943 0.942 0.936),
+    color(display-p3 0.135 0.135 0.129)
+  );
+
+  /* sand-11 - Subtle text */
   --text-color-subtle: light-dark(
     color(display-p3 0.388 0.388 0.37),
     color(display-p3 0.707 0.703 0.68)
   );
+
+  /* sand-12 - Primary text */
+  --text-color-base: light-dark(
+    color(display-p3 0.129 0.126 0.111),
+    color(display-p3 0.933 0.933 0.926)
+  );
+
+  /* orange-8 — Focus ring */
+  --ring-color-focus: light-dark(
+    color(display-p3 0.877 0.597 0.379),
+    color(display-p3 0.601 0.359 0.201)
+  );
+
+  /* orange-11  */
+  --text-color-accent: light-dark(color(display-p3 0.76 0.34 0), color(display-p3 1 0.63 0.38));
 }
 /*
 Radix Colors:
