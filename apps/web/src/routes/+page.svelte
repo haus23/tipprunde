@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { formatDate } from "$lib/utils";
     import Card from "$ui/card.svelte";
     import type { PageProps } from "./$types";
 
@@ -66,8 +67,45 @@
                 : "Aktuelle Spiele"}
         >
             <table class="w-full text-sm">
-                <tbody> </tbody>
+                <tbody>
+                    {#each data.currentMatches as match}
+                        <tr class="border-input border-b last:border-b-0">
+                            <td
+                                class="text-subtle w-px py-2 pr-3 text-xs whitespace-nowrap tabular-nums"
+                            >
+                                {formatDate(match.date!)}
+                            </td>
+                            <td class="py-2">
+                                <a
+                                    href={`/spiel?nr=${match.nr}`}
+                                    class="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+                                >
+                                    <span class="hidden lg:inline">
+                                        {match.hometeam?.name ?? "–"} – {match
+                                            .awayteam?.name ?? "–"}
+                                    </span>
+                                    <span class="lg:hidden">
+                                        {match.hometeam?.shortName ?? "–"} – {match
+                                            .awayteam?.shortName ?? "–"}
+                                    </span>
+                                </a>
+                            </td>
+                            <td
+                                class="text-subtle w-px py-2 pl-3 text-right whitespace-nowrap tabular-nums"
+                            >
+                                {match.result ?? "–:–"}
+                            </td>
+                        </tr>
+                    {/each}
+                </tbody>
             </table>
+            <div class="mt-3 flex items-center justify-end gap-4">
+                <a
+                    href="/spiele"
+                    class="text-subtle hover:text-base text-xs transition-colors"
+                    >Komplette Übersicht →</a
+                >
+            </div>
         </Card>
     </div>
 </div>

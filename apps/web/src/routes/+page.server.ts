@@ -1,3 +1,4 @@
+import { getCurrentMatches } from "$lib/server/db/matches";
 import { getRanking } from "$lib/server/db/ranking";
 import { error } from "@sveltejs/kit";
 
@@ -11,5 +12,8 @@ export const load: PageServerLoad = async ({ parent }) => {
   }
 
   const fullRanking = await getRanking(championship.id);
-  return { ranking: fullRanking.slice(0, 3) };
+  return {
+    ranking: fullRanking.slice(0, 3),
+    currentMatches: await getCurrentMatches(championship.id),
+  };
 };
