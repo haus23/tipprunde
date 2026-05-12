@@ -2,6 +2,10 @@ packages:
   - "apps/*"
   - "packages/*"
 
+allowBuilds:
+  "@tailwindcss/oxide": true
+  esbuild: true
+
 catalog:
   vite: npm:@voidzero-dev/vite-plus-core@^0.1.20
   vitest: npm:@voidzero-dev/vite-plus-test@latest
@@ -18,7 +22,3 @@ peerDependencyRules:
   allowedVersions:
     vite: "*"
     vitest: "*"
-
-# allowBuilds:
-#   "@tailwindcss/oxide": true
-#   esbuild: true

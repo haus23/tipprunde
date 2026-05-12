@@ -3,3 +3,6 @@ node_modules/
 
 # Svelte Apps
 .svelte-kit/
+
+# Vercel build
+.vercel/
