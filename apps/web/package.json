@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",
+    "@lucide/svelte": "^1.14.0",
+    "bits-ui": "^2.18.1",
     "drizzle-orm": "^1.0.0-rc.2",
     "svelte": "^5.55.5"
   },
