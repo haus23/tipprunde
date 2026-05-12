@@ -1,4 +1,5 @@
 import { db } from "$lib/server/db";
+import { error } from "@sveltejs/kit";
 
 import type { LayoutServerLoad } from "./$types";
 
@@ -8,5 +9,10 @@ export const load: LayoutServerLoad = async () => {
     where: { published: true },
     with: { rulesets: true },
   });
+
+  if (!championship) {
+    error(404, "Kein Turnier gefunden.");
+  }
+
   return { championship };
 };

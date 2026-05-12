@@ -8,6 +8,6 @@
     <div class="flex flex-col items-center">
         <p class="text-subtle text-xs tracking-widest uppercase">Haus23</p>
         <h1 class="text-3xl font-semibold tracking-tight">Tipprunde</h1>
-        <p class="text-subtle mt-1 text-lg">{data.championship.name}</p>
+        <p class="text-subtle mt-1 text-lg">{data.championship?.name}</p>
     </div>
 </div>
