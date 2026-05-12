@@ -1,7 +1,7 @@
 <script lang="ts">
     import "./layout.css";
     import favicon from "$lib/assets/favicon.ico";
-    import Logo from "$lib/ui/logo.svelte";
+    import Logo from "$ui/logo.svelte";
 
     const { children } = $props();
 
