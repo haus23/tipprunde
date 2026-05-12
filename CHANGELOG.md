@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.0.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.2...v0.0.3)
+
+### 🚀 Enhancements
+
+- **web:** Add color-scheme switch. ([60782ab](https://github.com/haus23/tipprunde/commit/60782ab))
+
+### 🏡 Chore
+
+- **web:** Add bits-ui und lucide icons. ([1def15e](https://github.com/haus23/tipprunde/commit/1def15e))
+
 ## v0.0.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.1...v0.0.2)
