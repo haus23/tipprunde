@@ -33,18 +33,18 @@
 }
 
 @theme {
+  --breakpoint-xs: 480px;
+
   --color-*: initial;
   --text-white: color(display-p3 1 1 1);
 
   /* sand-1 / black - Base/App background */
   --background-color-base: light-dark(color(display-p3 0.992 0.992 0.989), color(display-p3 0 0 0));
-
   /* white / sand-1 - Raise backgrounds */
   --background-color-surface: light-dark(
     color(display-p3 1 1 1),
     color(display-p3 0.067 0.067 0.063)
   );
-
   /* sand-3 — Subtle background (nav hover etc.) */
   --background-color-subtle: light-dark(
     color(display-p3 0.943 0.942 0.936),
@@ -56,13 +56,22 @@
     color(display-p3 0.943 0.942 0.936),
     color(display-p3 0.135 0.135 0.129)
   );
+  /* sand-4 — Surface card borders */
+  --border-color-surface: light-dark(
+    color(display-p3 0.913 0.912 0.903),
+    color(display-p3 0.164 0.163 0.156)
+  );
+  /* sand-7 — Input/row borders */
+  --border-color-input: light-dark(
+    color(display-p3 0.813 0.81 0.794),
+    color(display-p3 0.285 0.282 0.267)
+  );
 
   /* sand-11 - Subtle text */
   --text-color-subtle: light-dark(
     color(display-p3 0.388 0.388 0.37),
     color(display-p3 0.707 0.703 0.68)
   );
-
   /* sand-12 - Primary text */
   --text-color-base: light-dark(
     color(display-p3 0.129 0.126 0.111),
@@ -73,6 +82,16 @@
   --ring-color-focus: light-dark(
     color(display-p3 0.877 0.597 0.379),
     color(display-p3 0.601 0.359 0.201)
+  );
+  /* sand-1 / black */
+  --ring-offset-color-base: light-dark(
+    color(display-p3 0.992 0.992 0.989),
+    color(display-p3 0 0 0)
+  );
+  /* white / sand-1 */
+  --ring-offset-color-surface: light-dark(
+    color(display-p3 1 1 1),
+    color(display-p3 0.067 0.067 0.063)
   );
 
   /* orange-11  */

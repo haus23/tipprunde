@@ -10,3 +10,5 @@ export const db = drizzle({
   },
   relations,
 });
+
+export * from "./schema";

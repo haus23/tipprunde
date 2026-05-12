@@ -1,4 +1,30 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { sql } from "drizzle-orm";
+import { integer, primaryKey, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
+
+export const users = sqliteTable("users", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  email: text("email").unique(),
+  role: text("role", { enum: ["user", "manager", "admin"] })
+    .notNull()
+    .default("user"),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const teams = sqliteTable("teams", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  shortName: text("short_name").notNull(),
+});
+
+export const leagues = sqliteTable("leagues", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  shortName: text("short_name").notNull(),
+});
 
 export const rulesets = sqliteTable("rulesets", {
   id: text("id").primaryKey(),
@@ -25,3 +51,62 @@ export const championships = sqliteTable("championships", {
     .notNull()
     .default(false),
 });
+
+export const rounds = sqliteTable(
+  "rounds",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    championshipId: integer("championship_id")
+      .notNull()
+      .references(() => championships.id),
+    nr: integer("nr").notNull(),
+    published: integer("published", { mode: "boolean" }).notNull().default(false),
+    tipsPublished: integer("tips_published", { mode: "boolean" }).notNull().default(false),
+    completed: integer("completed", { mode: "boolean" }).notNull().default(false),
+    isDoubleRound: integer("is_double_round", { mode: "boolean" }),
+  },
+  (table) => [unique().on(table.championshipId, table.nr)],
+);
+
+export const matches = sqliteTable("matches", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  roundId: integer("round_id")
+    .notNull()
+    .references(() => rounds.id),
+  nr: integer("nr").notNull(),
+  date: text("date"),
+  leagueId: text("league_id").references(() => leagues.id),
+  hometeamId: text("hometeam_id").references(() => teams.id),
+  awayteamId: text("awayteam_id").references(() => teams.id),
+  result: text("result"),
+});
+
+export const tips = sqliteTable(
+  "tips",
+  {
+    matchId: integer("match_id")
+      .notNull()
+      .references(() => matches.id),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    tip: text("tip"),
+    points: integer("points"),
+    joker: integer("joker", { mode: "boolean" }),
+  },
+  (table) => [primaryKey({ columns: [table.matchId, table.userId] })],
+);
+
+export const players = sqliteTable(
+  "players",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    championshipId: integer("championship_id")
+      .notNull()
+      .references(() => championships.id),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+  },
+  (table) => [unique().on(table.championshipId, table.userId)],
+);
