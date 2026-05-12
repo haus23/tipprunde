@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.0.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.3...v0.0.4)
+
+### 🚀 Enhancements
+
+- **web:** Display current top-3 ranking on index route. ([a4efd01](https://github.com/haus23/tipprunde/commit/a4efd01))
+- **web:** Display current/last matches on index route. ([356be7e](https://github.com/haus23/tipprunde/commit/356be7e))
+- **web:** Display ruleset on index route. ([a70c8d7](https://github.com/haus23/tipprunde/commit/a70c8d7))
+
 ## v0.0.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.2...v0.0.3)
