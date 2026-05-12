@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ parent }) => {
   const { championship } = await parent();
 
   if (!championship) {
-    error(404, "Ungültiges Turnier");
+    error(404, "Kein Turnier gefunden.");
   }
 
   const players = await db.query.players.findMany({
