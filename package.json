@@ -2,6 +2,7 @@
   "name": "tipprunde",
   "description": "Haus23 Tipprunde",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "prepare": "vp config"
   },

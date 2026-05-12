@@ -3,9 +3,11 @@ packages:
   - "packages/*"
 
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@latest
+  vite: npm:@voidzero-dev/vite-plus-core@^0.1.20
   vitest: npm:@voidzero-dev/vite-plus-test@latest
-  vite-plus: latest
+  vite-plus: ^0.1.20
+  typescript: ~6.0.3
+  "@types/node": ~25.7.0
 overrides:
   vite: "catalog:"
   vitest: "catalog:"
@@ -16,3 +18,7 @@ peerDependencyRules:
   allowedVersions:
     vite: "*"
     vitest: "*"
+
+# allowBuilds:
+#   "@tailwindcss/oxide": true
+#   esbuild: true
