@@ -9,3 +9,6 @@ node_modules/
 
 # Vercel build
 .vercel/
+
+# Temporary task list (before using issues)
+TODO.md
