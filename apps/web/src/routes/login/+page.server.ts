@@ -7,7 +7,11 @@ import type { Actions, PageServerLoad } from "./$types";
 
 type StepResult = { step: "email" | "totp"; error?: string; email?: string; rememberMe?: boolean };
 
-export const load: PageServerLoad = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ cookies, locals }) => {
+  if (locals.user) {
+    redirect(302, "/");
+  }
+
   const email = cookies.get("__pending_auth");
 
   // Continue ongoing auth flow

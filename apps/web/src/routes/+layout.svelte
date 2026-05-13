@@ -4,7 +4,7 @@
     import Logo from "$ui/logo.svelte";
     import UserMenu from "$ui/user-menu.svelte";
 
-    const { children } = $props();
+    const { children, data } = $props();
 
     const navLinkClasses =
         "rounded-md px-3 py-1.5 text-sm font-medium text-subtle outline-none transition hover:bg-subtle hover:text-base active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-focus";
@@ -38,7 +38,7 @@
                 <a href="/spiel" class={navLinkClasses}>Spiele</a>
             </nav>
             <div class="flex items-center justify-end">
-                <UserMenu />
+                <UserMenu user={data.user} />
             </div>
         </div>
     </header>

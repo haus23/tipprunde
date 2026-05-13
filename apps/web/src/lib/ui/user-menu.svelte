@@ -3,10 +3,18 @@
     import { browser } from "$app/environment";
     import {
         EllipsisVerticalIcon,
+        LogInIcon,
+        LogOutIcon,
         MonitorIcon,
         MoonIcon,
+        SettingsIcon,
         SunIcon,
     } from "@lucide/svelte";
+
+    interface Props {
+        user: App.Locals["user"];
+    }
+    const { user }: Props = $props();
 
     const schemes = ["system", "light", "dark"] as const;
     type ColorScheme = (typeof schemes)[number];
@@ -21,7 +29,7 @@
     let SchemeIcon = $derived(schemeIcons[current]);
 
     const itemClass =
-        "flex w-full cursor-default items-center gap-2.5 rounded px-2.5 py-1.5 text-sm outline-none select-none data-highlighted:bg-subtle";
+        "flex w-full items-center gap-2.5 rounded px-2.5 py-1.5 text-sm outline-none select-none data-highlighted:bg-subtle";
 
     function next() {
         current = schemes[(schemes.indexOf(current) + 1) % schemes.length];
@@ -43,17 +51,56 @@
             collisionPadding={8}
             side="bottom"
             align="end"
+            alignOffset={-8}
             class="data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0 origin-(--bits-dropdown-menu-content-transform-origin) transition-[transform,scale,opacity] bg-surface border-surface min-w-48 rounded-md border p-1 shadow-md outline-none"
         >
             <DropdownMenu.Item class={itemClass} onSelect={next}>
                 <span class="flex-1">Hell-/Dunkelmodus</span>
                 <SchemeIcon size={14} class="text-subtle shrink-0" />
             </DropdownMenu.Item>
-            <DropdownMenu.Item class={itemClass}>
-                {#snippet child({ props })}
-                    <a href="/login" {...props}>Anmelden</a>
-                {/snippet}
-            </DropdownMenu.Item>
+            {#if user}
+                <DropdownMenu.Separator class="bg-subtle mx-1 my-1 h-px" />
+                <DropdownMenu.Group>
+                    <DropdownMenu.GroupHeading
+                        class="text-subtle text-xs font-medium px-2.5 py-1.5"
+                    >
+                        Hallo {user.name}
+                    </DropdownMenu.GroupHeading>
+                    {#if user.role === "manager" || user.role === "admin"}
+                        <DropdownMenu.Item class={itemClass}>
+                            {#snippet child({ props })}
+                                <a href="/manager" {...props}>
+                                    <span class="flex-1">Manager</span>
+                                    <SettingsIcon
+                                        size={14}
+                                        class="text-subtle shrink-0"
+                                    />
+                                </a>
+                            {/snippet}
+                        </DropdownMenu.Item>
+                    {/if}
+                    <DropdownMenu.Item class={itemClass}>
+                        {#snippet child({ props })}
+                            <a href="/logout" {...props}>
+                                <span class="flex-1">Abmelden</span>
+                                <LogOutIcon
+                                    size={14}
+                                    class="text-subtle shrink-0"
+                                />
+                            </a>
+                        {/snippet}
+                    </DropdownMenu.Item>
+                </DropdownMenu.Group>
+            {:else}
+                <DropdownMenu.Item class={itemClass}>
+                    {#snippet child({ props })}
+                        <a href="/login" {...props}>
+                            <span class="flex-1">Anmelden</span>
+                            <LogInIcon size={14} class="text-subtle shrink-0" />
+                        </a>
+                    {/snippet}
+                </DropdownMenu.Item>
+            {/if}
         </DropdownMenu.Content>
     </DropdownMenu.Portal>
 </DropdownMenu.Root>
