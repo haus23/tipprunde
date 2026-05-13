@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.1.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.5...v0.1.0)
+
+### 🚀 Enhancements
+
+- **web:** Highlight current user in ranking. ([a9a748d](https://github.com/haus23/tipprunde/commit/a9a748d))
+- **web:** Send login code per email. ([87b5893](https://github.com/haus23/tipprunde/commit/87b5893))
+- **web:** Add remaining routes with slightly changed concept. No params any more. ([b298e43](https://github.com/haus23/tipprunde/commit/b298e43))
+
+### 🩹 Fixes
+
+- Break out of pending auth. ([e064325](https://github.com/haus23/tipprunde/commit/e064325))
+
+### 💅 Refactors
+
+- **web:** Improve UI and UX for code input. ([f41192b](https://github.com/haus23/tipprunde/commit/f41192b))
+
 ## v0.0.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.4...v0.0.5)
