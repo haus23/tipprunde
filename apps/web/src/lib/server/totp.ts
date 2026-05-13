@@ -1,4 +1,10 @@
-import { APP_SECRET, TOTP_EXPIRES_IN, TOTP_MAX_ATTEMPTS } from "$env/static/private";
+import {
+  APP_SECRET,
+  FROM_EMAIL,
+  RESEND_API_KEY,
+  TOTP_EXPIRES_IN,
+  TOTP_MAX_ATTEMPTS,
+} from "$env/static/private";
 
 import { deleteTotpCode, getTotpCode, insertTotpCode, updateTotpCodeAttempts } from "./db/auth";
 
@@ -64,4 +70,22 @@ export async function verifyTotpCode(userId: number, code: string): Promise<Veri
 
   await deleteTotpCode(record.id);
   return "valid";
+}
+
+export async function sendTotpEmail(to: string, code: string): Promise<void> {
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: FROM_EMAIL,
+      to,
+      subject: "Dein Login-Code",
+      html: `<p>Dein Code: <strong>${code}</strong></p><p>Er ist 10 Minuten gültig.</p>`,
+    }),
+  });
+
+  if (!res.ok) throw new Error(`Resend error: ${res.status}`);
 }

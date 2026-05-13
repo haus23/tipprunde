@@ -1,6 +1,6 @@
 import { SESSION_DURATION_REMEMBER, TOTP_EXPIRES_IN } from "$env/static/private";
 import { createSession, findUser } from "$lib/server/db/auth";
-import { createTotpCode, verifyTotpCode } from "$lib/server/totp";
+import { createTotpCode, sendTotpEmail, verifyTotpCode } from "$lib/server/totp";
 import { redirect } from "@sveltejs/kit";
 
 import type { Actions, PageServerLoad } from "./$types";
@@ -41,8 +41,16 @@ export const actions = {
       return { step: "email", error: "Unbekannte E-Mail Adresse. Frag Micha!", email };
     }
 
-    const code = await createTotpCode(user.id);
-    console.log(code);
+    try {
+      const code = await createTotpCode(user.id);
+      await sendTotpEmail(email, code);
+    } catch {
+      return {
+        step: "email",
+        error: "Code konnte nicht gesendet werden. Bitte versuche es erneut.",
+        email,
+      };
+    }
 
     cookies.set("__pending_auth", email, {
       path: "/",
