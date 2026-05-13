@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { RULE_CATEGORIES } from "$lib/assets/rules";
+    import { RULE_CATEGORIES } from "$lib/domain/rules";
     import { formatDate } from "$lib/utils";
     import Card from "$ui/card.svelte";
     import type { PageProps } from "./$types";
