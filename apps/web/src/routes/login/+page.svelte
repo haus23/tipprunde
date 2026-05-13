@@ -44,51 +44,57 @@
                 </button>
             </form>
         {:else}
-            <form
-                method="POST"
-                action="?/verifyCode"
-                class="flex flex-col gap-4"
-            >
-                <p class="text-subtle text-sm">
-                    Code wurde an <span class="text-base font-medium"
-                        >{email}</span
-                    > gesendet.
-                </p>
-                <label class="flex flex-col gap-1.5">
-                    <span class="text-sm font-medium">Code</span>
-                    <input
-                        type="text"
-                        name="code"
-                        required
-                        pattern="[0-9]{'{'}6}"
-                        maxlength="6"
-                        inputmode="numeric"
-                        autocomplete="one-time-code"
-                        placeholder="123456"
-                        class={inputClass}
-                    />
-                </label>
-                <label class="flex cursor-pointer items-center gap-2 text-sm">
-                    <input
-                        type="checkbox"
-                        name="rememberMe"
-                        class="size-4 cursor-pointer accent-(--background-color-accent)"
-                        checked={form?.rememberMe}
-                    />
-                    Angemeldet bleiben
-                </label>
-                {#if form?.error}
-                    <p class="text-sm text-error">{form.error}</p>
-                {/if}
-                <div class="flex flex-col gap-2">
-                    <button type="submit" class={btnPrimaryClass}>
-                        Einloggen
-                    </button>
-                    <a href="/login" class={btnSecondaryClass + " text-center"}>
+            <div class="flex flex-col gap-4">
+                <form
+                    method="POST"
+                    action="?/verifyCode"
+                    class="flex flex-col gap-4"
+                >
+                    <p class="text-subtle text-sm">
+                        Code wurde an <span class="text-base font-medium"
+                            >{email}</span
+                        > gesendet.
+                    </p>
+                    <label class="flex flex-col gap-1.5">
+                        <span class="text-sm font-medium">Code</span>
+                        <input
+                            type="text"
+                            name="code"
+                            required
+                            pattern="[0-9]{'{'}6}"
+                            maxlength="6"
+                            inputmode="numeric"
+                            autocomplete="one-time-code"
+                            placeholder="123456"
+                            class={inputClass}
+                        />
+                    </label>
+                    <label
+                        class="flex cursor-pointer items-center gap-2 text-sm"
+                    >
+                        <input
+                            type="checkbox"
+                            name="rememberMe"
+                            class="size-4 cursor-pointer accent-(--background-color-accent)"
+                            checked={form?.rememberMe}
+                        />
+                        Angemeldet bleiben
+                    </label>
+                    {#if form?.error}
+                        <p class="text-sm text-error">{form.error}</p>
+                    {/if}
+                    <div class="flex flex-col gap-2">
+                        <button type="submit" class={btnPrimaryClass}>
+                            Einloggen
+                        </button>
+                    </div>
+                </form>
+                <form method="post" action="?/startOver">
+                    <button type="submit" class={btnSecondaryClass + " w-full"}>
                         Andere E-Mail verwenden
-                    </a>
-                </div>
-            </form>
+                    </button>
+                </form>
+            </div>
         {/if}
     </div>
 </div>

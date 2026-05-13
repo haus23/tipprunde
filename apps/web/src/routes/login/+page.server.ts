@@ -23,6 +23,11 @@ export const load: PageServerLoad = async ({ cookies, locals }) => {
 };
 
 export const actions = {
+  startOver: async ({ cookies }) => {
+    cookies.delete("__pending_auth", { path: "/" });
+    redirect(303, "/login");
+  },
+
   requestCode: async ({ cookies, request }): Promise<StepResult> => {
     const data = await request.formData();
 
