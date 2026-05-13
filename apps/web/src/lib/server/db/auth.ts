@@ -34,6 +34,17 @@ function generateSessionId(): string {
   return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+export async function getSession(sessionId: string) {
+  return db.query.sessions.findFirst({
+    where: {
+      id: sessionId,
+    },
+    with: {
+      user: true,
+    },
+  });
+}
+
 export async function createSession(userId: number, rememberMe: boolean) {
   const id = generateSessionId();
   const duration = rememberMe
@@ -42,4 +53,8 @@ export async function createSession(userId: number, rememberMe: boolean) {
   const expiresAt = new Date(Date.now() + duration * 1000).toISOString();
   await db.insert(sessions).values({ id, userId, rememberMe, expiresAt });
   return id;
+}
+
+export async function deleteSession(id: string) {
+  await db.delete(sessions).where(eq(sessions.id, id));
 }
