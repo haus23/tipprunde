@@ -24,3 +24,20 @@ export async function getCurrentMatches(championshipId: number) {
 
   return currentMatches;
 }
+
+export async function getRoundsWithMatches(championshipId: number) {
+  return db.query.rounds.findMany({
+    where: { championshipId, published: true },
+    orderBy: { nr: "asc" },
+    with: {
+      matches: {
+        orderBy: { nr: "asc" },
+        with: {
+          hometeam: true,
+          awayteam: true,
+          tips: true,
+        },
+      },
+    },
+  });
+}
