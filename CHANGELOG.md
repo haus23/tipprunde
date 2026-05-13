@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.0.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.0.4...v0.0.5)
+
+### 🚀 Enhancements
+
+- **web:** Implement basic login auth flow. ([8fb1bbc](https://github.com/haus23/tipprunde/commit/8fb1bbc))
+- **web:** Load authenticated user into locals and page data. ([b3fc23f](https://github.com/haus23/tipprunde/commit/b3fc23f))
+- **web:** Use authenticated user. ([afaf5f7](https://github.com/haus23/tipprunde/commit/afaf5f7))
+- **web:** Implement logout flow. ([5c79b31](https://github.com/haus23/tipprunde/commit/5c79b31))
+
+### 🩹 Fixes
+
+- Wrong folder for domain rules. ([30d102c](https://github.com/haus23/tipprunde/commit/30d102c))
+
 ## v0.0.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.3...v0.0.4)
