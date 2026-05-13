@@ -57,7 +57,7 @@
                         <td class="px-2 py-3 text-left">
                             <a
                                 href={`/spieler?name=${entry.slug}`}
-                                class="text-subtle hover:text-base focus-visible:ring-focus rounded font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+                                class={`${data.user?.id === entry.userId ? "text-accent" : "text-subtle hover:text-base"} focus-visible:ring-focus rounded font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface`}
                             >
                                 {entry.name}
                             </a>

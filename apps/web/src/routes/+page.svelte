@@ -40,7 +40,7 @@
                             <td class="py-2">
                                 <a
                                     href={`/spieler?name=${entry.slug}`}
-                                    class="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+                                    class={`${data.user?.id === entry.userId ? "text-accent " : ""}focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface`}
                                 >
                                     {entry.name}
                                 </a>
@@ -50,17 +50,45 @@
                             >
                         </tr>
                     {/each}
+                    {#if data.userBelowTop3}
+                        {#if data.userRankingIndex > 3}
+                            <tr>
+                                <td
+                                    colSpan={3}
+                                    class="text-subtle py-2.5 text-center text-xs"
+                                >
+                                    ⋮
+                                </td>
+                            </tr>
+                        {/if}
+                        <tr class="border-input border-t">
+                            <td class="w-px py-2 pr-3 text-right tabular-nums">
+                                {data.userBelowTop3.rank}
+                            </td>
+                            <td class="py-2">
+                                <a
+                                    href={`/spieler?name=${data.userBelowTop3.slug}`}
+                                    class="text-accent focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+                                >
+                                    {data.userBelowTop3.name}
+                                </a>
+                            </td>
+                            <td class="py-2 text-right font-medium tabular-nums"
+                                >{data.userBelowTop3.points}</td
+                            >
+                        </tr>
+                    {/if}
                 </tbody>
             </table>
             <div class="mt-3 flex items-center justify-end gap-4">
                 <a
                     href="/verlauf"
-                    class="text-subtle hover:text-base text-xs transition-colors"
+                    class="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface text-subtle hover:text-base text-xs transition-colors"
                     >Verlauf →</a
                 >
                 <a
                     href="/tabelle"
-                    class="text-subtle hover:text-base text-xs transition-colors"
+                    class="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface text-subtle hover:text-base text-xs transition-colors"
                     >Vollständige Tabelle →</a
                 >
             </div>
@@ -106,7 +134,7 @@
             <div class="mt-3 flex items-center justify-end gap-4">
                 <a
                     href="/spiele"
-                    class="text-subtle hover:text-base text-xs transition-colors"
+                    class="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface text-subtle hover:text-base text-xs transition-colors"
                     >Komplette Übersicht →</a
                 >
             </div>
