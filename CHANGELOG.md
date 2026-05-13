@@ -13,7 +13,7 @@
 
 ### 🩹 Fixes
 
-- Wrong folder for domain rules. ([30d102c](https://github.com/haus23/tipprunde/commit/30d102c))
+- **web:** Wrong folder for domain rules. ([30d102c](https://github.com/haus23/tipprunde/commit/30d102c))
 
 ## v0.0.4
 
