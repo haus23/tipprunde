@@ -36,7 +36,7 @@
   --breakpoint-xs: 480px;
 
   --color-*: initial;
-  --text-white: color(display-p3 1 1 1);
+  --text-color-white: color(display-p3 1 1 1);
 
   /* sand-1 / black - Base/App background */
   --background-color-base: light-dark(color(display-p3 0.992 0.992 0.989), color(display-p3 0 0 0));
@@ -94,8 +94,22 @@
     color(display-p3 0.067 0.067 0.063)
   );
 
+  /* orange-9 — Solid accent fill (components, buttons) */
+  --background-color-accent: color(display-p3 0.9 0.45 0.2);
+  /* orange-10 — Solid accent fill hover (components, buttons) */
+  --background-color-accent-hovered: light-dark(
+    color(display-p3 0.87 0.409 0.164),
+    color(display-p3 0.98 0.51 0.23)
+  );
+
   /* orange-11  */
   --text-color-accent: light-dark(color(display-p3 0.76 0.34 0), color(display-p3 1 0.63 0.38));
+
+  /* red-11 — Error text */
+  --text-color-error: light-dark(
+    color(display-p3 0.744 0.071 0.125),
+    color(display-p3 1 0.482 0.427)
+  );
 }
 /*
 Radix Colors:

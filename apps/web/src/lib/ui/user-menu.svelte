@@ -41,11 +41,18 @@
         <DropdownMenu.Content
             sideOffset={6}
             collisionPadding={8}
-            class="data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0 origin-(--bits-dropdown-menu-content-transform-origin) transition-[transform,scale,opacity] bg-surface border-surface min-w-48 rounded-md border p-2 shadow-md outline-none"
+            side="bottom"
+            align="end"
+            class="data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0 origin-(--bits-dropdown-menu-content-transform-origin) transition-[transform,scale,opacity] bg-surface border-surface min-w-48 rounded-md border p-1 shadow-md outline-none"
         >
             <DropdownMenu.Item class={itemClass} onSelect={next}>
                 <span class="flex-1">Hell-/Dunkelmodus</span>
                 <SchemeIcon size={14} class="text-subtle shrink-0" />
+            </DropdownMenu.Item>
+            <DropdownMenu.Item class={itemClass}>
+                {#snippet child({ props })}
+                    <a href="/login" {...props}>Anmelden</a>
+                {/snippet}
             </DropdownMenu.Item>
         </DropdownMenu.Content>
     </DropdownMenu.Portal>

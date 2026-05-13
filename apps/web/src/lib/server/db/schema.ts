@@ -14,6 +14,28 @@ export const users = sqliteTable("users", {
     .default(sql`CURRENT_TIMESTAMP`),
 });
 
+export const sessions = sqliteTable("sessions", {
+  id: text("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  rememberMe: integer("remember_me", { mode: "boolean" }).notNull().default(false),
+  expiresAt: text("expires_at").notNull(),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const totpCodes = sqliteTable("totp_codes", {
+  id: text("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  codeHash: text("code_hash").notNull(),
+  expiresAt: text("expires_at").notNull(),
+  attempts: integer("attempts").notNull().default(0),
+});
+
 export const teams = sqliteTable("teams", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
