@@ -35,7 +35,7 @@
             <nav class="flex items-center gap-1">
                 <a href="/tabelle" class={navLinkClasses}>Tabelle</a>
                 <a href="/spieler" class={navLinkClasses}>Spieler</a>
-                <a href="/spiel" class={navLinkClasses}>Spiele</a>
+                <a href="/spiele" class={navLinkClasses}>Spiele</a>
             </nav>
             <div class="flex items-center justify-end">
                 <UserMenu user={data.user} />

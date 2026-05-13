@@ -39,7 +39,7 @@
                             </td>
                             <td class="py-2">
                                 <a
-                                    href={`/spieler?name=${entry.slug}`}
+                                    href={`/spieler/${entry.slug}`}
                                     class={`${data.user?.id === entry.userId ? "text-accent " : ""}focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface`}
                                 >
                                     {entry.name}
@@ -67,7 +67,7 @@
                             </td>
                             <td class="py-2">
                                 <a
-                                    href={`/spieler?name=${data.userBelowTop3.slug}`}
+                                    href={`/spieler/${data.userBelowTop3.slug}`}
                                     class="text-accent focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
                                 >
                                     {data.userBelowTop3.name}
@@ -109,7 +109,7 @@
                             </td>
                             <td class="py-2">
                                 <a
-                                    href={`/spiel?nr=${match.nr}`}
+                                    href={`/spiele/${match.nr}`}
                                     class="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
                                 >
                                     <span class="hidden lg:inline">
