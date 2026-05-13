@@ -72,10 +72,14 @@ export const actions = {
 
     // Extract form data
     const code = data.get("code");
-    if (!(typeof code === "string") || !code) {
-      return { step: "totp", error: "Ohne Code klappt das nicht." };
-    }
     const rememberMe = data.get("rememberMe") === "on";
+
+    if (!(typeof code === "string") || !code) {
+      return { step: "totp", rememberMe, error: "Ohne Code klappt das nicht." };
+    }
+    if (code.length !== 6) {
+      return { step: "totp", rememberMe, error: "Zu kurz. Ein Code hat sechs Zeichen." };
+    }
 
     const result = await verifyTotpCode(user.id, code);
 

@@ -40,6 +40,10 @@
 
   /* sand-1 / black - Base/App background */
   --background-color-base: light-dark(color(display-p3 0.992 0.992 0.989), color(display-p3 0 0 0));
+  --background-color-base-inverted: light-dark(
+    color(display-p3 0 0 0),
+    color(display-p3 0.992 0.992 0.989)
+  );
   /* white / sand-1 - Raise backgrounds */
   --background-color-surface: light-dark(
     color(display-p3 1 1 1),
@@ -110,6 +114,20 @@
     color(display-p3 0.744 0.071 0.125),
     color(display-p3 1 0.482 0.427)
   );
+
+  --animate-caret-blink: caret-blink 1s ease-out infinite;
+
+  @keyframes caret-blink {
+    0%,
+    70%,
+    100% {
+      opacity: 1;
+    }
+    20%,
+    50% {
+      opacity: 0;
+    }
+  }
 }
 /*
 Radix Colors:
