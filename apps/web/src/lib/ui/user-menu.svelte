@@ -81,13 +81,17 @@
                     {/if}
                     <DropdownMenu.Item class={itemClass}>
                         {#snippet child({ props })}
-                            <a href="/logout" {...props}>
-                                <span class="flex-1">Abmelden</span>
-                                <LogOutIcon
-                                    size={14}
-                                    class="text-subtle shrink-0"
-                                />
-                            </a>
+                            <form method="post" action="/logout">
+                                <button type="submit" {...props}>
+                                    <span class="flex-1 text-left">
+                                        Abmelden
+                                    </span>
+                                    <LogOutIcon
+                                        size={14}
+                                        class="text-subtle shrink-0"
+                                    />
+                                </button>
+                            </form>
                         {/snippet}
                     </DropdownMenu.Item>
                 </DropdownMenu.Group>
