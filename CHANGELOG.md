@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.2.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0...v0.2.1)
+
+### 🚀 Enhancements
+
+- **spieler:** Add accordion open/close animations and margin transition ([87f1954](https://github.com/haus23/tipprunde/commit/87f1954))
+
+### 🩹 Fixes
+
+- **tipp-flag:** Fix arrow color and add hover support ([5d00a5d](https://github.com/haus23/tipprunde/commit/5d00a5d))
+
+### 💅 Refactors
+
+- **spieler:** Use cn() for grouped class names ([6d443af](https://github.com/haus23/tipprunde/commit/6d443af))
+
+### 🏡 Chore
+
+- Update deps. ([27a41a4](https://github.com/haus23/tipprunde/commit/27a41a4))
+
 ## v0.2.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.1...v0.2.0)
