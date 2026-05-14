@@ -84,5 +84,10 @@ Required in `.env` for local dev: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `APP
 
 - **bits-ui**
   - High-level Index: https://bits-ui.com/llms.txt
-  - Full Doc: bits-ui.com/docs/llms.txt
+  - Full Doc: https://bits-ui.com/docs/llms.txt
   - _Usage Note:_ Fetch the full doc only when deep API details or complex code examples are required.
+- **LayerChart** (Next Version, Svelte 5 ready)
+  - High level Index: https://next.layerchart.com/llms.txt
+  - Full Doc: https://next.layerchart.com/docs/llms.txt
+  - _Usage Note:_ Fetch the full doc only when deep API details or complex code examples are required.
+-
