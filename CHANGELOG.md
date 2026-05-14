@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.1.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.1.1)
+
+### 🚀 Enhancements
+
+- **web:** Add spiele-select component with navigation and styling ([f3a242a](https://github.com/haus23/tipprunde/commit/f3a242a))
+
+### 🏡 Chore
+
+- **web:** Preparing first ideas for the matches view. ([ac89b36](https://github.com/haus23/tipprunde/commit/ac89b36))
+- **web:** Setup svelte mcp server. ([43d0a8b](https://github.com/haus23/tipprunde/commit/43d0a8b))
+- **web:** Install svelte-check. ([5bf99f3](https://github.com/haus23/tipprunde/commit/5bf99f3))
+- **web:** Update tsconfig for sv check usage. ([4f89f62](https://github.com/haus23/tipprunde/commit/4f89f62))
+- Add claude instructions. ([7a4a065](https://github.com/haus23/tipprunde/commit/7a4a065))
+- Move mcp config to monorepo root. ([cf21bc9](https://github.com/haus23/tipprunde/commit/cf21bc9))
+
 ## v0.1.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.0.5...v0.1.0)
