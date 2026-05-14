@@ -1,5 +1,6 @@
 <script lang="ts">
     import { LineChart } from "layerchart";
+    import { SvelteSet } from "svelte/reactivity";
 
     import type { PageProps } from "./$types";
 
@@ -20,12 +21,25 @@
         "oklch(55% 0.20 10)",
     ];
 
-    const series = $derived(data.players.map((p, i) => ({
-        key: `u${p.userId}`,
-        label: p.name,
-        value: `u${p.userId}`,
-        color: COLORS[i % COLORS.length],
-    })));
+    const deselected = new SvelteSet<string>();
+
+    const series = $derived(
+        data.players.map((p, i) => ({
+            key: `u${p.userId}`,
+            label: p.name,
+            value: `u${p.userId}`,
+            color: COLORS[i % COLORS.length],
+            selected: !deselected.has(`u${p.userId}`),
+        })),
+    );
+
+    function toggleSeries(key: string) {
+        if (deselected.has(key)) {
+            deselected.delete(key);
+        } else {
+            deselected.add(key);
+        }
+    }
 </script>
 
 <div class="mx-auto w-full max-w-5xl py-8">
@@ -54,16 +68,34 @@
         </div>
     {:else}
         <div
-            class="xs:mx-4 bg-surface border-surface xs:rounded-md xs:border h-[480px] border-y p-4"
+            class="xs:mx-4 bg-surface border-surface xs:rounded-md xs:border border-y px-4 pt-4 pb-5"
             style="--color-surface-100: var(--background-color-surface); --color-surface-content: var(--text-color-base); --color-primary: var(--background-color-accent)"
         >
-            <LineChart
-                data={data.chartData}
-                x="matchNr"
-                {series}
-                legend={true}
-                padding={{ top: 8, right: 8, bottom: 32, left: 48 }}
-            />
+            <div class="h-[min(420px,60svh)] min-h-[180px]">
+                <LineChart
+                    data={data.chartData}
+                    x="matchNr"
+                    {series}
+                    legend={false}
+                    padding={{ top: 8, right: 8, bottom: 32, left: 48 }}
+                />
+            </div>
+            <div class="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
+                {#each series as s (s.key)}
+                    <button
+                        onclick={() => toggleSeries(s.key)}
+                        class="flex cursor-pointer items-center gap-1.5 rounded px-1.5 py-1 text-xs transition-opacity hover:bg-subtle {!s.selected
+                            ? 'opacity-35'
+                            : ''}"
+                    >
+                        <span
+                            class="size-2.5 shrink-0 rounded-full"
+                            style="background-color: {s.color}"
+                        ></span>
+                        <span class="text-subtle">{s.label}</span>
+                    </button>
+                {/each}
+            </div>
         </div>
     {/if}
 </div>

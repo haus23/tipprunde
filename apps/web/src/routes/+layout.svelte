@@ -13,7 +13,7 @@
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
 <div class="flex min-h-svh flex-col">
-    <header class="border-layout bg-base sticky top-0 h-14 border-b">
+    <header class="border-layout bg-base sticky top-0 z-10 h-14 border-b">
         <div
             class="mx-auto grid h-full max-w-5xl grid-cols-[1fr_auto_1fr] items-center px-4"
         >
