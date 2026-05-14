@@ -134,6 +134,18 @@
   /* orange-11  */
   --text-color-accent: light-dark(color(display-p3 0.76 0.34 0), color(display-p3 1 0.63 0.38));
 
+  /** Special colors **/
+
+  /* sand-12 / sand-1 — Inverted surface (tooltip) */
+  --background-color-inverted: light-dark(
+    color(display-p3 0.129 0.126 0.111),
+    color(display-p3 0.992 0.992 0.989)
+  );
+  --text-color-inverted: light-dark(
+    color(display-p3 0.992 0.992 0.989),
+    color(display-p3 0.129 0.126 0.111)
+  );
+
   /* red-11 — Error text */
   --text-color-error: light-dark(
     color(display-p3 0.744 0.071 0.125),

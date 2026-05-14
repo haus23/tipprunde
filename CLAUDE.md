@@ -70,6 +70,7 @@ The root layout (`+layout.server.ts`) loads the latest published championship an
 - Drizzle RQB v2 query syntax: object shorthand in `where` with operators (`in`, `gt`, `isNotNull`, etc.) — do not use v1 callback form
 - Only create DAL query functions when a concrete use case exists — no speculative helpers
 - TypeScript 6.0 subpath imports (`#/`) resolve natively; no tsconfig paths needed
+- If class attributes are getting to long (line-width way above 80 chars): group them semantically with the cn-helper int the `src/lib/utils.ts` file.
 
 ## Environment variables
 
