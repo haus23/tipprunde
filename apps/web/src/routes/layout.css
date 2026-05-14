@@ -32,8 +32,33 @@
   }
 }
 
+@keyframes accordion-down {
+  from {
+    height: 0;
+    overflow: hidden;
+  }
+  to {
+    height: var(--bits-accordion-content-height);
+    overflow: hidden;
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--bits-accordion-content-height);
+    overflow: hidden;
+  }
+  to {
+    height: 0;
+    overflow: hidden;
+  }
+}
+
 @theme {
   --breakpoint-xs: 480px;
+
+  --animate-accordion-down: accordion-down 200ms ease-out;
+  --animate-accordion-up: accordion-up 200ms ease-out;
 
   --color-*: initial;
   --text-color-white: color(display-p3 1 1 1);
