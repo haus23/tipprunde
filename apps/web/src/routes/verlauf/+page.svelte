@@ -1,7 +1,9 @@
 <script lang="ts">
-    import { LineChart } from "layerchart";
+    import { LineChart, Tooltip } from "layerchart";
+    import type { ChartState } from "layerchart";
     import { SvelteSet } from "svelte/reactivity";
 
+    import type { ChartPoint } from "$lib/server/db/verlauf";
     import type { PageProps } from "./$types";
 
     const { data }: PageProps = $props();
@@ -40,7 +42,50 @@
             deselected.add(key);
         }
     }
+
+    function visibleRanked(allSeries: Tooltip.TooltipSeries[]) {
+        const sorted = allSeries
+            .filter((s) => s.visible)
+            .toSorted(
+                (a, b) => ((b.value as number) ?? 0) - ((a.value as number) ?? 0),
+            );
+        let rank = 1;
+        return sorted.map((s, i) => {
+            if (i > 0 && (s.value as number) < (sorted[i - 1].value as number))
+                rank = i + 1;
+            return { ...s, rank };
+        });
+    }
 </script>
+
+{#snippet tooltip({ context }: { context: ChartState<ChartPoint> })}
+    <Tooltip.Root {context} contained="window">
+        {#snippet children({ data: point })}
+            {@const p = point as ChartPoint}
+            <p class="text-subtle mb-1.5 text-[11px] font-normal">
+                Spiel {p.matchNr}
+            </p>
+            {@const ranked = visibleRanked(context.tooltip.series)}
+            {#each ranked as s, i (s.key)}
+                <div class="flex items-center justify-between gap-3">
+                    <div class="label flex items-center gap-1.5">
+                        <span class="text-subtle w-6 shrink-0 text-right tabular-nums"
+                            >{i === 0 || s.rank !== ranked[i - 1].rank
+                                ? `${s.rank}.`
+                                : ""}</span
+                        >
+                        <span
+                            class="size-1.5 shrink-0 rounded-full"
+                            style="background-color: {s.color}"
+                        ></span>
+                        <span>{s.label}</span>
+                    </div>
+                    <span class="tabular-nums font-medium">{s.value}</span>
+                </div>
+            {/each}
+        {/snippet}
+    </Tooltip.Root>
+{/snippet}
 
 <div class="mx-auto w-full max-w-5xl py-8">
     <div class="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
@@ -76,6 +121,7 @@
                     data={data.chartData}
                     x="matchNr"
                     {series}
+                    {tooltip}
                     legend={false}
                     padding={{ top: 8, right: 8, bottom: 32, left: 48 }}
                 />
