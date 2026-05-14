@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.2.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.1.1...v0.2.0)
+
+### 🚀 Enhancements
+
+- **web:** Add /verlauf route with LayerChart points progression chart ([cda4198](https://github.com/haus23/tipprunde/commit/cda4198))
+- **verlauf:** Add rank to tooltip with distinct display ([8dc3e43](https://github.com/haus23/tipprunde/commit/8dc3e43))
+- **verlauf:** Improve tooltip positioning, selection UX, and rank accuracy ([4d78178](https://github.com/haus23/tipprunde/commit/4d78178))
+- **web:** Add /spieler route with player detail view ([b71b78f](https://github.com/haus23/tipprunde/commit/b71b78f))
+
+### 🩹 Fixes
+
+- **web:** Fix /verlauf responsiveness, legend, and header z-index ([29e60b5](https://github.com/haus23/tipprunde/commit/29e60b5))
+
 ## v0.1.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.1.0...v0.1.1)
