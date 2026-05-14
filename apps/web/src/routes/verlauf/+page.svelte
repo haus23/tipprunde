@@ -1,9 +1,8 @@
 <script lang="ts">
     import { LineChart, Tooltip } from "layerchart";
     import type { ChartState } from "layerchart";
-    import { SvelteSet } from "svelte/reactivity";
 
-    import type { ChartPoint } from "$lib/server/db/verlauf";
+    import type { ChartPoint, PlayerPoint } from "$lib/server/db/verlauf";
     import type { PageProps } from "./$types";
 
     const { data }: PageProps = $props();
@@ -23,55 +22,77 @@
         "oklch(55% 0.20 10)",
     ];
 
-    const deselected = new SvelteSet<string>();
-
     const series = $derived(
         data.players.map((p, i) => ({
             key: `u${p.userId}`,
             label: p.name,
-            value: `u${p.userId}`,
+            value: (d: ChartPoint) => d.players[`u${p.userId}`]?.points ?? 0,
             color: COLORS[i % COLORS.length],
-            selected: !deselected.has(`u${p.userId}`),
         })),
     );
 
-    function toggleSeries(key: string) {
-        if (deselected.has(key)) {
-            deselected.delete(key);
-        } else {
-            deselected.add(key);
-        }
-    }
+    let context = $state<ChartState<ChartPoint>>();
 
-    function visibleRanked(allSeries: Tooltip.TooltipSeries[]) {
-        const sorted = allSeries
-            .filter((s) => s.visible)
-            .toSorted(
-                (a, b) => ((b.value as number) ?? 0) - ((a.value as number) ?? 0),
-            );
-        let rank = 1;
-        return sorted.map((s, i) => {
-            if (i > 0 && (s.value as number) < (sorted[i - 1].value as number))
-                rank = i + 1;
-            return { ...s, rank };
-        });
-    }
+    const allSelected = $derived(context?.series?.selectedKeys?.isEmpty() ?? true);
+
+    let tooltipRef = $state<HTMLElement | undefined>();
+
+    $effect(() => {
+        const el = tooltipRef;
+        if (!el) return;
+        const clamp = () => {
+            const r = el.getBoundingClientRect();
+            const ts = window.getComputedStyle(el).transform;
+            const m = ts && ts !== "none" ? new DOMMatrix(ts) : new DOMMatrix();
+            const rawTop = r.top - m.f;
+            const rawBottom = r.bottom - m.f;
+            const rawLeft = r.left - m.e;
+            const rawRight = r.right - m.e;
+            const pad = 8;
+            const dy =
+                rawTop < pad
+                    ? pad - rawTop
+                    : rawBottom > innerHeight - pad
+                      ? innerHeight - pad - rawBottom
+                      : 0;
+            const dx =
+                rawLeft < pad
+                    ? pad - rawLeft
+                    : rawRight > innerWidth - pad
+                      ? innerWidth - pad - rawRight
+                      : 0;
+            const t = dx || dy ? `translate(${dx}px,${dy}px)` : "";
+            if (el.style.transform !== t) el.style.transform = t;
+        };
+        const obs = new MutationObserver(clamp);
+        obs.observe(el, { attributes: true, attributeFilter: ["style"] });
+        return () => obs.disconnect();
+    });
+
 </script>
 
-{#snippet tooltip({ context }: { context: ChartState<ChartPoint> })}
-    <Tooltip.Root {context} contained="window">
+{#snippet tooltip({ context: ctx }: { context: ChartState<ChartPoint> })}
+    <Tooltip.Root
+        context={ctx}
+        contained="window"
+        anchor="left"
+        bind:rootRef={tooltipRef}
+    >
         {#snippet children({ data: point })}
             {@const p = point as ChartPoint}
             <p class="text-subtle mb-1.5 text-[11px] font-normal">
                 Spiel {p.matchNr}
             </p>
-            {@const ranked = visibleRanked(context.tooltip.series)}
-            {#each ranked as s, i (s.key)}
-                <div class="flex items-center justify-between gap-3">
+            {@const visible = ctx.tooltip.series
+                .filter((s) => s.visible)
+                .toSorted((a, b) => ((b.value as number) ?? 0) - ((a.value as number) ?? 0))}
+            {#each visible as s, i (s.key)}
+                {@const rank = (p.players[s.key] as PlayerPoint)?.rank ?? 0}
+                <div class="flex items-center justify-between gap-3 pr-1">
                     <div class="label flex items-center gap-1.5">
                         <span class="text-subtle w-6 shrink-0 text-right tabular-nums"
-                            >{i === 0 || s.rank !== ranked[i - 1].rank
-                                ? `${s.rank}.`
+                            >{i === 0 || rank !== ((p.players[visible[i - 1].key] as PlayerPoint)?.rank ?? 0)
+                                ? `${rank}.`
                                 : ""}</span
                         >
                         <span
@@ -116,23 +137,26 @@
             class="xs:mx-4 bg-surface border-surface xs:rounded-md xs:border border-y px-4 pt-4 pb-5"
             style="--color-surface-100: var(--background-color-surface); --color-surface-content: var(--text-color-base); --color-primary: var(--background-color-accent)"
         >
-            <div class="h-[min(420px,60svh)] min-h-[180px]">
+            <div class="h-[min(420px,60svh)] min-h-45">
                 <LineChart
+                    bind:context
                     data={data.chartData}
                     x="matchNr"
                     {series}
                     {tooltip}
                     legend={false}
-                    padding={{ top: 8, right: 8, bottom: 32, left: 48 }}
+                    padding={{ top: 8, right: 0, bottom: 32, left: 16 }}
                 />
             </div>
             <div class="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
                 {#each series as s (s.key)}
                     <button
-                        onclick={() => toggleSeries(s.key)}
-                        class="flex cursor-pointer items-center gap-1.5 rounded px-1.5 py-1 text-xs transition-opacity hover:bg-subtle {!s.selected
-                            ? 'opacity-35'
-                            : ''}"
+                        onclick={() => context?.series?.selectedKeys?.toggle(s.key)}
+                        class="flex cursor-pointer items-center gap-1.5 rounded px-1.5 py-1 text-xs transition-opacity hover:bg-subtle {allSelected
+                            ? 'opacity-75'
+                            : !context?.series?.isVisible(s.key)
+                              ? 'opacity-35'
+                              : ''}"
                     >
                         <span
                             class="size-2.5 shrink-0 rounded-full"

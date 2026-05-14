@@ -3,7 +3,8 @@ import { inArray } from "drizzle-orm";
 import { db, tips } from ".";
 
 export type VerlaufPlayer = { userId: number; name: string };
-export type ChartPoint = { matchNr: number } & Record<string, number>;
+export type PlayerPoint = { points: number; rank: number };
+export type ChartPoint = { matchNr: number; players: Record<string, PlayerPoint> };
 
 export async function getVerlauf(championshipId: number) {
   const players = await db.query.players.findMany({
@@ -52,17 +53,33 @@ export async function getVerlauf(championshipId: number) {
         cumulative.set(t.userId, (cumulative.get(t.userId) ?? 0) + (t.points ?? 0));
       });
 
-    const point: ChartPoint = { matchNr: match.nr };
-    playerInfos.forEach((p) => {
-      point[`u${p.userId}`] = cumulative.get(p.userId) ?? 0;
+    const sorted = [...playerInfos].sort(
+      (a, b) => (cumulative.get(b.userId) ?? 0) - (cumulative.get(a.userId) ?? 0),
+    );
+    let rank = 1;
+    const ranks = new Map<number, number>();
+    sorted.forEach((p, i) => {
+      if (i > 0 && (cumulative.get(p.userId) ?? 0) < (cumulative.get(sorted[i - 1].userId) ?? 0)) {
+        rank = i + 1;
+      }
+      ranks.set(p.userId, rank);
     });
-    return point;
+
+    const matchPlayers: Record<string, PlayerPoint> = {};
+    playerInfos.forEach((p) => {
+      matchPlayers[`u${p.userId}`] = {
+        points: cumulative.get(p.userId) ?? 0,
+        rank: ranks.get(p.userId) ?? 0,
+      };
+    });
+
+    return { matchNr: match.nr, players: matchPlayers };
   });
 
   const finalPoint = chartData.at(-1);
   const sortedPlayers = [...playerInfos].sort((a, b) => {
-    const pa = finalPoint?.[`u${a.userId}`] ?? 0;
-    const pb = finalPoint?.[`u${b.userId}`] ?? 0;
+    const pa = finalPoint?.players[`u${a.userId}`]?.points ?? 0;
+    const pb = finalPoint?.players[`u${b.userId}`]?.points ?? 0;
     return pb - pa;
   });
 
