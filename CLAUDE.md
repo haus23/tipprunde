@@ -6,6 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 pnpm workspace with currently a single app at `apps/web` (SvelteKit). A `packages/` directory is reserved but currently empty. All development work happens currently inside `apps/web`.
 
+Related agent instructions:
+@apps/web/CLAUDE.md
+
 ## Commands
 
 All commands run from `apps/web` (or root with `pnpm --filter @tipprunde/web`):
@@ -76,3 +79,10 @@ Required in `.env` for local dev: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `APP
 
 - Use bits-ui where appropriate
 - Only use color tokens from the `src/routes/layout.css`. Or create new tokens if needed. The design system uses an orange/sand palette from RadixUI colors. That colors are listed in the comments.
+
+## External Documentation (LLM-Ready)
+
+- **bits-ui**
+  - High-level Index: https://bits-ui.com/llms.txt
+  - Full Doc: bits-ui.com/docs/llms.txt
+  - _Usage Note:_ Fetch the full doc only when deep API details or complex code examples are required.

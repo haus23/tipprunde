@@ -1,3 +1,7 @@
+import { twMerge } from "tailwind-merge";
+
+export const cn = twMerge;
+
 export function formatDate(date: string) {
   const d = new Date(date);
   if (d.getFullYear() === new Date().getFullYear()) {
