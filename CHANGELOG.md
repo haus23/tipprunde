@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.3.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0...v0.3.1)
+
+### 🚀 Enhancements
+
+- **header:** Refactor color scheme switcher to two-action model ([c377769](https://github.com/haus23/tipprunde/commit/c377769))
+- **errors:** Add error pages and improve 404 messages ([a4245b7](https://github.com/haus23/tipprunde/commit/a4245b7))
+- **seo:** Add page titles to all routes ([df8073d](https://github.com/haus23/tipprunde/commit/df8073d))
+
+### 🩹 Fixes
+
+- **layout:** Add xs:mx-4 to content cards on spiele and spieler views ([6b5bb81](https://github.com/haus23/tipprunde/commit/6b5bb81))
+- **home:** Align bottom links in dashboard cards ([f14d563](https://github.com/haus23/tipprunde/commit/f14d563))
+
 ## v0.3.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.2...v0.3.0)
