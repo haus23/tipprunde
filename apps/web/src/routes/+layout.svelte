@@ -1,13 +1,19 @@
 <script lang="ts">
     import "./layout.css";
     import favicon from "$lib/assets/favicon.ico";
+    import { MoonIcon, SunIcon } from "@lucide/svelte";
     import Logo from "$ui/logo.svelte";
     import UserMenu from "$ui/user-menu.svelte";
+    import { colorScheme, toggleScheme } from "$lib/state/color-scheme.svelte";
 
     const { children, data } = $props();
 
+    const SchemeIcon = $derived(
+        colorScheme.effective === "dark" ? MoonIcon : SunIcon,
+    );
+
     const navLinkClasses =
-        "rounded-md px-3 py-1.5 text-sm font-medium text-subtle outline-none transition hover:bg-subtle hover:text-base active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-focus";
+        "rounded-md px-2 xs:px-3 py-1.5 text-sm font-medium text-subtle outline-none transition hover:bg-subtle hover:text-base active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-focus";
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
@@ -15,7 +21,7 @@
 <div class="flex min-h-svh flex-col">
     <header class="border-layout bg-base sticky top-0 z-10 h-14 border-b">
         <div
-            class="mx-auto grid h-full max-w-5xl grid-cols-[1fr_auto_1fr] items-center px-4"
+            class="mx-auto grid h-full max-w-5xl grid-cols-[auto_1fr_auto] xs:grid-cols-[1fr_auto_1fr] items-center px-2 xs:px-4"
         >
             <div class="flex">
                 <a
@@ -32,12 +38,19 @@
                     </span>
                 </a>
             </div>
-            <nav class="flex items-center gap-1">
+            <nav class="flex items-center justify-center gap-1">
                 <a href="/tabelle" class={navLinkClasses}>Tabelle</a>
                 <a href="/spieler" class={navLinkClasses}>Spieler</a>
                 <a href="/spiele" class={navLinkClasses}>Spiele</a>
             </nav>
-            <div class="flex items-center justify-end">
+            <div class="flex items-center justify-end gap-1">
+                <button
+                    onclick={toggleScheme}
+                    aria-label="Farbschema wechseln"
+                    class="text-subtle hover:text-base hover:bg-subtle focus-visible:ring-focus flex size-8 cursor-pointer items-center justify-center rounded-md outline-none transition-colors active:scale-95 focus-visible:ring-2"
+                >
+                    <SchemeIcon size={18} />
+                </button>
                 <UserMenu user={data.user} />
             </div>
         </div>
