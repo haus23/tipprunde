@@ -65,7 +65,7 @@
             <nav class="flex h-full items-center justify-center gap-1">
                 {#each [{ href: "/tabelle", label: "Tabelle" }, { href: "/spieler", label: "Spieler" }, { href: "/spiele", label: "Spiele" }] as item (item.href)}
                     <div
-                        class="flex h-full items-center has-aria-[current=page]:border-b-2 has-aria-[current=page]:border-accent"
+                        class="flex h-full items-center border-b-2 border-transparent has-aria-[current=page]:border-accent"
                     >
                         <a
                             href={item.href}
