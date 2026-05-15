@@ -71,6 +71,10 @@
 
 </script>
 
+<svelte:head>
+    <title>Verlauf · {data.championship.name}</title>
+</svelte:head>
+
 {#snippet tooltip({ context: ctx }: { context: ChartState<ChartPoint> })}
     <Tooltip.Root
         context={ctx}

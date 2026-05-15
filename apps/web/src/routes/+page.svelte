@@ -6,6 +6,8 @@
 
     const { data }: PageProps = $props();
 
+    const championship = $derived(data.championship);
+
     const championshipRules = RULE_CATEGORIES.flatMap(
         ({ field, label, rules }) => {
             const ruleId = data.championship.ruleset?.[field];
@@ -15,6 +17,10 @@
         },
     );
 </script>
+
+<svelte:head>
+    <title>runde.tips</title>
+</svelte:head>
 
 <div class="mx-auto w-full max-w-5xl px-2 xs:px-4 py-8 flex flex-col gap-8">
     <div class="flex flex-col items-center">

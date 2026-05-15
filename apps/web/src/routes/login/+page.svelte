@@ -26,6 +26,10 @@
     ].join(" ");
 </script>
 
+<svelte:head>
+    <title>Anmelden · runde.tips</title>
+</svelte:head>
+
 <div class="flex flex-1 items-center justify-center px-4 py-12">
     <div
         class="border-surface bg-surface flex w-full max-w-lg flex-col gap-6 rounded-xl border p-8"

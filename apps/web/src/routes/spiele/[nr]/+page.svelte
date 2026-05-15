@@ -86,6 +86,10 @@
             : null,
     );
 
+    const paarung = $derived(
+        allMatches[currentIndex]?.paarungShort ?? `Spiel ${matchData.nr}`,
+    );
+
     const navLinkClass = cn(
         "flex items-center gap-1 rounded text-sm outline-none",
         "text-subtle hover:text-base transition-colors",
@@ -103,6 +107,10 @@
         "focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface focus-visible:ring-focus",
     );
 </script>
+
+<svelte:head>
+    <title>{paarung} · {data.championship.name}</title>
+</svelte:head>
 
 <div class="mx-auto w-full max-w-5xl py-8">
     <div class="xs:px-0 relative flex flex-col items-center gap-2 px-4 md:mb-6">
