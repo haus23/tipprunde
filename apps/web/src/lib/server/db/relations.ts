@@ -32,6 +32,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.matches.roundId,
       to: r.rounds.id,
     }),
+    league: r.one.leagues({
+      from: r.matches.leagueId,
+      to: r.leagues.id,
+    }),
     hometeam: r.one.teams({
       from: r.matches.hometeamId,
       to: r.teams.id,

@@ -33,6 +33,7 @@ export async function getRoundsWithMatches(championshipId: number) {
       matches: {
         orderBy: { nr: "asc" },
         with: {
+          league: true,
           hometeam: true,
           awayteam: true,
           tips: true,
