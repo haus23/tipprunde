@@ -150,7 +150,7 @@
     </div>
 
     <div
-        class="bg-surface border-surface xs:mx-0 xs:rounded-md xs:border mx-0 border-y px-4 py-2"
+        class="bg-surface border-surface xs:mx-4 xs:rounded-md xs:border border-y px-4 py-2"
     >
         <table class="w-full text-sm">
             <thead>

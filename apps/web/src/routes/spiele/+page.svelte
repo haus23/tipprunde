@@ -12,7 +12,7 @@
 
     const itemClass = cn(
         "group bg-surface border-surface border-y",
-        "xs:rounded-md xs:border",
+        "xs:mx-4 xs:rounded-md xs:border",
         "transition-[margin] duration-300 ease-out",
         "data-[state=open]:my-2 first:data-[state=open]:mt-0 last:data-[state=open]:mb-0",
     );
