@@ -125,6 +125,8 @@
 
   /* orange-9 — Solid accent fill (components, buttons) */
   --background-color-accent: color(display-p3 0.9 0.45 0.2);
+  /* orange-9 — Solid accent border */
+  --border-color-accent: color(display-p3 0.9 0.45 0.2);
   /* orange-10 — Solid accent fill hover (components, buttons) */
   --background-color-accent-hovered: light-dark(
     color(display-p3 0.87 0.409 0.164),

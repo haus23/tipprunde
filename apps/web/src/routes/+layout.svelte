@@ -4,10 +4,14 @@
     import { MoonIcon, SunIcon } from "@lucide/svelte";
     import Logo from "$ui/logo.svelte";
     import UserMenu from "$ui/user-menu.svelte";
+    import { page } from "$app/state";
     import { cn } from "$lib/utils";
     import { colorScheme, toggleScheme } from "$lib/state/color-scheme.svelte";
 
     const { children, data } = $props();
+
+    const isActive = (path: string) =>
+        page.url.pathname === path || page.url.pathname.startsWith(path + "/");
 
     const SchemeIcon = $derived(
         colorScheme.effective === "dark" ? MoonIcon : SunIcon,
@@ -50,10 +54,20 @@
                     </span>
                 </a>
             </div>
-            <nav class="flex items-center justify-center gap-1">
-                <a href="/tabelle" class={navLinkClasses}>Tabelle</a>
-                <a href="/spieler" class={navLinkClasses}>Spieler</a>
-                <a href="/spiele" class={navLinkClasses}>Spiele</a>
+            <nav class="flex h-full items-center justify-center gap-1">
+                {#each [
+                    { href: "/tabelle", label: "Tabelle" },
+                    { href: "/spieler", label: "Spieler" },
+                    { href: "/spiele", label: "Spiele" },
+                ] as item}
+                    <div class="flex h-full items-center has-[[aria-current=page]]:border-b-2 has-[[aria-current=page]]:border-accent">
+                        <a
+                            href={item.href}
+                            aria-current={isActive(item.href) ? "page" : undefined}
+                            class={navLinkClasses}
+                        >{item.label}</a>
+                    </div>
+                {/each}
             </nav>
             <div class="flex items-center justify-end gap-1">
                 <button
