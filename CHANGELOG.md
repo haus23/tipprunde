@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.4.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.3.1...v0.4.0)
+
+### 🚀 Enhancements
+
+- **nav:** Add active indicator to header nav links ([c149378](https://github.com/haus23/tipprunde/commit/c149378))
+- **spieler:** Default to current user's profile when logged in ([532068e](https://github.com/haus23/tipprunde/commit/532068e))
+- **perf:** Move user session client-side, enable CDN caching ([4e794a4](https://github.com/haus23/tipprunde/commit/4e794a4))
+
+### 🩹 Fixes
+
+- Simplify class name. ([c83d81e](https://github.com/haus23/tipprunde/commit/c83d81e))
+- **home:** Smooth transitions for color scheme icon and user ranking row ([0cf52f6](https://github.com/haus23/tipprunde/commit/0cf52f6))
+- **layout:** Reserve nav border space with transparent border to prevent link shifting ([7759e8f](https://github.com/haus23/tipprunde/commit/7759e8f))
+
+### 💅 Refactors
+
+- Rename dal files to use german names. ([c0e9319](https://github.com/haus23/tipprunde/commit/c0e9319))
+- Use cn-function where appropriate. ([e2d7be0](https://github.com/haus23/tipprunde/commit/e2d7be0))
+- Move user personalization client-side, redirect /spieler to explicit slug ([a899a3b](https://github.com/haus23/tipprunde/commit/a899a3b))
+
 ## v0.3.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.0...v0.3.1)
