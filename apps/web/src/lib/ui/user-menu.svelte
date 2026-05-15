@@ -16,11 +16,7 @@
         resetScheme,
         toggleScheme,
     } from "$lib/state/color-scheme.svelte";
-
-    interface Props {
-        user: App.Locals["user"];
-    }
-    const { user }: Props = $props();
+    import { userStore } from "$lib/state/user.svelte";
 
     const SchemeIcon = $derived(
         colorScheme.effective === "dark" ? MoonIcon : SunIcon,
@@ -72,15 +68,15 @@
                     <MonitorIcon size={14} class="text-subtle shrink-0" />
                 </DropdownMenu.Item>
             {/if}
-            {#if user}
+            {#if userStore.current}
                 <DropdownMenu.Separator class="bg-subtle mx-1 my-1 h-px" />
                 <DropdownMenu.Group>
                     <DropdownMenu.GroupHeading
                         class="text-subtle text-xs font-medium px-2.5 py-1.5"
                     >
-                        Hallo {user.name}
+                        Hallo {userStore.current.name}
                     </DropdownMenu.GroupHeading>
-                    {#if user.role === "manager" || user.role === "admin"}
+                    {#if userStore.current.role === "manager" || userStore.current.role === "admin"}
                         <DropdownMenu.Item class={itemClass}>
                             {#snippet child({ props })}
                                 <a href="/manager" {...props}>

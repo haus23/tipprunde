@@ -3,7 +3,7 @@ import { error } from "@sveltejs/kit";
 
 import type { LayoutServerLoad } from "./$types";
 
-export const load: LayoutServerLoad = async ({ locals }) => {
+export const load: LayoutServerLoad = async () => {
   const championship = await db.query.championships.findFirst({
     orderBy: { nr: "desc" },
     where: { published: true },
@@ -14,5 +14,5 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     error(404, "Kein Turnier gefunden.");
   }
 
-  return { championship, user: locals.user };
+  return { championship };
 };

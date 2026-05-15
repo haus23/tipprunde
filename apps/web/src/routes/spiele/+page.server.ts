@@ -2,8 +2,10 @@ import { getRoundsWithMatches } from "$lib/server/db/spiele";
 
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ parent }) => {
+export const load: PageServerLoad = async ({ parent, setHeaders }) => {
   const { championship } = await parent();
+
+  setHeaders({ "cache-control": "s-maxage=60, stale-while-revalidate=600" });
 
   const rounds = await getRoundsWithMatches(championship.id);
 

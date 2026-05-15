@@ -4,11 +4,13 @@ import { error } from "@sveltejs/kit";
 
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params, parent }) => {
+export const load: PageServerLoad = async ({ params, parent, setHeaders }) => {
   const { championship } = await parent();
 
   const nr = Number(params.nr);
   if (isNaN(nr)) error(404, "Keine gültige Spielnummer.");
+
+  setHeaders({ "cache-control": "s-maxage=60, stale-while-revalidate=600" });
 
   const [rounds, match, ranking] = await Promise.all([
     getRoundsWithMatches(championship.id),

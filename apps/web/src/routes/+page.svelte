@@ -1,6 +1,7 @@
 <script lang="ts">
     import { RULE_CATEGORIES } from "$lib/domain/rules";
     import { cn, formatDate } from "$lib/utils";
+    import { userStore } from "$lib/state/user.svelte";
     import Card from "$ui/card.svelte";
     import type { PageProps } from "./$types";
 
@@ -8,13 +9,10 @@
 
     const championship = $derived(data.championship);
 
-    let currentUserId = $state<number | undefined>(undefined);
-    $effect(() => { currentUserId = data.user?.id; });
-
     const top3 = $derived(data.ranking.slice(0, 3));
     const userEntry = $derived(
-        currentUserId
-            ? (data.ranking.find((e) => e.userId === currentUserId) ?? null)
+        userStore.id
+            ? (data.ranking.find((e) => e.userId === userStore.id) ?? null)
             : null,
     );
     const userBelowTop3 = $derived(
@@ -65,7 +63,7 @@
                                     class={cn(
                                         "rounded outline-none",
                                         "focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface focus-visible:ring-focus",
-                                        currentUserId === entry.userId && "text-accent",
+                                        userStore.id === entry.userId && "text-accent",
                                     )}
                                 >
                                     {entry.name}

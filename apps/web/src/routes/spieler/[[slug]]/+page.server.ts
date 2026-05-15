@@ -4,7 +4,7 @@ import { error, redirect } from "@sveltejs/kit";
 
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params, parent, locals }) => {
+export const load: PageServerLoad = async ({ params, parent, locals, setHeaders }) => {
   const { championship } = await parent();
 
   const ranking = await getRanking(championship.id);
@@ -15,6 +15,8 @@ export const load: PageServerLoad = async ({ params, parent, locals }) => {
     if (!defaultSlug) error(404, "Keine Spieler gefunden.");
     redirect(302, `/spieler/${defaultSlug}`);
   }
+
+  setHeaders({ "cache-control": "s-maxage=60, stale-while-revalidate=600" });
 
   const slug = params.slug;
   const player = ranking.find((p) => p.slug === slug);

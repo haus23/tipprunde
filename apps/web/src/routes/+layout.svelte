@@ -7,6 +7,9 @@
     import { page } from "$app/state";
     import { cn } from "$lib/utils";
     import { colorScheme, toggleScheme } from "$lib/state/color-scheme.svelte";
+    import { fetchUser } from "$lib/state/user.svelte";
+
+    $effect(() => { fetchUser(); });
 
     const { children, data } = $props();
 
@@ -77,7 +80,7 @@
                 >
                     <SchemeIcon size={18} />
                 </button>
-                <UserMenu user={data.user} />
+                <UserMenu />
             </div>
         </div>
     </header>
