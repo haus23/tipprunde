@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.2.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.1...v0.2.2)
+
+### 🚀 Enhancements
+
+- **spiele:** Add match overview page with accordion by round ([6b39f7f](https://github.com/haus23/tipprunde/commit/6b39f7f))
+- **spiele:** Add single match view with sortable tips table ([de3f12e](https://github.com/haus23/tipprunde/commit/de3f12e))
+
+### 🩹 Fixes
+
+- Update ring offset color. ([23f4556](https://github.com/haus23/tipprunde/commit/23f4556))
+
 ## v0.2.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.0...v0.2.1)
