@@ -4,12 +4,14 @@ import { error } from "@sveltejs/kit";
 
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params, parent }) => {
+export const load: PageServerLoad = async ({ params, parent, locals }) => {
   const { championship } = await parent();
 
   const ranking = await getRanking(championship.id);
 
-  const slug = params.slug ?? ranking[0]?.slug;
+  const defaultSlug =
+    (locals.user && ranking.find((p) => p.userId === locals.user!.id)?.slug) || ranking[0]?.slug;
+  const slug = params.slug ?? defaultSlug;
   if (!slug) error(404, "Keine Spieler gefunden.");
 
   const player = ranking.find((p) => p.slug === slug);
