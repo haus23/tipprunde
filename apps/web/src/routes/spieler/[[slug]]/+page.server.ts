@@ -10,10 +10,10 @@ export const load: PageServerLoad = async ({ params, parent }) => {
   const ranking = await getRanking(championship.id);
 
   const slug = params.slug ?? ranking[0]?.slug;
-  if (!slug) error(404);
+  if (!slug) error(404, "Keine Spieler gefunden.");
 
   const player = ranking.find((p) => p.slug === slug);
-  if (!player) error(404);
+  if (!player) error(404, `Kein Spieler mit dem Kürzel „${slug}".`);
 
   const rounds = await getSpieler(championship.id, player.userId);
 

@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ params, parent }) => {
   const { championship } = await parent();
 
   const nr = Number(params.nr);
-  if (isNaN(nr)) error(404);
+  if (isNaN(nr)) error(404, "Keine gültige Spielnummer.");
 
   const [rounds, match, ranking] = await Promise.all([
     getRoundsWithMatches(championship.id),
@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ params, parent }) => {
     getRanking(championship.id),
   ]);
 
-  if (!match) error(404);
+  if (!match) error(404, `Kein Spiel mit Nummer ${nr} gefunden.`);
 
   const roundsWithMatches = rounds.map((r) => ({
     nr: r.nr,
