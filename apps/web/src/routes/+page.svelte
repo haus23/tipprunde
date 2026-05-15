@@ -86,7 +86,7 @@
                     {/if}
                 </tbody>
             </table>
-            <div class="mt-3 flex items-center justify-end gap-4">
+            <div class="mt-auto pt-3 flex items-center justify-end gap-4">
                 <a
                     href="/verlauf"
                     class="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface text-subtle hover:text-base text-xs transition-colors"
@@ -137,7 +137,7 @@
                     {/each}
                 </tbody>
             </table>
-            <div class="mt-3 flex items-center justify-end gap-4">
+            <div class="mt-auto pt-3 flex items-center justify-end gap-4">
                 <a
                     href="/spiele"
                     class="focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface text-subtle hover:text-base text-xs transition-colors"
