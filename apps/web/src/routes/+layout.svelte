@@ -8,8 +8,13 @@
     import { cn } from "$lib/utils";
     import { colorScheme, toggleScheme } from "$lib/state/color-scheme.svelte";
     import { fetchUser } from "$lib/state/user.svelte";
+    import { onMount } from "svelte";
+    import { fade } from "svelte/transition";
 
     $effect(() => { fetchUser(); });
+
+    let mounted = $state(false);
+    onMount(() => { mounted = true; });
 
     const { children, data } = $props();
 
@@ -58,7 +63,7 @@
                 </a>
             </div>
             <nav class="flex h-full items-center justify-center gap-1">
-                {#each [{ href: "/tabelle", label: "Tabelle" }, { href: "/spieler", label: "Spieler" }, { href: "/spiele", label: "Spiele" }] as item}
+                {#each [{ href: "/tabelle", label: "Tabelle" }, { href: "/spieler", label: "Spieler" }, { href: "/spiele", label: "Spiele" }] as item (item.href)}
                     <div
                         class="flex h-full items-center has-aria-[current=page]:border-b-2 has-aria-[current=page]:border-accent"
                     >
@@ -78,7 +83,11 @@
                     aria-label="Farbschema wechseln"
                     class={schemeBtnClass}
                 >
-                    <SchemeIcon size={18} />
+                    {#if mounted}
+                        <span in:fade={{ duration: 200 }}>
+                            <SchemeIcon size={18} />
+                        </span>
+                    {/if}
                 </button>
                 <UserMenu />
             </div>

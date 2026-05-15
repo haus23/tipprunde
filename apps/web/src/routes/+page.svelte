@@ -3,6 +3,8 @@
     import { cn, formatDate } from "$lib/utils";
     import { userStore } from "$lib/state/user.svelte";
     import Card from "$ui/card.svelte";
+    import { slide } from "svelte/transition";
+    import { cubicOut } from "svelte/easing";
     import type { PageProps } from "./$types";
 
     const { data }: PageProps = $props();
@@ -16,7 +18,9 @@
             : null,
     );
     const userBelowTop3 = $derived(
-        userEntry && !top3.some((e) => e.userId === userEntry.userId) ? userEntry : null,
+        userEntry && !top3.some((e) => e.userId === userEntry.userId)
+            ? userEntry
+            : null,
     );
     const userRankingIndex = $derived(
         userBelowTop3 ? data.ranking.indexOf(userBelowTop3) : -1,
@@ -63,7 +67,8 @@
                                     class={cn(
                                         "rounded outline-none",
                                         "focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface focus-visible:ring-focus",
-                                        userStore.id === entry.userId && "text-accent",
+                                        userStore.id === entry.userId &&
+                                            "text-accent",
                                     )}
                                 >
                                     {entry.name}
@@ -74,35 +79,46 @@
                             >
                         </tr>
                     {/each}
-                    {#if userBelowTop3}
-                        {#if userRankingIndex > 3}
-                            <tr>
-                                <td
-                                    colSpan={3}
-                                    class="text-subtle py-2.5 text-center text-xs"
-                                >
-                                    ⋮
-                                </td>
-                            </tr>
-                        {/if}
-                        <tr class="border-input border-t">
-                            <td class="w-px py-2 pr-3 text-right tabular-nums">
-                                {userBelowTop3.rank}
-                            </td>
-                            <td class="py-2">
-                                <a
-                                    href={`/spieler/${userBelowTop3.slug}`}
-                                    class="text-accent focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
-                                >
-                                    {userBelowTop3.name}
-                                </a>
-                            </td>
-                            <td class="py-2 text-right font-medium tabular-nums"
-                                >{userBelowTop3.points}</td
-                            >
-                        </tr>
-                    {/if}
                 </tbody>
+                {#if userBelowTop3}
+                    <tbody>
+                        <tr>
+                            <td colSpan={3} class="p-0">
+                                <div
+                                    transition:slide={{
+                                        duration: 250,
+                                        easing: cubicOut,
+                                    }}
+                                >
+                                    {#if userRankingIndex > 3}
+                                        <p
+                                            class="text-subtle py-2.5 text-center text-xs"
+                                        >
+                                            ⋮
+                                        </p>
+                                    {/if}
+                                    <div
+                                        class="border-input flex items-center gap-3 border-t py-2"
+                                    >
+                                        <span
+                                            class="w-4 shrink-0 text-right tabular-nums"
+                                            >{userBelowTop3.rank}</span
+                                        >
+                                        <a
+                                            href={`/spieler/${userBelowTop3.slug}`}
+                                            class="text-accent focus-visible:ring-focus flex-1 rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+                                        >
+                                            {userBelowTop3.name}
+                                        </a>
+                                        <span class="font-medium tabular-nums"
+                                            >{userBelowTop3.points}</span
+                                        >
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                {/if}
             </table>
             <div class="mt-auto pt-3 flex items-center justify-end gap-4">
                 <a
