@@ -1,4 +1,4 @@
-import { getRanking } from "$lib/server/db/ranking";
+import { getRanking } from "$lib/server/db/tabelle";
 import { error } from "@sveltejs/kit";
 
 import type { PageServerLoad } from "./$types";

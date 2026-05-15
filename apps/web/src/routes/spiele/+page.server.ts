@@ -1,4 +1,4 @@
-import { getRoundsWithMatches } from "$lib/server/db/matches";
+import { getRoundsWithMatches } from "$lib/server/db/spiele";
 
 import type { PageServerLoad } from "./$types";
 

@@ -1,5 +1,5 @@
-import { getMatchWithTips, getRoundsWithMatches } from "$lib/server/db/matches";
-import { getRanking } from "$lib/server/db/ranking";
+import { getMatchWithTips, getRoundsWithMatches } from "$lib/server/db/spiele";
+import { getRanking } from "$lib/server/db/tabelle";
 import { error } from "@sveltejs/kit";
 
 import type { PageServerLoad } from "./$types";
