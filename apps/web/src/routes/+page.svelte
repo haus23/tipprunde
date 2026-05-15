@@ -8,6 +8,22 @@
 
     const championship = $derived(data.championship);
 
+    let currentUserId = $state<number | undefined>(undefined);
+    $effect(() => { currentUserId = data.user?.id; });
+
+    const top3 = $derived(data.ranking.slice(0, 3));
+    const userEntry = $derived(
+        currentUserId
+            ? (data.ranking.find((e) => e.userId === currentUserId) ?? null)
+            : null,
+    );
+    const userBelowTop3 = $derived(
+        userEntry && !top3.some((e) => e.userId === userEntry.userId) ? userEntry : null,
+    );
+    const userRankingIndex = $derived(
+        userBelowTop3 ? data.ranking.indexOf(userBelowTop3) : -1,
+    );
+
     const championshipRules = RULE_CATEGORIES.flatMap(
         ({ field, label, rules }) => {
             const ruleId = data.championship.ruleset?.[field];
@@ -36,10 +52,10 @@
         >
             <table class="w-full text-sm">
                 <tbody>
-                    {#each data.ranking as entry, index}
+                    {#each top3 as entry, index}
                         <tr class="border-input border-b last:border-b-0">
                             <td class="w-px py-2 pr-3 text-right tabular-nums">
-                                {entry.rank !== data.ranking[index - 1]?.rank
+                                {entry.rank !== top3[index - 1]?.rank
                                     ? entry.rank
                                     : ""}
                             </td>
@@ -49,7 +65,7 @@
                                     class={cn(
                                         "rounded outline-none",
                                         "focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface focus-visible:ring-focus",
-                                        data.user?.id === entry.userId && "text-accent",
+                                        currentUserId === entry.userId && "text-accent",
                                     )}
                                 >
                                     {entry.name}
@@ -60,8 +76,8 @@
                             >
                         </tr>
                     {/each}
-                    {#if data.userBelowTop3}
-                        {#if data.userRankingIndex > 3}
+                    {#if userBelowTop3}
+                        {#if userRankingIndex > 3}
                             <tr>
                                 <td
                                     colSpan={3}
@@ -73,18 +89,18 @@
                         {/if}
                         <tr class="border-input border-t">
                             <td class="w-px py-2 pr-3 text-right tabular-nums">
-                                {data.userBelowTop3.rank}
+                                {userBelowTop3.rank}
                             </td>
                             <td class="py-2">
                                 <a
-                                    href={`/spieler/${data.userBelowTop3.slug}`}
+                                    href={`/spieler/${userBelowTop3.slug}`}
                                     class="text-accent focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
                                 >
-                                    {data.userBelowTop3.name}
+                                    {userBelowTop3.name}
                                 </a>
                             </td>
                             <td class="py-2 text-right font-medium tabular-nums"
-                                >{data.userBelowTop3.points}</td
+                                >{userBelowTop3.points}</td
                             >
                         </tr>
                     {/if}

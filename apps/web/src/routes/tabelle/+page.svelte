@@ -4,6 +4,9 @@
 
     const { data }: PageProps = $props();
 
+    let currentUserId = $state<number | undefined>(undefined);
+    $effect(() => { currentUserId = data.user?.id; });
+
     const thClass = cn("text-subtle px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase");
     const tdClass = cn("px-2 py-3 tabular-nums");
 
@@ -63,7 +66,7 @@
                                 href={`/spieler/${entry.slug}`}
                                 class={cn(
                                     playerLinkClass,
-                                    data.user?.id === entry.userId
+                                    currentUserId === entry.userId
                                         ? "text-accent"
                                         : "text-subtle hover:text-base",
                                 )}

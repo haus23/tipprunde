@@ -1,6 +1,6 @@
 import { getSpieler } from "$lib/server/db/spieler";
 import { getRanking } from "$lib/server/db/tabelle";
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 
 import type { PageServerLoad } from "./$types";
 
@@ -9,11 +9,14 @@ export const load: PageServerLoad = async ({ params, parent, locals }) => {
 
   const ranking = await getRanking(championship.id);
 
-  const defaultSlug =
-    (locals.user && ranking.find((p) => p.userId === locals.user!.id)?.slug) || ranking[0]?.slug;
-  const slug = params.slug ?? defaultSlug;
-  if (!slug) error(404, "Keine Spieler gefunden.");
+  if (!params.slug) {
+    const defaultSlug =
+      (locals.user && ranking.find((p) => p.userId === locals.user!.id)?.slug) || ranking[0]?.slug;
+    if (!defaultSlug) error(404, "Keine Spieler gefunden.");
+    redirect(302, `/spieler/${defaultSlug}`);
+  }
 
+  const slug = params.slug;
   const player = ranking.find((p) => p.slug === slug);
   if (!player) error(404, `Kein Spieler mit dem Kürzel „${slug}".`);
 
