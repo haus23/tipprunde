@@ -4,6 +4,7 @@
     import { MoonIcon, SunIcon } from "@lucide/svelte";
     import Logo from "$ui/logo.svelte";
     import UserMenu from "$ui/user-menu.svelte";
+    import { cn } from "$lib/utils";
     import { colorScheme, toggleScheme } from "$lib/state/color-scheme.svelte";
 
     const { children, data } = $props();
@@ -12,8 +13,19 @@
         colorScheme.effective === "dark" ? MoonIcon : SunIcon,
     );
 
-    const navLinkClasses =
-        "rounded-md px-2 xs:px-3 py-1.5 text-sm font-medium text-subtle outline-none transition hover:bg-subtle hover:text-base active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-focus";
+    const navLinkClasses = cn(
+        "rounded-md px-2 xs:px-3 py-1.5",
+        "text-sm font-medium text-subtle",
+        "outline-none transition hover:bg-subtle hover:text-base active:scale-[0.97]",
+        "focus-visible:ring-2 focus-visible:ring-focus",
+    );
+
+    const schemeBtnClass = cn(
+        "flex size-8 cursor-pointer items-center justify-center rounded-md",
+        "text-subtle hover:text-base hover:bg-subtle",
+        "outline-none transition-colors active:scale-95",
+        "focus-visible:ring-2 focus-visible:ring-focus",
+    );
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
@@ -47,7 +59,7 @@
                 <button
                     onclick={toggleScheme}
                     aria-label="Farbschema wechseln"
-                    class="text-subtle hover:text-base hover:bg-subtle focus-visible:ring-focus flex size-8 cursor-pointer items-center justify-center rounded-md outline-none transition-colors active:scale-95 focus-visible:ring-2"
+                    class={schemeBtnClass}
                 >
                     <SchemeIcon size={18} />
                 </button>

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { RULE_CATEGORIES } from "$lib/domain/rules";
-    import { formatDate } from "$lib/utils";
+    import { cn, formatDate } from "$lib/utils";
     import Card from "$ui/card.svelte";
     import type { PageProps } from "./$types";
 
@@ -46,7 +46,11 @@
                             <td class="py-2">
                                 <a
                                     href={`/spieler/${entry.slug}`}
-                                    class={`${data.user?.id === entry.userId ? "text-accent " : ""}focus-visible:ring-focus rounded outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface`}
+                                    class={cn(
+                                        "rounded outline-none",
+                                        "focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface focus-visible:ring-focus",
+                                        data.user?.id === entry.userId && "text-accent",
+                                    )}
                                 >
                                     {entry.name}
                                 </a>

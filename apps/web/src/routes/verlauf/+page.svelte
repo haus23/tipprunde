@@ -2,6 +2,7 @@
     import { LineChart, Tooltip } from "layerchart";
     import type { ChartState } from "layerchart";
 
+    import { cn } from "$lib/utils";
     import type { ChartPoint, PlayerPoint } from "$lib/server/db/verlauf";
     import type { PageProps } from "./$types";
 
@@ -120,7 +121,11 @@
         <div class="flex items-center gap-4 text-sm">
             <a
                 href="/tabelle"
-                class="text-subtle hover:text-base focus-visible:ring-focus rounded transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-base"
+                class={cn(
+                    "rounded outline-none transition-colors",
+                    "text-subtle hover:text-base",
+                    "focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-base focus-visible:ring-focus",
+                )}
             >
                 {data.championship.completed
                     ? "Abschlusstabelle"
@@ -156,11 +161,15 @@
                 {#each series as s (s.key)}
                     <button
                         onclick={() => context?.series?.selectedKeys?.toggle(s.key)}
-                        class="flex cursor-pointer items-center gap-1.5 rounded px-1.5 py-1 text-xs transition-opacity hover:bg-subtle {allSelected
-                            ? 'opacity-75'
-                            : !context?.series?.isVisible(s.key)
-                              ? 'opacity-35'
-                              : ''}"
+                        class={cn(
+                            "flex cursor-pointer items-center gap-1.5 rounded px-1.5 py-1 text-xs",
+                            "transition-opacity hover:bg-subtle",
+                            allSelected
+                                ? "opacity-75"
+                                : !context?.series?.isVisible(s.key)
+                                  ? "opacity-35"
+                                  : "",
+                        )}
                     >
                         <span
                             class="size-2.5 shrink-0 rounded-full"

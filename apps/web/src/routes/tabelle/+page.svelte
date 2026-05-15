@@ -1,7 +1,22 @@
 <script lang="ts">
+    import { cn } from "$lib/utils";
     import type { PageProps } from "./$types";
 
     const { data }: PageProps = $props();
+
+    const thClass = cn("text-subtle px-2 pt-2 pb-3 text-xs font-medium tracking-wide uppercase");
+    const tdClass = cn("px-2 py-3 tabular-nums");
+
+    const subNavLinkClass = cn(
+        "rounded outline-none transition-colors",
+        "text-subtle hover:text-base",
+        "focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-base focus-visible:ring-focus",
+    );
+
+    const playerLinkClass = cn(
+        "rounded font-medium outline-none transition-colors",
+        "focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface focus-visible:ring-focus",
+    );
 </script>
 
 <svelte:head>
@@ -19,10 +34,7 @@
                     ? "Abschlusstabelle"
                     : "Aktuelle Tabelle"}</span
             >
-            <a
-                href="/verlauf"
-                class="text-subtle hover:text-base focus-visible:ring-focus rounded transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-base"
-            >
+            <a href="/verlauf" class={subNavLinkClass}>
                 Punkteverlauf
             </a>
         </div>
@@ -33,43 +45,33 @@
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-input border-b text-left">
-                    <th
-                        class="text-subtle w-px px-2 pt-2 pb-3 text-right text-xs font-medium tracking-wide uppercase"
-                    >
-                        Platz
-                    </th>
-                    <th
-                        class="text-subtle px-2 pt-2 pb-3 text-left text-xs font-medium tracking-wide uppercase"
-                    >
-                        Spieler
-                    </th>
-                    <th
-                        class="text-subtle w-px px-2 pt-2 pb-3 text-center text-xs font-medium tracking-wide uppercase"
-                    >
-                        Punkte
-                    </th>
+                    <th class={cn(thClass, "w-px text-right")}>Platz</th>
+                    <th class={cn(thClass, "text-left")}>Spieler</th>
+                    <th class={cn(thClass, "w-px text-center")}>Punkte</th>
                 </tr>
             </thead>
             <tbody>
                 {#each data.ranking as entry, index}
                     <tr class="border-input border-b last:border-b-0">
-                        <td class="w-px px-2 py-3 text-right tabular-nums">
+                        <td class={cn(tdClass, "w-px text-right")}>
                             {entry.rank !== data.ranking[index - 1]?.rank
                                 ? entry.rank
                                 : ""}
                         </td>
-                        <td class="px-2 py-3 text-left">
+                        <td class={cn(tdClass, "text-left")}>
                             <a
                                 href={`/spieler/${entry.slug}`}
-                                class={`${data.user?.id === entry.userId ? "text-accent" : "text-subtle hover:text-base"} focus-visible:ring-focus rounded font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-surface`}
+                                class={cn(
+                                    playerLinkClass,
+                                    data.user?.id === entry.userId
+                                        ? "text-accent"
+                                        : "text-subtle hover:text-base",
+                                )}
                             >
                                 {entry.name}
                             </a>
                         </td>
-                        <td
-                            class="px-2 py-3 text-center font-medium tabular-nums"
-                            >{entry.points}</td
-                        >
+                        <td class={cn(tdClass, "text-center font-medium")}>{entry.points}</td>
                     </tr>
                 {/each}
             </tbody>

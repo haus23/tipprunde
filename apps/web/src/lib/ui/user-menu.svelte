@@ -10,6 +10,7 @@
         SunIcon,
     } from "@lucide/svelte";
 
+    import { cn } from "$lib/utils";
     import {
         colorScheme,
         resetScheme,
@@ -25,15 +26,29 @@
         colorScheme.effective === "dark" ? MoonIcon : SunIcon,
     );
 
-    const itemClass =
-        "flex w-full items-center gap-2.5 rounded px-2.5 py-1.5 text-sm outline-none select-none data-highlighted:bg-subtle";
+    const triggerClass = cn(
+        "flex size-8 cursor-pointer items-center justify-center rounded-md",
+        "text-subtle hover:text-base hover:bg-subtle data-[state=open]:bg-subtle/75",
+        "outline-none transition-colors active:scale-95",
+        "focus-visible:ring-2 focus-visible:ring-focus",
+    );
+
+    const contentClass = cn(
+        "min-w-48 rounded-md border border-surface bg-surface p-1 shadow-md outline-none",
+        "origin-(--bits-dropdown-menu-content-transform-origin) transition-[transform,scale,opacity]",
+        "data-starting-style:scale-95 data-starting-style:opacity-0",
+        "data-ending-style:scale-95 data-ending-style:opacity-0",
+    );
+
+    const itemClass = cn(
+        "flex w-full items-center gap-2.5 rounded px-2.5 py-1.5",
+        "text-sm select-none outline-none",
+        "data-highlighted:bg-subtle",
+    );
 </script>
 
 <DropdownMenu.Root>
-    <DropdownMenu.Trigger
-        aria-label="Menü öffnen"
-        class="text-subtle hover:text-base hover:bg-subtle data-[state=open]:bg-subtle/75 focus-visible:ring-focus flex size-8 cursor-pointer items-center justify-center rounded-md outline-none transition-colors active:scale-95 focus-visible:ring-2"
-    >
+    <DropdownMenu.Trigger aria-label="Menü öffnen" class={triggerClass}>
         <EllipsisVerticalIcon size="20" />
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
@@ -43,7 +58,7 @@
             side="bottom"
             align="end"
             alignOffset={-8}
-            class="data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0 origin-(--bits-dropdown-menu-content-transform-origin) transition-[transform,scale,opacity] bg-surface border-surface min-w-48 rounded-md border p-1 shadow-md outline-none"
+            class={contentClass}
         >
             <DropdownMenu.Item class={itemClass} onSelect={toggleScheme}>
                 <span class="flex-1">Hell-/Dunkelmodus</span>
