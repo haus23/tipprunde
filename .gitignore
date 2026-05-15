@@ -7,6 +7,9 @@ node_modules/
 # Svelte Apps
 .svelte-kit/
 
+# React Router Apps
+.react-router/
+
 # Vercel build
 .vercel/
 
