@@ -12,7 +12,7 @@
     <Popover.Trigger
         openOnHover
         aria-label={label}
-        class="text-accent focus-visible:ring-focus absolute top-1/2 -right-1 -translate-y-1/2 cursor-default rounded text-xs outline-none focus-visible:ring-2 focus-visible:ring-offset-2 xs:right-1"
+        class="text-accent focus-visible:ring-focus absolute top-1/2 -right-1 -translate-y-1/2 cursor-default rounded text-xs outline-none focus-visible:ring-2 focus-visible:ring-offset-2 xs:right-1 focus-visible:ring-offset-surface"
     >
         ★
     </Popover.Trigger>
