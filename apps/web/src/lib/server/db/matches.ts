@@ -25,6 +25,18 @@ export async function getCurrentMatches(championshipId: number) {
   return currentMatches;
 }
 
+export async function getMatchWithTips(championshipId: number, nr: number) {
+  return db.query.matches.findFirst({
+    where: { round: { championshipId, published: true }, nr },
+    with: {
+      league: true,
+      hometeam: true,
+      awayteam: true,
+      tips: { with: { user: true } },
+    },
+  });
+}
+
 export async function getRoundsWithMatches(championshipId: number) {
   return db.query.rounds.findMany({
     where: { championshipId, published: true },

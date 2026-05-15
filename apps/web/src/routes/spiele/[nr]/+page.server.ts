@@ -1,16 +1,22 @@
-import { getRoundsWithMatches } from "$lib/server/db/matches";
+import { getMatchWithTips, getRoundsWithMatches } from "$lib/server/db/matches";
+import { getRanking } from "$lib/server/db/ranking";
 import { error } from "@sveltejs/kit";
 
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ parent }) => {
+export const load: PageServerLoad = async ({ params, parent }) => {
   const { championship } = await parent();
 
-  if (!championship) {
-    error(404, "Kein Turnier gefunden.");
-  }
+  const nr = Number(params.nr);
+  if (isNaN(nr)) error(404);
 
-  const rounds = await getRoundsWithMatches(championship.id);
+  const [rounds, match, ranking] = await Promise.all([
+    getRoundsWithMatches(championship.id),
+    getMatchWithTips(championship.id, nr),
+    getRanking(championship.id),
+  ]);
+
+  if (!match) error(404);
 
   const roundsWithMatches = rounds.map((r) => ({
     nr: r.nr,
@@ -22,5 +28,33 @@ export const load: PageServerLoad = async ({ parent }) => {
     })),
   }));
 
-  return { roundsWithMatches };
+  const matchRound = rounds.find((r) => r.id === match.roundId);
+  const tipsPublished = matchRound?.tipsPublished ?? false;
+
+  const totalPoints = match.result ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0) : null;
+
+  const rankedTips = ranking.map((entry) => {
+    const tip = match.tips.find((t) => t.userId === entry.userId);
+    return {
+      rank: entry.rank,
+      userId: entry.userId,
+      name: entry.name ?? "",
+      slug: entry.slug ?? "",
+      tip: tipsPublished ? (tip?.tip ?? null) : null,
+      points: tipsPublished ? (tip?.points ?? null) : null,
+      joker: tipsPublished ? (tip?.joker ?? null) : null,
+    };
+  });
+
+  const matchData = {
+    nr: match.nr,
+    date: match.date,
+    liga: match.league?.name ?? null,
+    result: match.result,
+    totalPoints,
+    tipsPublished,
+    rankedTips,
+  };
+
+  return { roundsWithMatches, matchData };
 };

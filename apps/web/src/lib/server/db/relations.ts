@@ -27,6 +27,12 @@ export const relations = defineRelations(schema, (r) => ({
       to: r.users.id,
     }),
   },
+  tips: {
+    user: r.one.users({
+      from: r.tips.userId,
+      to: r.users.id,
+    }),
+  },
   matches: {
     round: r.one.rounds({
       from: r.matches.roundId,
