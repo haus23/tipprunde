@@ -26,12 +26,9 @@
         }
     }
 
-    function parseTip(tip: string | null): [number, number, number] {
-        if (!tip) return [99, 99, 99];
+    function parseTip(tip: string): [number, number] {
         const [h, a] = tip.split(":").map(Number);
-        if (isNaN(h!) || isNaN(a!)) return [99, 99, 99];
-        const outcome = h! > a! ? 0 : h === a ? 1 : 2;
-        return [outcome, h!, a!];
+        return [isNaN(h!) ? 99 : h!, isNaN(a!) ? 99 : a!];
     }
 
     const sortedTips = $derived.by(() => {
@@ -49,9 +46,11 @@
             if (a.tip === null && b.tip === null) return 0;
             if (a.tip === null) return 1;
             if (b.tip === null) return -1;
-            const [ao, ah, aa] = parseTip(a.tip);
-            const [bo, bh, ba] = parseTip(b.tip);
-            return factor * (ao - bo || bh! - ba! - (ah! - aa!) || ah! - bh!);
+            const [ah, aa] = parseTip(a.tip);
+            const [bh, ba] = parseTip(b.tip);
+            const aDiff = ah - aa;
+            const bDiff = bh - ba;
+            return factor * ((bDiff - aDiff) || (bh - ah));
         });
     });
 
