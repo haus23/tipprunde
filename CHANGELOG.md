@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.3.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.2.2...v0.3.0)
+
+### 🚀 Enhancements
+
+- **spiele:** Add prev/next navigation and back link to match view ([efb94b5](https://github.com/haus23/tipprunde/commit/efb94b5))
+
+### 🩹 Fixes
+
+- **spiele:** Fix tip sort to use goal diff and home goals as tie-break ([4f31752](https://github.com/haus23/tipprunde/commit/4f31752))
+
 ## v0.2.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.2.1...v0.2.2)
