@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.4.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0...v0.4.1)
+
+### 🚀 Enhancements
+
+- **manager:** Add minimal React Router 7 + Tailwind starter ([5a88e08](https://github.com/haus23/tipprunde/commit/5a88e08))
+- **web:** Add Vercel rewrite to proxy /manager to manager app ([bf6db64](https://github.com/haus23/tipprunde/commit/bf6db64))
+
+### 🩹 Fixes
+
+- **manager:** Set Vite base to /manager/ so assets are proxied correctly ([7076089](https://github.com/haus23/tipprunde/commit/7076089))
+- **manager:** Align basename trailing slash with Vite base config ([9bd78a7](https://github.com/haus23/tipprunde/commit/9bd78a7))
+- **manager:** Use assetsDir instead of base to serve assets at /manager/assets/ ([4a9f57f](https://github.com/haus23/tipprunde/commit/4a9f57f))
+- **manager:** Fix routing for both trailing-slash and non-trailing-slash cases ([4450aaa](https://github.com/haus23/tipprunde/commit/4450aaa))
+
 ## v0.4.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.3.1...v0.4.0)
