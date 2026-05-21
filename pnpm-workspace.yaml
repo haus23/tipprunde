@@ -7,18 +7,6 @@ allowBuilds:
   esbuild: true
 
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@latest
-  vitest: npm:@voidzero-dev/vite-plus-test@latest
-  vite-plus: ^0.1.21
-  typescript: ~6.0.3
-  "@types/node": ~25.7.0
-overrides:
-  vite: "catalog:"
-  vitest: "catalog:"
-peerDependencyRules:
-  allowAny:
-    - vite
-    - vitest
-  allowedVersions:
-    vite: "*"
-    vitest: "*"
+  "@types/node": 25.9.1
+  typescript: 6.0.3
+  vite: 8.0.13

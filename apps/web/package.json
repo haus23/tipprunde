@@ -2,9 +2,9 @@
   "name": "@tipprunde/web",
   "type": "module",
   "scripts": {
-    "dev": "vp dev",
-    "build": "vp build",
-    "preview": "vp preview",
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
     "prepare": "svelte-kit sync"
   },
   "dependencies": {
@@ -20,11 +20,10 @@
     "@sveltejs/adapter-vercel": "^6.3.3",
     "@sveltejs/kit": "^2.59.1",
     "@tailwindcss/vite": "^4.3.0",
-    "@types/node": "^24.12.4",
+    "@types/node": "catalog:",
     "svelte-check": "^4.4.8",
     "tailwindcss": "^4.3.0",
     "typescript": "catalog:",
-    "vite": "catalog:",
-    "vite-plus": "catalog:"
+    "vite": "catalog:"
   }
 }
