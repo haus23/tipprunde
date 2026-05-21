@@ -1,0 +1,12 @@
+{
+  "name": "@tipprunde/db",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./schema": "./src/schema.ts",
+    "./relations": "./src/relations.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "catalog:"
+  }
+}

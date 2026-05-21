@@ -1,7 +1,6 @@
 import { TURSO_DATABASE_URL, TURSO_AUTH_TOKEN } from "$env/static/private";
+import { relations } from "@tipprunde/db/relations";
 import { drizzle } from "drizzle-orm/libsql/web";
-
-import { relations } from "./relations";
 
 export const db = drizzle({
   connection: {
@@ -11,4 +10,4 @@ export const db = drizzle({
   relations,
 });
 
-export * from "./schema";
+export * from "@tipprunde/db/schema";

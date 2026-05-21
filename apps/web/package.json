@@ -8,10 +8,11 @@
     "prepare": "svelte-kit sync"
   },
   "dependencies": {
-    "@libsql/client": "^0.17.3",
+    "@libsql/client": "catalog:",
     "@lucide/svelte": "^1.14.0",
+    "@tipprunde/db": "workspace:*",
     "bits-ui": "^2.18.1",
-    "drizzle-orm": "^1.0.0-rc.2",
+    "drizzle-orm": "catalog:",
     "layerchart": "2.0.0-next.63",
     "svelte": "^5.55.5",
     "tailwind-merge": "^3.6.0"

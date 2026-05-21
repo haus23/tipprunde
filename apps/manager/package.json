@@ -8,8 +8,11 @@
     "typecheck": "react-router typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@libsql/client": "catalog:",
     "@react-router/node": "^7",
+    "@tipprunde/db": "workspace:*",
     "@vercel/react-router": "^1",
+    "drizzle-orm": "catalog:",
     "isbot": "^5",
     "react": "^19",
     "react-dom": "^19",
