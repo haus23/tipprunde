@@ -8,22 +8,22 @@
     "prepare": "svelte-kit sync"
   },
   "dependencies": {
-    "@libsql/client": "catalog:",
-    "@lucide/svelte": "^1.14.0",
+    "@libsql/client": "catalog:orm",
+    "@lucide/svelte": "1.16.0",
     "@tipprunde/db": "workspace:*",
-    "bits-ui": "^2.18.1",
-    "drizzle-orm": "catalog:",
+    "bits-ui": "2.18.1",
+    "drizzle-orm": "catalog:orm",
     "layerchart": "2.0.0-next.63",
-    "svelte": "^5.55.5",
-    "tailwind-merge": "^3.6.0"
+    "svelte": "5.55.9",
+    "tailwind-merge": "catalog:tailwind"
   },
   "devDependencies": {
-    "@sveltejs/adapter-vercel": "^6.3.3",
-    "@sveltejs/kit": "^2.59.1",
-    "@tailwindcss/vite": "^4.3.0",
-    "@types/node": "catalog:",
-    "svelte-check": "^4.4.8",
-    "tailwindcss": "^4.3.0",
+    "@sveltejs/adapter-vercel": "6.3.3",
+    "@sveltejs/kit": "2.60.1",
+    "@tailwindcss/vite": "catalog:tailwind",
+    "@types/node": "catalog:types",
+    "svelte-check": "4.4.8",
+    "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
     "vite": "catalog:"
   }

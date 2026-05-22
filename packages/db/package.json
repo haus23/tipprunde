@@ -7,6 +7,6 @@
     "./relations": "./src/relations.ts"
   },
   "dependencies": {
-    "drizzle-orm": "catalog:"
+    "drizzle-orm": "catalog:orm"
   }
 }
