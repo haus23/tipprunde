@@ -1,17 +1,17 @@
 # Dependencies
 node_modules/
 
-# Dev toolchain secrets
+# Dev environment
+.well-known/
 .env
 
-# Svelte Apps
+# Svelte App
 .svelte-kit/
+.vercel/
 
 # React Router Apps
 .react-router/
-
-# Vercel build
-.vercel/
+build/
 
 # Temporary task list (before using issues)
 TODO.md
