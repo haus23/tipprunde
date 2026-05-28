@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.5.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.4.1...v0.5.0)
+
+### 🚀 Enhancements
+
+- **manager:** Add session-based auth via RR7 middleware ([bc43e10](https://github.com/haus23/tipprunde/commit/bc43e10))
+- **manager:** Add design system foundations and Card component ([4278a89](https://github.com/haus23/tipprunde/commit/4278a89))
+- **manager:** Add championship-based routing with cookie persistence ([5e8c987](https://github.com/haus23/tipprunde/commit/5e8c987))
+
+### 🏡 Chore
+
+- Opt out from vite-plus for dev server and build tool. ([ef67d80](https://github.com/haus23/tipprunde/commit/ef67d80))
+- Align vite configuration. ([4a32797](https://github.com/haus23/tipprunde/commit/4a32797))
+- Extract shared DB schema and relations into @tipprunde/db package ([db5a805](https://github.com/haus23/tipprunde/commit/db5a805))
+- Re-organize workspace catalogs. ([4ec26dc](https://github.com/haus23/tipprunde/commit/4ec26dc))
+- Ignore manager build and chrome devtools setup. ([4c6c37a](https://github.com/haus23/tipprunde/commit/4c6c37a))
+- Add favicon to manager app ([368b18c](https://github.com/haus23/tipprunde/commit/368b18c))
+- **db:** Add drizzle-kit with per-environment scripts ([42052cf](https://github.com/haus23/tipprunde/commit/42052cf))
+- **web:** Update svelte-kit. ([8ca13a9](https://github.com/haus23/tipprunde/commit/8ca13a9))
+
 ## v0.4.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.4.0...v0.4.1)
