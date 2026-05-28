@@ -17,6 +17,7 @@
     color(display-p3 0.854 0.852 0.839),
     color(display-p3 0.23 0.229 0.217)
   );
+
   --radius-md: 0.5rem;
   --radius-sm: 0.25rem;
 }

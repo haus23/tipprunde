@@ -1,17 +1,11 @@
+import { sessions } from "@tipprunde/db/schema";
+import { eq } from "drizzle-orm";
+
+import { getCookie } from "./cookies.server";
 import { db } from "./db.server";
 
-function getAuthCookie(request: Request): string | null {
-  const cookieHeader = request.headers.get("cookie");
-  if (!cookieHeader) return null;
-  for (const part of cookieHeader.split(";")) {
-    const [key, ...val] = part.trim().split("=");
-    if (key === "__auth") return decodeURIComponent(val.join("="));
-  }
-  return null;
-}
-
 export async function getSessionUser(request: Request) {
-  const sessionId = getAuthCookie(request);
+  const sessionId = getCookie(request, "__auth");
   if (!sessionId) return null;
 
   const session = await db.query.sessions.findFirst({
@@ -24,4 +18,8 @@ export async function getSessionUser(request: Request) {
 
   const { id, name, role } = session.user;
   return { id, name, role };
+}
+
+export async function deleteSession(sessionId: string) {
+  await db.delete(sessions).where(eq(sessions.id, sessionId));
 }
