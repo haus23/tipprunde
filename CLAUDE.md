@@ -11,6 +11,11 @@ pnpm workspace with two apps - `apps/web` (SvelteKit) and `apps/manager` (React 
 Related agent instructions:
 @apps/web/CLAUDE.md
 
+### Backend application (`apps/manager`)
+
+Related agent instructions:
+@apps/manager/CLAUDE.md
+
 ### DB package (`packages/db`)
 
 In the `src` folder:
