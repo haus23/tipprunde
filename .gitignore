@@ -4,6 +4,8 @@ node_modules/
 # Dev environment
 .well-known/
 .env
+.env.*
+!.env.example
 
 # Svelte App
 .svelte-kit/
