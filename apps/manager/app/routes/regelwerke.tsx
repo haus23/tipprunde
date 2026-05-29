@@ -13,6 +13,7 @@ import {
   Input,
   Label,
   Modal,
+  ModalOverlay,
   Radio,
   RadioGroup,
   Row,
@@ -200,21 +201,23 @@ type RulesetDialogProps = {
 
 function RulesetDialog({ title, isOpen, onOpenChange, children }: RulesetDialogProps) {
   return (
-    <Modal
+    <ModalOverlay
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       isDismissable
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4"
     >
-      <Dialog className="bg-surface-raised border-subtle w-full max-w-lg rounded-md border shadow-xl outline-none">
-        <div className="border-subtle border-b px-6 py-4">
-          <Heading slot="title" className="text-base font-semibold">
-            {title}
-          </Heading>
-        </div>
-        <div className="max-h-[70dvh] overflow-y-auto px-6 py-5">{children}</div>
-      </Dialog>
-    </Modal>
+      <Modal className="bg-surface-raised border-subtle w-full max-w-lg rounded-md border shadow-xl outline-none">
+        <Dialog className="outline-none">
+          <div className="border-subtle border-b px-6 py-4">
+            <Heading slot="title" className="text-base font-semibold">
+              {title}
+            </Heading>
+          </div>
+          <div className="max-h-[70dvh] overflow-y-auto px-6 py-5">{children}</div>
+        </Dialog>
+      </Modal>
+    </ModalOverlay>
   );
 }
 
