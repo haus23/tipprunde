@@ -21,3 +21,8 @@ The SvelteKit app is just reading the db with drizzle-orm. No drizzle-kit setup.
 ## Docs
 
 In the `docs/` folder you can find several hints for developing this app.
+
+## External Documentation (LLM-Ready)
+
+- **React Aria Components**
+  - High-level Index: https://react-aria.adobe.com/llms.txt
