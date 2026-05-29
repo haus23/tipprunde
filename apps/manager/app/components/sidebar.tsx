@@ -12,9 +12,10 @@ import {
   TrophyIcon,
   UsersIcon,
 } from "lucide-react";
-import { NavLink } from "react-router";
+import { Form, NavLink } from "react-router";
 
 import { Logo } from "#/components/logo.tsx";
+import { cn } from "#/lib/utils.ts";
 
 type NavItemProps = {
   to: string;
@@ -28,7 +29,11 @@ function NavItem({ to, end, icon: Icon, children }: NavItemProps) {
     <NavLink
       to={to}
       end={end}
-      className="text-app hover:bg-nav-active aria-[current=page]:bg-nav-active aria-[current=page]:text-accent flex items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors"
+      className={cn(
+        "flex items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors",
+        "text-app hover:bg-nav-active",
+        "aria-[current=page]:bg-nav-active aria-[current=page]:text-accent",
+      )}
     >
       <Icon className="size-4 shrink-0" />
       {children}
@@ -105,9 +110,15 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
         </div>
 
         <div className="border-subtle border-t p-2">
-          <NavItem to="/logout" icon={LogOutIcon}>
-            Abmelden
-          </NavItem>
+          <Form method="post" action="/logout">
+            <button
+              type="submit"
+              className="text-app hover:bg-nav-active flex w-full items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors"
+            >
+              <LogOutIcon className="size-4 shrink-0" />
+              Abmelden
+            </button>
+          </Form>
         </div>
       </div>
     </aside>

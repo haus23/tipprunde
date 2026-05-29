@@ -83,6 +83,9 @@ importers:
       react-router:
         specifier: 7.15.1
         version: 7.15.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      tailwind-merge:
+        specifier: catalog:tailwind
+        version: 3.6.0
     devDependencies:
       '@react-router/dev':
         specifier: 7.15.1
