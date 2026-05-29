@@ -7,8 +7,12 @@ export default [
     route("spiele", "routes/championship/spiele.tsx"),
     route("tipps", "routes/championship/tipps.tsx"),
     route("ergebnisse", "routes/championship/ergebnisse.tsx"),
+    route("zusatzpunkte", "routes/championship/zusatzpunkte.tsx"),
   ]),
   route("turniere", "routes/turniere.tsx"),
   route("spieler", "routes/spieler.tsx"),
+  route("teams", "routes/teams.tsx"),
+  route("ligen", "routes/ligen.tsx"),
+  route("regelwerke", "routes/regelwerke.tsx"),
   route("logout", "routes/logout.tsx"),
 ] satisfies RouteConfig;

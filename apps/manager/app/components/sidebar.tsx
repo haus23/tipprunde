@@ -1,3 +1,17 @@
+import {
+  CalendarDays,
+  Folders,
+  ListChecks,
+  LogOut,
+  type LucideIcon,
+  NotepadText,
+  Pilcrow,
+  Shield,
+  Shirt,
+  Star,
+  Trophy,
+  UserCog,
+} from "lucide-react";
 import { NavLink } from "react-router";
 
 import { Logo } from "#/components/logo.tsx";
@@ -5,20 +19,22 @@ import { Logo } from "#/components/logo.tsx";
 type NavItemProps = {
   to: string;
   end?: boolean;
+  icon: LucideIcon;
   children: React.ReactNode;
 };
 
-function NavItem({ to, end, children }: NavItemProps) {
+function NavItem({ to, end, icon: Icon, children }: NavItemProps) {
   return (
     <NavLink
       to={to}
       end={end}
       className={({ isActive }) =>
-        `flex items-center rounded-sm px-2 py-1.5 text-sm transition-colors ${
+        `flex items-center gap-2.5 rounded-sm px-2 py-1.5 text-sm transition-colors ${
           isActive ? "bg-nav-active text-accent" : "text-app hover:bg-nav-active"
         }`
       }
     >
+      <Icon className="size-4 shrink-0" />
       {children}
     </NavLink>
   );
@@ -46,12 +62,21 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
         <nav className="flex flex-col gap-0.5 p-2">
           {slug && (
             <>
-              <NavItem to={`/${slug}`} end>
-                Übersicht
+              <NavItem to={`/${slug}`} end icon={Trophy}>
+                Turnier
               </NavItem>
-              <NavItem to={`/${slug}/spiele`}>Spiele</NavItem>
-              <NavItem to={`/${slug}/tipps`}>Tipps</NavItem>
-              <NavItem to={`/${slug}/ergebnisse`}>Ergebnisse</NavItem>
+              <NavItem to={`/${slug}/spiele`} icon={CalendarDays}>
+                Spiele
+              </NavItem>
+              <NavItem to={`/${slug}/tipps`} icon={NotepadText}>
+                Tipps
+              </NavItem>
+              <NavItem to={`/${slug}/ergebnisse`} icon={ListChecks}>
+                Ergebnisse
+              </NavItem>
+              <NavItem to={`/${slug}/zusatzpunkte`} icon={Star}>
+                Zusatzpunkte
+              </NavItem>
             </>
           )}
         </nav>
@@ -63,13 +88,28 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
             Stammdaten
           </p>
           <nav className="mt-1 flex flex-col gap-0.5">
-            <NavItem to="/turniere">Turniere</NavItem>
-            <NavItem to="/spieler">Spieler</NavItem>
+            <NavItem to="/turniere" icon={Folders}>
+              Turniere
+            </NavItem>
+            <NavItem to="/spieler" icon={UserCog}>
+              Spieler
+            </NavItem>
+            <NavItem to="/teams" icon={Shirt}>
+              Teams
+            </NavItem>
+            <NavItem to="/ligen" icon={Shield}>
+              Ligen
+            </NavItem>
+            <NavItem to="/regelwerke" icon={Pilcrow}>
+              Regelwerke
+            </NavItem>
           </nav>
         </div>
 
         <div className="border-subtle border-t p-2">
-          <NavItem to="/logout">Abmelden</NavItem>
+          <NavItem to="/logout" icon={LogOut}>
+            Abmelden
+          </NavItem>
         </div>
       </div>
     </aside>
