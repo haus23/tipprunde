@@ -6,6 +6,7 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "module": "Preserve",
+    "allowImportingTsExtensions": true,
     "noEmit": true,
     "rootDirs": [".", "./.react-router/types"]
   }

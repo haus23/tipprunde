@@ -18,6 +18,17 @@
     color(display-p3 0.23 0.229 0.217)
   );
 
+  --text-color-muted: light-dark(
+    color(display-p3 0.388 0.388 0.37),
+    color(display-p3 0.707 0.703 0.68)
+  );
+  --text-color-accent: light-dark(color(display-p3 0.76 0.34 0), color(display-p3 1 0.63 0.38));
+
+  --background-color-nav-active: light-dark(
+    color(display-p3 0.943 0.942 0.936),
+    color(display-p3 0.135 0.135 0.129)
+  );
+
   --radius-md: 0.5rem;
   --radius-sm: 0.25rem;
 }

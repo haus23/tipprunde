@@ -2,6 +2,9 @@
   "name": "@tipprunde/manager",
   "private": true,
   "type": "module",
+  "imports": {
+    "#/*": "./app/*"
+  },
   "scripts": {
     "dev": "react-router dev",
     "build": "react-router build",

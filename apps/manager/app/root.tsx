@@ -1,6 +1,7 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, redirect } from "react-router";
 
 import type { Route } from "./+types/root";
+import { Sidebar } from "./components/sidebar";
 import { getSessionUser } from "./lib/auth.server";
 import { getChampionshipBySlug, getLatestChampionship } from "./lib/championship.server";
 import { championshipContext, userContext } from "./lib/context";
@@ -52,6 +53,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
-  return <Outlet />;
+export function loader({ context }: Route.LoaderArgs) {
+  const championship = context.get(championshipContext);
+  return { slug: championship?.slug };
+}
+
+export default function App({ loaderData }: Route.ComponentProps) {
+  const { slug } = loaderData;
+  return (
+    <div className="grid h-dvh grid-cols-[208px_1fr] grid-rows-[56px_1fr]">
+      <Sidebar slug={slug} />
+      <header className="border-subtle bg-surface-raised border-b" />
+      <main className="overflow-y-auto">
+        <Outlet />
+      </main>
+    </div>
+  );
 }
