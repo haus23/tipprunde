@@ -12,7 +12,8 @@ import {
   Label,
   Modal,
   ModalOverlay,
-  Radio,
+  RadioButton,
+  RadioField,
   RadioGroup,
   TextArea,
   TextField,
@@ -138,39 +139,39 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
         >
           <Label className="text-sm font-medium">{category.label}</Label>
           {category.rules.map((rule) => (
-            <Radio
-              key={rule.value}
-              value={rule.value}
-              className={cn(
-                "group flex cursor-pointer items-start gap-3 rounded-sm border p-3 text-sm",
-                "border-subtle transition-colors outline-none",
-                "hover:bg-nav-active",
-                "data-selected:border-accent data-selected:bg-accent-subtle",
-                "data-focused:ring-2 data-focused:ring-accent/60",
-              )}
-            >
-              <div
+            <RadioField key={rule.value} value={rule.value}>
+              <RadioButton
                 className={cn(
-                  "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
-                  "border-subtle",
-                  "group-data-selected:border-accent",
+                  "group flex cursor-pointer items-start gap-3 rounded-sm border p-3 text-sm",
+                  "border-subtle transition-colors outline-none",
+                  "hover:bg-nav-active",
+                  "data-selected:border-accent data-selected:bg-accent-subtle",
+                  "data-focused:ring-2 data-focused:ring-accent/60",
                 )}
               >
                 <div
                   className={cn(
-                    "size-2 scale-0 rounded-full transition-transform",
-                    "bg-btn",
-                    "group-data-selected:scale-100",
+                    "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
+                    "border-subtle",
+                    "group-data-selected:border-accent",
                   )}
-                />
-              </div>
-              <div>
-                <div className="font-medium">{rule.label}</div>
-                {rule.description && (
-                  <div className="text-subtle mt-0.5 text-xs">{rule.description}</div>
-                )}
-              </div>
-            </Radio>
+                >
+                  <div
+                    className={cn(
+                      "size-2 scale-0 rounded-full transition-transform",
+                      "bg-btn",
+                      "group-data-selected:scale-100",
+                    )}
+                  />
+                </div>
+                <div>
+                  <div className="font-medium">{rule.label}</div>
+                  {rule.description && (
+                    <div className="text-subtle mt-0.5 text-xs">{rule.description}</div>
+                  )}
+                </div>
+              </RadioButton>
+            </RadioField>
           ))}
           <FieldError className="text-xs text-red-500" />
         </RadioGroup>
