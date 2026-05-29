@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router";
+import { NavLink } from "react-router";
 
 import { Logo } from "#/components/logo.tsx";
 
@@ -26,17 +26,21 @@ function NavItem({ to, end, children }: NavItemProps) {
 
 type SidebarProps = {
   slug: string | undefined;
+  webAppUrl: string;
 };
 
-export function Sidebar({ slug }: SidebarProps) {
+export function Sidebar({ slug, webAppUrl }: SidebarProps) {
   return (
     <aside className="border-subtle bg-surface-raised row-span-2 flex flex-col border-r">
-      <Link to="/" className="border-subtle flex h-14 shrink-0 items-center gap-2.5 border-b px-4">
+      <a
+        href={webAppUrl}
+        className="border-subtle flex h-14 shrink-0 items-center gap-2.5 border-b px-4"
+      >
         <div className="text-accent size-7">
           <Logo />
         </div>
         <span className="text-sm font-semibold">runde.tips</span>
-      </Link>
+      </a>
 
       <div className="flex flex-1 flex-col overflow-y-auto">
         <nav className="flex flex-col gap-0.5 p-2">
