@@ -17,6 +17,7 @@
         toggleScheme,
     } from "$lib/state/color-scheme.svelte";
     import { userStore } from "$lib/state/user.svelte";
+    import { PUBLIC_MANAGER_URL } from "$env/static/public";
 
     const SchemeIcon = $derived(
         colorScheme.effective === "dark" ? MoonIcon : SunIcon,
@@ -79,7 +80,11 @@
                     {#if userStore.current.role === "manager" || userStore.current.role === "admin"}
                         <DropdownMenu.Item class={itemClass}>
                             {#snippet child({ props })}
-                                <a href="/manager" {...props}>
+                                <a
+                                    href={PUBLIC_MANAGER_URL}
+                                    {...props}
+                                    data-sveltekit-reload
+                                >
                                     <span class="flex-1">Manager</span>
                                     <SettingsIcon
                                         size={14}
