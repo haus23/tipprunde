@@ -1,12 +1,10 @@
 import { rulesets } from "@tipprunde/db/schema";
-import { JOKER_RULES, RULE_CATEGORIES, TIP_RULES } from "@tipprunde/domain/rules";
+import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
 import { eq } from "drizzle-orm";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Button,
-  Cell,
-  Column,
   Dialog,
   FieldError,
   Heading,
@@ -16,10 +14,6 @@ import {
   ModalOverlay,
   Radio,
   RadioGroup,
-  Row,
-  Table,
-  TableBody,
-  TableHeader,
   TextArea,
   TextField,
 } from "react-aria-components";
@@ -65,10 +59,6 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   return null;
-}
-
-function getRuleLabel(rules: { value: string; label: string }[], id: string) {
-  return rules.find((r) => r.value === id)?.label ?? id;
 }
 
 type RulesetFormProps = {
@@ -272,70 +262,53 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
         </Button>
       </div>
 
-      <Table aria-label="Regelwerke" className="w-full border-collapse text-sm">
-        <TableHeader>
-          <Column
-            id="name"
-            isRowHeader
-            className="border-subtle text-muted border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase"
-          >
-            Name
-          </Column>
-          <Column
-            id="tipRule"
-            className="border-subtle text-muted border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase"
-          >
-            Punkte-Regel
-          </Column>
-          <Column
-            id="jokerRule"
-            className="border-subtle text-muted border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase"
-          >
-            Joker-Regel
-          </Column>
-          <Column id="actions" className="border-subtle w-0 border-b px-3 py-2.5" />
-        </TableHeader>
-        <TableBody
-          items={rulesetList}
-          renderEmptyState={() => (
-            <div className="text-subtle py-16 text-center text-sm">
-              Noch keine Regelwerke angelegt.
-            </div>
+      <table className="w-full table-fixed border-collapse text-sm">
+        <thead>
+          <tr>
+            <th className="border-subtle text-muted w-56 border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase">
+              Name
+            </th>
+            <th className="border-subtle text-muted border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase">
+              Beschreibung
+            </th>
+            <th className="border-subtle w-12 border-b" />
+          </tr>
+        </thead>
+        <tbody>
+          {rulesetList.length === 0 ? (
+            <tr>
+              <td colSpan={3} className="text-subtle py-16 text-center">
+                Noch keine Regelwerke angelegt.
+              </td>
+            </tr>
+          ) : (
+            rulesetList.map((ruleset) => (
+              <tr
+                key={ruleset.id}
+                className="border-subtle hover:bg-surface-raised border-b transition-colors last:border-0"
+              >
+                <td className="px-3 py-3 font-medium">{ruleset.name}</td>
+                <td className="px-3 py-3">
+                  <div className="text-subtle truncate text-sm">{ruleset.description}</div>
+                </td>
+                <td className="px-3 py-3 text-right">
+                  <button
+                    onClick={() => setEditingRuleset(ruleset)}
+                    aria-label={`${ruleset.name} bearbeiten`}
+                    className={cn(
+                      "text-muted rounded-sm p-1.5 transition-colors",
+                      "hover:bg-nav-active hover:text-app",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                    )}
+                  >
+                    <PencilIcon className="size-4" />
+                  </button>
+                </td>
+              </tr>
+            ))
           )}
-        >
-          {(ruleset) => (
-            <Row
-              id={ruleset.id}
-              className="border-subtle hover:bg-surface-raised border-b transition-colors last:border-0"
-            >
-              <Cell className="px-3 py-3">
-                <div className="font-medium">{ruleset.name}</div>
-                {ruleset.description && (
-                  <div className="text-subtle mt-0.5 text-xs">{ruleset.description}</div>
-                )}
-              </Cell>
-              <Cell className="text-subtle px-3 py-3 text-xs">
-                {getRuleLabel(TIP_RULES, ruleset.tipRuleId)}
-              </Cell>
-              <Cell className="text-subtle px-3 py-3 text-xs">
-                {getRuleLabel(JOKER_RULES, ruleset.jokerRuleId)}
-              </Cell>
-              <Cell className="px-3 py-3">
-                <Button
-                  onPress={() => setEditingRuleset(ruleset)}
-                  className={cn(
-                    "text-muted inline-flex items-center gap-1.5 rounded-sm px-2 py-1.5 text-xs transition-colors",
-                    "hover:bg-nav-active hover:text-app",
-                  )}
-                >
-                  <PencilIcon className="size-3.5" />
-                  Bearbeiten
-                </Button>
-              </Cell>
-            </Row>
-          )}
-        </TableBody>
-      </Table>
+        </tbody>
+      </table>
 
       <RulesetDialog title="Neues Regelwerk" isOpen={isCreateOpen} onOpenChange={setIsCreateOpen}>
         <RulesetForm fetcher={fetcher} onClose={() => setIsCreateOpen(false)} />
