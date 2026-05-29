@@ -1,7 +1,7 @@
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
-  index("routes/home.tsx"),
+  index("routes/index.tsx"),
   route(":slug", "routes/championship.tsx", [
     index("routes/championship/index.tsx"),
     route("spiele", "routes/championship/spiele.tsx"),
@@ -9,6 +9,7 @@ export default [
     route("ergebnisse", "routes/championship/ergebnisse.tsx"),
     route("zusatzpunkte", "routes/championship/zusatzpunkte.tsx"),
   ]),
+  route("start", "routes/start.tsx"),
   route("turniere", "routes/turniere.tsx"),
   route("spieler", "routes/spieler.tsx"),
   route("teams", "routes/teams.tsx"),

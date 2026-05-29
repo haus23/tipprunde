@@ -8,6 +8,7 @@ import {
   PilcrowIcon,
   ShieldIcon,
   ShirtIcon,
+  RocketIcon,
   StarIcon,
   TrophyIcon,
   UsersIcon,
@@ -63,7 +64,7 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
 
       <div className="flex flex-1 flex-col overflow-y-auto">
         <nav className="flex flex-col gap-1 p-2">
-          {slug && (
+          {slug ? (
             <>
               <NavItem to={`/${slug}`} end icon={TrophyIcon}>
                 Turnier
@@ -81,6 +82,10 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
                 Zusatzpunkte
               </NavItem>
             </>
+          ) : (
+            <NavItem to="/start" icon={RocketIcon}>
+              Start
+            </NavItem>
           )}
         </nav>
 
