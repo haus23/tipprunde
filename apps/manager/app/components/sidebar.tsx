@@ -31,12 +31,12 @@ function NavItem({ to, end, icon: Icon, children }: NavItemProps) {
       to={to}
       end={end}
       className={cn(
-        "flex items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors",
+        "group flex items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors",
         "text-app hover:bg-nav-active",
-        "aria-[current=page]:bg-nav-active aria-[current=page]:text-accent",
+        "aria-[current=page]:bg-nav-active",
       )}
     >
-      <Icon className="size-4 shrink-0" />
+      <Icon className="group-aria-[current=page]:text-accent size-4 shrink-0" />
       {children}
     </NavLink>
   );
