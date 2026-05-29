@@ -1,6 +1,7 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, redirect } from "react-router";
 
 import type { Route } from "./+types/root";
+import faviconUrl from "./assets/favicon.ico?url";
 import { Sidebar } from "./components/sidebar";
 import { getSessionUser } from "./lib/auth.server";
 import { getChampionshipBySlug, getLatestChampionship } from "./lib/championship.server";
@@ -36,13 +37,14 @@ const championshipMiddleware: Route.MiddlewareFunction = async ({ request, conte
 
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware, championshipMiddleware];
 
+export const meta: Route.MetaFunction = () => [{ tagName: "link", rel: "icon", href: faviconUrl }];
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
         <Meta />
         <Links />
       </head>
