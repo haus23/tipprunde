@@ -1,5 +1,35 @@
 # Changelog
 
+## v0.6.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.5.1...v0.6.0)
+
+### 🚀 Enhancements
+
+- **manager:** Add onboarding wizard and layout polish ([67d810f](https://github.com/haus23/tipprunde/commit/67d810f))
+- **manager:** Implement Regelwerke page with RAC table and modal forms ([95e13c1](https://github.com/haus23/tipprunde/commit/95e13c1))
+- Extract shared domain rules into @tipprunde/domain package ([9ddda7f](https://github.com/haus23/tipprunde/commit/9ddda7f))
+- **manager:** Auto-slug id field from name in Regelwerk create form ([0c93b35](https://github.com/haus23/tipprunde/commit/0c93b35))
+- **manager:** Add consistent focus-visible ring styles across interactive elements ([16ef71e](https://github.com/haus23/tipprunde/commit/16ef71e))
+
+### 🩹 Fixes
+
+- **web:** Make link outbound and configurable. ([f84b9eb](https://github.com/haus23/tipprunde/commit/f84b9eb))
+- **manager:** Use explicit path for favicon. ([726c4df](https://github.com/haus23/tipprunde/commit/726c4df))
+- **manager:** Let vite handle the favicon path. ([192bc8d](https://github.com/haus23/tipprunde/commit/192bc8d))
+- **manager:** Close Regelwerk dialog on outside click ([06014f4](https://github.com/haus23/tipprunde/commit/06014f4))
+
+### 💅 Refactors
+
+- **manager:** Scope active nav accent to icon only, add CSS token comments ([a2a96f1](https://github.com/haus23/tipprunde/commit/a2a96f1))
+- **manager:** Apply Tailwind v4 shorthands ([aa93b37](https://github.com/haus23/tipprunde/commit/aa93b37))
+- **manager:** Replace RAC Table with plain table in Regelwerke ([1316679](https://github.com/haus23/tipprunde/commit/1316679))
+- **manager:** Migrate Radio to RadioField + RadioButton (RAC new API) ([865c678](https://github.com/haus23/tipprunde/commit/865c678))
+
+### 🏡 Chore
+
+- Add skills and docs for React Aria Components. ([dbb2835](https://github.com/haus23/tipprunde/commit/dbb2835))
+
 ## v0.5.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.5.0...v0.5.1)
