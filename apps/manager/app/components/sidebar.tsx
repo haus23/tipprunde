@@ -1,16 +1,16 @@
 import {
-  CalendarDays,
-  Folders,
-  ListChecks,
-  LogOut,
+  CalendarIcon,
+  DicesIcon,
+  FoldersIcon,
+  ListChecksIcon,
+  LogOutIcon,
   type LucideIcon,
-  NotepadText,
-  Pilcrow,
-  Shield,
-  Shirt,
-  Star,
-  Trophy,
-  UserCog,
+  PilcrowIcon,
+  ShieldIcon,
+  ShirtIcon,
+  StarIcon,
+  TrophyIcon,
+  UsersIcon,
 } from "lucide-react";
 import { NavLink } from "react-router";
 
@@ -28,11 +28,7 @@ function NavItem({ to, end, icon: Icon, children }: NavItemProps) {
     <NavLink
       to={to}
       end={end}
-      className={({ isActive }) =>
-        `flex items-center gap-2.5 rounded-sm px-2 py-1.5 text-sm transition-colors ${
-          isActive ? "bg-nav-active text-accent" : "text-app hover:bg-nav-active"
-        }`
-      }
+      className="text-app hover:bg-nav-active aria-[current=page]:bg-nav-active aria-[current=page]:text-accent flex items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors"
     >
       <Icon className="size-4 shrink-0" />
       {children}
@@ -48,33 +44,35 @@ type SidebarProps = {
 export function Sidebar({ slug, webAppUrl }: SidebarProps) {
   return (
     <aside className="border-subtle bg-surface-raised row-span-2 flex flex-col border-r">
-      <a
-        href={webAppUrl}
-        className="border-subtle flex h-14 shrink-0 items-center gap-2.5 border-b px-4"
-      >
-        <div className="text-accent size-7">
-          <Logo />
-        </div>
-        <span className="text-sm font-semibold">runde.tips</span>
-      </a>
+      <div className="border-subtle flex h-14 shrink-0 items-center border-b px-2">
+        <a
+          href={webAppUrl}
+          className="hover:bg-nav-active flex h-9 w-full items-center gap-2.5 rounded-sm px-2"
+        >
+          <div className="text-accent size-7">
+            <Logo />
+          </div>
+          <span className="text-sm font-semibold">runde.tips</span>
+        </a>
+      </div>
 
       <div className="flex flex-1 flex-col overflow-y-auto">
-        <nav className="flex flex-col gap-0.5 p-2">
+        <nav className="flex flex-col gap-1 p-2">
           {slug && (
             <>
-              <NavItem to={`/${slug}`} end icon={Trophy}>
+              <NavItem to={`/${slug}`} end icon={TrophyIcon}>
                 Turnier
               </NavItem>
-              <NavItem to={`/${slug}/spiele`} icon={CalendarDays}>
+              <NavItem to={`/${slug}/spiele`} icon={CalendarIcon}>
                 Spiele
               </NavItem>
-              <NavItem to={`/${slug}/tipps`} icon={NotepadText}>
+              <NavItem to={`/${slug}/tipps`} icon={DicesIcon}>
                 Tipps
               </NavItem>
-              <NavItem to={`/${slug}/ergebnisse`} icon={ListChecks}>
+              <NavItem to={`/${slug}/ergebnisse`} icon={ListChecksIcon}>
                 Ergebnisse
               </NavItem>
-              <NavItem to={`/${slug}/zusatzpunkte`} icon={Star}>
+              <NavItem to={`/${slug}/zusatzpunkte`} icon={StarIcon}>
                 Zusatzpunkte
               </NavItem>
             </>
@@ -87,27 +85,27 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
           <p className="text-muted px-2 py-1 text-xs font-medium tracking-wider uppercase">
             Stammdaten
           </p>
-          <nav className="mt-1 flex flex-col gap-0.5">
-            <NavItem to="/turniere" icon={Folders}>
+          <nav className="mt-1 flex flex-col gap-1">
+            <NavItem to="/turniere" icon={FoldersIcon}>
               Turniere
             </NavItem>
-            <NavItem to="/spieler" icon={UserCog}>
+            <NavItem to="/spieler" icon={UsersIcon}>
               Spieler
             </NavItem>
-            <NavItem to="/teams" icon={Shirt}>
+            <NavItem to="/teams" icon={ShirtIcon}>
               Teams
             </NavItem>
-            <NavItem to="/ligen" icon={Shield}>
+            <NavItem to="/ligen" icon={ShieldIcon}>
               Ligen
             </NavItem>
-            <NavItem to="/regelwerke" icon={Pilcrow}>
+            <NavItem to="/regelwerke" icon={PilcrowIcon}>
               Regelwerke
             </NavItem>
           </nav>
         </div>
 
         <div className="border-subtle border-t p-2">
-          <NavItem to="/logout" icon={LogOut}>
+          <NavItem to="/logout" icon={LogOutIcon}>
             Abmelden
           </NavItem>
         </div>
