@@ -95,7 +95,7 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
         <Input
           className={cn(
             "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
-            "outline-none data-[focused]:ring-2 data-[focused]:ring-accent/60",
+            "outline-none data-focused:ring-2 data-focused:ring-accent/60",
           )}
         />
         <FieldError className="text-xs text-red-500" />
@@ -111,7 +111,7 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
           rows={2}
           className={cn(
             "border-subtle bg-surface resize-none rounded-sm border px-2.5 py-1.5 text-sm",
-            "outline-none data-[focused]:ring-2 data-[focused]:ring-accent/60",
+            "outline-none data-focused:ring-2 data-focused:ring-accent/60",
           )}
         />
       </TextField>
@@ -133,22 +133,22 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
                 "group flex cursor-pointer items-start gap-3 rounded-sm border p-3 text-sm",
                 "border-subtle transition-colors outline-none",
                 "hover:bg-nav-active",
-                "data-[selected]:border-accent data-[selected]:bg-accent-subtle",
-                "data-[focused]:ring-2 data-[focused]:ring-accent/60",
+                "data-selected:border-accent data-selected:bg-accent-subtle",
+                "data-focused:ring-2 data-focused:ring-accent/60",
               )}
             >
               <div
                 className={cn(
                   "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
                   "border-subtle",
-                  "group-data-[selected]:border-accent",
+                  "group-data-selected:border-accent",
                 )}
               >
                 <div
                   className={cn(
                     "size-2 scale-0 rounded-full transition-transform",
                     "bg-btn",
-                    "group-data-[selected]:scale-100",
+                    "group-data-selected:scale-100",
                   )}
                 />
               </div>

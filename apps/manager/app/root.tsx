@@ -65,7 +65,7 @@ export function loader({ context }: Route.LoaderArgs) {
 export default function App({ loaderData }: Route.ComponentProps) {
   const { slug, webAppUrl } = loaderData;
   return (
-    <div className="border-subtle mx-auto grid h-dvh w-full max-w-[1600px] grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
+    <div className="border-subtle mx-auto grid h-dvh w-full max-w-400 grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
       <Sidebar slug={slug} webAppUrl={webAppUrl} />
       <header className="border-subtle bg-surface-raised border-b" />
       <main className="overflow-y-auto">
