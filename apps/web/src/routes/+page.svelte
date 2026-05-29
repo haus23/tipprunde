@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { RULE_CATEGORIES } from "$lib/domain/rules";
+    import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
     import { cn, formatDate } from "$lib/utils";
     import { userStore } from "$lib/state/user.svelte";
     import Card from "$ui/card.svelte";

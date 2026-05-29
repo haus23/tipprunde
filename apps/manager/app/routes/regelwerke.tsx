@@ -1,4 +1,5 @@
 import { rulesets } from "@tipprunde/db/schema";
+import { JOKER_RULES, RULE_CATEGORIES, TIP_RULES } from "@tipprunde/domain/rules";
 import { eq } from "drizzle-orm";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -24,7 +25,6 @@ import {
 import { useFetcher } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
-import { RULE_CATEGORIES, TIP_RULES, JOKER_RULES } from "#/lib/domain/rules.ts";
 import { cn } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/regelwerke";

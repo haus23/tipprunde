@@ -1,0 +1,8 @@
+{
+  "name": "@tipprunde/domain",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./rules": "./src/rules.ts"
+  }
+}
