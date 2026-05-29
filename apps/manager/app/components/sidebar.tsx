@@ -34,6 +34,7 @@ function NavItem({ to, end, icon: Icon, children }: NavItemProps) {
         "group flex items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors",
         "text-app hover:bg-nav-active",
         "aria-[current=page]:bg-nav-active",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
       )}
     >
       <Icon className="group-aria-[current=page]:text-accent size-4 shrink-0" />
@@ -53,7 +54,7 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
       <div className="border-subtle flex h-14 shrink-0 items-center border-b px-2">
         <a
           href={webAppUrl}
-          className="hover:bg-nav-active flex h-9 w-full items-center gap-2.5 rounded-sm px-2"
+          className="hover:bg-nav-active focus-visible:ring-accent flex h-9 w-full items-center gap-2.5 rounded-sm px-2 focus-visible:ring-2 focus-visible:outline-none"
         >
           <div className="text-accent size-7">
             <Logo />
@@ -118,7 +119,7 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
           <Form method="post" action="/logout">
             <button
               type="submit"
-              className="text-app hover:bg-nav-active flex w-full items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors"
+              className="text-app hover:bg-nav-active focus-visible:ring-accent flex w-full items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none"
             >
               <LogOutIcon className="size-4 shrink-0" />
               Abmelden

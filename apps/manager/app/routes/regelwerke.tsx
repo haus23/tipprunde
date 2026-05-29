@@ -183,6 +183,7 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
           className={cn(
             "rounded-sm border border-subtle px-4 py-2 text-sm transition-colors",
             "hover:bg-nav-active",
+            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
           )}
         >
           Abbrechen
@@ -194,6 +195,7 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
             "bg-btn text-btn rounded-md px-4 py-2 text-sm font-medium transition-colors",
             "hover:bg-btn-hover",
             "disabled:opacity-50",
+            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
           )}
         >
           {isPending ? "…" : isEdit ? "Speichern" : "Erstellen"}
@@ -255,6 +257,7 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
           className={cn(
             "bg-btn text-btn flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
             "hover:bg-btn-hover",
+            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
           )}
         >
           <PlusIcon className="size-4" />
