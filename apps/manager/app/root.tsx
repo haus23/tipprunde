@@ -8,29 +8,31 @@ import { clearCookieHeader, cookieHeader, getCookie } from "./lib/cookies.server
 
 import "./app.css";
 
-export const middleware: Route.MiddlewareFunction[] = [
-  async ({ request, context }, next) => {
-    const user = await getSessionUser(request);
-    if (!user) throw redirect("/login");
-    context.set(userContext, user);
+const authMiddleware: Route.MiddlewareFunction = async ({ request, context }) => {
+  const user = await getSessionUser(request);
+  if (!user) throw redirect("/login");
+  context.set(userContext, user);
+};
 
-    const cookieSlug = getCookie(request, "__championship");
-    let championship = cookieSlug ? await getChampionshipBySlug(cookieSlug) : null;
-    if (!championship) championship = (await getLatestChampionship()) ?? null;
+const championshipMiddleware: Route.MiddlewareFunction = async ({ request, context }, next) => {
+  const cookieSlug = getCookie(request, "__championship");
+  let championship = cookieSlug ? await getChampionshipBySlug(cookieSlug) : null;
+  if (!championship) championship = (await getLatestChampionship()) ?? null;
 
-    context.set(championshipContext, championship!);
+  context.set(championshipContext, championship!);
 
-    const response = await next();
+  const response = await next();
 
-    if (championship && championship.slug !== cookieSlug) {
-      response.headers.append("Set-Cookie", cookieHeader("__championship", championship.slug));
-    } else if (!championship) {
-      response.headers.append("Set-Cookie", clearCookieHeader("__championship"));
-    }
+  if (championship && championship.slug !== cookieSlug) {
+    response.headers.append("Set-Cookie", cookieHeader("__championship", championship.slug));
+  } else if (!championship) {
+    response.headers.append("Set-Cookie", clearCookieHeader("__championship"));
+  }
 
-    return response;
-  },
-];
+  return response;
+};
+
+export const middleware: Route.MiddlewareFunction[] = [authMiddleware, championshipMiddleware];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
