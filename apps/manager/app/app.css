@@ -47,6 +47,16 @@
   /* white — Text on solid orange backgrounds */
   --text-color-btn: color(display-p3 1 1 1);
 
+  /* orange9 — Accent border (selected states) */
+  --border-color-accent: light-dark(color(display-p3 0.9 0.45 0.2), color(display-p3 0.9 0.45 0.2));
+  /* orange3 — Subtle accent background (selected states) */
+  --background-color-accent-subtle: light-dark(
+    color(display-p3 0.997 0.944 0.921),
+    color(display-p3 0.168 0.087 0.049)
+  );
+  /* orange9 — Focus ring */
+  --ring-color-accent: light-dark(color(display-p3 0.9 0.45 0.2), color(display-p3 0.9 0.45 0.2));
+
   /* sand6 — Subtle borders and separators */
   --border-color-subtle: light-dark(
     color(display-p3 0.854 0.852 0.839),
