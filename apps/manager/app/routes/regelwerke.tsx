@@ -26,7 +26,7 @@ import {
 import { useFetcher } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
-import { cn } from "#/lib/utils.ts";
+import { cn, slugify } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/regelwerke";
 
@@ -52,7 +52,8 @@ export async function action({ request }: Route.ActionArgs) {
   };
 
   if (intent === "create") {
-    const ruleset = { id: crypto.randomUUID(), ...values };
+    const id = formData.get("id") as string;
+    const ruleset = { id, ...values };
     await db.insert(rulesets).values(ruleset);
     return { ruleset };
   }
@@ -80,6 +81,14 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
 
+  const [idValue, setIdValue] = useState("");
+  const [idDirty, setIdDirty] = useState(false);
+
+  const inputClass = cn(
+    "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
+    "outline-none data-focused:ring-2 data-focused:ring-accent/60",
+  );
+
   return (
     <fetcher.Form method="post" className="flex flex-col gap-5">
       <input type="hidden" name="intent" value={isEdit ? "update" : "create"} />
@@ -94,13 +103,31 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
       >
         <Label className="text-sm font-medium">Name</Label>
         <Input
-          className={cn(
-            "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
-            "outline-none data-focused:ring-2 data-focused:ring-accent/60",
-          )}
+          className={inputClass}
+          onBlur={(e) => {
+            if (!idDirty) setIdValue(slugify(e.target.value));
+          }}
         />
         <FieldError className="text-xs text-red-500" />
       </TextField>
+
+      {!isEdit && (
+        <TextField
+          name="id"
+          value={idValue}
+          onChange={(v) => {
+            setIdValue(v);
+            setIdDirty(true);
+          }}
+          isRequired
+          validationBehavior="native"
+          className="flex flex-col gap-1.5"
+        >
+          <Label className="text-sm font-medium">Kennung (eindeutig)</Label>
+          <Input className={cn(inputClass, "font-mono")} />
+          <FieldError className="text-xs text-red-500" />
+        </TextField>
+      )}
 
       <TextField
         name="description"
@@ -108,13 +135,7 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
         className="flex flex-col gap-1.5"
       >
         <Label className="text-sm font-medium">Beschreibung</Label>
-        <TextArea
-          rows={2}
-          className={cn(
-            "border-subtle bg-surface resize-none rounded-sm border px-2.5 py-1.5 text-sm",
-            "outline-none data-focused:ring-2 data-focused:ring-accent/60",
-          )}
-        />
+        <TextArea rows={2} className={cn(inputClass, "resize-none")} />
       </TextField>
 
       {RULE_CATEGORIES.map((category) => (
