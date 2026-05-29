@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.5.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.5.0...v0.5.1)
+
+### 🚀 Enhancements
+
+- **manager:** Add sidebar layout with logo, nav, and design tokens ([955fd01](https://github.com/haus23/tipprunde/commit/955fd01))
+- **manager:** Route frontend links via WEB_APP_URL env var ([1d71649](https://github.com/haus23/tipprunde/commit/1d71649))
+- **manager:** Add missing route stubs and sidebar icons ([ed51644](https://github.com/haus23/tipprunde/commit/ed51644))
+- **manager:** Fix logout form, add cn utility and tailwind-merge ([4d23892](https://github.com/haus23/tipprunde/commit/4d23892))
+
+### 💅 Refactors
+
+- **manager:** Split root middleware into separate auth and championship concerns ([0d70b6f](https://github.com/haus23/tipprunde/commit/0d70b6f))
+- **manager:** Polish sidebar nav — icons, spacing, aria-current styling ([477799a](https://github.com/haus23/tipprunde/commit/477799a))
+
+### 🏡 Chore
+
+- **db:** Add current migrations. ([895d81b](https://github.com/haus23/tipprunde/commit/895d81b))
+- Add typescript to project root deps. ([f2cc1a2](https://github.com/haus23/tipprunde/commit/f2cc1a2))
+
 ## v0.5.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.4.1...v0.5.0)
