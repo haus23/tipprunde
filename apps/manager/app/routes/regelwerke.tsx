@@ -27,6 +27,19 @@ import type { Route } from "./+types/regelwerke";
 
 type Ruleset = typeof rulesets.$inferSelect;
 
+type ActionErrors = Partial<
+  Record<
+    | "name"
+    | "id"
+    | "tipRuleId"
+    | "jokerRuleId"
+    | "matchRuleId"
+    | "roundRuleId"
+    | "extraQuestionRuleId",
+    string
+  >
+>;
+
 export async function loader() {
   const data = await db.query.rulesets.findMany({ orderBy: { name: "asc" } });
   return { rulesets: data };
@@ -46,14 +59,33 @@ export async function action({ request }: Route.ActionArgs) {
     extraQuestionRuleId: formData.get("extraQuestionRuleId") as string,
   };
 
+  const errors: ActionErrors = {};
+
+  if (!values.name?.trim()) errors.name = "Name ist erforderlich";
+  if (!values.tipRuleId) errors.tipRuleId = "Bitte eine Option wählen";
+  if (!values.jokerRuleId) errors.jokerRuleId = "Bitte eine Option wählen";
+  if (!values.matchRuleId) errors.matchRuleId = "Bitte eine Option wählen";
+  if (!values.roundRuleId) errors.roundRuleId = "Bitte eine Option wählen";
+  if (!values.extraQuestionRuleId) errors.extraQuestionRuleId = "Bitte eine Option wählen";
+
   if (intent === "create") {
     const id = formData.get("id") as string;
+    if (!id?.trim()) {
+      errors.id = "Kennung ist erforderlich";
+    } else {
+      const existing = await db.query.rulesets.findFirst({ where: { id } });
+      if (existing) errors.id = "Diese Kennung ist bereits vergeben";
+    }
+
+    if (Object.keys(errors).length > 0) return { errors };
+
     const ruleset = { id, ...values };
     await db.insert(rulesets).values(ruleset);
     return { ruleset };
   }
 
   if (intent === "update") {
+    if (Object.keys(errors).length > 0) return { errors };
     const id = formData.get("id") as string;
     await db.update(rulesets).set(values).where(eq(rulesets.id, id));
     return { ruleset: { id, ...values } };
@@ -71,6 +103,7 @@ type RulesetFormProps = {
 function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
+  const errors = fetcher.data && "errors" in fetcher.data ? fetcher.data.errors : null;
 
   const [idValue, setIdValue] = useState("");
   const [idDirty, setIdDirty] = useState(false);
@@ -100,6 +133,7 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
           }}
         />
         <FieldError className="text-xs text-red-500" />
+        {errors?.name && <p className="text-xs text-red-500">{errors.name}</p>}
       </TextField>
 
       {!isEdit && (
@@ -117,6 +151,7 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
           <Label className="text-sm font-medium">Kennung (eindeutig)</Label>
           <Input className={cn(inputClass, "font-mono")} />
           <FieldError className="text-xs text-red-500" />
+          {errors?.id && <p className="text-xs text-red-500">{errors.id}</p>}
         </TextField>
       )}
 
@@ -174,6 +209,9 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
             </RadioField>
           ))}
           <FieldError className="text-xs text-red-500" />
+          {errors?.[category.field] && (
+            <p className="text-xs text-red-500">{errors[category.field]}</p>
+          )}
         </RadioGroup>
       ))}
 
@@ -243,7 +281,7 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
   const [editingRuleset, setEditingRuleset] = useState<Ruleset | null>(null);
 
   useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data?.ruleset) {
+    if (fetcher.state === "idle" && fetcher.data && "ruleset" in fetcher.data) {
       setIsCreateOpen(false);
       setEditingRuleset(null);
     }
