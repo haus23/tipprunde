@@ -1,5 +1,32 @@
 # Changelog
 
+## v0.6.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0...v0.6.1)
+
+### 🚀 Enhancements
+
+- **manager:** Add server-side validation to Regelwerk action ([2f1455e](https://github.com/haus23/tipprunde/commit/2f1455e))
+
+### 💅 Refactors
+
+- **manager:** Make RulesetForm self-contained with own fetcher ([dcd7fd7](https://github.com/haus23/tipprunde/commit/dcd7fd7))
+- Inline the handler to get rid of type deprecation. ([01fb0cf](https://github.com/haus23/tipprunde/commit/01fb0cf))
+- **manager:** Extract RegelwerkDialog into reusable component ([7698bad](https://github.com/haus23/tipprunde/commit/7698bad))
+- **manager:** Replace manual validation with valibot in Regelwerk action ([c6665c3](https://github.com/haus23/tipprunde/commit/c6665c3))
+- Make create/update logic cleaner. ([f75eb3a](https://github.com/haus23/tipprunde/commit/f75eb3a))
+
+### 🏡 Chore
+
+- Update pnpm. ([dc4631c](https://github.com/haus23/tipprunde/commit/dc4631c))
+- **manager:** Add valibot. ([8040b17](https://github.com/haus23/tipprunde/commit/8040b17))
+- **dx:** Update settings to let only oxfmt handle formatting tsx. ([467692c](https://github.com/haus23/tipprunde/commit/467692c))
+- **manager:** Update react and types. ([ae89f2f](https://github.com/haus23/tipprunde/commit/ae89f2f))
+- **manager:** Update react-router. ([47fd942](https://github.com/haus23/tipprunde/commit/47fd942))
+- **web:** Update svelte. ([07b7537](https://github.com/haus23/tipprunde/commit/07b7537))
+- Update lucide icons and move into catalog. ([9bae2d8](https://github.com/haus23/tipprunde/commit/9bae2d8))
+- Update vite toolchain. ([e6dc9cc](https://github.com/haus23/tipprunde/commit/e6dc9cc))
+
 ## v0.6.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.5.1...v0.6.0)
