@@ -1,8 +1,10 @@
 import { rulesets } from "@tipprunde/db/schema";
 import { eq } from "drizzle-orm";
+import { createInsertSchema } from "drizzle-orm/valibot";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "react-aria-components";
+import * as v from "valibot";
 
 import { RegelwerkDialog } from "#/components/regelwerk-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
@@ -12,18 +14,15 @@ import type { Route } from "./+types/regelwerke";
 
 type Ruleset = typeof rulesets.$inferSelect;
 
-type ActionErrors = Partial<
-  Record<
-    | "name"
-    | "id"
-    | "tipRuleId"
-    | "jokerRuleId"
-    | "matchRuleId"
-    | "roundRuleId"
-    | "extraQuestionRuleId",
-    string
-  >
->;
+const rulesetSchema = createInsertSchema(rulesets, {
+  id: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Kennung ist erforderlich")),
+  name: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Name ist erforderlich")),
+  tipRuleId: (schema) => v.pipe(schema, v.nonEmpty("Bitte eine Option wählen")),
+  jokerRuleId: (schema) => v.pipe(schema, v.nonEmpty("Bitte eine Option wählen")),
+  matchRuleId: (schema) => v.pipe(schema, v.nonEmpty("Bitte eine Option wählen")),
+  roundRuleId: (schema) => v.pipe(schema, v.nonEmpty("Bitte eine Option wählen")),
+  extraQuestionRuleId: (schema) => v.pipe(schema, v.nonEmpty("Bitte eine Option wählen")),
+});
 
 export async function loader() {
   const data = await db.query.rulesets.findMany({ orderBy: { name: "asc" } });
@@ -34,46 +33,26 @@ export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const intent = formData.get("intent") as string;
 
-  const values = {
-    name: formData.get("name") as string,
-    description: formData.get("description") as string,
-    tipRuleId: formData.get("tipRuleId") as string,
-    jokerRuleId: formData.get("jokerRuleId") as string,
-    matchRuleId: formData.get("matchRuleId") as string,
-    roundRuleId: formData.get("roundRuleId") as string,
-    extraQuestionRuleId: formData.get("extraQuestionRuleId") as string,
-  };
+  const result = v.safeParse(rulesetSchema, Object.fromEntries(formData));
 
-  const errors: ActionErrors = {};
+  if (!result.success) {
+    return { errors: v.flatten(result.issues).nested ?? {} };
+  }
 
-  if (!values.name?.trim()) errors.name = "Name ist erforderlich";
-  if (!values.tipRuleId) errors.tipRuleId = "Bitte eine Option wählen";
-  if (!values.jokerRuleId) errors.jokerRuleId = "Bitte eine Option wählen";
-  if (!values.matchRuleId) errors.matchRuleId = "Bitte eine Option wählen";
-  if (!values.roundRuleId) errors.roundRuleId = "Bitte eine Option wählen";
-  if (!values.extraQuestionRuleId) errors.extraQuestionRuleId = "Bitte eine Option wählen";
+  const { id, ...values } = result.output;
 
   if (intent === "create") {
-    const id = formData.get("id") as string;
-    if (!id?.trim()) {
-      errors.id = "Kennung ist erforderlich";
-    } else {
-      const existing = await db.query.rulesets.findFirst({ where: { id } });
-      if (existing) errors.id = "Diese Kennung ist bereits vergeben";
+    const existing = await db.query.rulesets.findFirst({ where: { id } });
+    if (existing) {
+      return { errors: { id: ["Diese Kennung ist bereits vergeben"] } };
     }
-
-    if (Object.keys(errors).length > 0) return { errors };
-
-    const ruleset = { id, ...values };
-    await db.insert(rulesets).values(ruleset);
-    return { ruleset };
+    await db.insert(rulesets).values(result.output);
+    return { ruleset: result.output };
   }
 
   if (intent === "update") {
-    if (Object.keys(errors).length > 0) return { errors };
-    const id = formData.get("id") as string;
     await db.update(rulesets).set(values).where(eq(rulesets.id, id));
-    return { ruleset: { id, ...values } };
+    return { ruleset: result.output };
   }
 
   return null;

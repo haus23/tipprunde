@@ -24,7 +24,7 @@ import { cn, slugify } from "#/lib/utils.ts";
 type Ruleset = typeof rulesets.$inferSelect;
 
 // Local mirror of the /regelwerke action's return shape — no route import needed
-type RulesetActionData = { ruleset: Ruleset } | { errors: Record<string, string> } | null;
+type RulesetActionData = { ruleset: Ruleset } | { errors: Record<string, string[]> } | null;
 
 type RulesetFormProps = {
   defaultValues?: Ruleset;
