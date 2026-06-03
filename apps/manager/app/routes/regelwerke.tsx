@@ -120,13 +120,15 @@ function RulesetForm({ defaultValues, onClose }: RulesetFormProps) {
     "outline-none data-focused:ring-2 data-focused:ring-accent/60",
   );
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    await fetcher.submit(e.currentTarget, { method: "post" });
-  }
-
   return (
-    <Form onSubmit={handleSubmit} className="flex flex-col gap-5" validationErrors={errors}>
+    <Form
+      onSubmit={(e) => {
+        e.preventDefault();
+        void fetcher.submit(e.currentTarget, { method: "post" });
+      }}
+      className="flex flex-col gap-5"
+      validationErrors={errors}
+    >
       <input type="hidden" name="intent" value={isEdit ? "update" : "create"} />
       {isEdit && <input type="hidden" name="id" value={defaultValues.id} />}
 
