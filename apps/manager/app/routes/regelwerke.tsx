@@ -1,5 +1,4 @@
 import { rulesets } from "@tipprunde/db/schema";
-import { eq } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-orm/valibot";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
@@ -31,7 +30,7 @@ export async function loader() {
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
-  const intent = formData.get("intent") as string;
+  const intent = v.parse(v.picklist(["create", "update"]), formData.get("intent"));
 
   const result = v.safeParse(rulesetSchema, Object.fromEntries(formData));
 
@@ -42,20 +41,19 @@ export async function action({ request }: Route.ActionArgs) {
   const { id, ...values } = result.output;
 
   if (intent === "create") {
-    const existing = await db.query.rulesets.findFirst({ where: { id } });
+    const existing = await db.query.rulesets.findFirst({
+      where: { id },
+    });
     if (existing) {
       return { errors: { id: ["Diese Kennung ist bereits vergeben"] } };
     }
-    await db.insert(rulesets).values(result.output);
-    return { ruleset: result.output };
   }
 
-  if (intent === "update") {
-    await db.update(rulesets).set(values).where(eq(rulesets.id, id));
-    return { ruleset: result.output };
-  }
-
-  return null;
+  await db.insert(rulesets).values(result.output).onConflictDoUpdate({
+    target: rulesets.id,
+    set: values,
+  });
+  return { ruleset: result.output };
 }
 
 export default function Regelwerke({ loaderData }: Route.ComponentProps) {
