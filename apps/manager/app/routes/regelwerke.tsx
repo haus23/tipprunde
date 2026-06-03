@@ -7,6 +7,7 @@ import {
   Button,
   Dialog,
   FieldError,
+  Form,
   Heading,
   Input,
   Label,
@@ -96,14 +97,20 @@ export async function action({ request }: Route.ActionArgs) {
 
 type RulesetFormProps = {
   defaultValues?: Ruleset;
-  fetcher: ReturnType<typeof useFetcher<typeof action>>;
   onClose: () => void;
 };
 
-function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
+function RulesetForm({ defaultValues, onClose }: RulesetFormProps) {
+  const fetcher = useFetcher<typeof action>();
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
-  const errors = fetcher.data && "errors" in fetcher.data ? fetcher.data.errors : null;
+  const errors = fetcher.data && "errors" in fetcher.data ? fetcher.data.errors : undefined;
+
+  useEffect(() => {
+    if (fetcher.state === "idle" && fetcher.data && "ruleset" in fetcher.data) {
+      onClose();
+    }
+  }, [fetcher.state, fetcher.data, onClose]);
 
   const [idValue, setIdValue] = useState("");
   const [idDirty, setIdDirty] = useState(false);
@@ -113,8 +120,13 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
     "outline-none data-focused:ring-2 data-focused:ring-accent/60",
   );
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await fetcher.submit(e.currentTarget, { method: "post" });
+  }
+
   return (
-    <fetcher.Form method="post" className="flex flex-col gap-5">
+    <Form onSubmit={handleSubmit} className="flex flex-col gap-5" validationErrors={errors}>
       <input type="hidden" name="intent" value={isEdit ? "update" : "create"} />
       {isEdit && <input type="hidden" name="id" value={defaultValues.id} />}
 
@@ -122,7 +134,6 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
         name="name"
         defaultValue={defaultValues?.name}
         isRequired
-        validationBehavior="native"
         className="flex flex-col gap-1.5"
       >
         <Label className="text-sm font-medium">Name</Label>
@@ -133,7 +144,6 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
           }}
         />
         <FieldError className="text-xs text-red-500" />
-        {errors?.name && <p className="text-xs text-red-500">{errors.name}</p>}
       </TextField>
 
       {!isEdit && (
@@ -145,13 +155,11 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
             setIdDirty(true);
           }}
           isRequired
-          validationBehavior="native"
           className="flex flex-col gap-1.5"
         >
           <Label className="text-sm font-medium">Kennung (eindeutig)</Label>
           <Input className={cn(inputClass, "font-mono")} />
           <FieldError className="text-xs text-red-500" />
-          {errors?.id && <p className="text-xs text-red-500">{errors.id}</p>}
         </TextField>
       )}
 
@@ -209,9 +217,6 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
             </RadioField>
           ))}
           <FieldError className="text-xs text-red-500" />
-          {errors?.[category.field] && (
-            <p className="text-xs text-red-500">{errors[category.field]}</p>
-          )}
         </RadioGroup>
       ))}
 
@@ -240,7 +245,7 @@ function RulesetForm({ defaultValues, fetcher, onClose }: RulesetFormProps) {
           {isPending ? "…" : isEdit ? "Speichern" : "Erstellen"}
         </Button>
       </div>
-    </fetcher.Form>
+    </Form>
   );
 }
 
@@ -275,17 +280,8 @@ function RulesetDialog({ title, isOpen, onOpenChange, children }: RulesetDialogP
 
 export default function Regelwerke({ loaderData }: Route.ComponentProps) {
   const { rulesets: rulesetList } = loaderData;
-  const fetcher = useFetcher<typeof action>();
-
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingRuleset, setEditingRuleset] = useState<Ruleset | null>(null);
-
-  useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data && "ruleset" in fetcher.data) {
-      setIsCreateOpen(false);
-      setEditingRuleset(null);
-    }
-  }, [fetcher.state, fetcher.data]);
 
   return (
     <div className="p-8">
@@ -353,7 +349,7 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
       </table>
 
       <RulesetDialog title="Neues Regelwerk" isOpen={isCreateOpen} onOpenChange={setIsCreateOpen}>
-        <RulesetForm fetcher={fetcher} onClose={() => setIsCreateOpen(false)} />
+        {isCreateOpen && <RulesetForm onClose={() => setIsCreateOpen(false)} />}
       </RulesetDialog>
 
       <RulesetDialog
@@ -362,11 +358,7 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
         onOpenChange={(open) => !open && setEditingRuleset(null)}
       >
         {editingRuleset && (
-          <RulesetForm
-            defaultValues={editingRuleset}
-            fetcher={fetcher}
-            onClose={() => setEditingRuleset(null)}
-          />
+          <RulesetForm defaultValues={editingRuleset} onClose={() => setEditingRuleset(null)} />
         )}
       </RulesetDialog>
     </div>
