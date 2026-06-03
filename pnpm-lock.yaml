@@ -92,6 +92,9 @@ importers:
       tailwind-merge:
         specifier: catalog:tailwind
         version: 3.6.0
+      valibot:
+        specifier: ^1.4.1
+        version: 1.4.1(typescript@6.0.3)
     devDependencies:
       '@react-router/dev':
         specifier: 7.15.1
