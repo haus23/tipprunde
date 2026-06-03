@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@libsql/client": "catalog:orm",
-    "@lucide/svelte": "1.16.0",
+    "@lucide/svelte": "catalog:icons",
     "@tipprunde/db": "workspace:*",
     "@tipprunde/domain": "workspace:*",
     "bits-ui": "2.18.1",
