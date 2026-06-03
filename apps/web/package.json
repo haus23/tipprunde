@@ -15,7 +15,7 @@
     "bits-ui": "2.18.1",
     "drizzle-orm": "catalog:orm",
     "layerchart": "2.0.0-next.63",
-    "svelte": "5.55.9",
+    "svelte": "5.56.1",
     "tailwind-merge": "catalog:tailwind"
   },
   "devDependencies": {
@@ -23,7 +23,7 @@
     "@sveltejs/kit": "2.61.1",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/node": "catalog:types",
-    "svelte-check": "4.4.8",
+    "svelte-check": "4.5.0",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
     "vite": "catalog:"
