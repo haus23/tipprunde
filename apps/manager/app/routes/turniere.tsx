@@ -17,6 +17,7 @@ type Championship = typeof championships.$inferSelect;
 type ChampionshipWithRuleset = Championship & { ruleset: { name: string } | null };
 
 const championshipSchema = createInsertSchema(championships, {
+  id: v.optional(v.pipe(v.string(), v.toNumber(), v.integer())),
   name: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Name ist erforderlich")),
   slug: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Kennung ist erforderlich")),
   nr: v.pipe(
