@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.6.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.1...v0.6.2)
+
+### 🚀 Enhancements
+
+- **manager:** Add Turniere route with create/edit dialog ([5051819](https://github.com/haus23/tipprunde/commit/5051819))
+
+### 🩹 Fixes
+
+- **manager:** Derive championship slug from naming convention ([a0a5f9d](https://github.com/haus23/tipprunde/commit/a0a5f9d))
+
+### 💅 Refactors
+
+- **manager:** Use valibot v1.2 toNumber() coercion for nr field ([a50ccb5](https://github.com/haus23/tipprunde/commit/a50ccb5))
+
 ## v0.6.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.0...v0.6.1)
