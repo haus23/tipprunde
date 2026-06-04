@@ -64,7 +64,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
   }, [fetcher.state, fetcher.data, onClose, onSuccess]);
 
   const [slugValue, setSlugValue] = useState(defaultValues?.slug ?? "");
-  const [slugDirty, setSlugDirty] = useState(false);
+  const [slugDirty, setSlugDirty] = useState(isEdit);
 
   const inputClass = cn(
     "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
@@ -120,11 +120,12 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
           setSlugValue(v);
           setSlugDirty(true);
         }}
+        isReadOnly={isEdit}
         isRequired
         className="flex flex-col gap-1.5"
       >
-        <Label className="text-sm font-medium">Kennung (eindeutig)</Label>
-        <Input className={cn(inputClass, "font-mono")} />
+        <Label className="text-sm font-medium">Kennung</Label>
+        <Input className={cn(inputClass, "font-mono", isEdit && "text-subtle cursor-default")} />
         <FieldError className="text-xs text-red-500" />
       </TextField>
 

@@ -134,7 +134,10 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
                 className="border-subtle hover:bg-surface-raised border-b transition-colors last:border-0"
               >
                 <td className="text-muted px-3 py-3 font-mono text-sm">{championship.nr}</td>
-                <td className="px-3 py-3 font-medium">{championship.name}</td>
+                <td className="px-3 py-3">
+                  <div className="font-medium">{championship.name}</div>
+                  <div className="text-subtle font-mono text-xs">{championship.slug}</div>
+                </td>
                 <td className="px-3 py-3">
                   <div className="text-subtle truncate text-sm">{championship.ruleset?.name}</div>
                 </td>
