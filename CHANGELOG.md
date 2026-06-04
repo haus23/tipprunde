@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.6.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.2...v0.6.3)
+
+### 🚀 Enhancements
+
+- **manager:** Navigate to new championship after creation ([5db8a3f](https://github.com/haus23/tipprunde/commit/5db8a3f))
+- **manager:** Show slug in table and as read-only field in edit dialog ([2767629](https://github.com/haus23/tipprunde/commit/2767629))
+- **manager:** Add root error boundary with frown icon and error color token ([78a2e1f](https://github.com/haus23/tipprunde/commit/78a2e1f))
+- **manager:** Add empty state loaders for championship sub-routes ([1d1bb27](https://github.com/haus23/tipprunde/commit/1d1bb27))
+
+### 🩹 Fixes
+
+- **manager:** Check nr and slug uniqueness before championship insert ([ac25611](https://github.com/haus23/tipprunde/commit/ac25611))
+- **manager:** Coerce id from string for championship update ([e596bab](https://github.com/haus23/tipprunde/commit/e596bab))
+
+### 💅 Refactors
+
+- **manager:** Enforce design system colors, replace text-red-500 ([c32801f](https://github.com/haus23/tipprunde/commit/c32801f))
+
 ## v0.6.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.1...v0.6.2)
