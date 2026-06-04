@@ -77,9 +77,35 @@
   --radius-sm: 0.25rem;
 }
 
+@custom-variant dark {
+  &:where([data-color-scheme="dark"] *, [data-color-scheme="dark"]) {
+    @slot;
+  }
+
+  &:where(
+    [data-color-scheme="system"] *,
+    [data-color-scheme="system"],
+    :root:not([data-color-scheme]) *,
+    :root:not([data-color-scheme])
+  ) {
+    @media (prefers-color-scheme: dark) {
+      @slot;
+    }
+  }
+}
+
 @layer base {
-  :root {
+  :root:not([data-color-scheme]),
+  [data-color-scheme="system"] {
     color-scheme: light dark;
+  }
+
+  [data-color-scheme="light"] {
+    color-scheme: light;
+  }
+
+  [data-color-scheme="dark"] {
+    color-scheme: dark;
   }
 
   body {

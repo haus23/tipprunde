@@ -1,5 +1,7 @@
-import { FrownIcon } from "lucide-react";
+import { FrownIcon, MoonIcon, SunIcon } from "lucide-react";
+import { useEffect } from "react";
 import {
+  data,
   isRouteErrorResponse,
   Link,
   Links,
@@ -8,8 +10,11 @@ import {
   Scripts,
   ScrollRestoration,
   redirect,
+  useFetcher,
   useRouteError,
+  useRouteLoaderData,
 } from "react-router";
+import * as v from "valibot";
 
 import type { Route } from "./+types/root";
 import faviconUrl from "./assets/favicon.ico?url";
@@ -18,10 +23,12 @@ import { getSessionUser } from "./lib/auth.server";
 import { getChampionshipBySlug, getLatestChampionship } from "./lib/championship.server";
 import { championshipContext, userContext } from "./lib/context";
 import { clearCookieHeader, cookieHeader, getCookie } from "./lib/cookies.server";
-import { usePageTitle } from "./lib/utils";
+import { cn, usePageTitle } from "./lib/utils";
 import { webAppUrl } from "./lib/web-app.server";
 
 import "./app.css";
+
+type ColorScheme = "system" | "light" | "dark";
 
 const authMiddleware: Route.MiddlewareFunction = async ({ request, context }) => {
   const user = await getSessionUser(request);
@@ -52,8 +59,11 @@ export const middleware: Route.MiddlewareFunction[] = [authMiddleware, champions
 export const meta: Route.MetaFunction = () => [{ tagName: "link", rel: "icon", href: faviconUrl }];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const loaderData = useRouteLoaderData<typeof loader>("root");
+  const colorScheme = loaderData?.colorScheme ?? "system";
+
   return (
-    <html lang="de">
+    <html lang="de" data-color-scheme={colorScheme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -69,9 +79,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function loader({ context }: Route.LoaderArgs) {
+export function loader({ context, request }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
-  return { slug: championship?.slug, webAppUrl: webAppUrl() };
+  const colorScheme = (getCookie(request, "__color-scheme") ?? "system") as ColorScheme;
+  return { slug: championship?.slug, webAppUrl: webAppUrl(), colorScheme };
+}
+
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.formData();
+  const scheme = v.parse(v.picklist(["light", "dark"]), formData.get("scheme"));
+  return data(null, { headers: { "Set-Cookie": cookieHeader("__color-scheme", scheme) } });
 }
 
 export function ErrorBoundary() {
@@ -105,15 +122,48 @@ export function ErrorBoundary() {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-  const { slug, webAppUrl } = loaderData;
-
+  const { slug, webAppUrl, colorScheme } = loaderData;
   const pageTitle = usePageTitle();
+  const fetcher = useFetcher();
+
+  const pendingScheme = fetcher.formData?.get("scheme") as ColorScheme | undefined;
+
+  // Optimistic: immediately update <html> before the loader revalidates
+  useEffect(() => {
+    if (pendingScheme) {
+      document.documentElement.setAttribute("data-color-scheme", pendingScheme);
+    }
+  }, [pendingScheme]);
+
+  const handleToggle = () => {
+    const isDark =
+      colorScheme === "dark" ||
+      (colorScheme === "system" &&
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+    void fetcher.submit({ scheme: isDark ? "light" : "dark" }, { method: "post", action: "/" });
+  };
 
   return (
     <div className="border-subtle mx-auto grid h-dvh w-full max-w-400 grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
       <Sidebar slug={slug} webAppUrl={webAppUrl} />
-      <header className="border-subtle bg-surface-raised flex items-center justify-center border-b">
+      <header className="border-subtle bg-surface-raised flex items-center border-b px-4">
+        <div className="flex-1" />
         {pageTitle && <h1 className="text-sm font-medium">{pageTitle}</h1>}
+        <div className="flex flex-1 justify-end">
+          <button
+            onClick={handleToggle}
+            aria-label="Farbschema wechseln"
+            className={cn(
+              "text-muted rounded-sm p-1.5 transition-colors",
+              "hover:bg-nav-active hover:text-app",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+            )}
+          >
+            <MoonIcon className="hidden size-4 dark:block" />
+            <SunIcon className="block size-4 dark:hidden" />
+          </button>
+        </div>
       </header>
       <main className="overflow-y-auto">
         <Outlet />
