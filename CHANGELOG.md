@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.6.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.3...v0.6.4)
+
+### 🚀 Enhancements
+
+- **manager:** Set html title for each route. ([ea44917](https://github.com/haus23/tipprunde/commit/ea44917))
+- **manager:** Set page title per route in the header. ([335e12f](https://github.com/haus23/tipprunde/commit/335e12f))
+- **manager:** Add page titles — html title tags + header via handle ([c38b740](https://github.com/haus23/tipprunde/commit/c38b740))
+- **manager:** Add color scheme toggle with cookie persistence ([12a16da](https://github.com/haus23/tipprunde/commit/12a16da))
+
+### 💅 Refactors
+
+- **manager:** Move h1 to root layout header, normalize toolbar rows ([4dc6ff7](https://github.com/haus23/tipprunde/commit/4dc6ff7))
+
 ## v0.6.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.2...v0.6.3)
