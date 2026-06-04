@@ -81,7 +81,7 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
             if (!idDirty) setIdValue(slugify(e.target.value));
           }}
         />
-        <FieldError className="text-xs text-red-500" />
+        <FieldError className="text-error text-xs" />
       </TextField>
 
       {!isEdit && (
@@ -97,7 +97,7 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
         >
           <Label className="text-sm font-medium">Kennung (eindeutig)</Label>
           <Input className={cn(inputClass, "font-mono")} />
-          <FieldError className="text-xs text-red-500" />
+          <FieldError className="text-error text-xs" />
         </TextField>
       )}
 
@@ -154,7 +154,7 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
               </RadioButton>
             </RadioField>
           ))}
-          <FieldError className="text-xs text-red-500" />
+          <FieldError className="text-error text-xs" />
         </RadioGroup>
       ))}
 

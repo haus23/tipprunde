@@ -42,6 +42,10 @@ Eg:
 
 A derived color of the original sand/orange colors may be used, if a more subtle difference between two steps is needed. Also for any semantic color (success, error, warning) new colors may be choosed.
 
+## Enforcing the design system
+
+Tailwind's default color palette (`red-500`, `blue-100`, etc.) is disabled via `--color-*: initial` at the top of the `@theme` block in `app.css`. All color usage must go through the tokens defined there. Do not remove this line.
+
 ## Reference Sand/Orange CSS colors
 
 Sand Light

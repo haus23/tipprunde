@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 @theme inline {
+  --color-*: initial; /* Wipe Tailwind's default palette — all colors go through design tokens */
+  --color-black: black; /* Modal overlays: bg-black/30 */
+  --color-white: white; /* Explicit white when needed outside token system */
+
   /* sand1 — App background */
   --background-color-surface: light-dark(
     color(display-p3 0.992 0.992 0.989),

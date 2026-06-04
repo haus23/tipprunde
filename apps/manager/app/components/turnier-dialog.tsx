@@ -94,7 +94,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
       >
         <Label className="text-sm font-medium">Nummer</Label>
         <Input type="number" min={1} className={cn(inputClass, "w-24")} />
-        <FieldError className="text-xs text-red-500" />
+        <FieldError className="text-error text-xs" />
       </TextField>
 
       <TextField
@@ -110,7 +110,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
             if (!slugDirty) setSlugValue(deriveSlug(e.target.value));
           }}
         />
-        <FieldError className="text-xs text-red-500" />
+        <FieldError className="text-error text-xs" />
       </TextField>
 
       <TextField
@@ -126,7 +126,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
       >
         <Label className="text-sm font-medium">Kennung</Label>
         <Input className={cn(inputClass, "font-mono", isEdit && "text-subtle cursor-default")} />
-        <FieldError className="text-xs text-red-500" />
+        <FieldError className="text-error text-xs" />
       </TextField>
 
       <Select
@@ -148,7 +148,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
           </SelectValue>
           <ChevronDownIcon className="text-muted size-4 shrink-0" />
         </Button>
-        <FieldError className="text-xs text-red-500" />
+        <FieldError className="text-error text-xs" />
         <Popover className="bg-surface-raised border-subtle w-[--trigger-width] rounded-sm border shadow-lg outline-none">
           <ListBox className="p-1">
             {rulesets.map((ruleset) => (
