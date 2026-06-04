@@ -55,6 +55,15 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   if (intent === "create") {
+    const [nrConflict, slugConflict] = await Promise.all([
+      db.query.championships.findFirst({ where: { nr: result.output.nr } }),
+      db.query.championships.findFirst({ where: { slug: result.output.slug } }),
+    ]);
+    const conflicts: Record<string, string[]> = {};
+    if (nrConflict) conflicts.nr = ["Diese Nummer ist bereits vergeben"];
+    if (slugConflict) conflicts.slug = ["Diese Kennung ist bereits vergeben"];
+    if (Object.keys(conflicts).length) return { errors: conflicts };
+
     const [championship] = await db.insert(championships).values(result.output).returning();
     return { championship };
   }
