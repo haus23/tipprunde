@@ -8,7 +8,6 @@ import {
   Scripts,
   ScrollRestoration,
   redirect,
-  useMatches,
   useRouteError,
 } from "react-router";
 
@@ -19,6 +18,7 @@ import { getSessionUser } from "./lib/auth.server";
 import { getChampionshipBySlug, getLatestChampionship } from "./lib/championship.server";
 import { championshipContext, userContext } from "./lib/context";
 import { clearCookieHeader, cookieHeader, getCookie } from "./lib/cookies.server";
+import { usePageTitle } from "./lib/utils";
 import { webAppUrl } from "./lib/web-app.server";
 
 import "./app.css";
@@ -106,15 +106,8 @@ export function ErrorBoundary() {
 
 export default function App({ loaderData }: Route.ComponentProps) {
   const { slug, webAppUrl } = loaderData;
-  const matches = useMatches();
 
-  const pageTitle = matches.findLast(
-    (m): m is typeof m & { handle: { title: string } } =>
-      !!m.handle &&
-      typeof m.handle === "object" &&
-      "title" in m.handle &&
-      typeof m.handle.title === "string",
-  )?.handle.title;
+  const pageTitle = usePageTitle();
 
   return (
     <div className="border-subtle mx-auto grid h-dvh w-full max-w-400 grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
