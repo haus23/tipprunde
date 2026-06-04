@@ -15,6 +15,7 @@ export default function Start({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex h-full items-center justify-center p-8">
+      <title>Manager | runde.tips</title>
       <div className="w-full max-w-lg">
         {hasRulesets ? (
           <Card>

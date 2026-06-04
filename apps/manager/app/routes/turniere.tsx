@@ -91,6 +91,7 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="p-8">
+      <title>Turniere | Stammdaten</title>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-xl font-semibold">Turniere</h1>
         <Button

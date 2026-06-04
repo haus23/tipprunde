@@ -63,6 +63,7 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="p-8">
+      <title>Regelwerke | Stammdaten</title>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-xl font-semibold">Regelwerke</h1>
         <Button

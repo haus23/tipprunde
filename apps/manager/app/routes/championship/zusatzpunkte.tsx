@@ -10,14 +10,18 @@ export async function loader({ context }: Route.LoaderArgs) {
     columns: { extraQuestionRuleId: true },
   });
 
-  return { hasExtraQuestions: ruleset?.extraQuestionRuleId === "mit-zusatzfragen" };
+  return {
+    hasExtraQuestions: ruleset?.extraQuestionRuleId === "mit-zusatzfragen",
+    championshipName: championship.name,
+  };
 }
 
 export default function Zusatzpunkte({ loaderData }: Route.ComponentProps) {
-  const { hasExtraQuestions } = loaderData;
+  const { hasExtraQuestions, championshipName } = loaderData;
 
   return (
     <div className="p-8">
+      <title>{`Zusatzpunkte | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center justify-between">
         <h1 className="text-xl font-semibold">Zusatzpunkte</h1>
       </div>

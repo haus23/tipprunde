@@ -8,14 +8,15 @@ export async function loader({ context }: Route.LoaderArgs) {
   const firstRound = await db.query.rounds.findFirst({
     where: { championshipId: championship.id },
   });
-  return { hasRounds: !!firstRound };
+  return { hasRounds: !!firstRound, championshipName: championship.name };
 }
 
 export default function Ergebnisse({ loaderData }: Route.ComponentProps) {
-  const { hasRounds } = loaderData;
+  const { hasRounds, championshipName } = loaderData;
 
   return (
     <div className="p-8">
+      <title>{`Ergebnisse | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center justify-between">
         <h1 className="text-xl font-semibold">Ergebnisse</h1>
       </div>
