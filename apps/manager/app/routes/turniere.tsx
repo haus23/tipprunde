@@ -4,6 +4,7 @@ import { createInsertSchema } from "drizzle-orm/valibot";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "react-aria-components";
+import { useNavigate } from "react-router";
 import * as v from "valibot";
 
 import { TurnierDialog } from "#/components/turnier-dialog.tsx";
@@ -72,6 +73,7 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function Turniere({ loaderData }: Route.ComponentProps) {
   const { championships: championshipList, rulesets: rulesetList, nextNr } = loaderData;
+  const navigate = useNavigate();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingChampionship, setEditingChampionship] = useState<ChampionshipWithRuleset | null>(
     null,
@@ -151,6 +153,7 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
         onOpenChange={setIsCreateOpen}
         rulesets={rulesetList}
         nextNr={nextNr}
+        onSuccess={(championship) => navigate(`/${championship.slug}`)}
       />
 
       <TurnierDialog
