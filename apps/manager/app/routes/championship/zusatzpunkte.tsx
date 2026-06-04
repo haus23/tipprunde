@@ -1,3 +1,7 @@
+export function loader(): never {
+  throw new Error("Deliberate test error — error boundary check");
+}
+
 export default function Zusatzpunkte() {
   return (
     <div className="p-8">

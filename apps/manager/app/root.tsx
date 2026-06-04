@@ -1,4 +1,15 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, redirect } from "react-router";
+import { FrownIcon } from "lucide-react";
+import {
+  isRouteErrorResponse,
+  Link,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  redirect,
+  useRouteError,
+} from "react-router";
 
 import type { Route } from "./+types/root";
 import faviconUrl from "./assets/favicon.ico?url";
@@ -60,6 +71,36 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export function loader({ context }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
   return { slug: championship?.slug, webAppUrl: webAppUrl() };
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  const title = isRouteErrorResponse(error)
+    ? `${error.status} – ${error.statusText}`
+    : "Unerwarteter Fehler";
+
+  const message = isRouteErrorResponse(error)
+    ? String(error.data)
+    : error instanceof Error
+      ? error.message
+      : "Ein unbekannter Fehler ist aufgetreten.";
+
+  return (
+    <div className="flex h-dvh flex-col items-center justify-center gap-4 p-8 text-center">
+      <FrownIcon className="text-error size-12" strokeWidth={1.5} />
+      <h1 className="text-xl font-semibold">{title}</h1>
+      <p className="text-subtle text-sm">{message}</p>
+      {import.meta.env.DEV && error instanceof Error && error.stack && (
+        <pre className="border-subtle bg-surface-raised text-muted max-h-64 max-w-2xl overflow-auto rounded-md border p-4 text-left text-xs">
+          {error.stack}
+        </pre>
+      )}
+      <Link to="/" className="text-sm underline underline-offset-4">
+        Zurück zur Startseite
+      </Link>
+    </div>
+  );
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
