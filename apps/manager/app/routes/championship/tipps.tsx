@@ -30,9 +30,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
   return (
     <div className="p-8">
       <title>{`Tipps | ${championshipName}`}</title>
-      <div className="mb-6 flex min-h-9 items-center justify-between">
-        <h1 className="text-xl font-semibold">Tipps</h1>
-      </div>
+      <div className="mb-6 flex min-h-9 items-center justify-between" />
       {emptyMessage && <p className="text-subtle mt-8 text-center text-sm">{emptyMessage}</p>}
     </div>
   );

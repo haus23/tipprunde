@@ -19,9 +19,7 @@ export default function Ergebnisse({ loaderData }: Route.ComponentProps) {
   return (
     <div className="p-8">
       <title>{`Ergebnisse | ${championshipName}`}</title>
-      <div className="mb-6 flex min-h-9 items-center justify-between">
-        <h1 className="text-xl font-semibold">Ergebnisse</h1>
-      </div>
+      <div className="mb-6 flex min-h-9 items-center justify-between" />
       {!hasRounds && (
         <p className="text-subtle mt-8 text-center text-sm">Noch keine Spiele angelegt.</p>
       )}

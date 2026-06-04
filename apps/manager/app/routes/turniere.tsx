@@ -94,8 +94,8 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
   return (
     <div className="p-8">
       <title>Turniere | Stammdaten</title>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Turniere</h1>
+      <div className="mb-6 flex min-h-9 items-center justify-between">
+        <div />
         <Button
           onPress={() => setIsCreateOpen(true)}
           className={cn(

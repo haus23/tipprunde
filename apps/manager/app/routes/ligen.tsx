@@ -4,7 +4,7 @@ export default function Ligen() {
   return (
     <div className="p-8">
       <title>Ligen | Stammdaten</title>
-      <h1 className="text-2xl font-bold">Ligen</h1>
+      <div className="mb-6 flex min-h-9 items-center justify-between" />
     </div>
   );
 }

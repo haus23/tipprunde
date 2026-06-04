@@ -26,7 +26,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
     <div className="p-8">
       <title>{`Spiele | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center justify-between">
-        <h1 className="text-xl font-semibold">Spiele</h1>
+        <div />
         <Button
           onPress={() => setIsCreateOpen(true)}
           className={cn(

@@ -113,7 +113,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
     <div className="border-subtle mx-auto grid h-dvh w-full max-w-400 grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
       <Sidebar slug={slug} webAppUrl={webAppUrl} />
       <header className="border-subtle bg-surface-raised flex items-center justify-center border-b">
-        {pageTitle && <span className="text-sm font-medium">{pageTitle}</span>}
+        {pageTitle && <h1 className="text-sm font-medium">{pageTitle}</h1>}
       </header>
       <main className="overflow-y-auto">
         <Outlet />

@@ -24,9 +24,7 @@ export default function Zusatzpunkte({ loaderData }: Route.ComponentProps) {
   return (
     <div className="p-8">
       <title>{`Zusatzpunkte | ${championshipName}`}</title>
-      <div className="mb-6 flex min-h-9 items-center justify-between">
-        <h1 className="text-xl font-semibold">Zusatzpunkte</h1>
-      </div>
+      <div className="mb-6 flex min-h-9 items-center justify-between" />
       <p className="text-subtle mt-8 text-center text-sm">
         {hasExtraQuestions
           ? "Noch keine Zusatzfragen festgelegt."
