@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.6.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.4...v0.6.5)
+
+### 🚀 Enhancements
+
+- **manager:** Implement teams stammdaten route with CRUD ([c71c869](https://github.com/haus23/tipprunde/commit/c71c869))
+- **manager:** Implement ligen CRUD + fix server error persistence in dialogs ([1a5c133](https://github.com/haus23/tipprunde/commit/1a5c133))
+- **manager:** Implement spieler CRUD + fix email validation ([02444ad](https://github.com/haus23/tipprunde/commit/02444ad))
+
 ## v0.6.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.3...v0.6.4)
