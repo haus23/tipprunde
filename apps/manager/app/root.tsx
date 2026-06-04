@@ -8,6 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
   redirect,
+  useMatches,
   useRouteError,
 } from "react-router";
 
@@ -105,10 +106,22 @@ export function ErrorBoundary() {
 
 export default function App({ loaderData }: Route.ComponentProps) {
   const { slug, webAppUrl } = loaderData;
+  const matches = useMatches();
+
+  const pageTitle = matches.findLast(
+    (m): m is typeof m & { handle: { title: string } } =>
+      !!m.handle &&
+      typeof m.handle === "object" &&
+      "title" in m.handle &&
+      typeof m.handle.title === "string",
+  )?.handle.title;
+
   return (
     <div className="border-subtle mx-auto grid h-dvh w-full max-w-400 grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
       <Sidebar slug={slug} webAppUrl={webAppUrl} />
-      <header className="border-subtle bg-surface-raised border-b" />
+      <header className="border-subtle bg-surface-raised flex items-center justify-center border-b">
+        {pageTitle && <span className="text-sm font-medium">{pageTitle}</span>}
+      </header>
       <main className="overflow-y-auto">
         <Outlet />
       </main>

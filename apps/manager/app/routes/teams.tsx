@@ -1,3 +1,5 @@
+export const handle = { title: "Stammdaten | Teams" };
+
 export default function Teams() {
   return (
     <div className="p-8">

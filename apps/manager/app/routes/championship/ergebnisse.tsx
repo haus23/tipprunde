@@ -3,6 +3,8 @@ import { db } from "#/lib/db.server.ts";
 import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/ergebnisse";
 
+export const handle = { title: "Ergebnisse" };
+
 export async function loader({ context }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
   const firstRound = await db.query.rounds.findFirst({

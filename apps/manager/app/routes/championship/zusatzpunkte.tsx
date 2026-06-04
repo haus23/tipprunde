@@ -3,6 +3,8 @@ import { db } from "#/lib/db.server.ts";
 import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/zusatzpunkte";
 
+export const handle = { title: "Zusatzpunkte" };
+
 export async function loader({ context }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
   const ruleset = await db.query.rulesets.findFirst({

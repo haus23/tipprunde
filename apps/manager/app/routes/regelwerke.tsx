@@ -13,6 +13,8 @@ import type { Route } from "./+types/regelwerke";
 
 type Ruleset = typeof rulesets.$inferSelect;
 
+export const handle = { title: "Stammdaten | Regelwerke" };
+
 const rulesetSchema = createInsertSchema(rulesets, {
   id: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Kennung ist erforderlich")),
   name: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Name ist erforderlich")),

@@ -16,6 +16,8 @@ import type { Route } from "./+types/turniere";
 type Championship = typeof championships.$inferSelect;
 type ChampionshipWithRuleset = Championship & { ruleset: { name: string } | null };
 
+export const handle = { title: "Stammdaten | Turniere" };
+
 const championshipSchema = createInsertSchema(championships, {
   id: v.optional(v.pipe(v.string(), v.toNumber(), v.integer())),
   name: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Name ist erforderlich")),

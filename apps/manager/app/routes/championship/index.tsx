@@ -2,6 +2,8 @@ import { Card, CardContent } from "../../components/card";
 import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/index";
 
+export const handle = { title: "Übersicht" };
+
 export function loader({ context }: Route.LoaderArgs) {
   return { championship: context.get(championshipContext) };
 }

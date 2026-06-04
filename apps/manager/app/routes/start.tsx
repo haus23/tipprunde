@@ -5,6 +5,8 @@ import { db } from "#/lib/db.server.ts";
 
 import type { Route } from "./+types/start";
 
+export const handle = { title: "Manager" };
+
 export async function loader(_: Route.LoaderArgs) {
   const hasRulesets = !!(await db.query.rulesets.findFirst());
   return { hasRulesets };

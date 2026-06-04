@@ -1,3 +1,5 @@
+export const handle = { title: "Stammdaten | Ligen" };
+
 export default function Ligen() {
   return (
     <div className="p-8">

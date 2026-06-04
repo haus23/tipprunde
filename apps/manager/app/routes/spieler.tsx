@@ -1,3 +1,5 @@
+export const handle = { title: "Stammdaten | Spieler" };
+
 export default function Spieler() {
   return (
     <div className="p-8">
