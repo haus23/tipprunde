@@ -20,7 +20,18 @@ import {
 } from "react-aria-components";
 import { useFetcher } from "react-router";
 
-import { cn, slugify } from "#/lib/utils.ts";
+import { cn } from "#/lib/utils.ts";
+
+// Championships follow a fixed naming convention, so the slug can be derived:
+// "Hinrunde 2002/03" → "hr0203", "Rückrunde 2022/23" → "rr2223"
+// "WM 2006"          → "wm2006", "EM 2012"           → "em2012"
+function deriveSlug(name: string): string {
+  const match = name.match(/^([HRWE]).*(\d{2})\/?(\d{2})$/i);
+  if (!match) return "";
+  const first = match[1].toLowerCase();
+  const second = ["h", "r"].includes(first) ? "r" : "m";
+  return first + second + match[2] + match[3];
+}
 
 type Championship = typeof championships.$inferSelect;
 type Ruleset = Pick<typeof rulesets.$inferSelect, "id" | "name">;
@@ -96,7 +107,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         <Input
           className={inputClass}
           onBlur={(e) => {
-            if (!slugDirty) setSlugValue(slugify(e.target.value));
+            if (!slugDirty) setSlugValue(deriveSlug(e.target.value));
           }}
         />
         <FieldError className="text-xs text-red-500" />
