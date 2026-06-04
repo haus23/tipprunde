@@ -18,12 +18,12 @@ type ChampionshipWithRuleset = Championship & { ruleset: { name: string } | null
 const championshipSchema = createInsertSchema(championships, {
   name: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Name ist erforderlich")),
   slug: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Kennung ist erforderlich")),
-  nr: (schema) =>
-    v.pipe(
-      schema,
-      v.check((n) => Number.isInteger(n), "Muss eine ganze Zahl sein"),
-      v.minValue(1, "Muss mindestens 1 sein"),
-    ),
+  nr: v.pipe(
+    v.string(),
+    v.toNumber(),
+    v.integer("Muss eine ganze Zahl sein"),
+    v.minValue(1, "Muss mindestens 1 sein"),
+  ),
   rulesetId: (schema) => v.pipe(schema, v.nonEmpty("Bitte ein Regelwerk wählen")),
 });
 
@@ -47,12 +47,7 @@ export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const intent = v.parse(v.picklist(["create", "update"]), formData.get("intent"));
 
-  const result = v.safeParse(championshipSchema, {
-    name: formData.get("name"),
-    slug: formData.get("slug"),
-    nr: Number(formData.get("nr")),
-    rulesetId: formData.get("rulesetId"),
-  });
+  const result = v.safeParse(championshipSchema, Object.fromEntries(formData));
 
   if (!result.success) {
     return { errors: v.flatten(result.issues).nested ?? {} };
@@ -63,12 +58,11 @@ export async function action({ request }: Route.ActionArgs) {
     return { championship };
   }
 
-  if (intent === "update") {
-    const id = Number(formData.get("id"));
+  if (intent === "update" && result.output.id) {
     const [championship] = await db
       .update(championships)
       .set(result.output)
-      .where(eq(championships.id, id))
+      .where(eq(championships.id, result.output.id))
       .returning();
     return { championship };
   }
