@@ -1,4 +1,4 @@
-import type { teams } from "@tipprunde/db/schema";
+import type { leagues } from "@tipprunde/db/schema";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -16,19 +16,19 @@ import { useFetcher } from "react-router";
 
 import { cn, slugify } from "#/lib/utils.ts";
 
-type Team = typeof teams.$inferSelect;
+type League = typeof leagues.$inferSelect;
 
-// Local mirror of the /teams action's return shape — no route import needed
-type TeamActionData = { team: Team } | { errors: Record<string, string[]> } | null;
+// Local mirror of the /ligen action's return shape — no route import needed
+type LigaActionData = { league: League } | { errors: Record<string, string[]> } | null;
 
-type TeamFormProps = {
-  defaultValues?: Team;
+type LigaFormProps = {
+  defaultValues?: League;
   onClose: () => void;
-  onSuccess?: (team: Team) => void;
+  onSuccess?: (league: League) => void;
 };
 
-function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
-  const fetcher = useFetcher<TeamActionData>();
+function LigaForm({ defaultValues, onClose, onSuccess }: LigaFormProps) {
+  const fetcher = useFetcher<LigaActionData>();
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
   const [serverErrors, setServerErrors] = useState<Record<string, string[]>>({});
@@ -37,8 +37,8 @@ function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
     if (fetcher.state !== "idle" || !fetcher.data) return;
     if ("errors" in fetcher.data) {
       setServerErrors(fetcher.data.errors);
-    } else if ("team" in fetcher.data) {
-      onSuccess?.(fetcher.data.team);
+    } else if ("league" in fetcher.data) {
+      onSuccess?.(fetcher.data.league);
       onClose();
     }
   }, [fetcher.state, fetcher.data, onClose, onSuccess]);
@@ -57,7 +57,7 @@ function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
         e.preventDefault();
         void fetcher.submit(e.currentTarget, {
           method: "post",
-          action: "/teams",
+          action: "/ligen",
         });
       }}
       className="flex flex-col gap-5"
@@ -143,14 +143,14 @@ function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
   );
 }
 
-type TeamDialogProps = {
+type LigaDialogProps = {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  defaultValues?: Team;
-  onSuccess?: (team: Team) => void;
+  defaultValues?: League;
+  onSuccess?: (league: League) => void;
 };
 
-export function TeamDialog({ isOpen, onOpenChange, defaultValues, onSuccess }: TeamDialogProps) {
+export function LigaDialog({ isOpen, onOpenChange, defaultValues, onSuccess }: LigaDialogProps) {
   const onClose = () => onOpenChange(false);
 
   return (
@@ -164,12 +164,12 @@ export function TeamDialog({ isOpen, onOpenChange, defaultValues, onSuccess }: T
         <Dialog className="outline-none">
           <div className="border-subtle border-b px-6 py-4">
             <Heading slot="title" className="text-base font-semibold">
-              {defaultValues ? "Team bearbeiten" : "Neues Team"}
+              {defaultValues ? "Liga bearbeiten" : "Neue Liga"}
             </Heading>
           </div>
           <div className="px-6 py-5">
             {isOpen && (
-              <TeamForm defaultValues={defaultValues} onClose={onClose} onSuccess={onSuccess} />
+              <LigaForm defaultValues={defaultValues} onClose={onClose} onSuccess={onSuccess} />
             )}
           </div>
         </Dialog>

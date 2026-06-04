@@ -54,10 +54,13 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
   const fetcher = useFetcher<ChampionshipActionData>();
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
-  const errors = fetcher.data && "errors" in fetcher.data ? fetcher.data.errors : undefined;
+  const [serverErrors, setServerErrors] = useState<Record<string, string[]>>({});
 
   useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data && "championship" in fetcher.data) {
+    if (fetcher.state !== "idle" || !fetcher.data) return;
+    if ("errors" in fetcher.data) {
+      setServerErrors(fetcher.data.errors);
+    } else if ("championship" in fetcher.data) {
       onSuccess?.(fetcher.data.championship);
       onClose();
     }
@@ -81,7 +84,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         });
       }}
       className="flex flex-col gap-5"
-      validationErrors={errors}
+      validationErrors={serverErrors}
     >
       <input type="hidden" name="intent" value={isEdit ? "update" : "create"} />
       {isEdit && <input type="hidden" name="id" value={defaultValues.id} />}
@@ -93,7 +96,12 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         className="flex flex-col gap-1.5"
       >
         <Label className="text-sm font-medium">Nummer</Label>
-        <Input type="number" min={1} className={cn(inputClass, "w-24")} />
+        <Input
+          type="number"
+          min={1}
+          className={cn(inputClass, "w-24")}
+          onChange={() => setServerErrors({})}
+        />
         <FieldError className="text-error text-xs" />
       </TextField>
 
@@ -107,7 +115,10 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         <Input
           className={inputClass}
           onBlur={(e) => {
-            if (!slugDirty) setSlugValue(deriveSlug(e.target.value));
+            if (!slugDirty) {
+              setSlugValue(deriveSlug(e.target.value));
+              setServerErrors({});
+            }
           }}
         />
         <FieldError className="text-error text-xs" />
@@ -119,6 +130,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         onChange={(v) => {
           setSlugValue(v);
           setSlugDirty(true);
+          setServerErrors({});
         }}
         isReadOnly={isEdit}
         isRequired

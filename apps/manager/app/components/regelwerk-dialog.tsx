@@ -36,10 +36,13 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
   const fetcher = useFetcher<RulesetActionData>();
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
-  const errors = fetcher.data && "errors" in fetcher.data ? fetcher.data.errors : undefined;
+  const [serverErrors, setServerErrors] = useState<Record<string, string[]>>({});
 
   useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data && "ruleset" in fetcher.data) {
+    if (fetcher.state !== "idle" || !fetcher.data) return;
+    if ("errors" in fetcher.data) {
+      setServerErrors(fetcher.data.errors);
+    } else if ("ruleset" in fetcher.data) {
       onSuccess?.(fetcher.data.ruleset);
       onClose();
     }
@@ -63,7 +66,7 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
         });
       }}
       className="flex flex-col gap-5"
-      validationErrors={errors}
+      validationErrors={serverErrors}
     >
       <input type="hidden" name="intent" value={isEdit ? "update" : "create"} />
       {isEdit && <input type="hidden" name="id" value={defaultValues.id} />}
@@ -78,7 +81,10 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
         <Input
           className={inputClass}
           onBlur={(e) => {
-            if (!idDirty) setIdValue(slugify(e.target.value));
+            if (!idDirty) {
+              setIdValue(slugify(e.target.value));
+              setServerErrors({});
+            }
           }}
         />
         <FieldError className="text-error text-xs" />
@@ -91,6 +97,7 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
           onChange={(v) => {
             setIdValue(v);
             setIdDirty(true);
+            setServerErrors({});
           }}
           isRequired
           className="flex flex-col gap-1.5"
