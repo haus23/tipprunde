@@ -7,3 +7,10 @@ export async function getChampionshipBySlug(slug: string) {
 export async function getLatestChampionship() {
   return db.query.championships.findFirst({ orderBy: { nr: "desc" } });
 }
+
+export async function getChampionships() {
+  return db.query.championships.findMany({
+    orderBy: { nr: "desc" },
+    columns: { slug: true, name: true },
+  });
+}

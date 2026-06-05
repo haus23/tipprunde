@@ -18,9 +18,14 @@ import * as v from "valibot";
 
 import type { Route } from "./+types/root";
 import faviconUrl from "./assets/favicon.ico?url";
+import { ChampionshipSwitcher } from "./components/championship-switcher";
 import { Sidebar } from "./components/sidebar";
 import { getSessionUser } from "./lib/auth.server";
-import { getChampionshipBySlug, getLatestChampionship } from "./lib/championship.server";
+import {
+  getChampionshipBySlug,
+  getChampionships,
+  getLatestChampionship,
+} from "./lib/championship.server";
 import { championshipContext, userContext } from "./lib/context";
 import { clearCookieHeader, cookieHeader, getCookie } from "./lib/cookies.server";
 import { cn, usePageTitle } from "./lib/utils";
@@ -79,10 +84,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function loader({ context, request }: Route.LoaderArgs) {
+export async function loader({ context, request }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
   const colorScheme = (getCookie(request, "__color-scheme") ?? "system") as ColorScheme;
-  return { slug: championship?.slug, webAppUrl: webAppUrl(), colorScheme };
+  const championships = await getChampionships();
+  return {
+    slug: championship?.slug,
+    name: championship?.name,
+    webAppUrl: webAppUrl(),
+    colorScheme,
+    championships,
+  };
 }
 
 export async function action({ request }: Route.ActionArgs) {
@@ -122,7 +134,7 @@ export function ErrorBoundary() {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-  const { slug, webAppUrl, colorScheme } = loaderData;
+  const { slug, name, webAppUrl, colorScheme, championships } = loaderData;
   const pageTitle = usePageTitle();
   const fetcher = useFetcher();
 
@@ -148,7 +160,10 @@ export default function App({ loaderData }: Route.ComponentProps) {
     <div className="border-subtle mx-auto grid h-dvh w-full max-w-400 grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
       <Sidebar slug={slug} webAppUrl={webAppUrl} />
       <header className="border-subtle bg-surface-raised flex items-center border-b px-4">
-        <div className="flex-1" />
+        <ChampionshipSwitcher
+          current={slug && name ? { slug, name } : null}
+          championships={championships}
+        />
         {pageTitle && <h1 className="text-sm font-medium">{pageTitle}</h1>}
         <div className="flex flex-1 justify-end">
           <button
