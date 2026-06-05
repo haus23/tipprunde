@@ -5,7 +5,7 @@ import {
   teams,
 } from "@tipprunde/db/schema";
 import { desc, eq, max } from "drizzle-orm";
-import { PencilIcon } from "lucide-react";
+import { PencilIcon, PlusIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import {
   Button,
@@ -24,7 +24,9 @@ import { db } from "#/lib/db.server.ts";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
+import { LigaDialog } from "../../components/liga-dialog";
 import { RoundNavigator } from "../../components/round-navigator";
+import { TeamDialog } from "../../components/team-dialog";
 import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/spiele";
 
@@ -167,7 +169,9 @@ type MatchComboBoxProps = {
   name: string;
   label: string;
   options: Array<Team | League>;
-  defaultSelectedKey?: string | null;
+  value: string | null;
+  onChange: (id: string | null) => void;
+  onCreate?: () => void;
   placeholder?: string;
 };
 
@@ -175,16 +179,19 @@ function MatchComboBox({
   name,
   label,
   options,
-  defaultSelectedKey,
+  value,
+  onChange,
+  onCreate,
   placeholder,
 }: MatchComboBoxProps) {
   return (
     <ComboBox
       name={name}
-      defaultValue={defaultSelectedKey ?? null}
-      defaultFilter={(name, search) => {
-        const shortName = options.find((option) => option.name === name)?.shortName;
-        return [name, shortName]
+      value={value}
+      onChange={(key) => onChange(key ? String(key) : null)}
+      defaultFilter={(textValue, search) => {
+        const shortName = options.find((o) => o.name === textValue)?.shortName;
+        return [textValue, shortName]
           .filter(Boolean)
           .join(" ")
           .toLocaleLowerCase()
@@ -194,13 +201,27 @@ function MatchComboBox({
       className="flex flex-col gap-1.5"
     >
       <Label className="text-sm font-medium">{label}</Label>
-      <Input
-        placeholder={placeholder}
-        className={cn(
-          "border-subtle bg-surface w-full rounded-sm border px-2.5 py-1.5 text-sm",
-          "outline-none data-focused:ring-2 data-focused:ring-accent/60",
+      <div className={cn("flex rounded-sm", "focus-within:ring-2 focus-within:ring-accent/60")}>
+        <Input
+          placeholder={placeholder}
+          className={cn(
+            "border-subtle bg-surface w-full border px-2.5 py-1.5 text-sm outline-none",
+            onCreate ? "rounded-l-sm border-r-0" : "rounded-sm",
+          )}
+        />
+        {onCreate && (
+          <Button
+            onPress={onCreate}
+            aria-label="Neu anlegen"
+            className={cn(
+              "border-subtle bg-surface shrink-0 rounded-r-sm border px-2.5 transition-colors outline-none",
+              "hover:bg-nav-active",
+            )}
+          >
+            <PlusIcon className="size-4" />
+          </Button>
         )}
-      />
+      </div>
       <Popover className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none">
         <ListBox items={options} className="max-h-60 overflow-y-auto p-1 outline-none">
           {(item) => (
@@ -225,10 +246,17 @@ type MatchFormProps = {
   onDone: () => void;
 };
 
+type CreateDialog = "hometeam" | "awayteam" | "league" | null;
+
 function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: MatchFormProps) {
   const fetcher = useFetcher();
   const isPending = fetcher.state !== "idle";
   const isEdit = !!editMatch;
+
+  const [hometeamId, setHometeamId] = useState<string | null>(editMatch?.hometeamId ?? null);
+  const [awayteamId, setAwayteamId] = useState<string | null>(editMatch?.awayteamId ?? null);
+  const [leagueId, setLeagueId] = useState<string | null>(editMatch?.leagueId ?? null);
+  const [createDialog, setCreateDialog] = useState<CreateDialog>(null);
 
   const inputClass = cn(
     "border-subtle bg-surface w-full rounded-sm border px-2.5 py-1.5 text-sm",
@@ -240,78 +268,105 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
   }
 
   return (
-    <Form
-      onSubmit={(e) => {
-        e.preventDefault();
-        void fetcher.submit(e.currentTarget, { method: "post" });
-      }}
-      className="space-y-4"
-    >
-      {isEdit && <input type="hidden" name="id" value={editMatch.id} />}
-      <input type="hidden" name="intent" value={isEdit ? "update-match" : "create-match"} />
-      <input type="hidden" name="roundId" value={roundId} />
+    <>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          void fetcher.submit(e.currentTarget, { method: "post" });
+        }}
+        className="space-y-4"
+      >
+        {isEdit && <input type="hidden" name="id" value={editMatch.id} />}
+        <input type="hidden" name="intent" value={isEdit ? "update-match" : "create-match"} />
+        <input type="hidden" name="roundId" value={roundId} />
 
-      <div className="grid grid-cols-4 gap-4">
-        <TextField
-          name="date"
-          defaultValue={editMatch?.date ?? defaultDate}
-          className="flex flex-col gap-1.5"
-        >
-          <Label className="text-sm font-medium">Datum</Label>
-          <Input type="date" className={inputClass} />
-        </TextField>
+        <div className="grid grid-cols-4 gap-4">
+          <TextField
+            name="date"
+            defaultValue={editMatch?.date ?? defaultDate}
+            className="flex flex-col gap-1.5"
+          >
+            <Label className="text-sm font-medium">Datum</Label>
+            <Input type="date" className={inputClass} />
+          </TextField>
 
-        <MatchComboBox
-          name="leagueId"
-          label="Liga"
-          placeholder="Liga wählen ..."
-          options={leagues}
-          defaultSelectedKey={editMatch?.leagueId}
-        />
+          <MatchComboBox
+            name="leagueId"
+            label="Liga"
+            placeholder="Liga wählen ..."
+            options={leagues}
+            value={leagueId}
+            onChange={setLeagueId}
+            onCreate={() => setCreateDialog("league")}
+          />
 
-        <MatchComboBox
-          name="hometeamId"
-          label="Heimteam"
-          placeholder="Team wählen ..."
-          options={teams}
-          defaultSelectedKey={editMatch?.hometeamId}
-        />
+          <MatchComboBox
+            name="hometeamId"
+            label="Heimteam"
+            placeholder="Team wählen ..."
+            options={teams}
+            value={hometeamId}
+            onChange={setHometeamId}
+            onCreate={() => setCreateDialog("hometeam")}
+          />
 
-        <MatchComboBox
-          name="awayteamId"
-          label="Auswärtsteam"
-          placeholder="Team wählen ..."
-          options={teams}
-          defaultSelectedKey={editMatch?.awayteamId}
-        />
-      </div>
+          <MatchComboBox
+            name="awayteamId"
+            label="Auswärtsteam"
+            placeholder="Team wählen ..."
+            options={teams}
+            value={awayteamId}
+            onChange={setAwayteamId}
+            onCreate={() => setCreateDialog("awayteam")}
+          />
+        </div>
 
-      <div className="flex justify-end gap-3">
-        <Button
-          type="button"
-          onPress={onDone}
-          className={cn(
-            "rounded-sm border border-subtle px-4 py-2 text-sm transition-colors",
-            "hover:bg-nav-active",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
-        >
-          Abbrechen
-        </Button>
-        <Button
-          type="submit"
-          isDisabled={isPending}
-          className={cn(
-            "bg-btn text-btn rounded-md px-4 py-2 text-sm font-medium transition-colors",
-            "hover:bg-btn-hover",
-            "data-disabled:opacity-50",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
-        >
-          {isPending ? "…" : isEdit ? "Speichern" : "Anlegen"}
-        </Button>
-      </div>
-    </Form>
+        <div className="flex justify-end gap-3">
+          <Button
+            type="button"
+            onPress={onDone}
+            className={cn(
+              "rounded-sm border border-subtle px-4 py-2 text-sm transition-colors",
+              "hover:bg-nav-active",
+              "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
+            )}
+          >
+            Abbrechen
+          </Button>
+          <Button
+            type="submit"
+            isDisabled={isPending}
+            className={cn(
+              "bg-btn text-btn rounded-md px-4 py-2 text-sm font-medium transition-colors",
+              "hover:bg-btn-hover",
+              "data-disabled:opacity-50",
+              "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
+            )}
+          >
+            {isPending ? "…" : isEdit ? "Speichern" : "Anlegen"}
+          </Button>
+        </div>
+      </Form>
+
+      <TeamDialog
+        isOpen={createDialog === "hometeam" || createDialog === "awayteam"}
+        onOpenChange={(open) => !open && setCreateDialog(null)}
+        onSuccess={(team) => {
+          if (createDialog === "hometeam") setHometeamId(team.id);
+          else setAwayteamId(team.id);
+          setCreateDialog(null);
+        }}
+      />
+
+      <LigaDialog
+        isOpen={createDialog === "league"}
+        onOpenChange={(open) => !open && setCreateDialog(null)}
+        onSuccess={(league) => {
+          setLeagueId(league.id);
+          setCreateDialog(null);
+        }}
+      />
+    </>
   );
 }
 
