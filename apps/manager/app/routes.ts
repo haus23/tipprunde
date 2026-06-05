@@ -16,4 +16,5 @@ export default [
   route("ligen", "routes/ligen.tsx"),
   route("regelwerke", "routes/regelwerke.tsx"),
   route("logout", "routes/logout.tsx"),
+  route("color-scheme", "routes/color-scheme.tsx"),
 ] satisfies RouteConfig;

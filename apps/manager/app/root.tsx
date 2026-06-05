@@ -2,7 +2,6 @@ import { FrownIcon, MoonIcon, SunIcon } from "lucide-react";
 import { Suspense, useEffect } from "react";
 import { I18nProvider } from "react-aria-components";
 import {
-  data,
   isRouteErrorResponse,
   Link,
   Links,
@@ -16,7 +15,6 @@ import {
   useRouteError,
   useRouteLoaderData,
 } from "react-router";
-import * as v from "valibot";
 
 import type { Route } from "./+types/root";
 import faviconUrl from "./assets/favicon.ico?url";
@@ -98,12 +96,6 @@ export function loader({ context, request }: Route.LoaderArgs) {
   };
 }
 
-export async function action({ request }: Route.ActionArgs) {
-  const formData = await request.formData();
-  const scheme = v.parse(v.picklist(["light", "dark"]), formData.get("scheme"));
-  return data(null, { headers: { "Set-Cookie": cookieHeader("__color-scheme", scheme) } });
-}
-
 export function ErrorBoundary() {
   const error = useRouteError();
 
@@ -148,7 +140,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
     }
   }, [pendingScheme]);
 
-  const rootAction = useHref("/");
+  const colorSchemeAction = useHref("/color-scheme");
 
   const handleToggle = () => {
     const isDark =
@@ -158,7 +150,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         window.matchMedia("(prefers-color-scheme: dark)").matches);
     void fetcher.submit(
       { scheme: isDark ? "light" : "dark" },
-      { method: "post", action: rootAction },
+      { method: "post", action: colorSchemeAction },
     );
   };
 
