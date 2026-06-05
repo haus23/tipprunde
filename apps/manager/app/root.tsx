@@ -12,6 +12,7 @@ import {
   ScrollRestoration,
   redirect,
   useFetcher,
+  useHref,
   useRouteError,
   useRouteLoaderData,
 } from "react-router";
@@ -147,13 +148,18 @@ export default function App({ loaderData }: Route.ComponentProps) {
     }
   }, [pendingScheme]);
 
+  const rootAction = useHref("/");
+
   const handleToggle = () => {
     const isDark =
       colorScheme === "dark" ||
       (colorScheme === "system" &&
         typeof window !== "undefined" &&
         window.matchMedia("(prefers-color-scheme: dark)").matches);
-    void fetcher.submit({ scheme: isDark ? "light" : "dark" }, { method: "post", action: "/" });
+    void fetcher.submit(
+      { scheme: isDark ? "light" : "dark" },
+      { method: "post", action: rootAction },
+    );
   };
 
   return (
