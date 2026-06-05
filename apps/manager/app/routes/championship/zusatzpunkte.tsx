@@ -6,7 +6,6 @@ import type { Route } from "./+types/zusatzpunkte";
 export const handle = { title: "Zusatzpunkte" };
 
 export async function loader({ context }: Route.LoaderArgs) {
-  throw new Error("Testfehler für Error Boundary");
   const championship = context.get(championshipContext);
   const ruleset = await db.query.rulesets.findFirst({
     where: { id: championship.rulesetId },
