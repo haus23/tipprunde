@@ -1,4 +1,4 @@
-import { championships, rulesets } from "@tipprunde/db/schema";
+import { championships } from "@tipprunde/db/schema";
 import { eq } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-orm/valibot";
 import { PencilIcon, PlusIcon } from "lucide-react";
