@@ -1,5 +1,5 @@
 import { FrownIcon, MoonIcon, SunIcon } from "lucide-react";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import {
   data,
   isRouteErrorResponse,
@@ -84,16 +84,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export async function loader({ context, request }: Route.LoaderArgs) {
+export function loader({ context, request }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
   const colorScheme = (getCookie(request, "__color-scheme") ?? "system") as ColorScheme;
-  const championships = await getChampionships();
   return {
     slug: championship?.slug,
     name: championship?.name,
     webAppUrl: webAppUrl(),
     colorScheme,
-    championships,
+    championships: getChampionships(),
   };
 }
 
@@ -160,10 +159,12 @@ export default function App({ loaderData }: Route.ComponentProps) {
     <div className="border-subtle mx-auto grid h-dvh w-full max-w-400 grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
       <Sidebar slug={slug} webAppUrl={webAppUrl} />
       <header className="border-subtle bg-surface-raised flex items-center border-b px-4">
-        <ChampionshipSwitcher
-          current={slug && name ? { slug, name } : null}
-          championships={championships}
-        />
+        <Suspense fallback={<div className="flex-1" />}>
+          <ChampionshipSwitcher
+            current={slug && name ? { slug, name } : null}
+            championships={championships}
+          />
+        </Suspense>
         {pageTitle && <h1 className="text-sm font-medium">{pageTitle}</h1>}
         <div className="flex flex-1 justify-end">
           <button

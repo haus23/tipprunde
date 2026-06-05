@@ -1,5 +1,5 @@
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
-import { useState } from "react";
+import { use, useState } from "react";
 import { Button, DialogTrigger, ListBox, ListBoxItem, Popover } from "react-aria-components";
 import { useNavigate } from "react-router";
 
@@ -9,16 +9,17 @@ type Championship = { slug: string; name: string };
 
 type ChampionshipSwitcherProps = {
   current: Championship | null;
-  championships: Championship[];
+  championships: Promise<Championship[]>;
 };
 
 export function ChampionshipSwitcher({ current, championships }: ChampionshipSwitcherProps) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const championshipList = use(championships);
 
   if (!current) return <div className="flex-1" />;
 
-  if (championships.length <= 1) {
+  if (championshipList.length <= 1) {
     return (
       <div className="flex flex-1 items-center px-2">
         <span className="text-muted text-sm">{current.name}</span>
@@ -42,7 +43,7 @@ export function ChampionshipSwitcher({ current, championships }: ChampionshipSwi
         <Popover placement="bottom start">
           <ListBox
             aria-label="Turnier wechseln"
-            items={championships}
+            items={championshipList}
             onAction={(key) => {
               navigate(`/${key}`);
               setIsOpen(false);
