@@ -1,6 +1,6 @@
 import { championships, rounds as roundsTable } from "@tipprunde/db/schema";
 import { eq, max } from "drizzle-orm";
-import { ArrowRightIcon, PlusIcon } from "lucide-react";
+import { CalendarIcon, PlusIcon } from "lucide-react";
 import { Button, SwitchButton, SwitchField } from "react-aria-components";
 import { Link, useFetcher } from "react-router";
 import * as v from "valibot";
@@ -17,7 +17,7 @@ export const handle = { title: "Übersicht" };
 const flagField = v.picklist(["published", "completed", "extraQuestionsPublished"]);
 type FlagField = v.InferOutput<typeof flagField>;
 
-const roundFlagField = v.picklist(["published", "tipsPublished", "completed"]);
+const roundFlagField = v.picklist(["published", "tipsPublished"]);
 type RoundFlagField = v.InferOutput<typeof roundFlagField>;
 
 export async function loader({ context }: Route.LoaderArgs) {
@@ -29,7 +29,7 @@ export async function loader({ context }: Route.LoaderArgs) {
     }),
     db.query.rounds.findMany({
       where: { championshipId: championship.id },
-      columns: { id: true, nr: true, published: true, tipsPublished: true, completed: true },
+      columns: { id: true, nr: true, published: true, tipsPublished: true },
       orderBy: { nr: "asc" },
     }),
   ]);
@@ -133,12 +133,12 @@ type CompactSwitchProps = {
   label: string;
   isSelected: boolean;
   onChange: (value: boolean) => void;
-  isPending?: boolean;
+  isDisabled?: boolean;
 };
 
-function CompactSwitch({ label, isSelected, onChange, isPending }: CompactSwitchProps) {
+function CompactSwitch({ label, isSelected, onChange, isDisabled }: CompactSwitchProps) {
   return (
-    <SwitchField isSelected={isSelected} onChange={onChange} isDisabled={isPending}>
+    <SwitchField isSelected={isSelected} onChange={onChange} isDisabled={isDisabled}>
       <SwitchButton
         className={cn(
           "flex items-center gap-1.5",
@@ -176,7 +176,6 @@ type Round = {
   nr: number;
   published: boolean;
   tipsPublished: boolean;
-  completed: boolean;
 };
 
 function RoundRow({ round }: { round: Round }) {
@@ -199,33 +198,31 @@ function RoundRow({ round }: { round: Round }) {
 
   const published = getFlag("published", round.published);
   const tipsPublished = getFlag("tipsPublished", round.tipsPublished);
-  const completed = getFlag("completed", round.completed);
+
+  // Dependency chain: published → tipsPublished; once tips are public, round can't be unpublished
+  const publishedDisabled = isPending || tipsPublished;
+  const tipsPublishedDisabled = isPending || !published;
 
   return (
     <div className="flex items-center gap-4 py-3">
       <span className="text-muted w-8 text-right text-sm tabular-nums">{round.nr}</span>
       <div className="flex flex-1 gap-6">
         <CompactSwitch
-          label="Veröffentlicht"
+          label="Spiele öffentlich"
           isSelected={published}
           onChange={() => toggle("published", published)}
-          isPending={isPending}
+          isDisabled={publishedDisabled}
         />
         <CompactSwitch
-          label="Tipps veröffentlicht"
+          label="Tipps öffentlich"
           isSelected={tipsPublished}
           onChange={() => toggle("tipsPublished", tipsPublished)}
-          isPending={isPending}
-        />
-        <CompactSwitch
-          label="Abgeschlossen"
-          isSelected={completed}
-          onChange={() => toggle("completed", completed)}
-          isPending={isPending}
+          isDisabled={tipsPublishedDisabled}
         />
       </div>
       <Link
         to="spiele"
+        title={`Spiele der Runde ${round.nr}`}
         aria-label={`Spiele der Runde ${round.nr}`}
         className={cn(
           "text-muted rounded-sm p-1 transition-colors",
@@ -233,7 +230,7 @@ function RoundRow({ round }: { round: Round }) {
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
         )}
       >
-        <ArrowRightIcon className="size-4" />
+        <CalendarIcon className="size-4" />
       </Link>
     </div>
   );
