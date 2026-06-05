@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.7.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.1...v0.7.2)
+
+### 🚀 Enhancements
+
+- **manager:** Add round creation dialog and round navigator ([29b7c2c](https://github.com/haus23/tipprunde/commit/29b7c2c))
+- **manager:** Implement Spiele route with match create/edit form ([db192bb](https://github.com/haus23/tipprunde/commit/db192bb))
+- **manager:** Inline create team/league from match form ([812a6cd](https://github.com/haus23/tipprunde/commit/812a6cd))
+- **manager:** Render german dates with short form in current year ([b033ef8](https://github.com/haus23/tipprunde/commit/b033ef8))
+- **manager:** Replace native date input with RAC DatePicker ([9a3240a](https://github.com/haus23/tipprunde/commit/9a3240a))
+
+### 🩹 Fixes
+
+- **manager:** Default date from last match across championship ([fa690ed](https://github.com/haus23/tipprunde/commit/fa690ed))
+
+### 💅 Refactors
+
+- **manager:** Simplify round creation and navigator ([d55c2c6](https://github.com/haus23/tipprunde/commit/d55c2c6))
+- **manager:** Replace Select with ComboBox and use full entity types ([943ff95](https://github.com/haus23/tipprunde/commit/943ff95))
+- **manager:** Simplify ComboBox — native filtering and leaner types ([2792e9f](https://github.com/haus23/tipprunde/commit/2792e9f))
+- **manager:** Use RAC native filtering with shortName support ([98d414b](https://github.com/haus23/tipprunde/commit/98d414b))
+
 ## v0.7.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0...v0.7.1)
