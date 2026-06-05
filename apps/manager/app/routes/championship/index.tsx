@@ -1,7 +1,8 @@
-import { championships } from "@tipprunde/db/schema";
-import { eq } from "drizzle-orm";
-import { SwitchButton, SwitchField } from "react-aria-components";
-import { useFetcher } from "react-router";
+import { championships, rounds as roundsTable } from "@tipprunde/db/schema";
+import { eq, max } from "drizzle-orm";
+import { ArrowRightIcon, PlusIcon } from "lucide-react";
+import { Button, SwitchButton, SwitchField } from "react-aria-components";
+import { Link, useFetcher } from "react-router";
 import * as v from "valibot";
 
 import { db } from "#/lib/db.server.ts";
@@ -16,21 +17,56 @@ export const handle = { title: "Übersicht" };
 const flagField = v.picklist(["published", "completed", "extraQuestionsPublished"]);
 type FlagField = v.InferOutput<typeof flagField>;
 
+const roundFlagField = v.picklist(["published", "tipsPublished", "completed"]);
+type RoundFlagField = v.InferOutput<typeof roundFlagField>;
+
 export async function loader({ context }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
-  const ruleset = await db.query.rulesets.findFirst({
-    where: { id: championship.rulesetId },
-    columns: { extraQuestionRuleId: true },
-  });
+  const [ruleset, roundList] = await Promise.all([
+    db.query.rulesets.findFirst({
+      where: { id: championship.rulesetId },
+      columns: { extraQuestionRuleId: true },
+    }),
+    db.query.rounds.findMany({
+      where: { championshipId: championship.id },
+      columns: { id: true, nr: true, published: true, tipsPublished: true, completed: true },
+      orderBy: { nr: "asc" },
+    }),
+  ]);
   return {
     championship,
     hasExtraQuestions: ruleset?.extraQuestionRuleId === "mit-zusatzfragen",
+    roundList,
   };
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
   const championship = context.get(championshipContext);
   const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  if (intent === "create-round") {
+    const result = await db
+      .select({ maxNr: max(roundsTable.nr) })
+      .from(roundsTable)
+      .where(eq(roundsTable.championshipId, championship.id));
+    const nextNr = (result[0]?.maxNr ?? 0) + 1;
+    await db.insert(roundsTable).values({ championshipId: championship.id, nr: nextNr });
+    return null;
+  }
+
+  if (intent === "toggle-round-flag") {
+    const roundId = Number(formData.get("roundId"));
+    const field = v.parse(roundFlagField, formData.get("field"));
+    const value = formData.get("value") === "true";
+    await db
+      .update(roundsTable)
+      .set({ [field]: value })
+      .where(eq(roundsTable.id, roundId));
+    return null;
+  }
+
+  // Championship flag toggle
   const field = v.parse(flagField, formData.get("field"));
   const value = formData.get("value") === "true";
   await db
@@ -39,6 +75,8 @@ export async function action({ request, context }: Route.ActionArgs) {
     .where(eq(championships.id, championship.id));
   return null;
 }
+
+// --- Championship flag switches ---
 
 type FlagSwitchProps = {
   label: string;
@@ -89,20 +127,138 @@ function FlagSwitch({ label, description, isSelected, onChange, isPending }: Fla
   );
 }
 
-export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) {
-  const { championship, hasExtraQuestions } = loaderData;
+// --- Compact round flag switches ---
+
+type CompactSwitchProps = {
+  label: string;
+  isSelected: boolean;
+  onChange: (value: boolean) => void;
+  isPending?: boolean;
+};
+
+function CompactSwitch({ label, isSelected, onChange, isPending }: CompactSwitchProps) {
+  return (
+    <SwitchField isSelected={isSelected} onChange={onChange} isDisabled={isPending}>
+      <SwitchButton
+        className={cn(
+          "flex cursor-pointer items-center gap-1.5",
+          "data-focus-visible:rounded-sm data-focus-visible:outline-2 data-focus-visible:outline-offset-2 data-focus-visible:outline-accent",
+        )}
+      >
+        {({ isSelected, isDisabled }) => (
+          <>
+            <div
+              className={cn(
+                "flex h-4 w-7 shrink-0 items-center rounded-full border transition-colors",
+                isSelected ? "border-accent bg-btn" : "border-subtle bg-surface",
+                isDisabled && "opacity-50",
+              )}
+            >
+              <div
+                className={cn(
+                  "ml-0.5 size-3 rounded-full transition-transform",
+                  isSelected ? "translate-x-3 bg-white" : "bg-control",
+                )}
+              />
+            </div>
+            <span className={cn("text-xs", isSelected ? "text-app" : "text-muted")}>{label}</span>
+          </>
+        )}
+      </SwitchButton>
+    </SwitchField>
+  );
+}
+
+// --- Round row ---
+
+type Round = {
+  id: number;
+  nr: number;
+  published: boolean;
+  tipsPublished: boolean;
+  completed: boolean;
+};
+
+function RoundRow({ round }: { round: Round }) {
   const fetcher = useFetcher();
   const isPending = fetcher.state !== "idle";
 
-  const pendingField = fetcher.formData?.get("field") as FlagField | undefined;
+  const pendingField = fetcher.formData?.get("field") as RoundFlagField | undefined;
   const pendingValue = fetcher.formData?.get("value") === "true";
+
+  function getFlag(field: RoundFlagField, serverValue: boolean) {
+    return pendingField === field ? pendingValue : serverValue;
+  }
+
+  function toggle(field: RoundFlagField, current: boolean) {
+    void fetcher.submit(
+      { intent: "toggle-round-flag", roundId: String(round.id), field, value: String(!current) },
+      { method: "post" },
+    );
+  }
+
+  const published = getFlag("published", round.published);
+  const tipsPublished = getFlag("tipsPublished", round.tipsPublished);
+  const completed = getFlag("completed", round.completed);
+
+  return (
+    <div className="flex items-center gap-4 py-3">
+      <span className="text-muted w-8 text-right text-sm tabular-nums">{round.nr}</span>
+      <div className="flex flex-1 gap-6">
+        <CompactSwitch
+          label="Veröffentlicht"
+          isSelected={published}
+          onChange={() => toggle("published", published)}
+          isPending={isPending}
+        />
+        <CompactSwitch
+          label="Tipps veröffentlicht"
+          isSelected={tipsPublished}
+          onChange={() => toggle("tipsPublished", tipsPublished)}
+          isPending={isPending}
+        />
+        <CompactSwitch
+          label="Abgeschlossen"
+          isSelected={completed}
+          onChange={() => toggle("completed", completed)}
+          isPending={isPending}
+        />
+      </div>
+      <Link
+        to="spiele"
+        aria-label={`Spiele der Runde ${round.nr}`}
+        className={cn(
+          "text-muted rounded-sm p-1 transition-colors",
+          "hover:bg-nav-active hover:text-app",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+        )}
+      >
+        <ArrowRightIcon className="size-4" />
+      </Link>
+    </div>
+  );
+}
+
+// --- Page ---
+
+export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) {
+  const { championship, hasExtraQuestions, roundList } = loaderData;
+
+  const flagFetcher = useFetcher();
+  const createFetcher = useFetcher({ key: "create-round" });
+
+  const isFlagPending = flagFetcher.state !== "idle";
+  const isCreating = createFetcher.state !== "idle";
+
+  const pendingField = flagFetcher.formData?.get("field") as FlagField | undefined;
+  const pendingValue = flagFetcher.formData?.get("value") === "true";
 
   function getFlag(field: FlagField, serverValue: boolean) {
     return pendingField === field ? pendingValue : serverValue;
   }
 
   function toggleFlag(field: FlagField, current: boolean) {
-    void fetcher.submit({ field, value: String(!current) }, { method: "post" });
+    void flagFetcher.submit({ field, value: String(!current) }, { method: "post" });
   }
 
   const published = getFlag("published", championship.published);
@@ -113,8 +269,10 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
   );
 
   return (
-    <div className="p-8">
+    <div className="space-y-6 p-8">
       <title>{`Übersicht | ${championship.name}`}</title>
+
+      {/* Turnier-Status */}
       <Card>
         <div className="border-subtle border-b px-6 py-4">
           <h2 className="text-sm font-semibold">Turnier-Status</h2>
@@ -126,14 +284,14 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
               description="Turnier ist auf dem Frontend sichtbar"
               isSelected={published}
               onChange={() => toggleFlag("published", published)}
-              isPending={isPending}
+              isPending={isFlagPending}
             />
             <FlagSwitch
               label="Abgeschlossen"
               description="Turnier ist beendet; löst abschließende Neuberechnung aus"
               isSelected={completed}
               onChange={() => toggleFlag("completed", completed)}
-              isPending={isPending}
+              isPending={isFlagPending}
             />
             {hasExtraQuestions && (
               <FlagSwitch
@@ -141,10 +299,43 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
                 description="Zusatzfragen und Antworten sind auf dem Frontend sichtbar"
                 isSelected={extraQuestionsPublished}
                 onChange={() => toggleFlag("extraQuestionsPublished", extraQuestionsPublished)}
-                isPending={isPending}
+                isPending={isFlagPending}
               />
             )}
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Runden */}
+      <Card>
+        <div className="border-subtle flex items-center justify-between border-b px-6 py-4">
+          <h2 className="text-sm font-semibold">Runden</h2>
+          <Button
+            isDisabled={isCreating}
+            onPress={() =>
+              void createFetcher.submit({ intent: "create-round" }, { method: "post" })
+            }
+            className={cn(
+              "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",
+              "bg-btn text-btn hover:bg-btn-hover",
+              "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
+              "data-disabled:cursor-not-allowed data-disabled:opacity-50",
+            )}
+          >
+            <PlusIcon className="size-3.5" />
+            Neue Runde
+          </Button>
+        </div>
+        <CardContent>
+          {roundList.length === 0 ? (
+            <p className="text-subtle py-4 text-center text-sm">Noch keine Runden angelegt.</p>
+          ) : (
+            <div className="divide-subtle divide-y">
+              {roundList.map((round) => (
+                <RoundRow key={round.id} round={round} />
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
