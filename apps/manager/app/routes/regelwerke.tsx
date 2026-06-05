@@ -135,7 +135,11 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
         </tbody>
       </table>
 
-      <RegelwerkDialog isOpen={isCreateOpen} onOpenChange={setIsCreateOpen} />
+      <RegelwerkDialog
+        isOpen={isCreateOpen}
+        onOpenChange={setIsCreateOpen}
+        onSuccess={(ruleset) => setFilter(ruleset.name)}
+      />
 
       <RegelwerkDialog
         isOpen={!!editingRuleset}

@@ -157,7 +157,11 @@ export default function Spieler({ loaderData }: Route.ComponentProps) {
         </tbody>
       </table>
 
-      <SpielerDialog isOpen={isCreateOpen} onOpenChange={setIsCreateOpen} />
+      <SpielerDialog
+        isOpen={isCreateOpen}
+        onOpenChange={setIsCreateOpen}
+        onSuccess={(user) => setFilter(user.name)}
+      />
 
       <SpielerDialog
         isOpen={!!editingUser}

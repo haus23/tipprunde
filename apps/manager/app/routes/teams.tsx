@@ -127,7 +127,11 @@ export default function Teams({ loaderData }: Route.ComponentProps) {
         </tbody>
       </table>
 
-      <TeamDialog isOpen={isCreateOpen} onOpenChange={setIsCreateOpen} />
+      <TeamDialog
+        isOpen={isCreateOpen}
+        onOpenChange={setIsCreateOpen}
+        onSuccess={(team) => setFilter(team.shortName)}
+      />
 
       <TeamDialog
         isOpen={!!editingTeam}

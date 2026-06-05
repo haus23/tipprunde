@@ -127,7 +127,11 @@ export default function Ligen({ loaderData }: Route.ComponentProps) {
         </tbody>
       </table>
 
-      <LigaDialog isOpen={isCreateOpen} onOpenChange={setIsCreateOpen} />
+      <LigaDialog
+        isOpen={isCreateOpen}
+        onOpenChange={setIsCreateOpen}
+        onSuccess={(league) => setFilter(league.shortName)}
+      />
 
       <LigaDialog
         isOpen={!!editingLeague}
