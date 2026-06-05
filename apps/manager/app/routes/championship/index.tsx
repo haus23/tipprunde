@@ -295,8 +295,8 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
             />
             {hasExtraQuestions && (
               <FlagSwitch
-                label="Zusatzfragen veröffentlicht"
-                description="Zusatzfragen und Antworten sind auf dem Frontend sichtbar"
+                label="Zusatzpunkte veröffentlicht"
+                description="Auswertung der Zusatzfragen ist auf dem Frontend sichtbar"
                 isSelected={extraQuestionsPublished}
                 onChange={() => toggleFlag("extraQuestionsPublished", extraQuestionsPublished)}
                 isDisabled={extraQuestionsDisabled}
@@ -304,7 +304,7 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
             )}
             <FlagSwitch
               label="Abgeschlossen"
-              description="Turnier ist beendet; löst abschließende Neuberechnung aus"
+              description="Turnier ist beendet. Abschließen löst Neuberechnung aus"
               isSelected={completed}
               onChange={() => toggleFlag("completed", completed)}
               isDisabled={completedDisabled}
