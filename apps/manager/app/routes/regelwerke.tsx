@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "react-aria-components";
 import * as v from "valibot";
 
+import { FilterInput } from "#/components/filter-input.tsx";
 import { RegelwerkDialog } from "#/components/regelwerk-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
 import { cn } from "#/lib/utils.ts";
@@ -60,14 +61,19 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function Regelwerke({ loaderData }: Route.ComponentProps) {
   const { rulesets: rulesetList } = loaderData;
+  const [filter, setFilter] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingRuleset, setEditingRuleset] = useState<Ruleset | null>(null);
+
+  const filtered = rulesetList.filter(
+    (r) => !filter || `${r.name} ${r.id}`.toLowerCase().includes(filter.toLowerCase()),
+  );
 
   return (
     <div className="p-8">
       <title>Regelwerke | Stammdaten</title>
       <div className="mb-6 flex min-h-9 items-center justify-between">
-        <div />
+        <FilterInput value={filter} onChange={setFilter} />
         <Button
           onPress={() => setIsCreateOpen(true)}
           className={cn(
@@ -94,14 +100,14 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
           </tr>
         </thead>
         <tbody>
-          {rulesetList.length === 0 ? (
+          {filtered.length === 0 ? (
             <tr>
               <td colSpan={3} className="text-subtle py-16 text-center">
-                Noch keine Regelwerke angelegt.
+                {filter ? "Keine Ergebnisse." : "Noch keine Regelwerke angelegt."}
               </td>
             </tr>
           ) : (
-            rulesetList.map((ruleset) => (
+            filtered.map((ruleset) => (
               <tr
                 key={ruleset.id}
                 className="border-subtle hover:bg-surface-raised border-b transition-colors last:border-0"

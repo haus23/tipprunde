@@ -7,6 +7,7 @@ import { Button } from "react-aria-components";
 import { useNavigate } from "react-router";
 import * as v from "valibot";
 
+import { FilterInput } from "#/components/filter-input.tsx";
 import { TurnierDialog } from "#/components/turnier-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
 import { cn } from "#/lib/utils.ts";
@@ -86,16 +87,21 @@ export async function action({ request }: Route.ActionArgs) {
 export default function Turniere({ loaderData }: Route.ComponentProps) {
   const { championships: championshipList, rulesets: rulesetList, nextNr } = loaderData;
   const navigate = useNavigate();
+  const [filter, setFilter] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingChampionship, setEditingChampionship] = useState<ChampionshipWithRuleset | null>(
     null,
+  );
+
+  const filtered = championshipList.filter(
+    (c) => !filter || `${c.name} ${c.slug}`.toLowerCase().includes(filter.toLowerCase()),
   );
 
   return (
     <div className="p-8">
       <title>Turniere | Stammdaten</title>
       <div className="mb-6 flex min-h-9 items-center justify-between">
-        <div />
+        <FilterInput value={filter} onChange={setFilter} />
         <Button
           onPress={() => setIsCreateOpen(true)}
           className={cn(
@@ -125,14 +131,14 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
           </tr>
         </thead>
         <tbody>
-          {championshipList.length === 0 ? (
+          {filtered.length === 0 ? (
             <tr>
               <td colSpan={4} className="text-subtle py-16 text-center">
-                Noch keine Turniere angelegt.
+                {filter ? "Keine Ergebnisse." : "Noch keine Turniere angelegt."}
               </td>
             </tr>
           ) : (
-            championshipList.map((championship) => (
+            filtered.map((championship) => (
               <tr
                 key={championship.id}
                 className="border-subtle hover:bg-surface-raised border-b transition-colors last:border-0"

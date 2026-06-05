@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "react-aria-components";
 import * as v from "valibot";
 
+import { FilterInput } from "#/components/filter-input.tsx";
 import { TeamDialog } from "#/components/team-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
 import { cn } from "#/lib/utils.ts";
@@ -54,14 +55,19 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function Teams({ loaderData }: Route.ComponentProps) {
   const { teams: teamList } = loaderData;
+  const [filter, setFilter] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingTeam, setEditingTeam] = useState<Team | null>(null);
+
+  const filtered = teamList.filter(
+    (t) => !filter || `${t.name} ${t.shortName}`.toLowerCase().includes(filter.toLowerCase()),
+  );
 
   return (
     <div className="p-8">
       <title>Teams | Stammdaten</title>
       <div className="mb-6 flex min-h-9 items-center justify-between">
-        <div />
+        <FilterInput value={filter} onChange={setFilter} />
         <Button
           onPress={() => setIsCreateOpen(true)}
           className={cn(
@@ -88,14 +94,14 @@ export default function Teams({ loaderData }: Route.ComponentProps) {
           </tr>
         </thead>
         <tbody>
-          {teamList.length === 0 ? (
+          {filtered.length === 0 ? (
             <tr>
               <td colSpan={3} className="text-subtle py-16 text-center">
-                Noch keine Teams angelegt.
+                {filter ? "Keine Ergebnisse." : "Noch keine Teams angelegt."}
               </td>
             </tr>
           ) : (
-            teamList.map((team) => (
+            filtered.map((team) => (
               <tr
                 key={team.id}
                 className="border-subtle hover:bg-surface-raised border-b transition-colors last:border-0"

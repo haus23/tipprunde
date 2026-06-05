@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "react-aria-components";
 import * as v from "valibot";
 
+import { FilterInput } from "#/components/filter-input.tsx";
 import { SpielerDialog } from "#/components/spieler-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
 import { cn } from "#/lib/utils.ts";
@@ -77,14 +78,19 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function Spieler({ loaderData }: Route.ComponentProps) {
   const { users: userList } = loaderData;
+  const [filter, setFilter] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+
+  const filtered = userList.filter(
+    (u) => !filter || `${u.name} ${u.slug}`.toLowerCase().includes(filter.toLowerCase()),
+  );
 
   return (
     <div className="p-8">
       <title>Spieler | Stammdaten</title>
       <div className="mb-6 flex min-h-9 items-center justify-between">
-        <div />
+        <FilterInput value={filter} onChange={setFilter} />
         <Button
           onPress={() => setIsCreateOpen(true)}
           className={cn(
@@ -114,14 +120,14 @@ export default function Spieler({ loaderData }: Route.ComponentProps) {
           </tr>
         </thead>
         <tbody>
-          {userList.length === 0 ? (
+          {filtered.length === 0 ? (
             <tr>
               <td colSpan={4} className="text-subtle py-16 text-center">
-                Noch keine Spieler angelegt.
+                {filter ? "Keine Ergebnisse." : "Noch keine Spieler angelegt."}
               </td>
             </tr>
           ) : (
-            userList.map((user) => (
+            filtered.map((user) => (
               <tr
                 key={user.id}
                 className="border-subtle hover:bg-surface-raised border-b transition-colors last:border-0"
