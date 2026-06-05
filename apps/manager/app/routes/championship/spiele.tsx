@@ -313,6 +313,7 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
           <Button
             type="button"
             onPress={onDone}
+            excludeFromTabOrder
             className={cn(
               "rounded-sm border border-subtle px-4 py-2 text-sm transition-colors",
               "hover:bg-nav-active",

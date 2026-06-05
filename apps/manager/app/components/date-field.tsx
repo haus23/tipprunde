@@ -109,8 +109,8 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
                   className={({ isSelected, isFocused, isDisabled, isOutsideMonth }) =>
                     cn(
                       "flex size-7 m-0.5 cursor-default items-center justify-center rounded-full text-sm outline-none",
-                      isOutsideMonth && "opacity-30",
-                      isDisabled && "opacity-30",
+                      isOutsideMonth && "invisible pointer-events-none",
+                      isDisabled && "opacity-30 pointer-events-none",
                       !isSelected && !isDisabled && "hover:bg-nav-active",
                       isFocused && !isSelected && "ring-2 ring-inset ring-accent/60",
                       isSelected && "bg-btn text-btn",
