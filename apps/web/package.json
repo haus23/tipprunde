@@ -15,15 +15,15 @@
     "bits-ui": "2.18.1",
     "drizzle-orm": "catalog:orm",
     "layerchart": "2.0.0-next.63",
-    "svelte": "5.56.1",
+    "svelte": "5.56.2",
     "tailwind-merge": "catalog:tailwind"
   },
   "devDependencies": {
     "@sveltejs/adapter-vercel": "6.3.3",
-    "@sveltejs/kit": "2.61.1",
+    "@sveltejs/kit": "2.63.0",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/node": "catalog:types",
-    "svelte-check": "4.5.0",
+    "svelte-check": "4.6.0",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
     "vite": "catalog:"
