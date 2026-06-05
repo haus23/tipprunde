@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.7.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.3...v0.7.4)
+
+### 🩹 Fixes
+
+- **manager:** Move color scheme toggle to dedicated route ([39b8f72](https://github.com/haus23/tipprunde/commit/39b8f72))
+
 ## v0.7.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.2...v0.7.3)
