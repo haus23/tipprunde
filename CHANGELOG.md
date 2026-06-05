@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.7.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.0...v0.7.1)
+
+### 🚀 Enhancements
+
+- **manager:** Add championship flags card to Turnier Übersicht ([4a1f8e1](https://github.com/haus23/tipprunde/commit/4a1f8e1))
+- **manager:** Add RundenManagement card to Turnier Übersicht ([f702d28](https://github.com/haus23/tipprunde/commit/f702d28))
+
+### 💅 Refactors
+
+- **manager:** Improve championship flag switches UX ([84764de](https://github.com/haus23/tipprunde/commit/84764de))
+- **manager:** Refine round row UX in RundenManagement ([7c5bb3e](https://github.com/haus23/tipprunde/commit/7c5bb3e))
+
+### 📖 Documentation
+
+- **manager:** Add domain model reference ([bd1a4ff](https://github.com/haus23/tipprunde/commit/bd1a4ff))
+
+### 🏡 Chore
+
+- **manager:** Label and description changes. ([a7781df](https://github.com/haus23/tipprunde/commit/a7781df))
+
 ## v0.7.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.5...v0.7.0)
