@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.7.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.4...v0.7.5)
+
+### 🩹 Fixes
+
+- **manager:** Fix basename double-prefix and error boundary link ([2d5bcbe](https://github.com/haus23/tipprunde/commit/2d5bcbe))
+
 ## v0.7.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.3...v0.7.4)
