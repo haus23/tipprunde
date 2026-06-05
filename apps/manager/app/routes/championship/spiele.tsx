@@ -182,6 +182,14 @@ function MatchComboBox({
     <ComboBox
       name={name}
       defaultValue={defaultSelectedKey ?? null}
+      defaultFilter={(name, search) => {
+        const shortName = options.find((option) => option.name === name)?.shortName;
+        return [name, shortName]
+          .filter(Boolean)
+          .join(" ")
+          .toLocaleLowerCase()
+          .includes(search.toLocaleLowerCase());
+      }}
       menuTrigger="focus"
       className="flex flex-col gap-1.5"
     >
@@ -193,7 +201,7 @@ function MatchComboBox({
           "outline-none data-focused:ring-2 data-focused:ring-accent/60",
         )}
       />
-      <Popover className="bg-surface-raised border-subtle w-[--trigger-width] rounded-sm border shadow-lg outline-none">
+      <Popover className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none">
         <ListBox items={options} className="max-h-60 overflow-y-auto p-1 outline-none">
           {(item) => (
             <ListBoxItem id={item.id} textValue={item.name} className={listBoxItemClass}>
