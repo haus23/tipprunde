@@ -21,7 +21,7 @@ import {
 import { redirect, useFetcher } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
-import { cn } from "#/lib/utils.ts";
+import { cn, formatDate } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
 import { LigaDialog } from "../../components/liga-dialog";
@@ -388,7 +388,7 @@ function MatchesTable({ matches, onEdit }: { matches: MatchRow[]; onEdit: (m: Ma
         {matches.map((match) => (
           <tr key={match.id} className="border-subtle border-b last:border-0">
             <td className="text-muted py-3 pr-4 text-right tabular-nums">{match.nr}</td>
-            <td className="py-3 pr-4 tabular-nums">{match.date ?? "—"}</td>
+            <td className="py-3 pr-4 tabular-nums">{match.date ? formatDate(match.date) : "—"}</td>
             <td className="py-3 pr-4">
               {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
             </td>
