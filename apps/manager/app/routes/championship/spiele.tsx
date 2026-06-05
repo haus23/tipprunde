@@ -163,12 +163,10 @@ const listBoxItemClass = cn(
   "hover:bg-nav-active data-focused:bg-nav-active data-selected:bg-accent-subtle",
 );
 
-type ComboBoxOption = { id: string; name: string };
-
 type MatchComboBoxProps = {
   name: string;
   label: string;
-  options: ComboBoxOption[];
+  options: Array<Team | League>;
   defaultSelectedKey?: string | null;
   placeholder?: string;
 };
@@ -180,17 +178,10 @@ function MatchComboBox({
   defaultSelectedKey,
   placeholder,
 }: MatchComboBoxProps) {
-  const [inputValue, setInputValue] = useState("");
-  const filteredOptions = inputValue
-    ? options.filter((o) => o.name.toLowerCase().includes(inputValue.toLowerCase()))
-    : options;
-
   return (
-    <ComboBox<ComboBoxOption>
+    <ComboBox
       name={name}
       defaultValue={defaultSelectedKey ?? null}
-      onInputChange={setInputValue}
-      items={filteredOptions}
       menuTrigger="focus"
       className="flex flex-col gap-1.5"
     >
@@ -203,8 +194,8 @@ function MatchComboBox({
         )}
       />
       <Popover className="bg-surface-raised border-subtle w-[--trigger-width] rounded-sm border shadow-lg outline-none">
-        <ListBox className="max-h-60 overflow-y-auto p-1 outline-none">
-          {(item: ComboBoxOption) => (
+        <ListBox items={options} className="max-h-60 overflow-y-auto p-1 outline-none">
+          {(item) => (
             <ListBoxItem id={item.id} textValue={item.name} className={listBoxItemClass}>
               {item.name}
             </ListBoxItem>
