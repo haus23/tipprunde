@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.7.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.6.5...v0.7.0)
+
+### 🚀 Enhancements
+
+- **manager:** Add filter input to all stammdaten tables ([7ead778](https://github.com/haus23/tipprunde/commit/7ead778))
+- **manager:** Add championship switcher to header ([e770e02](https://github.com/haus23/tipprunde/commit/e770e02))
+
+### 💅 Refactors
+
+- **manager:** Replace filter input with RAC SearchField for a11y ([b1469f1](https://github.com/haus23/tipprunde/commit/b1469f1))
+- **manager:** Stream championship list via React 19 use() + Suspense ([1dcb204](https://github.com/haus23/tipprunde/commit/1dcb204))
+
+### 📖 Documentation
+
+- **manager:** Add deployment guide with bootstrap instructions ([6c5b0de](https://github.com/haus23/tipprunde/commit/6c5b0de))
+
+### 🏡 Chore
+
+- **manager:** Enable all React Router v8 future flags ([fc5a73d](https://github.com/haus23/tipprunde/commit/fc5a73d))
+
 ## v0.6.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.6.4...v0.6.5)
