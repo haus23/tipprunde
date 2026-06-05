@@ -11,6 +11,7 @@
     "typecheck": "react-router typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@internationalized/date": "^3.12.2",
     "@libsql/client": "catalog:orm",
     "@react-router/node": "7.16.0",
     "@tipprunde/db": "workspace:*",

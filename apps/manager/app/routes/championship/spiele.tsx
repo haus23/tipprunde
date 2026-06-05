@@ -16,7 +16,6 @@ import {
   ListBox,
   ListBoxItem,
   Popover,
-  TextField,
 } from "react-aria-components";
 import { redirect, useFetcher } from "react-router";
 
@@ -24,6 +23,7 @@ import { db } from "#/lib/db.server.ts";
 import { cn, formatDate } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
+import { DateField } from "../../components/date-field";
 import { LigaDialog } from "../../components/liga-dialog";
 import { RoundNavigator } from "../../components/round-navigator";
 import { TeamDialog } from "../../components/team-dialog";
@@ -258,11 +258,6 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
   const [leagueId, setLeagueId] = useState<string | null>(editMatch?.leagueId ?? null);
   const [createDialog, setCreateDialog] = useState<CreateDialog>(null);
 
-  const inputClass = cn(
-    "border-subtle bg-surface w-full rounded-sm border px-2.5 py-1.5 text-sm",
-    "outline-none data-focused:ring-2 data-focused:ring-accent/60",
-  );
-
   if (fetcher.state === "idle" && fetcher.data !== undefined) {
     onDone();
   }
@@ -281,14 +276,7 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
         <input type="hidden" name="roundId" value={roundId} />
 
         <div className="grid grid-cols-4 gap-4">
-          <TextField
-            name="date"
-            defaultValue={editMatch?.date ?? defaultDate}
-            className="flex flex-col gap-1.5"
-          >
-            <Label className="text-sm font-medium">Datum</Label>
-            <Input type="date" className={inputClass} />
-          </TextField>
+          <DateField name="date" label="Datum" defaultValue={editMatch?.date ?? defaultDate} />
 
           <MatchComboBox
             name="leagueId"

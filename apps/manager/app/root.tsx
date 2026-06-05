@@ -1,5 +1,6 @@
 import { FrownIcon, MoonIcon, SunIcon } from "lucide-react";
 import { Suspense, useEffect } from "react";
+import { I18nProvider } from "react-aria-components";
 import {
   data,
   isRouteErrorResponse,
@@ -76,7 +77,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <I18nProvider locale="de-DE">{children}</I18nProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

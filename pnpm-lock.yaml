@@ -60,6 +60,9 @@ importers:
 
   apps/manager:
     dependencies:
+      '@internationalized/date':
+        specifier: ^3.12.2
+        version: 3.12.2
       '@libsql/client':
         specifier: catalog:orm
         version: 0.17.3
