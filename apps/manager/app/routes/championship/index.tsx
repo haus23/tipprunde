@@ -1,14 +1,16 @@
 import { championships, rounds as roundsTable } from "@tipprunde/db/schema";
-import { eq, max } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { CalendarIcon, PlusIcon } from "lucide-react";
+import { useState } from "react";
 import { Button, SwitchButton, SwitchField } from "react-aria-components";
-import { Link, useFetcher } from "react-router";
+import { Link, data, useFetcher } from "react-router";
 import * as v from "valibot";
 
 import { db } from "#/lib/db.server.ts";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
+import { RundeDialog } from "../../components/runde-dialog";
 import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/index";
 
@@ -46,12 +48,18 @@ export async function action({ request, context }: Route.ActionArgs) {
   const intent = formData.get("intent");
 
   if (intent === "create-round") {
-    const result = await db
-      .select({ maxNr: max(roundsTable.nr) })
-      .from(roundsTable)
-      .where(eq(roundsTable.championshipId, championship.id));
-    const nextNr = (result[0]?.maxNr ?? 0) + 1;
-    await db.insert(roundsTable).values({ championshipId: championship.id, nr: nextNr });
+    const nr = Number(formData.get("nr"));
+    if (!Number.isInteger(nr) || nr < 1) {
+      return data({ errors: { nr: ["Ungültige Rundennummer"] } }, { status: 400 });
+    }
+    const existing = await db.query.rounds.findFirst({
+      where: { championshipId: championship.id, nr },
+      columns: { id: true },
+    });
+    if (existing) {
+      return data({ errors: { nr: ["Rundennummer bereits vergeben"] } }, { status: 400 });
+    }
+    await db.insert(roundsTable).values({ championshipId: championship.id, nr });
     return null;
   }
 
@@ -242,10 +250,10 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
   const { championship, hasExtraQuestions, roundList } = loaderData;
 
   const flagFetcher = useFetcher();
-  const createFetcher = useFetcher({ key: "create-round" });
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   const isFlagPending = flagFetcher.state !== "idle";
-  const isCreating = createFetcher.state !== "idle";
+  const nextNr = roundList.length > 0 ? Math.max(...roundList.map((r) => r.nr)) + 1 : 1;
 
   const pendingField = flagFetcher.formData?.get("field") as FlagField | undefined;
   const pendingValue = flagFetcher.formData?.get("value") === "true";
@@ -315,15 +323,11 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
         <div className="border-subtle flex items-center justify-between border-b px-6 py-4">
           <h2 className="text-sm font-semibold">Runden</h2>
           <Button
-            isDisabled={isCreating}
-            onPress={() =>
-              void createFetcher.submit({ intent: "create-round" }, { method: "post" })
-            }
+            onPress={() => setIsCreateOpen(true)}
             className={cn(
               "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",
               "bg-btn text-btn hover:bg-btn-hover",
               "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-              "data-disabled:cursor-not-allowed data-disabled:opacity-50",
             )}
           >
             <PlusIcon className="size-3.5" />
@@ -342,6 +346,8 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
           )}
         </CardContent>
       </Card>
+
+      <RundeDialog isOpen={isCreateOpen} onOpenChange={setIsCreateOpen} nextNr={nextNr} />
     </div>
   );
 }
