@@ -1,12 +1,48 @@
-import { redirect } from "react-router";
+import { matches as matchesTable, rounds as roundsTable } from "@tipprunde/db/schema";
+import { eq, max } from "drizzle-orm";
+import { ChevronDownIcon, PencilIcon } from "lucide-react";
+import { useCallback, useState } from "react";
+import {
+  Button,
+  Form,
+  Input,
+  Label,
+  ListBox,
+  ListBoxItem,
+  Popover,
+  Select,
+  SelectValue,
+  TextField,
+} from "react-aria-components";
+import { redirect, useFetcher } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
+import { cn } from "#/lib/utils.ts";
 
+import { Card, CardContent } from "../../components/card";
 import { RoundNavigator } from "../../components/round-navigator";
 import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/spiele";
 
 export const handle = { title: "Spiele" };
+
+// --- Types ---
+
+type TeamOption = { id: string; shortName: string };
+type LeagueOption = { id: string; shortName: string };
+type MatchRow = {
+  id: number;
+  nr: number;
+  date: string | null;
+  hometeamId: string | null;
+  awayteamId: string | null;
+  leagueId: string | null;
+  hometeam: { shortName: string } | null;
+  awayteam: { shortName: string } | null;
+  league: { shortName: string } | null;
+};
+
+// --- Loader ---
 
 export async function loader({ params, context }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
@@ -17,11 +53,14 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   });
 
   const lastRound = rounds.at(-1);
-
   if (!lastRound) {
     return {
       rounds,
       currentNr: null,
+      currentRoundId: null,
+      matches: [] as MatchRow[],
+      teams: [] as TeamOption[],
+      leagues: [] as LeagueOption[],
       slug: championship.slug,
       championshipName: championship.name,
     };
@@ -34,14 +73,286 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     throw redirect(`/${championship.slug}/spiele/${lastRound.nr}`);
   }
 
-  return { rounds, currentNr, slug: championship.slug, championshipName: championship.name };
+  const currentRoundId = rounds.find((r) => r.nr === currentNr)!.id;
+
+  const [matchList, teamList, leagueList] = await Promise.all([
+    db.query.matches.findMany({
+      where: { roundId: currentRoundId },
+      columns: {
+        id: true,
+        nr: true,
+        date: true,
+        hometeamId: true,
+        awayteamId: true,
+        leagueId: true,
+      },
+      with: {
+        hometeam: { columns: { shortName: true } },
+        awayteam: { columns: { shortName: true } },
+        league: { columns: { shortName: true } },
+      },
+      orderBy: { nr: "asc" },
+    }),
+    db.query.teams.findMany({
+      columns: { id: true, shortName: true },
+      orderBy: { shortName: "asc" },
+    }),
+    db.query.leagues.findMany({
+      columns: { id: true, shortName: true },
+      orderBy: { shortName: "asc" },
+    }),
+  ]);
+
+  return {
+    rounds,
+    currentNr,
+    currentRoundId,
+    matches: matchList as MatchRow[],
+    teams: teamList,
+    leagues: leagueList,
+    slug: championship.slug,
+    championshipName: championship.name,
+  };
 }
 
-export default function Spiele({ loaderData }: Route.ComponentProps) {
-  const { rounds, currentNr, slug, championshipName } = loaderData;
+// --- Action ---
+
+export async function action({ request, context }: Route.ActionArgs) {
+  const championship = context.get(championshipContext);
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  const date = (formData.get("date") as string) || null;
+  const leagueId = (formData.get("leagueId") as string) || null;
+  const hometeamId = (formData.get("hometeamId") as string) || null;
+  const awayteamId = (formData.get("awayteamId") as string) || null;
+
+  if (intent === "create-match") {
+    const roundId = Number(formData.get("roundId"));
+    const result = await db
+      .select({ maxNr: max(matchesTable.nr) })
+      .from(matchesTable)
+      .innerJoin(roundsTable, eq(roundsTable.id, matchesTable.roundId))
+      .where(eq(roundsTable.championshipId, championship.id));
+    const nr = (result[0]?.maxNr ?? 0) + 1;
+    await db.insert(matchesTable).values({ roundId, nr, date, leagueId, hometeamId, awayteamId });
+    return null;
+  }
+
+  if (intent === "update-match") {
+    const id = Number(formData.get("id"));
+    await db
+      .update(matchesTable)
+      .set({ date, leagueId, hometeamId, awayteamId })
+      .where(eq(matchesTable.id, id));
+    return null;
+  }
+
+  return null;
+}
+
+// --- Match select helper ---
+
+const selectTriggerClass = cn(
+  "border-subtle bg-surface flex w-full items-center justify-between gap-2 rounded-sm border px-2.5 py-1.5 text-sm",
+  "outline-none data-focused:ring-2 data-focused:ring-accent/60",
+);
+
+const listBoxItemClass = cn(
+  "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
+  "hover:bg-nav-active data-focused:bg-nav-active data-selected:bg-accent-subtle",
+);
+
+type MatchSelectProps = {
+  name: string;
+  label: string;
+  options: { id: string; label: string }[];
+  defaultValue?: string | null;
+  placeholder?: string;
+};
+
+function MatchSelect({ name, label, options, defaultValue, placeholder = "—" }: MatchSelectProps) {
+  return (
+    <Select name={name} defaultValue={defaultValue ?? ""} className="flex flex-col gap-1.5">
+      <Label className="text-sm font-medium">{label}</Label>
+      <Button className={selectTriggerClass}>
+        <SelectValue className="data-placeholder:text-muted" />
+        <ChevronDownIcon className="text-muted size-4 shrink-0" />
+      </Button>
+      <Popover className="bg-surface-raised border-subtle w-[--trigger-width] rounded-sm border shadow-lg outline-none">
+        <ListBox className="p-1">
+          <ListBoxItem id="" textValue={placeholder} className={listBoxItemClass}>
+            <span className="text-muted">{placeholder}</span>
+          </ListBoxItem>
+          {options.map((opt) => (
+            <ListBoxItem key={opt.id} id={opt.id} className={listBoxItemClass}>
+              {opt.label}
+            </ListBoxItem>
+          ))}
+        </ListBox>
+      </Popover>
+    </Select>
+  );
+}
+
+// --- Match form ---
+
+type MatchFormProps = {
+  roundId: number;
+  editMatch: MatchRow | null;
+  teams: TeamOption[];
+  leagues: LeagueOption[];
+  onDone: () => void;
+};
+
+function MatchForm({ roundId, editMatch, teams, leagues, onDone }: MatchFormProps) {
+  const fetcher = useFetcher();
+  const isPending = fetcher.state !== "idle";
+  const isEdit = !!editMatch;
+
+  const inputClass = cn(
+    "border-subtle bg-surface w-full rounded-sm border px-2.5 py-1.5 text-sm",
+    "outline-none data-focused:ring-2 data-focused:ring-accent/60",
+  );
+
+  if (fetcher.state === "idle" && fetcher.data !== undefined) {
+    onDone();
+  }
 
   return (
-    <div className="p-8">
+    <Form
+      onSubmit={(e) => {
+        e.preventDefault();
+        void fetcher.submit(e.currentTarget, { method: "post" });
+      }}
+      className="space-y-4"
+    >
+      {isEdit && <input type="hidden" name="id" value={editMatch.id} />}
+      <input type="hidden" name="intent" value={isEdit ? "update-match" : "create-match"} />
+      <input type="hidden" name="roundId" value={roundId} />
+
+      <div className="grid grid-cols-4 gap-4">
+        <TextField
+          name="date"
+          defaultValue={editMatch?.date ?? ""}
+          className="flex flex-col gap-1.5"
+        >
+          <Label className="text-sm font-medium">Datum</Label>
+          <Input type="date" className={inputClass} />
+        </TextField>
+
+        <MatchSelect
+          name="leagueId"
+          label="Liga"
+          options={leagues.map((l) => ({ id: l.id, label: l.shortName }))}
+          defaultValue={editMatch?.leagueId}
+        />
+
+        <MatchSelect
+          name="hometeamId"
+          label="Heimteam"
+          options={teams.map((t) => ({ id: t.id, label: t.shortName }))}
+          defaultValue={editMatch?.hometeamId}
+        />
+
+        <MatchSelect
+          name="awayteamId"
+          label="Gastteam"
+          options={teams.map((t) => ({ id: t.id, label: t.shortName }))}
+          defaultValue={editMatch?.awayteamId}
+        />
+      </div>
+
+      <div className="flex justify-end gap-3">
+        <Button
+          type="button"
+          onPress={onDone}
+          className={cn(
+            "rounded-sm border border-subtle px-4 py-2 text-sm transition-colors",
+            "hover:bg-nav-active",
+            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
+          )}
+        >
+          Abbrechen
+        </Button>
+        <Button
+          type="submit"
+          isDisabled={isPending}
+          className={cn(
+            "bg-btn text-btn rounded-md px-4 py-2 text-sm font-medium transition-colors",
+            "hover:bg-btn-hover",
+            "data-disabled:opacity-50",
+            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
+          )}
+        >
+          {isPending ? "…" : isEdit ? "Speichern" : "Anlegen"}
+        </Button>
+      </div>
+    </Form>
+  );
+}
+
+// --- Matches table ---
+
+function MatchesTable({ matches, onEdit }: { matches: MatchRow[]; onEdit: (m: MatchRow) => void }) {
+  return (
+    <table className="w-full text-sm">
+      <thead>
+        <tr className="border-subtle border-b">
+          <th className="text-muted pr-4 pb-3 text-right font-medium">#</th>
+          <th className="text-muted pr-4 pb-3 text-left font-medium">Datum</th>
+          <th className="text-muted pr-4 pb-3 text-left font-medium">Spiel</th>
+          <th className="text-muted pb-3 text-left font-medium">Liga</th>
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        {matches.map((match) => (
+          <tr key={match.id} className="border-subtle border-b last:border-0">
+            <td className="text-muted py-3 pr-4 text-right tabular-nums">{match.nr}</td>
+            <td className="py-3 pr-4 tabular-nums">{match.date ?? "—"}</td>
+            <td className="py-3 pr-4">
+              {match.hometeam?.shortName ?? "?"} – {match.awayteam?.shortName ?? "?"}
+            </td>
+            <td className="py-3">{match.league?.shortName ?? "—"}</td>
+            <td className="py-3 text-right">
+              <Button
+                onPress={() => onEdit(match)}
+                aria-label={`Spiel ${match.nr} bearbeiten`}
+                className={cn(
+                  "text-muted rounded-sm p-1 transition-colors",
+                  "hover:bg-nav-active hover:text-app",
+                  "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
+                )}
+              >
+                <PencilIcon className="size-4" />
+              </Button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+// --- Page ---
+
+export default function Spiele({ loaderData }: Route.ComponentProps) {
+  const { rounds, currentNr, currentRoundId, matches, teams, leagues, slug, championshipName } =
+    loaderData;
+
+  const [editMatch, setEditMatch] = useState<MatchRow | null>(null);
+  const [createKey, setCreateKey] = useState(0);
+
+  const formKey = editMatch ? `edit-${editMatch.id}` : `create-${createKey}`;
+
+  const handleDone = useCallback(() => {
+    setEditMatch(null);
+    setCreateKey((k) => k + 1);
+  }, []);
+
+  return (
+    <div className="space-y-6 p-8">
       <title>{`Spiele | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center">
         {currentNr !== null && (
@@ -53,11 +364,40 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
         )}
       </div>
 
-      {rounds.length === 0 && (
+      {currentNr === null ? (
         <p className="text-subtle text-center text-sm">Noch keine Runden angelegt.</p>
-      )}
+      ) : (
+        <>
+          <Card>
+            <div className="border-subtle border-b px-6 py-4">
+              <h2 className="text-sm font-semibold">
+                {editMatch ? "Spiel bearbeiten" : "Neues Spiel"}
+              </h2>
+            </div>
+            <CardContent>
+              <MatchForm
+                key={formKey}
+                roundId={currentRoundId!}
+                editMatch={editMatch}
+                teams={teams}
+                leagues={leagues}
+                onDone={handleDone}
+              />
+            </CardContent>
+          </Card>
 
-      {/* Match list for currentNr goes here */}
+          {matches.length > 0 && (
+            <Card>
+              <div className="border-subtle border-b px-6 py-4">
+                <h2 className="text-sm font-semibold">Spiele</h2>
+              </div>
+              <CardContent>
+                <MatchesTable matches={matches} onEdit={setEditMatch} />
+              </CardContent>
+            </Card>
+          )}
+        </>
+      )}
     </div>
   );
 }
