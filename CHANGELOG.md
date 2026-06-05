@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.8.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.5...v0.8.0)
+
+### 🚀 Enhancements
+
+- **manager:** Set filter to newly created entity after creation ([386290d](https://github.com/haus23/tipprunde/commit/386290d))
+
+### 🏡 Chore
+
+- **manager:** Update RR ([6dded6f](https://github.com/haus23/tipprunde/commit/6dded6f))
+- **web:** Update Svelte ([9f5724d](https://github.com/haus23/tipprunde/commit/9f5724d))
+
+### ✅ Tests
+
+- **manager:** Temporary error in Zusatzpunkte loader for error boundary testing ([017fe87](https://github.com/haus23/tipprunde/commit/017fe87))
+- **manager:** Remove temporary error boundary test ([764ea0a](https://github.com/haus23/tipprunde/commit/764ea0a))
+
 ## v0.7.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.4...v0.7.5)
