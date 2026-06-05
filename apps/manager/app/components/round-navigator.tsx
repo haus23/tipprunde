@@ -5,22 +5,21 @@ import { useNavigate } from "react-router";
 import { cn } from "#/lib/utils.ts";
 
 type RoundNavigatorProps = {
-  rounds: { nr: number }[];
   currentNr: number;
+  totalRounds: number;
   base: string; // absolute base path, e.g. "/turnier-2024/spiele"
 };
 
-export function RoundNavigator({ rounds, currentNr, base }: RoundNavigatorProps) {
+export function RoundNavigator({ currentNr, totalRounds, base }: RoundNavigatorProps) {
   const navigate = useNavigate();
-  const currentIndex = rounds.findIndex((r) => r.nr === currentNr);
-  const prevRound = currentIndex > 0 ? rounds[currentIndex - 1] : null;
-  const nextRound = currentIndex < rounds.length - 1 ? rounds[currentIndex + 1] : null;
+  const hasPrev = currentNr > 1;
+  const hasNext = currentNr < totalRounds;
 
   return (
     <div className="flex items-center gap-1">
       <Button
-        isDisabled={!prevRound}
-        onPress={() => prevRound && void navigate(`${base}/${prevRound.nr}`)}
+        isDisabled={!hasPrev}
+        onPress={() => void navigate(`${base}/${currentNr - 1}`)}
         aria-label="Vorherige Runde"
         className={cn(
           "text-muted rounded-sm p-1 transition-colors",
@@ -32,11 +31,11 @@ export function RoundNavigator({ rounds, currentNr, base }: RoundNavigatorProps)
         <ChevronLeftIcon className="size-4" />
       </Button>
       <span className="text-muted px-2 text-sm tabular-nums">
-        Runde {currentIndex + 1} von {rounds.length}
+        Runde {currentNr} von {totalRounds}
       </span>
       <Button
-        isDisabled={!nextRound}
-        onPress={() => nextRound && void navigate(`${base}/${nextRound.nr}`)}
+        isDisabled={!hasNext}
+        onPress={() => void navigate(`${base}/${currentNr + 1}`)}
         aria-label="Nächste Runde"
         className={cn(
           "text-muted rounded-sm p-1 transition-colors",

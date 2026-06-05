@@ -1,9 +1,9 @@
 import { championships, rounds as roundsTable } from "@tipprunde/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, max } from "drizzle-orm";
 import { CalendarIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Button, SwitchButton, SwitchField } from "react-aria-components";
-import { Link, data, useFetcher } from "react-router";
+import { Link, useFetcher } from "react-router";
 import * as v from "valibot";
 
 import { db } from "#/lib/db.server.ts";
@@ -48,18 +48,12 @@ export async function action({ request, context }: Route.ActionArgs) {
   const intent = formData.get("intent");
 
   if (intent === "create-round") {
-    const nr = Number(formData.get("nr"));
-    if (!Number.isInteger(nr) || nr < 1) {
-      return data({ errors: { nr: ["Ungültige Rundennummer"] } }, { status: 400 });
-    }
-    const existing = await db.query.rounds.findFirst({
-      where: { championshipId: championship.id, nr },
-      columns: { id: true },
-    });
-    if (existing) {
-      return data({ errors: { nr: ["Rundennummer bereits vergeben"] } }, { status: 400 });
-    }
-    await db.insert(roundsTable).values({ championshipId: championship.id, nr });
+    const result = await db
+      .select({ maxNr: max(roundsTable.nr) })
+      .from(roundsTable)
+      .where(eq(roundsTable.championshipId, championship.id));
+    const nextNr = (result[0]?.maxNr ?? 0) + 1;
+    await db.insert(roundsTable).values({ championshipId: championship.id, nr: nextNr });
     return null;
   }
 
@@ -229,7 +223,7 @@ function RoundRow({ round }: { round: Round }) {
         />
       </div>
       <Link
-        to="spiele"
+        to={`spiele/${round.nr}`}
         title={`Spiele der Runde ${round.nr}`}
         aria-label={`Spiele der Runde ${round.nr}`}
         className={cn(

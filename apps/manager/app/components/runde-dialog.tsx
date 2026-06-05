@@ -1,22 +1,8 @@
 import { useEffect } from "react";
-import {
-  Button,
-  Dialog,
-  FieldError,
-  Form,
-  Heading,
-  Input,
-  Label,
-  Modal,
-  ModalOverlay,
-  TextField,
-} from "react-aria-components";
+import { Button, Dialog, Heading, Modal, ModalOverlay } from "react-aria-components";
 import { useFetcher } from "react-router";
 
 import { cn } from "#/lib/utils.ts";
-
-// Local mirror of the create-round branch of the championship index action
-type RundeActionData = { errors: Record<string, string[]> } | null;
 
 type RundeFormProps = {
   nextNr: number;
@@ -24,45 +10,20 @@ type RundeFormProps = {
 };
 
 function RundeForm({ nextNr, onClose }: RundeFormProps) {
-  const fetcher = useFetcher<RundeActionData>();
+  const fetcher = useFetcher();
   const isPending = fetcher.state !== "idle";
-  const serverErrors = fetcher.data && "errors" in fetcher.data ? fetcher.data.errors : {};
 
   useEffect(() => {
-    if (fetcher.state !== "idle") return;
-    if (fetcher.data === null) onClose();
+    if (fetcher.state === "idle" && fetcher.data !== undefined) onClose();
   }, [fetcher.state, fetcher.data, onClose]);
 
-  const inputClass = cn(
-    "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
-    "outline-none data-focused:ring-2 data-focused:ring-accent/60",
-  );
-
   return (
-    <Form
-      onSubmit={(e) => {
-        e.preventDefault();
-        void fetcher.submit(e.currentTarget, { method: "post" });
-      }}
-      className="flex flex-col gap-5"
-      validationErrors={serverErrors}
-    >
-      <input type="hidden" name="intent" value="create-round" />
-
-      <TextField
-        name="nr"
-        defaultValue={String(nextNr)}
-        isRequired
-        className="flex flex-col gap-1.5"
-      >
-        <Label className="text-sm font-medium">Rundennummer</Label>
-        <Input type="number" min="1" className={cn(inputClass, "tabular-nums")} />
-        <FieldError className="text-error text-xs" />
-      </TextField>
-
-      <div className="border-subtle flex justify-end gap-3 border-t pt-4">
+    <div className="flex flex-col gap-5">
+      <p className="text-sm">
+        Runde <span className="font-semibold tabular-nums">{nextNr}</span> wird angelegt.
+      </p>
+      <div className="flex justify-end gap-3">
         <Button
-          type="button"
           onPress={onClose}
           className={cn(
             "rounded-sm border border-subtle px-4 py-2 text-sm transition-colors",
@@ -73,8 +34,8 @@ function RundeForm({ nextNr, onClose }: RundeFormProps) {
           Abbrechen
         </Button>
         <Button
-          type="submit"
           isDisabled={isPending}
+          onPress={() => void fetcher.submit({ intent: "create-round" }, { method: "post" })}
           className={cn(
             "bg-btn text-btn rounded-md px-4 py-2 text-sm font-medium transition-colors",
             "hover:bg-btn-hover",
@@ -85,7 +46,7 @@ function RundeForm({ nextNr, onClose }: RundeFormProps) {
           {isPending ? "…" : "Erstellen"}
         </Button>
       </div>
-    </Form>
+    </div>
   );
 }
 

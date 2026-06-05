@@ -45,7 +45,11 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
       <title>{`Spiele | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center">
         {currentNr !== null && (
-          <RoundNavigator rounds={rounds} currentNr={currentNr} base={`/${slug}/spiele`} />
+          <RoundNavigator
+            currentNr={currentNr}
+            totalRounds={rounds.length}
+            base={`/${slug}/spiele`}
+          />
         )}
       </div>
 
