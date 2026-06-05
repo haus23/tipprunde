@@ -3,7 +3,6 @@ import { Suspense, useEffect } from "react";
 import { I18nProvider } from "react-aria-components";
 import {
   isRouteErrorResponse,
-  Link,
   Links,
   Meta,
   Outlet,
@@ -11,7 +10,6 @@ import {
   ScrollRestoration,
   redirect,
   useFetcher,
-  useHref,
   useRouteError,
   useRouteLoaderData,
 } from "react-router";
@@ -119,9 +117,9 @@ export function ErrorBoundary() {
           {error.stack}
         </pre>
       )}
-      <Link to="/" className="text-sm underline underline-offset-4">
+      <a href="/manager" className="text-sm underline underline-offset-4">
         Zurück zur Startseite
-      </Link>
+      </a>
     </div>
   );
 }
@@ -140,8 +138,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
     }
   }, [pendingScheme]);
 
-  const colorSchemeAction = useHref("/color-scheme");
-
   const handleToggle = () => {
     const isDark =
       colorScheme === "dark" ||
@@ -150,7 +146,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         window.matchMedia("(prefers-color-scheme: dark)").matches);
     void fetcher.submit(
       { scheme: isDark ? "light" : "dark" },
-      { method: "post", action: colorSchemeAction },
+      { method: "post", action: "/color-scheme" },
     );
   };
 
