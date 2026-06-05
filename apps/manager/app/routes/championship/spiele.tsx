@@ -1,5 +1,5 @@
 import { matches as matchesTable, rounds as roundsTable } from "@tipprunde/db/schema";
-import { eq, max } from "drizzle-orm";
+import { desc, eq, max } from "drizzle-orm";
 import { ChevronDownIcon, PencilIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import {
@@ -75,7 +75,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 
   const currentRoundId = rounds.find((r) => r.nr === currentNr)!.id;
 
-  const [matchList, teamList, leagueList] = await Promise.all([
+  const [matchList, teamList, leagueList, lastMatchResult] = await Promise.all([
     db.query.matches.findMany({
       where: { roundId: currentRoundId },
       columns: {
@@ -101,6 +101,13 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       columns: { id: true, shortName: true },
       orderBy: { shortName: "asc" },
     }),
+    db
+      .select({ date: matchesTable.date })
+      .from(matchesTable)
+      .innerJoin(roundsTable, eq(roundsTable.id, matchesTable.roundId))
+      .where(eq(roundsTable.championshipId, championship.id))
+      .orderBy(desc(matchesTable.nr))
+      .limit(1),
   ]);
 
   return {
@@ -108,6 +115,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     currentNr,
     currentRoundId,
     matches: matchList as MatchRow[],
+    lastMatchDate: lastMatchResult[0]?.date ?? "",
     teams: teamList,
     leagues: leagueList,
     slug: championship.slug,
@@ -200,12 +208,13 @@ function MatchSelect({ name, label, options, defaultValue, placeholder = "—" }
 type MatchFormProps = {
   roundId: number;
   editMatch: MatchRow | null;
+  defaultDate: string;
   teams: TeamOption[];
   leagues: LeagueOption[];
   onDone: () => void;
 };
 
-function MatchForm({ roundId, editMatch, teams, leagues, onDone }: MatchFormProps) {
+function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: MatchFormProps) {
   const fetcher = useFetcher();
   const isPending = fetcher.state !== "idle";
   const isEdit = !!editMatch;
@@ -234,7 +243,7 @@ function MatchForm({ roundId, editMatch, teams, leagues, onDone }: MatchFormProp
       <div className="grid grid-cols-4 gap-4">
         <TextField
           name="date"
-          defaultValue={editMatch?.date ?? ""}
+          defaultValue={editMatch?.date ?? defaultDate}
           className="flex flex-col gap-1.5"
         >
           <Label className="text-sm font-medium">Datum</Label>
@@ -338,8 +347,17 @@ function MatchesTable({ matches, onEdit }: { matches: MatchRow[]; onEdit: (m: Ma
 // --- Page ---
 
 export default function Spiele({ loaderData }: Route.ComponentProps) {
-  const { rounds, currentNr, currentRoundId, matches, teams, leagues, slug, championshipName } =
-    loaderData;
+  const {
+    rounds,
+    currentNr,
+    currentRoundId,
+    matches,
+    lastMatchDate,
+    teams,
+    leagues,
+    slug,
+    championshipName,
+  } = loaderData;
 
   const [editMatch, setEditMatch] = useState<MatchRow | null>(null);
   const [createKey, setCreateKey] = useState(0);
@@ -379,6 +397,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
                 key={formKey}
                 roundId={currentRoundId!}
                 editMatch={editMatch}
+                defaultDate={lastMatchDate}
                 teams={teams}
                 leagues={leagues}
                 onDone={handleDone}
