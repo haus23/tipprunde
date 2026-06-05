@@ -83,30 +83,30 @@ type FlagSwitchProps = {
   description: string;
   isSelected: boolean;
   onChange: (value: boolean) => void;
-  isPending?: boolean;
+  isDisabled?: boolean;
 };
 
-function FlagSwitch({ label, description, isSelected, onChange, isPending }: FlagSwitchProps) {
+function FlagSwitch({ label, description, isSelected, onChange, isDisabled }: FlagSwitchProps) {
   return (
     <SwitchField
       isSelected={isSelected}
       onChange={onChange}
-      isDisabled={isPending}
+      isDisabled={isDisabled}
       className="py-3"
     >
       <SwitchButton
         className={cn(
-          "flex cursor-pointer items-center gap-4",
+          "flex items-center gap-4",
+          "data-disabled:opacity-50",
           "data-focus-visible:rounded-sm data-focus-visible:outline-2 data-focus-visible:outline-offset-2 data-focus-visible:outline-accent",
         )}
       >
-        {({ isSelected, isDisabled }) => (
+        {({ isSelected }) => (
           <>
             <div
               className={cn(
                 "flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors",
                 isSelected ? "border-accent bg-btn" : "border-subtle bg-surface",
-                isDisabled && "opacity-50",
               )}
             >
               <div
@@ -141,17 +141,17 @@ function CompactSwitch({ label, isSelected, onChange, isPending }: CompactSwitch
     <SwitchField isSelected={isSelected} onChange={onChange} isDisabled={isPending}>
       <SwitchButton
         className={cn(
-          "flex cursor-pointer items-center gap-1.5",
+          "flex items-center gap-1.5",
+          "data-disabled:opacity-50",
           "data-focus-visible:rounded-sm data-focus-visible:outline-2 data-focus-visible:outline-offset-2 data-focus-visible:outline-accent",
         )}
       >
-        {({ isSelected, isDisabled }) => (
+        {({ isSelected }) => (
           <>
             <div
               className={cn(
                 "flex h-4 w-7 shrink-0 items-center rounded-full border transition-colors",
                 isSelected ? "border-accent bg-btn" : "border-subtle bg-surface",
-                isDisabled && "opacity-50",
               )}
             >
               <div
@@ -268,6 +268,13 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
     championship.extraQuestionsPublished,
   );
 
+  // Dependency chain: published → extraQuestionsPublished (if present) → completed
+  // Turning completed on disables all other switches
+  const publishedDisabled = isFlagPending || completed;
+  const extraQuestionsDisabled = isFlagPending || !published || completed;
+  const completedDisabled =
+    isFlagPending || !published || (hasExtraQuestions && !extraQuestionsPublished);
+
   return (
     <div className="space-y-6 p-8">
       <title>{`Übersicht | ${championship.name}`}</title>
@@ -284,14 +291,7 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
               description="Turnier ist auf dem Frontend sichtbar"
               isSelected={published}
               onChange={() => toggleFlag("published", published)}
-              isPending={isFlagPending}
-            />
-            <FlagSwitch
-              label="Abgeschlossen"
-              description="Turnier ist beendet; löst abschließende Neuberechnung aus"
-              isSelected={completed}
-              onChange={() => toggleFlag("completed", completed)}
-              isPending={isFlagPending}
+              isDisabled={publishedDisabled}
             />
             {hasExtraQuestions && (
               <FlagSwitch
@@ -299,9 +299,16 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
                 description="Zusatzfragen und Antworten sind auf dem Frontend sichtbar"
                 isSelected={extraQuestionsPublished}
                 onChange={() => toggleFlag("extraQuestionsPublished", extraQuestionsPublished)}
-                isPending={isFlagPending}
+                isDisabled={extraQuestionsDisabled}
               />
             )}
+            <FlagSwitch
+              label="Abgeschlossen"
+              description="Turnier ist beendet; löst abschließende Neuberechnung aus"
+              isSelected={completed}
+              onChange={() => toggleFlag("completed", completed)}
+              isDisabled={completedDisabled}
+            />
           </div>
         </CardContent>
       </Card>
