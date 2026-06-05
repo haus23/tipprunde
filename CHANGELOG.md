@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.7.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.7.2...v0.7.3)
+
+### 🩹 Fixes
+
+- **manager:** Hide outside-month calendar cells, skip Abbrechen in tab order ([5e22953](https://github.com/haus23/tipprunde/commit/5e22953))
+- **manager:** Use useHref for color scheme action to respect basename ([8bb0f07](https://github.com/haus23/tipprunde/commit/8bb0f07))
+
 ## v0.7.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.1...v0.7.2)
