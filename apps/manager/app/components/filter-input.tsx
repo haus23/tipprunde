@@ -15,7 +15,7 @@ export function FilterInput({ value, onChange, placeholder = "Suchen …" }: Fil
       value={value}
       onChange={onChange}
       aria-label="Einträge filtern"
-      className="relative mr-4 flex flex-1 items-center"
+      className="relative flex flex-1 items-center"
     >
       <SearchIcon className="text-muted pointer-events-none absolute left-2.5 size-3.5" />
       <Input

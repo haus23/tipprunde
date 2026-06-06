@@ -1,11 +1,13 @@
+import { UserPlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
-import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
+import { Button, ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
 import { useFetcher } from "react-router";
 
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "./card";
 import { FilterInput } from "./filter-input";
+import { SpielerDialog } from "./spieler-dialog";
 
 type User = {
   id: number;
@@ -24,6 +26,7 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
   const fetcher = useFetcher();
   const [playerIds, setPlayerIds] = useState(() => new Set(initialIds));
   const [filter, setFilter] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   const inChampionship = useMemo(
     () => allUsers.filter((u) => playerIds.has(u.id)).sort((a, b) => a.id - b.id),
@@ -89,8 +92,27 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
               emptyText={filter ? "Keine Ergebnisse." : "Alle Spieler sind bereits im Turnier."}
               fixedHeight
             />
-            <FilterInput value={filter} onChange={setFilter} />
+            <div className="flex items-center gap-4">
+              <FilterInput value={filter} onChange={setFilter} />
+              <Button
+                onPress={() => setIsCreateOpen(true)}
+                aria-label="Neuer Spieler"
+                className={cn(
+                  "bg-btn text-btn shrink-0 rounded-sm p-1.5 transition-colors",
+                  "hover:bg-btn-hover",
+                  "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
+                )}
+              >
+                <UserPlusIcon className="size-4" />
+              </Button>
+            </div>
           </div>
+
+          <SpielerDialog
+            isOpen={isCreateOpen}
+            onOpenChange={setIsCreateOpen}
+            onSuccess={(user) => setFilter(user.name)}
+          />
         </div>
       </CardContent>
     </Card>
