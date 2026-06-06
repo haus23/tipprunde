@@ -82,6 +82,7 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
             users={available}
             dragAndDropHooks={availableHooks}
             emptyText="Alle Spieler sind bereits im Turnier."
+            fixedHeight
           />
         </div>
       </CardContent>
@@ -94,9 +95,10 @@ type PlayerListProps = {
   users: User[];
   dragAndDropHooks: ReturnType<typeof useDragAndDrop>["dragAndDropHooks"];
   emptyText: string;
+  fixedHeight?: boolean;
 };
 
-function PlayerList({ label, users, dragAndDropHooks, emptyText }: PlayerListProps) {
+function PlayerList({ label, users, dragAndDropHooks, emptyText, fixedHeight }: PlayerListProps) {
   return (
     <div className="space-y-2">
       <p className="text-muted text-xs font-medium tracking-wide uppercase">{label}</p>
@@ -108,7 +110,8 @@ function PlayerList({ label, users, dragAndDropHooks, emptyText }: PlayerListPro
           <p className="text-subtle px-3 py-8 text-center text-sm">{emptyText}</p>
         )}
         className={cn(
-          "border-subtle min-h-48 rounded-sm border p-1 outline-none",
+          "border-subtle overflow-y-auto rounded-sm border p-1 outline-none",
+          fixedHeight ? "h-[368px]" : "max-h-[368px]",
           "data-drop-target:border-accent data-drop-target:bg-accent/5",
         )}
       >
