@@ -89,7 +89,7 @@ export default function Spieler({ loaderData }: Route.ComponentProps) {
   return (
     <div className="p-8">
       <title>Spieler | Stammdaten</title>
-      <div className="mb-6 flex min-h-9 items-center justify-between">
+      <div className="mb-6 flex min-h-9 items-center justify-between gap-4">
         <FilterInput value={filter} onChange={setFilter} />
         <Button
           onPress={() => setIsCreateOpen(true)}
