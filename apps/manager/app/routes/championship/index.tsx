@@ -1,5 +1,9 @@
-import { championships, rounds as roundsTable } from "@tipprunde/db/schema";
-import { eq, max } from "drizzle-orm";
+import {
+  championships,
+  players as playersTable,
+  rounds as roundsTable,
+} from "@tipprunde/db/schema";
+import { and, eq, max } from "drizzle-orm";
 import { CalendarIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Button, SwitchButton, SwitchField } from "react-aria-components";
@@ -10,6 +14,7 @@ import { db } from "#/lib/db.server.ts";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
+import { MitspielerCard } from "../../components/mitspieler-card";
 import { RundeDialog } from "../../components/runde-dialog";
 import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/index";
@@ -24,7 +29,7 @@ type RoundFlagField = v.InferOutput<typeof roundFlagField>;
 
 export async function loader({ context }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
-  const [ruleset, roundList] = await Promise.all([
+  const [ruleset, roundList, playerList, allUsers] = await Promise.all([
     db.query.rulesets.findFirst({
       where: { id: championship.rulesetId },
       columns: { extraQuestionRuleId: true },
@@ -34,11 +39,21 @@ export async function loader({ context }: Route.LoaderArgs) {
       columns: { id: true, nr: true, published: true, tipsPublished: true },
       orderBy: { nr: "asc" },
     }),
+    db.query.players.findMany({
+      where: { championshipId: championship.id },
+      columns: { userId: true },
+    }),
+    db.query.users.findMany({
+      orderBy: { name: "asc" },
+      columns: { id: true, name: true, slug: true },
+    }),
   ]);
   return {
     championship,
     hasExtraQuestions: ruleset?.extraQuestionRuleId === "mit-zusatzfragen",
     roundList,
+    playerUserIds: playerList.map((p) => p.userId),
+    allUsers,
   };
 }
 
@@ -65,6 +80,25 @@ export async function action({ request, context }: Route.ActionArgs) {
       .update(roundsTable)
       .set({ [field]: value })
       .where(eq(roundsTable.id, roundId));
+    return null;
+  }
+
+  if (intent === "add-player") {
+    const userId = Number(formData.get("userId"));
+    await db
+      .insert(playersTable)
+      .values({ championshipId: championship.id, userId })
+      .onConflictDoNothing();
+    return null;
+  }
+
+  if (intent === "remove-player") {
+    const userId = Number(formData.get("userId"));
+    await db
+      .delete(playersTable)
+      .where(
+        and(eq(playersTable.championshipId, championship.id), eq(playersTable.userId, userId)),
+      );
     return null;
   }
 
@@ -241,7 +275,7 @@ function RoundRow({ round }: { round: Round }) {
 // --- Page ---
 
 export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) {
-  const { championship, hasExtraQuestions, roundList } = loaderData;
+  const { championship, hasExtraQuestions, roundList, playerUserIds, allUsers } = loaderData;
 
   const flagFetcher = useFetcher();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -342,6 +376,8 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
       </Card>
 
       <RundeDialog isOpen={isCreateOpen} onOpenChange={setIsCreateOpen} nextNr={nextNr} />
+
+      <MitspielerCard playerUserIds={playerUserIds} allUsers={allUsers} />
     </div>
   );
 }
