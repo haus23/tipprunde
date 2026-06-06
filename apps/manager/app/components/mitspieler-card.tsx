@@ -24,7 +24,7 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
   const [playerIds, setPlayerIds] = useState(() => new Set(initialIds));
 
   const inChampionship = useMemo(
-    () => allUsers.filter((u) => playerIds.has(u.id)),
+    () => allUsers.filter((u) => playerIds.has(u.id)).sort((a, b) => a.id - b.id),
     [allUsers, playerIds],
   );
   const available = useMemo(
