@@ -5,6 +5,7 @@ import { useFetcher } from "react-router";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "./card";
+import { FilterInput } from "./filter-input";
 
 type User = {
   id: number;
@@ -22,15 +23,18 @@ const DRAG_TYPE = "x-tipprunde/user-id";
 export function MitspielerCard({ playerUserIds: initialIds, allUsers }: MitspielerCardProps) {
   const fetcher = useFetcher();
   const [playerIds, setPlayerIds] = useState(() => new Set(initialIds));
+  const [filter, setFilter] = useState("");
 
   const inChampionship = useMemo(
     () => allUsers.filter((u) => playerIds.has(u.id)).sort((a, b) => a.id - b.id),
     [allUsers, playerIds],
   );
-  const available = useMemo(
-    () => allUsers.filter((u) => !playerIds.has(u.id)),
-    [allUsers, playerIds],
-  );
+  const available = useMemo(() => {
+    const all = allUsers.filter((u) => !playerIds.has(u.id));
+    if (!filter) return all;
+    const q = filter.toLowerCase();
+    return all.filter((u) => u.name.toLowerCase().includes(q));
+  }, [allUsers, playerIds, filter]);
 
   const { dragAndDropHooks: inChampionshipHooks } = useDragAndDrop({
     getItems: (keys) => [...keys].map((id) => ({ [DRAG_TYPE]: String(id) })),
@@ -77,13 +81,16 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
             dragAndDropHooks={inChampionshipHooks}
             emptyText="Noch keine Spieler im Turnier."
           />
-          <PlayerList
-            label="Alle Spieler"
-            users={available}
-            dragAndDropHooks={availableHooks}
-            emptyText="Alle Spieler sind bereits im Turnier."
-            fixedHeight
-          />
+          <div className="space-y-2">
+            <PlayerList
+              label="Alle Spieler"
+              users={available}
+              dragAndDropHooks={availableHooks}
+              emptyText={filter ? "Keine Ergebnisse." : "Alle Spieler sind bereits im Turnier."}
+              fixedHeight
+            />
+            <FilterInput value={filter} onChange={setFilter} />
+          </div>
         </div>
       </CardContent>
     </Card>
