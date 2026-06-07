@@ -24,6 +24,7 @@ export function FilterInput({ value, onChange, placeholder = "Suchen …" }: Fil
           "border-subtle bg-surface w-full rounded-sm border py-1.5 pr-8 pl-8 text-sm",
           "placeholder:text-muted outline-none",
           "data-focused:ring-2 data-focused:ring-accent/60",
+          "[&::-webkit-search-cancel-button]:hidden",
         )}
       />
       {value && (
