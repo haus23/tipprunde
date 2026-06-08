@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.8.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0...v0.8.1)
+
+### 🚀 Enhancements
+
+- **manager:** Add Mitspieler card with drag-and-drop player management ([9c8c34d](https://github.com/haus23/tipprunde/commit/9c8c34d))
+- **manager:** Limit player lists to 10 visible entries with scroll ([c4ecf66](https://github.com/haus23/tipprunde/commit/c4ecf66))
+- **manager:** Add filter input below Alle Spieler list ([3b064c8](https://github.com/haus23/tipprunde/commit/3b064c8))
+- **manager:** Add inline player creation to Mitspieler card ([d89c0e1](https://github.com/haus23/tipprunde/commit/d89c0e1))
+
+### 🩹 Fixes
+
+- **manager:** Order Mitspieler list by user id instead of name ([98564f5](https://github.com/haus23/tipprunde/commit/98564f5))
+- **manager:** Restore gap between filter input and button on Stammdaten routes ([99f52af](https://github.com/haus23/tipprunde/commit/99f52af))
+- **manager:** Remove native search cancel button. ([79a2d78](https://github.com/haus23/tipprunde/commit/79a2d78))
+- **manager:** Clear filter after adding a player to the championship ([42e404e](https://github.com/haus23/tipprunde/commit/42e404e))
+
 ## v0.8.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.7.5...v0.8.0)
