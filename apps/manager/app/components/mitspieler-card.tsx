@@ -46,6 +46,7 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
         if (item.kind === "text") {
           const userId = Number(await item.getText(DRAG_TYPE));
           setPlayerIds((prev) => new Set([...prev, userId]));
+          setFilter("");
           fetcher.submit({ intent: "add-player", userId: String(userId) }, { method: "post" });
         }
       }
