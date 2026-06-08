@@ -50,7 +50,7 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
               segment={segment}
               className={({ isFocused, isPlaceholder }) =>
                 cn(
-                  "inline whitespace-nowrap rounded-xs px-0.5 caret-transparent outline-none tabular-nums",
+                  "inline whitespace-nowrap rounded-xs caret-transparent outline-none tabular-nums",
                   "type-literal:px-0 type-literal:text-muted",
                   isPlaceholder && "text-muted",
                   isFocused && "bg-btn text-btn",

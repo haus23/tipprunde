@@ -141,7 +141,7 @@ function PlayerList({ label, users, dragAndDropHooks, emptyText, fixedHeight }: 
         )}
         className={cn(
           "border-subtle overflow-y-auto rounded-sm border p-1 outline-none",
-          fixedHeight ? "h-[368px]" : "max-h-[368px]",
+          fixedHeight ? "h-92" : "max-h-92",
           "data-drop-target:border-accent data-drop-target:bg-accent/5",
         )}
       >
