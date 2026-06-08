@@ -142,7 +142,7 @@ function FlagSwitch({ label, description, isSelected, onChange, isDisabled }: Fl
             <div
               className={cn(
                 "flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors",
-                isSelected ? "border-accent bg-btn" : "border-subtle bg-surface",
+                isSelected ? "border-accent bg-accent" : "border-subtle bg-surface",
               )}
             >
               <div
@@ -187,7 +187,7 @@ function CompactSwitch({ label, isSelected, onChange, isDisabled }: CompactSwitc
             <div
               className={cn(
                 "flex h-4 w-7 shrink-0 items-center rounded-full border transition-colors",
-                isSelected ? "border-accent bg-btn" : "border-subtle bg-surface",
+                isSelected ? "border-accent bg-accent" : "border-subtle bg-surface",
               )}
             >
               <div
@@ -354,7 +354,7 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
             onPress={() => setIsCreateOpen(true)}
             className={cn(
               "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",
-              "bg-btn text-btn hover:bg-btn-hover",
+              "bg-accent text-accent-fg hover:bg-accent-hover",
               "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
             )}
           >

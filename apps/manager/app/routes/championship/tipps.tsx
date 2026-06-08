@@ -283,7 +283,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
                           className={cn(
                             "group flex size-5 cursor-pointer items-center justify-center rounded border outline-none transition-colors",
                             "border-subtle",
-                            "data-selected:border-btn data-selected:bg-btn",
+                            "data-selected:border-accent data-selected:bg-accent",
                             "data-focused:ring-2 data-focused:ring-accent",
                           )}
                         >

@@ -53,7 +53,7 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
                   "inline whitespace-nowrap rounded-xs caret-transparent outline-none tabular-nums",
                   "type-literal:px-0 type-literal:text-muted",
                   isPlaceholder && "text-muted",
-                  isFocused && "bg-btn text-btn",
+                  isFocused && "bg-accent text-accent-fg",
                 )
               }
             />
@@ -113,7 +113,7 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
                       isDisabled && "opacity-30 pointer-events-none",
                       !isSelected && !isDisabled && "hover:bg-nav-active",
                       isFocused && !isSelected && "ring-2 ring-inset ring-accent/60",
-                      isSelected && "bg-btn text-btn",
+                      isSelected && "bg-accent text-accent-fg",
                     )
                   }
                 />

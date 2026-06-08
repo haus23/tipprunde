@@ -105,8 +105,8 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
         <Button
           onPress={() => setIsCreateOpen(true)}
           className={cn(
-            "bg-btn text-btn flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-            "hover:bg-btn-hover",
+            "bg-accent text-accent-fg flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+            "hover:bg-accent-hover",
             "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
           )}
         >

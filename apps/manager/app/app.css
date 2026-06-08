@@ -25,13 +25,13 @@
     color(display-p3 0.912 0.908 0.9),
     color(display-p3 0.162 0.162 0.154)
   );
-  /* orange9 — Solid background */
-  --background-color-btn: light-dark(
+  /* orange9 — Solid accent background */
+  --background-color-accent: light-dark(
     color(display-p3 0.9 0.45 0.2),
     color(display-p3 0.9 0.45 0.2)
   );
-  /* orange10 — Hovered solid background */
-  --background-color-btn-hover: light-dark(
+  /* orange10 — Hovered solid accent background */
+  --background-color-accent-hover: light-dark(
     color(display-p3 0.87 0.409 0.164),
     color(display-p3 0.98 0.51 0.23)
   );
@@ -53,8 +53,8 @@
   );
   /* orange11 — Low-contrast accent text */
   --text-color-accent: light-dark(color(display-p3 0.76 0.34 0), color(display-p3 1 0.63 0.38));
-  /* white — Text on solid orange backgrounds */
-  --text-color-btn: color(display-p3 1 1 1);
+  /* white — Text on solid accent backgrounds */
+  --text-color-accent-fg: color(display-p3 1 1 1);
 
   /* orange9 — Accent border (selected states) */
   --border-color-accent: light-dark(color(display-p3 0.9 0.45 0.2), color(display-p3 0.9 0.45 0.2));

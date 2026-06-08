@@ -197,8 +197,8 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
           type="submit"
           isDisabled={isPending}
           className={cn(
-            "bg-btn text-btn rounded-md px-4 py-2 text-sm font-medium transition-colors",
-            "hover:bg-btn-hover",
+            "bg-accent text-accent-fg rounded-md px-4 py-2 text-sm font-medium transition-colors",
+            "hover:bg-accent-hover",
             "disabled:opacity-50",
             "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
           )}

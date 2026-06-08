@@ -99,8 +99,8 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
                 onPress={() => setIsCreateOpen(true)}
                 aria-label="Neuer Spieler"
                 className={cn(
-                  "bg-btn text-btn shrink-0 rounded-sm p-1.5 transition-colors",
-                  "hover:bg-btn-hover",
+                  "bg-accent text-accent-fg shrink-0 rounded-sm p-1.5 transition-colors",
+                  "hover:bg-accent-hover",
                   "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
                 )}
               >

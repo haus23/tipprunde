@@ -29,7 +29,7 @@ export default function Start({ loaderData }: Route.ComponentProps) {
               </p>
               <Link
                 to="/turniere"
-                className="bg-btn text-btn hover:bg-btn-hover mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
+                className="bg-accent text-accent-fg hover:bg-accent-hover mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
               >
                 Erstes Turnier anlegen →
               </Link>
@@ -48,7 +48,7 @@ export default function Start({ loaderData }: Route.ComponentProps) {
               </p>
               <Link
                 to="/regelwerke"
-                className="bg-btn text-btn hover:bg-btn-hover mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
+                className="bg-accent text-accent-fg hover:bg-accent-hover mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
               >
                 Hier geht's lang →
               </Link>
