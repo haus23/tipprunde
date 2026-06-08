@@ -66,10 +66,15 @@
   /* orange9 — Focus ring */
   --ring-color-accent: light-dark(color(display-p3 0.9 0.45 0.2), color(display-p3 0.9 0.45 0.2));
 
-  /* red11 — Error text / icons */
+  /* red11 — Error text / icons / borders */
   --text-color-error: light-dark(
     color(display-p3 0.481 0.118 0.099),
     color(display-p3 0.979 0.541 0.481)
+  );
+  /* red9 — Error border (solid, vivid) */
+  --border-color-error: light-dark(
+    color(display-p3 0.82 0.282 0.295),
+    color(display-p3 1 0.425 0.441)
   );
 
   /* sand6 — Subtle borders and separators */

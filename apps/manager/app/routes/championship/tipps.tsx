@@ -125,7 +125,13 @@ export async function action({ request, context }: Route.ActionArgs) {
   return null;
 }
 
-type TipEntry = { tip: string; joker: boolean };
+const TIP_PATTERN = /^\d{1,2}:\d{1,2}$/;
+
+function normalizeTip(raw: string): string {
+  return raw.replace(/\s+/g, "").replace(/[-.]/g, ":").replace(/:+/g, ":");
+}
+
+type TipEntry = { tip: string; joker: boolean; invalid?: boolean };
 
 export default function Tipps({ loaderData }: Route.ComponentProps) {
   const { rounds, currentNr, players, matches, tips, slug, championshipName } = loaderData;
@@ -144,7 +150,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
       }
     }
     setTipEntries(playerTips);
-  }, [playerId, tips]);
+  }, [playerId, currentNr]);
 
   if (players.length === 0) {
     return (
@@ -186,6 +192,26 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
       },
       { method: "post" },
     );
+  }
+
+  function handleTipBlur(matchId: number) {
+    const entry = getTip(matchId);
+    const raw = entry.tip.trim();
+
+    if (!raw) {
+      updateTip(matchId, { tip: "", invalid: false });
+      saveTip(matchId, { ...entry, tip: "" });
+      return;
+    }
+
+    const normalized = normalizeTip(raw);
+    const isValid = TIP_PATTERN.test(normalized);
+
+    updateTip(matchId, { tip: normalized, invalid: !isValid });
+
+    if (isValid) {
+      saveTip(matchId, { ...entry, tip: normalized });
+    }
   }
 
   return (
@@ -242,33 +268,38 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-subtle border-b">
-                  <th className="text-muted pr-4 pb-3 text-right font-medium">#</th>
-                  <th className="text-muted pr-4 pb-3 text-left font-medium">Spiel</th>
-                  <th className="text-muted pr-4 pb-3 text-left font-medium">Tipp</th>
-                  <th className="text-muted pb-3 text-center font-medium">Joker</th>
+                  <th className="text-muted pr-2 pb-3 text-right font-medium">#</th>
+                  <th className="text-muted px-2 pb-3 text-left font-medium">Spiel</th>
+                  <th className="text-muted px-2 pb-3 text-center font-medium">Tipp</th>
+                  <th className="text-muted pb-3 pl-2 text-center font-medium">Joker</th>
                 </tr>
               </thead>
               <tbody>
                 {(matches ?? []).map((match) => (
                   <tr key={match.id} className="border-subtle border-b last:border-0">
-                    <td className="text-muted py-3 pr-4 text-right tabular-nums">{match.nr}</td>
-                    <td className="py-3 pr-4">
+                    <td className="text-muted py-3 pr-2 text-right tabular-nums">{match.nr}</td>
+                    <td className="px-2 py-3">
                       {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
                     </td>
-                    <td className="py-3 pr-4">
+                    <td className="px-2 py-3 text-center">
                       <input
                         type="text"
                         value={getTip(match.id).tip}
-                        onChange={(e) => updateTip(match.id, { tip: e.target.value })}
-                        onBlur={() => saveTip(match.id, getTip(match.id))}
+                        onChange={(e) =>
+                          updateTip(match.id, { tip: e.target.value, invalid: false })
+                        }
+                        onBlur={() => handleTipBlur(match.id)}
                         aria-label={`Tipp für Spiel ${match.nr}`}
+                        aria-invalid={getTip(match.id).invalid}
                         className={cn(
-                          "border-subtle bg-surface w-20 rounded-sm border px-2 py-1 text-sm outline-none",
-                          "focus:ring-2 focus:ring-accent",
+                          "bg-surface w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none",
+                          getTip(match.id).invalid
+                            ? "border-error"
+                            : "border-subtle focus:ring-2 focus:ring-accent",
                         )}
                       />
                     </td>
-                    <td className="py-3 text-center">
+                    <td className="py-3 pl-2 text-center">
                       <CheckboxField
                         isSelected={getTip(match.id).joker}
                         onChange={(checked) => {
