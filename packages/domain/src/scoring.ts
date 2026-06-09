@@ -20,7 +20,7 @@ function signOf(n: number): -1 | 0 | 1 {
  *
  * Returns null when no result exists yet — meaning "not yet calculated",
  * which is distinct from 0 (result exists, tip was wrong).
- * This is the function the ergebnisse action should call directly.
+ * Returns 0 for a null or empty tip with a valid result.
  */
 export function calcTipPoints(
   tip: string | null,
@@ -30,21 +30,6 @@ export function calcTipPoints(
   joker: boolean | null,
 ): number | null {
   if (!result) return null;
-  return calcBase(tip, result, tipRuleId, isDoubleRound, joker);
-}
-
-/**
- * Calculate base points for a single tip.
- * Requires a valid result string — callers must ensure result exists.
- * Applies tipRuleId, isDoubleRound multiplier, and joker multiplier.
- */
-export function calcBase(
-  tip: string | null,
-  result: string,
-  tipRuleId: TipRuleId,
-  isDoubleRound: boolean | null,
-  joker: boolean | null,
-): number {
   if (!tip) return 0;
 
   const [tipHome, tipAway] = parseScore(tip);
