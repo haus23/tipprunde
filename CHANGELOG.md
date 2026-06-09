@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.9.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.8.2...v0.9.0)
+
+### 🚀 Enhancements
+
+- **manager:** Add paste support for bulk tip entry ([399f0e1](https://github.com/haus23/tipprunde/commit/399f0e1))
+- **manager:** Implement result editing route ([42c5e80](https://github.com/haus23/tipprunde/commit/42c5e80))
+- **domain:** Add scoring module with calcBase and calcTipPoints ([b979340](https://github.com/haus23/tipprunde/commit/b979340))
+- **manager:** Auto-calculate tip points on result/tip save ([d16c0e1](https://github.com/haus23/tipprunde/commit/d16c0e1))
+
+### 💅 Refactors
+
+- **domain:** Merge calcBase into calcTipPoints ([357cfea](https://github.com/haus23/tipprunde/commit/357cfea))
+
 ## v0.8.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.8.1...v0.8.2)
