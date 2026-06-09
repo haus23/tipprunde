@@ -5,6 +5,12 @@
       "source": "react-aria.adobe.com",
       "sourceType": "well-known",
       "computedHash": "bb2a848e42ac9637d7601c61ec51c75b58ca963201ae7b2c65eae68e40644f23"
+    },
+    "react-router-framework-mode": {
+      "source": "remix-run/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-router-framework-mode/SKILL.md",
+      "computedHash": "26c5bdac2f686c47eb4c4b48b6cb52401cde1dc833e6d26408ddfb22ea83c5ca"
     }
   }
 }
