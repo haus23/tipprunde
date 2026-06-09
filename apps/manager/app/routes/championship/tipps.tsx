@@ -1,6 +1,6 @@
 import { tips as tipsTable } from "@tipprunde/db/schema";
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Button,
   CheckboxButton,
@@ -45,7 +45,9 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   if (!lastRound) {
     return {
       currentNr: null,
+      rounds,
       players,
+      matches: [],
       slug: championship.slug,
       championshipName: championship.name,
     };
@@ -65,25 +67,16 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     with: {
       hometeam: { columns: { name: true } },
       awayteam: { columns: { name: true } },
+      tips: { columns: { userId: true, tip: true, joker: true } },
     },
     orderBy: { nr: "asc" },
   });
-
-  const matchIds = matches.map((m) => m.id);
-  const tips =
-    matchIds.length > 0
-      ? await db.query.tips.findMany({
-          where: { matchId: { in: matchIds } },
-          columns: { matchId: true, userId: true, tip: true, joker: true },
-        })
-      : [];
 
   return {
     rounds,
     currentNr,
     players,
     matches,
-    tips,
     slug: championship.slug,
     championshipName: championship.name,
   };
@@ -96,6 +89,11 @@ export async function action({ request, context }: Route.ActionArgs) {
   if (formData.get("intent") === "update-tip") {
     const matchId = Number(formData.get("matchId"));
     const userId = Number(formData.get("userId"));
+
+    if (!Number.isInteger(matchId) || matchId <= 0 || !Number.isInteger(userId) || userId <= 0) {
+      return null;
+    }
+
     const tip = (formData.get("tip") as string) || null;
     const joker = formData.get("joker") === "true";
 
@@ -110,7 +108,7 @@ export async function action({ request, context }: Route.ActionArgs) {
     ]);
 
     if (match?.round?.championshipId !== championship.id || !player) {
-      return null;
+      return { ok: false };
     }
 
     await db
@@ -122,7 +120,7 @@ export async function action({ request, context }: Route.ActionArgs) {
       });
   }
 
-  return null;
+  return { ok: true };
 }
 
 const TIP_PATTERN = /^\d{1,2}:\d{1,2}$/;
@@ -134,23 +132,45 @@ function normalizeTip(raw: string): string {
 type TipEntry = { tip: string; joker: boolean; invalid?: boolean };
 
 export default function Tipps({ loaderData }: Route.ComponentProps) {
-  const { rounds, currentNr, players, matches, tips, slug, championshipName } = loaderData;
+  const { rounds, currentNr, players, matches, slug, championshipName } = loaderData;
 
   const [playerId, setPlayerId] = useState(players.at(0)?.id ?? 0);
   const [tipEntries, setTipEntries] = useState<Record<number, TipEntry>>({});
   const fetcher = useFetcher();
 
-  const currentUserId = players.find((p) => p.id === playerId)?.user?.id;
+  // Track the last player+round seen by the effect to distinguish a real
+  // context switch (player/round changed → full reset) from a mere tips
+  // refresh after a save (same context → rebuild from server but keep any
+  // invalid local edits, because invalid tips are never persisted and would
+  // disappear from `tips` after revalidation).
+  const prevContextRef = useRef({ playerId, nr: currentNr });
 
   useEffect(() => {
-    const playerTips: Record<number, TipEntry> = {};
-    for (const t of tips ?? []) {
-      if (t.userId === currentUserId) {
-        playerTips[t.matchId] = { tip: t.tip ?? "", joker: t.joker ?? false };
+    const prev = prevContextRef.current;
+    const isContextSwitch = prev.playerId !== playerId || prev.nr !== currentNr;
+    prevContextRef.current = { playerId, nr: currentNr };
+
+    const userId = players.find((p) => p.id === playerId)?.user?.id;
+
+    setTipEntries((prevEntries) => {
+      const fresh: Record<number, TipEntry> = {};
+      for (const match of matches) {
+        const t = match.tips.find((t) => t.userId === userId);
+        if (t) {
+          fresh[match.id] = { tip: t.tip ?? "", joker: t.joker ?? false };
+        }
       }
-    }
-    setTipEntries(playerTips);
-  }, [playerId, currentNr]);
+      if (!isContextSwitch) {
+        // Tips refreshed after a save — keep invalid local edits intact
+        for (const [key, entry] of Object.entries(prevEntries)) {
+          if (entry.invalid) {
+            fresh[Number(key)] = entry;
+          }
+        }
+      }
+      return fresh;
+    });
+  }, [matches, playerId, currentNr]);
 
   if (players.length === 0) {
     return (
@@ -181,12 +201,13 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
   }
 
   function saveTip(matchId: number, entry: TipEntry) {
-    if (!currentUserId) return;
+    const userId = players.find((p) => p.id === playerId)?.user?.id;
+    if (!userId) return;
     void fetcher.submit(
       {
         intent: "update-tip",
         matchId: String(matchId),
-        userId: String(currentUserId),
+        userId: String(userId),
         tip: entry.tip,
         joker: String(entry.joker),
       },
@@ -262,7 +283,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
 
       <Card>
         <CardContent>
-          {(matches ?? []).length === 0 ? (
+          {matches.length === 0 ? (
             <p className="text-subtle text-center text-sm">Noch keine Spiele in dieser Runde.</p>
           ) : (
             <table className="w-full text-sm">
@@ -275,7 +296,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
                 </tr>
               </thead>
               <tbody>
-                {(matches ?? []).map((match) => (
+                {matches.map((match) => (
                   <tr key={match.id} className="border-subtle border-b last:border-0">
                     <td className="text-muted py-3 pr-2 text-right tabular-nums">{match.nr}</td>
                     <td className="px-2 py-3">
