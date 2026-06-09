@@ -1,5 +1,5 @@
 import { tips as tipsTable } from "@tipprunde/db/schema";
-import { CheckIcon, ChevronDownIcon } from "lucide-react";
+import { CheckIcon, ChevronDownIcon, ClipboardIcon } from "lucide-react";
 import { useState } from "react";
 import {
   Button,
@@ -225,6 +225,46 @@ function TipGrid({
     );
   }
 
+  function applyPastedTips(text: string, startMatchId: number) {
+    const startIndex = matches.findIndex((m) => m.id === startMatchId);
+    if (startIndex === -1) return;
+
+    const newEntries: Record<number, TipEntry> = {};
+
+    text
+      .trimEnd()
+      .split(/\r?\n/)
+      .slice(0, matches.length - startIndex)
+      .forEach((raw, offset) => {
+        const match = matches[startIndex + offset];
+        const trimmed = raw.trim();
+        const normalized = trimmed ? normalizeTip(trimmed) : "";
+        const isValid = normalized !== "" && TIP_PATTERN.test(normalized);
+        const joker = getTip(match.id).joker;
+
+        newEntries[match.id] = { tip: normalized, joker, invalid: normalized !== "" && !isValid };
+
+        if (isValid || normalized === "") {
+          saveTip(match.id, { tip: normalized, joker });
+        }
+      });
+
+    setTipEntries((prev) => ({ ...prev, ...newEntries }));
+  }
+
+  function handleTipPaste(matchId: number, e: React.ClipboardEvent<HTMLInputElement>) {
+    const text = e.clipboardData.getData("text");
+    if (text.trimEnd().split(/\r?\n/).length <= 1) return; // single value — let native paste + onBlur handle it
+    e.preventDefault();
+    applyPastedTips(text, matchId);
+  }
+
+  async function handleClipboardPaste() {
+    const text = await navigator.clipboard.readText();
+    if (!text.trim() || matches.length === 0) return;
+    applyPastedTips(text, matches[0].id);
+  }
+
   function handleTipBlur(matchId: number) {
     const entry = getTip(matchId);
     const raw = entry.tip.trim();
@@ -255,7 +295,22 @@ function TipGrid({
         <tr className="border-subtle border-b">
           <th className="text-muted pr-2 pb-3 text-right font-medium">#</th>
           <th className="text-muted px-2 pb-3 text-left font-medium">Spiel</th>
-          <th className="text-muted px-2 pb-3 text-center font-medium">Tipp</th>
+          <th className="text-muted px-2 pb-3 text-center font-medium">
+            <div className="flex items-center justify-center gap-1">
+              <span>Tipp</span>
+              <Button
+                onPress={() => void handleClipboardPaste()}
+                aria-label="Tipps aus Zwischenablage einfügen"
+                className={cn(
+                  "text-muted rounded-sm p-0.5 transition-colors",
+                  "hover:bg-nav-active hover:text-app",
+                  "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
+                )}
+              >
+                <ClipboardIcon className="size-3.5" />
+              </Button>
+            </div>
+          </th>
           <th className="text-muted pb-3 pl-2 text-center font-medium">Joker</th>
         </tr>
       </thead>
@@ -272,6 +327,7 @@ function TipGrid({
                 value={getTip(match.id).tip}
                 onChange={(e) => updateTip(match.id, { tip: e.target.value, invalid: false })}
                 onBlur={() => handleTipBlur(match.id)}
+                onPaste={(e) => handleTipPaste(match.id, e)}
                 aria-label={`Tipp für Spiel ${match.nr}`}
                 aria-invalid={getTip(match.id).invalid}
                 className={cn(
