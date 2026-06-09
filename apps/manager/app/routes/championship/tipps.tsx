@@ -275,10 +275,10 @@ function TipGrid({
                 aria-label={`Tipp für Spiel ${match.nr}`}
                 aria-invalid={getTip(match.id).invalid}
                 className={cn(
-                  "bg-surface w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none",
+                  "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
                   getTip(match.id).invalid
-                    ? "border-error"
-                    : "border-subtle focus:ring-2 focus:ring-accent",
+                    ? "bg-error dark:bg-surface dark:text-error"
+                    : "bg-surface",
                 )}
               />
             </td>

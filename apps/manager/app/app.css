@@ -66,6 +66,11 @@
   /* orange9 — Focus ring */
   --ring-color-accent: light-dark(color(display-p3 0.9 0.45 0.2), color(display-p3 0.9 0.45 0.2));
 
+  /* red4 — Error input background (subtle tint) */
+  --background-color-error: light-dark(
+    color(display-p3 1 0.897 0.891),
+    color(display-p3 0.197 0.097 0.089)
+  );
   /* red11 — Error text / icons / borders */
   --text-color-error: light-dark(
     color(display-p3 0.481 0.118 0.099),
