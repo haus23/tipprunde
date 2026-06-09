@@ -1,5 +1,11 @@
-import { matches as matchesTable } from "@tipprunde/db/schema";
-import { eq } from "drizzle-orm";
+import { matches as matchesTable, tips as tipsTable } from "@tipprunde/db/schema";
+import {
+  applyMatchRule,
+  applyRoundRule,
+  calcTipPoints,
+  type TipRuleId,
+} from "@tipprunde/domain/scoring";
+import { and, eq } from "drizzle-orm";
 import { useState } from "react";
 import { redirect, useFetcher, useNavigate } from "react-router";
 
@@ -70,16 +76,45 @@ export async function action({ request, context }: Route.ActionArgs) {
 
     const result = (formData.get("result") as string) || null;
 
-    const match = await db.query.matches.findFirst({
-      where: { id: matchId },
-      with: { round: { columns: { championshipId: true } } },
-    });
+    const [match, tips, ruleset] = await Promise.all([
+      db.query.matches.findFirst({
+        where: { id: matchId },
+        with: { round: { columns: { championshipId: true, isDoubleRound: true } } },
+      }),
+      db.query.tips.findMany({
+        where: { matchId },
+        columns: { userId: true, tip: true, joker: true },
+      }),
+      championship.rulesetId
+        ? db.query.rulesets.findFirst({
+            where: { id: championship.rulesetId },
+            columns: { tipRuleId: true },
+          })
+        : Promise.resolve(null),
+    ]);
 
-    if (match?.round?.championshipId !== championship.id) {
+    if (!match || !match.round || match.round.championshipId !== championship.id) {
       return { ok: false };
     }
 
     await db.update(matchesTable).set({ result }).where(eq(matchesTable.id, matchId));
+
+    const tipRuleId = ruleset?.tipRuleId as TipRuleId | undefined;
+    const isDoubleRound = match.round.isDoubleRound;
+
+    if (tipRuleId && tips.length > 0) {
+      await Promise.all(
+        tips.map((tip) => {
+          const points = calcTipPoints(tip.tip, result, tipRuleId, isDoubleRound, tip.joker);
+          return db
+            .update(tipsTable)
+            .set({ points })
+            .where(and(eq(tipsTable.matchId, matchId), eq(tipsTable.userId, tip.userId)));
+        }),
+      );
+      applyMatchRule();
+      applyRoundRule();
+    }
   }
 
   return { ok: true };

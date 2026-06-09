@@ -1,4 +1,11 @@
 import { tips as tipsTable } from "@tipprunde/db/schema";
+import {
+  applyMatchRule,
+  applyRoundRule,
+  calcTipPoints,
+  type TipRuleId,
+} from "@tipprunde/domain/scoring";
+import { and, eq } from "drizzle-orm";
 import { CheckIcon, ChevronDownIcon, ClipboardIcon } from "lucide-react";
 import { useState } from "react";
 import {
@@ -127,17 +134,23 @@ export async function action({ request, context }: Route.ActionArgs) {
     const tip = (formData.get("tip") as string) || null;
     const joker = formData.get("joker") === "true";
 
-    const [match, player] = await Promise.all([
+    const [match, player, ruleset] = await Promise.all([
       db.query.matches.findFirst({
         where: { id: matchId },
-        with: { round: { columns: { championshipId: true } } },
+        with: { round: { columns: { championshipId: true, isDoubleRound: true } } },
       }),
       db.query.players.findFirst({
         where: { userId, championshipId: championship.id },
       }),
+      championship.rulesetId
+        ? db.query.rulesets.findFirst({
+            where: { id: championship.rulesetId },
+            columns: { tipRuleId: true },
+          })
+        : Promise.resolve(null),
     ]);
 
-    if (match?.round?.championshipId !== championship.id || !player) {
+    if (!match || !match.round || match.round.championshipId !== championship.id || !player) {
       return { ok: false };
     }
 
@@ -148,6 +161,18 @@ export async function action({ request, context }: Route.ActionArgs) {
         target: [tipsTable.matchId, tipsTable.userId],
         set: { tip, joker },
       });
+
+    const tipRuleId = ruleset?.tipRuleId as TipRuleId | undefined;
+
+    if (match.result && tipRuleId) {
+      const points = calcTipPoints(tip, match.result, tipRuleId, match.round.isDoubleRound, joker);
+      await db
+        .update(tipsTable)
+        .set({ points })
+        .where(and(eq(tipsTable.matchId, matchId), eq(tipsTable.userId, userId)));
+      applyMatchRule();
+      applyRoundRule();
+    }
   }
 
   return { ok: true };
