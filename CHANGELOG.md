@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.8.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.8.1...v0.8.2)
+
+### 🚀 Enhancements
+
+- **manager:** Implement tipps editing with round navigation and player select ([0e3af86](https://github.com/haus23/tipprunde/commit/0e3af86))
+- **manager:** Tip validation and normalization ([8513b07](https://github.com/haus23/tipprunde/commit/8513b07))
+
+### 🩹 Fixes
+
+- **manager:** Small CSS fix and cleanup. ([b4700f9](https://github.com/haus23/tipprunde/commit/b4700f9))
+
+### 💅 Refactors
+
+- **manager:** Rename btn color tokens to accent ([2bb4362](https://github.com/haus23/tipprunde/commit/2bb4362))
+- **manager:** Improve tipps route after code review ([7cbca24](https://github.com/haus23/tipprunde/commit/7cbca24))
+- **manager:** Rearchitect tipps route for per-player loading ([85dc667](https://github.com/haus23/tipprunde/commit/85dc667))
+- **manager:** Use player slug in tipps route URL ([f911009](https://github.com/haus23/tipprunde/commit/f911009))
+- **manager:** Improve invalid tip visual feedback ([b49e25e](https://github.com/haus23/tipprunde/commit/b49e25e))
+
+### 🏡 Chore
+
+- **manager:** Update CLAUDE.md ([0dd34eb](https://github.com/haus23/tipprunde/commit/0dd34eb))
+- Add RR7 skills. ([b650605](https://github.com/haus23/tipprunde/commit/b650605))
+
 ## v0.8.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.8.0...v0.8.1)
