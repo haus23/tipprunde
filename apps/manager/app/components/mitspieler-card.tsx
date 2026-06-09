@@ -28,10 +28,13 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
   const [filter, setFilter] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-  const inChampionship = useMemo(
-    () => allUsers.filter((u) => playerIds.has(u.id)).sort((a, b) => a.id - b.id),
-    [allUsers, playerIds],
-  );
+  const inChampionship = useMemo(() => {
+    const userMap = new Map(allUsers.map((u) => [u.id, u]));
+    return [...playerIds].flatMap((id) => {
+      const u = userMap.get(id);
+      return u ? [u] : [];
+    });
+  }, [allUsers, playerIds]);
   const available = useMemo(() => {
     const all = allUsers.filter((u) => !playerIds.has(u.id));
     if (!filter) return all;
