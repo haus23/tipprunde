@@ -26,7 +26,7 @@ export const handle = { title: "Tipps" };
 
 export async function loader({ params, context }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
-  const requestedPlayerId = params.playerId ? Number(params.playerId) : null;
+  const requestedPlayerSlug = params.playerSlug ?? null;
 
   const [rounds, playerList, ruleset] = await Promise.all([
     db.query.rounds.findMany({
@@ -36,7 +36,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     }),
     db.query.players.findMany({
       where: { championshipId: championship.id },
-      with: { user: { columns: { id: true, name: true } } },
+      with: { user: { columns: { id: true, slug: true, name: true } } },
     }),
     championship.rulesetId
       ? db.query.rulesets.findFirst({
@@ -55,19 +55,19 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       allMatches: [],
       jokerRuleId: null,
       defaultNr: null,
-      currentPlayerId: null,
+      currentPlayerSlug: null,
       slug: championship.slug,
       championshipName: championship.name,
     };
   }
 
   // Redirect to first player when param is missing or invalid
-  const currentPlayer = requestedPlayerId
-    ? players.find((p) => p.userId === requestedPlayerId)
+  const currentPlayer = requestedPlayerSlug
+    ? players.find((p) => p.user?.slug === requestedPlayerSlug)
     : null;
 
   if (!currentPlayer) {
-    throw redirect(`/${championship.slug}/tipps/${players[0].userId}`);
+    throw redirect(`/${championship.slug}/tipps/${players[0].user!.slug}`);
   }
 
   if (rounds.length === 0) {
@@ -77,7 +77,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       allMatches: [],
       jokerRuleId: ruleset?.jokerRuleId ?? null,
       defaultNr: null,
-      currentPlayerId: currentPlayer.userId,
+      currentPlayerSlug: currentPlayer.user!.slug,
       slug: championship.slug,
       championshipName: championship.name,
     };
@@ -105,7 +105,8 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     allMatches,
     jokerRuleId: ruleset?.jokerRuleId ?? null,
     defaultNr: rounds.at(-1)!.nr,
-    currentPlayerId: currentPlayer.userId,
+    currentPlayerSlug: currentPlayer.user!.slug,
+    currentUserId: currentPlayer.userId,
     slug: championship.slug,
     championshipName: championship.name,
   };
@@ -172,7 +173,7 @@ type TipMatch = {
 
 type TipGridProps = {
   matches: TipMatch[];
-  currentPlayerId: number;
+  currentUserId: number;
   jokerRuleId: string | null;
   jokerCount: number;
   roundJokerCount: number;
@@ -180,7 +181,7 @@ type TipGridProps = {
 
 function TipGrid({
   matches,
-  currentPlayerId,
+  currentUserId,
   jokerRuleId,
   jokerCount,
   roundJokerCount,
@@ -216,7 +217,7 @@ function TipGrid({
       {
         intent: "update-tip",
         matchId: String(matchId),
-        userId: String(currentPlayerId),
+        userId: String(currentUserId),
         tip: entry.tip,
         joker: String(entry.joker),
       },
@@ -322,7 +323,8 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
     allMatches,
     jokerRuleId,
     defaultNr,
-    currentPlayerId,
+    currentPlayerSlug,
+    currentUserId,
     slug,
     championshipName,
   } = loaderData;
@@ -371,7 +373,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
         <CardContent>
           <Select
             aria-label="Spieler auswählen"
-            value={currentPlayerId}
+            value={currentPlayerSlug}
             onChange={(v) => v !== null && void navigate(`/${slug}/tipps/${v}`)}
             className="flex flex-col gap-1.5"
           >
@@ -390,7 +392,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
               <ListBox items={players} className="max-h-72 overflow-y-auto p-1 outline-none">
                 {(player) => (
                   <ListBoxItem
-                    id={player.userId}
+                    id={player.user?.slug ?? ""}
                     textValue={player.user?.name ?? ""}
                     className={cn(
                       "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
@@ -409,9 +411,9 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
       <Card>
         <CardContent>
           <TipGrid
-            key={`${currentPlayerId}-${currentNr}`}
+            key={`${currentPlayerSlug}-${currentNr}`}
             matches={currentMatches}
-            currentPlayerId={currentPlayerId!}
+            currentUserId={currentUserId!}
             jokerRuleId={jokerRuleId}
             jokerCount={jokerCount}
             roundJokerCount={roundJokerCount}

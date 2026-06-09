@@ -5,7 +5,7 @@ export default [
   route(":slug", "routes/championship.tsx", [
     index("routes/championship/index.tsx"),
     route("spiele/:nr?", "routes/championship/spiele.tsx"),
-    route("tipps/:playerId?", "routes/championship/tipps.tsx"),
+    route("tipps/:playerSlug?", "routes/championship/tipps.tsx"),
     route("ergebnisse/:nr?", "routes/championship/ergebnisse.tsx"),
     route("zusatzpunkte", "routes/championship/zusatzpunkte.tsx"),
   ]),
