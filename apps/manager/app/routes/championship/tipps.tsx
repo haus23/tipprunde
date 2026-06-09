@@ -1,6 +1,6 @@
 import { tips as tipsTable } from "@tipprunde/db/schema";
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
   Button,
   CheckboxButton,
@@ -12,7 +12,7 @@ import {
   Select,
   SelectValue,
 } from "react-aria-components";
-import { redirect, useFetcher } from "react-router";
+import { redirect, useFetcher, useNavigate } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
 import { cn } from "#/lib/utils.ts";
@@ -26,8 +26,9 @@ export const handle = { title: "Tipps" };
 
 export async function loader({ params, context }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
+  const requestedPlayerId = params.playerId ? Number(params.playerId) : null;
 
-  const [rounds, playerList] = await Promise.all([
+  const [rounds, playerList, ruleset] = await Promise.all([
     db.query.rounds.findMany({
       where: { championshipId: championship.id },
       columns: { id: true, nr: true },
@@ -35,48 +36,76 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     }),
     db.query.players.findMany({
       where: { championshipId: championship.id },
-      with: { user: true },
+      with: { user: { columns: { id: true, name: true } } },
     }),
+    championship.rulesetId
+      ? db.query.rulesets.findFirst({
+          where: { id: championship.rulesetId },
+          columns: { jokerRuleId: true },
+        })
+      : Promise.resolve(null),
   ]);
 
   const players = playerList.sort((a, b) => (a.user?.name ?? "").localeCompare(b.user?.name ?? ""));
 
-  const lastRound = rounds.at(-1);
-  if (!lastRound) {
+  if (players.length === 0) {
     return {
-      currentNr: null,
-      rounds,
       players,
-      matches: [],
+      rounds,
+      allMatches: [],
+      jokerRuleId: null,
+      defaultNr: null,
+      currentPlayerId: null,
       slug: championship.slug,
       championshipName: championship.name,
     };
   }
 
-  const requestedNr = params.nr ? Number(params.nr) : null;
-  const currentNr = requestedNr ?? lastRound.nr;
+  // Redirect to first player when param is missing or invalid
+  const currentPlayer = requestedPlayerId
+    ? players.find((p) => p.userId === requestedPlayerId)
+    : null;
 
-  if (!rounds.some((r) => r.nr === currentNr)) {
-    throw redirect(`/${championship.slug}/tipps/${lastRound.nr}`);
+  if (!currentPlayer) {
+    throw redirect(`/${championship.slug}/tipps/${players[0].userId}`);
   }
 
-  const currentRound = rounds.find((r) => r.nr === currentNr)!;
-  const matches = await db.query.matches.findMany({
-    where: { roundId: currentRound.id },
-    columns: { id: true, nr: true },
+  if (rounds.length === 0) {
+    return {
+      players,
+      rounds,
+      allMatches: [],
+      jokerRuleId: ruleset?.jokerRuleId ?? null,
+      defaultNr: null,
+      currentPlayerId: currentPlayer.userId,
+      slug: championship.slug,
+      championshipName: championship.name,
+    };
+  }
+
+  // Load all matches for the championship with this player's tips nested
+  const roundIds = rounds.map((r) => r.id);
+  const allMatches = await db.query.matches.findMany({
+    where: { roundId: { in: roundIds } },
+    columns: { id: true, nr: true, roundId: true },
     with: {
       hometeam: { columns: { name: true } },
       awayteam: { columns: { name: true } },
-      tips: { columns: { userId: true, tip: true, joker: true } },
+      tips: {
+        where: { userId: currentPlayer.userId },
+        columns: { tip: true, joker: true },
+      },
     },
     orderBy: { nr: "asc" },
   });
 
   return {
-    rounds,
-    currentNr,
     players,
-    matches,
+    rounds,
+    allMatches,
+    jokerRuleId: ruleset?.jokerRuleId ?? null,
+    defaultNr: rounds.at(-1)!.nr,
+    currentPlayerId: currentPlayer.userId,
     slug: championship.slug,
     championshipName: championship.name,
   };
@@ -123,6 +152,8 @@ export async function action({ request, context }: Route.ActionArgs) {
   return { ok: true };
 }
 
+// --- Tip grid ---
+
 const TIP_PATTERN = /^\d{1,2}:\d{1,2}$/;
 
 function normalizeTip(raw: string): string {
@@ -131,65 +162,45 @@ function normalizeTip(raw: string): string {
 
 type TipEntry = { tip: string; joker: boolean; invalid?: boolean };
 
-export default function Tipps({ loaderData }: Route.ComponentProps) {
-  const { rounds, currentNr, players, matches, slug, championshipName } = loaderData;
+type TipMatch = {
+  id: number;
+  nr: number;
+  hometeam: { name: string } | null;
+  awayteam: { name: string } | null;
+  tips: { tip: string | null; joker: boolean | null }[];
+};
 
-  const [playerId, setPlayerId] = useState(players.at(0)?.id ?? 0);
-  const [tipEntries, setTipEntries] = useState<Record<number, TipEntry>>({});
+type TipGridProps = {
+  matches: TipMatch[];
+  currentPlayerId: number;
+  jokerRuleId: string | null;
+  jokerCount: number;
+  roundJokerCount: number;
+};
+
+function TipGrid({
+  matches,
+  currentPlayerId,
+  jokerRuleId,
+  jokerCount,
+  roundJokerCount,
+}: TipGridProps) {
   const fetcher = useFetcher();
 
-  // Track the last player+round seen by the effect to distinguish a real
-  // context switch (player/round changed → full reset) from a mere tips
-  // refresh after a save (same context → rebuild from server but keep any
-  // invalid local edits, because invalid tips are never persisted and would
-  // disappear from `tips` after revalidation).
-  const prevContextRef = useRef({ playerId, nr: currentNr });
+  const [tipEntries, setTipEntries] = useState<Record<number, TipEntry>>(() => {
+    const entries: Record<number, TipEntry> = {};
+    for (const match of matches) {
+      const t = match.tips[0];
+      if (t) entries[match.id] = { tip: t.tip ?? "", joker: t.joker ?? false };
+    }
+    return entries;
+  });
 
-  useEffect(() => {
-    const prev = prevContextRef.current;
-    const isContextSwitch = prev.playerId !== playerId || prev.nr !== currentNr;
-    prevContextRef.current = { playerId, nr: currentNr };
-
-    const userId = players.find((p) => p.id === playerId)?.user?.id;
-
-    setTipEntries((prevEntries) => {
-      const fresh: Record<number, TipEntry> = {};
-      for (const match of matches) {
-        const t = match.tips.find((t) => t.userId === userId);
-        if (t) {
-          fresh[match.id] = { tip: t.tip ?? "", joker: t.joker ?? false };
-        }
-      }
-      if (!isContextSwitch) {
-        // Tips refreshed after a save — keep invalid local edits intact
-        for (const [key, entry] of Object.entries(prevEntries)) {
-          if (entry.invalid) {
-            fresh[Number(key)] = entry;
-          }
-        }
-      }
-      return fresh;
-    });
-  }, [matches, playerId, currentNr]);
-
-  if (players.length === 0) {
-    return (
-      <div className="space-y-6 p-8">
-        <title>{`Tipps | ${championshipName}`}</title>
-        <div className="mb-6 flex min-h-9 items-center" />
-        <p className="text-subtle text-center text-sm">Noch keine Spieler im Turnier.</p>
-      </div>
-    );
-  }
-
-  if (currentNr === null) {
-    return (
-      <div className="space-y-6 p-8">
-        <title>{`Tipps | ${championshipName}`}</title>
-        <div className="mb-6 flex min-h-9 items-center" />
-        <p className="text-subtle text-center text-sm">Noch keine Spiele angelegt.</p>
-      </div>
-    );
+  function isJokerAllowed(matchId: number): boolean {
+    const currentlyChecked = tipEntries[matchId]?.joker ?? false;
+    if (jokerRuleId === "einmal-pro-runde") return roundJokerCount === 0 || currentlyChecked;
+    if (jokerRuleId === "zwei-pro-turnier") return jokerCount < 2 || currentlyChecked;
+    return false;
   }
 
   function getTip(matchId: number): TipEntry {
@@ -201,13 +212,11 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
   }
 
   function saveTip(matchId: number, entry: TipEntry) {
-    const userId = players.find((p) => p.id === playerId)?.user?.id;
-    if (!userId) return;
     void fetcher.submit(
       {
         intent: "update-tip",
         matchId: String(matchId),
-        userId: String(userId),
+        userId: String(currentPlayerId),
         tip: entry.tip,
         joker: String(entry.joker),
       },
@@ -235,19 +244,135 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
     }
   }
 
+  if (matches.length === 0) {
+    return <p className="text-subtle text-center text-sm">Noch keine Spiele in dieser Runde.</p>;
+  }
+
+  return (
+    <table className="w-full text-sm">
+      <thead>
+        <tr className="border-subtle border-b">
+          <th className="text-muted pr-2 pb-3 text-right font-medium">#</th>
+          <th className="text-muted px-2 pb-3 text-left font-medium">Spiel</th>
+          <th className="text-muted px-2 pb-3 text-center font-medium">Tipp</th>
+          <th className="text-muted pb-3 pl-2 text-center font-medium">Joker</th>
+        </tr>
+      </thead>
+      <tbody>
+        {matches.map((match) => (
+          <tr key={match.id} className="border-subtle border-b last:border-0">
+            <td className="text-muted py-3 pr-2 text-right tabular-nums">{match.nr}</td>
+            <td className="px-2 py-3">
+              {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
+            </td>
+            <td className="px-2 py-3 text-center">
+              <input
+                type="text"
+                value={getTip(match.id).tip}
+                onChange={(e) => updateTip(match.id, { tip: e.target.value, invalid: false })}
+                onBlur={() => handleTipBlur(match.id)}
+                aria-label={`Tipp für Spiel ${match.nr}`}
+                aria-invalid={getTip(match.id).invalid}
+                className={cn(
+                  "bg-surface w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none",
+                  getTip(match.id).invalid
+                    ? "border-error"
+                    : "border-subtle focus:ring-2 focus:ring-accent",
+                )}
+              />
+            </td>
+            <td className="py-3 pl-2 text-center">
+              <CheckboxField
+                isSelected={getTip(match.id).joker}
+                isDisabled={!isJokerAllowed(match.id)}
+                onChange={(checked) => {
+                  const updated = { ...getTip(match.id), joker: checked };
+                  updateTip(match.id, { joker: checked });
+                  saveTip(match.id, updated);
+                }}
+                aria-label={`Joker für Spiel ${match.nr}`}
+                className="flex justify-center"
+              >
+                <CheckboxButton
+                  className={cn(
+                    "group flex size-5 cursor-pointer items-center justify-center rounded border outline-none transition-colors",
+                    "border-subtle",
+                    "data-selected:border-accent data-selected:bg-accent",
+                    "data-focused:ring-2 data-focused:ring-accent",
+                    "data-disabled:cursor-not-allowed data-disabled:opacity-40",
+                  )}
+                >
+                  <CheckIcon className="size-3 stroke-4 text-transparent group-data-selected:text-white" />
+                </CheckboxButton>
+              </CheckboxField>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+// --- Page ---
+
+export default function Tipps({ loaderData }: Route.ComponentProps) {
+  const {
+    players,
+    rounds,
+    allMatches,
+    jokerRuleId,
+    defaultNr,
+    currentPlayerId,
+    slug,
+    championshipName,
+  } = loaderData;
+  const navigate = useNavigate();
+  const [currentNr, setCurrentNr] = useState(defaultNr ?? 0);
+
+  if (players.length === 0) {
+    return (
+      <div className="space-y-6 p-8">
+        <title>{`Tipps | ${championshipName}`}</title>
+        <div className="mb-6 flex min-h-9 items-center" />
+        <p className="text-subtle text-center text-sm">Noch keine Spieler im Turnier.</p>
+      </div>
+    );
+  }
+
+  if (rounds.length === 0) {
+    return (
+      <div className="space-y-6 p-8">
+        <title>{`Tipps | ${championshipName}`}</title>
+        <div className="mb-6 flex min-h-9 items-center" />
+        <p className="text-subtle text-center text-sm">Noch keine Spiele angelegt.</p>
+      </div>
+    );
+  }
+
+  const currentRound = rounds.find((r) => r.nr === currentNr);
+  const currentMatches = allMatches.filter((m) => m.roundId === currentRound?.id);
+
+  // Joker counts derived from server-confirmed data (allMatches)
+  const jokerCount = allMatches.filter((m) => m.tips[0]?.joker).length;
+  const roundJokerCount = currentMatches.filter((m) => m.tips[0]?.joker).length;
+
   return (
     <div className="space-y-6 p-8">
       <title>{`Tipps | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center">
-        <RoundNavigator currentNr={currentNr} totalRounds={rounds.length} base={`/${slug}/tipps`} />
+        <RoundNavigator
+          currentNr={currentNr}
+          totalRounds={rounds.length}
+          onNavigate={setCurrentNr}
+        />
       </div>
 
       <Card>
         <CardContent>
           <Select
             aria-label="Spieler auswählen"
-            value={playerId}
-            onChange={(v) => v !== null && setPlayerId(Number(v))}
+            value={currentPlayerId}
+            onChange={(v) => v !== null && void navigate(`/${slug}/tipps/${v}`)}
             className="flex flex-col gap-1.5"
           >
             <Label className="text-sm font-medium">Spieler</Label>
@@ -265,7 +390,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
               <ListBox items={players} className="max-h-72 overflow-y-auto p-1 outline-none">
                 {(player) => (
                   <ListBoxItem
-                    id={player.id}
+                    id={player.userId}
                     textValue={player.user?.name ?? ""}
                     className={cn(
                       "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
@@ -283,71 +408,14 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
 
       <Card>
         <CardContent>
-          {matches.length === 0 ? (
-            <p className="text-subtle text-center text-sm">Noch keine Spiele in dieser Runde.</p>
-          ) : (
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-subtle border-b">
-                  <th className="text-muted pr-2 pb-3 text-right font-medium">#</th>
-                  <th className="text-muted px-2 pb-3 text-left font-medium">Spiel</th>
-                  <th className="text-muted px-2 pb-3 text-center font-medium">Tipp</th>
-                  <th className="text-muted pb-3 pl-2 text-center font-medium">Joker</th>
-                </tr>
-              </thead>
-              <tbody>
-                {matches.map((match) => (
-                  <tr key={match.id} className="border-subtle border-b last:border-0">
-                    <td className="text-muted py-3 pr-2 text-right tabular-nums">{match.nr}</td>
-                    <td className="px-2 py-3">
-                      {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
-                    </td>
-                    <td className="px-2 py-3 text-center">
-                      <input
-                        type="text"
-                        value={getTip(match.id).tip}
-                        onChange={(e) =>
-                          updateTip(match.id, { tip: e.target.value, invalid: false })
-                        }
-                        onBlur={() => handleTipBlur(match.id)}
-                        aria-label={`Tipp für Spiel ${match.nr}`}
-                        aria-invalid={getTip(match.id).invalid}
-                        className={cn(
-                          "bg-surface w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none",
-                          getTip(match.id).invalid
-                            ? "border-error"
-                            : "border-subtle focus:ring-2 focus:ring-accent",
-                        )}
-                      />
-                    </td>
-                    <td className="py-3 pl-2 text-center">
-                      <CheckboxField
-                        isSelected={getTip(match.id).joker}
-                        onChange={(checked) => {
-                          const updated = { ...getTip(match.id), joker: checked };
-                          updateTip(match.id, { joker: checked });
-                          saveTip(match.id, updated);
-                        }}
-                        aria-label={`Joker für Spiel ${match.nr}`}
-                        className="flex justify-center"
-                      >
-                        <CheckboxButton
-                          className={cn(
-                            "group flex size-5 cursor-pointer items-center justify-center rounded border outline-none transition-colors",
-                            "border-subtle",
-                            "data-selected:border-accent data-selected:bg-accent",
-                            "data-focused:ring-2 data-focused:ring-accent",
-                          )}
-                        >
-                          <CheckIcon className="size-3 stroke-4 text-transparent group-data-selected:text-white" />
-                        </CheckboxButton>
-                      </CheckboxField>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+          <TipGrid
+            key={`${currentPlayerId}-${currentNr}`}
+            matches={currentMatches}
+            currentPlayerId={currentPlayerId!}
+            jokerRuleId={jokerRuleId}
+            jokerCount={jokerCount}
+            roundJokerCount={roundJokerCount}
+          />
         </CardContent>
       </Card>
     </div>

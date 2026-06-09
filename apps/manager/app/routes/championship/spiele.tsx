@@ -17,7 +17,7 @@ import {
   ListBoxItem,
   Popover,
 } from "react-aria-components";
-import { redirect, useFetcher } from "react-router";
+import { redirect, useFetcher, useNavigate } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
 import { cn, formatDate } from "#/lib/utils.ts";
@@ -417,6 +417,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
     championshipName,
   } = loaderData;
 
+  const navigate = useNavigate();
   const [editMatch, setEditMatch] = useState<MatchRow | null>(null);
   const [createKey, setCreateKey] = useState(0);
 
@@ -444,7 +445,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
         <RoundNavigator
           currentNr={currentNr}
           totalRounds={rounds.length}
-          base={`/${slug}/spiele`}
+          onNavigate={(nr) => void navigate(`/${slug}/spiele/${nr}`)}
         />
       </div>
 
