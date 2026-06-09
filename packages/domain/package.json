@@ -3,6 +3,15 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./rules": "./src/rules.ts"
+    "./rules": "./src/rules.ts",
+    "./scoring": "./src/scoring.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc",
+    "test": "node --experimental-strip-types --test src/scoring.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:types",
+    "typescript": "catalog:"
   }
 }

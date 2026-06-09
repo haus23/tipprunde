@@ -41,15 +41,81 @@ across the slugged championship routes.
 
 Joker doubles the tip points in both variants.
 
-### Scoring chain (applied in order)
+### Points storage — null vs. 0
+
+`tips.points` is a **nullable integer**. The two falsy states have distinct meanings:
+
+| Value  | Meaning                                              |
+| ------ | ---------------------------------------------------- |
+| `null` | Match has no result yet — points not yet calculated  |
+| `0`    | Result exists, this tip scored no points (wrong tip) |
+
+When a result is **reset to null**, all tips for that match must have their points
+reset to `null` as well — not `0`. This preserves the "not yet calculated" state
+and allows the frontend to distinguish between "no result" and "wrong tip".
+
+### Points recalculation — storage
+
+Points are stored as a **single `tips.points` integer** (the final total after all modifiers).
+There are no separate columns for base points vs. rule bonuses.
+
+When recalculation is triggered, all affected tips are **reset to their base value first**,
+then modifiers are applied on top — a clean two-pass approach that avoids maintaining
+partial state across columns.
+
+### Points recalculation — algorithm
+
+```
+// Pass 1 — base points for each tip
+for each tip on the match:
+    tip.points = calcBase(tip, result, tipRuleId, isDoubleRound)
+
+// Pass 2 — match-level modifier (if matchRuleId !== "keine-besonderheiten")
+apply matchRuleId over all tips for this match
+    e.g. "alleiniger-treffer-drei-punkte": add 3 to the sole scorer's tip
+
+// Pass 3 — round-level modifier (if roundRuleId !== "keine-besonderheiten")
+apply roundRuleId over relevant tips for the round
+```
+
+### Points recalculation — triggers
+
+Two domain events trigger recalculation:
+
+**A. Match result edited**
+
+1. Run all three passes for **all tips on this match**
+
+**B. Tip edited (match already has a result)**
+
+1. Recalculate base points (pass 1) for **this tip only**
+2. If `matchRuleId` or `roundRuleId` is not `"keine-besonderheiten"`: run passes 2 and 3
+   over **all tips for the match** — match-level rules (e.g. sole scorer) depend on
+   the full set of tip outcomes, so one tip changing can affect others
+
+### Scoring chain (single tip, applied in order)
 
 1. Base points from `tipRuleId` (3 / 2 / 1 or 3 / 1)
 2. × 2 if `isDoubleRound`
 3. × 2 if joker set on this tip
-4. - 3 if sole scorer (`matchRuleId === "alleiniger-treffer-drei-punkte"`)
+
+### Match-level modifier (`matchRuleId`, applied after all tips calculated)
+
+| Value                            | Effect                                                                             |
+| -------------------------------- | ---------------------------------------------------------------------------------- |
+| `keine-besonderheiten`           | No modification                                                                    |
+| `alleiniger-treffer-drei-punkte` | If exactly one player scored points on this match: add 3 bonus points to their tip |
+
+### Round-level modifier (`roundRuleId`, applied after round completion)
+
+| Value                  | Effect          |
+| ---------------------- | --------------- |
+| `keine-besonderheiten` | No modification |
+
+Future values will add round-level bonus point passes (deferred to ~championship #30).
 
 Maximum possible score per tip: `3 × 2 × 2 + 3 = 15 points`
-(exact result, double round, joker, sole scorer).
+(exact result, double round, joker, sole scorer bonus).
 
 ### `jokerRuleId` — joker availability
 

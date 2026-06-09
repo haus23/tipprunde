@@ -29,7 +29,7 @@ This package uses the drizzle-orm@1.0 package. So all code querying this schemas
 
 ```bash
 # Patch version change: 0.1.2 -> 0.1.3  (It's a minor release arg due to major version 0)
-bunx changelogen --noAuthors --release --minor --push
+pnpx changelogen --noAuthors --release --minor --push
 # Minor version change: 0.1.2 -> 0.2.0  (It's a major release arg due to major version 0)
-bunx changelogen --noAuthors --release --major --push
+pnpx changelogen --noAuthors --release --major --push
 ```

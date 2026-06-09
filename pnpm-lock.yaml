@@ -202,7 +202,14 @@ importers:
         specifier: catalog:orm
         version: 1.0.0-rc.3
 
-  packages/domain: {}
+  packages/domain:
+    devDependencies:
+      '@types/node':
+        specifier: catalog:types
+        version: 25.9.1
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
 
 packages:
 
