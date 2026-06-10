@@ -73,7 +73,7 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 
 ## Docs
 
-The `docs/` folder contains:
+Shared docs are in the root `docs/` folder:
 
 - `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain logic, open design questions
 - `theme.md` — Color system: Radix Sand/Orange tokens, `--color-*` CSS properties, Tailwind setup

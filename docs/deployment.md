@@ -2,11 +2,24 @@
 
 ## Environment variables
 
-| Variable             | Description                                       |
-| -------------------- | ------------------------------------------------- |
-| `TURSO_DATABASE_URL` | Turso database URL (`libsql://...`)               |
-| `TURSO_AUTH_TOKEN`   | Turso auth token                                  |
-| `WEB_APP_URL`        | URL of the frontend app (used for login redirect) |
+### Shared (both apps)
+
+| Variable             | Description                         |
+| -------------------- | ----------------------------------- |
+| `TURSO_DATABASE_URL` | Turso database URL (`libsql://...`) |
+| `TURSO_AUTH_TOKEN`   | Turso auth token                    |
+
+### Manager app (`apps/manager`)
+
+| Variable      | Description                                       |
+| ------------- | ------------------------------------------------- |
+| `WEB_APP_URL` | URL of the frontend app (used for login redirect) |
+
+### Web app (`apps/web`)
+
+| Variable | Description |
+| -------- | ----------- |
+| TBD      |             |
 
 ## First-deploy bootstrap
 

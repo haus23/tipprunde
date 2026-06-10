@@ -1,6 +1,7 @@
 # Theme
 
-The color system of this app is created around the radix colors sand/orange.
+The shared color system for all apps is built around the Radix colors sand/orange palette.
+Tokens live in `packages/theme/src/theme.css` and are consumed via `@import "@tipprunde/theme"` in each app's main CSS file.
 
 Source code for all colors: https://github.com/radix-ui/colors
 
@@ -31,20 +32,20 @@ Step | Use Case
 
 ## Color Tokens for tailwindcss
 
-All tailwind colors must be defined as theme color using a light-dark function in the `app/app.css`. The theme vars must use the dedicated color name for its purpose:
+All Tailwind colors are defined as semantic tokens using `light-dark()` in `packages/theme/src/theme.css`. Token names follow a purpose-based convention:
 
-Eg:
+```css
+--background-color-surface: light-dark(...);
+--text-color-app: light-dark(...);
+--border-color-subtle: light-dark(...);
+--ring-color-...: light-dark(...);
+```
 
---background-color-surface: light-dark(color(display-p3 0.992 0.992 0.989), color(display-p3 0 0 0));
---text-color-app: light-dark(...)
---border-color-subtle: ...
---ring-color-...
-
-A derived color of the original sand/orange colors may be used, if a more subtle difference between two steps is needed. Also for any semantic color (success, error, warning) new colors may be choosed.
+A derived color between two steps may be used for subtle distinctions. Semantic colors (success, error, warning) may use new values outside the sand/orange palette.
 
 ## Enforcing the design system
 
-Tailwind's default color palette (`red-500`, `blue-100`, etc.) is disabled via `--color-*: initial` at the top of the `@theme` block in `app.css`. All color usage must go through the tokens defined there. Do not remove this line.
+Tailwind's default color palette (`red-500`, `blue-100`, etc.) is disabled via `--color-*: initial` at the top of the `@theme inline {}` block. All color usage must go through the semantic tokens. Do not remove this line.
 
 ## Reference Sand/Orange CSS colors
 

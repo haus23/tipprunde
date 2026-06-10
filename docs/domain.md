@@ -154,7 +154,7 @@ first championship that uses it (approx. championship #30 in the data backfill).
 
 ---
 
-## Route-level implications
+## Route-level implications (manager app)
 
 ### Turnier (index)
 

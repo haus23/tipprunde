@@ -4,7 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Monorepo structure
 
-pnpm workspace with two apps - `apps/web` (SvelteKit) and `apps/manager` (React Router 7 - and shared code library in the `packages/` directory. Currently only the `packages/db` library with the drizzle-orm schema definitions and relations.
+pnpm workspace with two apps and shared packages:
+
+- `apps/web` — New web frontend (TanStack Start) — **work in progress**
+- `apps/manager` — Backend management app (React Router 7)
+- `apps/web-legacy` — Original SvelteKit frontend, kept as reference only — do not modify
+- `packages/db` — Drizzle ORM schema + relations (SQLite/Turso)
+- `packages/domain` — Domain logic: scoring rules, tip point calculation
+- `packages/theme` — Shared Tailwind CSS v4 design tokens (Radix Sand + Orange palette)
 
 ### Frontend application (`apps/web`)
 
@@ -20,10 +27,32 @@ Related agent instructions:
 
 In the `src` folder:
 
-- `schema.ts` — Drizzle table definitions (SQLite). Core entities: `users`, `sessions`, `totpCodes`, `championships`, `rounds`, `matches`, `teams`, `leagues`, `tips`, `players`, `rulesets`
+- `schema.ts` — Drizzle table definitions (SQLite). Core entities: `users`, `sessions`, `totpCodes`, `championships`, `rounds`, `matches`, `teams`, `leagues`, `tips`, `players`, `rulesets`, `extraQuestions`, `extraAnswers`
 - `relations.ts` — Drizzle RQB v2 relations via `defineRelations`
 
-This package uses the drizzle-orm@1.0 package. So all code querying this schemas should use the Drizzle RQB v2 query syntax: object shorthand in `where` with operators (`in`, `gt`, `isNotNull`, etc.) — do not use v1 callback form
+This package uses the drizzle-orm@1.0 package. So all code querying these schemas should use the Drizzle RQB v2 query syntax: object shorthand in `where` with operators (`in`, `gt`, `isNotNull`, etc.) — do not use v1 callback form
+
+### Domain package (`packages/domain`)
+
+- `rules.ts` — Rule ID constants (tip rules, joker rules, match rules, round rules, extra question rules)
+- `scoring.ts` — `calcTipPoints(tip, result, tipRuleId, isDoubleRound, joker)` — returns `number | null` (null = no result yet, 0 = wrong tip)
+
+Test: `node --experimental-strip-types --test src/scoring.test.ts`
+
+### Theme package (`packages/theme`)
+
+Single export: `@tipprunde/theme` → `src/theme.css`
+
+Consumed in apps via `@import "@tipprunde/theme"` in the app's main CSS file. Contains the full `@theme inline {}` block, `@custom-variant dark`, and `@layer base` styles. Do not add app-specific tokens here.
+
+## Docs
+
+Shared documentation in `docs/`:
+
+- `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain, open design questions
+- `theme.md` — Color system: Radix Sand/Orange tokens, `@tipprunde/theme` package usage
+- `tokens.md` — Design tokens: border-radius scale
+- `deployment.md` — Environment variables, first-deploy bootstrap, user management
 
 ## Release (from repo root):
 
