@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { integer, primaryKey, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
+import { integer, primaryKey, real, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -117,6 +117,30 @@ export const tips = sqliteTable(
     joker: integer("joker", { mode: "boolean" }),
   },
   (table) => [primaryKey({ columns: [table.matchId, table.userId] })],
+);
+
+export const extraQuestions = sqliteTable("extra_questions", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  championshipId: integer("championship_id")
+    .notNull()
+    .references(() => championships.id),
+  question: text("question").notNull(),
+  description: text("description").notNull(),
+  answer: text("answer"),
+});
+
+export const extraPoints = sqliteTable(
+  "extra_points",
+  {
+    extraQuestionId: integer("extra_question_id")
+      .notNull()
+      .references(() => extraQuestions.id),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    points: real("points").notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.extraQuestionId, table.userId] })],
 );
 
 export const players = sqliteTable(
