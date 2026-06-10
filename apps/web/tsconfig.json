@@ -3,6 +3,7 @@
     "jsx": "react-jsx",
     "module": "Preserve",
     "types": ["vite/client"],
+    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "noEmit": true,
     "skipLibCheck": true
