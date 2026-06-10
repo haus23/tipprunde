@@ -1,6 +1,8 @@
-import { Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Link, Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Logo } from "@tipprunde/ui";
 
-import { ColorScheme, getSessionData } from "#/lib/session.ts";
+import type { ColorScheme } from "#/lib/session.ts";
+import { getSessionData } from "#/lib/session.ts";
 
 import appCss from "../styles/app.css?url";
 
@@ -28,7 +30,26 @@ function RootComponent() {
   const { colorScheme } = Route.useRouteContext();
   return (
     <RootDocument colorScheme={colorScheme}>
-      <Outlet />
+      <div className="flex min-h-svh flex-col">
+        <header className="border-subtle bg-surface sticky top-0 z-10 h-14 border-b">
+          <div className="xs:px-4 mx-auto flex h-full max-w-5xl items-center px-2">
+            <Link
+              to="/"
+              className="focus-visible:ring-accent flex items-center gap-2 rounded px-1 pb-0.5 outline-none focus-visible:ring-2"
+            >
+              <span className="text-accent size-8">
+                <Logo />
+              </span>
+              <span className="hidden pr-2 text-sm font-semibold tracking-tight sm:block">
+                runde.tips
+              </span>
+            </Link>
+          </div>
+        </header>
+        <main>
+          <Outlet />
+        </main>
+      </div>
     </RootDocument>
   );
 }
