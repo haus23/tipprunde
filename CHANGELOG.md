@@ -1,5 +1,32 @@
 # Changelog
 
+## v0.10.4
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.10.3...v0.10.4)
+
+### 🚀 Enhancements
+
+- **theme:** Add xs breakpoint, document all breakpoints ([d1f63ed](https://github.com/haus23/tipprunde/commit/d1f63ed))
+- **web:** Add root layout with sticky header and logo link ([cacba0a](https://github.com/haus23/tipprunde/commit/cacba0a))
+- **ui:** Add Button component with intent/size variants ([59b2b3c](https://github.com/haus23/tipprunde/commit/59b2b3c))
+- **web:** Add color-scheme menu (light/dark/system) ([bce45e2](https://github.com/haus23/tipprunde/commit/bce45e2))
+
+### 💅 Refactors
+
+- **theme:** Alias text-muted to text-subtle ([04c8874](https://github.com/haus23/tipprunde/commit/04c8874))
+- **manager:** Swap buttons to shared ui Button ([cacadfc](https://github.com/haus23/tipprunde/commit/cacadfc))
+
+### 📖 Documentation
+
+- Add web app shell & header layout spec ([7ace595](https://github.com/haus23/tipprunde/commit/7ace595))
+
+### 🏡 Chore
+
+- Drop legacy prepare script. Not needed any more. ([5b8685d](https://github.com/haus23/tipprunde/commit/5b8685d))
+- **web:** Add ui package. ([0ec2ed2](https://github.com/haus23/tipprunde/commit/0ec2ed2))
+- **manager:** Update ports to match new web app defaults ([ad19984](https://github.com/haus23/tipprunde/commit/ad19984))
+- Catalog react-aria-components, add as ui peer dependency ([c2e4846](https://github.com/haus23/tipprunde/commit/c2e4846))
+
 ## v0.10.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.10.2...v0.10.3)
