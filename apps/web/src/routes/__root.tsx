@@ -1,8 +1,11 @@
 import { Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 
+import { ColorScheme, getSessionData } from "#/lib/session.ts";
+
 import appCss from "../styles/app.css?url";
 
 export const Route = createRootRoute({
+  beforeLoad: async () => await getSessionData(),
   head: () => ({
     meta: [
       {
@@ -22,16 +25,20 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+  const { colorScheme } = Route.useRouteContext();
   return (
-    <RootDocument>
+    <RootDocument colorScheme={colorScheme}>
       <Outlet />
     </RootDocument>
   );
 }
 
-function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
+function RootDocument({
+  children,
+  colorScheme,
+}: Readonly<{ children: React.ReactNode; colorScheme: ColorScheme }>) {
   return (
-    <html lang="de">
+    <html lang="de" data-color-scheme={colorScheme}>
       <head>
         <HeadContent />
       </head>
