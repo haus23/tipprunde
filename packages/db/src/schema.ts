@@ -129,8 +129,8 @@ export const extraQuestions = sqliteTable("extra_questions", {
   answer: text("answer"),
 });
 
-export const extraPoints = sqliteTable(
-  "extra_points",
+export const extraAnswers = sqliteTable(
+  "extra_answers",
   {
     extraQuestionId: integer("extra_question_id")
       .notNull()
@@ -138,7 +138,8 @@ export const extraPoints = sqliteTable(
     userId: integer("user_id")
       .notNull()
       .references(() => users.id),
-    points: real("points").notNull(),
+    answer: text("answer"),
+    points: real("points"),
   },
   (table) => [primaryKey({ columns: [table.extraQuestionId, table.userId] })],
 );

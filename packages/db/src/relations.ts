@@ -24,14 +24,14 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.extraQuestions.championshipId,
       to: r.championships.id,
     }),
-    extraPoints: r.many.extraPoints({
+    extraAnswers: r.many.extraAnswers({
       from: r.extraQuestions.id,
-      to: r.extraPoints.extraQuestionId,
+      to: r.extraAnswers.extraQuestionId,
     }),
   },
-  extraPoints: {
+  extraAnswers: {
     user: r.one.users({
-      from: r.extraPoints.userId,
+      from: r.extraAnswers.userId,
       to: r.users.id,
     }),
   },
