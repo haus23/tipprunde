@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.10.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.10.1...v0.10.2)
+
+### 🚀 Enhancements
+
+- **web:** Read session cookies in root beforeLoad ([f303565](https://github.com/haus23/tipprunde/commit/f303565))
+
+### 🏡 Chore
+
+- Fix package manager version. ([0ae1643](https://github.com/haus23/tipprunde/commit/0ae1643))
+- **web:** Read current championship as proof-of-concept. ([dce149e](https://github.com/haus23/tipprunde/commit/dce149e))
+- **manager:** Remove unneeded dependency @libsql/client ([83ae030](https://github.com/haus23/tipprunde/commit/83ae030))
+
 ## v0.10.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.10.0...v0.10.1)
