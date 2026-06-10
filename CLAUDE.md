@@ -12,6 +12,7 @@ pnpm workspace with two apps and shared packages:
 - `packages/db` — Drizzle ORM schema + relations (SQLite/Turso)
 - `packages/domain` — Domain logic: scoring rules, tip point calculation
 - `packages/theme` — Shared Tailwind CSS v4 design tokens (Radix Sand + Orange palette)
+- `packages/ui` — Shared React components reused across both apps
 
 ### Frontend application (`apps/web`)
 

@@ -284,6 +284,34 @@ importers:
 
   packages/theme: {}
 
+  packages/ui:
+    dependencies:
+      cva:
+        specifier: 1.0.0-beta.4
+        version: 1.0.0-beta.4(typescript@6.0.3)
+      react:
+        specifier: '*'
+        version: 19.2.7
+      tailwind-merge:
+        specifier: catalog:tailwind
+        version: 3.6.0
+    devDependencies:
+      '@tipprunde/theme':
+        specifier: workspace:*
+        version: link:../theme
+      '@types/react':
+        specifier: catalog:types
+        version: 19.2.16
+      tailwindcss:
+        specifier: catalog:tailwind
+        version: 4.3.0
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vite:
+        specifier: 'catalog:'
+        version: 8.0.16(@types/node@25.9.1)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)
+
 packages:
 
   '@babel/code-frame@7.27.1':
@@ -2306,6 +2334,14 @@ packages:
 
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+
+  cva@1.0.0-beta.4:
+    resolution: {integrity: sha512-F/JS9hScapq4DBVQXcK85l9U91M6ePeXoBMSp7vypzShoefUBxjQTo3g3935PUHgQd+IW77DjbPRIxugy4/GCQ==}
+    peerDependencies:
+      typescript: '>= 4.5.5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   d3-array@2.12.1:
     resolution: {integrity: sha512-B0ErZK/66mHtEsR1TkPEEkwdy+WDesimkM5gpZr5Dsg54BiTA5RXtYW5qTLIAcekaS9xfZrzBLF/OAkB3Qn1YQ==}
@@ -5284,6 +5320,12 @@ snapshots:
       srvx: 0.11.16
 
   csstype@3.2.3: {}
+
+  cva@1.0.0-beta.4(typescript@6.0.3):
+    dependencies:
+      clsx: 2.1.1
+    optionalDependencies:
+      typescript: 6.0.3
 
   d3-array@2.12.1:
     dependencies:

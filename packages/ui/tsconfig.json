@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+    "module": "Preserve",
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  }
+}

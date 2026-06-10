@@ -1,0 +1,28 @@
+{
+  "name": "@tipprunde/ui",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "cva": "1.0.0-beta.4",
+    "tailwind-merge": "catalog:tailwind"
+  },
+  "devDependencies": {
+    "@tipprunde/theme": "workspace:*",
+    "@types/react": "catalog:types",
+    "tailwindcss": "catalog:tailwind",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "*"
+  }
+}
