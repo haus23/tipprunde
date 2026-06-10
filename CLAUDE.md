@@ -52,8 +52,9 @@ Shared documentation in `docs/`:
 
 - `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain, open design questions
 - `theme.md` — Color system: Radix Sand/Orange tokens, `@tipprunde/theme` package usage
-- `tokens.md` — Design tokens: border-radius scale
+- `tokens.md` — Design tokens: border-radius scale, breakpoints
 - `deployment.md` — Environment variables, first-deploy bootstrap, user management
+- `web-shell.md` — Web app shell: header contents, Priority+ nav collapse, docked/drawer chat panel
 
 ## Release (from repo root):
 
