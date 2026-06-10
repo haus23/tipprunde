@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie } from "@tanstack/react-start/server";
 
-import { db } from "./db.ts";
+import { db } from "./db.server.ts";
 
 export type ColorScheme = "light" | "dark" | "system";
 

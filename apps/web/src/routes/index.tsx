@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 
-import { db } from "#/lib/db.ts";
+import { db } from "#/lib/db.server.ts";
 
 const getChampionship = createServerFn().handler(async () => {
   const championship = await db.query.championships.findFirst({
