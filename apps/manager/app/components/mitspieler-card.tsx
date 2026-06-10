@@ -50,7 +50,7 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
           const userId = Number(await item.getText(DRAG_TYPE));
           setPlayerIds((prev) => new Set([...prev, userId]));
           setFilter("");
-          fetcher.submit({ intent: "add-player", userId: String(userId) }, { method: "post" });
+          void fetcher.submit({ intent: "add-player", userId: String(userId) }, { method: "post" });
         }
       }
     },
@@ -68,7 +68,10 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
             next.delete(userId);
             return next;
           });
-          fetcher.submit({ intent: "remove-player", userId: String(userId) }, { method: "post" });
+          void fetcher.submit(
+            { intent: "remove-player", userId: String(userId) },
+            { method: "post" },
+          );
         }
       }
     },
