@@ -4,6 +4,5 @@ import { type UserConfig } from "vite";
 
 export default {
   build: { assetsDir: "manager/assets" },
-  server: { port: 5174 },
   plugins: [reactRouter(), tailwindcss()],
 } satisfies UserConfig;
