@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "react-router build",
-    "typecheck": "react-router typegen && tsc --noEmit"
+    "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
     "@internationalized/date": "^3.12.2",
@@ -21,9 +21,9 @@
     "drizzle-orm": "catalog:orm",
     "isbot": "5.1.40",
     "lucide-react": "catalog:icons",
-    "react": "19.2.7",
+    "react": "catalog:react",
     "react-aria-components": "1.18.0",
-    "react-dom": "19.2.7",
+    "react-dom": "catalog:react",
     "react-router": "7.17.0",
     "tailwind-merge": "catalog:tailwind",
     "valibot": "^1.4.1"
@@ -31,8 +31,8 @@
   "devDependencies": {
     "@react-router/dev": "7.17.0",
     "@tailwindcss/vite": "catalog:tailwind",
-    "@types/react": "19.2.16",
-    "@types/react-dom": "19.2.3",
+    "@types/react": "catalog:types",
+    "@types/react-dom": "catalog:types",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
     "vite": "catalog:"
