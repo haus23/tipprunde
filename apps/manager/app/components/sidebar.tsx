@@ -1,3 +1,4 @@
+import { Logo } from "@tipprunde/ui";
 import {
   CalendarIcon,
   DicesIcon,
@@ -15,7 +16,6 @@ import {
 } from "lucide-react";
 import { Form, NavLink } from "react-router";
 
-import { Logo } from "#/components/logo.tsx";
 import { cn } from "#/lib/utils.ts";
 
 type NavItemProps = {
