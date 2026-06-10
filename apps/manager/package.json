@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@internationalized/date": "^3.12.2",
-    "@libsql/client": "catalog:orm",
     "@react-router/node": "7.17.0",
     "@tipprunde/db": "workspace:*",
     "@tipprunde/domain": "workspace:*",
