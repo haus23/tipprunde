@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.10.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.9.1...v0.10.0)
+
+### 🚀 Enhancements
+
+- **db:** Rename extraPoints to extraAnswers, add answer column ([dd270ab](https://github.com/haus23/tipprunde/commit/dd270ab))
+- **manager:** Rewrite Zusatzpunkte route for extraAnswers schema ([5890f9a](https://github.com/haus23/tipprunde/commit/5890f9a))
+
 ## v0.9.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0...v0.9.1)
