@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.10.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.10.0...v0.10.1)
+
+### 🏡 Chore
+
+- Rename web app to web-legacy ([4d96409](https://github.com/haus23/tipprunde/commit/4d96409))
+- Move docs to root, update agent instructions ([5703176](https://github.com/haus23/tipprunde/commit/5703176))
+- **web:** Create minimal tanstack start web app. ([8742ccb](https://github.com/haus23/tipprunde/commit/8742ccb))
+- **manager:** Align package deps with workspace catalogs. ([c273e7c](https://github.com/haus23/tipprunde/commit/c273e7c))
+- **web:** Add favicon. ([3f55ab8](https://github.com/haus23/tipprunde/commit/3f55ab8))
+- **web:** Prepare vercel deployment. ([53703f8](https://github.com/haus23/tipprunde/commit/53703f8))
+
 ## v0.10.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.9.1...v0.10.0)
