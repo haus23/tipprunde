@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.10.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.10.2...v0.10.3)
+
+### 🏡 Chore
+
+- **web:** Rename to \*.server.ts to achieve import protection. ([d27e984](https://github.com/haus23/tipprunde/commit/d27e984))
+- **ui:** Create new ui package. ([c8c27b7](https://github.com/haus23/tipprunde/commit/c8c27b7))
+- **manager:** Add ui package and usage proof-of-concept. ([ec5d171](https://github.com/haus23/tipprunde/commit/ec5d171))
+- **web:** Add vercel config for the manager rewrites. ([a0f02af](https://github.com/haus23/tipprunde/commit/a0f02af))
+
 ## v0.10.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.10.1...v0.10.2)
