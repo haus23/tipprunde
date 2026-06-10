@@ -23,6 +23,7 @@ catalogs:
   react:
     react: 19.2.7
     react-dom: 19.2.7
+    react-aria-components: 1.18.0
   tailwind:
     "@tailwindcss/vite": 4.3.0
     tailwind-merge: 3.6.0

@@ -22,7 +22,7 @@
     "isbot": "5.1.40",
     "lucide-react": "catalog:icons",
     "react": "catalog:react",
-    "react-aria-components": "1.18.0",
+    "react-aria-components": "catalog:react",
     "react-dom": "catalog:react",
     "react-router": "7.17.0",
     "tailwind-merge": "catalog:tailwind",

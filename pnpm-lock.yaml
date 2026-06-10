@@ -39,6 +39,9 @@ catalogs:
     react:
       specifier: 19.2.7
       version: 19.2.7
+    react-aria-components:
+      specifier: 1.18.0
+      version: 1.18.0
     react-dom:
       specifier: 19.2.7
       version: 19.2.7
@@ -110,7 +113,7 @@ importers:
         specifier: catalog:react
         version: 19.2.7
       react-aria-components:
-        specifier: 1.18.0
+        specifier: catalog:react
         version: 1.18.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react-dom:
         specifier: catalog:react
@@ -308,6 +311,9 @@ importers:
       '@types/react':
         specifier: catalog:types
         version: 19.2.16
+      react-aria-components:
+        specifier: catalog:react
+        version: 1.18.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss:
         specifier: catalog:tailwind
         version: 4.3.0

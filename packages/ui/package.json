@@ -18,11 +18,13 @@
   "devDependencies": {
     "@tipprunde/theme": "workspace:*",
     "@types/react": "catalog:types",
+    "react-aria-components": "catalog:react",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
     "vite": "catalog:"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "*",
+    "react-aria-components": "*"
   }
 }
