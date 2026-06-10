@@ -1,0 +1,7 @@
+{
+  "name": "@tipprunde/theme",
+  "private": true,
+  "exports": {
+    ".": "./src/theme.css"
+  }
+}

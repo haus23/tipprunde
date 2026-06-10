@@ -1,0 +1,127 @@
+@theme inline {
+  --color-*: initial; /* Wipe Tailwind's default palette — all colors go through design tokens */
+  --color-black: black; /* Modal overlays: bg-black/30 */
+  --color-white: white; /* Explicit white when needed outside token system */
+
+  /* sand1 — App background */
+  --background-color-surface: light-dark(
+    color(display-p3 0.992 0.992 0.989),
+    color(display-p3 0.067 0.067 0.063)
+  );
+  /* sand2 — Subtle background */
+  --background-color-surface-raised: light-dark(
+    color(display-p3 0.977 0.977 0.973),
+    color(display-p3 0.098 0.098 0.094)
+  );
+  /* sand3 — UI element background (hover / active) */
+  --background-color-nav-active: light-dark(
+    color(display-p3 0.943 0.942 0.936),
+    color(display-p3 0.135 0.135 0.129)
+  );
+  /* sand4 — Hovered UI element background / control knobs */
+  --background-color-control: light-dark(
+    color(display-p3 0.912 0.908 0.9),
+    color(display-p3 0.162 0.162 0.154)
+  );
+  /* orange9 — Solid accent background */
+  --background-color-accent: light-dark(
+    color(display-p3 0.9 0.45 0.2),
+    color(display-p3 0.9 0.45 0.2)
+  );
+  /* orange10 — Hovered solid accent background */
+  --background-color-accent-hover: light-dark(
+    color(display-p3 0.87 0.409 0.164),
+    color(display-p3 0.98 0.51 0.23)
+  );
+
+  /* sand12 — High-contrast text */
+  --text-color-app: light-dark(
+    color(display-p3 0.129 0.126 0.111),
+    color(display-p3 0.933 0.933 0.926)
+  );
+  /* sand11 — Low-contrast text (section labels) */
+  --text-color-muted: light-dark(
+    color(display-p3 0.388 0.388 0.37),
+    color(display-p3 0.707 0.703 0.68)
+  );
+  /* sand11 — Low-contrast text (prose / descriptions) */
+  --text-color-subtle: light-dark(
+    color(display-p3 0.388 0.388 0.37),
+    color(display-p3 0.707 0.703 0.68)
+  );
+  /* orange11 — Low-contrast accent text */
+  --text-color-accent: light-dark(color(display-p3 0.76 0.34 0), color(display-p3 1 0.63 0.38));
+  /* white — Text on solid accent backgrounds */
+  --text-color-accent-fg: color(display-p3 1 1 1);
+
+  /* orange9 — Accent border (selected states) */
+  --border-color-accent: light-dark(color(display-p3 0.9 0.45 0.2), color(display-p3 0.9 0.45 0.2));
+  /* orange3 — Subtle accent background (selected states) */
+  --background-color-accent-subtle: light-dark(
+    color(display-p3 0.997 0.944 0.921),
+    color(display-p3 0.168 0.087 0.049)
+  );
+  /* orange9 — Focus ring */
+  --ring-color-accent: light-dark(color(display-p3 0.9 0.45 0.2), color(display-p3 0.9 0.45 0.2));
+
+  /* red4 — Error input background (subtle tint) */
+  --background-color-error: light-dark(
+    color(display-p3 1 0.897 0.891),
+    color(display-p3 0.197 0.097 0.089)
+  );
+  /* red11 — Error text / icons / borders */
+  --text-color-error: light-dark(
+    color(display-p3 0.481 0.118 0.099),
+    color(display-p3 0.979 0.541 0.481)
+  );
+  /* red9 — Error border (solid, vivid) */
+  --border-color-error: light-dark(
+    color(display-p3 0.82 0.282 0.295),
+    color(display-p3 1 0.425 0.441)
+  );
+
+  /* sand6 — Subtle borders and separators */
+  --border-color-subtle: light-dark(
+    color(display-p3 0.854 0.852 0.839),
+    color(display-p3 0.23 0.229 0.217)
+  );
+
+  --radius-md: 0.5rem;
+  --radius-sm: 0.25rem;
+}
+
+@custom-variant dark {
+  &:where([data-color-scheme="dark"] *, [data-color-scheme="dark"]) {
+    @slot;
+  }
+
+  &:where(
+    [data-color-scheme="system"] *,
+    [data-color-scheme="system"],
+    :root:not([data-color-scheme]) *,
+    :root:not([data-color-scheme])
+  ) {
+    @media (prefers-color-scheme: dark) {
+      @slot;
+    }
+  }
+}
+
+@layer base {
+  :root:not([data-color-scheme]),
+  [data-color-scheme="system"] {
+    color-scheme: light dark;
+  }
+
+  [data-color-scheme="light"] {
+    color-scheme: light;
+  }
+
+  [data-color-scheme="dark"] {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-surface text-app;
+  }
+}
