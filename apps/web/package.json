@@ -16,6 +16,7 @@
     "@tipprunde/db": "workspace:*",
     "@tipprunde/domain": "workspace:*",
     "@tipprunde/theme": "workspace:*",
+    "@tipprunde/ui": "workspace:*",
     "drizzle-orm": "catalog:orm",
     "nitro": "3.0.260603-beta",
     "react": "catalog:react",
