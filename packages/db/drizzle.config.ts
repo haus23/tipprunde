@@ -1,14 +1,11 @@
 import { defineConfig } from "drizzle-kit";
 
-const url = process.env.TURSO_DATABASE_URL;
-if (!url) throw new Error("TURSO_DATABASE_URL is required");
-
 export default defineConfig({
   schema: "./src/schema.ts",
   out: "./migrations",
   dialect: "turso",
   dbCredentials: {
-    url,
+    url: process.env.TURSO_DATABASE_URL ?? "",
     authToken: process.env.TURSO_AUTH_TOKEN,
   },
 });
