@@ -1,5 +1,5 @@
 {
-  "name": "@tipprunde/web",
+  "name": "@tipprunde/web-legacy",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
