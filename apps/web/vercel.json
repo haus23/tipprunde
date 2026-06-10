@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/manager",
+      "destination": "https://tipprunde-manager.vercel.app/manager"
+    },
+    {
+      "source": "/manager/:path*",
+      "destination": "https://tipprunde-manager.vercel.app/manager/:path*"
+    }
+  ]
+}
