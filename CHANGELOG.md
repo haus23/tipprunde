@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.9.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.9.0...v0.9.1)
+
+### 🚀 Enhancements
+
+- **db:** Add extra_questions and extra_points tables ([e34c2f9](https://github.com/haus23/tipprunde/commit/e34c2f9))
+
+### 🩹 Fixes
+
+- **manager:** Preserve enrollment order in Mitspieler list ([be36489](https://github.com/haus23/tipprunde/commit/be36489))
+- **manager:** Add void to floating promise calls ([b281f99](https://github.com/haus23/tipprunde/commit/b281f99))
+- **db:** Remove URL guard from drizzle config ([a87856d](https://github.com/haus23/tipprunde/commit/a87856d))
+
+### 💅 Refactors
+
+- **manager:** Use the theme package. ([8c6291f](https://github.com/haus23/tipprunde/commit/8c6291f))
+
+### 🏡 Chore
+
+- **theme:** Create a new theme package with exported tipprunde theme. ([ea167fb](https://github.com/haus23/tipprunde/commit/ea167fb))
+- **db:** Migration for extra_questions and extra_points tables ([db8fa5b](https://github.com/haus23/tipprunde/commit/db8fa5b))
+
 ## v0.9.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.8.2...v0.9.0)
