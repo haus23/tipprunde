@@ -1,8 +1,8 @@
 import type { rulesets } from "@tipprunde/db/schema";
 import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
+import { Button } from "@tipprunde/ui";
 import { useEffect, useState } from "react";
 import {
-  Button,
   Dialog,
   FieldError,
   Form,
@@ -166,27 +166,10 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
       ))}
 
       <div className="border-subtle flex justify-end gap-3 border-t pt-4">
-        <Button
-          type="button"
-          onPress={onClose}
-          className={cn(
-            "rounded-sm border border-subtle px-4 py-2 text-sm transition-colors",
-            "hover:bg-nav-active",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
-        >
+        <Button intent="secondary" type="button" onPress={onClose}>
           Abbrechen
         </Button>
-        <Button
-          type="submit"
-          isDisabled={isPending}
-          className={cn(
-            "bg-accent text-accent-fg rounded-md px-4 py-2 text-sm font-medium transition-colors",
-            "hover:bg-accent-hover",
-            "disabled:opacity-50",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
-        >
+        <Button type="submit" isDisabled={isPending}>
           {isPending ? "…" : isEdit ? "Speichern" : "Erstellen"}
         </Button>
       </div>

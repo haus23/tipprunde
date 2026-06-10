@@ -1,5 +1,6 @@
+import { Button } from "@tipprunde/ui";
 import { SearchIcon, XIcon } from "lucide-react";
-import { Button, Input, SearchField } from "react-aria-components";
+import { Input, SearchField } from "react-aria-components";
 
 import { cn } from "#/lib/utils.ts";
 
@@ -29,12 +30,10 @@ export function FilterInput({ value, onChange, placeholder = "Suchen …" }: Fil
       />
       {value && (
         <Button
+          intent="ghost"
+          size="icon"
           aria-label="Filter zurücksetzen"
-          className={cn(
-            "text-muted absolute right-2 rounded-sm p-0.5 transition-colors",
-            "hover:text-app",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
+          className="absolute right-2 p-0.5"
         >
           <XIcon className="size-3.5" />
         </Button>

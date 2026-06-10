@@ -5,11 +5,12 @@ import {
   calcTipPoints,
   type TipRuleId,
 } from "@tipprunde/domain/scoring";
+import { Button } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { CheckIcon, ChevronDownIcon, ClipboardIcon } from "lucide-react";
 import { useState } from "react";
 import {
-  Button,
+  Button as RACButton,
   CheckboxButton,
   CheckboxField,
   Label,
@@ -324,13 +325,11 @@ function TipGrid({
             <div className="flex items-center justify-center gap-1">
               <span>Tipp</span>
               <Button
+                intent="ghost"
+                size="icon"
                 onPress={() => void handleClipboardPaste()}
                 aria-label="Tipps aus Zwischenablage einfügen"
-                className={cn(
-                  "text-muted rounded-sm p-0.5 transition-colors",
-                  "hover:bg-nav-active hover:text-app",
-                  "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-                )}
+                className="p-0.5"
               >
                 <ClipboardIcon className="size-3.5" />
               </Button>
@@ -459,7 +458,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
             className="flex flex-col gap-1.5"
           >
             <Label className="text-sm font-medium">Spieler</Label>
-            <Button
+            <RACButton
               className={cn(
                 "border-subtle bg-surface flex w-full items-center justify-between rounded-sm border px-3 py-1.5 text-sm outline-none",
                 "hover:bg-nav-active",
@@ -468,7 +467,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
             >
               <SelectValue />
               <ChevronDownIcon className="text-muted size-4 shrink-0" />
-            </Button>
+            </RACButton>
             <Popover className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none">
               <ListBox items={players} className="max-h-72 overflow-y-auto p-1 outline-none">
                 {(player) => (

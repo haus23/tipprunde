@@ -1,16 +1,15 @@
 import { championships } from "@tipprunde/db/schema";
+import { Button } from "@tipprunde/ui";
 import { eq } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-orm/valibot";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { Button } from "react-aria-components";
 import { useNavigate } from "react-router";
 import * as v from "valibot";
 
 import { FilterInput } from "#/components/filter-input.tsx";
 import { TurnierDialog } from "#/components/turnier-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
-import { cn } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/turniere";
 
@@ -102,14 +101,7 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
       <title>Turniere | Stammdaten</title>
       <div className="mb-6 flex min-h-9 items-center justify-between gap-4">
         <FilterInput value={filter} onChange={setFilter} />
-        <Button
-          onPress={() => setIsCreateOpen(true)}
-          className={cn(
-            "bg-accent text-accent-fg flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-            "hover:bg-accent-hover",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
-        >
+        <Button onPress={() => setIsCreateOpen(true)}>
           <PlusIcon className="size-4" />
           Neues Turnier
         </Button>
@@ -152,17 +144,14 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
                   <div className="text-subtle truncate text-sm">{championship.ruleset?.name}</div>
                 </td>
                 <td className="px-3 py-3 text-right">
-                  <button
-                    onClick={() => setEditingChampionship(championship)}
+                  <Button
+                    intent="ghost"
+                    size="icon"
+                    onPress={() => setEditingChampionship(championship)}
                     aria-label={`${championship.name} bearbeiten`}
-                    className={cn(
-                      "text-muted rounded-sm p-1.5 transition-colors",
-                      "hover:bg-nav-active hover:text-app",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-                    )}
                   >
                     <PencilIcon className="size-4" />
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))

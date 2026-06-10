@@ -1,7 +1,7 @@
 import { parseDate } from "@internationalized/date";
+import { Button } from "@tipprunde/ui";
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import {
-  Button,
   Calendar,
   CalendarCell,
   CalendarGrid,
@@ -59,12 +59,7 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
             />
           )}
         </DateInput>
-        <Button
-          className={cn(
-            "text-muted border-subtle mr-1 rounded-sm border-l p-1 outline-none transition-colors",
-            "hover:bg-nav-active hover:text-app",
-          )}
-        >
+        <Button intent="ghost" size="icon" className="border-subtle mr-1 border-l p-1">
           <CalendarIcon className="size-4" />
         </Button>
       </Group>
@@ -73,23 +68,11 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
       <Popover className="bg-surface-raised border-subtle rounded-md border p-3 shadow-lg outline-none">
         <Calendar className="w-56">
           <header className="mb-3 flex items-center justify-between">
-            <Button
-              slot="previous"
-              className={cn(
-                "text-muted rounded-sm p-1 outline-none transition-colors",
-                "hover:bg-nav-active hover:text-app",
-              )}
-            >
+            <Button slot="previous" intent="ghost" size="icon" className="p-1">
               <ChevronLeftIcon className="size-4" />
             </Button>
             <CalendarHeading className="my-0 text-sm font-semibold" />
-            <Button
-              slot="next"
-              className={cn(
-                "text-muted rounded-sm p-1 outline-none transition-colors",
-                "hover:bg-nav-active hover:text-app",
-              )}
-            >
+            <Button slot="next" intent="ghost" size="icon" className="p-1">
               <ChevronRightIcon className="size-4" />
             </Button>
           </header>

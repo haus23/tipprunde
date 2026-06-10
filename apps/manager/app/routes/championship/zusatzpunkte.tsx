@@ -2,10 +2,18 @@ import {
   extraAnswers as extraAnswersTable,
   extraQuestions as extraQuestionsTable,
 } from "@tipprunde/db/schema";
+import { Button } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { ChevronDownIcon, ChevronRightIcon, PlusIcon, XIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Button, ListBox, ListBoxItem, Popover, Select, SelectValue } from "react-aria-components";
+import {
+  Button as RACButton,
+  ListBox,
+  ListBoxItem,
+  Popover,
+  Select,
+  SelectValue,
+} from "react-aria-components";
 import { useFetcher } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
@@ -314,28 +322,26 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
         {showDeleteConfirm ? (
           <div className="flex shrink-0 items-center gap-2">
             <span className="text-muted text-xs">Löschen?</span>
-            <Button
+            <RACButton
               onPress={handleDelete}
               className="text-error text-xs outline-none hover:underline data-focused:underline"
             >
               Ja
-            </Button>
-            <Button
+            </RACButton>
+            <RACButton
               onPress={() => setShowDeleteConfirm(false)}
               className="text-muted text-xs outline-none hover:underline data-focused:underline"
             >
               Nein
-            </Button>
+            </RACButton>
           </div>
         ) : (
           <Button
+            intent="ghost"
+            size="icon"
             onPress={() => setShowDeleteConfirm(true)}
             aria-label="Frage löschen"
-            className={cn(
-              "shrink-0 rounded-sm p-1 text-muted transition-colors",
-              "hover:bg-nav-active hover:text-error",
-              "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-            )}
+            className="hover:text-error shrink-0 p-1"
           >
             <XIcon className="size-4" />
           </Button>
@@ -376,7 +382,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
               <div className="flex items-center justify-between">
                 <p className="text-muted text-xs font-medium tracking-wide uppercase">Punkte</p>
                 {availablePlayers.length > 0 && !showAddEarner && (
-                  <Button
+                  <RACButton
                     onPress={() => setShowAddEarner(true)}
                     className={cn(
                       "flex items-center gap-1 rounded-sm text-muted text-xs transition-colors",
@@ -386,7 +392,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                   >
                     <PlusIcon className="size-3" />
                     Spieler
-                  </Button>
+                  </RACButton>
                 )}
               </div>
 
@@ -403,13 +409,11 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                         {Number.isInteger(ea.points) ? ea.points : ea.points!.toFixed(1)}
                       </span>
                       <Button
+                        intent="ghost"
+                        size="icon"
                         onPress={() => handleRemovePoints(ea.userId)}
                         aria-label={`Punkte für ${ea.user!.name} entfernen`}
-                        className={cn(
-                          "rounded-sm p-0.5 text-muted transition-colors",
-                          "hover:text-error",
-                          "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-                        )}
+                        className="hover:text-error p-0.5"
                       >
                         <XIcon className="size-3" />
                       </Button>
@@ -427,7 +431,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                     placeholder="Spieler ..."
                     className="min-w-0 flex-1"
                   >
-                    <Button
+                    <RACButton
                       className={cn(
                         "border-subtle bg-surface flex w-full items-center justify-between rounded-sm border px-2 py-1 text-sm outline-none",
                         "data-focused:ring-2 data-focused:ring-accent",
@@ -435,7 +439,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                     >
                       <SelectValue className="data-placeholder:text-muted" />
                       <ChevronDownIcon className="text-muted size-3.5 shrink-0" />
-                    </Button>
+                    </RACButton>
                     <Popover className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none">
                       <ListBox
                         items={availablePlayers}
@@ -467,30 +471,24 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                   />
 
                   <Button
+                    size="sm"
                     onPress={handleAddEarner}
                     isDisabled={!newEarnerUserId || !newEarnerPoints}
-                    className={cn(
-                      "shrink-0 rounded-sm bg-accent px-2.5 py-1 text-accent-fg text-sm transition-colors",
-                      "hover:bg-accent-hover",
-                      "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-                      "data-disabled:cursor-not-allowed data-disabled:opacity-40",
-                    )}
+                    className="shrink-0 px-2.5 py-1"
                   >
                     Hinzufügen
                   </Button>
 
                   <Button
+                    intent="ghost"
+                    size="icon"
                     onPress={() => {
                       setShowAddEarner(false);
                       setNewEarnerUserId(null);
                       setNewEarnerPoints("");
                     }}
                     aria-label="Abbrechen"
-                    className={cn(
-                      "shrink-0 rounded-sm p-1 text-muted transition-colors",
-                      "hover:bg-nav-active",
-                      "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-                    )}
+                    className="shrink-0 p-1"
                   >
                     <XIcon className="size-4" />
                   </Button>
@@ -501,7 +499,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
 
           {/* Player answers — collapsible */}
           <div className="border-subtle border-t pt-3">
-            <Button
+            <RACButton
               onPress={() => setAnswersOpen((o) => !o)}
               className={cn(
                 "flex w-full items-center gap-1.5 text-muted text-xs font-medium uppercase tracking-wide",
@@ -515,7 +513,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                 <ChevronRightIcon className="size-3.5" />
               )}
               Antworten ({players.length})
-            </Button>
+            </RACButton>
 
             {answersOpen && (
               <div className="mt-2 space-y-1">
@@ -569,14 +567,11 @@ export default function Zusatzpunkte({ loaderData }: Route.ComponentProps) {
       <title>{`Zusatzpunkte | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center justify-end">
         <Button
+          size="sm"
           onPress={() =>
             void createFetcher.submit({ intent: "create-question" }, { method: "post" })
           }
-          className={cn(
-            "flex items-center gap-1.5 rounded-sm bg-accent px-3 py-1.5 text-accent-fg text-sm transition-colors",
-            "hover:bg-accent-hover",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
+          className="gap-1.5"
         >
           <PlusIcon className="size-4" />
           Neue Frage

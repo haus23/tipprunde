@@ -1,6 +1,7 @@
+import { Button } from "@tipprunde/ui";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 import { use, useState } from "react";
-import { Button, DialogTrigger, ListBox, ListBoxItem, Popover } from "react-aria-components";
+import { DialogTrigger, ListBox, ListBoxItem, Popover } from "react-aria-components";
 import { useNavigate } from "react-router";
 
 import { cn } from "#/lib/utils.ts";
@@ -30,13 +31,7 @@ export function ChampionshipSwitcher({ current, championships }: ChampionshipSwi
   return (
     <div className="flex flex-1 items-center">
       <DialogTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
-        <Button
-          className={cn(
-            "text-muted flex items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm transition-colors",
-            "hover:bg-nav-active hover:text-app",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
-        >
+        <Button intent="ghost" className="gap-1.5 px-2 py-1.5">
           {current.name}
           <ChevronsUpDownIcon className="size-3.5 shrink-0" />
         </Button>

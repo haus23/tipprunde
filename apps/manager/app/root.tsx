@@ -1,3 +1,4 @@
+import { Button } from "@tipprunde/ui";
 import { FrownIcon, MoonIcon, SunIcon } from "lucide-react";
 import { Suspense, useEffect } from "react";
 import { I18nProvider } from "react-aria-components";
@@ -26,7 +27,7 @@ import {
 } from "./lib/championship.server";
 import { championshipContext, userContext } from "./lib/context";
 import { clearCookieHeader, cookieHeader, getCookie } from "./lib/cookies.server";
-import { cn, usePageTitle } from "./lib/utils";
+import { usePageTitle } from "./lib/utils";
 import { webAppUrl } from "./lib/web-app.server";
 
 import "./app.css";
@@ -162,18 +163,15 @@ export default function App({ loaderData }: Route.ComponentProps) {
         </Suspense>
         {pageTitle && <h1 className="text-sm font-medium">{pageTitle}</h1>}
         <div className="flex flex-1 justify-end">
-          <button
-            onClick={handleToggle}
+          <Button
+            intent="ghost"
+            size="icon"
+            onPress={handleToggle}
             aria-label="Farbschema wechseln"
-            className={cn(
-              "text-muted rounded-sm p-1.5 transition-colors",
-              "hover:bg-nav-active hover:text-app",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-            )}
           >
             <MoonIcon className="hidden size-4 dark:block" />
             <SunIcon className="block size-4 dark:hidden" />
-          </button>
+          </Button>
         </div>
       </header>
       <main className="overflow-y-auto">

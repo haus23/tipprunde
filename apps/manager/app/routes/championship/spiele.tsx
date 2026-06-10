@@ -4,11 +4,12 @@ import {
   rounds as roundsTable,
   teams,
 } from "@tipprunde/db/schema";
+import { Button } from "@tipprunde/ui";
 import { desc, eq, max } from "drizzle-orm";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import {
-  Button,
+  Button as RACButton,
   ComboBox,
   Form,
   Input,
@@ -210,7 +211,7 @@ function MatchComboBox({
           )}
         />
         {onCreate && (
-          <Button
+          <RACButton
             onPress={onCreate}
             aria-label="Neu anlegen"
             className={cn(
@@ -219,7 +220,7 @@ function MatchComboBox({
             )}
           >
             <PlusIcon className="size-4" />
-          </Button>
+          </RACButton>
         )}
       </div>
       <Popover className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none">
@@ -310,28 +311,10 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
         </div>
 
         <div className="flex justify-end gap-3">
-          <Button
-            type="button"
-            onPress={onDone}
-            excludeFromTabOrder
-            className={cn(
-              "rounded-sm border border-subtle px-4 py-2 text-sm transition-colors",
-              "hover:bg-nav-active",
-              "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-            )}
-          >
+          <Button intent="secondary" type="button" onPress={onDone} excludeFromTabOrder>
             Abbrechen
           </Button>
-          <Button
-            type="submit"
-            isDisabled={isPending}
-            className={cn(
-              "bg-accent text-accent-fg rounded-md px-4 py-2 text-sm font-medium transition-colors",
-              "hover:bg-accent-hover",
-              "data-disabled:opacity-50",
-              "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-            )}
-          >
+          <Button type="submit" isDisabled={isPending}>
             {isPending ? "…" : isEdit ? "Speichern" : "Anlegen"}
           </Button>
         </div>
@@ -384,13 +367,10 @@ function MatchesTable({ matches, onEdit }: { matches: MatchRow[]; onEdit: (m: Ma
             <td className="py-3">{match.league?.shortName ?? "—"}</td>
             <td className="py-3 text-right">
               <Button
+                intent="ghost"
+                size="icon"
                 onPress={() => onEdit(match)}
                 aria-label={`Spiel ${match.nr} bearbeiten`}
-                className={cn(
-                  "text-muted rounded-sm p-1 transition-colors",
-                  "hover:bg-nav-active hover:text-app",
-                  "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-                )}
               >
                 <PencilIcon className="size-4" />
               </Button>

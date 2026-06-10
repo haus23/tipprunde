@@ -1,8 +1,7 @@
+import { Button } from "@tipprunde/ui";
 import { useEffect } from "react";
-import { Button, Dialog, Heading, Modal, ModalOverlay } from "react-aria-components";
+import { Dialog, Heading, Modal, ModalOverlay } from "react-aria-components";
 import { useFetcher } from "react-router";
-
-import { cn } from "#/lib/utils.ts";
 
 type RundeFormProps = {
   nextNr: number;
@@ -23,25 +22,12 @@ function RundeForm({ nextNr, onClose }: RundeFormProps) {
         Runde <span className="font-semibold tabular-nums">{nextNr}</span> wird angelegt.
       </p>
       <div className="flex justify-end gap-3">
-        <Button
-          onPress={onClose}
-          className={cn(
-            "rounded-sm border border-subtle px-4 py-2 text-sm transition-colors",
-            "hover:bg-nav-active",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
-        >
+        <Button intent="secondary" onPress={onClose}>
           Abbrechen
         </Button>
         <Button
           isDisabled={isPending}
           onPress={() => void fetcher.submit({ intent: "create-round" }, { method: "post" })}
-          className={cn(
-            "bg-accent text-accent-fg rounded-md px-4 py-2 text-sm font-medium transition-colors",
-            "hover:bg-accent-hover",
-            "data-disabled:opacity-50",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
         >
           {isPending ? "…" : "Erstellen"}
         </Button>

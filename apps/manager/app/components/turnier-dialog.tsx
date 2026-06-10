@@ -1,8 +1,9 @@
 import type { championships, rulesets } from "@tipprunde/db/schema";
+import { Button } from "@tipprunde/ui";
 import { ChevronDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
-  Button,
+  Button as RACButton,
   Dialog,
   FieldError,
   Form,
@@ -148,7 +149,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         className="flex flex-col gap-1.5"
       >
         <Label className="text-sm font-medium">Regelwerk</Label>
-        <Button className={cn(inputClass, "flex w-full items-center justify-between gap-2")}>
+        <RACButton className={cn(inputClass, "flex w-full items-center justify-between gap-2")}>
           <SelectValue className="text-sm">
             {({ isPlaceholder, defaultChildren }) =>
               isPlaceholder ? (
@@ -159,7 +160,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
             }
           </SelectValue>
           <ChevronDownIcon className="text-muted size-4 shrink-0" />
-        </Button>
+        </RACButton>
         <FieldError className="text-error text-xs" />
         <Popover className="bg-surface-raised border-subtle w-[--trigger-width] rounded-sm border shadow-lg outline-none">
           <ListBox className="p-1">
@@ -182,27 +183,10 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
       </Select>
 
       <div className="border-subtle flex justify-end gap-3 border-t pt-4">
-        <Button
-          type="button"
-          onPress={onClose}
-          className={cn(
-            "rounded-sm border border-subtle px-4 py-2 text-sm transition-colors",
-            "hover:bg-nav-active",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
-        >
+        <Button intent="secondary" type="button" onPress={onClose}>
           Abbrechen
         </Button>
-        <Button
-          type="submit"
-          isDisabled={isPending}
-          className={cn(
-            "bg-accent text-accent-fg rounded-md px-4 py-2 text-sm font-medium transition-colors",
-            "hover:bg-accent-hover",
-            "disabled:opacity-50",
-            "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-          )}
-        >
+        <Button type="submit" isDisabled={isPending}>
           {isPending ? "…" : isEdit ? "Speichern" : "Erstellen"}
         </Button>
       </div>

@@ -1,6 +1,7 @@
+import { Button } from "@tipprunde/ui";
 import { UserPlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
-import { Button, ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
+import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
 import { useFetcher } from "react-router";
 
 import { cn } from "#/lib/utils.ts";
@@ -102,13 +103,10 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
             <div className="flex items-center gap-4">
               <FilterInput value={filter} onChange={setFilter} />
               <Button
+                size="icon"
                 onPress={() => setIsCreateOpen(true)}
                 aria-label="Neuer Spieler"
-                className={cn(
-                  "bg-accent text-accent-fg shrink-0 rounded-sm p-1.5 transition-colors",
-                  "hover:bg-accent-hover",
-                  "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-                )}
+                className="shrink-0"
               >
                 <UserPlusIcon className="size-4" />
               </Button>

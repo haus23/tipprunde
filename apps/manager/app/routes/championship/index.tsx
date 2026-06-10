@@ -3,10 +3,11 @@ import {
   players as playersTable,
   rounds as roundsTable,
 } from "@tipprunde/db/schema";
+import { Button } from "@tipprunde/ui";
 import { and, eq, max } from "drizzle-orm";
 import { CalendarIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { Button, SwitchButton, SwitchField } from "react-aria-components";
+import { SwitchButton, SwitchField } from "react-aria-components";
 import { Link, useFetcher } from "react-router";
 import * as v from "valibot";
 
@@ -351,12 +352,9 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
         <div className="border-subtle flex items-center justify-between border-b px-6 py-4">
           <h2 className="text-sm font-semibold">Runden</h2>
           <Button
+            size="sm"
             onPress={() => setIsCreateOpen(true)}
-            className={cn(
-              "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",
-              "bg-accent text-accent-fg hover:bg-accent-hover",
-              "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-            )}
+            className="gap-1.5 px-2.5 text-xs"
           >
             <PlusIcon className="size-3.5" />
             Neue Runde

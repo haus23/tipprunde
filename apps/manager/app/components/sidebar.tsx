@@ -1,4 +1,4 @@
-import { Logo } from "@tipprunde/ui";
+import { Button, Logo } from "@tipprunde/ui";
 import {
   CalendarIcon,
   DicesIcon,
@@ -117,13 +117,14 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
 
         <div className="border-subtle border-t p-2">
           <Form method="post" action="/logout">
-            <button
+            <Button
               type="submit"
-              className="text-app hover:bg-nav-active focus-visible:ring-accent flex w-full items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              intent="ghost"
+              className="text-app w-full justify-start gap-2.5 px-2"
             >
               <LogOutIcon className="size-4 shrink-0" />
               Abmelden
-            </button>
+            </Button>
           </Form>
         </div>
       </div>
