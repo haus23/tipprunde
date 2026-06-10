@@ -1,6 +1,7 @@
 import { Link, Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { Logo } from "@tipprunde/ui";
 
+import { ColorSchemeMenu } from "#/components/color-scheme-menu.tsx";
 import type { ColorScheme } from "#/lib/session.ts";
 import { getSessionData } from "#/lib/session.ts";
 
@@ -44,6 +45,9 @@ function RootComponent() {
                 runde.tips
               </span>
             </Link>
+            <div className="ml-auto flex items-center gap-1">
+              <ColorSchemeMenu colorScheme={colorScheme} />
+            </div>
           </div>
         </header>
         <main>

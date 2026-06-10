@@ -173,6 +173,9 @@ importers:
       drizzle-orm:
         specifier: catalog:orm
         version: 1.0.0-rc.3(@libsql/client@0.17.3)(valibot@1.4.1(typescript@6.0.3))(zod@4.4.3)
+      lucide-react:
+        specifier: catalog:icons
+        version: 1.17.0(react@19.2.7)
       nitro:
         specifier: 3.0.260603-beta
         version: 3.0.260603-beta(@libsql/client@0.17.3)(chokidar@5.0.0)(dotenv@17.4.2)(drizzle-orm@1.0.0-rc.3(@libsql/client@0.17.3)(valibot@1.4.1(typescript@6.0.3))(zod@4.4.3))(jiti@2.7.0)(lru-cache@11.5.1)(rollup@4.61.1)(vite@8.0.16(@types/node@25.9.1)(esbuild@0.28.0)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
