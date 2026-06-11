@@ -15,6 +15,14 @@ Custom breakpoints defined in `@tipprunde/theme`. Tailwind's default breakpoints
 
 All breakpoints are mobile-first (`min-width`). Use `max-xs:`, `max-sm:` etc. for max-width variants.
 
+## Easing
+
+| Token        | Utility    | Value                            | Use case                                                      |
+| ------------ | ---------- | -------------------------------- | ------------------------------------------------------------- |
+| `--ease-out` | `ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` | All UI interactions (overrides Tailwind's default `ease-out`) |
+
+No other easing tokens — `ease-in-out` and `linear` retain their Tailwind defaults.
+
 ## Shadows
 
 | Token              | Utility          | Use case                          |

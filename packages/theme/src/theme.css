@@ -90,6 +90,8 @@
   --shadow-popover: 0 4px 12px rgb(0 0 0 / 0.1); /* dropdowns, popovers, select menus */
   --shadow-overlay: 0 8px 32px rgb(0 0 0 / 0.2); /* dialogs, modals, drawers */
 
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* strong ease-out for UI interactions */
+
   --breakpoint-xs: 30rem; /* 480px — custom; below Tailwind's sm (640px) */
 }
 
