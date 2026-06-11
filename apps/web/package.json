@@ -25,6 +25,7 @@
     "react-dom": "catalog:react"
   },
   "devDependencies": {
+    "@react-aria/optimize-locales-plugin": "catalog:",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/node": "catalog:types",
     "@types/react": "catalog:types",
