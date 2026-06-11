@@ -26,7 +26,7 @@ export const sessions = sqliteTable("sessions", {
     .default(sql`CURRENT_TIMESTAMP`),
 });
 
-export const totpCodes = sqliteTable("totp_codes", {
+export const loginCodes = sqliteTable("login_codes", {
   id: text("id").primaryKey(),
   userId: integer("user_id")
     .notNull()

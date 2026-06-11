@@ -1,0 +1,1 @@
+ALTER TABLE `totp_codes` RENAME TO `login_codes`;
