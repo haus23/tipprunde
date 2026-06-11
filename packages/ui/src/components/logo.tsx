@@ -1,9 +1,7 @@
-import { ComponentProps } from "react";
-
 import logoUrl from "#/assets/logo.svg?no-inline";
 import { cx } from "#/lib/cva.ts";
 
-export function Logo({ className, ...props }: ComponentProps<"svg">) {
+export function Logo({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
       role="img"
