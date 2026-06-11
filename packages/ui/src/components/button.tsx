@@ -5,16 +5,16 @@ import { cva } from "#/lib/cva.ts";
 
 const buttonClasses = cva({
   base: [
-    "inline-flex cursor-pointer items-center justify-center gap-2 rounded-sm whitespace-nowrap",
+    "inline-flex items-center justify-center gap-2 rounded-sm whitespace-nowrap",
     "transition-colors outline-none",
-    "data-focused:ring-2 data-focused:ring-accent",
-    "disabled:cursor-not-allowed disabled:opacity-50",
+    "data-focus-visible:ring-2 data-focus-visible:ring-accent",
+    "disabled:opacity-50",
   ],
   variants: {
     intent: {
-      primary: "bg-accent text-accent-fg font-medium hover:bg-accent-hover",
-      secondary: "border border-subtle hover:bg-nav-active",
-      ghost: "text-muted hover:bg-nav-active hover:text-app",
+      primary: "bg-accent text-accent-fg font-medium data-hovered:bg-accent-hover",
+      secondary: "border border-subtle data-hovered:bg-nav-active",
+      ghost: "text-muted data-hovered:bg-nav-active data-hovered:text-app",
     },
     size: {
       md: "px-4 py-2 text-sm",
