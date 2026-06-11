@@ -32,5 +32,7 @@ export const getSessionData = createServerFn().handler(async () => {
     }
   }
 
-  return { colorScheme, user };
+  const managerUrl = process.env["PUBLIC_MANAGER_URL"] ?? "http://localhost:5173/manager";
+
+  return { colorScheme, user, managerUrl };
 });

@@ -10,6 +10,7 @@ export function getRouter() {
     context: {
       user: null as SessionUser | null,
       colorScheme: "system" as ColorScheme,
+      managerUrl: "",
     },
   });
 

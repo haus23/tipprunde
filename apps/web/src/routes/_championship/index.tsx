@@ -1,24 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 
-import { db } from "#/lib/db.server.ts";
-
-const getChampionship = createServerFn().handler(async () => {
-  const championship = await db.query.championships.findFirst({
-    where: { published: true },
-    orderBy: { nr: "desc" },
-  });
-  return { championship };
-});
-
-export const Route = createFileRoute("/")({
-  loader: () => getChampionship(),
+export const Route = createFileRoute("/_championship/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { championship } = Route.useLoaderData();
-  const { user } = Route.useRouteContext();
+  const { championship, user } = Route.useRouteContext();
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-8">
       <div className="mb-10 text-center">
