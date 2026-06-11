@@ -1,5 +1,5 @@
 import { type VariantProps } from "cva";
-import { Button as RACButton, type ButtonProps } from "react-aria-components";
+import { Button as AriaButton, type ButtonProps } from "react-aria-components";
 
 import { cva } from "#/lib/cva.ts";
 
@@ -32,5 +32,5 @@ const buttonClasses = cva({
 interface Props extends ButtonProps, VariantProps<typeof buttonClasses> {}
 
 export function Button({ className, intent, size, ...props }: Props) {
-  return <RACButton className={buttonClasses({ intent, size, className })} {...props} />;
+  return <AriaButton className={buttonClasses({ intent, size, className })} {...props} />;
 }
