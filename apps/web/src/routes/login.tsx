@@ -1,16 +1,8 @@
 import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
-import { Button } from "@tipprunde/ui";
-import { ArrowLeftIcon, CheckIcon } from "lucide-react";
+import { Button, Checkbox } from "@tipprunde/ui";
+import { ArrowLeftIcon } from "lucide-react";
 import { useState, useTransition } from "react";
-import {
-  CheckboxButton,
-  CheckboxField,
-  FieldError,
-  Form,
-  Input,
-  Label,
-  TextField,
-} from "react-aria-components";
+import { FieldError, Form, Input, Label, TextField } from "react-aria-components";
 
 import { getPendingLogin, requestCode, startOver, verifyCode } from "#/lib/auth.ts";
 import type { LoginStep } from "#/lib/auth.ts";
@@ -120,16 +112,9 @@ function RouteComponent() {
               <FieldError className="text-error text-sm" />
             </TextField>
 
-            <CheckboxField
-              isSelected={rememberMe}
-              onChange={setRememberMe}
-              className="flex items-center gap-2 text-sm"
-            >
-              <CheckboxButton className="group border-subtle data-selected:border-accent data-selected:bg-accent data-focused:ring-accent flex size-5 items-center justify-center rounded border transition ease-out outline-none data-focused:ring-2">
-                <CheckIcon className="group-data-selected:text-accent-fg size-3 stroke-[3] text-transparent" />
-              </CheckboxButton>
-              <Label className="text-app select-none">Angemeldet bleiben</Label>
-            </CheckboxField>
+            <Checkbox isSelected={rememberMe} onChange={setRememberMe} className="text-sm">
+              Angemeldet bleiben
+            </Checkbox>
 
             {state.error && <p className="text-error text-sm">{state.error}</p>}
 

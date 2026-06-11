@@ -5,14 +5,12 @@ import {
   calcTipPoints,
   type TipRuleId,
 } from "@tipprunde/domain/scoring";
-import { Button } from "@tipprunde/ui";
+import { Button, Checkbox } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
-import { CheckIcon, ChevronDownIcon, ClipboardIcon } from "lucide-react";
+import { ChevronDownIcon, ClipboardIcon } from "lucide-react";
 import { useState } from "react";
 import {
   Button as RACButton,
-  CheckboxButton,
-  CheckboxField,
   Label,
   ListBox,
   ListBoxItem,
@@ -363,7 +361,7 @@ function TipGrid({
               />
             </td>
             <td className="py-3 pl-2 text-center">
-              <CheckboxField
+              <Checkbox
                 isSelected={getTip(match.id).joker}
                 isDisabled={!isJokerAllowed(match.id)}
                 onChange={(checked) => {
@@ -372,20 +370,7 @@ function TipGrid({
                   saveTip(match.id, updated);
                 }}
                 aria-label={`Joker für Spiel ${match.nr}`}
-                className="flex justify-center"
-              >
-                <CheckboxButton
-                  className={cn(
-                    "group flex size-5 cursor-pointer items-center justify-center rounded border outline-none transition-colors",
-                    "border-subtle",
-                    "data-selected:border-accent data-selected:bg-accent",
-                    "data-focused:ring-2 data-focused:ring-accent",
-                    "data-disabled:cursor-not-allowed data-disabled:opacity-40",
-                  )}
-                >
-                  <CheckIcon className="size-3 stroke-4 text-transparent group-data-selected:text-white" />
-                </CheckboxButton>
-              </CheckboxField>
+              />
             </td>
           </tr>
         ))}
