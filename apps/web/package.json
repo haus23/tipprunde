@@ -22,7 +22,8 @@
     "nitro": "3.0.260603-beta",
     "react": "catalog:react",
     "react-aria-components": "catalog:react",
-    "react-dom": "catalog:react"
+    "react-dom": "catalog:react",
+    "valibot": "^1.4.1"
   },
   "devDependencies": {
     "@react-aria/optimize-locales-plugin": "catalog:",

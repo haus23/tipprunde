@@ -191,6 +191,9 @@ importers:
       react-dom:
         specifier: catalog:react
         version: 19.2.7(react@19.2.7)
+      valibot:
+        specifier: ^1.4.1
+        version: 1.4.1(typescript@6.0.3)
     devDependencies:
       '@react-aria/optimize-locales-plugin':
         specifier: 'catalog:'
