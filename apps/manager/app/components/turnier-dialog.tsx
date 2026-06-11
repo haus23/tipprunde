@@ -1,15 +1,12 @@
 import type { championships, rulesets } from "@tipprunde/db/schema";
-import { Button } from "@tipprunde/ui";
+import { Button, FieldError, Label, TextField } from "@tipprunde/ui";
 import { ChevronDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Button as RACButton,
   Dialog,
-  FieldError,
   Form,
   Heading,
-  Input,
-  Label,
   ListBox,
   ListBoxItem,
   Modal,
@@ -17,7 +14,6 @@ import {
   Popover,
   Select,
   SelectValue,
-  TextField,
 } from "react-aria-components";
 import { useFetcher } from "react-router";
 
@@ -70,6 +66,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
   const [slugValue, setSlugValue] = useState(defaultValues?.slug ?? "");
   const [slugDirty, setSlugDirty] = useState(isEdit);
 
+  // Shared with the regelwerk Select trigger below; will fold into a Select primitive later.
   const inputClass = cn(
     "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
     "outline-none data-focused:ring-2 data-focused:ring-accent/60",
@@ -92,38 +89,28 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
 
       <TextField
         name="nr"
+        type="number"
         defaultValue={String(defaultValues?.nr ?? nextNr ?? "")}
         isRequired
-        className="flex flex-col gap-1.5"
-      >
-        <Label className="text-sm font-medium">Nummer</Label>
-        <Input
-          type="number"
-          min={1}
-          className={cn(inputClass, "w-24")}
-          onChange={() => setServerErrors({})}
-        />
-        <FieldError className="text-error text-xs" />
-      </TextField>
+        onChange={() => setServerErrors({})}
+        label="Nummer"
+        inputProps={{ min: 1, className: "w-24" }}
+      />
 
       <TextField
         name="name"
         defaultValue={defaultValues?.name}
         isRequired
-        className="flex flex-col gap-1.5"
-      >
-        <Label className="text-sm font-medium">Name</Label>
-        <Input
-          className={inputClass}
-          onBlur={(e) => {
+        label="Name"
+        inputProps={{
+          onBlur: (e) => {
             if (!slugDirty) {
               setSlugValue(deriveSlug(e.target.value));
               setServerErrors({});
             }
-          }}
-        />
-        <FieldError className="text-error text-xs" />
-      </TextField>
+          },
+        }}
+      />
 
       <TextField
         name="slug"
@@ -135,12 +122,9 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         }}
         isReadOnly={isEdit}
         isRequired
-        className="flex flex-col gap-1.5"
-      >
-        <Label className="text-sm font-medium">Kennung</Label>
-        <Input className={cn(inputClass, "font-mono", isEdit && "text-subtle cursor-default")} />
-        <FieldError className="text-error text-xs" />
-      </TextField>
+        label="Kennung"
+        inputProps={{ className: cn("font-mono", isEdit && "text-subtle cursor-default") }}
+      />
 
       <Select
         name="rulesetId"
@@ -148,7 +132,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         isRequired
         className="flex flex-col gap-1.5"
       >
-        <Label className="text-sm font-medium">Regelwerk</Label>
+        <Label>Regelwerk</Label>
         <RACButton className={cn(inputClass, "flex w-full items-center justify-between gap-2")}>
           <SelectValue className="text-sm">
             {({ isPlaceholder, defaultChildren }) =>
@@ -161,7 +145,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
           </SelectValue>
           <ChevronDownIcon className="text-muted size-4 shrink-0" />
         </RACButton>
-        <FieldError className="text-error text-xs" />
+        <FieldError />
         <Popover className="bg-surface-raised border-subtle w-[--trigger-width] rounded-sm border shadow-lg outline-none">
           <ListBox className="p-1">
             {rulesets.map((ruleset) => (

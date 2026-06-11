@@ -1,20 +1,10 @@
 import type { teams } from "@tipprunde/db/schema";
-import { Button } from "@tipprunde/ui";
+import { Button, TextField } from "@tipprunde/ui";
 import { useEffect, useState } from "react";
-import {
-  Dialog,
-  FieldError,
-  Form,
-  Heading,
-  Input,
-  Label,
-  Modal,
-  ModalOverlay,
-  TextField,
-} from "react-aria-components";
+import { Dialog, Form, Heading, Modal, ModalOverlay } from "react-aria-components";
 import { useFetcher } from "react-router";
 
-import { cn, slugify } from "#/lib/utils.ts";
+import { slugify } from "#/lib/utils.ts";
 
 type Team = typeof teams.$inferSelect;
 
@@ -46,11 +36,6 @@ function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
   const [idValue, setIdValue] = useState(defaultValues?.id ?? "");
   const [idDirty, setIdDirty] = useState(isEdit);
 
-  const inputClass = cn(
-    "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
-    "outline-none data-focused:ring-2 data-focused:ring-accent/60",
-  );
-
   return (
     <Form
       onSubmit={(e) => {
@@ -66,35 +51,22 @@ function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
       <input type="hidden" name="intent" value={isEdit ? "update" : "create"} />
       {isEdit && <input type="hidden" name="id" value={defaultValues.id} />}
 
-      <TextField
-        name="name"
-        defaultValue={defaultValues?.name}
-        isRequired
-        className="flex flex-col gap-1.5"
-      >
-        <Label className="text-sm font-medium">Name</Label>
-        <Input className={inputClass} />
-        <FieldError className="text-error text-xs" />
-      </TextField>
+      <TextField name="name" defaultValue={defaultValues?.name} isRequired label="Name" />
 
       <TextField
         name="shortName"
         defaultValue={defaultValues?.shortName}
         isRequired
-        className="flex flex-col gap-1.5"
-      >
-        <Label className="text-sm font-medium">Kurzname</Label>
-        <Input
-          className={inputClass}
-          onBlur={(e) => {
+        label="Kurzname"
+        inputProps={{
+          onBlur: (e) => {
             if (!idDirty) {
               setIdValue(slugify(e.target.value));
               setServerErrors({});
             }
-          }}
-        />
-        <FieldError className="text-error text-xs" />
-      </TextField>
+          },
+        }}
+      />
 
       {!isEdit && (
         <TextField
@@ -106,12 +78,9 @@ function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
             setServerErrors({});
           }}
           isRequired
-          className="flex flex-col gap-1.5"
-        >
-          <Label className="text-sm font-medium">Kennung (eindeutig)</Label>
-          <Input className={cn(inputClass, "font-mono")} />
-          <FieldError className="text-error text-xs" />
-        </TextField>
+          label="Kennung (eindeutig)"
+          inputProps={{ className: "font-mono" }}
+        />
       )}
 
       <div className="border-subtle flex justify-end gap-3 border-t pt-4">

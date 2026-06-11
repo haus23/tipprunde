@@ -1,15 +1,12 @@
 import type { users } from "@tipprunde/db/schema";
-import { Button } from "@tipprunde/ui";
+import { Button, FieldError, Label, TextField } from "@tipprunde/ui";
 import { ChevronDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Button as RACButton,
   Dialog,
-  FieldError,
   Form,
   Heading,
-  Input,
-  Label,
   ListBox,
   ListBoxItem,
   Modal,
@@ -17,7 +14,6 @@ import {
   Popover,
   Select,
   SelectValue,
-  TextField,
 } from "react-aria-components";
 import { useFetcher } from "react-router";
 
@@ -59,6 +55,7 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
   const [slugValue, setSlugValue] = useState(defaultValues?.slug ?? "");
   const [slugDirty, setSlugDirty] = useState(isEdit);
 
+  // Shared with the role Select trigger below; will fold into a Select primitive later.
   const inputClass = cn(
     "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
     "outline-none data-focused:ring-2 data-focused:ring-accent/60",
@@ -83,20 +80,16 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
         name="name"
         defaultValue={defaultValues?.name}
         isRequired
-        className="flex flex-col gap-1.5"
-      >
-        <Label className="text-sm font-medium">Name</Label>
-        <Input
-          className={inputClass}
-          onBlur={(e) => {
+        label="Name"
+        inputProps={{
+          onBlur: (e) => {
             if (!slugDirty) {
               setSlugValue(slugify(e.target.value));
               setServerErrors({});
             }
-          }}
-        />
-        <FieldError className="text-error text-xs" />
-      </TextField>
+          },
+        }}
+      />
 
       <TextField
         name="slug"
@@ -108,22 +101,16 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
         }}
         isReadOnly={isEdit}
         isRequired
-        className="flex flex-col gap-1.5"
-      >
-        <Label className="text-sm font-medium">Kennung</Label>
-        <Input className={cn(inputClass, "font-mono", isEdit && "text-subtle cursor-default")} />
-        <FieldError className="text-error text-xs" />
-      </TextField>
+        label="Kennung"
+        inputProps={{ className: cn("font-mono", isEdit && "text-subtle cursor-default") }}
+      />
 
       <TextField
         name="email"
+        type="email"
         defaultValue={defaultValues?.email ?? ""}
-        className="flex flex-col gap-1.5"
-      >
-        <Label className="text-sm font-medium">E-Mail</Label>
-        <Input type="email" className={inputClass} />
-        <FieldError className="text-error text-xs" />
-      </TextField>
+        label="E-Mail"
+      />
 
       <Select
         name="role"
@@ -131,12 +118,12 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
         isRequired
         className="flex flex-col gap-1.5"
       >
-        <Label className="text-sm font-medium">Rolle</Label>
+        <Label>Rolle</Label>
         <RACButton className={cn(inputClass, "flex w-full items-center justify-between gap-2")}>
           <SelectValue className="text-sm" />
           <ChevronDownIcon className="text-muted size-4 shrink-0" />
         </RACButton>
-        <FieldError className="text-error text-xs" />
+        <FieldError />
         <Popover className="bg-surface-raised border-subtle w-[--trigger-width] rounded-sm border shadow-lg outline-none">
           <ListBox className="p-1">
             {roleOptions.map((option) => (

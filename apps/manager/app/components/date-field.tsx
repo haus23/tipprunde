@@ -1,5 +1,5 @@
 import { parseDate } from "@internationalized/date";
-import { Button } from "@tipprunde/ui";
+import { Button, Label } from "@tipprunde/ui";
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import {
   Calendar,
@@ -13,7 +13,6 @@ import {
   DatePicker,
   DateSegment,
   Group,
-  Label,
   Popover,
 } from "react-aria-components";
 
@@ -35,7 +34,7 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
       shouldForceLeadingZeros
       className="flex flex-col gap-1.5"
     >
-      <Label className="text-sm font-medium">{label}</Label>
+      <Label>{label}</Label>
 
       {/* Input group: segmented input + calendar trigger */}
       <Group

@@ -1,8 +1,8 @@
 import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
-import { Button, Checkbox } from "@tipprunde/ui";
+import { Button, Checkbox, TextField } from "@tipprunde/ui";
 import { ArrowLeftIcon } from "lucide-react";
 import { useState, useTransition } from "react";
-import { FieldError, Form, Input, Label, TextField } from "react-aria-components";
+import { Form } from "react-aria-components";
 
 import { getPendingLogin, requestCode, startOver, verifyCode } from "#/lib/auth.ts";
 import type { LoginStep } from "#/lib/auth.ts";
@@ -16,11 +16,6 @@ export const Route = createFileRoute("/login")({
   loader: () => getPendingLogin(),
   component: RouteComponent,
 });
-
-const fieldClasses = "flex flex-col gap-1.5";
-const labelClasses = "text-app text-sm font-medium";
-const inputClasses =
-  "border-subtle bg-surface text-app focus-visible:ring-accent rounded-sm border px-3 py-2 text-sm outline-none transition ease-out focus-visible:ring-2";
 
 function RouteComponent() {
   const router = useRouter();
@@ -77,17 +72,16 @@ function RouteComponent() {
       <div className="border-subtle bg-surface-raised shadow-popover rounded-md border p-6">
         {state.step === "email" ? (
           <Form onSubmit={submitEmail} className="flex flex-col gap-4">
-            <TextField name="email" type="email" isRequired className={fieldClasses}>
-              <Label className={labelClasses}>E-Mail</Label>
-              <Input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                autoFocus
-                className={inputClasses}
-              />
-              <FieldError className="text-error text-sm" />
-            </TextField>
+            <TextField
+              name="email"
+              type="email"
+              isRequired
+              value={email}
+              onChange={setEmail}
+              autoComplete="email"
+              autoFocus
+              label="E-Mail"
+            />
 
             {state.error && <p className="text-error text-sm">{state.error}</p>}
 
@@ -97,20 +91,21 @@ function RouteComponent() {
           </Form>
         ) : (
           <Form onSubmit={submitCode} className="flex flex-col gap-4">
-            <TextField name="code" isRequired className={fieldClasses}>
-              <Label className={labelClasses}>Login-Code</Label>
-              <Input
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                maxLength={6}
-                placeholder="123456"
-                autoFocus
-                className={`${inputClasses} text-center text-lg tracking-[0.5em]`}
-              />
-              <FieldError className="text-error text-sm" />
-            </TextField>
+            <TextField
+              name="code"
+              isRequired
+              value={code}
+              onChange={setCode}
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              maxLength={6}
+              autoFocus
+              label="Login-Code"
+              inputProps={{
+                placeholder: "123456",
+                className: "text-center text-lg tracking-[0.5em]",
+              }}
+            />
 
             <Checkbox isSelected={rememberMe} onChange={setRememberMe} className="text-sm">
               Angemeldet bleiben

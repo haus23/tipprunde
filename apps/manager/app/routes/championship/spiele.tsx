@@ -4,7 +4,7 @@ import {
   rounds as roundsTable,
   teams,
 } from "@tipprunde/db/schema";
-import { Button } from "@tipprunde/ui";
+import { Button, Label } from "@tipprunde/ui";
 import { desc, eq, max } from "drizzle-orm";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { useCallback, useState } from "react";
@@ -13,7 +13,6 @@ import {
   ComboBox,
   Form,
   Input,
-  Label,
   ListBox,
   ListBoxItem,
   Popover,
@@ -201,7 +200,7 @@ function MatchComboBox({
       menuTrigger="focus"
       className="flex flex-col gap-1.5"
     >
-      <Label className="text-sm font-medium">{label}</Label>
+      <Label>{label}</Label>
       <div className={cn("flex rounded-sm", "focus-within:ring-2 focus-within:ring-accent/60")}>
         <Input
           placeholder={placeholder}

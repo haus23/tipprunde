@@ -1,21 +1,17 @@
 import type { rulesets } from "@tipprunde/db/schema";
 import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
-import { Button } from "@tipprunde/ui";
+import { Button, FieldError, Label, TextArea, TextField } from "@tipprunde/ui";
 import { useEffect, useState } from "react";
 import {
   Dialog,
-  FieldError,
   Form,
   Heading,
-  Input,
-  Label,
   Modal,
   ModalOverlay,
   RadioButton,
   RadioField,
   RadioGroup,
-  TextArea,
-  TextField,
+  TextField as AriaTextField,
 } from "react-aria-components";
 import { useFetcher } from "react-router";
 
@@ -51,11 +47,6 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
   const [idValue, setIdValue] = useState("");
   const [idDirty, setIdDirty] = useState(false);
 
-  const inputClass = cn(
-    "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
-    "outline-none data-focused:ring-2 data-focused:ring-accent/60",
-  );
-
   return (
     <Form
       onSubmit={(e) => {
@@ -75,20 +66,16 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
         name="name"
         defaultValue={defaultValues?.name}
         isRequired
-        className="flex flex-col gap-1.5"
-      >
-        <Label className="text-sm font-medium">Name</Label>
-        <Input
-          className={inputClass}
-          onBlur={(e) => {
+        label="Name"
+        inputProps={{
+          onBlur: (e) => {
             if (!idDirty) {
               setIdValue(slugify(e.target.value));
               setServerErrors({});
             }
-          }}
-        />
-        <FieldError className="text-error text-xs" />
-      </TextField>
+          },
+        }}
+      />
 
       {!isEdit && (
         <TextField
@@ -100,22 +87,19 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
             setServerErrors({});
           }}
           isRequired
-          className="flex flex-col gap-1.5"
-        >
-          <Label className="text-sm font-medium">Kennung (eindeutig)</Label>
-          <Input className={cn(inputClass, "font-mono")} />
-          <FieldError className="text-error text-xs" />
-        </TextField>
+          label="Kennung (eindeutig)"
+          inputProps={{ className: "font-mono" }}
+        />
       )}
 
-      <TextField
+      <AriaTextField
         name="description"
         defaultValue={defaultValues?.description}
         className="flex flex-col gap-1.5"
       >
-        <Label className="text-sm font-medium">Beschreibung</Label>
-        <TextArea rows={2} className={cn(inputClass, "resize-none")} />
-      </TextField>
+        <Label>Beschreibung</Label>
+        <TextArea rows={2} />
+      </AriaTextField>
 
       {RULE_CATEGORIES.map((category) => (
         <RadioGroup
@@ -125,7 +109,7 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
           isRequired
           className="flex flex-col gap-2"
         >
-          <Label className="text-sm font-medium">{category.label}</Label>
+          <Label>{category.label}</Label>
           {category.rules.map((rule) => (
             <RadioField key={rule.value} value={rule.value}>
               <RadioButton
@@ -161,7 +145,7 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
               </RadioButton>
             </RadioField>
           ))}
-          <FieldError className="text-error text-xs" />
+          <FieldError />
         </RadioGroup>
       ))}
 

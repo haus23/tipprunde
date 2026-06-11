@@ -5,13 +5,12 @@ import {
   calcTipPoints,
   type TipRuleId,
 } from "@tipprunde/domain/scoring";
-import { Button, Checkbox } from "@tipprunde/ui";
+import { Button, Checkbox, Label } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { ChevronDownIcon, ClipboardIcon } from "lucide-react";
 import { useState } from "react";
 import {
   Button as RACButton,
-  Label,
   ListBox,
   ListBoxItem,
   Popover,
@@ -442,7 +441,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
             onChange={(v) => v !== null && void navigate(`/${slug}/tipps/${v}`)}
             className="flex flex-col gap-1.5"
           >
-            <Label className="text-sm font-medium">Spieler</Label>
+            <Label>Spieler</Label>
             <RACButton
               className={cn(
                 "border-subtle bg-surface flex w-full items-center justify-between rounded-sm border px-3 py-1.5 text-sm outline-none",
