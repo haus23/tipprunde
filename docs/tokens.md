@@ -15,6 +15,15 @@ Custom breakpoints defined in `@tipprunde/theme`. Tailwind's default breakpoints
 
 All breakpoints are mobile-first (`min-width`). Use `max-xs:`, `max-sm:` etc. for max-width variants.
 
+## Shadows
+
+| Token              | Utility          | Use case                          |
+| ------------------ | ---------------- | --------------------------------- |
+| `--shadow-popover` | `shadow-popover` | Dropdowns, popovers, select menus |
+| `--shadow-overlay` | `shadow-overlay` | Dialogs, modals, drawers          |
+
+No other shadow values — cards and inputs rely on border + background contrast.
+
 ## Border Radius
 
 | Token         | Utility      | Value     | Use case                            |

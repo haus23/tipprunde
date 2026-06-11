@@ -87,6 +87,9 @@
   --radius-md: 0.5rem;
   --radius-sm: 0.25rem;
 
+  --shadow-popover: 0 4px 12px rgb(0 0 0 / 0.1); /* dropdowns, popovers, select menus */
+  --shadow-overlay: 0 8px 32px rgb(0 0 0 / 0.2); /* dialogs, modals, drawers */
+
   --breakpoint-xs: 30rem; /* 480px — custom; below Tailwind's sm (640px) */
 }
 
