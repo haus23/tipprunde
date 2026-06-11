@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.10.5
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.10.4...v0.10.5)
+
+### 🚀 Enhancements
+
+- **web:** Add react-aria-components + I18nProvider ([5de9637](https://github.com/haus23/tipprunde/commit/5de9637))
+- **theme:** Add shadow tokens (popover + overlay) ([49b60c5](https://github.com/haus23/tipprunde/commit/49b60c5))
+- **web:** Add color-scheme menu (light/dark/system) ([9dfe7ad](https://github.com/haus23/tipprunde/commit/9dfe7ad))
+- **web:** Strip unused RAC locales via optimize-locales-plugin ([fd24c7c](https://github.com/haus23/tipprunde/commit/fd24c7c))
+
+### 💅 Refactors
+
+- **ui:** Improve Button interaction states ([d001479](https://github.com/haus23/tipprunde/commit/d001479))
+
+### 🏡 Chore
+
+- Add Design Skills by Emil Kowalski. And apply. ([face21a](https://github.com/haus23/tipprunde/commit/face21a))
+- **dx:** Tweak some lsp settings. No need for eslint, ... ([e596699](https://github.com/haus23/tipprunde/commit/e596699))
+- **ui:** Wipe out type import. ([ed69693](https://github.com/haus23/tipprunde/commit/ed69693))
+
 ## v0.10.4
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.10.3...v0.10.4)
