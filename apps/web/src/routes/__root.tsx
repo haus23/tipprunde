@@ -1,5 +1,6 @@
 import { Link, Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { Logo } from "@tipprunde/ui";
+import { I18nProvider } from "react-aria-components";
 
 import { ColorSchemeMenu } from "#/components/color-scheme-menu.tsx";
 import type { ColorScheme } from "#/lib/session.ts";
@@ -68,7 +69,7 @@ function RootDocument({
         <HeadContent />
       </head>
       <body>
-        {children}
+        <I18nProvider locale="de-DE">{children}</I18nProvider>
         <Scripts />
       </body>
     </html>

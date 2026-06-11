@@ -182,6 +182,9 @@ importers:
       react:
         specifier: catalog:react
         version: 19.2.7
+      react-aria-components:
+        specifier: catalog:react
+        version: 1.18.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react-dom:
         specifier: catalog:react
         version: 19.2.7(react@19.2.7)
