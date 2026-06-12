@@ -5,7 +5,14 @@ import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      // App data is mutated by the manager app (separate deployment) and is
+      // never real-time — serve from cache for 10 min so cross-route navigation
+      // doesn't re-hit the DB. Override per-query if some data needs to be fresher.
+      queries: { staleTime: 10 * 60 * 1000 },
+    },
+  });
 
   const router = createRouter({
     routeTree,
