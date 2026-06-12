@@ -13,6 +13,7 @@ export const relations = defineRelations(schema, (r) => ({
     ruleset: r.one.rulesets({
       from: r.championships.rulesetId,
       to: r.rulesets.id,
+      optional: false,
     }),
     extraQuestions: r.many.extraQuestions({
       from: r.championships.id,
