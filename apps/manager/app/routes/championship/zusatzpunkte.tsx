@@ -52,9 +52,7 @@ export async function loader({ context }: Route.LoaderArgs) {
     }),
   ]);
 
-  const players = playerList
-    .filter((p) => p.user !== null)
-    .sort((a, b) => (a.user?.name ?? "").localeCompare(b.user?.name ?? ""));
+  const players = playerList.sort((a, b) => a.user.name.localeCompare(b.user.name));
 
   return {
     hasExtraQuestions: ruleset?.extraQuestionRuleId === "mit-zusatzfragen",
@@ -204,7 +202,7 @@ type ExtraAnswer = {
   userId: number;
   answer: string | null;
   points: number | null;
-  user: { id: number; name: string } | null;
+  user: { id: number; name: string };
 };
 
 type Question = {
@@ -217,7 +215,7 @@ type Question = {
 
 type EnrolledPlayer = {
   userId: number;
-  user: { id: number; name: string } | null;
+  user: { id: number; name: string };
 };
 
 // --- Question card ---
@@ -299,9 +297,9 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
     );
   }
 
-  const earners = question.extraAnswers.filter((ea) => ea.points !== null && ea.user !== null);
+  const earners = question.extraAnswers.filter((ea) => ea.points !== null);
   const earnerUserIds = new Set(earners.map((ea) => ea.userId));
-  const availablePlayers = players.filter((p) => p.user && !earnerUserIds.has(p.userId));
+  const availablePlayers = players.filter((p) => !earnerUserIds.has(p.userId));
 
   return (
     <Card>
@@ -404,7 +402,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                 <div className="space-y-1">
                   {earners.map((ea) => (
                     <div key={ea.userId} className="flex items-center gap-2">
-                      <span className="flex-1 text-sm">{ea.user!.name}</span>
+                      <span className="flex-1 text-sm">{ea.user.name}</span>
                       <span className="text-sm tabular-nums">
                         {Number.isInteger(ea.points) ? ea.points : ea.points!.toFixed(1)}
                       </span>
@@ -412,7 +410,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                         intent="ghost"
                         size="icon"
                         onPress={() => handleRemovePoints(ea.userId)}
-                        aria-label={`Punkte für ${ea.user!.name} entfernen`}
+                        aria-label={`Punkte für ${ea.user.name} entfernen`}
                         className="hover:text-error p-0.5"
                       >
                         <XIcon className="size-3" />
@@ -448,13 +446,13 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                         {(player) => (
                           <ListBoxItem
                             id={String(player.userId)}
-                            textValue={player.user?.name ?? ""}
+                            textValue={player.user.name}
                             className={cn(
                               "cursor-pointer rounded-sm px-2.5 py-1 text-sm outline-none",
                               "hover:bg-nav-active data-focused:bg-nav-active",
                             )}
                           >
-                            {player.user?.name ?? ""}
+                            {player.user.name}
                           </ListBoxItem>
                         )}
                       </ListBox>
@@ -519,7 +517,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
               <div className="mt-2 space-y-1">
                 {players.map((player) => (
                   <div key={player.userId} className="flex items-center gap-3">
-                    <span className="w-32 shrink-0 truncate text-sm">{player.user?.name}</span>
+                    <span className="w-32 shrink-0 truncate text-sm">{player.user.name}</span>
                     <input
                       type="text"
                       value={answerInputs[player.userId] ?? ""}

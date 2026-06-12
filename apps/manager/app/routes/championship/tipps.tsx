@@ -51,7 +51,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       : Promise.resolve(null),
   ]);
 
-  const players = playerList.sort((a, b) => (a.user?.name ?? "").localeCompare(b.user?.name ?? ""));
+  const players = playerList.sort((a, b) => a.user.name.localeCompare(b.user.name));
 
   if (players.length === 0) {
     return {
@@ -68,7 +68,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 
   // Redirect to first player when param is missing or invalid
   const currentPlayer = requestedPlayerSlug
-    ? players.find((p) => p.user?.slug === requestedPlayerSlug)
+    ? players.find((p) => p.user.slug === requestedPlayerSlug)
     : null;
 
   if (!currentPlayer) {
@@ -456,14 +456,14 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
               <ListBox items={players} className="max-h-72 overflow-y-auto p-1 outline-none">
                 {(player) => (
                   <ListBoxItem
-                    id={player.user?.slug ?? ""}
-                    textValue={player.user?.name ?? ""}
+                    id={player.user.slug}
+                    textValue={player.user.name}
                     className={cn(
                       "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
                       "hover:bg-nav-active data-focused:bg-nav-active data-selected:bg-accent-subtle",
                     )}
                   >
-                    {player.user?.name ?? ""}
+                    {player.user.name}
                   </ListBoxItem>
                 )}
               </ListBox>
