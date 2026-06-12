@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.11.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.11.0...v0.11.1)
+
+### 🚀 Enhancements
+
+- **web:** Integrate TanStack Query for cross-route ranking cache ([143b062](https://github.com/haus23/tipprunde/commit/143b062))
+- **web:** Set 10-min default staleTime on QueryClient ([2786edb](https://github.com/haus23/tipprunde/commit/2786edb))
+
+### 💅 Refactors
+
+- **web:** Use text-base for body content, keep text-sm for nav/captions ([b94964f](https://github.com/haus23/tipprunde/commit/b94964f))
+- **web:** Extract getRanking into shared lib/ranking.ts server fn ([44d1404](https://github.com/haus23/tipprunde/commit/44d1404))
+
 ## v0.11.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.10.5...v0.11.0)
