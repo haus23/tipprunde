@@ -56,6 +56,10 @@ Shared documentation in `docs/`:
 - `deployment.md` — Environment variables, first-deploy bootstrap, user management
 - `web-shell.md` — Web app shell: header contents, Priority+ nav collapse, docked/drawer chat panel
 
+## Skills
+
+AGENTS.md has instructions to find skills beside the autodiscoverable skills in your .claude folder
+
 ## Release (from repo root):
 
 ```bash
