@@ -1,3 +1,4 @@
+import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import { extraAnswers, extraQuestions, matches, rounds, tips } from "@tipprunde/db/schema";
 import { calcRanking, includesExtraQuestions } from "@tipprunde/domain/ranking";
@@ -64,4 +65,10 @@ export const getRanking = createServerFn()
     }));
 
     return { ranking, showExtras: includesExtraQuestions(ruleset, flags) };
+  });
+
+export const rankingQueryOptions = (championshipId: number) =>
+  queryOptions({
+    queryKey: ["ranking", championshipId],
+    queryFn: () => getRanking({ data: championshipId }),
   });

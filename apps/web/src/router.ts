@@ -1,18 +1,20 @@
+import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
+import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 
-import type { ColorScheme, SessionUser } from "./lib/session.ts";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
+  const queryClient = new QueryClient();
+
   const router = createRouter({
     routeTree,
     scrollRestoration: true,
-    context: {
-      user: null as SessionUser | null,
-      colorScheme: "system" as ColorScheme,
-      managerUrl: "",
-    },
+    defaultPreloadStaleTime: 0,
+    context: { queryClient },
   });
+
+  setupRouterSsrQueryIntegration({ router, queryClient });
 
   return router;
 }

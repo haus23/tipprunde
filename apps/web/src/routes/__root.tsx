@@ -1,7 +1,8 @@
+import type { QueryClient } from "@tanstack/react-query";
 import {
   Link,
   Outlet,
-  createRootRoute,
+  createRootRouteWithContext,
   HeadContent,
   Scripts,
   useRouter,
@@ -34,7 +35,7 @@ import { getSessionData } from "#/lib/session.ts";
 
 import appCss from "../styles/app.css?url";
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   beforeLoad: async () => await getSessionData(),
   head: () => ({
     meta: [
