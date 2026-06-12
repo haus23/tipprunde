@@ -79,9 +79,9 @@ function RouteComponent() {
       </div>
 
       {ranking.length === 0 ? (
-        <p className="text-subtle py-16 text-center text-sm">Noch keine Platzierungen.</p>
+        <p className="text-subtle py-16 text-center">Noch keine Platzierungen.</p>
       ) : (
-        <table className="w-full border-collapse text-sm">
+        <table className="w-full border-collapse">
           <thead>
             <tr className="text-muted text-xs tracking-wide uppercase">
               <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-right font-medium">

@@ -62,7 +62,7 @@ function RouteComponent() {
     <div className="mx-auto flex w-full max-w-sm flex-col px-4 py-12">
       <div className="mb-6 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">Anmelden</h1>
-        <p className="text-subtle mt-1 text-sm">
+        <p className="text-subtle mt-1">
           {state.step === "email"
             ? "Melde dich mit deiner E-Mail-Adresse an."
             : `Wir haben einen Code an ${state.email} gesendet.`}
@@ -83,7 +83,7 @@ function RouteComponent() {
               label="E-Mail"
             />
 
-            {state.error && <p className="text-error text-sm">{state.error}</p>}
+            {state.error && <p className="text-error">{state.error}</p>}
 
             <Button type="submit" isDisabled={pending} className="mt-1">
               {pending ? "Sende Code …" : "Code anfordern"}
@@ -107,11 +107,11 @@ function RouteComponent() {
               }}
             />
 
-            <Checkbox isSelected={rememberMe} onChange={setRememberMe} className="text-sm">
+            <Checkbox isSelected={rememberMe} onChange={setRememberMe}>
               Angemeldet bleiben
             </Checkbox>
 
-            {state.error && <p className="text-error text-sm">{state.error}</p>}
+            {state.error && <p className="text-error">{state.error}</p>}
 
             <Button type="submit" isDisabled={pending} className="mt-1">
               {pending ? "Prüfe Code …" : "Anmelden"}
