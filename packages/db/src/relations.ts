@@ -7,6 +7,7 @@ export const relations = defineRelations(schema, (r) => ({
     user: r.one.users({
       from: r.sessions.userId,
       to: r.users.id,
+      optional: false,
     }),
   },
   championships: {
@@ -24,6 +25,7 @@ export const relations = defineRelations(schema, (r) => ({
     championship: r.one.championships({
       from: r.extraQuestions.championshipId,
       to: r.championships.id,
+      optional: false,
     }),
     extraAnswers: r.many.extraAnswers({
       from: r.extraQuestions.id,
@@ -34,6 +36,7 @@ export const relations = defineRelations(schema, (r) => ({
     user: r.one.users({
       from: r.extraAnswers.userId,
       to: r.users.id,
+      optional: false,
     }),
   },
   rounds: {
@@ -46,18 +49,21 @@ export const relations = defineRelations(schema, (r) => ({
     user: r.one.users({
       from: r.players.userId,
       to: r.users.id,
+      optional: false,
     }),
   },
   tips: {
     user: r.one.users({
       from: r.tips.userId,
       to: r.users.id,
+      optional: false,
     }),
   },
   matches: {
     round: r.one.rounds({
       from: r.matches.roundId,
       to: r.rounds.id,
+      optional: false,
     }),
     league: r.one.leagues({
       from: r.matches.leagueId,
