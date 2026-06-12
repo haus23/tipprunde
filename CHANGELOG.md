@@ -1,5 +1,35 @@
 # Changelog
 
+## v0.11.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.10.5...v0.11.0)
+
+### 🚀 Enhancements
+
+- **web:** Build primary nav with pathless championship layout ([a57edc3](https://github.com/haus23/tipprunde/commit/a57edc3))
+- **web:** Email + one-time-code login flow ([9e2b52e](https://github.com/haus23/tipprunde/commit/9e2b52e))
+- **ui:** Add TextField and form-field primitives ([7c064e1](https://github.com/haus23/tipprunde/commit/7c064e1))
+- **ui:** Add SearchField primitive, migrate manager FilterInput ([3e2c004](https://github.com/haus23/tipprunde/commit/3e2c004))
+- **domain:** Add calcRanking with extra-question gating and tests ([0c34b80](https://github.com/haus23/tipprunde/commit/0c34b80))
+- **web:** Add Tabelle view with ranking, layout padding ([13e16ca](https://github.com/haus23/tipprunde/commit/13e16ca))
+
+### 🩹 Fixes
+
+- **db:** Mark championships.ruleset relation as non-optional ([3bf39c9](https://github.com/haus23/tipprunde/commit/3bf39c9))
+- **db:** Mark all notNull FK relations as optional: false ([e382c9f](https://github.com/haus23/tipprunde/commit/e382c9f))
+
+### 💅 Refactors
+
+- **db:** Rename totpCodes table to loginCodes ([ec2167c](https://github.com/haus23/tipprunde/commit/ec2167c))
+- **ui:** Extract shared Checkbox component ([07ae358](https://github.com/haus23/tipprunde/commit/07ae358))
+- Adopt shared TextField across manager dialogs and web login ([ec5427f](https://github.com/haus23/tipprunde/commit/ec5427f))
+- **ui:** Align RAC alias to AriaButton ([6faa415](https://github.com/haus23/tipprunde/commit/6faa415))
+- **manager:** Remove redundant null guards on player.user and extra-answer.user ([7bd659a](https://github.com/haus23/tipprunde/commit/7bd659a))
+
+### 🏡 Chore
+
+- Use tanstack intent to inform agents about packaged skills. ([1b43547](https://github.com/haus23/tipprunde/commit/1b43547))
+
 ## v0.10.5
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.10.4...v0.10.5)
