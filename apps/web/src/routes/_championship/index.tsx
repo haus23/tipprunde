@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_championship/")({
 function RouteComponent() {
   const { championship, user } = Route.useRouteContext();
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+    <div className="mx-auto w-full max-w-5xl py-8">
       <div className="mb-10 text-center">
         <p className="text-subtle text-xs tracking-widest uppercase">Haus23</p>
         <h1 className="text-3xl font-semibold tracking-tight">Tipprunde</h1>

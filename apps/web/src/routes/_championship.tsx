@@ -16,5 +16,9 @@ export const Route = createFileRoute("/_championship")({
     const { championship } = await getChampionship();
     return { championship };
   },
-  component: () => <Outlet />,
+  component: () => (
+    <div className="xs:px-4">
+      <Outlet />
+    </div>
+  ),
 });
