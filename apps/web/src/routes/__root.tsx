@@ -23,7 +23,7 @@ import { I18nProvider } from "react-aria-components";
 
 const navItems = [
   { to: "/tabelle", label: "Tabelle" },
-  { to: "/spieler", label: "Spieler" },
+  { to: "/spieler/{-$slug}", label: "Spieler" },
   { to: "/spiele", label: "Spiele" },
   { to: "/archiv", label: "Archiv" },
 ] as const;
