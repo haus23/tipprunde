@@ -1,11 +1,10 @@
 import { rulesets } from "@tipprunde/db/schema";
-import { Button } from "@tipprunde/ui";
+import { Button, SearchField } from "@tipprunde/ui";
 import { createInsertSchema } from "drizzle-orm/valibot";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import * as v from "valibot";
 
-import { FilterInput } from "#/components/filter-input.tsx";
 import { RegelwerkDialog } from "#/components/regelwerk-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
 
@@ -72,7 +71,12 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
     <div className="p-8">
       <title>Regelwerke | Stammdaten</title>
       <div className="mb-6 flex min-h-9 items-center justify-between gap-4">
-        <FilterInput value={filter} onChange={setFilter} />
+        <SearchField
+          aria-label="Regelwerke filtern"
+          className="flex-1"
+          value={filter}
+          onChange={setFilter}
+        />
         <Button onPress={() => setIsCreateOpen(true)}>
           <PlusIcon className="size-4" />
           Neues Regelwerk

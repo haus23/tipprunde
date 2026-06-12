@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "cva": "1.0.0-beta.4",
+    "lucide-react": "catalog:icons",
     "tailwind-merge": "catalog:tailwind"
   },
   "devDependencies": {

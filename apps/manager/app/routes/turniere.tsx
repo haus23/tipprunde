@@ -1,5 +1,5 @@
 import { championships } from "@tipprunde/db/schema";
-import { Button } from "@tipprunde/ui";
+import { Button, SearchField } from "@tipprunde/ui";
 import { eq } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-orm/valibot";
 import { PencilIcon, PlusIcon } from "lucide-react";
@@ -7,7 +7,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import * as v from "valibot";
 
-import { FilterInput } from "#/components/filter-input.tsx";
 import { TurnierDialog } from "#/components/turnier-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
 
@@ -100,7 +99,12 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
     <div className="p-8">
       <title>Turniere | Stammdaten</title>
       <div className="mb-6 flex min-h-9 items-center justify-between gap-4">
-        <FilterInput value={filter} onChange={setFilter} />
+        <SearchField
+          aria-label="Turniere filtern"
+          className="flex-1"
+          value={filter}
+          onChange={setFilter}
+        />
         <Button onPress={() => setIsCreateOpen(true)}>
           <PlusIcon className="size-4" />
           Neues Turnier

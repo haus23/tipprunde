@@ -1,4 +1,4 @@
-import { Button } from "@tipprunde/ui";
+import { Button, SearchField } from "@tipprunde/ui";
 import { UserPlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
@@ -7,7 +7,6 @@ import { useFetcher } from "react-router";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "./card";
-import { FilterInput } from "./filter-input";
 import { SpielerDialog } from "./spieler-dialog";
 
 type User = {
@@ -101,7 +100,12 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
               fixedHeight
             />
             <div className="flex items-center gap-4">
-              <FilterInput value={filter} onChange={setFilter} />
+              <SearchField
+                aria-label="Mitspieler filtern"
+                className="flex-1"
+                value={filter}
+                onChange={setFilter}
+              />
               <Button
                 size="icon"
                 onPress={() => setIsCreateOpen(true)}
