@@ -3,12 +3,13 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./ranking": "./src/ranking.ts",
     "./rules": "./src/rules.ts",
     "./scoring": "./src/scoring.ts"
   },
   "scripts": {
     "typecheck": "tsc",
-    "test": "node --experimental-strip-types --test src/scoring.test.ts"
+    "test": "node --experimental-strip-types --test src/*.test.ts"
   },
   "devDependencies": {
     "@types/node": "catalog:types",

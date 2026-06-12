@@ -1,0 +1,89 @@
+import { EXTRA_QUESTION_RULES } from "./rules.ts";
+
+export type ExtraQuestionRuleId = (typeof EXTRA_QUESTION_RULES)[number]["value"];
+
+// --- Input / Output ---
+
+export type RankingInput = {
+  /** Enrolled players — defines who appears in the ranking, even with 0 points. */
+  players: { userId: number }[];
+  /** Tip rows scoped to the championship. `points` is null until the match is scored. */
+  tips: { userId: number; points: number | null }[];
+  /** Extra-answer rows scoped to the championship. `points` is null until graded. */
+  extraAnswers: { userId: number; points: number | null }[];
+  ruleset: { extraQuestionRuleId: string };
+  championship: { extraQuestionsPublished: boolean };
+};
+
+export type RankingEntry = {
+  userId: number;
+  tipPoints: number;
+  extraPoints: number;
+  total: number;
+  /** Tie-aware rank: equal totals share a rank, the next rank skips accordingly. */
+  rank: number;
+};
+
+// --- Ranking ---
+
+/**
+ * Whether extra-answer points count toward the ranking: the ruleset must
+ * include extra questions AND the championship must have published them.
+ *
+ * Exposed so views can decide whether to show an extras column without
+ * re-deriving the rule (and without knowing the magic rule id).
+ */
+export function includesExtraQuestions(
+  ruleset: RankingInput["ruleset"],
+  championship: RankingInput["championship"],
+): boolean {
+  return (
+    ruleset.extraQuestionRuleId === ("mit-zusatzfragen" satisfies ExtraQuestionRuleId) &&
+    championship.extraQuestionsPublished
+  );
+}
+
+/**
+ * Compute the championship ranking from already-scored points.
+ *
+ * Tip and extra-answer points are persisted at scoring time, so this is pure
+ * aggregation: sum each player's tip points, conditionally add extra-answer
+ * points, then assign tie-aware ranks by descending total.
+ *
+ * Extra-answer points only count when the ruleset includes extra questions
+ * AND the championship has published them — otherwise they are ignored.
+ */
+export function calcRanking(input: RankingInput): RankingEntry[] {
+  const { players, tips, extraAnswers, ruleset, championship } = input;
+
+  const includeExtras = includesExtraQuestions(ruleset, championship);
+
+  const tipPointsByUser = sumPointsByUser(tips);
+  const extraPointsByUser = includeExtras
+    ? sumPointsByUser(extraAnswers)
+    : new Map<number, number>();
+
+  const totals = players.map((p) => {
+    const tipPoints = tipPointsByUser.get(p.userId) ?? 0;
+    const extraPoints = extraPointsByUser.get(p.userId) ?? 0;
+    return { userId: p.userId, tipPoints, extraPoints, total: tipPoints + extraPoints };
+  });
+
+  return totals
+    .toSorted((a, b) => b.total - a.total)
+    .reduce<RankingEntry[]>((acc, entry, index) => {
+      const prev = acc.at(-1);
+      const rank = prev && prev.total === entry.total ? prev.rank : index + 1;
+      acc.push({ ...entry, rank });
+      return acc;
+    }, []);
+}
+
+function sumPointsByUser(rows: { userId: number; points: number | null }[]): Map<number, number> {
+  const byUser = new Map<number, number>();
+  for (const row of rows) {
+    if (row.points === null) continue;
+    byUser.set(row.userId, (byUser.get(row.userId) ?? 0) + row.points);
+  }
+  return byUser;
+}
