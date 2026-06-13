@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.12.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.12.0...v0.12.1)
+
+### 🚀 Enhancements
+
+- **web:** Add Spiele overview, extract shared RoundAccordion ([a95f6a1](https://github.com/haus23/tipprunde/commit/a95f6a1))
+
+### 📖 Documentation
+
+- Document root-level pnpm filter commands ([8b224d2](https://github.com/haus23/tipprunde/commit/8b224d2))
+
 ## v0.12.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.11.2...v0.12.0)
