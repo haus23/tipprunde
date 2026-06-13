@@ -46,6 +46,19 @@ Single export: `@tipprunde/theme` → `src/theme.css`
 
 Consumed in apps via `@import "@tipprunde/theme"` in the app's main CSS file. Contains the full `@theme inline {}` block, `@custom-variant dark`, and `@layer base` styles. Do not add app-specific tokens here.
 
+## Commands (from repo root)
+
+Use pnpm workspace filters instead of `cd`-ing into a package — `--filter web` /
+`--filter manager` match by directory name:
+
+```bash
+pnpm --filter web run dev          # web app dev server (apps/web)
+pnpm --filter manager run dev      # manager app dev server (apps/manager)
+pnpm --filter web typecheck        # type-check a single app
+```
+
+The same pattern works for any package script (`build`, `typecheck`, etc.).
+
 ## Docs
 
 Shared documentation in `docs/`:
