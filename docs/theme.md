@@ -43,6 +43,10 @@ All Tailwind colors are defined as semantic tokens using `light-dark()` in `pack
 
 A derived color between two steps may be used for subtle distinctions. Semantic colors (success, error, warning) may use new values outside the sand/orange palette.
 
+### Inverted surface
+
+`--background-color-inverted` (sand12) + `--text-color-inverted` (sand1) form an inverted pair for tooltips/toasts — a dark surface with light text in light mode, flipping in dark mode. Utilities: `bg-inverted` / `text-inverted`.
+
 ## Enforcing the design system
 
 Tailwind's default color palette (`red-500`, `blue-100`, etc.) is disabled via `--color-*: initial` at the top of the `@theme inline {}` block. All color usage must go through the semantic tokens. Do not remove this line.

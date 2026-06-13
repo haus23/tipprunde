@@ -33,6 +33,11 @@
     color(display-p3 0.87 0.409 0.164),
     color(display-p3 0.98 0.51 0.23)
   );
+  /* sand12 — Inverted surface (tooltips, toasts): dark in light mode, light in dark mode */
+  --background-color-inverted: light-dark(
+    color(display-p3 0.129 0.126 0.111),
+    color(display-p3 0.933 0.933 0.926)
+  );
 
   /* sand12 — High-contrast text */
   --text-color-app: light-dark(
@@ -51,6 +56,11 @@
   --text-color-accent: light-dark(color(display-p3 0.76 0.34 0), color(display-p3 1 0.63 0.38));
   /* white — Text on solid accent backgrounds */
   --text-color-accent-fg: color(display-p3 1 1 1);
+  /* sand1 — Text on inverted surface */
+  --text-color-inverted: light-dark(
+    color(display-p3 0.992 0.992 0.989),
+    color(display-p3 0.067 0.067 0.063)
+  );
 
   /* orange9 — Accent border (selected states) */
   --border-color-accent: light-dark(color(display-p3 0.9 0.45 0.2), color(display-p3 0.9 0.45 0.2));
