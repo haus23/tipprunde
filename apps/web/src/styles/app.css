@@ -2,6 +2,11 @@
 @source "../../node_modules/@tipprunde/ui";
 @import "@tipprunde/theme";
 
+@theme {
+  --text-base: 0.875rem;
+  --text-base--line-height: calc(1.25 / 0.875);
+}
+
 /* Animate the native round accordions (Spieler view) where supported: the
    `::details-content` pseudo-element + `interpolate-size: allow-keywords`
    unlock transitioning the panel to/from its auto height with zero JS.

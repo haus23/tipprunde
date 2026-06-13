@@ -13,7 +13,7 @@ function RouteComponent() {
         <h1 className="text-3xl font-semibold tracking-tight">Tipprunde</h1>
         <p className="text-subtle mt-1 text-lg">{championship?.name}</p>
       </div>
-      {user && <p className="text-center">Angemeldet als {user.name}</p>}
+      {user && <p className="text-center text-base">Angemeldet als {user.name}</p>}
     </div>
   );
 }

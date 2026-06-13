@@ -42,7 +42,7 @@ function RouteComponent() {
   if (!championship) {
     return (
       <div className="mx-auto w-full max-w-5xl py-8">
-        <p className="text-subtle py-16 text-center">Kein aktives Turnier.</p>
+        <p className="text-subtle py-16 text-center text-base">Kein aktives Turnier.</p>
       </div>
     );
   }
@@ -66,7 +66,9 @@ function SpielerView({
   if (!player) {
     return (
       <div className="mx-auto w-full max-w-5xl py-8">
-        <p className="text-subtle py-16 text-center">Kein Spieler mit dem Kürzel „{slug}“.</p>
+        <p className="text-subtle py-16 text-center text-base">
+          Kein Spieler mit dem Kürzel „{slug}“.
+        </p>
       </div>
     );
   }
@@ -126,7 +128,7 @@ function PlayerCard({
       </div>
 
       {rounds.length === 0 ? (
-        <p className="text-subtle px-4">Noch keine Runden gespielt.</p>
+        <p className="text-subtle px-4 text-base">Noch keine Runden gespielt.</p>
       ) : (
         <div className="border-subtle border-t">
           {rounds.map((round, i) => (
@@ -167,7 +169,7 @@ function RoundAccordion({ round, defaultOpen }: { round: PlayerRound; defaultOpe
         </span>
       </summary>
       <div className="xs:px-3 px-2 pb-3">
-        <table className="w-full">
+        <table className="w-full text-base">
           <thead>
             <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">
               <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-right font-medium">#</th>

@@ -38,3 +38,40 @@ No other shadow values — cards and inputs rely on border + background contrast
 | ------------- | ------------ | --------- | ----------------------------------- |
 | `--radius-md` | `rounded-md` | `0.5rem`  | Content: cards, dropdowns, modals   |
 | `--radius-sm` | `rounded-sm` | `0.25rem` | Components: buttons, inputs, badges |
+
+## Typography
+
+Font sizes use Tailwind v4's default scale. Line-heights are unitless
+`calc(lineHeight / fontSize)` ratios (Tailwind's own form), so they scale with
+the font-size instead of locking an absolute value.
+
+**Convention: body content carries an explicit `text-base`.** Readable content —
+prose, empty-state messages, data tables — sets `text-base` explicitly rather
+than inheriting from `<body>`. Chrome uses fixed `text-sm` / `text-xs`. This
+makes `--text-base` a single lever: override it to retune content size without
+moving the chrome.
+
+| Layer             | Sizes                  | Examples                                      |
+| ----------------- | ---------------------- | --------------------------------------------- |
+| Content           | `text-base` (explicit) | prose, empty states, ranking & match tables   |
+| Captions / labels | `text-sm`              | nav items, menu items, subtitles, stats lines |
+| Micro-labels      | `text-xs`              | table column headers, round meta              |
+| Headings          | `text-lg`–`text-3xl`   | page titles, section headers                  |
+
+When adding readable content, set `text-base` on it explicitly — do not rely on
+inheritance, or it won't track the token.
+
+### Web app content size
+
+`apps/web` sets a smaller content base in its own `src/styles/app.css` (web-only —
+**not** in the shared `@tipprunde/theme`, so the manager is unaffected):
+
+```css
+@theme {
+  --text-base: 0.875rem; /* 14px — matches the old text-sm */
+  --text-base--line-height: calc(1.25 / 0.875); /* Tailwind's text-sm ratio */
+}
+```
+
+Adjust `--text-base` to experiment with content size; the unitless line-height
+ratio keeps the rhythm proportional.

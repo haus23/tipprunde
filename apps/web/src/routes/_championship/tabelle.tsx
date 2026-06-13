@@ -21,7 +21,7 @@ function RouteComponent() {
   if (!championship) {
     return (
       <div className="mx-auto w-full max-w-3xl py-8">
-        <p className="text-subtle py-16 text-center">Kein aktives Turnier.</p>
+        <p className="text-subtle py-16 text-center text-base">Kein aktives Turnier.</p>
       </div>
     );
   }
@@ -50,7 +50,7 @@ function TabelleView({
       </div>
 
       {ranking.length === 0 ? (
-        <p className="text-subtle py-16 text-center">Noch keine Platzierungen.</p>
+        <p className="text-subtle py-16 text-center text-base">Noch keine Platzierungen.</p>
       ) : (
         <RankingTable ranking={ranking} showExtras={showExtras} currentUserId={user?.id} />
       )}
@@ -68,7 +68,7 @@ function RankingTable({
   currentUserId: number | undefined;
 }) {
   return (
-    <table className="w-full border-collapse">
+    <table className="w-full border-collapse text-base">
       <thead>
         <tr className="text-muted text-xs tracking-wide uppercase">
           <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-right font-medium">
