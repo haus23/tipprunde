@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.11.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.11.1...v0.11.2)
+
+### 🚀 Enhancements
+
+- **web:** Add Spieler view with player switch and round accordion ([2bc2c8b](https://github.com/haus23/tipprunde/commit/2bc2c8b))
+
+### 💅 Refactors
+
+- **web:** Center Spieler header, flatten rounds into a card-less list ([2062239](https://github.com/haus23/tipprunde/commit/2062239))
+- **web:** Make text-base explicit on content, set it as a tunable token ([00a563c](https://github.com/haus23/tipprunde/commit/00a563c))
+
+### 🏡 Chore
+
+- **dx:** Ignore generated code when formatting. ([e9ae44b](https://github.com/haus23/tipprunde/commit/e9ae44b))
+- Update package manager. ([d3a79da](https://github.com/haus23/tipprunde/commit/d3a79da))
+
 ## v0.11.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.11.0...v0.11.1)
