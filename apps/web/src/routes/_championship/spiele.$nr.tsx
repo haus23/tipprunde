@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowLeftIcon } from "lucide-react";
 
 import { formatDate } from "#/lib/format.ts";
 import { matchQueryOptions } from "#/lib/spiele.ts";
@@ -54,6 +55,15 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
 
   return (
     <div className="mx-auto w-full max-w-5xl py-8">
+      <div className="xs:px-0 mb-4 px-4">
+        <Link
+          to="/spiele"
+          className="text-subtle hover:text-app focus-visible:ring-accent inline-flex items-center gap-1 rounded-sm text-sm transition-colors outline-none focus-visible:ring-2"
+        >
+          <ArrowLeftIcon className="size-4" />
+          Spielübersicht
+        </Link>
+      </div>
       <div className="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
         <h1 className="text-center text-2xl font-semibold tracking-tight">
           <span className="sm:hidden">{match.paarungShort}</span>
