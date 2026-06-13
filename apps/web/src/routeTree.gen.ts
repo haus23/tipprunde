@@ -8,184 +8,192 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as ChampionshipRouteImport } from "./routes/_championship";
-import { Route as ChampionshipIndexRouteImport } from "./routes/_championship/index";
-import { Route as ChampionshipSpieleRouteImport } from "./routes/_championship/spiele";
-import { Route as ChampionshipSpielerChar123SlugChar125RouteImport } from "./routes/_championship/spieler.{-$slug}";
-import { Route as ChampionshipTabelleRouteImport } from "./routes/_championship/tabelle";
-import { Route as ArchivRouteImport } from "./routes/archiv";
-import { Route as LoginRouteImport } from "./routes/login";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ArchivRouteImport } from './routes/archiv'
+import { Route as ChampionshipRouteImport } from './routes/_championship'
+import { Route as ChampionshipIndexRouteImport } from './routes/_championship/index'
+import { Route as ChampionshipTabelleRouteImport } from './routes/_championship/tabelle'
+import { Route as ChampionshipSpieleRouteImport } from './routes/_championship/spiele'
+import { Route as ChampionshipSpielerChar123SlugChar125RouteImport } from './routes/_championship/spieler.{-$slug}'
 
 const LoginRoute = LoginRouteImport.update({
-  id: "/login",
-  path: "/login",
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ArchivRoute = ArchivRouteImport.update({
-  id: "/archiv",
-  path: "/archiv",
+  id: '/archiv',
+  path: '/archiv',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ChampionshipRoute = ChampionshipRouteImport.update({
-  id: "/_championship",
+  id: '/_championship',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ChampionshipIndexRoute = ChampionshipIndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => ChampionshipRoute,
-} as any);
+} as any)
 const ChampionshipTabelleRoute = ChampionshipTabelleRouteImport.update({
-  id: "/tabelle",
-  path: "/tabelle",
+  id: '/tabelle',
+  path: '/tabelle',
   getParentRoute: () => ChampionshipRoute,
-} as any);
+} as any)
 const ChampionshipSpieleRoute = ChampionshipSpieleRouteImport.update({
-  id: "/spiele",
-  path: "/spiele",
+  id: '/spiele',
+  path: '/spiele',
   getParentRoute: () => ChampionshipRoute,
-} as any);
+} as any)
 const ChampionshipSpielerChar123SlugChar125Route =
   ChampionshipSpielerChar123SlugChar125RouteImport.update({
-    id: "/spieler/{-$slug}",
-    path: "/spieler/{-$slug}",
+    id: '/spieler/{-$slug}',
+    path: '/spieler/{-$slug}',
     getParentRoute: () => ChampionshipRoute,
-  } as any);
+  } as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof ChampionshipIndexRoute;
-  "/archiv": typeof ArchivRoute;
-  "/login": typeof LoginRoute;
-  "/spiele": typeof ChampionshipSpieleRoute;
-  "/tabelle": typeof ChampionshipTabelleRoute;
-  "/spieler/{-$slug}": typeof ChampionshipSpielerChar123SlugChar125Route;
+  '/': typeof ChampionshipIndexRoute
+  '/archiv': typeof ArchivRoute
+  '/login': typeof LoginRoute
+  '/spiele': typeof ChampionshipSpieleRoute
+  '/tabelle': typeof ChampionshipTabelleRoute
+  '/spieler/{-$slug}': typeof ChampionshipSpielerChar123SlugChar125Route
 }
 export interface FileRoutesByTo {
-  "/archiv": typeof ArchivRoute;
-  "/login": typeof LoginRoute;
-  "/spiele": typeof ChampionshipSpieleRoute;
-  "/tabelle": typeof ChampionshipTabelleRoute;
-  "/": typeof ChampionshipIndexRoute;
-  "/spieler/{-$slug}": typeof ChampionshipSpielerChar123SlugChar125Route;
+  '/archiv': typeof ArchivRoute
+  '/login': typeof LoginRoute
+  '/spiele': typeof ChampionshipSpieleRoute
+  '/tabelle': typeof ChampionshipTabelleRoute
+  '/': typeof ChampionshipIndexRoute
+  '/spieler/{-$slug}': typeof ChampionshipSpielerChar123SlugChar125Route
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/_championship": typeof ChampionshipRouteWithChildren;
-  "/archiv": typeof ArchivRoute;
-  "/login": typeof LoginRoute;
-  "/_championship/spiele": typeof ChampionshipSpieleRoute;
-  "/_championship/tabelle": typeof ChampionshipTabelleRoute;
-  "/_championship/": typeof ChampionshipIndexRoute;
-  "/_championship/spieler/{-$slug}": typeof ChampionshipSpielerChar123SlugChar125Route;
+  __root__: typeof rootRouteImport
+  '/_championship': typeof ChampionshipRouteWithChildren
+  '/archiv': typeof ArchivRoute
+  '/login': typeof LoginRoute
+  '/_championship/spiele': typeof ChampionshipSpieleRoute
+  '/_championship/tabelle': typeof ChampionshipTabelleRoute
+  '/_championship/': typeof ChampionshipIndexRoute
+  '/_championship/spieler/{-$slug}': typeof ChampionshipSpielerChar123SlugChar125Route
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/archiv" | "/login" | "/spiele" | "/tabelle" | "/spieler/{-$slug}";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/archiv" | "/login" | "/spiele" | "/tabelle" | "/" | "/spieler/{-$slug}";
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/archiv'
+    | '/login'
+    | '/spiele'
+    | '/tabelle'
+    | '/spieler/{-$slug}'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/archiv' | '/login' | '/spiele' | '/tabelle' | '/' | '/spieler/{-$slug}'
   id:
-    | "__root__"
-    | "/_championship"
-    | "/archiv"
-    | "/login"
-    | "/_championship/spiele"
-    | "/_championship/tabelle"
-    | "/_championship/"
-    | "/_championship/spieler/{-$slug}";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/_championship'
+    | '/archiv'
+    | '/login'
+    | '/_championship/spiele'
+    | '/_championship/tabelle'
+    | '/_championship/'
+    | '/_championship/spieler/{-$slug}'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  ChampionshipRoute: typeof ChampionshipRouteWithChildren;
-  ArchivRoute: typeof ArchivRoute;
-  LoginRoute: typeof LoginRoute;
+  ChampionshipRoute: typeof ChampionshipRouteWithChildren
+  ArchivRoute: typeof ArchivRoute
+  LoginRoute: typeof LoginRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/login": {
-      id: "/login";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof LoginRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/archiv": {
-      id: "/archiv";
-      path: "/archiv";
-      fullPath: "/archiv";
-      preLoaderRoute: typeof ArchivRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_championship": {
-      id: "/_championship";
-      path: "";
-      fullPath: "/";
-      preLoaderRoute: typeof ChampionshipRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_championship/": {
-      id: "/_championship/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof ChampionshipIndexRouteImport;
-      parentRoute: typeof ChampionshipRoute;
-    };
-    "/_championship/tabelle": {
-      id: "/_championship/tabelle";
-      path: "/tabelle";
-      fullPath: "/tabelle";
-      preLoaderRoute: typeof ChampionshipTabelleRouteImport;
-      parentRoute: typeof ChampionshipRoute;
-    };
-    "/_championship/spiele": {
-      id: "/_championship/spiele";
-      path: "/spiele";
-      fullPath: "/spiele";
-      preLoaderRoute: typeof ChampionshipSpieleRouteImport;
-      parentRoute: typeof ChampionshipRoute;
-    };
-    "/_championship/spieler/{-$slug}": {
-      id: "/_championship/spieler/{-$slug}";
-      path: "/spieler/{-$slug}";
-      fullPath: "/spieler/{-$slug}";
-      preLoaderRoute: typeof ChampionshipSpielerChar123SlugChar125RouteImport;
-      parentRoute: typeof ChampionshipRoute;
-    };
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/archiv': {
+      id: '/archiv'
+      path: '/archiv'
+      fullPath: '/archiv'
+      preLoaderRoute: typeof ArchivRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_championship': {
+      id: '/_championship'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ChampionshipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_championship/': {
+      id: '/_championship/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof ChampionshipIndexRouteImport
+      parentRoute: typeof ChampionshipRoute
+    }
+    '/_championship/tabelle': {
+      id: '/_championship/tabelle'
+      path: '/tabelle'
+      fullPath: '/tabelle'
+      preLoaderRoute: typeof ChampionshipTabelleRouteImport
+      parentRoute: typeof ChampionshipRoute
+    }
+    '/_championship/spiele': {
+      id: '/_championship/spiele'
+      path: '/spiele'
+      fullPath: '/spiele'
+      preLoaderRoute: typeof ChampionshipSpieleRouteImport
+      parentRoute: typeof ChampionshipRoute
+    }
+    '/_championship/spieler/{-$slug}': {
+      id: '/_championship/spieler/{-$slug}'
+      path: '/spieler/{-$slug}'
+      fullPath: '/spieler/{-$slug}'
+      preLoaderRoute: typeof ChampionshipSpielerChar123SlugChar125RouteImport
+      parentRoute: typeof ChampionshipRoute
+    }
   }
 }
 
 interface ChampionshipRouteChildren {
-  ChampionshipSpieleRoute: typeof ChampionshipSpieleRoute;
-  ChampionshipTabelleRoute: typeof ChampionshipTabelleRoute;
-  ChampionshipIndexRoute: typeof ChampionshipIndexRoute;
-  ChampionshipSpielerChar123SlugChar125Route: typeof ChampionshipSpielerChar123SlugChar125Route;
+  ChampionshipSpieleRoute: typeof ChampionshipSpieleRoute
+  ChampionshipTabelleRoute: typeof ChampionshipTabelleRoute
+  ChampionshipIndexRoute: typeof ChampionshipIndexRoute
+  ChampionshipSpielerChar123SlugChar125Route: typeof ChampionshipSpielerChar123SlugChar125Route
 }
 
 const ChampionshipRouteChildren: ChampionshipRouteChildren = {
   ChampionshipSpieleRoute: ChampionshipSpieleRoute,
   ChampionshipTabelleRoute: ChampionshipTabelleRoute,
   ChampionshipIndexRoute: ChampionshipIndexRoute,
-  ChampionshipSpielerChar123SlugChar125Route: ChampionshipSpielerChar123SlugChar125Route,
-};
+  ChampionshipSpielerChar123SlugChar125Route:
+    ChampionshipSpielerChar123SlugChar125Route,
+}
 
-const ChampionshipRouteWithChildren = ChampionshipRoute._addFileChildren(ChampionshipRouteChildren);
+const ChampionshipRouteWithChildren = ChampionshipRoute._addFileChildren(
+  ChampionshipRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   ChampionshipRoute: ChampionshipRouteWithChildren,
   ArchivRoute: ArchivRoute,
   LoginRoute: LoginRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
-import type { createStart } from "@tanstack/react-start";
-
-import type { getRouter } from "./router.ts";
-declare module "@tanstack/react-start" {
+import type { getRouter } from './router.ts'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true;
-    router: Awaited<ReturnType<typeof getRouter>>;
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
   }
 }
