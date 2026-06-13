@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
+import { MatchLink } from "#/components/match-link.tsx";
 import { PlayerSwitch } from "#/components/player-switch.tsx";
 import { RoundAccordion } from "#/components/round-accordion.tsx";
 import { TipFlag } from "#/components/tip-flag.tsx";
@@ -195,18 +196,20 @@ function PlayerRoundItem({ round, defaultOpen }: { round: PlayerRound; defaultOp
             return (
               <tr key={match.id} className="border-subtle border-b last:border-b-0">
                 <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
-                  {match.nr}
+                  <MatchLink nr={match.nr}>{match.nr}</MatchLink>
                 </td>
                 <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
                   {match.date ? formatDate(match.date) : "–"}
                 </td>
                 <td className="xs:px-2 px-1 py-3">
-                  <span className="hidden sm:inline">
-                    {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
-                  </span>
-                  <span className="sm:hidden">
-                    {match.hometeam?.shortName ?? "–"} – {match.awayteam?.shortName ?? "–"}
-                  </span>
+                  <MatchLink nr={match.nr}>
+                    <span className="hidden sm:inline">
+                      {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
+                    </span>
+                    <span className="sm:hidden">
+                      {match.hometeam?.shortName ?? "–"} – {match.awayteam?.shortName ?? "–"}
+                    </span>
+                  </MatchLink>
                 </td>
                 <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                   {match.result ?? "–:–"}
