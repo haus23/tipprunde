@@ -104,7 +104,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
         <p className="text-subtle text-center text-sm">{meta}</p>
       </div>
 
-      <div className="mx-auto w-full max-w-2xl">
+      <div className="mx-auto w-full max-w-3xl">
         <table className="w-full text-base">
           <thead>
             <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">
@@ -113,7 +113,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
                 <th className="xs:px-3 w-px px-2 pt-2 pb-3 text-center font-medium">Tipp</th>
               )}
               {match.tipsPublished && (
-                <th className="xs:px-3 w-px px-2 pt-2 pb-3 text-right font-medium">Pkt</th>
+                <th className="xs:px-3 w-px px-2 pt-2 pb-3 text-center font-medium">Pkt</th>
               )}
             </tr>
           </thead>
@@ -122,7 +122,15 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
               const tip = tipsByUser.get(p.userId);
               return (
                 <tr key={p.userId} className="border-subtle border-b last:border-b-0">
-                  <td className="xs:px-3 px-2 py-3 font-medium">{p.name}</td>
+                  <td className="xs:px-3 px-2 py-3 font-medium">
+                    <Link
+                      to="/spieler/{-$slug}"
+                      params={{ slug: p.slug }}
+                      className="hover:text-accent focus-visible:ring-accent rounded-sm transition-colors outline-none focus-visible:ring-2"
+                    >
+                      {p.name}
+                    </Link>
+                  </td>
                   {match.tipsPublished && (
                     <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
                       {tip?.tip ?? "–"}
@@ -130,7 +138,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
                     </td>
                   )}
                   {match.tipsPublished && (
-                    <td className="xs:px-3 w-px px-2 py-3 text-right tabular-nums">
+                    <td className="xs:px-3 w-px px-2 py-3 text-center tabular-nums">
                       {tip?.points ?? "–"}
                     </td>
                   )}
