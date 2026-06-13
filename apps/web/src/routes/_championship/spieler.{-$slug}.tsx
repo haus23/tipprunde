@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { ChevronDownIcon } from "lucide-react";
 
 import { PlayerSwitch } from "#/components/player-switch.tsx";
+import { RoundAccordion } from "#/components/round-accordion.tsx";
 import { TipFlag } from "#/components/tip-flag.tsx";
 import { formatDate } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
@@ -146,7 +146,7 @@ function PlayerCard({
       ) : (
         <div className="border-subtle border-t">
           {rounds.map((round, i) => (
-            <RoundAccordion key={round.id} round={round} defaultOpen={i === defaultOpenIndex} />
+            <PlayerRoundItem key={round.id} round={round} defaultOpen={i === defaultOpenIndex} />
           ))}
         </div>
       )}
@@ -154,7 +154,7 @@ function PlayerCard({
   );
 }
 
-function RoundAccordion({ round, defaultOpen }: { round: PlayerRound; defaultOpen: boolean }) {
+function PlayerRoundItem({ round, defaultOpen }: { round: PlayerRound; defaultOpen: boolean }) {
   const matchesWithResult = round.matches.filter((m) => m.result !== null).length;
   const totalMatches = round.matches.length;
   const roundPoints = round.matches.reduce((sum, m) => sum + (m.tips[0]?.points ?? 0), 0);
@@ -166,70 +166,63 @@ function RoundAccordion({ round, defaultOpen }: { round: PlayerRound; defaultOpe
     matchesWithResult === totalMatches ? `${totalMatches}` : `${matchesWithResult}/${totalMatches}`;
 
   return (
-    <details
-      name="runden"
-      open={defaultOpen}
-      className="group border-subtle border-b last:border-b-0"
-    >
-      <summary className="focus-visible:ring-accent hover:bg-surface-raised xs:px-3 flex cursor-pointer list-none items-center justify-between px-2 py-3 transition-colors outline-none select-none focus-visible:ring-2 focus-visible:ring-inset [&::-webkit-details-marker]:hidden">
-        <span className="text-sm font-medium">Runde {round.nr}</span>
-        <span className="flex items-center gap-3">
-          <span className="text-subtle flex items-center gap-2 text-xs">
-            {round.tipsPublished && <span>{roundPoints} Pkt</span>}
-            <span>{roundSpiele} Sp.</span>
-            {roundAvg !== null && <span>Ø {roundAvg}</span>}
-          </span>
-          <ChevronDownIcon className="text-subtle size-3.5 transition-transform duration-200 group-open:rotate-180" />
+    <RoundAccordion
+      title={`Runde ${round.nr}`}
+      defaultOpen={defaultOpen}
+      meta={
+        <span className="text-subtle flex items-center gap-2 text-xs">
+          {round.tipsPublished && <span>{roundPoints} Pkt</span>}
+          <span>{roundSpiele} Sp.</span>
+          {roundAvg !== null && <span>Ø {roundAvg}</span>}
         </span>
-      </summary>
-      <div className="xs:px-3 px-2 pb-3">
-        <table className="w-full text-base">
-          <thead>
-            <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">
-              <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-right font-medium">#</th>
-              <th className="hidden w-px px-2 pt-2 pb-3 font-medium md:table-cell">Datum</th>
-              <th className="xs:px-2 px-1 pt-2 pb-3 font-medium">Paarung</th>
-              <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-center font-medium">Erg.</th>
-              <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-center font-medium">Tipp</th>
-              <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-center font-medium">Pkt</th>
-            </tr>
-          </thead>
-          <tbody>
-            {round.matches.map((match) => {
-              const tip = match.tips[0];
-              const showTip = round.tipsPublished && tip?.tip;
-              return (
-                <tr key={match.id} className="border-subtle border-b last:border-b-0">
-                  <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
-                    {match.nr}
-                  </td>
-                  <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
-                    {match.date ? formatDate(match.date) : "–"}
-                  </td>
-                  <td className="xs:px-2 px-1 py-3">
-                    <span className="hidden sm:inline">
-                      {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
-                    </span>
-                    <span className="sm:hidden">
-                      {match.hometeam?.shortName ?? "–"} – {match.awayteam?.shortName ?? "–"}
-                    </span>
-                  </td>
-                  <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
-                    {match.result ?? "–:–"}
-                  </td>
-                  <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
-                    {showTip ? tip.tip : "–"}
-                    {showTip && tip.joker && <TipFlag label="Joker-Tipp" />}
-                  </td>
-                  <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
-                    {tip?.points != null ? tip.points : "–"}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </details>
+      }
+    >
+      <table className="w-full text-base">
+        <thead>
+          <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">
+            <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-right font-medium">#</th>
+            <th className="hidden w-px px-2 pt-2 pb-3 font-medium md:table-cell">Datum</th>
+            <th className="xs:px-2 px-1 pt-2 pb-3 font-medium">Paarung</th>
+            <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-center font-medium">Erg.</th>
+            <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-center font-medium">Tipp</th>
+            <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-center font-medium">Pkt</th>
+          </tr>
+        </thead>
+        <tbody>
+          {round.matches.map((match) => {
+            const tip = match.tips[0];
+            const showTip = round.tipsPublished && tip?.tip;
+            return (
+              <tr key={match.id} className="border-subtle border-b last:border-b-0">
+                <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
+                  {match.nr}
+                </td>
+                <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
+                  {match.date ? formatDate(match.date) : "–"}
+                </td>
+                <td className="xs:px-2 px-1 py-3">
+                  <span className="hidden sm:inline">
+                    {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
+                  </span>
+                  <span className="sm:hidden">
+                    {match.hometeam?.shortName ?? "–"} – {match.awayteam?.shortName ?? "–"}
+                  </span>
+                </td>
+                <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
+                  {match.result ?? "–:–"}
+                </td>
+                <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
+                  {showTip ? tip.tip : "–"}
+                  {showTip && tip.joker && <TipFlag label="Joker-Tipp" />}
+                </td>
+                <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
+                  {tip?.points != null ? tip.points : "–"}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </RoundAccordion>
   );
 }
