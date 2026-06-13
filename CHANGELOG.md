@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.12.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.11.2...v0.12.0)
+
+### 🚀 Enhancements
+
+- **theme:** Add inverted surface tokens ([3b0399b](https://github.com/haus23/tipprunde/commit/3b0399b))
+- **web:** Use inverted colors for the tip-flag tooltip ([d08ac36](https://github.com/haus23/tipprunde/commit/d08ac36))
+
+### 💅 Refactors
+
+- **web:** Serve default player at /spieler instead of redirecting ([e7731a2](https://github.com/haus23/tipprunde/commit/e7731a2))
+
 ## v0.11.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.11.1...v0.11.2)
