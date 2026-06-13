@@ -65,17 +65,30 @@ export const roundsQueryOptions = (championshipId: number) =>
 export const getMatch = createServerFn()
   .validator((data: { championshipId: number; nr: number }) => data)
   .handler(async ({ data: { championshipId, nr } }) => {
-    const match = await db.query.matches.findFirst({
-      where: { nr, round: { championshipId, published: true } },
-      columns: { nr: true, date: true, result: true },
-      with: {
-        league: { columns: { name: true } },
-        hometeam: { columns: { name: true, shortName: true } },
-        awayteam: { columns: { name: true, shortName: true } },
-        // Single match → summing its tips in JS is cheap (no aggregate query).
-        tips: { columns: { points: true } },
-      },
-    });
+    const [match, prev, next] = await Promise.all([
+      db.query.matches.findFirst({
+        where: { nr, round: { championshipId, published: true } },
+        columns: { nr: true, date: true, result: true },
+        with: {
+          league: { columns: { name: true } },
+          hometeam: { columns: { name: true, shortName: true } },
+          awayteam: { columns: { name: true, shortName: true } },
+          // Single match → summing its tips in JS is cheap (no aggregate query).
+          tips: { columns: { points: true } },
+        },
+      }),
+      // Nearest lower/higher match number — null at the ends.
+      db.query.matches.findFirst({
+        where: { nr: { lt: nr }, round: { championshipId, published: true } },
+        orderBy: { nr: "desc" },
+        columns: { nr: true },
+      }),
+      db.query.matches.findFirst({
+        where: { nr: { gt: nr }, round: { championshipId, published: true } },
+        orderBy: { nr: "asc" },
+        columns: { nr: true },
+      }),
+    ]);
     if (!match) return { match: null };
 
     const points =
@@ -90,6 +103,8 @@ export const getMatch = createServerFn()
         paarungShort: `${match.hometeam?.shortName ?? "–"} – ${match.awayteam?.shortName ?? "–"}`,
         result: match.result,
         points,
+        prevNr: prev?.nr ?? null,
+        nextNr: next?.nr ?? null,
       },
     };
   });

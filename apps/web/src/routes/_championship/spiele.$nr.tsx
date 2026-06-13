@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 import { formatDate } from "#/lib/format.ts";
 import { matchQueryOptions } from "#/lib/spiele.ts";
@@ -55,7 +55,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
 
   return (
     <div className="mx-auto w-full max-w-5xl py-8">
-      <div className="xs:px-0 mb-4 px-4">
+      <div className="xs:px-0 mb-4 flex items-center justify-between px-4">
         <Link
           to="/spiele"
           className="text-subtle hover:text-app focus-visible:ring-accent inline-flex items-center gap-1 rounded-sm text-sm transition-colors outline-none focus-visible:ring-2"
@@ -63,6 +63,28 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
           <ArrowLeftIcon className="size-4" />
           Spielübersicht
         </Link>
+        <div className="flex items-center gap-1">
+          {match.prevNr !== null && (
+            <Link
+              to="/spiele/$nr"
+              params={{ nr: String(match.prevNr) }}
+              aria-label="Vorheriges Spiel"
+              className="text-subtle hover:bg-nav-active hover:text-app focus-visible:ring-accent flex size-7 items-center justify-center rounded-sm transition ease-out outline-none focus-visible:ring-2"
+            >
+              <ChevronLeftIcon className="size-4" />
+            </Link>
+          )}
+          {match.nextNr !== null && (
+            <Link
+              to="/spiele/$nr"
+              params={{ nr: String(match.nextNr) }}
+              aria-label="Nächstes Spiel"
+              className="text-subtle hover:bg-nav-active hover:text-app focus-visible:ring-accent flex size-7 items-center justify-center rounded-sm transition ease-out outline-none focus-visible:ring-2"
+            >
+              <ChevronRightIcon className="size-4" />
+            </Link>
+          )}
+        </div>
       </div>
       <div className="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
         <h1 className="text-center text-2xl font-semibold tracking-tight">
