@@ -2,7 +2,9 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
+import { TipFlag } from "#/components/tip-flag.tsx";
 import { formatDate } from "#/lib/format.ts";
+import { rankingQueryOptions } from "#/lib/ranking.ts";
 import { matchQueryOptions } from "#/lib/spiele.ts";
 
 export const Route = createFileRoute("/_championship/spiele/$nr")({
@@ -10,7 +12,10 @@ export const Route = createFileRoute("/_championship/spiele/$nr")({
     const id = context.championship?.id;
     const nr = Number(params.nr);
     if (id !== undefined && Number.isInteger(nr)) {
-      return context.queryClient.ensureQueryData(matchQueryOptions(id, nr));
+      return Promise.all([
+        context.queryClient.ensureQueryData(rankingQueryOptions(id)),
+        context.queryClient.ensureQueryData(matchQueryOptions(id, nr)),
+      ]);
     }
   },
   component: RouteComponent,
@@ -35,6 +40,9 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
   const {
     data: { match },
   } = useSuspenseQuery(matchQueryOptions(championshipId, nr));
+  const {
+    data: { ranking },
+  } = useSuspenseQuery(rankingQueryOptions(championshipId));
 
   if (!match) {
     return (
@@ -52,6 +60,8 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
   ]
     .filter(Boolean)
     .join(" · ");
+
+  const tipsByUser = new Map(match.tips.map((t) => [t.userId, t]));
 
   return (
     <div className="mx-auto w-full max-w-5xl py-8">
@@ -92,6 +102,43 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
           <span className="hidden sm:inline">{match.paarung}</span>
         </h1>
         <p className="text-subtle text-center text-sm">{meta}</p>
+      </div>
+
+      <div className="mx-auto w-full max-w-2xl">
+        <table className="w-full text-base">
+          <thead>
+            <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">
+              <th className="xs:px-3 px-2 pt-2 pb-3 font-medium">Spieler</th>
+              {match.tipsPublished && (
+                <th className="xs:px-3 w-px px-2 pt-2 pb-3 text-center font-medium">Tipp</th>
+              )}
+              {match.tipsPublished && (
+                <th className="xs:px-3 w-px px-2 pt-2 pb-3 text-right font-medium">Pkt</th>
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {ranking.map((p) => {
+              const tip = tipsByUser.get(p.userId);
+              return (
+                <tr key={p.userId} className="border-subtle border-b last:border-b-0">
+                  <td className="xs:px-3 px-2 py-3 font-medium">{p.name}</td>
+                  {match.tipsPublished && (
+                    <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
+                      {tip?.tip ?? "–"}
+                      {tip?.joker && <TipFlag label="Joker-Tipp" />}
+                    </td>
+                  )}
+                  {match.tipsPublished && (
+                    <td className="xs:px-3 w-px px-2 py-3 text-right tabular-nums">
+                      {tip?.points ?? "–"}
+                    </td>
+                  )}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

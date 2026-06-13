@@ -70,11 +70,12 @@ export const getMatch = createServerFn()
         where: { nr, round: { championshipId, published: true } },
         columns: { nr: true, date: true, result: true },
         with: {
+          round: { columns: { tipsPublished: true } },
           league: { columns: { name: true } },
           hometeam: { columns: { name: true, shortName: true } },
           awayteam: { columns: { name: true, shortName: true } },
-          // Single match → summing its tips in JS is cheap (no aggregate query).
-          tips: { columns: { points: true } },
+          // All tips for this match; joined to the ranking by userId in the view.
+          tips: { columns: { userId: true, tip: true, points: true, joker: true } },
         },
       }),
       // Nearest lower/higher match number — null at the ends.
@@ -105,6 +106,8 @@ export const getMatch = createServerFn()
         points,
         prevNr: prev?.nr ?? null,
         nextNr: next?.nr ?? null,
+        tipsPublished: match.round.tipsPublished,
+        tips: match.tips,
       },
     };
   });
