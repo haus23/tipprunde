@@ -6,7 +6,7 @@ import { formatDate } from "#/lib/format.ts";
 import { roundsQueryOptions } from "#/lib/spiele.ts";
 import type { SpieleRound } from "#/lib/spiele.ts";
 
-export const Route = createFileRoute("/_championship/spiele")({
+export const Route = createFileRoute("/_championship/spiele/")({
   loader: ({ context }) => {
     const id = context.championship?.id;
     if (id !== undefined) {

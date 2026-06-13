@@ -61,3 +61,43 @@ export const roundsQueryOptions = (championshipId: number) =>
     queryKey: ["spiele", championshipId],
     queryFn: () => getRounds({ data: championshipId }),
   });
+
+export const getMatch = createServerFn()
+  .validator((data: { championshipId: number; nr: number }) => data)
+  .handler(async ({ data: { championshipId, nr } }) => {
+    const match = await db.query.matches.findFirst({
+      where: { nr, round: { championshipId, published: true } },
+      columns: { nr: true, date: true, result: true },
+      with: {
+        league: { columns: { name: true } },
+        hometeam: { columns: { name: true, shortName: true } },
+        awayteam: { columns: { name: true, shortName: true } },
+        // Single match → summing its tips in JS is cheap (no aggregate query).
+        tips: { columns: { points: true } },
+      },
+    });
+    if (!match) return { match: null };
+
+    const points =
+      match.result !== null ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0) : null;
+
+    return {
+      match: {
+        nr: match.nr,
+        date: match.date,
+        liga: match.league?.name ?? null,
+        paarung: `${match.hometeam?.name ?? "–"} – ${match.awayteam?.name ?? "–"}`,
+        paarungShort: `${match.hometeam?.shortName ?? "–"} – ${match.awayteam?.shortName ?? "–"}`,
+        result: match.result,
+        points,
+      },
+    };
+  });
+
+export type MatchDetail = NonNullable<Awaited<ReturnType<typeof getMatch>>["match"]>;
+
+export const matchQueryOptions = (championshipId: number, nr: number) =>
+  queryOptions({
+    queryKey: ["match", championshipId, nr],
+    queryFn: () => getMatch({ data: { championshipId, nr } }),
+  });
