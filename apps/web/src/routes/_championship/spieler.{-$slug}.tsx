@@ -109,7 +109,7 @@ function PlayerCard({
 
   return (
     <div className="mx-auto w-full max-w-5xl py-8">
-      <div className="xs:px-0 mb-6 flex flex-col gap-2 px-4">
+      <div className="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
         <div className="flex items-center gap-1.5">
           <h1 className="text-2xl font-semibold tracking-tight">{player.name}</h1>
           <PlayerSwitch
@@ -117,7 +117,7 @@ function PlayerCard({
             currentSlug={player.slug}
           />
         </div>
-        <p className="text-subtle text-sm">
+        <p className="text-subtle text-center text-sm">
           {championshipName} · Platz {player.rank} · {player.total} Punkte
           <br className="xs:hidden" />
           <span className="xs:inline hidden"> · </span>
@@ -128,7 +128,7 @@ function PlayerCard({
       {rounds.length === 0 ? (
         <p className="text-subtle px-4">Noch keine Runden gespielt.</p>
       ) : (
-        <div className="flex flex-col gap-0.5">
+        <div className="border-subtle border-t">
           {rounds.map((round, i) => (
             <RoundAccordion key={round.id} round={round} defaultOpen={i === defaultOpenIndex} />
           ))}
@@ -153,9 +153,9 @@ function RoundAccordion({ round, defaultOpen }: { round: PlayerRound; defaultOpe
     <details
       name="runden"
       open={defaultOpen}
-      className="group bg-surface-raised border-subtle xs:rounded-md xs:border border-y transition-[margin] duration-300 ease-out open:my-2 first:open:mt-0 last:open:mb-0"
+      className="group border-subtle border-b last:border-b-0"
     >
-      <summary className="focus-visible:ring-accent xs:rounded-md xs:px-4 flex cursor-pointer list-none items-center justify-between px-3 py-3 outline-none select-none focus-visible:ring-2 focus-visible:ring-inset [&::-webkit-details-marker]:hidden">
+      <summary className="focus-visible:ring-accent hover:bg-surface-raised xs:px-3 flex cursor-pointer list-none items-center justify-between px-2 py-3 transition-colors outline-none select-none focus-visible:ring-2 focus-visible:ring-inset [&::-webkit-details-marker]:hidden">
         <span className="text-sm font-medium">Runde {round.nr}</span>
         <span className="flex items-center gap-3">
           <span className="text-subtle flex items-center gap-2 text-xs">
@@ -166,7 +166,7 @@ function RoundAccordion({ round, defaultOpen }: { round: PlayerRound; defaultOpe
           <ChevronDownIcon className="text-subtle size-3.5 transition-transform duration-200 group-open:rotate-180" />
         </span>
       </summary>
-      <div className="border-subtle xs:px-4 border-t px-3 py-2">
+      <div className="xs:px-3 px-2 pb-3">
         <table className="w-full">
           <thead>
             <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">
