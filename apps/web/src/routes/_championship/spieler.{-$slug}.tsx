@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { ChevronDownIcon } from "lucide-react";
 
 import { PlayerSwitch } from "#/components/player-switch.tsx";
@@ -18,15 +18,9 @@ export const Route = createFileRoute("/_championship/spieler/{-$slug}")({
     const { ranking } = await context.queryClient.ensureQueryData(
       rankingQueryOptions(championshipId),
     );
-    if (ranking.length === 0) return;
 
-    // No slug → resolve a default: the logged-in user if enrolled, else rank 1.
-    if (!params.slug) {
-      const self = context.user && ranking.find((p) => p.userId === context.user!.id);
-      throw redirect({ to: "/spieler/{-$slug}", params: { slug: self?.slug ?? ranking[0].slug } });
-    }
-
-    const player = ranking.find((p) => p.slug === params.slug);
+    // No redirect: /spieler shows the resolved default player directly.
+    const player = resolvePlayer(ranking, params.slug, context.user?.id);
     if (player) {
       await context.queryClient.ensureQueryData(
         playerMatchesQueryOptions(championshipId, player.userId),
@@ -35,6 +29,17 @@ export const Route = createFileRoute("/_championship/spieler/{-$slug}")({
   },
   component: RouteComponent,
 });
+
+/** Player to show: explicit slug, else the logged-in user if enrolled, else rank 1. */
+function resolvePlayer(
+  ranking: RankedPlayer[],
+  slug: string | undefined,
+  userId: number | undefined,
+): RankedPlayer | undefined {
+  if (slug) return ranking.find((p) => p.slug === slug);
+  const self = userId !== undefined ? ranking.find((p) => p.userId === userId) : undefined;
+  return self ?? ranking[0];
+}
 
 function RouteComponent() {
   const { championship } = Route.useRouteContext();
@@ -58,11 +63,20 @@ function SpielerView({
   championshipName: string;
 }) {
   const { slug } = Route.useParams();
+  const { user } = Route.useRouteContext();
   const {
     data: { ranking },
   } = useSuspenseQuery(rankingQueryOptions(championshipId));
 
-  const player = ranking.find((p) => p.slug === slug);
+  if (ranking.length === 0) {
+    return (
+      <div className="mx-auto w-full max-w-5xl py-8">
+        <p className="text-subtle py-16 text-center text-base">Noch keine Spieler.</p>
+      </div>
+    );
+  }
+
+  const player = resolvePlayer(ranking, slug, user?.id);
   if (!player) {
     return (
       <div className="mx-auto w-full max-w-5xl py-8">
