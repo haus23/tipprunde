@@ -45,7 +45,7 @@ export function TipFlag({ label }: Props) {
         onOpenChange={setIsOpen}
         isNonModal
         placement="bottom"
-        className="border-subtle bg-surface-raised text-app shadow-popover rounded-sm border px-2 py-1 text-xs transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0 data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
+        className="bg-inverted text-inverted shadow-popover rounded-sm px-2 py-1 text-xs transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0 data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
       >
         {label}
       </Popover>
