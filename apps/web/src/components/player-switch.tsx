@@ -81,10 +81,12 @@ export function PlayerSwitch({ players, currentSlug }: Props) {
                   key={p.slug}
                   id={p.slug}
                   textValue={p.name}
-                  className="text-app data-focused:bg-nav-active flex cursor-default items-center justify-between rounded-sm px-2.5 py-1.5 text-sm outline-none select-none"
+                  className="text-app data-focused:bg-nav-active relative flex cursor-default items-center rounded-sm py-1.5 pr-2.5 pl-8 text-sm outline-none select-none"
                 >
+                  {p.slug === currentSlug && (
+                    <CheckIcon className="text-accent absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2" />
+                  )}
                   {p.name}
-                  {p.slug === currentSlug && <CheckIcon className="text-accent size-3.5" />}
                 </MenuItem>
               ))}
             </Menu>

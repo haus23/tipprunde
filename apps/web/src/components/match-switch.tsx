@@ -59,7 +59,7 @@ export function MatchSwitch({ rounds, currentNr }: Props) {
       <Popover
         placement="bottom"
         offset={6}
-        className="border-subtle bg-surface-raised shadow-popover w-80 max-w-[calc(100vw-2rem)] origin-top rounded-md border transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0"
+        className="border-subtle bg-surface-raised shadow-popover w-[min(30rem,90vw)] origin-top rounded-md border transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0"
       >
         <Dialog aria-label="Spiel suchen" className="outline-none">
           <Autocomplete
@@ -95,17 +95,17 @@ export function MatchSwitch({ rounds, currentNr }: Props) {
                       key={m.nr}
                       id={m.nr}
                       textValue={m.paarung}
-                      className="text-app data-focused:bg-nav-active flex cursor-default items-center gap-3 rounded-sm px-2.5 py-1.5 text-sm outline-none select-none"
+                      className="text-app data-focused:bg-nav-active relative flex cursor-default items-center gap-3 rounded-sm py-1.5 pr-2.5 pl-8 text-sm outline-none select-none"
                     >
+                      {m.nr === currentNr && (
+                        <CheckIcon className="text-accent absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2" />
+                      )}
                       <span className="flex-1 truncate">
                         <span className="xs:hidden">{m.paarungShort}</span>
                         <span className="xs:inline hidden">{m.paarung}</span>
                       </span>
                       {m.points !== null && (
                         <span className="text-subtle shrink-0 text-xs">{m.points} Pkt</span>
-                      )}
-                      {m.nr === currentNr && (
-                        <CheckIcon className="text-accent size-3.5 shrink-0" />
                       )}
                     </MenuItem>
                   ))}
