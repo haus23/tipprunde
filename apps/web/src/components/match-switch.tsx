@@ -59,13 +59,13 @@ export function MatchSwitch({ rounds, currentNr }: Props) {
       <Popover
         placement="bottom"
         offset={6}
-        className="border-subtle bg-surface-raised shadow-popover w-[min(30rem,90vw)] origin-top rounded-md border transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0"
+        className="border-subtle bg-surface-raised shadow-popover flex w-[min(30rem,90vw)] origin-top flex-col overflow-hidden rounded-md border transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0"
       >
-        <Dialog aria-label="Spiel suchen" className="outline-none">
+        <Dialog aria-label="Spiel suchen" className="flex min-h-0 flex-1 flex-col outline-none">
           <Autocomplete
             filter={(textValue, inputValue) => normalize(textValue).includes(normalize(inputValue))}
           >
-            <div className="border-subtle border-b p-2">
+            <div className="border-subtle shrink-0 border-b p-2">
               <SearchField
                 aria-label="Spiel suchen"
                 autoFocus
@@ -79,7 +79,7 @@ export function MatchSwitch({ rounds, currentNr }: Props) {
               </SearchField>
             </div>
             <Menu
-              className="max-h-80 overflow-auto px-1 pb-1 outline-none"
+              className="min-h-0 flex-1 overflow-auto px-1 pb-1 outline-none"
               onAction={(key) => {
                 setIsOpen(false);
                 void navigate({ to: "/spiele/$nr", params: { nr: String(key) } });

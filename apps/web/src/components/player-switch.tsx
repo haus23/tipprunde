@@ -50,13 +50,13 @@ export function PlayerSwitch({ players, currentSlug }: Props) {
       <Popover
         placement="bottom start"
         offset={6}
-        className="border-subtle bg-surface-raised shadow-popover w-64 origin-top rounded-md border transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0"
+        className="border-subtle bg-surface-raised shadow-popover flex w-64 origin-top flex-col overflow-hidden rounded-md border transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0"
       >
-        <Dialog aria-label="Spieler suchen" className="outline-none">
+        <Dialog aria-label="Spieler suchen" className="flex min-h-0 flex-1 flex-col outline-none">
           <Autocomplete
             filter={(textValue, inputValue) => normalize(textValue).includes(normalize(inputValue))}
           >
-            <div className="border-subtle border-b p-2">
+            <div className="border-subtle shrink-0 border-b p-2">
               <SearchField
                 aria-label="Spieler suchen"
                 autoFocus
@@ -70,7 +70,7 @@ export function PlayerSwitch({ players, currentSlug }: Props) {
               </SearchField>
             </div>
             <Menu
-              className="max-h-64 overflow-auto p-1 outline-none"
+              className="min-h-0 flex-1 overflow-auto p-1 outline-none"
               onAction={(key) => {
                 setIsOpen(false);
                 void navigate({ to: "/spieler/{-$slug}", params: { slug: String(key) } });
