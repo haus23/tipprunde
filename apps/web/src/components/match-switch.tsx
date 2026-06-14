@@ -79,7 +79,7 @@ export function MatchSwitch({ rounds, currentNr }: Props) {
               </SearchField>
             </div>
             <Menu
-              className="max-h-80 overflow-auto p-1 outline-none"
+              className="max-h-80 overflow-auto px-1 pb-1 outline-none"
               onAction={(key) => {
                 setIsOpen(false);
                 void navigate({ to: "/spiele/$nr", params: { nr: String(key) } });
