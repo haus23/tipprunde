@@ -9,10 +9,11 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+import { MatchSwitch } from "#/components/match-switch.tsx";
 import { TipFlag } from "#/components/tip-flag.tsx";
 import { formatDate } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
-import { matchQueryOptions } from "#/lib/spiele.ts";
+import { matchQueryOptions, roundsQueryOptions } from "#/lib/spiele.ts";
 
 const navLinkClass =
   "text-subtle hover:text-app focus-visible:ring-accent flex items-center gap-1 rounded-sm outline-none transition-colors focus-visible:ring-2";
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/_championship/spiele/$nr")({
     if (id !== undefined && Number.isInteger(nr)) {
       return Promise.all([
         context.queryClient.ensureQueryData(rankingQueryOptions(id)),
+        context.queryClient.ensureQueryData(roundsQueryOptions(id)),
         context.queryClient.ensureQueryData(matchQueryOptions(id, nr)),
       ]);
     }
@@ -53,6 +55,9 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
   const {
     data: { ranking },
   } = useSuspenseQuery(rankingQueryOptions(championshipId));
+  const {
+    data: { rounds },
+  } = useSuspenseQuery(roundsQueryOptions(championshipId));
   const [sortCol, setSortCol] = useState<SortCol | null>(null);
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
@@ -105,10 +110,13 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
           <ChevronLeftIcon className="size-3" />
           Spielübersicht
         </Link>
-        <h1 className="text-center text-2xl font-semibold tracking-tight">
-          <span className="sm:hidden">{match.paarungShort}</span>
-          <span className="hidden sm:inline">{match.paarung}</span>
-        </h1>
+        <div className="flex items-center gap-1.5">
+          <h1 className="text-center text-2xl font-semibold tracking-tight">
+            <span className="sm:hidden">{match.paarungShort}</span>
+            <span className="hidden sm:inline">{match.paarung}</span>
+          </h1>
+          <MatchSwitch rounds={rounds} currentNr={match.nr} />
+        </div>
         <p className="text-subtle text-center text-sm">{meta}</p>
         <div className="xs:px-0 mt-2 mb-4 flex w-full justify-between md:absolute md:inset-x-0 md:top-1/2 md:mt-0 md:mb-0 md:-translate-y-1/2">
           {match.prevNr !== null ? (
