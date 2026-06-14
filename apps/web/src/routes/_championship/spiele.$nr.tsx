@@ -118,12 +118,12 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
           <MatchSwitch rounds={rounds} currentNr={match.nr} />
         </div>
         <p className="text-subtle text-center text-sm">{meta}</p>
-        <div className="xs:px-0 mt-2 mb-4 flex w-full justify-between md:absolute md:inset-x-0 md:top-1/2 md:mt-0 md:mb-0 md:-translate-y-1/2">
+        <div className="xs:px-0 mt-2 mb-4 flex w-full justify-between md:pointer-events-none md:absolute md:inset-x-0 md:top-1/2 md:mt-0 md:mb-0 md:-translate-y-1/2">
           {match.prevNr !== null ? (
             <Link
               to="/spiele/$nr"
               params={{ nr: String(match.prevNr) }}
-              className={`${navLinkClass} xs:ml-4 text-sm`}
+              className={`${navLinkClass} xs:ml-4 pointer-events-auto text-sm`}
             >
               <ChevronLeftIcon className="size-4" />
               Vorheriges
@@ -135,7 +135,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
             <Link
               to="/spiele/$nr"
               params={{ nr: String(match.nextNr) }}
-              className={`${navLinkClass} xs:mr-4 text-sm`}
+              className={`${navLinkClass} xs:mr-4 pointer-events-auto text-sm`}
             >
               Nächstes
               <ChevronRightIcon className="size-4" />
