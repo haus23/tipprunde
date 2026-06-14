@@ -2,7 +2,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowDownIcon,
-  ArrowLeftIcon,
   ArrowUpDownIcon,
   ArrowUpIcon,
   ChevronLeftIcon,
@@ -14,6 +13,9 @@ import { TipFlag } from "#/components/tip-flag.tsx";
 import { formatDate } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import { matchQueryOptions } from "#/lib/spiele.ts";
+
+const navLinkClass =
+  "text-subtle hover:text-app focus-visible:ring-accent flex items-center gap-1 rounded-sm outline-none transition-colors focus-visible:ring-2";
 
 export const Route = createFileRoute("/_championship/spiele/$nr")({
   loader: ({ context, params }) => {
@@ -98,43 +100,40 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
 
   return (
     <div className="mx-auto w-full max-w-5xl py-8">
-      <div className="xs:px-0 mb-4 flex items-center justify-between px-4">
-        <Link
-          to="/spiele"
-          className="text-subtle hover:text-app focus-visible:ring-accent inline-flex items-center gap-1 rounded-sm text-sm transition-colors outline-none focus-visible:ring-2"
-        >
-          <ArrowLeftIcon className="size-4" />
+      <div className="xs:px-0 relative flex flex-col items-center gap-2 px-4 md:mb-6">
+        <Link to="/spiele" className={`${navLinkClass} xs:self-auto mb-1 self-start text-xs`}>
+          <ChevronLeftIcon className="size-3" />
           Spielübersicht
         </Link>
-        <div className="flex items-center gap-1">
-          {match.prevNr !== null && (
-            <Link
-              to="/spiele/$nr"
-              params={{ nr: String(match.prevNr) }}
-              aria-label="Vorheriges Spiel"
-              className="text-subtle hover:bg-nav-active hover:text-app focus-visible:ring-accent flex size-7 items-center justify-center rounded-sm transition ease-out outline-none focus-visible:ring-2"
-            >
-              <ChevronLeftIcon className="size-4" />
-            </Link>
-          )}
-          {match.nextNr !== null && (
-            <Link
-              to="/spiele/$nr"
-              params={{ nr: String(match.nextNr) }}
-              aria-label="Nächstes Spiel"
-              className="text-subtle hover:bg-nav-active hover:text-app focus-visible:ring-accent flex size-7 items-center justify-center rounded-sm transition ease-out outline-none focus-visible:ring-2"
-            >
-              <ChevronRightIcon className="size-4" />
-            </Link>
-          )}
-        </div>
-      </div>
-      <div className="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
         <h1 className="text-center text-2xl font-semibold tracking-tight">
           <span className="sm:hidden">{match.paarungShort}</span>
           <span className="hidden sm:inline">{match.paarung}</span>
         </h1>
         <p className="text-subtle text-center text-sm">{meta}</p>
+        <div className="xs:px-0 mt-2 mb-4 flex w-full justify-between md:absolute md:inset-x-0 md:top-1/2 md:mt-0 md:mb-0 md:-translate-y-1/2">
+          {match.prevNr !== null ? (
+            <Link
+              to="/spiele/$nr"
+              params={{ nr: String(match.prevNr) }}
+              className={`${navLinkClass} xs:ml-4 text-sm`}
+            >
+              <ChevronLeftIcon className="size-4" />
+              Vorheriges
+            </Link>
+          ) : (
+            <span />
+          )}
+          {match.nextNr !== null && (
+            <Link
+              to="/spiele/$nr"
+              params={{ nr: String(match.nextNr) }}
+              className={`${navLinkClass} xs:mr-4 text-sm`}
+            >
+              Nächstes
+              <ChevronRightIcon className="size-4" />
+            </Link>
+          )}
+        </div>
       </div>
 
       <div className="mx-auto w-full max-w-3xl">
@@ -230,7 +229,7 @@ function sortRows(rows: TipRow[], col: SortCol, dir: SortDir): TipRow[] {
       if (a.points === null && b.points === null) return 0;
       if (a.points === null) return 1;
       if (b.points === null) return -1;
-      return factor * (a.points - b.points);
+      return factor * (b.points - a.points);
     }
     if (a.tip === null && b.tip === null) return 0;
     if (a.tip === null) return 1;
