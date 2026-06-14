@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.13.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.12.2...v0.13.0)
+
+### 🩹 Fixes
+
+- **web:** Let clicks reach the match switch behind the prev/next overlay ([5cd70cd](https://github.com/haus23/tipprunde/commit/5cd70cd))
+- **web:** Drop scroll-container top padding so sticky round headers pin flush ([d6dc5f1](https://github.com/haus23/tipprunde/commit/d6dc5f1))
+
+### 💅 Refactors
+
+- **web:** Widen match switch, indent items with a left-gutter check ([ca323f9](https://github.com/haus23/tipprunde/commit/ca323f9))
+
+### 🏡 Chore
+
+- **dx:** Add launch.json for the preview dev server ([091fa45](https://github.com/haus23/tipprunde/commit/091fa45))
+- **root:** Update tailwind catalog deps. ([5eea28d](https://github.com/haus23/tipprunde/commit/5eea28d))
+- **root:** Update types catalog deps. ([3c80077](https://github.com/haus23/tipprunde/commit/3c80077))
+
 ## v0.12.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.12.1...v0.12.2)
