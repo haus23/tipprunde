@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.12.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.12.1...v0.12.2)
+
+### 🚀 Enhancements
+
+- **web:** Add single-match route /spiele/$nr (header only) ([8e09ea7](https://github.com/haus23/tipprunde/commit/8e09ea7))
+- **web:** Link matches to the single-match view ([91f76ef](https://github.com/haus23/tipprunde/commit/91f76ef))
+- **web:** Add Spielübersicht up-link to the single-match view ([7133e46](https://github.com/haus23/tipprunde/commit/7133e46))
+- **web:** Add prev/next navigation to the single-match view ([4a2d640](https://github.com/haus23/tipprunde/commit/4a2d640))
+- **web:** Add tips table to the single-match view ([bd04f76](https://github.com/haus23/tipprunde/commit/bd04f76))
+- **web:** Sortable columns on the match tips table ([5387b28](https://github.com/haus23/tipprunde/commit/5387b28))
+- **web:** Add match switch to the single-match view ([d382ad0](https://github.com/haus23/tipprunde/commit/d382ad0))
+
+### 💅 Refactors
+
+- **web:** Polish match tips table ([fe6be1c](https://github.com/haus23/tipprunde/commit/fe6be1c))
+- **web:** Reposition single-match nav links ([912ebf0](https://github.com/haus23/tipprunde/commit/912ebf0))
+
 ## v0.12.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.12.0...v0.12.1)
