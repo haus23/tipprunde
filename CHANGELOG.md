@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.14.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.14.0...v0.14.1)
+
+### 🚀 Enhancements
+
+- **web:** Add TanStack Query devtools in dev mode ([224c14b](https://github.com/haus23/tipprunde/commit/224c14b))
+
+### 🩹 Fixes
+
+- **domain:** Score only real misses with discrete zero points. ([4481a06](https://github.com/haus23/tipprunde/commit/4481a06))
+
+### 💅 Refactors
+
+- **manager:** Rename Zusatzpunkte route to Zusatzfragen. ([439a2c4](https://github.com/haus23/tipprunde/commit/439a2c4))
+- **web:** Drop mobile nav overflow menu ([02e0a25](https://github.com/haus23/tipprunde/commit/02e0a25))
+
+### 📖 Documentation
+
+- **archiv:** Document Archiv ideas; drop Archiv from main nav ([37267f5](https://github.com/haus23/tipprunde/commit/37267f5))
+
 ## v0.14.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.13.2...v0.14.0)
