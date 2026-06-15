@@ -1,4 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   Link,
   Outlet,
@@ -85,6 +86,7 @@ function RootComponent() {
           <Outlet />
         </main>
       </div>
+      {import.meta.env.DEV && <ReactQueryDevtools />}
     </RootDocument>
   );
 }
