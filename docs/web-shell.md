@@ -36,16 +36,11 @@ Keep these separate — they have different jobs:
 
 Do not merge them into one "everything" menu; it muddies what the ⋯ means.
 
-## Navigation collapse (Priority+)
+## Navigation
 
-Breakpoint-driven, **not** measurement-driven. With a small fixed nav (4 items) we do
-not measure widths at runtime — we declare which items collapse at which breakpoint.
-This is SSR-clean (no measure-on-hydrate flash) and deterministic.
-
-The nav list is defined once and rendered in two places (inline + inside the ⋯ menu),
-each toggled by breakpoint classes.
-
-**Collapse order:** items collapse right-to-left as width shrinks (Spiele first, then Spieler, then Tabelle).
+Three short items (Tabelle · Spieler · Spiele) fit at every practical width, so
+there is **no overflow menu** — the nav is always fully visible. No ⋯ button, no
+duplicate rendering, no collapse logic.
 
 ## Chat as a layout citizen
 
@@ -92,10 +87,10 @@ collapses first; nav collapses later.
 
 | Width         | Chat             | Nav              | Right cluster             |
 | ------------- | ---------------- | ---------------- | ------------------------- |
-| ≥ `lg` (1024) | docked rail      | inline (4 items) | Scheme · User             |
+| ≥ `lg` (1024) | docked rail      | inline (3 items) | Scheme · User             |
 | `md`–`lg`     | 💬 drawer toggle | inline           | Scheme · User             |
-| < `sm`/`md`   | 💬 drawer toggle | overflow → ⋯     | Scheme · User             |
-| < `xs` (480)  | 💬 drawer toggle | ⋯                | Scheme may fold into User |
+| < `md`        | 💬 drawer toggle | inline           | Scheme · User             |
+| < `xs` (480)  | 💬 drawer toggle | inline           | Scheme may fold into User |
 
 ## Shell max-width
 
