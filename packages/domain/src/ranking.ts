@@ -18,7 +18,7 @@ export type RankingInput = {
 export type RankingEntry = {
   userId: number;
   tipPoints: number;
-  extraPoints: number;
+  extraQuestionPoints: number;
   total: number;
   /** Tie-aware rank: equal totals share a rank, the next rank skips accordingly. */
   rank: number;
@@ -70,8 +70,13 @@ export function calcRanking(input: RankingInput): RankingEntry[] {
 
   const totals = players.map((p) => {
     const tipPoints = tipPointsByUser.get(p.userId) ?? 0;
-    const extraPoints = extraPointsByUser.get(p.userId) ?? 0;
-    return { userId: p.userId, tipPoints, extraPoints, total: tipPoints + extraPoints };
+    const extraQuestionPoints = extraPointsByUser.get(p.userId) ?? 0;
+    return {
+      userId: p.userId,
+      tipPoints,
+      extraQuestionPoints,
+      total: tipPoints + extraQuestionPoints,
+    };
   });
 
   return totals

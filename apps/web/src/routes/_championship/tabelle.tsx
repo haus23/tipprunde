@@ -117,7 +117,7 @@ function RankingTable({
               </td>
               {showExtras && (
                 <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
-                  {entry.extraPoints}
+                  {entry.extraQuestionPoints}
                 </td>
               )}
               <td className="xs:px-3 xs:py-3 px-2 py-2 text-center font-medium tabular-nums">

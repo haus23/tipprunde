@@ -1,15 +1,11 @@
 import { matches as matchesTable, tips as tipsTable } from "@tipprunde/db/schema";
-import {
-  applyMatchRule,
-  applyRoundRule,
-  calcTipPoints,
-  type TipRuleId,
-} from "@tipprunde/domain/scoring";
+import { applyMatchRule, calcTipPoints, type TipRuleId } from "@tipprunde/domain/scoring";
 import { and, eq } from "drizzle-orm";
 import { useState } from "react";
 import { redirect, useFetcher, useNavigate } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
+import { updateRanking } from "#/lib/ranking.server.ts";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
@@ -113,7 +109,7 @@ export async function action({ request, context }: Route.ActionArgs) {
         }),
       );
       applyMatchRule();
-      applyRoundRule();
+      await updateRanking(championship.id);
     }
   }
 

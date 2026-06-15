@@ -85,7 +85,7 @@ void describe("calcRanking — extra points gating", () => {
       ruleset: { extraQuestionRuleId: "keine-besonderheiten" },
       championship: { extraQuestionPointsPublished: true },
     });
-    assert.equal(ranking.find((e) => e.userId === 1)?.extraPoints, 0);
+    assert.equal(ranking.find((e) => e.userId === 1)?.extraQuestionPoints, 0);
     assert.equal(ranking.find((e) => e.userId === 1)?.total, 5);
   });
 
@@ -95,7 +95,7 @@ void describe("calcRanking — extra points gating", () => {
       ruleset: { extraQuestionRuleId: "mit-zusatzfragen" },
       championship: { extraQuestionPointsPublished: false },
     });
-    assert.equal(ranking.find((e) => e.userId === 1)?.extraPoints, 0);
+    assert.equal(ranking.find((e) => e.userId === 1)?.extraQuestionPoints, 0);
   });
 
   void it("adds extras when ruleset includes them and they are published", () => {
@@ -104,7 +104,7 @@ void describe("calcRanking — extra points gating", () => {
       ruleset: { extraQuestionRuleId: "mit-zusatzfragen" },
       championship: { extraQuestionPointsPublished: true },
     });
-    assert.equal(ranking.find((e) => e.userId === 1)?.extraPoints, 2);
+    assert.equal(ranking.find((e) => e.userId === 1)?.extraQuestionPoints, 2);
     assert.equal(ranking.find((e) => e.userId === 1)?.total, 7);
   });
 

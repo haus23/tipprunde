@@ -17,6 +17,7 @@ import {
 import { useFetcher } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
+import { updateRanking } from "#/lib/ranking.server.ts";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
@@ -171,6 +172,9 @@ export async function action({ request, context }: Route.ActionArgs) {
         target: [extraAnswersTable.extraQuestionId, extraAnswersTable.userId],
         set: { points },
       });
+    if (championship.extraQuestionPointsPublished) {
+      await updateRanking(championship.id);
+    }
     return { ok: true };
   }
 
@@ -190,6 +194,9 @@ export async function action({ request, context }: Route.ActionArgs) {
           eq(extraAnswersTable.userId, userId),
         ),
       );
+    if (championship.extraQuestionPointsPublished) {
+      await updateRanking(championship.id);
+    }
     return { ok: true };
   }
 

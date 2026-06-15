@@ -12,6 +12,7 @@ import { Link, useFetcher } from "react-router";
 import * as v from "valibot";
 
 import { db } from "#/lib/db.server.ts";
+import { updateRanking } from "#/lib/ranking.server.ts";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
@@ -110,6 +111,9 @@ export async function action({ request, context }: Route.ActionArgs) {
     .update(championships)
     .set({ [field]: value })
     .where(eq(championships.id, championship.id));
+  if (field === "extraQuestionPointsPublished") {
+    await updateRanking(championship.id);
+  }
   return null;
 }
 

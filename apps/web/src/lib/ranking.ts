@@ -11,7 +11,7 @@ export type RankedPlayer = {
   name: string;
   slug: string;
   tipPoints: number;
-  extraPoints: number;
+  extraQuestionPoints: number;
   total: number;
   rank: number;
 };
