@@ -76,9 +76,8 @@ manager write**, not just when a championship is marked completed.
 
 **Manager refactor plan:**
 
-1. Add `rank`, `tipPoints`, `extraPoints`, `total` columns to `players` in `packages/db/src/schema.ts`
-2. After each of the write triggers above, call `calcRanking` (domain) and upsert results
-   into all `players` rows for that championship
+1. Add `rank`, `tipPoints`, `extraQuestionPoints`, `roundPoints`, `total` columns to `players` in `packages/db/src/schema.ts`; make `rounds.completed` nullable
+2. After each write trigger, update all `players` rows for the championship with the recalculated values
 3. Update the web app to read ranking directly from `players` instead of aggregating tips
 
 ## Planned: Dashboard section (index route)

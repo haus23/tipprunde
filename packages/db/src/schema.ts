@@ -69,9 +69,7 @@ export const championships = sqliteTable("championships", {
     .references(() => rulesets.id),
   published: integer("published", { mode: "boolean" }).notNull().default(false),
   completed: integer("completed", { mode: "boolean" }).notNull().default(false),
-  // Whether extra-question points count toward the ranking. DB column kept as
-  // `extra_questions_published` to avoid a migration.
-  extraQuestionPointsPublished: integer("extra_questions_published", { mode: "boolean" })
+  extraQuestionPointsPublished: integer("extra_question_points_published", { mode: "boolean" })
     .notNull()
     .default(false),
 });
@@ -86,7 +84,7 @@ export const rounds = sqliteTable(
     nr: integer("nr").notNull(),
     published: integer("published", { mode: "boolean" }).notNull().default(false),
     tipsPublished: integer("tips_published", { mode: "boolean" }).notNull().default(false),
-    completed: integer("completed", { mode: "boolean" }).notNull().default(false),
+    completed: integer("completed", { mode: "boolean" }),
     isDoubleRound: integer("is_double_round", { mode: "boolean" }),
   },
   (table) => [unique().on(table.championshipId, table.nr)],
@@ -156,6 +154,11 @@ export const players = sqliteTable(
     userId: integer("user_id")
       .notNull()
       .references(() => users.id),
+    rank: integer("rank"),
+    tipPoints: integer("tip_points"),
+    extraQuestionPoints: integer("extra_question_points"),
+    roundPoints: integer("round_points"),
+    total: integer("total"),
   },
   (table) => [unique().on(table.championshipId, table.userId)],
 );

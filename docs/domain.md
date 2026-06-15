@@ -19,8 +19,7 @@ across the slugged championship routes.
 > questions at all is decided only by
 > `ruleset.extraQuestionRuleId === "mit-zusatzfragen"` (domain `hasExtraQuestions`);
 > the ranking inclusion is `hasExtraQuestions && extraQuestionPointsPublished`
-> (domain `includesExtraQuestions`). The DB column is still
-> `extra_questions_published` (Drizzle field renamed without a migration).
+> (domain `includesExtraQuestions`).
 
 > **`completed` behaviour is open:** It does NOT necessarily lock editing.
 > Primary purpose is to trigger a final stat recalculation. Whether certain
@@ -236,17 +235,24 @@ table rather than calculated on-the-fly at read time. See
 New point categories are added as new nullable columns when the corresponding
 rule variant arrives.
 
-**Write triggers** — after any of these manager actions, `calcRanking` (domain)
-is called and all `players` rows for the championship are updated:
+**Write triggers** — after any of these manager actions, the `players` ranking
+columns are updated. "Re-rank" always means **all enrolled players** for the
+championship (match-level rules like sole scorer make this unavoidable):
 
-| Action                                      | Route              |
-| ------------------------------------------- | ------------------ |
-| Match result scored or edited               | `ergebnisse`       |
-| Tip entered when result already exists      | `tipps`            |
-| `extraQuestionPointsPublished` flag toggled | championship index |
-| Extra question points assigned              | `zusatzfragen`     |
+| Action                                                          | What is recalculated                                  | Route              |
+| --------------------------------------------------------------- | ----------------------------------------------------- | ------------------ |
+| Match result scored or edited                                   | `tipPoints` + `total` + `rank`                        | `ergebnisse`       |
+| Tip entered when result already exists                          | `tipPoints` + `total` + `rank`                        | `tipps`            |
+| `extraQuestionPointsPublished` toggled `true`                   | `extraQuestionPoints` + `total` + `rank`              | championship index |
+| `extraQuestionPointsPublished` toggled `false`                  | `extraQuestionPoints` → `null`, then `total` + `rank` | championship index |
+| Extra answer points changed (if `extraQuestionPointsPublished`) | `extraQuestionPoints` + `total` + `rank`              | `zusatzfragen`     |
+| Round completed with active ROUND_RULE (future)                 | `roundPoints` + `total` + `rank`                      | rounds             |
 
 The web app reads ranking directly from `players` — no aggregation at read time.
+
+> **Note:** `applyRoundRule` is currently called at the wrong place in the
+> codebase (no-op for all existing championships). This will be corrected as
+> part of the ranking refactor.
 
 ---
 
@@ -254,25 +260,17 @@ The web app reads ranking directly from `players` — no aggregation at read tim
 
 ### `round.completed`
 
-This flag has two distinct meanings depending on context:
+**Decision: make nullable.** `null` = no special ROUND_RULE, no explicit
+completion point needed. `true` = manager has explicitly completed the round
+to trigger a round-level bonus calculation.
 
-**Without special `roundRuleId`** (current situation):
+- For `roundRuleId === "keine-besonderheiten"` (all current championships):
+  the field stays `null` — it has no meaning and is never set.
+- For future special `roundRuleId` variants: the manager explicitly toggles it
+  in the UI, which triggers `applyRoundRule` and a ranking update.
 
-- A round can be considered "done" once all match results are entered
-- Auto-completing on last result entry is a reasonable strategy
-- Cascading from `championship.completed` (mark all rounds completed) is another option
-
-**With a future special `roundRuleId`** (e.g. round-level bonus calculation):
-
-- Explicit setting by the manager is required to trigger a round-level
-  calculation that adds bonus points to players
-- Auto-completion on last result would be wrong here
-
-**Proposed strategy:**
-
-- For `roundRuleId === "keine-besonderheiten"`: auto-complete when the last
-  match result is saved, or cascade from `championship.completed`
-- For future special roundRules: expose an explicit toggle in the UI
+This requires a schema change: `completed` on `rounds` becomes nullable
+(remove `notNull().default(false)`).
 
 ### Missing: `roundPoints` table
 
