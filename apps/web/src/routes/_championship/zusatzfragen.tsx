@@ -31,15 +31,23 @@ function RouteComponent() {
     );
   }
 
-  return <ZusatzfragenView championshipId={championship.id} championshipName={championship.name} />;
+  return (
+    <ZusatzfragenView
+      championshipId={championship.id}
+      championshipName={championship.name}
+      pointsPublished={championship.extraQuestionPointsPublished}
+    />
+  );
 }
 
 function ZusatzfragenView({
   championshipId,
   championshipName,
+  pointsPublished,
 }: {
   championshipId: number;
   championshipName: string;
+  pointsPublished: boolean;
 }) {
   const {
     data: { ranking },
@@ -62,7 +70,12 @@ function ZusatzfragenView({
       ) : (
         <div className="xs:px-0 flex flex-col gap-10 px-4">
           {questions.map((question) => (
-            <QuestionBlock key={question.id} question={question} ranking={ranking} />
+            <QuestionBlock
+              key={question.id}
+              question={question}
+              ranking={ranking}
+              pointsPublished={pointsPublished}
+            />
           ))}
         </div>
       )}
@@ -73,9 +86,11 @@ function ZusatzfragenView({
 function QuestionBlock({
   question,
   ranking,
+  pointsPublished,
 }: {
   question: ExtraQuestion;
   ranking: RankedPlayer[];
+  pointsPublished: boolean;
 }) {
   const answersByUser = new Map(question.extraAnswers.map((a) => [a.userId, a]));
 
@@ -85,7 +100,8 @@ function QuestionBlock({
         <h2 className="text-base font-medium">{question.question}</h2>
         {question.description && <p className="text-subtle text-sm">{question.description}</p>}
         <p className="text-subtle mt-1 text-sm">
-          Richtige Antwort: <span className="text-app">{question.answer ?? "noch offen"}</span>
+          {pointsPublished ? "Richtige Antwort:" : "Aktueller Stand:"}{" "}
+          <span className="text-app">{question.answer ?? "noch offen"}</span>
         </p>
       </div>
       <table className="w-full text-base">
