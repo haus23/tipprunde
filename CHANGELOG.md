@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.14.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.13.2...v0.14.0)
+
+### 🚀 Enhancements
+
+- **web:** Label extra-question answer as "Aktueller Stand" until published ([320f527](https://github.com/haus23/tipprunde/commit/320f527))
+- **web:** Collapse each Zusatzfrage's answer table behind a details ([879558e](https://github.com/haus23/tipprunde/commit/879558e))
+
+### 💅 Refactors
+
+- Rename extraQuestionsPublished field to extraQuestionPointsPublished ([146fca7](https://github.com/haus23/tipprunde/commit/146fca7))
+- **web:** Narrow content width from max-w-5xl to max-w-4xl ([33cb22b](https://github.com/haus23/tipprunde/commit/33cb22b))
+- **web:** Add horizontal padding to dashboard sections above xs ([ffa529d](https://github.com/haus23/tipprunde/commit/ffa529d))
+
 ## v0.13.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.13.1...v0.13.2)
