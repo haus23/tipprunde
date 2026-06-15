@@ -29,8 +29,7 @@ export function calcTipPoints(
   isDoubleRound: boolean | null,
   joker: boolean | null,
 ): number | null {
-  if (!result) return null;
-  if (!tip) return 0;
+  if (!result || !tip) return null;
 
   const [tipHome, tipAway] = parseScore(tip);
   const [resHome, resAway] = parseScore(result);

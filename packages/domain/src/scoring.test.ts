@@ -6,20 +6,28 @@ import { calcTipPoints } from "./scoring.ts";
 void describe("calcTipPoints — null/0 distinction", () => {
   const rule = "drei-oder-ein-punkt-joker-verdoppelt" as const;
 
-  void it("null result → null (not yet calculated)", () => {
-    assert.equal(calcTipPoints("2:1", null, rule, false, false), null);
-  });
-
   void it("null tip + null result → null", () => {
     assert.equal(calcTipPoints(null, null, rule, false, false), null);
   });
 
-  void it("null tip + result → 0 (result exists, no tip)", () => {
-    assert.equal(calcTipPoints(null, "2:1", rule, false, false), 0);
+  void it("null result → null (not yet calculated)", () => {
+    assert.equal(calcTipPoints("2:1", null, rule, false, false), null);
   });
 
-  void it("empty tip + result → 0", () => {
-    assert.equal(calcTipPoints("", "2:1", rule, false, false), 0);
+  void it("null tip + result → null (result exists, no tip)", () => {
+    assert.equal(calcTipPoints(null, "2:1", rule, false, false), null);
+  });
+
+  void it("empty tip + result → null (after edit)", () => {
+    assert.equal(calcTipPoints("", "2:1", rule, false, false), null);
+  });
+
+  void it("tip + empty result → null (after edit)", () => {
+    assert.equal(calcTipPoints("2:1", "", rule, false, false), null);
+  });
+
+  void it("empty tip + empty result → null (after edit)", () => {
+    assert.equal(calcTipPoints("", "", rule, false, false), null);
   });
 
   void it("wrong tip → 0 (result exists, tip was wrong)", () => {
