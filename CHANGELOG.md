@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.14.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.14.1...v0.14.2)
+
+### 🚀 Enhancements
+
+- **manager:** Materialize ranking after every relevant write ([ade7bb2](https://github.com/haus23/tipprunde/commit/ade7bb2))
+
+### 💅 Refactors
+
+- **db:** Extend players with ranking columns; clean up rounds + championship schema ([5d04160](https://github.com/haus23/tipprunde/commit/5d04160))
+
+### 📖 Documentation
+
+- Record ranking persistence decision ([d35ace3](https://github.com/haus23/tipprunde/commit/d35ace3))
+
+### 🏡 Chore
+
+- **db:** Add migration for the ranking feature. ([9489c52](https://github.com/haus23/tipprunde/commit/9489c52))
+
 ## v0.14.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.14.0...v0.14.1)
