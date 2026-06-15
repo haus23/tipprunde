@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.13.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.13.1...v0.13.2)
+
+### 🚀 Enhancements
+
+- **web:** Add Zusatzfragen route and dashboard link ([1c1df46](https://github.com/haus23/tipprunde/commit/1c1df46))
+
+### 💅 Refactors
+
+- **domain:** Split hasExtraQuestions from includesExtraQuestions ([b916fac](https://github.com/haus23/tipprunde/commit/b916fac))
+
 ## v0.13.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.13.0...v0.13.1)
