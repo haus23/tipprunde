@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+import { CellLink } from "#/components/cell-link.tsx";
 import { MatchSwitch } from "#/components/match-switch.tsx";
-import { PlayerLink } from "#/components/player-link.tsx";
 import { TipFlag } from "#/components/tip-flag.tsx";
 import { formatDate } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
@@ -183,7 +183,9 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
             {sortedRows.map((row) => (
               <tr key={row.userId} className="border-subtle border-b last:border-b-0">
                 <td className="xs:px-3 px-2 py-3 font-medium">
-                  <PlayerLink slug={row.slug}>{row.name}</PlayerLink>
+                  <CellLink to="/spieler/{-$slug}" params={{ slug: row.slug }}>
+                    {row.name}
+                  </CellLink>
                 </td>
                 {match.tipsPublished && (
                   <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">

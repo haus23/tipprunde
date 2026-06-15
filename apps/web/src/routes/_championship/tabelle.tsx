@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { PlayerLink } from "#/components/player-link.tsx";
+import { CellLink } from "#/components/cell-link.tsx";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import type { RankedPlayer } from "#/lib/ranking.ts";
 import type { SessionUser } from "#/lib/session.ts";
@@ -111,7 +111,9 @@ function RankingTable({
                 {sharesRankAbove ? "" : entry.rank}
               </td>
               <td className={`xs:px-3 xs:py-3 px-2 py-2 ${isCurrentUser ? "font-medium" : ""}`}>
-                <PlayerLink slug={entry.slug}>{entry.name}</PlayerLink>
+                <CellLink to="/spieler/{-$slug}" params={{ slug: entry.slug }}>
+                  {entry.name}
+                </CellLink>
               </td>
               {showExtras && (
                 <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">

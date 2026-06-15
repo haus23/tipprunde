@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { MatchLink } from "#/components/match-link.tsx";
+import { CellLink } from "#/components/cell-link.tsx";
 import { RoundAccordion } from "#/components/round-accordion.tsx";
 import { formatDate } from "#/lib/format.ts";
 import { roundsQueryOptions } from "#/lib/spiele.ts";
@@ -94,7 +94,9 @@ function SpieleRoundItem({ round, defaultOpen }: { round: SpieleRound; defaultOp
           {round.matches.map((match) => (
             <tr key={match.id} className="border-subtle border-b last:border-b-0">
               <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
-                <MatchLink nr={match.nr}>{match.nr}</MatchLink>
+                <CellLink to="/spiele/$nr" params={{ nr: String(match.nr) }}>
+                  {match.nr}
+                </CellLink>
               </td>
               <td className="xs:table-cell hidden w-px px-2 py-3 tabular-nums">
                 {match.date ? formatDate(match.date) : "–"}
@@ -103,10 +105,10 @@ function SpieleRoundItem({ round, defaultOpen }: { round: SpieleRound; defaultOp
                 {match.liga ?? "–"}
               </td>
               <td className="xs:px-2 px-1 py-3">
-                <MatchLink nr={match.nr}>
+                <CellLink to="/spiele/$nr" params={{ nr: String(match.nr) }}>
                   <span className="hidden sm:inline">{match.paarung}</span>
                   <span className="sm:hidden">{match.paarungShort}</span>
-                </MatchLink>
+                </CellLink>
               </td>
               <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                 {match.result ?? "–:–"}
