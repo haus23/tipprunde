@@ -10,7 +10,7 @@ across the slugged championship routes.
 | Field                          | Type    | Default | Meaning                                                                  |
 | ------------------------------ | ------- | ------- | ------------------------------------------------------------------------ |
 | `published`                    | boolean | false   | Championship is visible on the public frontend                           |
-| `completed`                    | boolean | false   | Championship is finished; triggers expensive stat recalculation          |
+| `completed`                    | boolean | false   | Championship is finished; locks editing (TBD) and marks ranking as final |
 | `extraQuestionPointsPublished` | boolean | false   | Extra-question **points** count toward the ranking + show in the Tabelle |
 
 > **`extraQuestionPointsPublished`** is _solely_ about the ranking: whether
@@ -205,15 +205,48 @@ All three share a **round selector** in the left slot of the page toolbar
 
 These features are **only rendered or enabled** when the associated rule is active.
 
-| Feature                                       | Condition                                                                                             |
-| --------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `championship.extraQuestionsPublished` toggle | `ruleset.extraQuestionRuleId === "mit-zusatzfragen"`                                                  |
-| Zusatzpunkte route content (non-empty)        | `ruleset.extraQuestionRuleId === "mit-zusatzfragen"`                                                  |
-| `round.isDoubleRound` toggle on create        | `ruleset.roundRuleId === "mit-doppelrunden"` _(rule not yet defined — deferred to ~championship #30)_ |
+| Feature                                            | Condition                                                                                             |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `championship.extraQuestionPointsPublished` toggle | `ruleset.extraQuestionRuleId === "mit-zusatzfragen"`                                                  |
+| Zusatzfragen route content (non-empty)             | `ruleset.extraQuestionRuleId === "mit-zusatzfragen"`                                                  |
+| `round.isDoubleRound` toggle on create             | `ruleset.roundRuleId === "mit-doppelrunden"` _(rule not yet defined — deferred to ~championship #30)_ |
 
 > **Note on `isDoubleRound`:** The flag exists in the DB schema today but the
 > toggle UI should not be shown until the corresponding `roundRuleId` value is
 > introduced. For all current championships the field remains `null`.
+
+---
+
+## Ranking persistence
+
+The championship ranking is **persisted incrementally** into the `players` join
+table rather than calculated on-the-fly at read time. See
+[archiv.md](./archiv.md) for the full data design rationale.
+
+**`players` result columns** (all nullable — null = not yet scored):
+
+| Column                | Type            | Meaning                                                                 |
+| --------------------- | --------------- | ----------------------------------------------------------------------- |
+| `rank`                | integer \| null | Tie-aware rank (shared ranks possible)                                  |
+| `tipPoints`           | integer \| null | Sum of `tips.points` for all scored matches                             |
+| `extraQuestionPoints` | integer \| null | Sum of `extraAnswers.points` (only when `extraQuestionPointsPublished`) |
+| `roundPoints`         | integer \| null | Sum of round bonus points — future; always null for now                 |
+| `total`               | integer \| null | Sum of all above — ranking sort key; stored explicitly for consistency  |
+
+New point categories are added as new nullable columns when the corresponding
+rule variant arrives.
+
+**Write triggers** — after any of these manager actions, `calcRanking` (domain)
+is called and all `players` rows for the championship are updated:
+
+| Action                                      | Route              |
+| ------------------------------------------- | ------------------ |
+| Match result scored or edited               | `ergebnisse`       |
+| Tip entered when result already exists      | `tipps`            |
+| `extraQuestionPointsPublished` flag toggled | championship index |
+| Extra question points assigned              | `zusatzfragen`     |
+
+The web app reads ranking directly from `players` — no aggregation at read time.
 
 ---
 

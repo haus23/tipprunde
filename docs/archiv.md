@@ -4,9 +4,82 @@ Documents the planned Archiv feature for the web app (`apps/web`).
 
 ## Status
 
-**Not yet built.** The `/archiv` route exists as a stub in the router (it's in
-`routeTree.gen.ts`), but has no real implementation. The Archiv link has been
-**removed from the main nav** — entry point is the dashboard section below.
+**Not yet built.** The Archiv link has been **removed from the main nav** — entry
+will be via a dashboard section once it's built.
+
+## Data design decision
+
+The `players` join table (`championshipId`, `userId`) already has one row per
+player per championship — exactly the right shape for carrying ranking results.
+
+**Decision: extend `players` with nullable ranking columns:**
+
+```
+players (
+  id                   integer PK
+  championshipId       → championships.id
+  userId               → users.id
+  -- result columns (null until first scoring)
+  rank                 integer | null
+  tipPoints            integer | null   -- sum of tips.points
+  extraQuestionPoints  integer | null   -- sum of extraAnswers.points (when published)
+  roundPoints          integer | null   -- sum of roundPoints entries (future)
+  total                integer | null   -- tipPoints + extraQuestionPoints + roundPoints
+)
+```
+
+Every point category that feeds into `total` has its own explicit column. `total`
+is technically derivable from the components, but is stored explicitly so the
+ranking is always self-consistent — a rank-1 player can never appear to have
+fewer points than rank-2 due to a missing category.
+
+Columns are nullable because they have no meaningful value before any results
+are scored. The frontend handles nulls; null is not the same as 0 (which means
+"scored, but zero points").
+
+New point categories (e.g. `roundPoints`) are added as new nullable columns when
+the corresponding rule variant arrives — the iterative schema concept holds.
+
+### Why not a separate table
+
+A dedicated `rankings` table would have the same `(championshipId, userId)` key
+and same cardinality as `players` — it would be the same entity split across two
+tables for no benefit. One row per player per championship is the right shape;
+`players` already owns it.
+
+### Why not store only at completion
+
+See "Ranking write strategy" below. Ranking is kept current throughout the
+championship, not only written at completion time.
+
+## Ranking write strategy
+
+Ranking columns in `players` are updated **incrementally after every relevant
+manager write**, not just when a championship is marked completed.
+
+**Triggers (manager app):**
+
+- Result scored or edited (`ergebnisse` route) → re-rank all players for the championship
+- Tip entered when result already exists (`tipps` route) → re-rank
+- `extraQuestionPointsPublished` flag flipped → re-rank (extra points now count / stop counting)
+- Extra question points assigned (`zusatzfragen` route) → re-rank (if `extraQuestionPointsPublished`)
+
+**Benefits:**
+
+- Web app becomes pure display — no aggregation at read time, no `calcRanking` in the frontend
+- Fewer Turso reads per web request
+- Historical rankings (completed championships) are naturally preserved with no extra work
+- Serves all three future use cases from the same data:
+  - **Archiv dashboard** — `WHERE rank = 1` per championship
+  - **Ewige Tabelle** — `SUM(total) GROUP BY userId ORDER BY SUM(total) DESC`
+  - **Full Archiv drill-down** — `WHERE championshipId = ?`
+
+**Manager refactor plan:**
+
+1. Add `rank`, `tipPoints`, `extraPoints`, `total` columns to `players` in `packages/db/src/schema.ts`
+2. After each of the write triggers above, call `calcRanking` (domain) and upsert results
+   into all `players` rows for that championship
+3. Update the web app to read ranking directly from `players` instead of aggregating tips
 
 ## Planned: Dashboard section (index route)
 
@@ -22,35 +95,11 @@ summary of past championships, linking to the full archive.
 **Placement:** Below Regelwerk, inside the `xs:px-6 px-4` content wrapper — same
 horizontal padding as the other dashboard sections.
 
-## Open: winner determination
-
-How to get the winner (rank-1 player) for each past championship:
-
-**Option A — on-the-fly via `calcRanking`**
-Call the full scoring chain per past championship on demand. Correct by
-construction — same logic as the live ranking. But implies loading tips + results
-for every past championship just to get one name.
-
-**Option B — persisted field on the championship table**
-Store `winnerId` (or `winnerName`) on the `championships` row once the
-championship is completed. Zero extra work at read time; requires a write step
-when marking a championship as completed. The manager's "Turnier abschließen"
-flow (or the flags card) could trigger this.
-
-**Option C — persisted via materialized ranking snapshot**
-Store the full final ranking as a JSON blob or separate `championship_ranking`
-table. Heavier than needed for just the winner; more useful if we want podium
-(top 3) or historical stats.
-
-No decision made yet. Option B is the simplest for just displaying the winner;
-Option A avoids schema changes at the cost of a heavier query.
-
 ## Full `/archiv` route (future)
 
-Separate, larger work: a route listing all past championships with their winners,
-possibly with drill-down into each championship's final standings. Out of scope
-until the dashboard section is built and the winner-determination question is
-resolved.
+A route listing all past championships with their final standings, possibly with
+drill-down into each championship's Tabelle. Out of scope until the manager
+refactor and dashboard section are built.
 
 ## Notes
 
@@ -59,3 +108,5 @@ resolved.
 - The currently active championship context (`/_championship` layout) is pinned
   to the latest published championship; `/archiv` will need its own data loading
   strategy outside that layout.
+- "Ewige Tabelle" will live at its own route (TBD); it aggregates `players.total`
+  across all championships per user.
