@@ -79,8 +79,8 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
               <NavItem to={`/${slug}/ergebnisse`} icon={ListChecksIcon}>
                 Ergebnisse
               </NavItem>
-              <NavItem to={`/${slug}/zusatzpunkte`} icon={StarIcon}>
-                Zusatzpunkte
+              <NavItem to={`/${slug}/zusatzfragen`} icon={StarIcon}>
+                Zusatzfragen
               </NavItem>
             </>
           ) : (

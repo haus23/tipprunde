@@ -21,9 +21,9 @@ import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
 import { championshipContext } from "../../lib/context";
-import type { Route } from "./+types/zusatzpunkte";
+import type { Route } from "./+types/zusatzfragen";
 
-export const handle = { title: "Zusatzpunkte" };
+export const handle = { title: "Zusatzfragen" };
 
 // --- Loader ---
 
@@ -544,14 +544,14 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
 
 // --- Page ---
 
-export default function Zusatzpunkte({ loaderData }: Route.ComponentProps) {
+export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
   const { hasExtraQuestions, questions, players, championshipName } = loaderData;
   const createFetcher = useFetcher();
 
   if (!hasExtraQuestions) {
     return (
       <div className="p-8">
-        <title>{`Zusatzpunkte | ${championshipName}`}</title>
+        <title>{`Zusatzfragen | ${championshipName}`}</title>
         <div className="mb-6 flex min-h-9 items-center" />
         <p className="text-subtle mt-8 text-center text-sm">
           Keine Zusatzfragen in diesem Turnier.
@@ -562,7 +562,7 @@ export default function Zusatzpunkte({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="space-y-6 p-8">
-      <title>{`Zusatzpunkte | ${championshipName}`}</title>
+      <title>{`Zusatzfragen | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center justify-end">
         <Button
           size="sm"
