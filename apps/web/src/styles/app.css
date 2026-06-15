@@ -7,18 +7,18 @@
   --text-base--line-height: calc(1.25 / 0.875);
 }
 
-/* Animate the native round accordions (Spieler view) where supported: the
-   `::details-content` pseudo-element + `interpolate-size: allow-keywords`
-   unlock transitioning the panel to/from its auto height with zero JS.
-   Chromium supports this today; Safari/Firefox are rolling it out. Where
-   unsupported, it falls back to an instant toggle — today's behavior, so no
-   regression anywhere. */
+/* Animate the native accordions (any exclusive, i.e. named, <details>) where
+   supported: the `::details-content` pseudo-element + `interpolate-size:
+   allow-keywords` unlock transitioning the panel to/from its auto height with
+   zero JS. Chromium supports this today; Safari/Firefox are rolling it out.
+   Where unsupported, it falls back to an instant toggle — today's behavior, so
+   no regression anywhere. */
 @supports (interpolate-size: allow-keywords) {
   :root {
     interpolate-size: allow-keywords;
   }
 
-  details[name="runden"]::details-content {
+  details[name]::details-content {
     block-size: 0;
     overflow: clip;
     transition:
@@ -26,7 +26,7 @@
       content-visibility 250ms allow-discrete;
   }
 
-  details[name="runden"][open]::details-content {
+  details[name][open]::details-content {
     block-size: auto;
   }
 }
