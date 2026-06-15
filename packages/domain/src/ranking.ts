@@ -12,7 +12,7 @@ export type RankingInput = {
   /** Extra-answer rows scoped to the championship. `points` is null until graded. */
   extraAnswers: { userId: number; points: number | null }[];
   ruleset: { extraQuestionRuleId: string };
-  championship: { extraQuestionsPublished: boolean };
+  championship: { extraQuestionPointsPublished: boolean };
 };
 
 export type RankingEntry = {
@@ -38,14 +38,14 @@ export function hasExtraQuestions(ruleset: RankingInput["ruleset"]): boolean {
 /**
  * Whether extra-answer points count toward the ranking: the ruleset must
  * include extra questions AND the championship must have published their points
- * (the `extraQuestionsPublished` flag — really "extra-question points
- * published"). Gates the ranking total and the Tabelle's extras column.
+ * (`extraQuestionPointsPublished`). Gates the ranking total and the Tabelle's
+ * extras column.
  */
 export function includesExtraQuestions(
   ruleset: RankingInput["ruleset"],
   championship: RankingInput["championship"],
 ): boolean {
-  return hasExtraQuestions(ruleset) && championship.extraQuestionsPublished;
+  return hasExtraQuestions(ruleset) && championship.extraQuestionPointsPublished;
 }
 
 /**

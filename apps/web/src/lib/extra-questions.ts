@@ -14,7 +14,7 @@ export const getExtraQuestions = createServerFn()
     });
 
     // Gate solely on the ruleset including extra questions — point publishing
-    // (extraQuestionsPublished) only affects the ranking, not this view.
+    // (extraQuestionPointsPublished) only affects the ranking, not this view.
     if (
       !championship ||
       !hasExtraQuestions({ extraQuestionRuleId: championship.ruleset.extraQuestionRuleId })

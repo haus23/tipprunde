@@ -22,7 +22,7 @@ export const getRanking = createServerFn()
     const [championship, players, tipRows, extraRows] = await Promise.all([
       db.query.championships.findFirst({
         where: { id: championshipId },
-        columns: { extraQuestionsPublished: true },
+        columns: { extraQuestionPointsPublished: true },
         with: { ruleset: { columns: { extraQuestionRuleId: true } } },
       }),
       db.query.players.findMany({
@@ -47,7 +47,7 @@ export const getRanking = createServerFn()
     if (!championship) return { ranking: [] as RankedPlayer[], showExtras: false };
 
     const ruleset = { extraQuestionRuleId: championship.ruleset.extraQuestionRuleId };
-    const flags = { extraQuestionsPublished: championship.extraQuestionsPublished };
+    const flags = { extraQuestionPointsPublished: championship.extraQuestionPointsPublished };
 
     const entries = calcRanking({
       players: players.map((p) => ({ userId: p.userId })),

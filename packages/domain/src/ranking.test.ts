@@ -13,7 +13,7 @@ const base: RankingInput = {
   tips: [],
   extraAnswers: [],
   ruleset: { extraQuestionRuleId: "keine-besonderheiten" },
-  championship: { extraQuestionsPublished: false },
+  championship: { extraQuestionPointsPublished: false },
 };
 
 void describe("extra-question predicates", () => {
@@ -24,12 +24,12 @@ void describe("extra-question predicates", () => {
 
   void it("includesExtraQuestions also requires published points", () => {
     const ruleset = { extraQuestionRuleId: "mit-zusatzfragen" };
-    assert.equal(includesExtraQuestions(ruleset, { extraQuestionsPublished: true }), true);
-    assert.equal(includesExtraQuestions(ruleset, { extraQuestionsPublished: false }), false);
+    assert.equal(includesExtraQuestions(ruleset, { extraQuestionPointsPublished: true }), true);
+    assert.equal(includesExtraQuestions(ruleset, { extraQuestionPointsPublished: false }), false);
     assert.equal(
       includesExtraQuestions(
         { extraQuestionRuleId: "keine-besonderheiten" },
-        { extraQuestionsPublished: true },
+        { extraQuestionPointsPublished: true },
       ),
       false,
     );
@@ -83,7 +83,7 @@ void describe("calcRanking — extra points gating", () => {
     const ranking = calcRanking({
       ...withExtras,
       ruleset: { extraQuestionRuleId: "keine-besonderheiten" },
-      championship: { extraQuestionsPublished: true },
+      championship: { extraQuestionPointsPublished: true },
     });
     assert.equal(ranking.find((e) => e.userId === 1)?.extraPoints, 0);
     assert.equal(ranking.find((e) => e.userId === 1)?.total, 5);
@@ -93,7 +93,7 @@ void describe("calcRanking — extra points gating", () => {
     const ranking = calcRanking({
       ...withExtras,
       ruleset: { extraQuestionRuleId: "mit-zusatzfragen" },
-      championship: { extraQuestionsPublished: false },
+      championship: { extraQuestionPointsPublished: false },
     });
     assert.equal(ranking.find((e) => e.userId === 1)?.extraPoints, 0);
   });
@@ -102,7 +102,7 @@ void describe("calcRanking — extra points gating", () => {
     const ranking = calcRanking({
       ...withExtras,
       ruleset: { extraQuestionRuleId: "mit-zusatzfragen" },
-      championship: { extraQuestionsPublished: true },
+      championship: { extraQuestionPointsPublished: true },
     });
     assert.equal(ranking.find((e) => e.userId === 1)?.extraPoints, 2);
     assert.equal(ranking.find((e) => e.userId === 1)?.total, 7);
@@ -113,7 +113,7 @@ void describe("calcRanking — extra points gating", () => {
       ...base,
       extraAnswers: [{ userId: 1, points: 1.5 }],
       ruleset: { extraQuestionRuleId: "mit-zusatzfragen" },
-      championship: { extraQuestionsPublished: true },
+      championship: { extraQuestionPointsPublished: true },
     });
     assert.equal(ranking.find((e) => e.userId === 1)?.total, 1.5);
   });

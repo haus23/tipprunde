@@ -22,7 +22,7 @@ import type { Route } from "./+types/index";
 
 export const handle = { title: "Übersicht" };
 
-const flagField = v.picklist(["published", "completed", "extraQuestionsPublished"]);
+const flagField = v.picklist(["published", "completed", "extraQuestionPointsPublished"]);
 type FlagField = v.InferOutput<typeof flagField>;
 
 const roundFlagField = v.picklist(["published", "tipsPublished"]);
@@ -297,17 +297,17 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
 
   const published = getFlag("published", championship.published);
   const completed = getFlag("completed", championship.completed);
-  const extraQuestionsPublished = getFlag(
-    "extraQuestionsPublished",
-    championship.extraQuestionsPublished,
+  const extraQuestionPointsPublished = getFlag(
+    "extraQuestionPointsPublished",
+    championship.extraQuestionPointsPublished,
   );
 
-  // Dependency chain: published → extraQuestionsPublished (if present) → completed
+  // Dependency chain: published → extraQuestionPointsPublished (if present) → completed
   // Turning completed on disables all other switches
   const publishedDisabled = isFlagPending || completed;
   const extraQuestionsDisabled = isFlagPending || !published || completed;
   const completedDisabled =
-    isFlagPending || !published || (hasExtraQuestions && !extraQuestionsPublished);
+    isFlagPending || !published || (hasExtraQuestions && !extraQuestionPointsPublished);
 
   return (
     <div className="space-y-6 p-8">
@@ -329,10 +329,12 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
             />
             {hasExtraQuestions && (
               <FlagSwitch
-                label="Zusatzpunkte veröffentlicht"
+                label="Zusatzfragenpunkte veröffentlicht"
                 description="Auswertung der Zusatzfragen ist auf dem Frontend sichtbar"
-                isSelected={extraQuestionsPublished}
-                onChange={() => toggleFlag("extraQuestionsPublished", extraQuestionsPublished)}
+                isSelected={extraQuestionPointsPublished}
+                onChange={() =>
+                  toggleFlag("extraQuestionPointsPublished", extraQuestionPointsPublished)
+                }
                 isDisabled={extraQuestionsDisabled}
               />
             )}

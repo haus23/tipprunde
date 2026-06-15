@@ -7,20 +7,20 @@ across the slugged championship routes.
 
 ## Championship flags
 
-| Field                     | Type    | Default | Meaning                                                                  |
-| ------------------------- | ------- | ------- | ------------------------------------------------------------------------ |
-| `published`               | boolean | false   | Championship is visible on the public frontend                           |
-| `completed`               | boolean | false   | Championship is finished; triggers expensive stat recalculation          |
-| `extraQuestionsPublished` | boolean | false   | Extra-question **points** count toward the ranking + show in the Tabelle |
+| Field                          | Type    | Default | Meaning                                                                  |
+| ------------------------------ | ------- | ------- | ------------------------------------------------------------------------ |
+| `published`                    | boolean | false   | Championship is visible on the public frontend                           |
+| `completed`                    | boolean | false   | Championship is finished; triggers expensive stat recalculation          |
+| `extraQuestionPointsPublished` | boolean | false   | Extra-question **points** count toward the ranking + show in the Tabelle |
 
-> **`extraQuestionsPublished` is misnamed** — it really means "extra-question
-> _points_ published" (better: `extraQuestionPointsPublished`). It is _solely_
-> about the ranking: whether extra-answer points are added to the standings and
-> the Tabelle's extras column. It does **not** gate the Zusatzfragen view.
-> Whether a championship _has_ extra questions at all is decided only by
+> **`extraQuestionPointsPublished`** is _solely_ about the ranking: whether
+> extra-answer points are added to the standings and the Tabelle's extras column.
+> It does **not** gate the Zusatzfragen view. Whether a championship _has_ extra
+> questions at all is decided only by
 > `ruleset.extraQuestionRuleId === "mit-zusatzfragen"` (domain `hasExtraQuestions`);
-> the ranking inclusion is `hasExtraQuestions && extraQuestionsPublished`
-> (domain `includesExtraQuestions`).
+> the ranking inclusion is `hasExtraQuestions && extraQuestionPointsPublished`
+> (domain `includesExtraQuestions`). The DB column is still
+> `extra_questions_published` (Drizzle field renamed without a migration).
 
 > **`completed` behaviour is open:** It does NOT necessarily lock editing.
 > Primary purpose is to trigger a final stat recalculation. Whether certain

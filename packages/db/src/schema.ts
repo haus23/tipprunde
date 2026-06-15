@@ -69,7 +69,9 @@ export const championships = sqliteTable("championships", {
     .references(() => rulesets.id),
   published: integer("published", { mode: "boolean" }).notNull().default(false),
   completed: integer("completed", { mode: "boolean" }).notNull().default(false),
-  extraQuestionsPublished: integer("extra_questions_published", { mode: "boolean" })
+  // Whether extra-question points count toward the ranking. DB column kept as
+  // `extra_questions_published` to avoid a migration.
+  extraQuestionPointsPublished: integer("extra_questions_published", { mode: "boolean" })
     .notNull()
     .default(false),
 });
