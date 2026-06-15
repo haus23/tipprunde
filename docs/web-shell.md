@@ -10,7 +10,7 @@ how the shell uses them.
 Everything a user can reach from the header at max width:
 
 - **Home link** (logo) — leftmost, always visible
-- **Primary nav** — Tabelle · Spieler · Spiele · Archiv
+- **Primary nav** — Tabelle · Spieler · Spiele
 - **Chat** — see "Chat as a layout citizen" below (not a header item on wide screens)
 - **Scheme control** — single control (see consolidation note)
 - **User menu / Login** — rightmost, always visible
@@ -45,8 +45,7 @@ This is SSR-clean (no measure-on-hydrate flash) and deterministic.
 The nav list is defined once and rendered in two places (inline + inside the ⋯ menu),
 each toggled by breakpoint classes.
 
-**Collapse order:** `Archiv` first (past championships, lowest frequency), then the
-others as width shrinks.
+**Collapse order:** items collapse right-to-left as width shrinks (Spiele first, then Spieler, then Tabelle).
 
 ## Chat as a layout citizen
 
@@ -91,12 +90,12 @@ websocket/subscription, scroll position, an unsent draft.
 The header has **independent thresholds**, not one switch. Chat (widest consumer)
 collapses first; nav collapses later.
 
-| Width         | Chat             | Nav                       | Right cluster             |
-| ------------- | ---------------- | ------------------------- | ------------------------- |
-| ≥ `lg` (1024) | docked rail      | inline (4 items)          | Scheme · User             |
-| `md`–`lg`     | 💬 drawer toggle | inline                    | Scheme · User             |
-| < `sm`/`md`   | 💬 drawer toggle | overflow → ⋯ (Archiv 1st) | Scheme · User             |
-| < `xs` (480)  | 💬 drawer toggle | ⋯                         | Scheme may fold into User |
+| Width         | Chat             | Nav              | Right cluster             |
+| ------------- | ---------------- | ---------------- | ------------------------- |
+| ≥ `lg` (1024) | docked rail      | inline (4 items) | Scheme · User             |
+| `md`–`lg`     | 💬 drawer toggle | inline           | Scheme · User             |
+| < `sm`/`md`   | 💬 drawer toggle | overflow → ⋯     | Scheme · User             |
+| < `xs` (480)  | 💬 drawer toggle | ⋯                | Scheme may fold into User |
 
 ## Shell max-width
 

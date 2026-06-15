@@ -25,7 +25,6 @@ const navItems = [
   { to: "/tabelle", label: "Tabelle" },
   { to: "/spieler/{-$slug}", label: "Spieler" },
   { to: "/spiele", label: "Spiele" },
-  { to: "/archiv", label: "Archiv" },
 ] as const;
 
 import { ColorSchemeMenu } from "#/components/color-scheme-menu.tsx";
