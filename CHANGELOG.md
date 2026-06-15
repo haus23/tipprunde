@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.13.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.13.0...v0.13.1)
+
+### 🚀 Enhancements
+
+- **web:** Link Tabelle player names to their Spieler view ([4dc5776](https://github.com/haus23/tipprunde/commit/4dc5776))
+- **web:** Build the index dashboard (standings, current matches, ruleset) ([d0ea27b](https://github.com/haus23/tipprunde/commit/d0ea27b))
+
+### 🩹 Fixes
+
+- **web:** Constrain switch menus to the popover height (no overflow spill) ([3c2a0db](https://github.com/haus23/tipprunde/commit/3c2a0db))
+- **web:** Always center overview link. ([74ce6cb](https://github.com/haus23/tipprunde/commit/74ce6cb))
+
+### 💅 Refactors
+
+- **web:** Replace Match/PlayerLink with a single typed CellLink ([59b96f4](https://github.com/haus23/tipprunde/commit/59b96f4))
+
 ## v0.13.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.12.2...v0.13.0)
