@@ -106,7 +106,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
   return (
     <div className="mx-auto w-full max-w-5xl py-8">
       <div className="xs:px-0 relative flex flex-col items-center gap-2 px-4 md:mb-6">
-        <Link to="/spiele" className={`${navLinkClass} xs:self-auto mb-1 self-start text-xs`}>
+        <Link to="/spiele" className={`${navLinkClass} mb-1 self-auto text-xs`}>
           <ChevronLeftIcon className="size-3" />
           Spielübersicht
         </Link>
