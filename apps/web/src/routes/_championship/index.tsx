@@ -77,7 +77,7 @@ function Dashboard({
         <p className="text-subtle mt-1 text-lg">{championshipName}</p>
       </div>
 
-      <div className="xs:px-0 flex flex-col gap-10 px-4">
+      <div className="xs:px-6 flex flex-col gap-10 px-4">
         <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
           <Standings ranking={ranking} completed={completed} userId={user?.id} />
           <CurrentMatches matches={matches} completed={completed} />
