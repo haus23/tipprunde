@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { calcRanking, type RankingInput } from "./ranking.ts";
+import {
+  calcRanking,
+  hasExtraQuestions,
+  includesExtraQuestions,
+  type RankingInput,
+} from "./ranking.ts";
 
 const base: RankingInput = {
   players: [{ userId: 1 }, { userId: 2 }, { userId: 3 }],
@@ -10,6 +15,26 @@ const base: RankingInput = {
   ruleset: { extraQuestionRuleId: "keine-besonderheiten" },
   championship: { extraQuestionsPublished: false },
 };
+
+void describe("extra-question predicates", () => {
+  void it("hasExtraQuestions depends only on the ruleset, not point publishing", () => {
+    assert.equal(hasExtraQuestions({ extraQuestionRuleId: "mit-zusatzfragen" }), true);
+    assert.equal(hasExtraQuestions({ extraQuestionRuleId: "keine-besonderheiten" }), false);
+  });
+
+  void it("includesExtraQuestions also requires published points", () => {
+    const ruleset = { extraQuestionRuleId: "mit-zusatzfragen" };
+    assert.equal(includesExtraQuestions(ruleset, { extraQuestionsPublished: true }), true);
+    assert.equal(includesExtraQuestions(ruleset, { extraQuestionsPublished: false }), false);
+    assert.equal(
+      includesExtraQuestions(
+        { extraQuestionRuleId: "keine-besonderheiten" },
+        { extraQuestionsPublished: true },
+      ),
+      false,
+    );
+  });
+});
 
 void describe("calcRanking — aggregation", () => {
   void it("sums tip points per player", () => {

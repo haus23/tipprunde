@@ -7,11 +7,20 @@ across the slugged championship routes.
 
 ## Championship flags
 
-| Field                     | Type    | Default | Meaning                                                         |
-| ------------------------- | ------- | ------- | --------------------------------------------------------------- |
-| `published`               | boolean | false   | Championship is visible on the public frontend                  |
-| `completed`               | boolean | false   | Championship is finished; triggers expensive stat recalculation |
-| `extraQuestionsPublished` | boolean | false   | Extra questions for this championship have been published       |
+| Field                     | Type    | Default | Meaning                                                                  |
+| ------------------------- | ------- | ------- | ------------------------------------------------------------------------ |
+| `published`               | boolean | false   | Championship is visible on the public frontend                           |
+| `completed`               | boolean | false   | Championship is finished; triggers expensive stat recalculation          |
+| `extraQuestionsPublished` | boolean | false   | Extra-question **points** count toward the ranking + show in the Tabelle |
+
+> **`extraQuestionsPublished` is misnamed** — it really means "extra-question
+> _points_ published" (better: `extraQuestionPointsPublished`). It is _solely_
+> about the ranking: whether extra-answer points are added to the standings and
+> the Tabelle's extras column. It does **not** gate the Zusatzfragen view.
+> Whether a championship _has_ extra questions at all is decided only by
+> `ruleset.extraQuestionRuleId === "mit-zusatzfragen"` (domain `hasExtraQuestions`);
+> the ranking inclusion is `hasExtraQuestions && extraQuestionsPublished`
+> (domain `includesExtraQuestions`).
 
 > **`completed` behaviour is open:** It does NOT necessarily lock editing.
 > Primary purpose is to trigger a final stat recalculation. Whether certain

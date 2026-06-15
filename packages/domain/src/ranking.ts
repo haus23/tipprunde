@@ -27,20 +27,25 @@ export type RankingEntry = {
 // --- Ranking ---
 
 /**
+ * Whether the ruleset includes extra questions at all — i.e. the championship
+ * has a Zusatzfragen feature. Independent of whether their points are published
+ * into the ranking. Gates the Zusatzfragen view.
+ */
+export function hasExtraQuestions(ruleset: RankingInput["ruleset"]): boolean {
+  return ruleset.extraQuestionRuleId === ("mit-zusatzfragen" satisfies ExtraQuestionRuleId);
+}
+
+/**
  * Whether extra-answer points count toward the ranking: the ruleset must
- * include extra questions AND the championship must have published them.
- *
- * Exposed so views can decide whether to show an extras column without
- * re-deriving the rule (and without knowing the magic rule id).
+ * include extra questions AND the championship must have published their points
+ * (the `extraQuestionsPublished` flag — really "extra-question points
+ * published"). Gates the ranking total and the Tabelle's extras column.
  */
 export function includesExtraQuestions(
   ruleset: RankingInput["ruleset"],
   championship: RankingInput["championship"],
 ): boolean {
-  return (
-    ruleset.extraQuestionRuleId === ("mit-zusatzfragen" satisfies ExtraQuestionRuleId) &&
-    championship.extraQuestionsPublished
-  );
+  return hasExtraQuestions(ruleset) && championship.extraQuestionsPublished;
 }
 
 /**
