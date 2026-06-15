@@ -119,3 +119,43 @@ export const matchQueryOptions = (championshipId: number, nr: number) =>
     queryKey: ["match", championshipId, nr],
     queryFn: () => getMatch({ data: { championshipId, nr } }),
   });
+
+export const getCurrentMatches = createServerFn()
+  .validator((championshipId: number) => championshipId)
+  .handler(async ({ data: championshipId }) => {
+    const dated = await db.query.matches.findMany({
+      where: { date: { isNotNull: true }, round: { championshipId, published: true } },
+      orderBy: { date: "asc" },
+      columns: { nr: true, date: true, result: true },
+      with: {
+        hometeam: { columns: { name: true, shortName: true } },
+        awayteam: { columns: { name: true, shortName: true } },
+      },
+    });
+
+    // A window of up to 4 around "now": prefer 2 played + 2 upcoming, backfilling
+    // from whichever side has fewer.
+    const played = dated.filter((m) => m.result !== null);
+    const upcoming = dated.filter((m) => m.result === null);
+    const openCount = Math.min(upcoming.length, 4 - Math.min(played.length, 2));
+    const closedCount = Math.min(played.length, 4 - openCount);
+    const window = [...played.slice(played.length - closedCount), ...upcoming.slice(0, openCount)];
+
+    return {
+      matches: window.map((m) => ({
+        nr: m.nr,
+        date: m.date,
+        paarung: `${m.hometeam?.name ?? "–"} – ${m.awayteam?.name ?? "–"}`,
+        paarungShort: `${m.hometeam?.shortName ?? "–"} – ${m.awayteam?.shortName ?? "–"}`,
+        result: m.result,
+      })),
+    };
+  });
+
+export type CurrentMatch = Awaited<ReturnType<typeof getCurrentMatches>>["matches"][number];
+
+export const currentMatchesQueryOptions = (championshipId: number) =>
+  queryOptions({
+    queryKey: ["current-matches", championshipId],
+    queryFn: () => getCurrentMatches({ data: championshipId }),
+  });
