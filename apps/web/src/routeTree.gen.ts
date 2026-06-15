@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ArchivRouteImport } from './routes/archiv'
 import { Route as ChampionshipRouteImport } from './routes/_championship'
 import { Route as ChampionshipIndexRouteImport } from './routes/_championship/index'
+import { Route as ChampionshipZusatzfragenRouteImport } from './routes/_championship/zusatzfragen'
 import { Route as ChampionshipTabelleRouteImport } from './routes/_championship/tabelle'
 import { Route as ChampionshipSpieleIndexRouteImport } from './routes/_championship/spiele.index'
 import { Route as ChampionshipSpielerChar123SlugChar125RouteImport } from './routes/_championship/spieler.{-$slug}'
@@ -37,6 +38,12 @@ const ChampionshipIndexRoute = ChampionshipIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ChampionshipRoute,
 } as any)
+const ChampionshipZusatzfragenRoute =
+  ChampionshipZusatzfragenRouteImport.update({
+    id: '/zusatzfragen',
+    path: '/zusatzfragen',
+    getParentRoute: () => ChampionshipRoute,
+  } as any)
 const ChampionshipTabelleRoute = ChampionshipTabelleRouteImport.update({
   id: '/tabelle',
   path: '/tabelle',
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/archiv': typeof ArchivRoute
   '/login': typeof LoginRoute
   '/tabelle': typeof ChampionshipTabelleRoute
+  '/zusatzfragen': typeof ChampionshipZusatzfragenRoute
   '/spiele/$nr': typeof ChampionshipSpieleNrRoute
   '/spieler/{-$slug}': typeof ChampionshipSpielerChar123SlugChar125Route
   '/spiele/': typeof ChampionshipSpieleIndexRoute
@@ -72,6 +80,7 @@ export interface FileRoutesByTo {
   '/archiv': typeof ArchivRoute
   '/login': typeof LoginRoute
   '/tabelle': typeof ChampionshipTabelleRoute
+  '/zusatzfragen': typeof ChampionshipZusatzfragenRoute
   '/': typeof ChampionshipIndexRoute
   '/spiele/$nr': typeof ChampionshipSpieleNrRoute
   '/spieler/{-$slug}': typeof ChampionshipSpielerChar123SlugChar125Route
@@ -83,6 +92,7 @@ export interface FileRoutesById {
   '/archiv': typeof ArchivRoute
   '/login': typeof LoginRoute
   '/_championship/tabelle': typeof ChampionshipTabelleRoute
+  '/_championship/zusatzfragen': typeof ChampionshipZusatzfragenRoute
   '/_championship/': typeof ChampionshipIndexRoute
   '/_championship/spiele/$nr': typeof ChampionshipSpieleNrRoute
   '/_championship/spieler/{-$slug}': typeof ChampionshipSpielerChar123SlugChar125Route
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/archiv'
     | '/login'
     | '/tabelle'
+    | '/zusatzfragen'
     | '/spiele/$nr'
     | '/spieler/{-$slug}'
     | '/spiele/'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '/archiv'
     | '/login'
     | '/tabelle'
+    | '/zusatzfragen'
     | '/'
     | '/spiele/$nr'
     | '/spieler/{-$slug}'
@@ -113,6 +125,7 @@ export interface FileRouteTypes {
     | '/archiv'
     | '/login'
     | '/_championship/tabelle'
+    | '/_championship/zusatzfragen'
     | '/_championship/'
     | '/_championship/spiele/$nr'
     | '/_championship/spieler/{-$slug}'
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChampionshipIndexRouteImport
       parentRoute: typeof ChampionshipRoute
     }
+    '/_championship/zusatzfragen': {
+      id: '/_championship/zusatzfragen'
+      path: '/zusatzfragen'
+      fullPath: '/zusatzfragen'
+      preLoaderRoute: typeof ChampionshipZusatzfragenRouteImport
+      parentRoute: typeof ChampionshipRoute
+    }
     '/_championship/tabelle': {
       id: '/_championship/tabelle'
       path: '/tabelle'
@@ -188,6 +208,7 @@ declare module '@tanstack/react-router' {
 
 interface ChampionshipRouteChildren {
   ChampionshipTabelleRoute: typeof ChampionshipTabelleRoute
+  ChampionshipZusatzfragenRoute: typeof ChampionshipZusatzfragenRoute
   ChampionshipIndexRoute: typeof ChampionshipIndexRoute
   ChampionshipSpieleNrRoute: typeof ChampionshipSpieleNrRoute
   ChampionshipSpielerChar123SlugChar125Route: typeof ChampionshipSpielerChar123SlugChar125Route
@@ -196,6 +217,7 @@ interface ChampionshipRouteChildren {
 
 const ChampionshipRouteChildren: ChampionshipRouteChildren = {
   ChampionshipTabelleRoute: ChampionshipTabelleRoute,
+  ChampionshipZusatzfragenRoute: ChampionshipZusatzfragenRoute,
   ChampionshipIndexRoute: ChampionshipIndexRoute,
   ChampionshipSpieleNrRoute: ChampionshipSpieleNrRoute,
   ChampionshipSpielerChar123SlugChar125Route:

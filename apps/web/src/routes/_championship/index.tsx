@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { hasExtraQuestions } from "@tipprunde/domain/ranking";
 import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
 
 import { CellLink } from "#/components/cell-link.tsx";
@@ -214,6 +215,9 @@ function Regelwerk({ ruleset }: { ruleset: Ruleset }) {
     const rule = rules.find((r) => r.value === ruleId);
     return rule ? [{ label, description: rule.description }] : [];
   });
+  const showExtraQuestions = hasExtraQuestions({
+    extraQuestionRuleId: ruleset.extraQuestionRuleId,
+  });
 
   return (
     <section className="sm:mx-auto sm:max-w-lg">
@@ -227,6 +231,11 @@ function Regelwerk({ ruleset }: { ruleset: Ruleset }) {
           </div>
         ))}
       </div>
+      {showExtraQuestions && (
+        <div className="mt-4 flex justify-end">
+          <SectionLink to="/zusatzfragen">Zusatzfragen →</SectionLink>
+        </div>
+      )}
     </section>
   );
 }

@@ -1,0 +1,120 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+
+import { CellLink } from "#/components/cell-link.tsx";
+import { extraQuestionsQueryOptions } from "#/lib/extra-questions.ts";
+import type { ExtraQuestion } from "#/lib/extra-questions.ts";
+import { rankingQueryOptions } from "#/lib/ranking.ts";
+import type { RankedPlayer } from "#/lib/ranking.ts";
+
+export const Route = createFileRoute("/_championship/zusatzfragen")({
+  loader: ({ context }) => {
+    const id = context.championship?.id;
+    if (id !== undefined) {
+      return Promise.all([
+        context.queryClient.ensureQueryData(rankingQueryOptions(id)),
+        context.queryClient.ensureQueryData(extraQuestionsQueryOptions(id)),
+      ]);
+    }
+  },
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  const { championship } = Route.useRouteContext();
+
+  if (!championship) {
+    return (
+      <div className="mx-auto w-full max-w-3xl py-8">
+        <p className="text-subtle py-16 text-center text-base">Kein aktives Turnier.</p>
+      </div>
+    );
+  }
+
+  return <ZusatzfragenView championshipId={championship.id} championshipName={championship.name} />;
+}
+
+function ZusatzfragenView({
+  championshipId,
+  championshipName,
+}: {
+  championshipId: number;
+  championshipName: string;
+}) {
+  const {
+    data: { ranking },
+  } = useSuspenseQuery(rankingQueryOptions(championshipId));
+  const {
+    data: { questions },
+  } = useSuspenseQuery(extraQuestionsQueryOptions(championshipId));
+
+  return (
+    <div className="mx-auto w-full max-w-3xl py-8">
+      <div className="mb-6 flex flex-col items-center gap-2">
+        <h1 className="text-2xl font-semibold tracking-tight">Zusatzfragen</h1>
+        <p className="text-subtle text-sm">{championshipName}</p>
+      </div>
+
+      {questions.length === 0 ? (
+        <p className="text-subtle py-16 text-center text-base">
+          Keine Zusatzfragen für dieses Turnier.
+        </p>
+      ) : (
+        <div className="xs:px-0 flex flex-col gap-10 px-4">
+          {questions.map((question) => (
+            <QuestionBlock key={question.id} question={question} ranking={ranking} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function QuestionBlock({
+  question,
+  ranking,
+}: {
+  question: ExtraQuestion;
+  ranking: RankedPlayer[];
+}) {
+  const answersByUser = new Map(question.extraAnswers.map((a) => [a.userId, a]));
+
+  return (
+    <section>
+      <div className="mb-3">
+        <h2 className="text-base font-medium">{question.question}</h2>
+        {question.description && <p className="text-subtle text-sm">{question.description}</p>}
+        <p className="text-subtle mt-1 text-sm">
+          Richtige Antwort: <span className="text-app">{question.answer ?? "noch offen"}</span>
+        </p>
+      </div>
+      <table className="w-full text-base">
+        <thead>
+          <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">
+            <th className="xs:px-3 px-2 pt-2 pb-3 font-medium">Spieler</th>
+            <th className="xs:px-3 px-2 pt-2 pb-3 font-medium">Antwort</th>
+            <th className="xs:px-3 w-px px-2 pt-2 pb-3 text-center font-medium">Pkt</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ranking.map((player) => {
+            const answer = answersByUser.get(player.userId);
+            return (
+              <tr key={player.userId} className="border-subtle border-b last:border-b-0">
+                <td className="xs:px-3 px-2 py-3 font-medium">
+                  <CellLink to="/spieler/{-$slug}" params={{ slug: player.slug }}>
+                    {player.name}
+                  </CellLink>
+                </td>
+                <td className="xs:px-3 px-2 py-3">{answer?.answer ?? "–"}</td>
+                <td className="xs:px-3 w-px px-2 py-3 text-center tabular-nums">
+                  {answer?.points != null ? answer.points : "–"}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </section>
+  );
+}
