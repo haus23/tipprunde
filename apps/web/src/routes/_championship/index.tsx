@@ -32,7 +32,7 @@ function RouteComponent() {
 
   if (!championship) {
     return (
-      <div className="mx-auto w-full max-w-5xl py-8">
+      <div className="mx-auto w-full max-w-4xl py-8">
         <p className="text-subtle py-16 text-center text-base">Kein aktives Turnier.</p>
       </div>
     );
@@ -70,7 +70,7 @@ function Dashboard({
   } = useSuspenseQuery(rulesetQueryOptions(championshipId));
 
   return (
-    <div className="mx-auto w-full max-w-5xl py-8">
+    <div className="mx-auto w-full max-w-4xl py-8">
       <div className="mb-10 flex flex-col items-center">
         <p className="text-subtle text-xs tracking-widest uppercase">Haus23</p>
         <h1 className="text-3xl font-semibold tracking-tight">Tipprunde</h1>

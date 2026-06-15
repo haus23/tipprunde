@@ -61,7 +61,7 @@ function RootComponent() {
     <RootDocument colorScheme={colorScheme}>
       <div className="flex min-h-svh flex-col">
         <header className="border-subtle bg-surface sticky top-0 z-10 h-14 border-b">
-          <div className="xs:px-4 xs:grid-cols-[1fr_auto_1fr] mx-auto grid h-full max-w-5xl grid-cols-[auto_1fr_auto] items-center px-2">
+          <div className="xs:px-4 xs:grid-cols-[1fr_auto_1fr] mx-auto grid h-full max-w-4xl grid-cols-[auto_1fr_auto] items-center px-2">
             {/* Left: nav menu (below xs, GitHub-style) + home link */}
             <div className="col-start-1 flex items-center">
               <div className="xs:hidden pr-1">

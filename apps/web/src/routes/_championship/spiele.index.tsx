@@ -22,7 +22,7 @@ function RouteComponent() {
 
   if (!championship) {
     return (
-      <div className="mx-auto w-full max-w-5xl py-8">
+      <div className="mx-auto w-full max-w-4xl py-8">
         <p className="text-subtle py-16 text-center text-base">Kein aktives Turnier.</p>
       </div>
     );
@@ -46,7 +46,7 @@ function SpieleView({
   const defaultOpenIndex = lastResultIndex >= 0 ? lastResultIndex : 0;
 
   return (
-    <div className="mx-auto w-full max-w-5xl py-8">
+    <div className="mx-auto w-full max-w-4xl py-8">
       <div className="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
         <h1 className="text-2xl font-semibold tracking-tight">Spielübersicht</h1>
         <p className="text-subtle text-sm">{championshipName}</p>

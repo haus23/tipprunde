@@ -47,7 +47,7 @@ function RouteComponent() {
 
   if (!championship) {
     return (
-      <div className="mx-auto w-full max-w-5xl py-8">
+      <div className="mx-auto w-full max-w-4xl py-8">
         <p className="text-subtle py-16 text-center text-base">Kein aktives Turnier.</p>
       </div>
     );
@@ -71,7 +71,7 @@ function SpielerView({
 
   if (ranking.length === 0) {
     return (
-      <div className="mx-auto w-full max-w-5xl py-8">
+      <div className="mx-auto w-full max-w-4xl py-8">
         <p className="text-subtle py-16 text-center text-base">Noch keine Spieler.</p>
       </div>
     );
@@ -80,7 +80,7 @@ function SpielerView({
   const player = resolvePlayer(ranking, slug, user?.id);
   if (!player) {
     return (
-      <div className="mx-auto w-full max-w-5xl py-8">
+      <div className="mx-auto w-full max-w-4xl py-8">
         <p className="text-subtle py-16 text-center text-base">
           Kein Spieler mit dem Kürzel „{slug}“.
         </p>
@@ -125,7 +125,7 @@ function PlayerCard({
   const defaultOpenIndex = lastResultIndex >= 0 ? lastResultIndex : 0;
 
   return (
-    <div className="mx-auto w-full max-w-5xl py-8">
+    <div className="mx-auto w-full max-w-4xl py-8">
       <div className="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
         <div className="flex items-center gap-1.5">
           <h1 className="text-2xl font-semibold tracking-tight">{player.name}</h1>

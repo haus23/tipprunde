@@ -40,7 +40,7 @@ function RouteComponent() {
 
   if (!championship) {
     return (
-      <div className="mx-auto w-full max-w-5xl py-8">
+      <div className="mx-auto w-full max-w-4xl py-8">
         <p className="text-subtle py-16 text-center text-base">Kein aktives Turnier.</p>
       </div>
     );
@@ -64,7 +64,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
 
   if (!match) {
     return (
-      <div className="mx-auto w-full max-w-5xl py-8">
+      <div className="mx-auto w-full max-w-4xl py-8">
         <p className="text-subtle py-16 text-center text-base">Spiel nicht gefunden.</p>
       </div>
     );
@@ -105,7 +105,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
   const sortedRows = sortCol ? sortRows(rows, sortCol, sortDir) : rows;
 
   return (
-    <div className="mx-auto w-full max-w-5xl py-8">
+    <div className="mx-auto w-full max-w-4xl py-8">
       <div className="xs:px-0 relative flex flex-col items-center gap-2 px-4 md:mb-6">
         <Link to="/spiele" className={`${navLinkClass} mb-1 self-auto text-xs`}>
           <ChevronLeftIcon className="size-3" />
