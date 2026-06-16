@@ -159,3 +159,54 @@ export const currentMatchesQueryOptions = (championshipId: number) =>
     queryKey: ["current-matches", championshipId],
     queryFn: () => getCurrentMatches({ data: championshipId }),
   });
+
+export const getMatchdayTips = createServerFn()
+  .validator((data: { championshipId: number; userId: number }) => data)
+  .handler(async ({ data: { championshipId, userId } }) => {
+    const dated = await db.query.matches.findMany({
+      where: { date: { isNotNull: true }, round: { championshipId, published: true } },
+      orderBy: { date: "asc" },
+      columns: { id: true, nr: true, result: true },
+      with: {
+        round: { columns: { tipsPublished: true } },
+        hometeam: { columns: { shortName: true } },
+        awayteam: { columns: { shortName: true } },
+      },
+    });
+
+    const played = dated.filter((m) => m.result !== null);
+    const upcoming = dated.filter((m) => m.result === null);
+    const openCount = Math.min(upcoming.length, 4 - Math.min(played.length, 2));
+    const closedCount = Math.min(played.length, 4 - openCount);
+    const window = [...played.slice(played.length - closedCount), ...upcoming.slice(0, openCount)];
+
+    const matchIds = window.map((m) => m.id);
+    const tipRows =
+      matchIds.length > 0
+        ? await db.query.tips.findMany({
+            where: { userId, matchId: { in: matchIds } },
+            columns: { matchId: true, tip: true, points: true },
+          })
+        : [];
+
+    const tipByMatch = new Map(tipRows.map((t) => [t.matchId, t]));
+
+    return {
+      matches: window.map((m) => {
+        const userTip = m.round.tipsPublished ? (tipByMatch.get(m.id) ?? null) : null;
+        return {
+          nr: m.nr,
+          paarungShort: `${m.hometeam?.shortName ?? "–"} – ${m.awayteam?.shortName ?? "–"}`,
+          result: m.result,
+          tip: userTip?.tip ?? null,
+          points: userTip?.points ?? null,
+        };
+      }),
+    };
+  });
+
+export const matchdayTipsQueryOptions = (championshipId: number, userId: number) =>
+  queryOptions({
+    queryKey: ["matchday-tips", championshipId, userId],
+    queryFn: () => getMatchdayTips({ data: { championshipId, userId } }),
+  });

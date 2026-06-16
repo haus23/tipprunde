@@ -1,10 +1,14 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { CalendarIcon } from "lucide-react";
+import { useRef, useState } from "react";
+import { Button, Popover } from "react-aria-components";
 
 import { CellLink } from "#/components/cell-link.tsx";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import type { RankedPlayer } from "#/lib/ranking.ts";
 import type { SessionUser } from "#/lib/session.ts";
+import { matchdayTipsQueryOptions } from "#/lib/spiele.ts";
 
 export const Route = createFileRoute("/_championship/tabelle")({
   loader: ({ context }) => {
@@ -39,6 +43,7 @@ function TabelleView({
 }) {
   const { data: ranking } = useSuspenseQuery(rankingQueryOptions(championship.id));
   const showExtras = championship.extraQuestionPointsPublished ?? false;
+  const isOngoing = !championship.completed;
 
   return (
     <div className="mx-auto w-full max-w-3xl py-8">
@@ -52,7 +57,13 @@ function TabelleView({
       {ranking.length === 0 ? (
         <p className="text-subtle py-16 text-center text-base">Noch keine Platzierungen.</p>
       ) : (
-        <RankingTable ranking={ranking} showExtras={showExtras} currentUserId={user?.id} />
+        <RankingTable
+          ranking={ranking}
+          showExtras={showExtras}
+          currentUserId={user?.id}
+          championshipId={championship.id}
+          isOngoing={isOngoing}
+        />
       )}
     </div>
   );
@@ -62,10 +73,14 @@ function RankingTable({
   ranking,
   showExtras,
   currentUserId,
+  championshipId,
+  isOngoing,
 }: {
   ranking: RankedPlayer[];
   showExtras: boolean;
   currentUserId: number | undefined;
+  championshipId: number;
+  isOngoing: boolean;
 }) {
   return (
     <table className="w-full border-collapse text-base">
@@ -93,6 +108,7 @@ function RankingTable({
               "Punkte"
             )}
           </th>
+          {isOngoing && <th className="border-subtle w-px border-b px-2 py-2" />}
         </tr>
       </thead>
       <tbody>
@@ -122,10 +138,88 @@ function RankingTable({
               <td className="xs:px-3 xs:py-3 px-2 py-2 text-center font-medium tabular-nums">
                 {entry.total}
               </td>
+              {isOngoing && (
+                <td className="xs:px-3 xs:py-3 px-2 py-2">
+                  <MatchdayButton
+                    championshipId={championshipId}
+                    userId={entry.userId}
+                    name={entry.name}
+                  />
+                </td>
+              )}
             </tr>
           );
         })}
       </tbody>
     </table>
+  );
+}
+
+function MatchdayButton({
+  championshipId,
+  userId,
+  name,
+}: {
+  championshipId: number;
+  userId: number;
+  name: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const { data } = useQuery({
+    ...matchdayTipsQueryOptions(championshipId, userId),
+    enabled: isOpen,
+  });
+
+  const matches = data?.matches ?? [];
+
+  return (
+    <>
+      <Button
+        ref={buttonRef}
+        onPress={() => setIsOpen((v) => !v)}
+        aria-label={`Aktuelle Tipps von ${name}`}
+        className="text-subtle hover:text-app focus-visible:ring-accent cursor-default rounded-sm outline-none focus-visible:ring-2"
+      >
+        <CalendarIcon size={13} />
+      </Button>
+      <Popover
+        triggerRef={buttonRef}
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        isNonModal
+        placement="bottom end"
+        className="bg-surface border-subtle shadow-popover min-w-52 rounded-lg border p-3 text-sm transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0 data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
+      >
+        <p className="text-subtle mb-2 text-xs font-medium">{name}</p>
+        {matches.length === 0 ? (
+          <p className="text-subtle text-xs">Keine aktuellen Spiele.</p>
+        ) : (
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="text-muted border-subtle border-b">
+                <th className="pr-3 pb-1.5 text-left font-medium">Spiel</th>
+                <th className="px-2 pb-1.5 text-center font-medium">Erg.</th>
+                <th className="px-2 pb-1.5 text-center font-medium">Tipp</th>
+                <th className="pb-1.5 text-center font-medium">Pkt</th>
+              </tr>
+            </thead>
+            <tbody>
+              {matches.map((m) => (
+                <tr key={m.nr} className="border-subtle border-b last:border-0">
+                  <td className="py-1.5 pr-3">{m.paarungShort}</td>
+                  <td className="px-2 py-1.5 text-center tabular-nums">{m.result ?? "–:–"}</td>
+                  <td className="px-2 py-1.5 text-center tabular-nums">{m.tip ?? "–"}</td>
+                  <td className="py-1.5 text-center tabular-nums">
+                    {m.points !== null ? m.points : "–"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </Popover>
+    </>
   );
 }
