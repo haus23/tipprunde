@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.15.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.14.2...v0.15.0)
+
+### 🚀 Enhancements
+
+- **web:** Add per-player matchday tip popover to Tabelle ([b971e2a](https://github.com/haus23/tipprunde/commit/b971e2a))
+- **web:** Add pairing links + outside-click close to matchday popover ([19c1a8a](https://github.com/haus23/tipprunde/commit/19c1a8a))
+- **web:** Refine matchday popover — skeletons, isFlagged, joker star ([05e2344](https://github.com/haus23/tipprunde/commit/05e2344))
+- **web:** Add OverlayArrow + floating name badge to matchday popover ([7bfaa9b](https://github.com/haus23/tipprunde/commit/7bfaa9b))
+- **web:** Wrap matchday popover content in Dialog for focus management ([c14cca8](https://github.com/haus23/tipprunde/commit/c14cca8))
+
+### 🩹 Fixes
+
+- **manager:** Initialize ranking columns when enrolling a player ([c43defd](https://github.com/haus23/tipprunde/commit/c43defd))
+
+### 💅 Refactors
+
+- **web:** Read ranking from materialized players table ([04f792c](https://github.com/haus23/tipprunde/commit/04f792c))
+- **web:** Simplify matchday popover with DialogTrigger ([b821b8c](https://github.com/haus23/tipprunde/commit/b821b8c))
+
 ## v0.14.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.14.1...v0.14.2)
