@@ -1,8 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
-import { extraAnswers, extraQuestions, matches, rounds, tips } from "@tipprunde/db/schema";
-import { calcRanking, includesExtraQuestions } from "@tipprunde/domain/ranking";
-import { eq } from "drizzle-orm";
 
 import { db } from "#/lib/db.server.ts";
 
@@ -19,52 +16,32 @@ export type RankedPlayer = {
 export const getRanking = createServerFn()
   .validator((championshipId: number) => championshipId)
   .handler(async ({ data: championshipId }) => {
-    const [championship, players, tipRows, extraRows] = await Promise.all([
-      db.query.championships.findFirst({
-        where: { id: championshipId },
-        columns: { extraQuestionPointsPublished: true },
-        with: { ruleset: { columns: { extraQuestionRuleId: true } } },
-      }),
-      db.query.players.findMany({
-        where: { championshipId },
-        columns: { userId: true },
-        with: { user: { columns: { name: true, slug: true } } },
-        orderBy: { id: "asc" },
-      }),
-      db
-        .select({ userId: tips.userId, points: tips.points })
-        .from(tips)
-        .innerJoin(matches, eq(tips.matchId, matches.id))
-        .innerJoin(rounds, eq(matches.roundId, rounds.id))
-        .where(eq(rounds.championshipId, championshipId)),
-      db
-        .select({ userId: extraAnswers.userId, points: extraAnswers.points })
-        .from(extraAnswers)
-        .innerJoin(extraQuestions, eq(extraAnswers.extraQuestionId, extraQuestions.id))
-        .where(eq(extraQuestions.championshipId, championshipId)),
-    ]);
-
-    if (!championship) return { ranking: [] as RankedPlayer[], showExtras: false };
-
-    const ruleset = { extraQuestionRuleId: championship.ruleset.extraQuestionRuleId };
-    const flags = { extraQuestionPointsPublished: championship.extraQuestionPointsPublished };
-
-    const entries = calcRanking({
-      players: players.map((p) => ({ userId: p.userId })),
-      tips: tipRows,
-      extraAnswers: extraRows,
-      ruleset,
-      championship: flags,
+    const players = await db.query.players.findMany({
+      where: { championshipId },
+      columns: {
+        userId: true,
+        rank: true,
+        tipPoints: true,
+        extraQuestionPoints: true,
+        total: true,
+      },
+      with: { user: { columns: { name: true, slug: true } } },
     });
 
-    const userById = new Map(players.map((p) => [p.userId, p.user]));
-    const ranking: RankedPlayer[] = entries.map((e) => ({
-      ...e,
-      name: userById.get(e.userId)?.name ?? "",
-      slug: userById.get(e.userId)?.slug ?? "",
-    }));
+    const ranking: RankedPlayer[] = players
+      .filter((p) => p.rank !== null)
+      .map((p) => ({
+        userId: p.userId,
+        name: p.user?.name ?? "",
+        slug: p.user?.slug ?? "",
+        tipPoints: p.tipPoints ?? 0,
+        extraQuestionPoints: p.extraQuestionPoints ?? 0,
+        total: p.total ?? 0,
+        rank: p.rank!,
+      }))
+      .sort((a, b) => a.rank - b.rank);
 
-    return { ranking, showExtras: includesExtraQuestions(ruleset, flags) };
+    return ranking;
   });
 
 export const rankingQueryOptions = (championshipId: number) =>

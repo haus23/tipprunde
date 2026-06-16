@@ -53,9 +53,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
   const {
     data: { match },
   } = useSuspenseQuery(matchQueryOptions(championshipId, nr));
-  const {
-    data: { ranking },
-  } = useSuspenseQuery(rankingQueryOptions(championshipId));
+  const { data: ranking } = useSuspenseQuery(rankingQueryOptions(championshipId));
   const {
     data: { rounds },
   } = useSuspenseQuery(roundsQueryOptions(championshipId));

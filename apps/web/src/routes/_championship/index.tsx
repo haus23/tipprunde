@@ -59,9 +59,7 @@ function Dashboard({
   completed: boolean;
   user: SessionUser | null;
 }) {
-  const {
-    data: { ranking },
-  } = useSuspenseQuery(rankingQueryOptions(championshipId));
+  const { data: ranking } = useSuspenseQuery(rankingQueryOptions(championshipId));
   const {
     data: { matches },
   } = useSuspenseQuery(currentMatchesQueryOptions(championshipId));

@@ -16,9 +16,7 @@ export const Route = createFileRoute("/_championship/spieler/{-$slug}")({
     const championshipId = context.championship?.id;
     if (championshipId === undefined) return;
 
-    const { ranking } = await context.queryClient.ensureQueryData(
-      rankingQueryOptions(championshipId),
-    );
+    const ranking = await context.queryClient.ensureQueryData(rankingQueryOptions(championshipId));
 
     // No redirect: /spieler shows the resolved default player directly.
     const player = resolvePlayer(ranking, params.slug, context.user?.id);
@@ -65,9 +63,7 @@ function SpielerView({
 }) {
   const { slug } = Route.useParams();
   const { user } = Route.useRouteContext();
-  const {
-    data: { ranking },
-  } = useSuspenseQuery(rankingQueryOptions(championshipId));
+  const { data: ranking } = useSuspenseQuery(rankingQueryOptions(championshipId));
 
   if (ranking.length === 0) {
     return (

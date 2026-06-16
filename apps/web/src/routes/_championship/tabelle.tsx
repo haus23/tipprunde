@@ -37,9 +37,8 @@ function TabelleView({
   championship: NonNullable<ReturnType<typeof Route.useRouteContext>["championship"]>;
   user: SessionUser | null;
 }) {
-  const {
-    data: { ranking, showExtras },
-  } = useSuspenseQuery(rankingQueryOptions(championship.id));
+  const { data: ranking } = useSuspenseQuery(rankingQueryOptions(championship.id));
+  const showExtras = championship.extraQuestionPointsPublished ?? false;
 
   return (
     <div className="mx-auto w-full max-w-3xl py-8">

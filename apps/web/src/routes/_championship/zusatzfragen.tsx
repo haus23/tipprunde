@@ -50,9 +50,7 @@ function ZusatzfragenView({
   championshipName: string;
   pointsPublished: boolean;
 }) {
-  const {
-    data: { ranking },
-  } = useSuspenseQuery(rankingQueryOptions(championshipId));
+  const { data: ranking } = useSuspenseQuery(rankingQueryOptions(championshipId));
   const {
     data: { questions },
   } = useSuspenseQuery(extraQuestionsQueryOptions(championshipId));
