@@ -1,7 +1,8 @@
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { CalendarIcon } from "lucide-react";
-import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components";
+import { useLayoutEffect, useRef, useState } from "react";
+import { Button, Popover } from "react-aria-components";
 
 import { CellLink } from "#/components/cell-link.tsx";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
@@ -163,19 +164,47 @@ function MatchdayButton({
   userId: number;
   name: string;
 }) {
-  const { data } = useQuery(matchdayTipsQueryOptions(championshipId, userId));
+  const [isOpen, setIsOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const popoverRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+    function handleOutsideClick(ev: PointerEvent) {
+      if (
+        buttonRef.current?.contains(ev.target as Node) ||
+        popoverRef.current?.contains(ev.target as Node)
+      )
+        return;
+      setIsOpen(false);
+    }
+    window.addEventListener("pointerdown", handleOutsideClick, { capture: true });
+    return () => window.removeEventListener("pointerdown", handleOutsideClick, { capture: true });
+  }, [isOpen]);
+
+  const { data } = useQuery({
+    ...matchdayTipsQueryOptions(championshipId, userId),
+    enabled: isOpen,
+  });
 
   const matches = data?.matches ?? [];
 
   return (
-    <DialogTrigger>
+    <>
       <Button
+        ref={buttonRef}
+        onPress={() => setIsOpen((v) => !v)}
         aria-label={`Aktuelle Tipps von ${name}`}
         className="text-subtle hover:text-app focus-visible:ring-accent cursor-default rounded-sm outline-none focus-visible:ring-2"
       >
         <CalendarIcon size={13} />
       </Button>
       <Popover
+        ref={popoverRef}
+        triggerRef={buttonRef}
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        isNonModal
         placement="bottom end"
         className="bg-surface border-subtle shadow-popover min-w-52 rounded-lg border p-3 text-sm transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0 data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
       >
@@ -195,7 +224,11 @@ function MatchdayButton({
             <tbody>
               {matches.map((m) => (
                 <tr key={m.nr} className="border-subtle border-b last:border-0">
-                  <td className="py-1.5 pr-3">{m.paarungShort}</td>
+                  <td className="py-1.5 pr-3">
+                    <CellLink to="/spiele/$nr" params={{ nr: String(m.nr) }}>
+                      {m.paarungShort}
+                    </CellLink>
+                  </td>
                   <td className="px-2 py-1.5 text-center tabular-nums">{m.result ?? "–:–"}</td>
                   <td className="px-2 py-1.5 text-center tabular-nums">{m.tip ?? "–"}</td>
                   <td className="py-1.5 text-center tabular-nums">
@@ -207,6 +240,6 @@ function MatchdayButton({
           </table>
         )}
       </Popover>
-    </DialogTrigger>
+    </>
   );
 }
