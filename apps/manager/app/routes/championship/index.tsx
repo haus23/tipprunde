@@ -89,7 +89,7 @@ export async function action({ request, context }: Route.ActionArgs) {
     const userId = Number(formData.get("userId"));
     await db
       .insert(playersTable)
-      .values({ championshipId: championship.id, userId })
+      .values({ championshipId: championship.id, userId, rank: 1, tipPoints: 0, total: 0 })
       .onConflictDoNothing();
     return null;
   }
