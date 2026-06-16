@@ -2,7 +2,7 @@ import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { CalendarIcon } from "lucide-react";
 import { useLayoutEffect, useRef, useState } from "react";
-import { Button, Popover } from "react-aria-components";
+import { Button, OverlayArrow, Popover } from "react-aria-components";
 
 import { CellLink } from "#/components/cell-link.tsx";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
@@ -139,7 +139,7 @@ function RankingTable({
                 {entry.total}
               </td>
               {isOngoing && (
-                <td className="xs:px-3 xs:py-3 px-2 py-2">
+                <td className="xs:px-3 xs:py-3 py-2 pr-4">
                   <MatchdayButton
                     championshipId={championshipId}
                     userId={entry.userId}
@@ -205,10 +205,24 @@ function MatchdayButton({
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         isNonModal
+        crossOffset={16}
+        containerPadding={4}
         placement="bottom end"
-        className="bg-surface border-subtle shadow-popover min-w-52 rounded-lg border p-3 text-sm transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0 data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
+        className="bg-surface border-subtle shadow-popover relative flex min-w-60 flex-col rounded-lg border p-3 text-sm transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0 data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
       >
-        <p className="text-subtle mb-2 text-xs font-medium">{name}</p>
+        <OverlayArrow className="group">
+          <svg
+            width={12}
+            height={12}
+            viewBox="0 0 12 12"
+            className="block fill-(--background-color-surface) stroke-(--border-color-subtle) stroke-1 group-data-[placement=bottom]:rotate-180"
+          >
+            <path d="M0 0 L6 6 L12 0" />
+          </svg>
+        </OverlayArrow>
+        <p className="text-subtle border-subtle bg-surface absolute -top-2 self-center rounded-sm border px-2 py-1 text-xs font-medium">
+          {name}
+        </p>
         <table className="w-full text-xs">
           <thead>
             <tr className="text-muted border-subtle border-b">
