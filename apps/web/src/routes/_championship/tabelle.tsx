@@ -182,7 +182,7 @@ function MatchdayButton({
     return () => window.removeEventListener("pointerdown", handleOutsideClick, { capture: true });
   }, [isOpen]);
 
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     ...matchdayTipsQueryOptions(championshipId, userId),
     enabled: isOpen,
   });
@@ -209,36 +209,57 @@ function MatchdayButton({
         className="bg-surface border-subtle shadow-popover min-w-52 rounded-lg border p-3 text-sm transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0 data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
       >
         <p className="text-subtle mb-2 text-xs font-medium">{name}</p>
-        {matches.length === 0 ? (
-          <p className="text-subtle text-xs">Keine aktuellen Spiele.</p>
-        ) : (
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="text-muted border-subtle border-b">
-                <th className="pr-3 pb-1.5 text-left font-medium">Spiel</th>
-                <th className="px-2 pb-1.5 text-center font-medium">Erg.</th>
-                <th className="px-2 pb-1.5 text-center font-medium">Tipp</th>
-                <th className="pb-1.5 text-center font-medium">Pkt</th>
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="text-muted border-subtle border-b">
+              <th className="pr-3 pb-1.5 text-left font-medium">Spiel</th>
+              <th className="px-2 pb-1.5 text-center font-medium">Tipp</th>
+              <th className="pb-1.5 text-center font-medium">Pkt</th>
+            </tr>
+          </thead>
+          <tbody>
+            {isPending ? (
+              [1, 2, 3, 4].map((i) => (
+                <tr key={i} className="border-subtle border-b last:border-0">
+                  <td className="py-1.5 pr-3">
+                    <div className="bg-surface-raised h-3 w-24 animate-pulse rounded" />
+                  </td>
+                  <td className="px-2 py-1.5">
+                    <div className="bg-surface-raised mx-auto h-3 w-6 animate-pulse rounded" />
+                  </td>
+                  <td className="py-1.5">
+                    <div className="bg-surface-raised mx-auto h-3 w-4 animate-pulse rounded" />
+                  </td>
+                </tr>
+              ))
+            ) : matches.length === 0 ? (
+              <tr>
+                <td colSpan={3} className="text-subtle pt-2 text-xs">
+                  Keine aktuellen Spiele.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {matches.map((m) => (
+            ) : (
+              matches.map((m) => (
                 <tr key={m.nr} className="border-subtle border-b last:border-0">
                   <td className="py-1.5 pr-3">
                     <CellLink to="/spiele/$nr" params={{ nr: String(m.nr) }}>
                       {m.paarungShort}
                     </CellLink>
                   </td>
-                  <td className="px-2 py-1.5 text-center tabular-nums">{m.result ?? "–:–"}</td>
-                  <td className="px-2 py-1.5 text-center tabular-nums">{m.tip ?? "–"}</td>
+                  <td className="px-2 py-1.5 text-center tabular-nums">
+                    <span className="relative">
+                      {m.tip ?? "–"}
+                      {m.isFlagged && <span className="text-accent absolute -right-3.5">★</span>}
+                    </span>
+                  </td>
                   <td className="py-1.5 text-center tabular-nums">
                     {m.points !== null ? m.points : "–"}
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              ))
+            )}
+          </tbody>
+        </table>
       </Popover>
     </>
   );

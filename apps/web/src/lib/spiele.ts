@@ -185,7 +185,7 @@ export const getMatchdayTips = createServerFn()
       matchIds.length > 0
         ? await db.query.tips.findMany({
             where: { userId, matchId: { in: matchIds } },
-            columns: { matchId: true, tip: true, points: true },
+            columns: { matchId: true, tip: true, points: true, joker: true },
           })
         : [];
 
@@ -199,6 +199,7 @@ export const getMatchdayTips = createServerFn()
           paarungShort: `${m.hometeam?.shortName ?? "–"} – ${m.awayteam?.shortName ?? "–"}`,
           result: m.result,
           tip: userTip?.tip ?? null,
+          isFlagged: userTip?.joker ?? false,
           points: userTip?.points ?? null,
         };
       }),
