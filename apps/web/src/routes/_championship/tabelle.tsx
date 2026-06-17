@@ -195,7 +195,7 @@ function MatchdayButton({
         ref={buttonRef}
         onPress={() => setIsOpen((v) => !v)}
         aria-label={`Aktuelle Tipps von ${name}`}
-        className="text-subtle hover:text-app focus-visible:ring-accent cursor-default rounded-sm outline-none focus-visible:ring-2"
+        className="text-subtle hover:text-app focus-visible:ring-accent cursor-default rounded-sm p-1 outline-none focus-visible:ring-2"
       >
         <CalendarIcon size={13} />
       </Button>

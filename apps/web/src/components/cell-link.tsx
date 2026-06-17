@@ -10,7 +10,7 @@ function Link(props: Props) {
   return (
     <AriaLink
       {...props}
-      className="hover:text-accent focus-visible:ring-accent rounded-sm transition-colors outline-none focus-visible:ring-2"
+      className="hover:text-accent focus-visible:ring-accent rounded-sm p-1 transition-colors outline-none focus-visible:ring-2"
     />
   );
 }
