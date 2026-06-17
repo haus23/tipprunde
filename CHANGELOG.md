@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.15.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.15.1...v0.15.2)
+
+### 🚀 Enhancements
+
+- **web:** Add /archiv/$slug final ranking view ([c4930ec](https://github.com/haus23/tipprunde/commit/c4930ec))
+- **web:** Build out /archiv index with championship list and Ewige Tabelle ([bdc1b84](https://github.com/haus23/tipprunde/commit/bdc1b84))
+
+### 🩹 Fixes
+
+- **web:** Disable player links in archiv ranking view ([8227f8b](https://github.com/haus23/tipprunde/commit/8227f8b))
+- **web:** Fix Spieler nav link to point to player list instead of profile ([0733aa8](https://github.com/haus23/tipprunde/commit/0733aa8))
+- **web:** Fix Ewige Tabelle column padding and alignment ([117153a](https://github.com/haus23/tipprunde/commit/117153a))
+- **web:** Add uppercase tracking to archiv table headers for consistency ([961f8c1](https://github.com/haus23/tipprunde/commit/961f8c1))
+- **web:** Use CellLink for championship links in archiv tables ([79a9b64](https://github.com/haus23/tipprunde/commit/79a9b64))
+
 ## v0.15.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.15.0...v0.15.1)
