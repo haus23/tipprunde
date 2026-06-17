@@ -4,7 +4,7 @@ import { describe, it } from "node:test";
 import { calcTipPoints } from "./scoring.ts";
 
 void describe("calcTipPoints — null/0 distinction", () => {
-  const rule = "drei-oder-ein-punkt-joker-verdoppelt" as const;
+  const rule = "drei-oder-ein-punkt" as const;
 
   void it("null tip + null result → null", () => {
     assert.equal(calcTipPoints(null, null, rule, false, false), null);
@@ -35,8 +35,8 @@ void describe("calcTipPoints — null/0 distinction", () => {
   });
 });
 
-void describe("calcTipPoints — drei-zwei-oder-ein-punkt-joker-verdoppelt", () => {
-  const rule = "drei-zwei-oder-ein-punkt-joker-verdoppelt" as const;
+void describe("calcTipPoints — drei-zwei-oder-ein-punkt", () => {
+  const rule = "drei-zwei-oder-ein-punkt" as const;
 
   void it("exact result → 3", () => {
     assert.equal(calcTipPoints("2:1", "2:1", rule, false, false), 3);
@@ -79,8 +79,8 @@ void describe("calcTipPoints — drei-zwei-oder-ein-punkt-joker-verdoppelt", () 
   });
 });
 
-void describe("calcTipPoints — drei-oder-ein-punkt-joker-verdoppelt", () => {
-  const rule = "drei-oder-ein-punkt-joker-verdoppelt" as const;
+void describe("calcTipPoints — drei-oder-ein-punkt", () => {
+  const rule = "drei-oder-ein-punkt" as const;
 
   void it("exact result → 3", () => {
     assert.equal(calcTipPoints("2:1", "2:1", rule, false, false), 3);

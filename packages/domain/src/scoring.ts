@@ -38,10 +38,7 @@ export function calcTipPoints(
 
   if (tipHome === resHome && tipAway === resAway) {
     points = 3;
-  } else if (
-    tipRuleId === "drei-zwei-oder-ein-punkt-joker-verdoppelt" &&
-    tipHome - tipAway === resHome - resAway
-  ) {
+  } else if (tipRuleId === "drei-zwei-oder-ein-punkt" && tipHome - tipAway === resHome - resAway) {
     points = 2;
   } else if (signOf(tipHome - tipAway) === signOf(resHome - resAway)) {
     points = 1;

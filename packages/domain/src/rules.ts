@@ -6,13 +6,13 @@ export const TIP_RULES = [
       "Exaktes Ergebnis: 3 Punkte · Richtige Tordifferenz: 2 Punkte · Richtiger Ausgang: 1 Punkt. Eine spezielle Regelung gibt es für Unentschieden: ein getipptes Unentschieden bringt nur dann 2 Punkte, wenn es sich vom Ergebnis um genau ein Tor je Mannschaft unterscheidet. Also bei dem Ergebnis 1:1 gibt es 2 Punkte für die Tipps 0:0 und 2:2. Ein 3:3 Tipp bringt nur noch 1 Punkt.",
   },
   {
-    value: "drei-zwei-oder-ein-punkt-joker-verdoppelt" as const,
+    value: "drei-zwei-oder-ein-punkt" as const,
     label: "3, 2 oder 1 Punkt",
     description:
       "Exaktes Ergebnis: 3 Punkte · Richtige Tordifferenz: 2 Punkte · Richtiger Ausgang: 1 Punkt.",
   },
   {
-    value: "drei-oder-ein-punkt-joker-verdoppelt" as const,
+    value: "drei-oder-ein-punkt" as const,
     label: "3 oder 1 Punkt",
     description: "Exaktes Ergebnis: 3 Punkte · Richtiger Ausgang: 1 Punkt.",
   },
