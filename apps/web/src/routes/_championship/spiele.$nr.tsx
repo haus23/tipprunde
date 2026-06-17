@@ -181,7 +181,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
             {sortedRows.map((row) => (
               <tr key={row.userId} className="border-subtle border-b last:border-b-0">
                 <td className="xs:px-3 px-2 py-3 font-medium">
-                  <CellLink to="/spieler/{-$slug}" params={{ slug: row.slug }}>
+                  <CellLink to="/tipps/{-$slug}" params={{ slug: row.slug }}>
                     {row.name}
                   </CellLink>
                 </td>

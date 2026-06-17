@@ -67,7 +67,7 @@ export function RankingTable({
               </td>
               <td className={`xs:px-3 xs:py-3 px-2 py-2 ${isCurrentUser ? "font-medium" : ""}`}>
                 {linkPlayers ? (
-                  <CellLink to="/spieler/{-$slug}" params={{ slug: entry.slug }}>
+                  <CellLink to="/tipps/{-$slug}" params={{ slug: entry.slug }}>
                     {entry.name}
                   </CellLink>
                 ) : (

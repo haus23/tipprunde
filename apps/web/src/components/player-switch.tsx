@@ -73,7 +73,7 @@ export function PlayerSwitch({ players, currentSlug }: Props) {
               className="min-h-0 flex-1 overflow-auto p-1 outline-none"
               onAction={(key) => {
                 setIsOpen(false);
-                void navigate({ to: "/spieler/{-$slug}", params: { slug: String(key) } });
+                void navigate({ to: "/tipps/{-$slug}", params: { slug: String(key) } });
               }}
             >
               {players.map((p) => (

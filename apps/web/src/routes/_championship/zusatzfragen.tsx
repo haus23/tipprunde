@@ -121,7 +121,7 @@ function QuestionBlock({
               return (
                 <tr key={player.userId} className="border-subtle border-b last:border-b-0">
                   <td className="xs:px-3 px-2 py-3 font-medium">
-                    <CellLink to="/spieler/{-$slug}" params={{ slug: player.slug }}>
+                    <CellLink to="/tipps/{-$slug}" params={{ slug: player.slug }}>
                       {player.name}
                     </CellLink>
                   </td>

@@ -139,7 +139,7 @@ function Standings({
                   {sharesRankAbove ? "" : entry.rank}
                 </td>
                 <td className={`py-2 ${isUser ? "text-accent" : ""}`}>
-                  <CellLink to="/spieler/{-$slug}" params={{ slug: entry.slug }}>
+                  <CellLink to="/tipps/{-$slug}" params={{ slug: entry.slug }}>
                     {entry.name}
                   </CellLink>
                 </td>
@@ -162,7 +162,7 @@ function Standings({
                 {userBelowTop3.rank}
               </td>
               <td className="text-accent py-2">
-                <CellLink to="/spieler/{-$slug}" params={{ slug: userBelowTop3.slug }}>
+                <CellLink to="/tipps/{-$slug}" params={{ slug: userBelowTop3.slug }}>
                   {userBelowTop3.name}
                 </CellLink>
               </td>

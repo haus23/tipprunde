@@ -11,7 +11,7 @@ import type { RankedPlayer } from "#/lib/ranking.ts";
 import { playerMatchesQueryOptions } from "#/lib/spieler.ts";
 import type { PlayerRound } from "#/lib/spieler.ts";
 
-export const Route = createFileRoute("/_championship/spieler/{-$slug}")({
+export const Route = createFileRoute("/_championship/tipps/{-$slug}")({
   loader: async ({ context, params }) => {
     const championshipId = context.championship?.id;
     if (championshipId === undefined) return;
