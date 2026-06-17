@@ -4,6 +4,8 @@ import { hasExtraQuestions } from "@tipprunde/domain/ranking";
 import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
 
 import { CellLink } from "#/components/cell-link.tsx";
+import { archivPreviewQueryOptions } from "#/lib/archiv.ts";
+import type { ArchivEntry } from "#/lib/archiv.ts";
 import { formatDate } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import type { RankedPlayer } from "#/lib/ranking.ts";
@@ -21,6 +23,7 @@ export const Route = createFileRoute("/_championship/")({
         context.queryClient.ensureQueryData(rankingQueryOptions(id)),
         context.queryClient.ensureQueryData(currentMatchesQueryOptions(id)),
         context.queryClient.ensureQueryData(rulesetQueryOptions(id)),
+        context.queryClient.ensureQueryData(archivPreviewQueryOptions(id)),
       ]);
     }
   },
@@ -66,6 +69,9 @@ function Dashboard({
   const {
     data: { ruleset },
   } = useSuspenseQuery(rulesetQueryOptions(championshipId));
+  const {
+    data: { championships: archivChampionships },
+  } = useSuspenseQuery(archivPreviewQueryOptions(championshipId));
 
   return (
     <div className="mx-auto w-full max-w-4xl py-8">
@@ -81,6 +87,7 @@ function Dashboard({
           <CurrentMatches matches={matches} completed={completed} />
         </div>
         {ruleset && <Regelwerk ruleset={ruleset} />}
+        {archivChampionships.length > 0 && <ArchivPreview championships={archivChampionships} />}
       </div>
     </div>
   );
@@ -201,6 +208,44 @@ function CurrentMatches({ matches, completed }: { matches: CurrentMatch[]; compl
       )}
       <div className="mt-3 flex justify-end">
         <SectionLink to="/spiele">Komplette Übersicht →</SectionLink>
+      </div>
+    </section>
+  );
+}
+
+function ArchivPreview({ championships }: { championships: ArchivEntry[] }) {
+  return (
+    <section>
+      <SectionHeading>Archiv</SectionHeading>
+      <table className="w-full text-base">
+        <thead>
+          <tr className="text-muted border-subtle border-b text-xs">
+            <th className="pb-1.5 text-left font-medium">Turnier</th>
+            <th className="pr-3 pb-1.5 text-left font-medium">Sieger</th>
+            <th className="pb-1.5 text-right font-medium">Punkte</th>
+          </tr>
+        </thead>
+        <tbody>
+          {championships.map((entry) => (
+            <tr key={entry.slug} className="border-subtle border-b last:border-b-0">
+              <td className="text-subtle py-2 pr-3 text-sm">{entry.name}</td>
+              <td className="py-2 pr-3">
+                {entry.winners.map((w, i) => (
+                  <span key={w.slug}>
+                    {i > 0 && ", "}
+                    {w.name}
+                  </span>
+                ))}
+              </td>
+              <td className="py-2 text-right font-medium tabular-nums">
+                {entry.winners[0]?.total ?? "–"}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="mt-3 flex justify-end">
+        <SectionLink to="/archiv">Komplettes Archiv →</SectionLink>
       </div>
     </section>
   );
