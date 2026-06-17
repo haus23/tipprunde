@@ -1,5 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
+import { championships, players, users } from "@tipprunde/db/schema";
+import { count, eq, sum } from "drizzle-orm";
 
 import { db } from "#/lib/db.server.ts";
 
@@ -67,3 +69,80 @@ export const archivPreviewQueryOptions = (currentChampionshipId: number) =>
     queryKey: ["archiv-preview", currentChampionshipId],
     queryFn: () => getArchivPreview({ data: currentChampionshipId }),
   });
+
+export const getAllCompletedChampionships = createServerFn().handler(async () => {
+  const allCompleted = await db.query.championships.findMany({
+    where: { completed: true },
+    orderBy: { nr: "desc" },
+    columns: { id: true, slug: true, name: true },
+  });
+
+  if (allCompleted.length === 0) return { championships: [] };
+
+  const ids = allCompleted.map((c) => c.id);
+  const winners = await db.query.players.findMany({
+    where: { rank: 1, championshipId: { in: ids } },
+    columns: { championshipId: true, total: true },
+    with: { user: { columns: { name: true } } },
+  });
+
+  const winnersByChampionship = new Map<number, typeof winners>();
+  for (const w of winners) {
+    const list = winnersByChampionship.get(w.championshipId) ?? [];
+    list.push(w);
+    winnersByChampionship.set(w.championshipId, list);
+  }
+
+  return {
+    championships: allCompleted.map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      winners: (winnersByChampionship.get(c.id) ?? []).map((w) => ({
+        name: w.user.name,
+        total: w.total ?? 0,
+      })),
+    })),
+  };
+});
+
+export const allCompletedChampionshipsQueryOptions = queryOptions({
+  queryKey: ["archiv-all-championships"],
+  queryFn: () => getAllCompletedChampionships(),
+});
+
+export const getEwigeTabelle = createServerFn().handler(async () => {
+  const rows = await db
+    .select({
+      userId: players.userId,
+      name: users.name,
+      totalPoints: sum(players.total),
+      played: count(),
+    })
+    .from(players)
+    .innerJoin(championships, eq(players.championshipId, championships.id))
+    .innerJoin(users, eq(players.userId, users.id))
+    .where(eq(championships.completed, true))
+    .groupBy(players.userId);
+
+  const sorted = rows
+    .map((r) => ({
+      userId: r.userId,
+      name: r.name,
+      totalPoints: Number(r.totalPoints ?? 0),
+      played: r.played,
+    }))
+    .sort((a, b) => b.totalPoints - a.totalPoints || a.name.localeCompare(b.name, "de"));
+
+  let rank = 1;
+  const ranked = sorted.map((entry, i) => {
+    if (i > 0 && sorted[i - 1].totalPoints !== entry.totalPoints) rank = i + 1;
+    return { ...entry, rank };
+  });
+
+  return { entries: ranked };
+});
+
+export const ewigeTabellQueryOptions = queryOptions({
+  queryKey: ["ewige-tabelle"],
+  queryFn: () => getEwigeTabelle(),
+});
