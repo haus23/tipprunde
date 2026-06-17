@@ -42,12 +42,13 @@ across the slugged championship routes.
 
 ### `tipRuleId` — how tips are scored
 
-| Value                                       | Label             | Points                                                 |
-| ------------------------------------------- | ----------------- | ------------------------------------------------------ |
-| `drei-zwei-oder-ein-punkt-joker-verdoppelt` | 3, 2 oder 1 Punkt | Exact result: 3 · Correct diff: 2 · Correct outcome: 1 |
-| `drei-oder-ein-punkt-joker-verdoppelt`      | 3 oder 1 Punkt    | Exact result: 3 · Correct outcome: 1                   |
+| Value                                              | Label                                                | Points                                                                                                                                   |
+| -------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `drei-zwei-oder-ein-punkt`                         | 3, 2 oder 1 Punkt                                    | Exact result: 3 · Correct diff: 2 · Correct outcome: 1                                                                                   |
+| `drei-zwei-oder-ein-punkt-unentschieden-besonders` | 3, 2 oder 1 Punkt, besondere Regel für Unentschieden | Like above, but a drawn tip scores only 2 points when it differs from the drawn result by exactly 1 goal per team; further off → 1 point |
+| `drei-oder-ein-punkt`                              | 3 oder 1 Punkt                                       | Exact result: 3 · Correct outcome: 1                                                                                                     |
 
-Joker doubles the tip points in both variants.
+Joker doubles the tip points in all variants.
 
 ### Points storage — null vs. 0
 
@@ -116,21 +117,21 @@ Two domain events trigger recalculation:
 
 ### Round-level modifier (`roundRuleId`, applied after round completion)
 
-| Value                  | Effect          |
-| ---------------------- | --------------- |
-| `keine-besonderheiten` | No modification |
-
-Future values will add round-level bonus point passes (deferred to ~championship #30).
+| Value                      | Effect                                                                                                     |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `keine-besonderheiten`     | No modification                                                                                            |
+| `tordifferenz-bonus-malus` | After round completion: player with lowest accumulated goal deviation gets +1 point; highest gets −1 point |
 
 Maximum possible score per tip: `3 × 2 × 2 + 3 = 15 points`
 (exact result, double round, joker, sole scorer bonus).
 
 ### `jokerRuleId` — joker availability
 
-| Value              | Constraint                                       |
-| ------------------ | ------------------------------------------------ |
-| `einmal-pro-runde` | Exactly one joker per round                      |
-| `zwei-pro-turnier` | Exactly two jokers across the whole championship |
+| Value                                    | Constraint                                                                                         |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `einmal-pro-runde`                       | Exactly one joker per round                                                                        |
+| `zwei-pro-turnier`                       | Exactly two jokers across the whole championship                                                   |
+| `zwei-pro-turnier-plus-zwei-zusatzjoker` | Two jokers across the whole championship; up to two additional jokers may be purchased for €1 each |
 
 Affects: tip entry UI (when/how the joker can be set), tip table column.
 
@@ -145,13 +146,10 @@ Affects: points calculation in Ergebnisse.
 
 ### `roundRuleId`
 
-| Value                  | Effect                 |
-| ---------------------- | ---------------------- |
-| `keine-besonderheiten` | No special round logic |
-
-Currently only one variant. A future value (e.g. `mit-doppelrunden`) will
-unlock the `isDoubleRound` toggle when creating a round — deferred until the
-first championship that uses it (approx. championship #30 in the data backfill).
+| Value                      | Effect                                                            |
+| -------------------------- | ----------------------------------------------------------------- |
+| `keine-besonderheiten`     | No special round logic                                            |
+| `tordifferenz-bonus-malus` | Enables round completion toggle; triggers bonus/malus calculation |
 
 ### `extraQuestionRuleId`
 
