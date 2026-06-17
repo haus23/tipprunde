@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.15.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.15.0...v0.15.1)
+
+### 🚀 Enhancements
+
+- **web:** Add Archiv preview section to dashboard index ([d279455](https://github.com/haus23/tipprunde/commit/d279455))
+
+### 💅 Refactors
+
+- **web:** Add paddings to focusable links/buttons to create a pseudo ring-offset ([f9b52cf](https://github.com/haus23/tipprunde/commit/f9b52cf))
+
 ## v0.15.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.14.2...v0.15.0)
