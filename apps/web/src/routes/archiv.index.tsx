@@ -34,7 +34,7 @@ function RouteComponent() {
           ) : (
             <table className="w-full text-base">
               <thead>
-                <tr className="text-muted border-subtle border-b text-xs">
+                <tr className="text-muted border-subtle border-b text-xs tracking-wide uppercase">
                   <th className="pb-1.5 text-left font-medium">Turnier</th>
                   <th className="pr-3 pb-1.5 text-left font-medium">Sieger</th>
                   <th className="pb-1.5 text-right font-medium">Punkte</th>
@@ -79,7 +79,7 @@ function RouteComponent() {
           ) : (
             <table className="w-full text-base">
               <thead>
-                <tr className="text-muted border-subtle border-b text-xs">
+                <tr className="text-muted border-subtle border-b text-xs tracking-wide uppercase">
                   <th className="w-px pr-3 pb-1.5 text-right font-medium">Platz</th>
                   <th className="pb-1.5 pl-3 text-left font-medium">Spieler</th>
                   <th className="w-px px-3 pb-1.5 text-center font-medium">Turniere</th>

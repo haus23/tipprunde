@@ -219,7 +219,7 @@ function ArchivPreview({ championships }: { championships: ArchivEntry[] }) {
       <SectionHeading>Archiv</SectionHeading>
       <table className="w-full text-base">
         <thead>
-          <tr className="text-muted border-subtle border-b text-xs">
+          <tr className="text-muted border-subtle border-b text-xs tracking-wide uppercase">
             <th className="pb-1.5 text-left font-medium">Turnier</th>
             <th className="pr-3 pb-1.5 text-left font-medium">Sieger</th>
             <th className="pb-1.5 text-right font-medium">Punkte</th>
