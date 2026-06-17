@@ -228,7 +228,15 @@ function ArchivPreview({ championships }: { championships: ArchivEntry[] }) {
         <tbody>
           {championships.map((entry) => (
             <tr key={entry.slug} className="border-subtle border-b last:border-b-0">
-              <td className="text-subtle py-2 pr-3 text-sm">{entry.name}</td>
+              <td className="text-subtle py-2 pr-3 text-sm">
+                <Link
+                  to="/archiv/$slug"
+                  params={{ slug: entry.slug }}
+                  className="hover:text-app focus-visible:ring-accent rounded-sm transition-colors outline-none focus-visible:ring-2"
+                >
+                  {entry.name}
+                </Link>
+              </td>
               <td className="py-2 pr-3">
                 {entry.winners.map((w, i) => (
                   <span key={w.slug}>

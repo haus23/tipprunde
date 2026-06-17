@@ -10,9 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as ArchivRouteImport } from './routes/archiv'
 import { Route as ChampionshipRouteImport } from './routes/_championship'
+import { Route as ArchivIndexRouteImport } from './routes/archiv.index'
 import { Route as ChampionshipIndexRouteImport } from './routes/_championship/index'
+import { Route as ArchivSlugRouteImport } from './routes/archiv.$slug'
 import { Route as ChampionshipZusatzfragenRouteImport } from './routes/_championship/zusatzfragen'
 import { Route as ChampionshipTabelleRouteImport } from './routes/_championship/tabelle'
 import { Route as ChampionshipSpieleIndexRouteImport } from './routes/_championship/spiele.index'
@@ -24,19 +25,24 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArchivRoute = ArchivRouteImport.update({
-  id: '/archiv',
-  path: '/archiv',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ChampionshipRoute = ChampionshipRouteImport.update({
   id: '/_championship',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArchivIndexRoute = ArchivIndexRouteImport.update({
+  id: '/archiv/',
+  path: '/archiv/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChampionshipIndexRoute = ChampionshipIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ChampionshipRoute,
+} as any)
+const ArchivSlugRoute = ArchivSlugRouteImport.update({
+  id: '/archiv/$slug',
+  path: '/archiv/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ChampionshipZusatzfragenRoute =
   ChampionshipZusatzfragenRouteImport.update({
@@ -68,20 +74,22 @@ const ChampionshipSpieleNrRoute = ChampionshipSpieleNrRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof ChampionshipIndexRoute
-  '/archiv': typeof ArchivRoute
   '/login': typeof LoginRoute
   '/tabelle': typeof ChampionshipTabelleRoute
   '/zusatzfragen': typeof ChampionshipZusatzfragenRoute
+  '/archiv/$slug': typeof ArchivSlugRoute
+  '/archiv/': typeof ArchivIndexRoute
   '/spiele/$nr': typeof ChampionshipSpieleNrRoute
   '/spieler/{-$slug}': typeof ChampionshipSpielerChar123SlugChar125Route
   '/spiele/': typeof ChampionshipSpieleIndexRoute
 }
 export interface FileRoutesByTo {
-  '/archiv': typeof ArchivRoute
   '/login': typeof LoginRoute
   '/tabelle': typeof ChampionshipTabelleRoute
   '/zusatzfragen': typeof ChampionshipZusatzfragenRoute
+  '/archiv/$slug': typeof ArchivSlugRoute
   '/': typeof ChampionshipIndexRoute
+  '/archiv': typeof ArchivIndexRoute
   '/spiele/$nr': typeof ChampionshipSpieleNrRoute
   '/spieler/{-$slug}': typeof ChampionshipSpielerChar123SlugChar125Route
   '/spiele': typeof ChampionshipSpieleIndexRoute
@@ -89,11 +97,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_championship': typeof ChampionshipRouteWithChildren
-  '/archiv': typeof ArchivRoute
   '/login': typeof LoginRoute
   '/_championship/tabelle': typeof ChampionshipTabelleRoute
   '/_championship/zusatzfragen': typeof ChampionshipZusatzfragenRoute
+  '/archiv/$slug': typeof ArchivSlugRoute
   '/_championship/': typeof ChampionshipIndexRoute
+  '/archiv/': typeof ArchivIndexRoute
   '/_championship/spiele/$nr': typeof ChampionshipSpieleNrRoute
   '/_championship/spieler/{-$slug}': typeof ChampionshipSpielerChar123SlugChar125Route
   '/_championship/spiele/': typeof ChampionshipSpieleIndexRoute
@@ -102,31 +111,34 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/archiv'
     | '/login'
     | '/tabelle'
     | '/zusatzfragen'
+    | '/archiv/$slug'
+    | '/archiv/'
     | '/spiele/$nr'
     | '/spieler/{-$slug}'
     | '/spiele/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/archiv'
     | '/login'
     | '/tabelle'
     | '/zusatzfragen'
+    | '/archiv/$slug'
     | '/'
+    | '/archiv'
     | '/spiele/$nr'
     | '/spieler/{-$slug}'
     | '/spiele'
   id:
     | '__root__'
     | '/_championship'
-    | '/archiv'
     | '/login'
     | '/_championship/tabelle'
     | '/_championship/zusatzfragen'
+    | '/archiv/$slug'
     | '/_championship/'
+    | '/archiv/'
     | '/_championship/spiele/$nr'
     | '/_championship/spieler/{-$slug}'
     | '/_championship/spiele/'
@@ -134,8 +146,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   ChampionshipRoute: typeof ChampionshipRouteWithChildren
-  ArchivRoute: typeof ArchivRoute
   LoginRoute: typeof LoginRoute
+  ArchivSlugRoute: typeof ArchivSlugRoute
+  ArchivIndexRoute: typeof ArchivIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -147,18 +160,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/archiv': {
-      id: '/archiv'
-      path: '/archiv'
-      fullPath: '/archiv'
-      preLoaderRoute: typeof ArchivRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_championship': {
       id: '/_championship'
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof ChampionshipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/archiv/': {
+      id: '/archiv/'
+      path: '/archiv'
+      fullPath: '/archiv/'
+      preLoaderRoute: typeof ArchivIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_championship/': {
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof ChampionshipIndexRouteImport
       parentRoute: typeof ChampionshipRoute
+    }
+    '/archiv/$slug': {
+      id: '/archiv/$slug'
+      path: '/archiv/$slug'
+      fullPath: '/archiv/$slug'
+      preLoaderRoute: typeof ArchivSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_championship/zusatzfragen': {
       id: '/_championship/zusatzfragen'
@@ -231,8 +251,9 @@ const ChampionshipRouteWithChildren = ChampionshipRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   ChampionshipRoute: ChampionshipRouteWithChildren,
-  ArchivRoute: ArchivRoute,
   LoginRoute: LoginRoute,
+  ArchivSlugRoute: ArchivSlugRoute,
+  ArchivIndexRoute: ArchivIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
