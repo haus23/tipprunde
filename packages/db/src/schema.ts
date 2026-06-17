@@ -115,6 +115,7 @@ export const tips = sqliteTable(
     tip: text("tip"),
     points: integer("points"),
     joker: integer("joker", { mode: "boolean" }),
+    extraJoker: integer("extra_joker", { mode: "boolean" }),
   },
   (table) => [primaryKey({ columns: [table.matchId, table.userId] })],
 );

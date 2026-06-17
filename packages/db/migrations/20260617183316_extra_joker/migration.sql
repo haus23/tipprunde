@@ -1,0 +1,1 @@
+ALTER TABLE `tips` ADD `extra_joker` integer;
