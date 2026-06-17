@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.16.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.16.0...v0.16.1)
+
+### 🚀 Enhancements
+
+- **domain:** Add three new rules for upcoming championship ([6df30da](https://github.com/haus23/tipprunde/commit/6df30da))
+
+### 💅 Refactors
+
+- **domain:** Drop -joker-verdoppelt suffix from tip rule IDs ([2c27d21](https://github.com/haus23/tipprunde/commit/2c27d21))
+
+### 📖 Documentation
+
+- **domain:** Update rule ID tables for new rules and rename ([26dd24f](https://github.com/haus23/tipprunde/commit/26dd24f))
+
 ## v0.16.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.15.2...v0.16.0)
