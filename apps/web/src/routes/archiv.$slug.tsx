@@ -58,6 +58,7 @@ function ChampionshipArchivView({
           currentUserId={undefined}
           championshipId={championship.id}
           isOngoing={false}
+          linkPlayers={false}
         />
       )}
     </div>

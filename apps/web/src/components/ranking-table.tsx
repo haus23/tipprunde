@@ -13,12 +13,14 @@ export function RankingTable({
   currentUserId,
   championshipId,
   isOngoing,
+  linkPlayers = true,
 }: {
   ranking: RankedPlayer[];
   showExtras: boolean;
   currentUserId: number | undefined;
   championshipId: number;
   isOngoing: boolean;
+  linkPlayers?: boolean;
 }) {
   return (
     <table className="w-full border-collapse text-base">
@@ -64,9 +66,13 @@ export function RankingTable({
                 {sharesRankAbove ? "" : entry.rank}
               </td>
               <td className={`xs:px-3 xs:py-3 px-2 py-2 ${isCurrentUser ? "font-medium" : ""}`}>
-                <CellLink to="/spieler/{-$slug}" params={{ slug: entry.slug }}>
-                  {entry.name}
-                </CellLink>
+                {linkPlayers ? (
+                  <CellLink to="/spieler/{-$slug}" params={{ slug: entry.slug }}>
+                    {entry.name}
+                  </CellLink>
+                ) : (
+                  entry.name
+                )}
               </td>
               {showExtras && (
                 <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
