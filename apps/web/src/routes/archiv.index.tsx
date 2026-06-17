@@ -80,10 +80,10 @@ function RouteComponent() {
             <table className="w-full text-base">
               <thead>
                 <tr className="text-muted border-subtle border-b text-xs">
-                  <th className="pb-1.5 text-right font-medium">Platz</th>
+                  <th className="w-px pr-3 pb-1.5 text-right font-medium">Platz</th>
                   <th className="pb-1.5 pl-3 text-left font-medium">Spieler</th>
-                  <th className="pb-1.5 text-center font-medium">Turniere</th>
-                  <th className="pb-1.5 text-right font-medium">Punkte</th>
+                  <th className="w-px px-3 pb-1.5 text-center font-medium">Turniere</th>
+                  <th className="w-px pb-1.5 pl-3 text-right font-medium">Punkte</th>
                 </tr>
               </thead>
               <tbody>
@@ -95,8 +95,10 @@ function RouteComponent() {
                         {sharesRankAbove ? "" : entry.rank}
                       </td>
                       <td className="py-2 pl-3">{entry.name}</td>
-                      <td className="text-subtle py-2 text-center tabular-nums">{entry.played}</td>
-                      <td className="py-2 text-right font-medium tabular-nums">
+                      <td className="text-subtle w-px px-3 py-2 text-center tabular-nums">
+                        {entry.played}
+                      </td>
+                      <td className="w-px py-2 pl-3 text-right font-medium tabular-nums">
                         {entry.totalPoints}
                       </td>
                     </tr>
