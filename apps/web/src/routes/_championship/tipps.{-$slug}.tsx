@@ -131,7 +131,7 @@ function PlayerCard({
           />
         </div>
         <p className="text-subtle text-center text-sm">
-          {championshipName} · Platz {player.rank} · {player.total} Punkte
+          {championshipName} · Platz {player.rank} · {player.tipPoints} Punkte
           <br className="xs:hidden" />
           <span className="xs:inline hidden"> · </span>
           {playerSpiele} Spiele{playerAvg !== null && ` · Ø ${playerAvg}`}
