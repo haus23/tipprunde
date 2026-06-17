@@ -1,13 +1,19 @@
 export const TIP_RULES = [
   {
+    value: "drei-zwei-oder-ein-punkt-unentschieden-besonders" as const,
+    label: "3, 2 oder 1 Punkt, besondere Regel für Unentschieden",
+    description:
+      "Exaktes Ergebnis: 3 Punkte · Richtige Tordifferenz: 2 Punkte · Richtiger Ausgang: 1 Punkt. Eine spezielle Regelung gibt es für Unentschieden: ein getipptes Unentschieden bringt nur dann 2 Punkte, wenn es sich vom Ergebnis um genau ein Tor je Mannschaft unterscheidet. Also bei dem Ergebnis 1:1 gibt es 2 Punkte für die Tipps 0:0 und 2:2. Ein 3:3 Tipp bringt nur noch 1 Punkt.",
+  },
+  {
     value: "drei-zwei-oder-ein-punkt-joker-verdoppelt" as const,
-    label: "3, 2 oder 1 Punkt, Joker verdoppelt",
+    label: "3, 2 oder 1 Punkt",
     description:
       "Exaktes Ergebnis: 3 Punkte · Richtige Tordifferenz: 2 Punkte · Richtiger Ausgang: 1 Punkt.",
   },
   {
     value: "drei-oder-ein-punkt-joker-verdoppelt" as const,
-    label: "3 oder 1 Punkt, Joker verdoppelt",
+    label: "3 oder 1 Punkt",
     description: "Exaktes Ergebnis: 3 Punkte · Richtiger Ausgang: 1 Punkt.",
   },
 ];
@@ -25,6 +31,12 @@ export const JOKER_RULES = [
     description:
       "Auf einen Tipp kann ein Joker gesetzt werden. Die Punkte dieses Tipps werden verdoppelt. Im gesamten Turnier können maximal zwei Joker gesetzt werden.",
   },
+  {
+    value: "zwei-pro-turnier-plus-zwei-zusatzjoker" as const,
+    label: "Genau zwei Joker im Turnier plus zwei Zusatzjoker",
+    description:
+      "Auf einen Tipp kann ein Joker gesetzt werden. Die Punkte dieses Tipps werden verdoppelt. Im gesamten Turnier können maximal zwei Joker gesetzt werden. Zusätzlich können bis zu zwei zusätzliche Joker für je 1 Euro gekauft werden.",
+  },
 ];
 
 export const MATCH_RULES = [
@@ -39,6 +51,12 @@ export const MATCH_RULES = [
 
 export const ROUND_RULES = [
   { value: "keine-besonderheiten" as const, label: "Keine Besonderheiten", description: "" },
+  {
+    value: "tordifferenz-bonus-malus" as const,
+    label: "Tordifferenz-Bonus und -Malus",
+    description:
+      "Pro Runde wird für jeden Tipp die Summe der absoluten Abweichungen von Heim- und Auswärtstoren berechnet (Beispiel: Ergebnis 3:1, Tipp 0:2 → |3−0| + |1−2| = 4). Die Abweichungen aller Spiele einer Runde werden je Spieler aufaddiert. Wer die geringste Gesamtabweichung erzielt, erhält 1 Bonuspunkt. Wer die größte Abweichung hat, erhält 1 Punkt Abzug.",
+  },
 ];
 
 export const EXTRA_QUESTION_RULES = [
