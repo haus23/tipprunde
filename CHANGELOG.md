@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.16.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.15.2...v0.16.0)
+
+### 🩹 Fixes
+
+- **web:** Display only tip points, not the total points. ([32417dc](https://github.com/haus23/tipprunde/commit/32417dc))
+
+### 💅 Refactors
+
+- **web:** Rename spieler route to tipps, freeing /spieler for a future player profile page ([2ed0794](https://github.com/haus23/tipprunde/commit/2ed0794))
+
 ## v0.15.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.15.1...v0.15.2)
