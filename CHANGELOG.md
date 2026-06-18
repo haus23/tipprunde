@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.17.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.16.3...v0.17.0)
+
+### 🚀 Enhancements
+
+- **domain:** Rename tordifferenz-bonus-malus to torabweichung-bonus-malus ([018cbaf](https://github.com/haus23/tipprunde/commit/018cbaf))
+- **domain+web:** Visualize round goal deviation in player view ([2718c00](https://github.com/haus23/tipprunde/commit/2718c00))
+- **manager:** Round completion toggle with torabweichung-bonus-malus calculation ([def7db9](https://github.com/haus23/tipprunde/commit/def7db9))
+- **web+manager:** Show torabweichung bonus/malus in player round summary ([68a69ed](https://github.com/haus23/tipprunde/commit/68a69ed))
+
+### 📖 Documentation
+
+- **domain:** Missing tip counts as 0:0 for torabweichung-bonus-malus ([79907cc](https://github.com/haus23/tipprunde/commit/79907cc))
+
 ## v0.16.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.16.2...v0.16.3)
