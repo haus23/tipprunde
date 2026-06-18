@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.16.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.16.2...v0.16.3)
+
+### 🚀 Enhancements
+
+- **domain:** Score drei-zwei-oder-ein-punkt-unentschieden-besonders ([01658b0](https://github.com/haus23/tipprunde/commit/01658b0))
+- **domain:** Replace zwei-pro-turnier-plus-zwei-zusatzjoker with einmal-pro-runde-plus-zwei-zusatzjoker ([8b4734e](https://github.com/haus23/tipprunde/commit/8b4734e))
+
 ## v0.16.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.16.1...v0.16.2)
