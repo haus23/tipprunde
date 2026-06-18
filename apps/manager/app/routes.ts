@@ -17,4 +17,5 @@ export default [
   route("regelwerke", "routes/regelwerke.tsx"),
   route("logout", "routes/logout.tsx"),
   route("color-scheme", "routes/color-scheme.tsx"),
+  route("manager-shell", "routes/manager-shell.tsx"),
 ] satisfies RouteConfig;

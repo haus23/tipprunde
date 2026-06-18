@@ -1,5 +1,12 @@
 import { Button } from "@tipprunde/ui";
-import { FrownIcon, MoonIcon, SunIcon } from "lucide-react";
+import {
+  FrownIcon,
+  MenuIcon,
+  MoonIcon,
+  PanelLeftCloseIcon,
+  PanelLeftOpenIcon,
+  SunIcon,
+} from "lucide-react";
 import { Suspense, useEffect } from "react";
 import { I18nProvider } from "react-aria-components";
 import {
@@ -18,6 +25,8 @@ import {
 import type { Route } from "./+types/root";
 import faviconUrl from "./assets/favicon.ico?url";
 import { ChampionshipSwitcher } from "./components/championship-switcher";
+import { MobileNav } from "./components/mobile-nav";
+import { ShellProvider, useShell } from "./components/shell-provider";
 import { Sidebar } from "./components/sidebar";
 import { getSessionUser } from "./lib/auth.server";
 import {
@@ -27,7 +36,7 @@ import {
 } from "./lib/championship.server";
 import { championshipContext, userContext } from "./lib/context";
 import { clearCookieHeader, cookieHeader, getCookie } from "./lib/cookies.server";
-import { usePageTitle } from "./lib/utils";
+import { cn, usePageTitle } from "./lib/utils";
 import { webAppUrl } from "./lib/web-app.server";
 
 import "./app.css";
@@ -86,11 +95,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export function loader({ context, request }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
   const colorScheme = (getCookie(request, "__color-scheme") ?? "system") as ColorScheme;
+  const sidebarCollapsed = getCookie(request, "__manager-sidebar") === "true";
   return {
     slug: championship?.slug,
     name: championship?.name,
     webAppUrl: webAppUrl(),
     colorScheme,
+    sidebarCollapsed,
     championships: getChampionships(),
   };
 }
@@ -126,9 +137,18 @@ export function ErrorBoundary() {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
+  return (
+    <ShellProvider initialSidebarCollapsed={loaderData.sidebarCollapsed}>
+      <Shell loaderData={loaderData} />
+    </ShellProvider>
+  );
+}
+
+function Shell({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] }) {
   const { slug, name, webAppUrl, colorScheme, championships } = loaderData;
   const pageTitle = usePageTitle();
   const fetcher = useFetcher();
+  const { isSidebarCollapsed, toggleSidebar, toggleMobileMenu } = useShell();
 
   const pendingScheme = fetcher.formData?.get("scheme") as ColorScheme | undefined;
 
@@ -152,16 +172,44 @@ export default function App({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <div className="border-subtle isolate mx-auto grid h-dvh w-full max-w-400 grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
+    <div
+      className={cn(
+        "border-subtle isolate mx-auto grid h-dvh w-full max-w-400 grid-cols-[1fr] grid-rows-[56px_1fr] border-x transition-[grid-template-columns] duration-300 ease-out",
+        isSidebarCollapsed ? "md:grid-cols-[56px_1fr]" : "md:grid-cols-[208px_1fr]",
+      )}
+    >
       <Sidebar slug={slug} webAppUrl={webAppUrl} />
-      <header className="border-subtle bg-surface-raised flex items-center border-b px-4">
+      <MobileNav slug={slug} webAppUrl={webAppUrl} />
+      <header className="border-subtle bg-surface-raised flex items-center gap-1 border-b px-4">
+        <Button
+          intent="ghost"
+          size="icon"
+          onPress={toggleMobileMenu}
+          aria-label="Navigation öffnen"
+          className="md:hidden"
+        >
+          <MenuIcon className="size-4" />
+        </Button>
+        <Button
+          intent="ghost"
+          size="icon"
+          onPress={toggleSidebar}
+          aria-label={isSidebarCollapsed ? "Sidebar ausklappen" : "Sidebar einklappen"}
+          className="hidden md:inline-flex"
+        >
+          {isSidebarCollapsed ? (
+            <PanelLeftOpenIcon className="size-4" />
+          ) : (
+            <PanelLeftCloseIcon className="size-4" />
+          )}
+        </Button>
         <Suspense fallback={<div className="flex-1" />}>
           <ChampionshipSwitcher
             current={slug && name ? { slug, name } : null}
             championships={championships}
           />
         </Suspense>
-        {pageTitle && <h1 className="text-sm font-medium">{pageTitle}</h1>}
+        {pageTitle && <h1 className="hidden text-sm font-medium sm:block">{pageTitle}</h1>}
         <div className="flex flex-1 justify-end">
           <Button
             intent="ghost"
