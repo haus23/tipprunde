@@ -28,6 +28,7 @@ export function calcTipPoints(
   tipRuleId: TipRuleId,
   isDoubleRound: boolean | null,
   joker: boolean | null,
+  extraJoker: boolean | null = null,
 ): number | null {
   if (!result || !tip) return null;
 
@@ -46,6 +47,7 @@ export function calcTipPoints(
 
   if (isDoubleRound) points *= 2;
   if (joker) points *= 2;
+  if (extraJoker) points *= 2;
 
   return points;
 }

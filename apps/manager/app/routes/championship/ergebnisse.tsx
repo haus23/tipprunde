@@ -79,7 +79,7 @@ export async function action({ request, context }: Route.ActionArgs) {
       }),
       db.query.tips.findMany({
         where: { matchId },
-        columns: { userId: true, tip: true, joker: true },
+        columns: { userId: true, tip: true, joker: true, extraJoker: true },
       }),
       championship.rulesetId
         ? db.query.rulesets.findFirst({
@@ -101,7 +101,14 @@ export async function action({ request, context }: Route.ActionArgs) {
     if (tipRuleId && tips.length > 0) {
       await Promise.all(
         tips.map((tip) => {
-          const points = calcTipPoints(tip.tip, result, tipRuleId, isDoubleRound, tip.joker);
+          const points = calcTipPoints(
+            tip.tip,
+            result,
+            tipRuleId,
+            isDoubleRound,
+            tip.joker,
+            tip.extraJoker,
+          );
           return db
             .update(tipsTable)
             .set({ points })

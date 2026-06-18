@@ -160,7 +160,14 @@ export async function action({ request, context }: Route.ActionArgs) {
     const tipRuleId = ruleset?.tipRuleId as TipRuleId | undefined;
 
     if (match.result && tipRuleId) {
-      const points = calcTipPoints(tip, match.result, tipRuleId, match.round.isDoubleRound, joker);
+      const points = calcTipPoints(
+        tip,
+        match.result,
+        tipRuleId,
+        match.round.isDoubleRound,
+        joker,
+        extraJoker,
+      );
       await db
         .update(tipsTable)
         .set({ points })

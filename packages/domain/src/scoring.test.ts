@@ -70,6 +70,10 @@ void describe("calcTipPoints — drei-zwei-oder-ein-punkt", () => {
     assert.equal(calcTipPoints("2:1", "2:1", rule, false, true), 6);
   });
 
+  void it("extraJoker doubles points", () => {
+    assert.equal(calcTipPoints("2:1", "2:1", rule, false, false, true), 6);
+  });
+
   void it("joker + isDoubleRound → 4×", () => {
     assert.equal(calcTipPoints("2:1", "2:1", rule, true, true), 12);
   });
