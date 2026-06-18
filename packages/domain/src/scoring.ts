@@ -39,8 +39,17 @@ export function calcTipPoints(
 
   if (tipHome === resHome && tipAway === resAway) {
     points = 3;
-  } else if (tipRuleId === "drei-zwei-oder-ein-punkt" && tipHome - tipAway === resHome - resAway) {
-    points = 2;
+  } else if (
+    (tipRuleId === "drei-zwei-oder-ein-punkt" ||
+      tipRuleId === "drei-zwei-oder-ein-punkt-unentschieden-besonders") &&
+    tipHome - tipAway === resHome - resAway
+  ) {
+    // Special draw rule: drawn tip on drawn result only scores 2 if within 1 goal per team
+    const drawPenalty =
+      tipRuleId === "drei-zwei-oder-ein-punkt-unentschieden-besonders" &&
+      resHome === resAway &&
+      Math.abs(tipHome - resHome) > 1;
+    points = drawPenalty ? 1 : 2;
   } else if (signOf(tipHome - tipAway) === signOf(resHome - resAway)) {
     points = 1;
   }

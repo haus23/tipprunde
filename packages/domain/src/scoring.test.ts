@@ -83,6 +83,42 @@ void describe("calcTipPoints — drei-zwei-oder-ein-punkt", () => {
   });
 });
 
+void describe("calcTipPoints — drei-zwei-oder-ein-punkt-unentschieden-besonders", () => {
+  const rule = "drei-zwei-oder-ein-punkt-unentschieden-besonders" as const;
+
+  void it("exact result → 3", () => {
+    assert.equal(calcTipPoints("2:1", "2:1", rule, false, false), 3);
+  });
+
+  void it("correct diff (non-draw) → 2", () => {
+    assert.equal(calcTipPoints("3:2", "2:1", rule, false, false), 2);
+  });
+
+  void it("correct outcome → 1", () => {
+    assert.equal(calcTipPoints("3:1", "2:1", rule, false, false), 1);
+  });
+
+  void it("draw: exact → 3", () => {
+    assert.equal(calcTipPoints("1:1", "1:1", rule, false, false), 3);
+  });
+
+  void it("draw: 1 goal apart (0:0 vs 1:1) → 2", () => {
+    assert.equal(calcTipPoints("0:0", "1:1", rule, false, false), 2);
+  });
+
+  void it("draw: 1 goal apart (2:2 vs 1:1) → 2", () => {
+    assert.equal(calcTipPoints("2:2", "1:1", rule, false, false), 2);
+  });
+
+  void it("draw: 2 goals apart (3:3 vs 1:1) → 1", () => {
+    assert.equal(calcTipPoints("3:3", "1:1", rule, false, false), 1);
+  });
+
+  void it("draw: 2 goals apart (0:0 vs 2:2) → 1", () => {
+    assert.equal(calcTipPoints("0:0", "2:2", rule, false, false), 1);
+  });
+});
+
 void describe("calcTipPoints — drei-oder-ein-punkt", () => {
   const rule = "drei-oder-ein-punkt" as const;
 
