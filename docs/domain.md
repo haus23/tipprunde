@@ -127,11 +127,11 @@ Maximum possible score per tip: `3 × 2 × 2 + 3 = 15 points`
 
 ### `jokerRuleId` — joker availability
 
-| Value                                    | Constraint                                                                                         |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `einmal-pro-runde`                       | Exactly one joker per round                                                                        |
-| `zwei-pro-turnier`                       | Exactly two jokers across the whole championship                                                   |
-| `zwei-pro-turnier-plus-zwei-zusatzjoker` | Two jokers across the whole championship; up to two additional jokers may be purchased for €1 each |
+| Value                                    | Constraint                                                                    |
+| ---------------------------------------- | ----------------------------------------------------------------------------- |
+| `einmal-pro-runde`                       | Exactly one joker per round                                                   |
+| `zwei-pro-turnier`                       | Exactly two jokers across the whole championship                              |
+| `einmal-pro-runde-plus-zwei-zusatzjoker` | One joker per round; up to two additional jokers may be purchased for €1 each |
 
 Affects: tip entry UI (when/how the joker can be set), tip table column.
 

@@ -32,10 +32,10 @@ export const JOKER_RULES = [
       "Auf einen Tipp kann ein Joker gesetzt werden. Die Punkte dieses Tipps werden verdoppelt. Im gesamten Turnier können maximal zwei Joker gesetzt werden.",
   },
   {
-    value: "zwei-pro-turnier-plus-zwei-zusatzjoker" as const,
-    label: "Genau zwei Joker im Turnier plus zwei Zusatzjoker",
+    value: "einmal-pro-runde-plus-zwei-zusatzjoker" as const,
+    label: "Genau einmal pro Runde plus zwei Zusatzjoker",
     description:
-      "Auf einen Tipp kann ein Joker gesetzt werden. Die Punkte dieses Tipps werden verdoppelt. Im gesamten Turnier können maximal zwei Joker gesetzt werden. Zusätzlich können bis zu zwei zusätzliche Joker für je 1 Euro gekauft werden. Auf einen Tipp können nicht beide Joker gesetzt werden.",
+      "Auf einen Tipp kann ein Joker gesetzt werden. Die Punkte dieses Tipps werden verdoppelt. Pro Runde kann maximal ein Joker gesetzt werden. Zusätzlich können im gesamten Turnier bis zu zwei zusätzliche Joker für je 1 Euro gekauft werden. Auf einen Tipp können nicht beide Joker gesetzt werden.",
   },
 ];
 

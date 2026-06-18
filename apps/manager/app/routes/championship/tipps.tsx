@@ -236,12 +236,12 @@ function TipGrid({
   function isJokerAllowed(matchId: number): boolean {
     if (tipEntries[matchId]?.extraJoker) return false;
     const currentlyChecked = tipEntries[matchId]?.joker ?? false;
-    if (jokerRuleId === "einmal-pro-runde") return roundJokerCount === 0 || currentlyChecked;
     if (
-      jokerRuleId === "zwei-pro-turnier" ||
-      jokerRuleId === "zwei-pro-turnier-plus-zwei-zusatzjoker"
+      jokerRuleId === "einmal-pro-runde" ||
+      jokerRuleId === "einmal-pro-runde-plus-zwei-zusatzjoker"
     )
-      return jokerCount < 2 || currentlyChecked;
+      return roundJokerCount === 0 || currentlyChecked;
+    if (jokerRuleId === "zwei-pro-turnier") return jokerCount < 2 || currentlyChecked;
     return false;
   }
 
@@ -465,7 +465,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
   const currentMatches = allMatches.filter((m) => m.roundId === currentRound?.id);
 
   // Joker counts derived from server-confirmed data (allMatches)
-  const hasExtraJoker = jokerRuleId === "zwei-pro-turnier-plus-zwei-zusatzjoker";
+  const hasExtraJoker = jokerRuleId === "einmal-pro-runde-plus-zwei-zusatzjoker";
   const jokerCount = allMatches.filter((m) => m.tips[0]?.joker).length;
   const roundJokerCount = currentMatches.filter((m) => m.tips[0]?.joker).length;
   const extraJokerCount = allMatches.filter((m) => m.tips[0]?.extraJoker).length;
