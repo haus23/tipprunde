@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.17.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.17.1...v0.17.2)
+
+### 🩹 Fixes
+
+- **manager:** Contain RAC VisuallyHidden inputs in scroll container ([ba5f899](https://github.com/haus23/tipprunde/commit/ba5f899))
+
 ## v0.17.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.17.0...v0.17.1)
