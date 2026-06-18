@@ -55,7 +55,7 @@ export const ROUND_RULES = [
     value: "torabweichung-bonus-malus" as const,
     label: "Torabweichung-Bonus und -Malus",
     description:
-      "Pro Runde wird für jeden Tipp die Summe der absoluten Abweichungen von Heim- und Auswärtstoren berechnet (Beispiel: Ergebnis 3:1, Tipp 0:2 → |3−0| + |1−2| = 4). Die Abweichungen aller Spiele einer Runde werden je Spieler aufaddiert. Wer die geringste Gesamtabweichung erzielt, erhält 1 Bonuspunkt. Wer die größte Abweichung hat, erhält 1 Punkt Abzug.",
+      "Pro Runde wird für jeden Tipp die Summe der absoluten Abweichungen von Heim- und Auswärtstoren berechnet (Beispiel: Ergebnis 3:1, Tipp 0:2 → |3−0| + |1−2| = 4). Die Abweichungen aller Spiele einer Runde werden je Spieler aufaddiert. Wer die geringste Gesamtabweichung erzielt, erhält 1 Bonuspunkt. Wer die größte Abweichung hat, erhält 1 Punkt Abzug. Ein ausgelassener Tipp wird dabei als 0:0 gewertet.",
   },
 ];
 
