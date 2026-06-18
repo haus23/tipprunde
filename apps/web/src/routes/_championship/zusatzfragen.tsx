@@ -104,7 +104,7 @@ function QuestionBlock({
             <span className="text-app">{question.answer ?? "noch offen"}</span>
           </p>
         </div>
-        <ChevronDownIcon className="text-subtle mt-1 size-4 shrink-0 transition-transform duration-200 group-open:rotate-180" />
+        <ChevronDownIcon className="text-subtle mt-1 size-4 shrink-0 transition-transform duration-200 ease-out group-open:rotate-180" />
       </summary>
       <div className="xs:px-3 px-2 pb-3">
         <table className="w-full text-base">

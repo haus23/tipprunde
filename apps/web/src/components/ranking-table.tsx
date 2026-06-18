@@ -60,7 +60,9 @@ export function RankingTable({
             <tr
               key={entry.userId}
               className={`border-subtle border-b transition-colors last:border-0 ${
-                isCurrentUser ? "bg-accent-subtle" : "hover:bg-surface-raised"
+                isCurrentUser
+                  ? "bg-accent-subtle"
+                  : "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-raised"
               }`}
             >
               <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-right tabular-nums">
@@ -140,7 +142,7 @@ function MatchdayButton({
         ref={buttonRef}
         onPress={() => setIsOpen((v) => !v)}
         aria-label={`Aktuelle Tipps von ${name}`}
-        className="text-subtle hover:text-app focus-visible:ring-accent cursor-default rounded-sm p-1 outline-none focus-visible:ring-2"
+        className="text-subtle hover:text-app focus-visible:ring-accent cursor-default rounded-sm p-1 transition-colors outline-none focus-visible:ring-2"
       >
         <CalendarIcon size={13} />
       </Button>

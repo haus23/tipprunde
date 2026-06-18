@@ -33,9 +33,9 @@ export function ColorSchemeMenu({ colorScheme }: { colorScheme: ColorScheme }) {
     <MenuTrigger>
       <Button intent="ghost" size="icon" aria-label="Farbschema">
         <span className="relative size-4">
-          <SunIcon className="absolute inset-0 size-full scale-75 opacity-0 transition ease-out in-data-[color-scheme=light]:scale-100 in-data-[color-scheme=light]:opacity-100" />
-          <MoonIcon className="absolute inset-0 size-full scale-75 opacity-0 transition ease-out in-data-[color-scheme=dark]:scale-100 in-data-[color-scheme=dark]:opacity-100" />
-          <MonitorIcon className="absolute inset-0 size-full scale-75 opacity-0 transition ease-out in-data-[color-scheme=system]:scale-100 in-data-[color-scheme=system]:opacity-100" />
+          <SunIcon className="absolute inset-0 size-full scale-75 opacity-0 transition-[transform,opacity] ease-out in-data-[color-scheme=light]:scale-100 in-data-[color-scheme=light]:opacity-100" />
+          <MoonIcon className="absolute inset-0 size-full scale-75 opacity-0 transition-[transform,opacity] ease-out in-data-[color-scheme=dark]:scale-100 in-data-[color-scheme=dark]:opacity-100" />
+          <MonitorIcon className="absolute inset-0 size-full scale-75 opacity-0 transition-[transform,opacity] ease-out in-data-[color-scheme=system]:scale-100 in-data-[color-scheme=system]:opacity-100" />
         </span>
       </Button>
       <Popover

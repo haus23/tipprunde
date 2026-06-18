@@ -25,7 +25,7 @@ export function RoundAccordion({ title, meta, defaultOpen, children }: Props) {
         <span className="text-sm font-medium">{title}</span>
         <span className="flex items-center gap-3">
           {meta}
-          <ChevronDownIcon className="text-subtle size-3.5 transition-transform duration-200 group-open:rotate-180" />
+          <ChevronDownIcon className="text-subtle size-3.5 transition-transform duration-200 ease-out group-open:rotate-180" />
         </span>
       </summary>
       <div className="xs:px-3 px-2 pb-3">{children}</div>

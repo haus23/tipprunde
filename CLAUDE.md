@@ -72,6 +72,8 @@ Shared documentation in `docs/`:
 
 AGENTS.md has instructions to find skills beside the autodiscoverable skills in your .claude folder
 
+After adding or changing interactive UI elements (buttons, popovers, accordions, hover states, animations), run the `emil-design-eng` skill to review animation and transition quality.
+
 ## Release (from repo root):
 
 ```bash

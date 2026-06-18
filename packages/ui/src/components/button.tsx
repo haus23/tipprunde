@@ -6,7 +6,7 @@ import { cva } from "#/lib/cva.ts";
 const buttonClasses = cva({
   base: [
     "inline-flex items-center justify-center gap-2 rounded-sm whitespace-nowrap",
-    "transition ease-out outline-none",
+    "transition-[background-color,transform,opacity] ease-out outline-none",
     "data-focus-visible:ring-2 data-focus-visible:ring-accent",
     "data-pressed:scale-[0.97]",
     "disabled:opacity-50",
