@@ -39,7 +39,7 @@ function NavItem({ to, end, icon: Icon, label, collapsed, onNavigate }: NavItemP
       end={end}
       onClick={onNavigate}
       className={cn(
-        "group flex items-center gap-2.5 rounded-sm px-2 py-2 text-sm transition-colors",
+        "group flex items-center gap-2.5 rounded-sm px-3 py-2 text-sm transition-colors",
         "text-app hover:bg-nav-active",
         "aria-[current=page]:bg-nav-active",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
@@ -49,7 +49,7 @@ function NavItem({ to, end, icon: Icon, label, collapsed, onNavigate }: NavItemP
       <span
         className={cn(
           "overflow-hidden whitespace-nowrap transition-opacity duration-200",
-          collapsed && "opacity-0",
+          collapsed ? "opacity-0" : "opacity-100",
         )}
       >
         {label}
@@ -77,6 +77,25 @@ type SidebarNavProps = {
 
 /** Shared nav body for the persistent sidebar (rail) and the mobile drawer. */
 export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
+  const logoutButton = (
+    <Button
+      type="submit"
+      intent="ghost"
+      aria-label="Abmelden"
+      className="text-app w-full justify-start gap-2.5 px-3"
+    >
+      <LogOutIcon className="size-4 shrink-0" />
+      <span
+        className={cn(
+          "overflow-hidden whitespace-nowrap transition-opacity duration-200",
+          collapsed ? "opacity-0" : "opacity-100",
+        )}
+      >
+        Abmelden
+      </span>
+    </Button>
+  );
+
   return (
     <div className="flex flex-1 flex-col overflow-y-auto">
       <nav className="flex flex-col gap-1 p-2">
@@ -184,24 +203,13 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
         <Form method="post" action="/logout">
           {collapsed ? (
             <TooltipTrigger delay={600}>
-              <Focusable>
-                <Button type="submit" intent="ghost" size="icon" aria-label="Abmelden">
-                  <LogOutIcon className="size-4 shrink-0" />
-                </Button>
-              </Focusable>
+              <Focusable>{logoutButton}</Focusable>
               <Tooltip placement="right" offset={6} className={tooltipClass}>
                 Abmelden
               </Tooltip>
             </TooltipTrigger>
           ) : (
-            <Button
-              type="submit"
-              intent="ghost"
-              className="text-app w-full justify-start gap-2.5 px-2"
-            >
-              <LogOutIcon className="size-4 shrink-0" />
-              Abmelden
-            </Button>
+            logoutButton
           )}
         </Form>
       </div>
@@ -231,7 +239,7 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
           <span
             className={cn(
               "overflow-hidden text-sm font-semibold whitespace-nowrap transition-opacity duration-200",
-              isSidebarCollapsed && "opacity-0",
+              isSidebarCollapsed ? "opacity-0" : "opacity-100",
             )}
           >
             runde.tips
