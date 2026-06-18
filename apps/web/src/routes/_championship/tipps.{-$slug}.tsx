@@ -215,6 +215,7 @@ function PlayerRoundItem({ round, defaultOpen }: { round: PlayerRound; defaultOp
                 <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
                   {showTip ? tip.tip : "–"}
                   {showTip && tip.joker && <TipFlag label="Joker-Tipp" />}
+                  {showTip && tip.extraJoker && <TipFlag label="Zusatzjoker-Tipp" />}
                 </td>
                 <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                   {tip?.points != null ? tip.points : "–"}

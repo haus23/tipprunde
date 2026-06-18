@@ -18,7 +18,10 @@ export const getPlayerMatches = createServerFn()
             hometeam: { columns: { name: true, shortName: true } },
             awayteam: { columns: { name: true, shortName: true } },
             // Only this player's tip — points/joker are already persisted.
-            tips: { where: { userId }, columns: { tip: true, points: true, joker: true } },
+            tips: {
+              where: { userId },
+              columns: { tip: true, points: true, joker: true, extraJoker: true },
+            },
           },
         },
       },

@@ -98,6 +98,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
       tip: t?.tip ?? null,
       points: t?.points ?? null,
       joker: t?.joker ?? null,
+      extraJoker: t?.extraJoker ?? null,
     };
   });
   const sortedRows = sortCol ? sortRows(rows, sortCol, sortDir) : rows;
@@ -189,6 +190,7 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
                   <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
                     {row.tip ?? "–"}
                     {row.joker && <TipFlag label="Joker-Tipp" />}
+                    {row.extraJoker && <TipFlag label="Zusatzjoker-Tipp" />}
                   </td>
                 )}
                 {match.tipsPublished && (
@@ -215,6 +217,7 @@ type TipRow = {
   tip: string | null;
   points: number | null;
   joker: boolean | null;
+  extraJoker: boolean | null;
 };
 
 /** "2:1" → [2, 1]; non-numeric parts sort last (99). */

@@ -75,7 +75,9 @@ export const getMatch = createServerFn()
           hometeam: { columns: { name: true, shortName: true } },
           awayteam: { columns: { name: true, shortName: true } },
           // All tips for this match; joined to the ranking by userId in the view.
-          tips: { columns: { userId: true, tip: true, points: true, joker: true } },
+          tips: {
+            columns: { userId: true, tip: true, points: true, joker: true, extraJoker: true },
+          },
         },
       }),
       // Nearest lower/higher match number — null at the ends.
@@ -185,7 +187,7 @@ export const getMatchdayTips = createServerFn()
       matchIds.length > 0
         ? await db.query.tips.findMany({
             where: { userId, matchId: { in: matchIds } },
-            columns: { matchId: true, tip: true, points: true, joker: true },
+            columns: { matchId: true, tip: true, points: true, joker: true, extraJoker: true },
           })
         : [];
 
@@ -199,7 +201,7 @@ export const getMatchdayTips = createServerFn()
           paarungShort: `${m.hometeam?.shortName ?? "–"} – ${m.awayteam?.shortName ?? "–"}`,
           result: m.result,
           tip: userTip?.tip ?? null,
-          isFlagged: userTip?.joker ?? false,
+          isFlagged: (userTip?.joker || userTip?.extraJoker) ?? false,
           points: userTip?.points ?? null,
         };
       }),
