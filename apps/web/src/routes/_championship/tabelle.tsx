@@ -2,16 +2,21 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { RankingTable } from "#/components/ranking-table.tsx";
+import { pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import type { SessionUser } from "#/lib/session.ts";
 
 export const Route = createFileRoute("/_championship/tabelle")({
-  loader: ({ context }) => {
+  loader: async ({ context }) => {
     const id = context.championship?.id;
     if (id !== undefined) {
-      return context.queryClient.ensureQueryData(rankingQueryOptions(id));
+      await context.queryClient.ensureQueryData(rankingQueryOptions(id));
     }
+    return { championshipName: context.championship?.name };
   },
+  head: ({ loaderData }) => ({
+    meta: [{ title: pageTitle("Tabelle", loaderData?.championshipName) }],
+  }),
   component: RouteComponent,
 });
 

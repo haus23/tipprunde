@@ -4,6 +4,7 @@ import { ChevronLeftIcon } from "lucide-react";
 
 import { RankingTable } from "#/components/ranking-table.tsx";
 import { championshipBySlugQueryOptions } from "#/lib/archiv.ts";
+import { pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 
 export const Route = createFileRoute("/archiv/$slug")({
@@ -13,7 +14,11 @@ export const Route = createFileRoute("/archiv/$slug")({
     );
     if (!championship) throw notFound();
     await context.queryClient.ensureQueryData(rankingQueryOptions(championship.id));
+    return { championshipName: championship.name };
   },
+  head: ({ loaderData }) => ({
+    meta: [{ title: pageTitle(loaderData?.championshipName, "Archiv") }],
+  }),
   component: RouteComponent,
 });
 

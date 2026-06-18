@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { CellLink } from "#/components/cell-link.tsx";
 import { allCompletedChampionshipsQueryOptions, ewigeTabellQueryOptions } from "#/lib/archiv.ts";
+import { pageTitle } from "#/lib/format.ts";
 
 export const Route = createFileRoute("/archiv/")({
   loader: ({ context }) =>
@@ -10,6 +11,9 @@ export const Route = createFileRoute("/archiv/")({
       context.queryClient.ensureQueryData(allCompletedChampionshipsQueryOptions),
       context.queryClient.ensureQueryData(ewigeTabellQueryOptions),
     ]),
+  head: () => ({
+    meta: [{ title: pageTitle("Archiv") }],
+  }),
   component: RouteComponent,
 });
 

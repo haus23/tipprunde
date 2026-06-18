@@ -12,7 +12,7 @@ import { useState } from "react";
 import { CellLink } from "#/components/cell-link.tsx";
 import { MatchSwitch } from "#/components/match-switch.tsx";
 import { TipFlag } from "#/components/tip-flag.tsx";
-import { formatDate } from "#/lib/format.ts";
+import { formatDate, pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import { matchQueryOptions, roundsQueryOptions } from "#/lib/spiele.ts";
 
@@ -20,17 +20,21 @@ const navLinkClass =
   "text-subtle hover:text-app focus-visible:ring-accent flex items-center gap-1 rounded-sm outline-none transition-colors focus-visible:ring-2";
 
 export const Route = createFileRoute("/_championship/spiele/$nr")({
-  loader: ({ context, params }) => {
+  loader: async ({ context, params }) => {
     const id = context.championship?.id;
     const nr = Number(params.nr);
     if (id !== undefined && Number.isInteger(nr)) {
-      return Promise.all([
+      await Promise.all([
         context.queryClient.ensureQueryData(rankingQueryOptions(id)),
         context.queryClient.ensureQueryData(roundsQueryOptions(id)),
         context.queryClient.ensureQueryData(matchQueryOptions(id, nr)),
       ]);
     }
+    return { championshipName: context.championship?.name };
   },
+  head: ({ loaderData }) => ({
+    meta: [{ title: pageTitle("Spiele", loaderData?.championshipName) }],
+  }),
   component: RouteComponent,
 });
 

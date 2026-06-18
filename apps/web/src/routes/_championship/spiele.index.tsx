@@ -3,17 +3,21 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { CellLink } from "#/components/cell-link.tsx";
 import { RoundAccordion } from "#/components/round-accordion.tsx";
-import { formatDate } from "#/lib/format.ts";
+import { formatDate, pageTitle } from "#/lib/format.ts";
 import { roundsQueryOptions } from "#/lib/spiele.ts";
 import type { SpieleRound } from "#/lib/spiele.ts";
 
 export const Route = createFileRoute("/_championship/spiele/")({
-  loader: ({ context }) => {
+  loader: async ({ context }) => {
     const id = context.championship?.id;
     if (id !== undefined) {
-      return context.queryClient.ensureQueryData(roundsQueryOptions(id));
+      await context.queryClient.ensureQueryData(roundsQueryOptions(id));
     }
+    return { championshipName: context.championship?.name };
   },
+  head: ({ loaderData }) => ({
+    meta: [{ title: pageTitle("Spiele", loaderData?.championshipName) }],
+  }),
   component: RouteComponent,
 });
 

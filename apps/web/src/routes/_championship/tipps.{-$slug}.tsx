@@ -6,7 +6,7 @@ import { CellLink } from "#/components/cell-link.tsx";
 import { PlayerSwitch } from "#/components/player-switch.tsx";
 import { RoundAccordion } from "#/components/round-accordion.tsx";
 import { TipFlag } from "#/components/tip-flag.tsx";
-import { formatDate } from "#/lib/format.ts";
+import { formatDate, pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import type { RankedPlayer } from "#/lib/ranking.ts";
 import { rulesetQueryOptions } from "#/lib/ruleset.ts";
@@ -30,7 +30,11 @@ export const Route = createFileRoute("/_championship/tipps/{-$slug}")({
         playerMatchesQueryOptions(championshipId, player.userId),
       );
     }
+    return { playerName: player?.name, championshipName: context.championship?.name };
   },
+  head: ({ loaderData }) => ({
+    meta: [{ title: pageTitle(loaderData?.playerName, loaderData?.championshipName) }],
+  }),
   component: RouteComponent,
 });
 

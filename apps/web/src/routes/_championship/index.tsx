@@ -6,7 +6,7 @@ import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
 import { CellLink } from "#/components/cell-link.tsx";
 import { archivPreviewQueryOptions } from "#/lib/archiv.ts";
 import type { ArchivEntry } from "#/lib/archiv.ts";
-import { formatDate } from "#/lib/format.ts";
+import { formatDate, pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import type { RankedPlayer } from "#/lib/ranking.ts";
 import { rulesetQueryOptions } from "#/lib/ruleset.ts";
@@ -16,17 +16,21 @@ import { currentMatchesQueryOptions } from "#/lib/spiele.ts";
 import type { CurrentMatch } from "#/lib/spiele.ts";
 
 export const Route = createFileRoute("/_championship/")({
-  loader: ({ context }) => {
+  loader: async ({ context }) => {
     const id = context.championship?.id;
     if (id !== undefined) {
-      return Promise.all([
+      await Promise.all([
         context.queryClient.ensureQueryData(rankingQueryOptions(id)),
         context.queryClient.ensureQueryData(currentMatchesQueryOptions(id)),
         context.queryClient.ensureQueryData(rulesetQueryOptions(id)),
         context.queryClient.ensureQueryData(archivPreviewQueryOptions(id)),
       ]);
     }
+    return { championshipName: context.championship?.name };
   },
+  head: ({ loaderData }) => ({
+    meta: [{ title: pageTitle(loaderData?.championshipName) }],
+  }),
   component: RouteComponent,
 });
 

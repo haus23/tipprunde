@@ -5,19 +5,24 @@ import { ChevronDownIcon } from "lucide-react";
 import { CellLink } from "#/components/cell-link.tsx";
 import { extraQuestionsQueryOptions } from "#/lib/extra-questions.ts";
 import type { ExtraQuestion } from "#/lib/extra-questions.ts";
+import { pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import type { RankedPlayer } from "#/lib/ranking.ts";
 
 export const Route = createFileRoute("/_championship/zusatzfragen")({
-  loader: ({ context }) => {
+  loader: async ({ context }) => {
     const id = context.championship?.id;
     if (id !== undefined) {
-      return Promise.all([
+      await Promise.all([
         context.queryClient.ensureQueryData(rankingQueryOptions(id)),
         context.queryClient.ensureQueryData(extraQuestionsQueryOptions(id)),
       ]);
     }
+    return { championshipName: context.championship?.name };
   },
+  head: ({ loaderData }) => ({
+    meta: [{ title: pageTitle("Zusatzfragen", loaderData?.championshipName) }],
+  }),
   component: RouteComponent,
 });
 

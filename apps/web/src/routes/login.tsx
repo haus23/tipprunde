@@ -6,6 +6,7 @@ import { Form } from "react-aria-components";
 
 import { getPendingLogin, requestCode, startOver, verifyCode } from "#/lib/auth.ts";
 import type { LoginStep } from "#/lib/auth.ts";
+import { pageTitle } from "#/lib/format.ts";
 
 export const Route = createFileRoute("/login")({
   beforeLoad: ({ context }) => {
@@ -14,6 +15,9 @@ export const Route = createFileRoute("/login")({
     }
   },
   loader: () => getPendingLogin(),
+  head: () => ({
+    meta: [{ title: pageTitle("Anmelden") }],
+  }),
   component: RouteComponent,
 });
 
