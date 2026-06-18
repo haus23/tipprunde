@@ -7,6 +7,8 @@ import {
   HeadContent,
   Scripts,
   useRouter,
+  ErrorComponent,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { Button, Logo } from "@tipprunde/ui";
 import { ChevronDownIcon, LogInIcon, LogOutIcon } from "lucide-react";
@@ -28,6 +30,8 @@ import appCss from "../styles/app.css?url";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   beforeLoad: async () => await getSessionData(),
+  errorComponent: RootErrorBoundary,
+  notFoundComponent: RootNotFound,
   head: () => ({
     meta: [
       {
@@ -161,6 +165,41 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
         className="focus-visible:ring-accent hover:bg-nav-active hover:text-app rounded-sm px-3 py-1.5 text-sm font-medium transition ease-out outline-none focus-visible:ring-2"
       >
         {children}
+      </Link>
+    </div>
+  );
+}
+
+function RootErrorBoundary({ error, reset }: ErrorComponentProps) {
+  return (
+    <RootDocument colorScheme="system">
+      <div className="flex min-h-svh flex-col items-center justify-center gap-4 p-8 text-center">
+        <h1 className="text-xl font-semibold">Etwas ist schiefgelaufen</h1>
+        {import.meta.env.DEV && (
+          <pre className="bg-surface-raised text-subtle max-w-xl overflow-auto rounded-md p-4 text-left text-xs">
+            {error instanceof Error ? error.message : String(error)}
+          </pre>
+        )}
+        <div className="flex gap-4 text-sm">
+          <button onClick={reset} className="text-accent transition-colors hover:underline">
+            Erneut versuchen
+          </button>
+          <a href="/" className="text-muted hover:text-app transition-colors">
+            Zur Startseite
+          </a>
+        </div>
+      </div>
+    </RootDocument>
+  );
+}
+
+function RootNotFound() {
+  return (
+    <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-center">
+      <h1 className="text-xl font-semibold">Seite nicht gefunden</h1>
+      <p className="text-subtle text-sm">Diese Seite existiert nicht.</p>
+      <Link to="/" className="text-accent text-sm transition-colors hover:underline">
+        Zur Startseite
       </Link>
     </div>
   );
