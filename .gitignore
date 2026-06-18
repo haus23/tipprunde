@@ -7,13 +7,12 @@ node_modules/
 .env.*
 !.env.example
 
-# Tanstack App
+# Prod deployment
+.vercel/
+
+# Tanstack Apps
 .tanstack/
 .output/
-
-# Svelte App
-.svelte-kit/
-.vercel/
 
 # React Router Apps
 .react-router/

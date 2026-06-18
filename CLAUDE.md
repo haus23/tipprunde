@@ -8,7 +8,6 @@ pnpm workspace with two apps and shared packages:
 
 - `apps/web` — New web frontend (TanStack Start) — **work in progress**
 - `apps/manager` — Backend management app (React Router 7)
-- `apps/web-legacy` — Original SvelteKit frontend, kept as reference only — do not modify
 - `packages/db` — Drizzle ORM schema + relations (SQLite/Turso)
 - `packages/domain` — Domain logic: scoring rules, tip point calculation
 - `packages/theme` — Shared Tailwind CSS v4 design tokens (Radix Sand + Orange palette)

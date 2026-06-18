@@ -16,7 +16,6 @@ catalog:
 catalogs:
   icons:
     lucide-react: 1.17.0
-    "@lucide/svelte": 1.17.0
   orm:
     "@libsql/client": 0.17.3
     drizzle-orm: 1.0.0-rc.3
