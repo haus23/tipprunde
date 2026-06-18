@@ -94,7 +94,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       awayteam: { columns: { name: true } },
       tips: {
         where: { userId: currentPlayer.userId },
-        columns: { tip: true, joker: true },
+        columns: { tip: true, joker: true, extraJoker: true },
       },
     },
     orderBy: { nr: "asc" },
@@ -127,6 +127,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
     const tip = (formData.get("tip") as string) || null;
     const joker = formData.get("joker") === "true";
+    const extraJoker = formData.get("extraJoker") === "true";
 
     const [match, player, ruleset] = await Promise.all([
       db.query.matches.findFirst({
@@ -150,10 +151,10 @@ export async function action({ request, context }: Route.ActionArgs) {
 
     await db
       .insert(tipsTable)
-      .values({ matchId, userId, tip, joker })
+      .values({ matchId, userId, tip, joker, extraJoker })
       .onConflictDoUpdate({
         target: [tipsTable.matchId, tipsTable.userId],
-        set: { tip, joker },
+        set: { tip, joker, extraJoker },
       });
 
     const tipRuleId = ruleset?.tipRuleId as TipRuleId | undefined;
@@ -180,14 +181,14 @@ function normalizeTip(raw: string): string {
   return raw.replace(/\s+/g, "").replace(/[-.]/g, ":").replace(/:+/g, ":");
 }
 
-type TipEntry = { tip: string; joker: boolean; invalid?: boolean };
+type TipEntry = { tip: string; joker: boolean; extraJoker: boolean; invalid?: boolean };
 
 type TipMatch = {
   id: number;
   nr: number;
   hometeam: { name: string } | null;
   awayteam: { name: string } | null;
-  tips: { tip: string | null; joker: boolean | null }[];
+  tips: { tip: string | null; joker: boolean | null; extraJoker: boolean | null }[];
 };
 
 type TipGridProps = {
@@ -196,6 +197,8 @@ type TipGridProps = {
   jokerRuleId: string | null;
   jokerCount: number;
   roundJokerCount: number;
+  hasExtraJoker: boolean;
+  extraJokerCount: number;
 };
 
 function TipGrid({
@@ -204,6 +207,8 @@ function TipGrid({
   jokerRuleId,
   jokerCount,
   roundJokerCount,
+  hasExtraJoker,
+  extraJokerCount,
 }: TipGridProps) {
   const fetcher = useFetcher();
 
@@ -211,20 +216,36 @@ function TipGrid({
     const entries: Record<number, TipEntry> = {};
     for (const match of matches) {
       const t = match.tips[0];
-      if (t) entries[match.id] = { tip: t.tip ?? "", joker: t.joker ?? false };
+      if (t)
+        entries[match.id] = {
+          tip: t.tip ?? "",
+          joker: t.joker ?? false,
+          extraJoker: t.extraJoker ?? false,
+        };
     }
     return entries;
   });
 
   function isJokerAllowed(matchId: number): boolean {
+    if (tipEntries[matchId]?.extraJoker) return false;
     const currentlyChecked = tipEntries[matchId]?.joker ?? false;
     if (jokerRuleId === "einmal-pro-runde") return roundJokerCount === 0 || currentlyChecked;
-    if (jokerRuleId === "zwei-pro-turnier") return jokerCount < 2 || currentlyChecked;
+    if (
+      jokerRuleId === "zwei-pro-turnier" ||
+      jokerRuleId === "zwei-pro-turnier-plus-zwei-zusatzjoker"
+    )
+      return jokerCount < 2 || currentlyChecked;
     return false;
   }
 
+  function isExtraJokerAllowed(matchId: number): boolean {
+    if (tipEntries[matchId]?.joker) return false;
+    const currentlyChecked = tipEntries[matchId]?.extraJoker ?? false;
+    return extraJokerCount < 2 || currentlyChecked;
+  }
+
   function getTip(matchId: number): TipEntry {
-    return tipEntries[matchId] ?? { tip: "", joker: false };
+    return tipEntries[matchId] ?? { tip: "", joker: false, extraJoker: false };
   }
 
   function updateTip(matchId: number, update: Partial<TipEntry>) {
@@ -239,6 +260,7 @@ function TipGrid({
         userId: String(currentUserId),
         tip: entry.tip,
         joker: String(entry.joker),
+        extraJoker: String(entry.extraJoker),
       },
       { method: "post" },
     );
@@ -260,11 +282,17 @@ function TipGrid({
         const normalized = trimmed ? normalizeTip(trimmed) : "";
         const isValid = normalized !== "" && TIP_PATTERN.test(normalized);
         const joker = getTip(match.id).joker;
+        const extraJoker = getTip(match.id).extraJoker;
 
-        newEntries[match.id] = { tip: normalized, joker, invalid: normalized !== "" && !isValid };
+        newEntries[match.id] = {
+          tip: normalized,
+          joker,
+          extraJoker,
+          invalid: normalized !== "" && !isValid,
+        };
 
         if (isValid || normalized === "") {
-          saveTip(match.id, { tip: normalized, joker });
+          saveTip(match.id, { tip: normalized, joker, extraJoker });
         }
       });
 
@@ -329,6 +357,7 @@ function TipGrid({
             </div>
           </th>
           <th className="text-muted pb-3 pl-2 text-center font-medium">Joker</th>
+          {hasExtraJoker && <th className="text-muted pb-3 pl-2 text-center font-medium">Extra</th>}
         </tr>
       </thead>
       <tbody>
@@ -367,6 +396,20 @@ function TipGrid({
                 aria-label={`Joker für Spiel ${match.nr}`}
               />
             </td>
+            {hasExtraJoker && (
+              <td className="py-3 pl-2 text-center">
+                <Checkbox
+                  isSelected={getTip(match.id).extraJoker}
+                  isDisabled={!isExtraJokerAllowed(match.id)}
+                  onChange={(checked) => {
+                    const updated = { ...getTip(match.id), extraJoker: checked };
+                    updateTip(match.id, { extraJoker: checked });
+                    saveTip(match.id, updated);
+                  }}
+                  aria-label={`Extra-Joker für Spiel ${match.nr}`}
+                />
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
@@ -415,8 +458,10 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
   const currentMatches = allMatches.filter((m) => m.roundId === currentRound?.id);
 
   // Joker counts derived from server-confirmed data (allMatches)
+  const hasExtraJoker = jokerRuleId === "zwei-pro-turnier-plus-zwei-zusatzjoker";
   const jokerCount = allMatches.filter((m) => m.tips[0]?.joker).length;
   const roundJokerCount = currentMatches.filter((m) => m.tips[0]?.joker).length;
+  const extraJokerCount = allMatches.filter((m) => m.tips[0]?.extraJoker).length;
 
   return (
     <div className="space-y-6 p-8">
@@ -477,6 +522,8 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
             jokerRuleId={jokerRuleId}
             jokerCount={jokerCount}
             roundJokerCount={roundJokerCount}
+            hasExtraJoker={hasExtraJoker}
+            extraJokerCount={extraJokerCount}
           />
         </CardContent>
       </Card>
