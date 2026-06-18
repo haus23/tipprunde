@@ -120,6 +120,20 @@ export const tips = sqliteTable(
   (table) => [primaryKey({ columns: [table.matchId, table.userId] })],
 );
 
+export const roundPoints = sqliteTable(
+  "round_points",
+  {
+    roundId: integer("round_id")
+      .notNull()
+      .references(() => rounds.id, { onDelete: "cascade" }),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    points: integer("points").notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.roundId, table.userId] })],
+);
+
 export const extraQuestions = sqliteTable("extra_questions", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   championshipId: integer("championship_id")

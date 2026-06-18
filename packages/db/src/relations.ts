@@ -44,6 +44,22 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.rounds.id,
       to: r.matches.roundId,
     }),
+    roundPoints: r.many.roundPoints({
+      from: r.rounds.id,
+      to: r.roundPoints.roundId,
+    }),
+  },
+  roundPoints: {
+    round: r.one.rounds({
+      from: r.roundPoints.roundId,
+      to: r.rounds.id,
+      optional: false,
+    }),
+    user: r.one.users({
+      from: r.roundPoints.userId,
+      to: r.users.id,
+      optional: false,
+    }),
   },
   players: {
     user: r.one.users({

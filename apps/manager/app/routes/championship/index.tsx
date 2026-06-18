@@ -1,8 +1,10 @@
 import {
   championships,
   players as playersTable,
+  roundPoints as roundPointsTable,
   rounds as roundsTable,
 } from "@tipprunde/db/schema";
+import { calcGoalDeviation } from "@tipprunde/domain/scoring";
 import { Button } from "@tipprunde/ui";
 import { and, eq, max } from "drizzle-orm";
 import { CalendarIcon, PlusIcon } from "lucide-react";
@@ -34,11 +36,11 @@ export async function loader({ context }: Route.LoaderArgs) {
   const [ruleset, roundList, playerList, allUsers] = await Promise.all([
     db.query.rulesets.findFirst({
       where: { id: championship.rulesetId },
-      columns: { extraQuestionRuleId: true },
+      columns: { extraQuestionRuleId: true, roundRuleId: true },
     }),
     db.query.rounds.findMany({
       where: { championshipId: championship.id },
-      columns: { id: true, nr: true, published: true, tipsPublished: true },
+      columns: { id: true, nr: true, published: true, tipsPublished: true, completed: true },
       orderBy: { nr: "asc" },
     }),
     db.query.players.findMany({
@@ -53,6 +55,7 @@ export async function loader({ context }: Route.LoaderArgs) {
   return {
     championship,
     hasExtraQuestions: ruleset?.extraQuestionRuleId === "mit-zusatzfragen",
+    hasDeviationRule: ruleset?.roundRuleId === "torabweichung-bonus-malus",
     roundList,
     playerUserIds: playerList.map((p) => p.userId),
     allUsers,
@@ -82,6 +85,72 @@ export async function action({ request, context }: Route.ActionArgs) {
       .update(roundsTable)
       .set({ [field]: value })
       .where(eq(roundsTable.id, roundId));
+    return null;
+  }
+
+  if (intent === "toggle-round-completed") {
+    const roundId = Number(formData.get("roundId"));
+    const value = formData.get("value") === "true";
+
+    // Always clean up old roundPoints entries for this round first
+    await db.delete(roundPointsTable).where(eq(roundPointsTable.roundId, roundId));
+
+    if (value) {
+      // Fetch all matches in this round with results, nested with all tips
+      const roundMatches = await db.query.matches.findMany({
+        where: { roundId },
+        columns: { id: true, result: true },
+        with: {
+          tips: { columns: { userId: true, tip: true } },
+        },
+      });
+
+      const matchesWithResult = roundMatches.filter((m) => m.result !== null);
+
+      if (matchesWithResult.length > 0) {
+        // Collect all player userIds from tips across all matches
+        const allUserIds = [
+          ...new Set(matchesWithResult.flatMap((m) => m.tips.map((t) => t.userId))),
+        ];
+
+        // Calculate deviation sum per player
+        const deviations = allUserIds.map((userId) => {
+          const sum = matchesWithResult.reduce((acc, m) => {
+            const tip = m.tips.find((t) => t.userId === userId);
+            return acc + calcGoalDeviation(tip?.tip ?? null, m.result!);
+          }, 0);
+          return { userId, sum };
+        });
+
+        if (deviations.length > 0) {
+          const minDev = Math.min(...deviations.map((d) => d.sum));
+          const maxDev = Math.max(...deviations.map((d) => d.sum));
+
+          const entries: { roundId: number; userId: number; points: number }[] = [];
+          for (const { userId, sum } of deviations) {
+            if (sum === minDev && minDev !== maxDev) entries.push({ roundId, userId, points: 1 });
+            else if (sum === maxDev && minDev !== maxDev)
+              entries.push({ roundId, userId, points: -1 });
+          }
+          if (entries.length > 0) {
+            await db.insert(roundPointsTable).values(entries);
+          }
+        }
+      }
+    }
+
+    await db
+      .update(roundsTable)
+      .set({ completed: value || false })
+      .where(eq(roundsTable.id, roundId));
+
+    // Re-fetch the championshipId for this round to update the ranking
+    const round = await db.query.rounds.findFirst({
+      where: { id: roundId },
+      columns: { championshipId: true },
+    });
+    if (round) await updateRanking(round.championshipId);
+
     return null;
   }
 
@@ -217,14 +286,19 @@ type Round = {
   nr: number;
   published: boolean;
   tipsPublished: boolean;
+  completed: boolean | null;
 };
 
-function RoundRow({ round }: { round: Round }) {
+function RoundRow({ round, hasDeviationRule }: { round: Round; hasDeviationRule: boolean }) {
   const fetcher = useFetcher();
   const isPending = fetcher.state !== "idle";
 
   const pendingField = fetcher.formData?.get("field") as RoundFlagField | undefined;
   const pendingValue = fetcher.formData?.get("value") === "true";
+  const pendingCompleted =
+    fetcher.formData?.get("intent") === "toggle-round-completed"
+      ? fetcher.formData?.get("value") === "true"
+      : undefined;
 
   function getFlag(field: RoundFlagField, serverValue: boolean) {
     return pendingField === field ? pendingValue : serverValue;
@@ -237,12 +311,22 @@ function RoundRow({ round }: { round: Round }) {
     );
   }
 
+  function toggleCompleted(current: boolean) {
+    void fetcher.submit(
+      { intent: "toggle-round-completed", roundId: String(round.id), value: String(!current) },
+      { method: "post" },
+    );
+  }
+
   const published = getFlag("published", round.published);
   const tipsPublished = getFlag("tipsPublished", round.tipsPublished);
+  const completed = pendingCompleted ?? round.completed ?? false;
 
-  // Dependency chain: published → tipsPublished; once tips are public, round can't be unpublished
-  const publishedDisabled = isPending || tipsPublished;
-  const tipsPublishedDisabled = isPending || !published;
+  // Dependency chain: published → tipsPublished → completed
+  // Once completed, published and tipsPublished are locked
+  const publishedDisabled = isPending || tipsPublished || completed;
+  const tipsPublishedDisabled = isPending || !published || completed;
+  const completedDisabled = isPending || !tipsPublished;
 
   return (
     <div className="flex items-center gap-4 py-3">
@@ -260,6 +344,14 @@ function RoundRow({ round }: { round: Round }) {
           onChange={() => toggle("tipsPublished", tipsPublished)}
           isDisabled={tipsPublishedDisabled}
         />
+        {hasDeviationRule && (
+          <CompactSwitch
+            label="Abgeschlossen"
+            isSelected={completed}
+            onChange={() => toggleCompleted(completed)}
+            isDisabled={completedDisabled}
+          />
+        )}
       </div>
       <Link
         to={`spiele/${round.nr}`}
@@ -280,7 +372,8 @@ function RoundRow({ round }: { round: Round }) {
 // --- Page ---
 
 export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) {
-  const { championship, hasExtraQuestions, roundList, playerUserIds, allUsers } = loaderData;
+  const { championship, hasExtraQuestions, hasDeviationRule, roundList, playerUserIds, allUsers } =
+    loaderData;
 
   const flagFetcher = useFetcher();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -372,7 +465,7 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
           ) : (
             <div className="divide-subtle divide-y">
               {roundList.map((round) => (
-                <RoundRow key={round.id} round={round} />
+                <RoundRow key={round.id} round={round} hasDeviationRule={hasDeviationRule} />
               ))}
             </div>
           )}

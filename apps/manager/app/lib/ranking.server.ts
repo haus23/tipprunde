@@ -3,6 +3,7 @@ import {
   extraQuestions,
   matches,
   players as playersTable,
+  roundPoints as roundPointsTable,
   rounds,
   tips,
 } from "@tipprunde/db/schema";
@@ -17,7 +18,7 @@ import { db } from "#/lib/db.server.ts";
  * extra-question points.
  */
 export async function updateRanking(championshipId: number): Promise<void> {
-  const [championship, enrolledPlayers, tipRows, extraRows] = await Promise.all([
+  const [championship, enrolledPlayers, tipRows, extraRows, roundRows] = await Promise.all([
     db.query.championships.findFirst({
       where: { id: championshipId },
       columns: { extraQuestionPointsPublished: true },
@@ -38,6 +39,11 @@ export async function updateRanking(championshipId: number): Promise<void> {
       .from(extraAnswers)
       .innerJoin(extraQuestions, eq(extraAnswers.extraQuestionId, extraQuestions.id))
       .where(eq(extraQuestions.championshipId, championshipId)),
+    db
+      .select({ userId: roundPointsTable.userId, points: roundPointsTable.points })
+      .from(roundPointsTable)
+      .innerJoin(rounds, eq(roundPointsTable.roundId, rounds.id))
+      .where(eq(rounds.championshipId, championshipId)),
   ]);
 
   if (!championship || enrolledPlayers.length === 0) return;
@@ -50,6 +56,7 @@ export async function updateRanking(championshipId: number): Promise<void> {
     players: enrolledPlayers.map((p) => ({ userId: p.userId })),
     tips: tipRows,
     extraAnswers: extraRows,
+    roundPoints: roundRows,
     ruleset,
     championship: flags,
   });
@@ -66,6 +73,7 @@ export async function updateRanking(championshipId: number): Promise<void> {
           rank: entry.rank,
           tipPoints: entry.tipPoints,
           extraQuestionPoints: includeExtras ? entry.extraQuestionPoints : null,
+          roundPoints: entry.roundPoints || null,
           total: entry.total,
         })
         .where(eq(playersTable.id, p.id));

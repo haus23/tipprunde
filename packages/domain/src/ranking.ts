@@ -11,6 +11,8 @@ export type RankingInput = {
   tips: { userId: number; points: number | null }[];
   /** Extra-answer rows scoped to the championship. `points` is null until graded. */
   extraAnswers: { userId: number; points: number | null }[];
+  /** Round bonus/malus rows scoped to the championship. Omit when no round rule is active. */
+  roundPoints?: { userId: number; points: number }[];
   ruleset: { extraQuestionRuleId: string };
   championship: { extraQuestionPointsPublished: boolean };
 };
@@ -19,6 +21,7 @@ export type RankingEntry = {
   userId: number;
   tipPoints: number;
   extraQuestionPoints: number;
+  roundPoints: number;
   total: number;
   /** Tie-aware rank: equal totals share a rank, the next rank skips accordingly. */
   rank: number;
@@ -59,7 +62,7 @@ export function includesExtraQuestions(
  * AND the championship has published them — otherwise they are ignored.
  */
 export function calcRanking(input: RankingInput): RankingEntry[] {
-  const { players, tips, extraAnswers, ruleset, championship } = input;
+  const { players, tips, extraAnswers, roundPoints, ruleset, championship } = input;
 
   const includeExtras = includesExtraQuestions(ruleset, championship);
 
@@ -67,15 +70,18 @@ export function calcRanking(input: RankingInput): RankingEntry[] {
   const extraPointsByUser = includeExtras
     ? sumPointsByUser(extraAnswers)
     : new Map<number, number>();
+  const roundPointsByUser = roundPoints ? sumPointsByUser(roundPoints) : new Map<number, number>();
 
   const totals = players.map((p) => {
     const tipPoints = tipPointsByUser.get(p.userId) ?? 0;
     const extraQuestionPoints = extraPointsByUser.get(p.userId) ?? 0;
+    const roundPts = roundPointsByUser.get(p.userId) ?? 0;
     return {
       userId: p.userId,
       tipPoints,
       extraQuestionPoints,
-      total: tipPoints + extraQuestionPoints,
+      roundPoints: roundPts,
+      total: tipPoints + extraQuestionPoints + roundPts,
     };
   });
 
