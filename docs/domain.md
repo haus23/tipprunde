@@ -117,10 +117,10 @@ Two domain events trigger recalculation:
 
 ### Round-level modifier (`roundRuleId`, applied after round completion)
 
-| Value                      | Effect                                                                                                     |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `keine-besonderheiten`     | No modification                                                                                            |
-| `tordifferenz-bonus-malus` | After round completion: player with lowest accumulated goal deviation gets +1 point; highest gets −1 point |
+| Value                       | Effect                                                                                                     |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `keine-besonderheiten`      | No modification                                                                                            |
+| `torabweichung-bonus-malus` | After round completion: player with lowest accumulated goal deviation gets +1 point; highest gets −1 point |
 
 Maximum possible score per tip: `3 × 2 × 2 + 3 = 15 points`
 (exact result, double round, joker, sole scorer bonus).
@@ -146,10 +146,10 @@ Affects: points calculation in Ergebnisse.
 
 ### `roundRuleId`
 
-| Value                      | Effect                                                            |
-| -------------------------- | ----------------------------------------------------------------- |
-| `keine-besonderheiten`     | No special round logic                                            |
-| `tordifferenz-bonus-malus` | Enables round completion toggle; triggers bonus/malus calculation |
+| Value                       | Effect                                                            |
+| --------------------------- | ----------------------------------------------------------------- |
+| `keine-besonderheiten`      | No special round logic                                            |
+| `torabweichung-bonus-malus` | Enables round completion toggle; triggers bonus/malus calculation |
 
 ### `extraQuestionRuleId`
 
