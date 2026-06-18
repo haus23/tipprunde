@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { calcGoalDeviation } from "@tipprunde/domain/scoring";
 
 import { CellLink } from "#/components/cell-link.tsx";
 import { PlayerSwitch } from "#/components/player-switch.tsx";
@@ -8,6 +9,7 @@ import { TipFlag } from "#/components/tip-flag.tsx";
 import { formatDate } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import type { RankedPlayer } from "#/lib/ranking.ts";
+import { rulesetQueryOptions } from "#/lib/ruleset.ts";
 import { playerMatchesQueryOptions } from "#/lib/spieler.ts";
 import type { PlayerRound } from "#/lib/spieler.ts";
 
@@ -16,7 +18,10 @@ export const Route = createFileRoute("/_championship/tipps/{-$slug}")({
     const championshipId = context.championship?.id;
     if (championshipId === undefined) return;
 
-    const ranking = await context.queryClient.ensureQueryData(rankingQueryOptions(championshipId));
+    const [ranking] = await Promise.all([
+      context.queryClient.ensureQueryData(rankingQueryOptions(championshipId)),
+      context.queryClient.ensureQueryData(rulesetQueryOptions(championshipId)),
+    ]);
 
     // No redirect: /spieler shows the resolved default player directly.
     const player = resolvePlayer(ranking, params.slug, context.user?.id);
@@ -108,6 +113,10 @@ function PlayerCard({
   const {
     data: { rounds },
   } = useSuspenseQuery(playerMatchesQueryOptions(championshipId, player.userId));
+  const {
+    data: { ruleset },
+  } = useSuspenseQuery(rulesetQueryOptions(championshipId));
+  const hasDeviationRule = ruleset?.roundRuleId === "torabweichung-bonus-malus";
 
   const allMatches = rounds.flatMap((r) => r.matches);
   const matchesWithResult = allMatches.filter((m) => m.result !== null).length;
@@ -143,7 +152,12 @@ function PlayerCard({
       ) : (
         <div className="border-subtle border-t">
           {rounds.map((round, i) => (
-            <PlayerRoundItem key={round.id} round={round} defaultOpen={i === defaultOpenIndex} />
+            <PlayerRoundItem
+              key={round.id}
+              round={round}
+              defaultOpen={i === defaultOpenIndex}
+              hasDeviationRule={hasDeviationRule}
+            />
           ))}
         </div>
       )}
@@ -151,7 +165,15 @@ function PlayerCard({
   );
 }
 
-function PlayerRoundItem({ round, defaultOpen }: { round: PlayerRound; defaultOpen: boolean }) {
+function PlayerRoundItem({
+  round,
+  defaultOpen,
+  hasDeviationRule,
+}: {
+  round: PlayerRound;
+  defaultOpen: boolean;
+  hasDeviationRule: boolean;
+}) {
   const matchesWithResult = round.matches.filter((m) => m.result !== null).length;
   const totalMatches = round.matches.length;
   const roundPoints = round.matches.reduce((sum, m) => sum + (m.tips[0]?.points ?? 0), 0);
@@ -159,6 +181,11 @@ function PlayerRoundItem({ round, defaultOpen }: { round: PlayerRound; defaultOp
     round.tipsPublished && matchesWithResult > 0
       ? (roundPoints / matchesWithResult).toFixed(2)
       : null;
+  const deviationSum = hasDeviationRule
+    ? round.matches
+        .filter((m) => m.result !== null)
+        .reduce((sum, m) => sum + calcGoalDeviation(m.tips[0]?.tip ?? null, m.result!), 0)
+    : null;
   const roundSpiele =
     matchesWithResult === totalMatches ? `${totalMatches}` : `${matchesWithResult}/${totalMatches}`;
 
@@ -171,6 +198,7 @@ function PlayerRoundItem({ round, defaultOpen }: { round: PlayerRound; defaultOp
           {round.tipsPublished && <span>{roundPoints} Pkt</span>}
           <span>{roundSpiele} Sp.</span>
           {roundAvg !== null && <span>Ø {roundAvg}</span>}
+          {deviationSum !== null && <span>Abw. {deviationSum}</span>}
         </span>
       }
     >

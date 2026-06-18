@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { calcTipPoints } from "./scoring.ts";
+import { calcGoalDeviation, calcTipPoints } from "./scoring.ts";
 
 void describe("calcTipPoints — null/0 distinction", () => {
   const rule = "drei-oder-ein-punkt" as const;
@@ -136,5 +136,27 @@ void describe("calcTipPoints — drei-oder-ein-punkt", () => {
 
   void it("wrong tip → 0", () => {
     assert.equal(calcTipPoints("0:2", "2:1", rule, false, false), 0);
+  });
+});
+
+void describe("calcGoalDeviation", () => {
+  void it("exact tip → 0", () => {
+    assert.equal(calcGoalDeviation("2:1", "2:1"), 0);
+  });
+
+  void it("off by 1 home goal → 1", () => {
+    assert.equal(calcGoalDeviation("1:1", "2:1"), 1);
+  });
+
+  void it("off by both goals → sum of abs diffs", () => {
+    assert.equal(calcGoalDeviation("0:2", "3:1"), 4); // |3-0| + |1-2| = 3 + 1
+  });
+
+  void it("null tip counts as 0:0", () => {
+    assert.equal(calcGoalDeviation(null, "2:1"), 3); // |2-0| + |1-0|
+  });
+
+  void it("0:0 tip on 0:0 result → 0", () => {
+    assert.equal(calcGoalDeviation("0:0", "0:0"), 0);
   });
 });

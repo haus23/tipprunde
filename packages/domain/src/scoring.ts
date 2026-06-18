@@ -62,6 +62,16 @@ export function calcTipPoints(
 }
 
 /**
+ * Absolute goal deviation for one tip vs. the actual result.
+ * A null/missing tip is treated as 0:0.
+ */
+export function calcGoalDeviation(tip: string | null, result: string): number {
+  const [resHome, resAway] = parseScore(result);
+  const [tipHome, tipAway] = tip ? parseScore(tip) : [0, 0];
+  return Math.abs(resHome - tipHome) + Math.abs(resAway - tipAway);
+}
+
+/**
  * Apply match-level modifier after all tips for a match are scored.
  * e.g. "alleiniger-treffer-drei-punkte": sole scorer gets +3 bonus.
  *
