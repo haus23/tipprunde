@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.16.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.16.1...v0.16.2)
+
+### 🚀 Enhancements
+
+- **db:** Add extra_joker column to tips table ([065aafe](https://github.com/haus23/tipprunde/commit/065aafe))
+- **manager:** Add extra joker column to tip entry grid ([4ff26d9](https://github.com/haus23/tipprunde/commit/4ff26d9))
+- **scoring:** Apply extra joker multiplier in calcTipPoints ([8923cdf](https://github.com/haus23/tipprunde/commit/8923cdf))
+- **web:** Visualize extra joker flag in match and player tip views ([6670025](https://github.com/haus23/tipprunde/commit/6670025))
+
+### 📖 Documentation
+
+- **domain:** Clarify mutual exclusion of joker and extra joker in rule description ([a480c66](https://github.com/haus23/tipprunde/commit/a480c66))
+
 ## v0.16.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.16.0...v0.16.1)
