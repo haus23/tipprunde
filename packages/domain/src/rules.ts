@@ -35,7 +35,7 @@ export const JOKER_RULES = [
     value: "zwei-pro-turnier-plus-zwei-zusatzjoker" as const,
     label: "Genau zwei Joker im Turnier plus zwei Zusatzjoker",
     description:
-      "Auf einen Tipp kann ein Joker gesetzt werden. Die Punkte dieses Tipps werden verdoppelt. Im gesamten Turnier können maximal zwei Joker gesetzt werden. Zusätzlich können bis zu zwei zusätzliche Joker für je 1 Euro gekauft werden.",
+      "Auf einen Tipp kann ein Joker gesetzt werden. Die Punkte dieses Tipps werden verdoppelt. Im gesamten Turnier können maximal zwei Joker gesetzt werden. Zusätzlich können bis zu zwei zusätzliche Joker für je 1 Euro gekauft werden. Auf einen Tipp können nicht beide Joker gesetzt werden.",
   },
 ];
 
