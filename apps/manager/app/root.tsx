@@ -152,7 +152,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <div className="border-subtle mx-auto grid h-dvh w-full max-w-400 grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
+    <div className="border-subtle isolate mx-auto grid h-dvh w-full max-w-400 grid-cols-[208px_1fr] grid-rows-[56px_1fr] border-x">
       <Sidebar slug={slug} webAppUrl={webAppUrl} />
       <header className="border-subtle bg-surface-raised flex items-center border-b px-4">
         <Suspense fallback={<div className="flex-1" />}>
@@ -174,7 +174,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
           </Button>
         </div>
       </header>
-      <main className="overflow-y-auto">
+      <main className="relative overflow-y-auto">
         <Outlet />
       </main>
     </div>
