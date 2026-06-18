@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.17.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.17.0...v0.17.1)
+
+### 🚀 Enhancements
+
+- **web:** Add global error boundary and 404 page ([47ce6d5](https://github.com/haus23/tipprunde/commit/47ce6d5))
+- **web:** Add per-route HTML titles ([5f22d64](https://github.com/haus23/tipprunde/commit/5f22d64))
+
+### 💅 Refactors
+
+- **web+ui:** Tighten animation/transition details per design review ([e1cbd63](https://github.com/haus23/tipprunde/commit/e1cbd63))
+
+### 🏡 Chore
+
+- Remove legacy Svelte Kit web app. ([67ed02a](https://github.com/haus23/tipprunde/commit/67ed02a))
+- Patch update deps. ([39da088](https://github.com/haus23/tipprunde/commit/39da088))
+- Upgrade vite-plus ([538a569](https://github.com/haus23/tipprunde/commit/538a569))
+
 ## v0.17.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.16.3...v0.17.0)
