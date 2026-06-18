@@ -11,6 +11,10 @@ export const getPlayerMatches = createServerFn()
       orderBy: { nr: "asc" },
       columns: { id: true, nr: true, tipsPublished: true },
       with: {
+        roundPoints: {
+          where: { userId },
+          columns: { points: true },
+        },
         matches: {
           orderBy: { nr: "asc" },
           columns: { id: true, nr: true, date: true, result: true },

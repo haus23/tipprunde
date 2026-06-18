@@ -186,6 +186,7 @@ function PlayerRoundItem({
         .filter((m) => m.result !== null)
         .reduce((sum, m) => sum + calcGoalDeviation(m.tips[0]?.tip ?? null, m.result!), 0)
     : null;
+  const roundBonus = round.roundPoints[0]?.points ?? null;
   const roundSpiele =
     matchesWithResult === totalMatches ? `${totalMatches}` : `${matchesWithResult}/${totalMatches}`;
 
@@ -199,6 +200,11 @@ function PlayerRoundItem({
           <span>{roundSpiele} Sp.</span>
           {roundAvg !== null && <span>Ø {roundAvg}</span>}
           {deviationSum !== null && <span>Abw. {deviationSum}</span>}
+          {roundBonus !== null && (
+            <span className={roundBonus > 0 ? "text-accent" : roundBonus < 0 ? "text-error" : ""}>
+              {roundBonus > 0 ? `+${roundBonus}` : roundBonus < 0 ? String(roundBonus) : "±0"}
+            </span>
+          )}
         </span>
       }
     >

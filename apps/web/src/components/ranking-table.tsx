@@ -22,6 +22,7 @@ export function RankingTable({
   isOngoing: boolean;
   linkPlayers?: boolean;
 }) {
+  const showTotal = showExtras;
   return (
     <table className="w-full border-collapse text-base">
       <thead>
@@ -39,7 +40,7 @@ export function RankingTable({
             </th>
           )}
           <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
-            {showExtras ? (
+            {showTotal ? (
               <>
                 <span className="xs:inline hidden">Gesamtpunkte</span>
                 <span className="xs:hidden">Gesamt</span>

@@ -9,6 +9,7 @@ export type RankedPlayer = {
   slug: string;
   tipPoints: number;
   extraQuestionPoints: number;
+  roundPoints: number | null;
   total: number;
   rank: number;
 };
@@ -23,6 +24,7 @@ export const getRanking = createServerFn()
         rank: true,
         tipPoints: true,
         extraQuestionPoints: true,
+        roundPoints: true,
         total: true,
       },
       with: { user: { columns: { name: true, slug: true } } },
@@ -36,6 +38,7 @@ export const getRanking = createServerFn()
         slug: p.user?.slug ?? "",
         tipPoints: p.tipPoints ?? 0,
         extraQuestionPoints: p.extraQuestionPoints ?? 0,
+        roundPoints: p.roundPoints ?? null,
         total: p.total ?? 0,
         rank: p.rank!,
       }))

@@ -73,7 +73,7 @@ export async function updateRanking(championshipId: number): Promise<void> {
           rank: entry.rank,
           tipPoints: entry.tipPoints,
           extraQuestionPoints: includeExtras ? entry.extraQuestionPoints : null,
-          roundPoints: entry.roundPoints || null,
+          roundPoints: roundRows.length > 0 ? entry.roundPoints : null,
           total: entry.total,
         })
         .where(eq(playersTable.id, p.id));
