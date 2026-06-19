@@ -8,11 +8,13 @@ import { ChevronDownIcon, ChevronRightIcon, PlusIcon, XIcon } from "lucide-react
 import { useEffect, useRef, useState } from "react";
 import {
   Button as RACButton,
+  Input,
   ListBox,
   ListBoxItem,
   Popover,
   Select,
   SelectValue,
+  TextField,
 } from "react-aria-components";
 import { useFetcher } from "react-router";
 
@@ -273,6 +275,8 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
 
   function handleSavePlayerAnswer(userId: number) {
     const playerAnswer = answerInputs[userId]?.trim() ?? "";
+    const serverAnswer = question.extraAnswers.find((ea) => ea.userId === userId)?.answer ?? "";
+    if (playerAnswer === serverAnswer) return;
     void fetcher.submit(
       {
         intent: "save-answer",
@@ -317,19 +321,26 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
   return (
     <Card>
       <div className="border-subtle flex items-start justify-between gap-3 border-b px-6 py-3">
-        <input
-          ref={questionInputRef}
-          type="text"
+        <TextField
+          aria-label="Frage"
           value={questionText}
-          onChange={(e) => setQuestionText(e.target.value)}
+          onChange={setQuestionText}
           onBlur={() => {
             const trimmed = questionText.trim();
-            if (trimmed) saveField("question", trimmed);
-            else setQuestionText(question.question);
+            if (!trimmed) {
+              setQuestionText(question.question);
+              return;
+            }
+            if (trimmed !== question.question) saveField("question", trimmed);
           }}
-          placeholder="Frage eingeben ..."
-          className="placeholder:text-muted min-w-0 flex-1 bg-transparent text-sm font-semibold outline-none placeholder:font-normal"
-        />
+          className="min-w-0 flex-1"
+        >
+          <Input
+            ref={questionInputRef}
+            placeholder="Frage eingeben ..."
+            className="placeholder:text-muted w-full bg-transparent text-sm font-semibold outline-none placeholder:font-normal"
+          />
+        </TextField>
         {showDeleteConfirm ? (
           <div className="flex shrink-0 items-center gap-2">
             <span className="text-muted text-xs">Löschen?</span>
@@ -364,27 +375,39 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
           {/* Description */}
           <div className="space-y-1.5">
             <p className="text-muted text-xs font-medium tracking-wide uppercase">Beschreibung</p>
-            <input
-              type="text"
+            <TextField
+              aria-label="Beschreibung"
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              onBlur={() => saveField("description", description.trim())}
-              placeholder="Punkteverteilung beschreiben ..."
-              className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-full rounded-sm border px-3 py-1.5 text-sm outline-none focus:ring-2"
-            />
+              onChange={setDescription}
+              onBlur={() => {
+                const trimmed = description.trim();
+                if (trimmed !== question.description) saveField("description", trimmed);
+              }}
+            >
+              <Input
+                placeholder="Punkteverteilung beschreiben ..."
+                className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-full rounded-sm border px-3 py-1.5 text-sm outline-none focus:ring-2"
+              />
+            </TextField>
           </div>
 
           {/* Official answer */}
           <div className="space-y-1.5">
             <p className="text-muted text-xs font-medium tracking-wide uppercase">Antwort</p>
-            <input
-              type="text"
+            <TextField
+              aria-label="Antwort"
               value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              onBlur={() => saveField("answer", answer.trim())}
-              placeholder="Noch keine Antwort ..."
-              className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-full rounded-sm border px-3 py-1.5 text-sm outline-none focus:ring-2"
-            />
+              onChange={setAnswer}
+              onBlur={() => {
+                const trimmed = answer.trim();
+                if (trimmed !== (question.answer ?? "")) saveField("answer", trimmed);
+              }}
+            >
+              <Input
+                placeholder="Noch keine Antwort ..."
+                className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-full rounded-sm border px-3 py-1.5 text-sm outline-none focus:ring-2"
+              />
+            </TextField>
           </div>
 
           {/* Points — always visible once answer is set */}
@@ -472,14 +495,17 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                     </Popover>
                   </Select>
 
-                  <input
-                    type="text"
+                  <TextField
+                    aria-label="Punkte"
                     value={newEarnerPoints}
-                    onChange={(e) => setNewEarnerPoints(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleAddEarner()}
-                    placeholder="Pkt."
-                    className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-14 rounded-sm border px-2 py-1 text-center text-sm outline-none focus:ring-2"
-                  />
+                    onChange={setNewEarnerPoints}
+                  >
+                    <Input
+                      onKeyDown={(e) => e.key === "Enter" && handleAddEarner()}
+                      placeholder="Pkt."
+                      className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-14 rounded-sm border px-2 py-1 text-center text-sm outline-none focus:ring-2"
+                    />
+                  </TextField>
 
                   <Button
                     size="sm"
@@ -531,19 +557,18 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                 {players.map((player) => (
                   <div key={player.userId} className="flex items-center gap-3">
                     <span className="w-32 shrink-0 truncate text-sm">{player.user.name}</span>
-                    <input
-                      type="text"
+                    <TextField
+                      aria-label={`Antwort von ${player.user.name}`}
                       value={answerInputs[player.userId] ?? ""}
-                      onChange={(e) =>
-                        setAnswerInputs((prev) => ({
-                          ...prev,
-                          [player.userId]: e.target.value,
-                        }))
-                      }
+                      onChange={(v) => setAnswerInputs((prev) => ({ ...prev, [player.userId]: v }))}
                       onBlur={() => handleSavePlayerAnswer(player.userId)}
-                      placeholder="Keine Antwort ..."
-                      className="border-subtle bg-surface placeholder:text-muted focus:ring-accent min-w-0 flex-1 rounded-sm border px-3 py-1 text-sm outline-none focus:ring-2"
-                    />
+                      className="min-w-0 flex-1"
+                    >
+                      <Input
+                        placeholder="Keine Antwort ..."
+                        className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-full rounded-sm border px-3 py-1 text-sm outline-none focus:ring-2"
+                      />
+                    </TextField>
                   </div>
                 ))}
               </div>

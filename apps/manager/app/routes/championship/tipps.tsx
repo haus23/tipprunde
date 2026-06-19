@@ -3,14 +3,16 @@ import { applyMatchRule, calcTipPoints, type TipRuleId } from "@tipprunde/domain
 import { Button, Checkbox, Label } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { ChevronDownIcon, ClipboardIcon } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Button as RACButton,
+  Input,
   ListBox,
   ListBoxItem,
   Popover,
   Select,
   SelectValue,
+  TextField,
 } from "react-aria-components";
 import { redirect, useFetcher, useNavigate } from "react-router";
 
@@ -231,6 +233,10 @@ function TipGrid({
 }: TipGridProps) {
   const fetcher = useFetcher();
 
+  const lastSubmittedTipRef = useRef<Record<number, string>>(
+    Object.fromEntries(matches.map((m) => [m.id, m.tips[0]?.tip ?? ""])),
+  );
+
   const [tipEntries, setTipEntries] = useState<Record<number, TipEntry>>(() => {
     const entries: Record<number, TipEntry> = {};
     for (const match of matches) {
@@ -310,7 +316,11 @@ function TipGrid({
           invalid: normalized !== "" && !isValid,
         };
 
-        if (isValid || normalized === "") {
+        if (
+          (isValid || normalized === "") &&
+          normalized !== lastSubmittedTipRef.current[match.id]
+        ) {
+          lastSubmittedTipRef.current[match.id] = normalized;
           saveTip(match.id, { tip: normalized, joker, extraJoker });
         }
       });
@@ -337,16 +347,19 @@ function TipGrid({
 
     if (!raw) {
       updateTip(matchId, { tip: "", invalid: false });
-      saveTip(matchId, { ...entry, tip: "" });
+      if (lastSubmittedTipRef.current[matchId] !== "") {
+        lastSubmittedTipRef.current[matchId] = "";
+        saveTip(matchId, { ...entry, tip: "" });
+      }
       return;
     }
 
     const normalized = normalizeTip(raw);
     const isValid = TIP_PATTERN.test(normalized);
-
     updateTip(matchId, { tip: normalized, invalid: !isValid });
 
-    if (isValid) {
+    if (isValid && normalized !== lastSubmittedTipRef.current[matchId]) {
+      lastSubmittedTipRef.current[matchId] = normalized;
       saveTip(matchId, { ...entry, tip: normalized });
     }
   }
@@ -387,21 +400,24 @@ function TipGrid({
               {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
             </td>
             <td className="px-2 py-3 text-center">
-              <input
-                type="text"
-                value={getTip(match.id).tip}
-                onChange={(e) => updateTip(match.id, { tip: e.target.value, invalid: false })}
-                onBlur={() => handleTipBlur(match.id)}
-                onPaste={(e) => handleTipPaste(match.id, e)}
+              <TextField
                 aria-label={`Tipp für Spiel ${match.nr}`}
-                aria-invalid={getTip(match.id).invalid}
-                className={cn(
-                  "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
-                  getTip(match.id).invalid
-                    ? "bg-error dark:bg-surface dark:text-error"
-                    : "bg-surface",
-                )}
-              />
+                value={getTip(match.id).tip}
+                onChange={(v) => updateTip(match.id, { tip: v, invalid: false })}
+                onBlur={() => handleTipBlur(match.id)}
+                isInvalid={getTip(match.id).invalid}
+                className="inline-flex"
+              >
+                <Input
+                  onPaste={(e) => handleTipPaste(match.id, e)}
+                  className={cn(
+                    "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
+                    getTip(match.id).invalid
+                      ? "bg-error dark:bg-surface dark:text-error"
+                      : "bg-surface",
+                  )}
+                />
+              </TextField>
             </td>
             <td className="py-3 pl-2 text-center">
               <Checkbox

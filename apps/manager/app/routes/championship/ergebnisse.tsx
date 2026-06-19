@@ -1,7 +1,8 @@
 import { matches as matchesTable, tips as tipsTable } from "@tipprunde/db/schema";
 import { applyMatchRule, calcTipPoints, type TipRuleId } from "@tipprunde/domain/scoring";
 import { and, eq } from "drizzle-orm";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Input, TextField } from "react-aria-components";
 import { redirect, useFetcher, useNavigate } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
@@ -156,6 +157,10 @@ type ResultMatch = {
 function ResultGrid({ matches }: { matches: ResultMatch[] }) {
   const fetcher = useFetcher();
 
+  const lastSubmittedResultRef = useRef<Record<number, string>>(
+    Object.fromEntries(matches.map((m) => [m.id, m.result ?? ""])),
+  );
+
   const [resultEntries, setResultEntries] = useState<Record<number, ResultEntry>>(() => {
     const entries: Record<number, ResultEntry> = {};
     for (const match of matches) {
@@ -185,16 +190,19 @@ function ResultGrid({ matches }: { matches: ResultMatch[] }) {
 
     if (!raw) {
       updateResult(matchId, { result: "", invalid: false });
-      saveResult(matchId, "");
+      if (lastSubmittedResultRef.current[matchId] !== "") {
+        lastSubmittedResultRef.current[matchId] = "";
+        saveResult(matchId, "");
+      }
       return;
     }
 
     const normalized = normalizeResult(raw);
     const isValid = RESULT_PATTERN.test(normalized);
-
     updateResult(matchId, { result: normalized, invalid: !isValid });
 
-    if (isValid) {
+    if (isValid && normalized !== lastSubmittedResultRef.current[matchId]) {
+      lastSubmittedResultRef.current[matchId] = normalized;
       saveResult(matchId, normalized);
     }
   }
@@ -220,20 +228,23 @@ function ResultGrid({ matches }: { matches: ResultMatch[] }) {
               {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
             </td>
             <td className="px-2 py-3 text-center">
-              <input
-                type="text"
-                value={getResult(match.id).result}
-                onChange={(e) => updateResult(match.id, { result: e.target.value, invalid: false })}
-                onBlur={() => handleResultBlur(match.id)}
+              <TextField
                 aria-label={`Ergebnis für Spiel ${match.nr}`}
-                aria-invalid={getResult(match.id).invalid}
-                className={cn(
-                  "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
-                  getResult(match.id).invalid
-                    ? "bg-error dark:bg-surface dark:text-error"
-                    : "bg-surface",
-                )}
-              />
+                value={getResult(match.id).result}
+                onChange={(v) => updateResult(match.id, { result: v, invalid: false })}
+                onBlur={() => handleResultBlur(match.id)}
+                isInvalid={getResult(match.id).invalid}
+                className="inline-flex"
+              >
+                <Input
+                  className={cn(
+                    "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
+                    getResult(match.id).invalid
+                      ? "bg-error dark:bg-surface dark:text-error"
+                      : "bg-surface",
+                  )}
+                />
+              </TextField>
             </td>
           </tr>
         ))}
