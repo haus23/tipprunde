@@ -11,6 +11,7 @@ import { updateRanking } from "#/lib/ranking.server.ts";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
+import { LockProvider } from "../../components/lock-provider";
 import { RoundNavigator } from "../../components/round-navigator";
 import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/ergebnisse";
@@ -24,7 +25,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 
   const rounds = await db.query.rounds.findMany({
     where: { championshipId: championship.id },
-    columns: { id: true, nr: true },
+    columns: { id: true, nr: true, completed: true },
     orderBy: { nr: "asc" },
   });
 
@@ -40,7 +41,9 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     throw redirect(`/${championship.slug}/ergebnisse/${lastRound.nr}`);
   }
 
-  const currentRoundId = rounds.find((r) => r.nr === currentNr)!.id;
+  const currentRound = rounds.find((r) => r.nr === currentNr)!;
+  const currentRoundId = currentRound.id;
+  const isLocked = championship.completed || (currentRound.completed ?? false);
 
   const matches = await db.query.matches.findMany({
     where: { roundId: currentRoundId },
@@ -56,6 +59,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     rounds,
     currentNr,
     matches,
+    isLocked,
     slug: championship.slug,
     championshipName: championship.name,
   };
@@ -269,7 +273,7 @@ export default function Ergebnisse({ loaderData }: Route.ComponentProps) {
     );
   }
 
-  const { matches, slug } = loaderData;
+  const { matches, isLocked, slug } = loaderData;
 
   return (
     <div className="space-y-6 p-8">
@@ -281,11 +285,13 @@ export default function Ergebnisse({ loaderData }: Route.ComponentProps) {
           onNavigate={(nr) => void navigate(`/${slug}/ergebnisse/${nr}`)}
         />
       </div>
-      <Card>
-        <CardContent>
-          <ResultGrid matches={matches} />
-        </CardContent>
-      </Card>
+      <LockProvider isLocked={isLocked}>
+        <Card>
+          <CardContent>
+            <ResultGrid matches={matches} />
+          </CardContent>
+        </Card>
+      </LockProvider>
     </div>
   );
 }

@@ -24,6 +24,7 @@ import { updateRanking } from "#/lib/ranking.server.ts";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
+import { LockProvider, useLock } from "../../components/lock-provider";
 import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/zusatzfragen";
 
@@ -63,6 +64,7 @@ export async function loader({ context }: Route.LoaderArgs) {
     questions,
     players,
     championshipName: championship.name,
+    championshipCompleted: championship.completed,
   };
 }
 
@@ -237,6 +239,7 @@ type EnrolledPlayer = {
 
 function QuestionCard({ question, players }: { question: Question; players: EnrolledPlayer[] }) {
   const fetcher = useFetcher();
+  const isLocked = useLock();
   const questionInputRef = useRef<HTMLInputElement>(null);
 
   const [questionText, setQuestionText] = useState(question.question);
@@ -341,32 +344,36 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
             className="placeholder:text-muted w-full bg-transparent text-sm font-semibold outline-none placeholder:font-normal"
           />
         </TextField>
-        {showDeleteConfirm ? (
-          <div className="flex shrink-0 items-center gap-2">
-            <span className="text-muted text-xs">Löschen?</span>
-            <RACButton
-              onPress={handleDelete}
-              className="text-error text-xs outline-none hover:underline data-focused:underline"
-            >
-              Ja
-            </RACButton>
-            <RACButton
-              onPress={() => setShowDeleteConfirm(false)}
-              className="text-muted text-xs outline-none hover:underline data-focused:underline"
-            >
-              Nein
-            </RACButton>
-          </div>
-        ) : (
-          <Button
-            intent="ghost"
-            size="icon"
-            onPress={() => setShowDeleteConfirm(true)}
-            aria-label="Frage löschen"
-            className="hover:text-error shrink-0 p-1"
-          >
-            <XIcon className="size-4" />
-          </Button>
+        {!isLocked && (
+          <>
+            {showDeleteConfirm ? (
+              <div className="flex shrink-0 items-center gap-2">
+                <span className="text-muted text-xs">Löschen?</span>
+                <RACButton
+                  onPress={handleDelete}
+                  className="text-error text-xs outline-none hover:underline data-focused:underline"
+                >
+                  Ja
+                </RACButton>
+                <RACButton
+                  onPress={() => setShowDeleteConfirm(false)}
+                  className="text-muted text-xs outline-none hover:underline data-focused:underline"
+                >
+                  Nein
+                </RACButton>
+              </div>
+            ) : (
+              <Button
+                intent="ghost"
+                size="icon"
+                onPress={() => setShowDeleteConfirm(true)}
+                aria-label="Frage löschen"
+                className="hover:text-error shrink-0 p-1"
+              >
+                <XIcon className="size-4" />
+              </Button>
+            )}
+          </>
         )}
       </div>
 
@@ -415,7 +422,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <p className="text-muted text-xs font-medium tracking-wide uppercase">Punkte</p>
-                {availablePlayers.length > 0 && !showAddEarner && (
+                {!isLocked && availablePlayers.length > 0 && !showAddEarner && (
                   <RACButton
                     onPress={() => setShowAddEarner(true)}
                     className={cn(
@@ -446,6 +453,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                         intent="ghost"
                         size="icon"
                         onPress={() => handleRemovePoints(ea.userId)}
+                        isDisabled={isLocked}
                         aria-label={`Punkte für ${ea.user.name} entfernen`}
                         className="hover:text-error p-0.5"
                       >
@@ -583,7 +591,8 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
 // --- Page ---
 
 export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
-  const { hasExtraQuestions, questions, players, championshipName } = loaderData;
+  const { hasExtraQuestions, questions, players, championshipName, championshipCompleted } =
+    loaderData;
   const createFetcher = useFetcher();
 
   if (!hasExtraQuestions) {
@@ -604,6 +613,7 @@ export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
       <div className="mb-6 flex min-h-9 items-center justify-end">
         <Button
           size="sm"
+          isDisabled={championshipCompleted}
           onPress={() =>
             void createFetcher.submit({ intent: "create-question" }, { method: "post" })
           }
@@ -617,11 +627,13 @@ export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
       {questions.length === 0 ? (
         <p className="text-subtle text-center text-sm">Noch keine Zusatzfragen festgelegt.</p>
       ) : (
-        <div className="space-y-6">
-          {questions.map((q) => (
-            <QuestionCard key={q.id} question={q} players={players} />
-          ))}
-        </div>
+        <LockProvider isLocked={championshipCompleted}>
+          <div className="space-y-6">
+            {questions.map((q) => (
+              <QuestionCard key={q.id} question={q} players={players} />
+            ))}
+          </div>
+        </LockProvider>
       )}
     </div>
   );

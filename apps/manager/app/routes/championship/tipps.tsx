@@ -22,6 +22,7 @@ import { updateRanking } from "#/lib/ranking.server.ts";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
+import { LockProvider, useLock } from "../../components/lock-provider";
 import { RoundNavigator } from "../../components/round-navigator";
 import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/tipps";
@@ -35,7 +36,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   const [rounds, playerList, ruleset] = await Promise.all([
     db.query.rounds.findMany({
       where: { championshipId: championship.id },
-      columns: { id: true, nr: true },
+      columns: { id: true, nr: true, completed: true },
       orderBy: { nr: "asc" },
     }),
     db.query.players.findMany({
@@ -62,6 +63,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       currentPlayerSlug: null,
       slug: championship.slug,
       championshipName: championship.name,
+      championshipCompleted: championship.completed,
     };
   }
 
@@ -84,6 +86,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       currentPlayerSlug: currentPlayer.user!.slug,
       slug: championship.slug,
       championshipName: championship.name,
+      championshipCompleted: championship.completed,
     };
   }
 
@@ -113,6 +116,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     currentUserId: currentPlayer.userId,
     slug: championship.slug,
     championshipName: championship.name,
+    championshipCompleted: championship.completed,
   };
 }
 
@@ -232,6 +236,7 @@ function TipGrid({
   extraJokerCount,
 }: TipGridProps) {
   const fetcher = useFetcher();
+  const isLocked = useLock();
 
   const lastSubmittedTipRef = useRef<Record<number, string>>(
     Object.fromEntries(matches.map((m) => [m.id, m.tips[0]?.tip ?? ""])),
@@ -381,6 +386,7 @@ function TipGrid({
                 intent="ghost"
                 size="icon"
                 onPress={() => void handleClipboardPaste()}
+                isDisabled={isLocked}
                 aria-label="Tipps aus Zwischenablage einfügen"
                 className="p-0.5"
               >
@@ -422,7 +428,7 @@ function TipGrid({
             <td className="py-3 pl-2 text-center">
               <Checkbox
                 isSelected={getTip(match.id).joker}
-                isDisabled={!isJokerAllowed(match.id)}
+                isDisabled={isLocked || !isJokerAllowed(match.id)}
                 onChange={(checked) => {
                   const updated = { ...getTip(match.id), joker: checked };
                   updateTip(match.id, { joker: checked });
@@ -435,7 +441,7 @@ function TipGrid({
               <td className="py-3 pl-2 text-center">
                 <Checkbox
                   isSelected={getTip(match.id).extraJoker}
-                  isDisabled={!isExtraJokerAllowed(match.id)}
+                  isDisabled={isLocked || !isExtraJokerAllowed(match.id)}
                   onChange={(checked) => {
                     const updated = { ...getTip(match.id), extraJoker: checked };
                     updateTip(match.id, { extraJoker: checked });
@@ -465,6 +471,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
     currentUserId,
     slug,
     championshipName,
+    championshipCompleted,
   } = loaderData;
   const navigate = useNavigate();
   const [currentNr, setCurrentNr] = useState(defaultNr ?? 0);
@@ -491,6 +498,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
 
   const currentRound = rounds.find((r) => r.nr === currentNr);
   const currentMatches = allMatches.filter((m) => m.roundId === currentRound?.id);
+  const isLocked = championshipCompleted || (currentRound?.completed ?? false);
 
   // Joker counts derived from server-confirmed data (allMatches)
   const hasExtraJoker = jokerRuleId === "einmal-pro-runde-plus-zwei-zusatzjoker";
@@ -548,20 +556,22 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardContent>
-          <TipGrid
-            key={`${currentPlayerSlug}-${currentNr}`}
-            matches={currentMatches}
-            currentUserId={currentUserId!}
-            jokerRuleId={jokerRuleId}
-            jokerCount={jokerCount}
-            roundJokerCount={roundJokerCount}
-            hasExtraJoker={hasExtraJoker}
-            extraJokerCount={extraJokerCount}
-          />
-        </CardContent>
-      </Card>
+      <LockProvider isLocked={isLocked}>
+        <Card>
+          <CardContent>
+            <TipGrid
+              key={`${currentPlayerSlug}-${currentNr}`}
+              matches={currentMatches}
+              currentUserId={currentUserId!}
+              jokerRuleId={jokerRuleId}
+              jokerCount={jokerCount}
+              roundJokerCount={roundJokerCount}
+              hasExtraJoker={hasExtraJoker}
+              extraJokerCount={extraJokerCount}
+            />
+          </CardContent>
+        </Card>
+      </LockProvider>
     </div>
   );
 }
