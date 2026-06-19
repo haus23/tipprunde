@@ -48,6 +48,7 @@ export async function loader({ context }: Route.LoaderArgs) {
     db.query.players.findMany({
       where: { championshipId: championship.id },
       columns: { userId: true },
+      orderBy: { id: "asc" },
     }),
     db.query.users.findMany({
       orderBy: { name: "asc" },
