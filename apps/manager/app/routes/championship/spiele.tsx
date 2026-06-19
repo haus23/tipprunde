@@ -56,7 +56,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
   const rounds = await db.query.rounds.findMany({
     where: { championshipId: championship.id },
-    columns: { id: true, nr: true },
+    columns: { id: true, nr: true, completed: true },
     orderBy: { nr: "asc" },
   });
 
@@ -75,7 +75,10 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     throw redirect(`/${championship.slug}/spiele/${lastRound.nr}`);
   }
 
-  const currentRoundId = rounds.find((r) => r.nr === currentNr)!.id;
+  const currentRound = rounds.find((r) => r.nr === currentNr)!;
+  const currentRoundId = currentRound.id;
+  const isRoundCompleted = currentRound.completed ?? false;
+  const isChampionshipCompleted = championship.completed;
 
   const [matchList, teamList, leagueList, lastMatchResult] = await Promise.all([
     db.query.matches.findMany({
@@ -118,6 +121,8 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     lastMatchDate: lastMatchResult[0]?.date ?? "",
     teams: teamList,
     leagues: leagueList,
+    isRoundCompleted,
+    isChampionshipCompleted,
     slug: championship.slug,
     championshipName: championship.name,
   };
@@ -156,19 +161,12 @@ export async function action({ request, context }: Route.ActionArgs) {
 
   if (intent === "update-match") {
     const id = Number(formData.get("id"));
+    if (championship.completed) return null;
     const match = await db.query.matches.findFirst({
       where: { id },
-      with: { round: { columns: { championshipId: true, completed: true } } },
+      with: { round: { columns: { championshipId: true } } },
     });
     if (!match || !match.round || match.round.championshipId !== championship.id) return null;
-    if (
-      isLocked({
-        championshipCompleted: championship.completed,
-        roundCompleted: match.round.completed,
-      })
-    ) {
-      return null;
-    }
     await db
       .update(matchesTable)
       .set({ date, leagueId, hometeamId, awayteamId })
@@ -364,7 +362,15 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
 
 // --- Matches table ---
 
-function MatchesTable({ matches, onEdit }: { matches: MatchRow[]; onEdit: (m: MatchRow) => void }) {
+function MatchesTable({
+  matches,
+  onEdit,
+  canEdit,
+}: {
+  matches: MatchRow[];
+  onEdit: (m: MatchRow) => void;
+  canEdit: boolean;
+}) {
   return (
     <table className="w-full text-sm">
       <thead>
@@ -373,7 +379,7 @@ function MatchesTable({ matches, onEdit }: { matches: MatchRow[]; onEdit: (m: Ma
           <th className="text-muted pr-4 pb-3 text-left font-medium">Datum</th>
           <th className="text-muted pr-4 pb-3 text-left font-medium">Spiel</th>
           <th className="text-muted pb-3 text-left font-medium">Liga</th>
-          <th />
+          {canEdit && <th />}
         </tr>
       </thead>
       <tbody>
@@ -385,16 +391,18 @@ function MatchesTable({ matches, onEdit }: { matches: MatchRow[]; onEdit: (m: Ma
               {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
             </td>
             <td className="py-3">{match.league?.shortName ?? "—"}</td>
-            <td className="py-3 text-right">
-              <Button
-                intent="ghost"
-                size="icon"
-                onPress={() => onEdit(match)}
-                aria-label={`Spiel ${match.nr} bearbeiten`}
-              >
-                <PencilIcon className="size-4" />
-              </Button>
-            </td>
+            {canEdit && (
+              <td className="py-3 text-right">
+                <Button
+                  intent="ghost"
+                  size="icon"
+                  onPress={() => onEdit(match)}
+                  aria-label={`Spiel ${match.nr} bearbeiten`}
+                >
+                  <PencilIcon className="size-4" />
+                </Button>
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
@@ -413,6 +421,8 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
     lastMatchDate,
     teams,
     leagues,
+    isRoundCompleted,
+    isChampionshipCompleted,
     slug,
     championshipName,
   } = loaderData;
@@ -438,6 +448,9 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
     );
   }
 
+  const canEdit = !isChampionshipCompleted;
+  const showForm = !isChampionshipCompleted && (!isRoundCompleted || editMatch !== null);
+
   return (
     <div className="space-y-6 p-8">
       <title>{`Spiele | ${championshipName}`}</title>
@@ -449,24 +462,26 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
         />
       </div>
 
-      <Card>
-        <div className="border-subtle border-b px-6 py-4">
-          <h2 className="text-sm font-semibold">
-            {editMatch ? "Spiel bearbeiten" : "Neues Spiel"}
-          </h2>
-        </div>
-        <CardContent>
-          <MatchForm
-            key={formKey}
-            roundId={currentRoundId!}
-            editMatch={editMatch}
-            defaultDate={lastMatchDate}
-            teams={teams}
-            leagues={leagues}
-            onDone={handleDone}
-          />
-        </CardContent>
-      </Card>
+      {showForm && (
+        <Card>
+          <div className="border-subtle border-b px-6 py-4">
+            <h2 className="text-sm font-semibold">
+              {editMatch ? "Spiel bearbeiten" : "Neues Spiel"}
+            </h2>
+          </div>
+          <CardContent>
+            <MatchForm
+              key={formKey}
+              roundId={currentRoundId!}
+              editMatch={editMatch}
+              defaultDate={lastMatchDate}
+              teams={teams}
+              leagues={leagues}
+              onDone={handleDone}
+            />
+          </CardContent>
+        </Card>
+      )}
 
       {matches.length > 0 && (
         <Card>
@@ -474,7 +489,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
             <h2 className="text-sm font-semibold">Spiele</h2>
           </div>
           <CardContent>
-            <MatchesTable matches={matches} onEdit={setEditMatch} />
+            <MatchesTable matches={matches} onEdit={setEditMatch} canEdit={canEdit} />
           </CardContent>
         </Card>
       )}
