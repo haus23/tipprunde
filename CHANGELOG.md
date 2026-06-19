@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.19.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.18.2...v0.19.0)
+
+### 🚀 Enhancements
+
+- **manager:** Block UI during pending fetches (Part C) ([2c97385](https://github.com/haus23/tipprunde/commit/2c97385))
+- **manager:** Lock round and player management when championship is completed ([315556e](https://github.com/haus23/tipprunde/commit/315556e))
+- **manager:** Lock match creation/editing based on round and championship state ([aad541c](https://github.com/haus23/tipprunde/commit/aad541c))
+
+### 🩹 Fixes
+
+- **manager:** Sort enrolled players by player id, not user id ([96b7350](https://github.com/haus23/tipprunde/commit/96b7350))
+- **manager:** Block paste during player navigation to prevent tips landing on wrong player ([236215d](https://github.com/haus23/tipprunde/commit/236215d))
+
 ## v0.18.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.18.1...v0.18.2)
