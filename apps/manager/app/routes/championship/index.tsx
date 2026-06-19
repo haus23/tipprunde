@@ -19,6 +19,7 @@ import { updateRanking } from "#/lib/ranking.server.ts";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
+import { LockProvider, useLock } from "../../components/lock-provider";
 import { MitspielerCard } from "../../components/mitspieler-card";
 import { RundeDialog } from "../../components/runde-dialog";
 import { championshipContext } from "../../lib/context";
@@ -310,6 +311,7 @@ type Round = {
 function RoundRow({ round, hasDeviationRule }: { round: Round; hasDeviationRule: boolean }) {
   const fetcher = useFetcher();
   const isPending = fetcher.state !== "idle";
+  const isChampionshipLocked = useLock();
 
   const pendingField = fetcher.formData?.get("field") as RoundFlagField | undefined;
   const pendingValue = fetcher.formData?.get("value") === "true";
@@ -342,9 +344,9 @@ function RoundRow({ round, hasDeviationRule }: { round: Round; hasDeviationRule:
 
   // Dependency chain: published → tipsPublished → completed
   // Once completed, published and tipsPublished are locked
-  const publishedDisabled = isPending || tipsPublished || completed;
-  const tipsPublishedDisabled = isPending || !published || completed;
-  const completedDisabled = isPending || !tipsPublished;
+  const publishedDisabled = isChampionshipLocked || isPending || tipsPublished || completed;
+  const tipsPublishedDisabled = isChampionshipLocked || isPending || !published || completed;
+  const completedDisabled = isChampionshipLocked || isPending || !tipsPublished;
 
   return (
     <div className="flex items-center gap-4 py-3">
@@ -465,35 +467,40 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
       </Card>
 
       {/* Runden */}
-      <Card>
-        <div className="border-subtle flex items-center justify-between border-b px-6 py-4">
-          <h2 className="text-sm font-semibold">Runden</h2>
-          <Button
-            size="sm"
-            onPress={() => setIsCreateOpen(true)}
-            className="gap-1.5 px-2.5 text-xs"
-          >
-            <PlusIcon className="size-3.5" />
-            Neue Runde
-          </Button>
-        </div>
-        <CardContent>
-          {roundList.length === 0 ? (
-            <p className="text-subtle py-4 text-center text-sm">Noch keine Runden angelegt.</p>
-          ) : (
-            <div className="divide-subtle divide-y">
-              {roundList.map((round) => (
-                <RoundRow key={round.id} round={round} hasDeviationRule={hasDeviationRule} />
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <LockProvider isLocked={championship.completed}>
+        <Card>
+          <div className="border-subtle flex items-center justify-between border-b px-6 py-4">
+            <h2 className="text-sm font-semibold">Runden</h2>
+            <Button
+              size="sm"
+              isDisabled={championship.completed}
+              onPress={() => setIsCreateOpen(true)}
+              className="gap-1.5 px-2.5 text-xs"
+            >
+              <PlusIcon className="size-3.5" />
+              Neue Runde
+            </Button>
+          </div>
+          <CardContent>
+            {roundList.length === 0 ? (
+              <p className="text-subtle py-4 text-center text-sm">Noch keine Runden angelegt.</p>
+            ) : (
+              <div className="divide-subtle divide-y">
+                {roundList.map((round) => (
+                  <RoundRow key={round.id} round={round} hasDeviationRule={hasDeviationRule} />
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </LockProvider>
 
       <RundeDialog isOpen={isCreateOpen} onOpenChange={setIsCreateOpen} nextNr={nextNr} />
 
       {/* key resets per-championship local state (enrolled set, filter) on switch */}
-      <MitspielerCard key={championship.id} playerUserIds={playerUserIds} allUsers={allUsers} />
+      <LockProvider isLocked={championship.completed}>
+        <MitspielerCard key={championship.id} playerUserIds={playerUserIds} allUsers={allUsers} />
+      </LockProvider>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { useFetcher } from "react-router";
 import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "./card";
+import { useLock } from "./lock-provider";
 import { SpielerDialog } from "./spieler-dialog";
 
 type User = {
@@ -23,6 +24,7 @@ type MitspielerCardProps = {
 const DRAG_TYPE = "x-tipprunde/user-id";
 
 export function MitspielerCard({ playerUserIds: initialIds, allUsers }: MitspielerCardProps) {
+  const isLocked = useLock();
   const fetcher = useFetcher();
   const [playerIds, setPlayerIds] = useState(() => new Set(initialIds));
   const [filter, setFilter] = useState("");
@@ -88,14 +90,14 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
           <PlayerList
             label={`Im Turnier (${inChampionship.length})`}
             users={inChampionship}
-            dragAndDropHooks={inChampionshipHooks}
+            dragAndDropHooks={isLocked ? undefined : inChampionshipHooks}
             emptyText="Noch keine Spieler im Turnier."
           />
           <div className="space-y-2">
             <PlayerList
               label="Alle Spieler"
               users={available}
-              dragAndDropHooks={availableHooks}
+              dragAndDropHooks={isLocked ? undefined : availableHooks}
               emptyText={filter ? "Keine Ergebnisse." : "Alle Spieler sind bereits im Turnier."}
               fixedHeight
             />
@@ -108,6 +110,7 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
               />
               <Button
                 size="icon"
+                isDisabled={isLocked}
                 onPress={() => setIsCreateOpen(true)}
                 aria-label="Neuer Spieler"
                 className="shrink-0"
@@ -131,7 +134,7 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
 type PlayerListProps = {
   label: string;
   users: User[];
-  dragAndDropHooks: ReturnType<typeof useDragAndDrop>["dragAndDropHooks"];
+  dragAndDropHooks: ReturnType<typeof useDragAndDrop>["dragAndDropHooks"] | undefined;
   emptyText: string;
   fixedHeight?: boolean;
 };
@@ -158,7 +161,8 @@ function PlayerList({ label, users, dragAndDropHooks, emptyText, fixedHeight }: 
             id={user.id}
             textValue={user.name}
             className={cn(
-              "cursor-grab rounded-sm px-3 py-2 text-sm outline-none",
+              dragAndDropHooks ? "cursor-grab" : "cursor-default",
+              "rounded-sm px-3 py-2 text-sm outline-none",
               "hover:bg-nav-active data-focused:bg-nav-active",
               "data-dragging:cursor-grabbing data-dragging:opacity-40",
             )}
