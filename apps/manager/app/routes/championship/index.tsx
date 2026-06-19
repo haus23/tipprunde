@@ -492,7 +492,8 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
 
       <RundeDialog isOpen={isCreateOpen} onOpenChange={setIsCreateOpen} nextNr={nextNr} />
 
-      <MitspielerCard playerUserIds={playerUserIds} allUsers={allUsers} />
+      {/* key resets per-championship local state (enrolled set, filter) on switch */}
+      <MitspielerCard key={championship.id} playerUserIds={playerUserIds} allUsers={allUsers} />
     </div>
   );
 }
