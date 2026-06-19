@@ -126,45 +126,54 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         inputProps={{ className: cn("font-mono", isEdit && "text-subtle cursor-default") }}
       />
 
-      <Select
-        name="rulesetId"
-        defaultValue={defaultValues?.rulesetId}
-        isRequired
-        className="flex flex-col gap-1.5"
-      >
-        <Label>Regelwerk</Label>
-        <RACButton className={cn(inputClass, "flex w-full items-center justify-between gap-2")}>
-          <SelectValue className="text-sm">
-            {({ isPlaceholder, defaultChildren }) =>
-              isPlaceholder ? (
-                <span className="text-subtle">Regelwerk wählen …</span>
-              ) : (
-                defaultChildren
-              )
-            }
-          </SelectValue>
-          <ChevronDownIcon className="text-muted size-4 shrink-0" />
-        </RACButton>
-        <FieldError />
-        <Popover className="bg-surface-raised border-subtle w-[--trigger-width] rounded-sm border shadow-lg outline-none">
-          <ListBox className="p-1">
-            {rulesets.map((ruleset) => (
-              <ListBoxItem
-                key={ruleset.id}
-                id={ruleset.id}
-                className={cn(
-                  "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
-                  "hover:bg-nav-active",
-                  "data-focused:bg-nav-active",
-                  "data-selected:bg-accent-subtle",
-                )}
-              >
-                {ruleset.name}
-              </ListBoxItem>
-            ))}
-          </ListBox>
-        </Popover>
-      </Select>
+      {isEdit ? (
+        // Ruleset is foundational — all scoring derives from it, so it is
+        // immutable after creation. Hidden input keeps it in the submission
+        // (the action drops it server-side regardless).
+        <div className="flex flex-col gap-1.5">
+          <Label>Regelwerk</Label>
+          <input type="hidden" name="rulesetId" value={defaultValues?.rulesetId ?? ""} />
+          <div className={cn(inputClass, "text-subtle cursor-default")}>
+            {rulesets.find((r) => r.id === defaultValues?.rulesetId)?.name ?? "—"}
+          </div>
+          <p className="text-muted text-xs">Nach Erstellung nicht änderbar.</p>
+        </div>
+      ) : (
+        <Select name="rulesetId" isRequired className="flex flex-col gap-1.5">
+          <Label>Regelwerk</Label>
+          <RACButton className={cn(inputClass, "flex w-full items-center justify-between gap-2")}>
+            <SelectValue className="text-sm">
+              {({ isPlaceholder, defaultChildren }) =>
+                isPlaceholder ? (
+                  <span className="text-subtle">Regelwerk wählen …</span>
+                ) : (
+                  defaultChildren
+                )
+              }
+            </SelectValue>
+            <ChevronDownIcon className="text-muted size-4 shrink-0" />
+          </RACButton>
+          <FieldError />
+          <Popover className="bg-surface-raised border-subtle w-[--trigger-width] rounded-sm border shadow-lg outline-none">
+            <ListBox className="p-1">
+              {rulesets.map((ruleset) => (
+                <ListBoxItem
+                  key={ruleset.id}
+                  id={ruleset.id}
+                  className={cn(
+                    "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
+                    "hover:bg-nav-active",
+                    "data-focused:bg-nav-active",
+                    "data-selected:bg-accent-subtle",
+                  )}
+                >
+                  {ruleset.name}
+                </ListBoxItem>
+              ))}
+            </ListBox>
+          </Popover>
+        </Select>
+      )}
 
       <div className="border-subtle flex justify-end gap-3 border-t pt-4">
         <Button intent="secondary" type="button" onPress={onClose}>

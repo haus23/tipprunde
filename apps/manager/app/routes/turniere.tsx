@@ -71,9 +71,10 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   if (intent === "update" && result.output.id) {
+    // Ruleset is immutable after creation — never apply rulesetId on update.
     const [championship] = await db
       .update(championships)
-      .set(result.output)
+      .set({ nr: result.output.nr, name: result.output.name, slug: result.output.slug })
       .where(eq(championships.id, result.output.id))
       .returning();
     return { championship };
