@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.18.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.17.2...v0.18.0)
+
+### 🚀 Enhancements
+
+- **manager:** Mobile-first responsive shell with collapsible sidebar ([68b7087](https://github.com/haus23/tipprunde/commit/68b7087))
+
+### 🩹 Fixes
+
+- **manager:** Keep sidebar icons stationary across collapse ([6eabda2](https://github.com/haus23/tipprunde/commit/6eabda2))
+
 ## v0.17.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.17.1...v0.17.2)
