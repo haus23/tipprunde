@@ -50,10 +50,16 @@ export async function action({ request }: Route.ActionArgs) {
     }
   }
 
-  await db.insert(rulesets).values(result.output).onConflictDoUpdate({
-    target: rulesets.id,
-    set: values,
-  });
+  // Rules are foundational — all scoring of championships using this ruleset
+  // derives from them, so they are immutable after creation. On update (conflict)
+  // only name + description change; the rule fields are applied on insert only.
+  await db
+    .insert(rulesets)
+    .values(result.output)
+    .onConflictDoUpdate({
+      target: rulesets.id,
+      set: { name: values.name, description: values.description },
+    });
   return { ruleset: result.output };
 }
 

@@ -28,6 +28,30 @@ type RulesetFormProps = {
   onSuccess?: (ruleset: Ruleset) => void;
 };
 
+/** Read-only display of a chosen rule (edit mode — rules are immutable). */
+function StaticRuleField({
+  category,
+  ruleset,
+}: {
+  category: (typeof RULE_CATEGORIES)[number];
+  ruleset: Ruleset;
+}) {
+  const value = ruleset[category.field];
+  const selected = category.rules.find((r) => r.value === value);
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Label>{category.label}</Label>
+      <input type="hidden" name={category.field} value={value ?? ""} />
+      <div className="border-subtle text-subtle rounded-sm border p-3 text-sm">
+        <div className="font-medium">{selected?.label ?? "—"}</div>
+        {selected?.description && (
+          <div className="text-muted mt-0.5 text-xs">{selected.description}</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
   const fetcher = useFetcher<RulesetActionData>();
   const isEdit = !!defaultValues;
@@ -101,53 +125,60 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
         <TextArea rows={2} />
       </AriaTextField>
 
-      {RULE_CATEGORIES.map((category) => (
-        <RadioGroup
-          key={category.field}
-          name={category.field}
-          defaultValue={defaultValues?.[category.field]}
-          isRequired
-          className="flex flex-col gap-2"
-        >
-          <Label>{category.label}</Label>
-          {category.rules.map((rule) => (
-            <RadioField key={rule.value} value={rule.value}>
-              <RadioButton
-                className={cn(
-                  "group flex cursor-pointer items-start gap-3 rounded-sm border p-3 text-sm",
-                  "border-subtle transition-colors outline-none",
-                  "hover:bg-nav-active",
-                  "data-selected:border-accent data-selected:bg-accent-subtle",
-                  "data-focused:ring-2 data-focused:ring-accent/60",
-                )}
-              >
-                <div
+      {isEdit && (
+        <p className="text-muted -mb-2 text-xs">Regeln sind nach Erstellung nicht änderbar.</p>
+      )}
+      {RULE_CATEGORIES.map((category) =>
+        isEdit ? (
+          <StaticRuleField key={category.field} category={category} ruleset={defaultValues!} />
+        ) : (
+          <RadioGroup
+            key={category.field}
+            name={category.field}
+            defaultValue={defaultValues?.[category.field]}
+            isRequired
+            className="flex flex-col gap-2"
+          >
+            <Label>{category.label}</Label>
+            {category.rules.map((rule) => (
+              <RadioField key={rule.value} value={rule.value}>
+                <RadioButton
                   className={cn(
-                    "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
-                    "border-subtle",
-                    "group-data-selected:border-accent",
+                    "group flex cursor-pointer items-start gap-3 rounded-sm border p-3 text-sm",
+                    "border-subtle transition-colors outline-none",
+                    "hover:bg-nav-active",
+                    "data-selected:border-accent data-selected:bg-accent-subtle",
+                    "data-focused:ring-2 data-focused:ring-accent/60",
                   )}
                 >
                   <div
                     className={cn(
-                      "size-2 scale-0 rounded-full transition-transform",
-                      "bg-accent",
-                      "group-data-selected:scale-100",
+                      "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
+                      "border-subtle",
+                      "group-data-selected:border-accent",
                     )}
-                  />
-                </div>
-                <div>
-                  <div className="font-medium">{rule.label}</div>
-                  {rule.description && (
-                    <div className="text-subtle mt-0.5 text-xs">{rule.description}</div>
-                  )}
-                </div>
-              </RadioButton>
-            </RadioField>
-          ))}
-          <FieldError />
-        </RadioGroup>
-      ))}
+                  >
+                    <div
+                      className={cn(
+                        "size-2 scale-0 rounded-full transition-transform",
+                        "bg-accent",
+                        "group-data-selected:scale-100",
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <div className="font-medium">{rule.label}</div>
+                    {rule.description && (
+                      <div className="text-subtle mt-0.5 text-xs">{rule.description}</div>
+                    )}
+                  </div>
+                </RadioButton>
+              </RadioField>
+            ))}
+            <FieldError />
+          </RadioGroup>
+        ),
+      )}
 
       <div className="border-subtle flex justify-end gap-3 border-t pt-4">
         <Button intent="secondary" type="button" onPress={onClose}>
