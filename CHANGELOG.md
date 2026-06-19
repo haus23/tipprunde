@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.18.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.18.1...v0.18.2)
+
+### 🚀 Enhancements
+
+- **manager:** Migrate tip/result/answer inputs to RAC TextField + dirty-check ([e0ef4c9](https://github.com/haus23/tipprunde/commit/e0ef4c9))
+- **manager:** Add LockProvider (RAC context) for completed-state UI lock ([5416f09](https://github.com/haus23/tipprunde/commit/5416f09))
+
+### 🩹 Fixes
+
+- **manager:** Reset ResultGrid state on round navigation ([7c72172](https://github.com/haus23/tipprunde/commit/7c72172))
+
 ## v0.18.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.18.0...v0.18.1)
