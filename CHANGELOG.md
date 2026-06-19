@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.18.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.18.0...v0.18.1)
+
+### 🚀 Enhancements
+
+- **manager:** Make ruleset rule-IDs immutable after creation ([705b251](https://github.com/haus23/tipprunde/commit/705b251))
+- **manager:** Make championship ruleset assignment immutable after creation ([d2db050](https://github.com/haus23/tipprunde/commit/d2db050))
+- **manager:** Enforce completed-state edit lock server-side ([2af3703](https://github.com/haus23/tipprunde/commit/2af3703))
+
+### 🩹 Fixes
+
+- **manager:** Show the current championship's players, not the first-loaded ([5be2769](https://github.com/haus23/tipprunde/commit/5be2769))
+
 ## v0.18.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.17.2...v0.18.0)
