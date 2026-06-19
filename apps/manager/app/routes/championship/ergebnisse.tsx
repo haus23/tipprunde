@@ -288,7 +288,7 @@ export default function Ergebnisse({ loaderData }: Route.ComponentProps) {
       <LockProvider isLocked={isLocked}>
         <Card>
           <CardContent>
-            <ResultGrid matches={matches} />
+            <ResultGrid key={currentNr} matches={matches} />
           </CardContent>
         </Card>
       </LockProvider>
