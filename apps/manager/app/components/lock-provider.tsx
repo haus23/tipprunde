@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { Provider, TextFieldContext } from "react-aria-components";
-import { useFetchers } from "react-router";
+import { useFetchers, useNavigation } from "react-router";
 
 const LockContext = createContext(false);
 
@@ -12,7 +12,8 @@ export function LockProvider({
   children: React.ReactNode;
 }) {
   const isAnyPending = useFetchers().some((f) => f.state !== "idle");
-  const isDisabled = isLocked || isAnyPending;
+  const isNavigating = useNavigation().state !== "idle";
+  const isDisabled = isLocked || isAnyPending || isNavigating;
   return (
     <LockContext.Provider value={isDisabled}>
       <Provider values={[[TextFieldContext, { isDisabled }]]}>{children}</Provider>
