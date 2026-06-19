@@ -17,6 +17,7 @@ import {
 import { useFetcher } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
+import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
 import { cn } from "#/lib/utils.ts";
 
@@ -69,6 +70,11 @@ export async function action({ request, context }: Route.ActionArgs) {
   const championship = context.get(championshipContext);
   const formData = await request.formData();
   const intent = formData.get("intent") as string;
+
+  // All zusatzfragen mutations are championship-scoped — locked when completed.
+  if (isLocked({ championshipCompleted: championship.completed })) {
+    return { ok: false, locked: true };
+  }
 
   if (intent === "create-question") {
     await db

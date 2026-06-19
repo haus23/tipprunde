@@ -20,6 +20,7 @@ import {
 import { redirect, useFetcher, useNavigate } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
+import { getRound, isLocked } from "#/lib/lock.server.ts";
 import { cn, formatDate } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
@@ -136,6 +137,13 @@ export async function action({ request, context }: Route.ActionArgs) {
 
   if (intent === "create-match") {
     const roundId = Number(formData.get("roundId"));
+    const round = await getRound(roundId, championship.id);
+    if (!round) return null;
+    if (
+      isLocked({ championshipCompleted: championship.completed, roundCompleted: round.completed })
+    ) {
+      return null;
+    }
     const result = await db
       .select({ maxNr: max(matchesTable.nr) })
       .from(matchesTable)
@@ -148,6 +156,19 @@ export async function action({ request, context }: Route.ActionArgs) {
 
   if (intent === "update-match") {
     const id = Number(formData.get("id"));
+    const match = await db.query.matches.findFirst({
+      where: { id },
+      with: { round: { columns: { championshipId: true, completed: true } } },
+    });
+    if (!match || !match.round || match.round.championshipId !== championship.id) return null;
+    if (
+      isLocked({
+        championshipCompleted: championship.completed,
+        roundCompleted: match.round.completed,
+      })
+    ) {
+      return null;
+    }
     await db
       .update(matchesTable)
       .set({ date, leagueId, hometeamId, awayteamId })

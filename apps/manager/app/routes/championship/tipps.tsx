@@ -15,6 +15,7 @@ import {
 import { redirect, useFetcher, useNavigate } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
+import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
 import { cn } from "#/lib/utils.ts";
 
@@ -132,7 +133,9 @@ export async function action({ request, context }: Route.ActionArgs) {
     const [match, player, ruleset] = await Promise.all([
       db.query.matches.findFirst({
         where: { id: matchId },
-        with: { round: { columns: { championshipId: true, isDoubleRound: true } } },
+        with: {
+          round: { columns: { championshipId: true, isDoubleRound: true, completed: true } },
+        },
       }),
       db.query.players.findFirst({
         where: { userId, championshipId: championship.id },
@@ -147,6 +150,15 @@ export async function action({ request, context }: Route.ActionArgs) {
 
     if (!match || !match.round || match.round.championshipId !== championship.id || !player) {
       return { ok: false };
+    }
+
+    if (
+      isLocked({
+        championshipCompleted: championship.completed,
+        roundCompleted: match.round.completed,
+      })
+    ) {
+      return { ok: false, locked: true };
     }
 
     await db

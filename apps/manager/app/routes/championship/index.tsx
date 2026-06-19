@@ -14,6 +14,7 @@ import { Link, useFetcher } from "react-router";
 import * as v from "valibot";
 
 import { db } from "#/lib/db.server.ts";
+import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
 import { cn } from "#/lib/utils.ts";
 
@@ -66,6 +67,21 @@ export async function action({ request, context }: Route.ActionArgs) {
   const championship = context.get(championshipContext);
   const formData = await request.formData();
   const intent = formData.get("intent");
+
+  // Completed championship locks all round- and player-management. The
+  // championship flag toggle is handled separately below (the `completed`
+  // switch must stay operable to unlock).
+  const locked = isLocked({ championshipCompleted: championship.completed });
+  const dataIntents = [
+    "create-round",
+    "toggle-round-flag",
+    "toggle-round-completed",
+    "add-player",
+    "remove-player",
+  ];
+  if (locked && typeof intent === "string" && dataIntents.includes(intent)) {
+    return null;
+  }
 
   if (intent === "create-round") {
     const result = await db
@@ -173,9 +189,11 @@ export async function action({ request, context }: Route.ActionArgs) {
     return null;
   }
 
-  // Championship flag toggle
+  // Championship flag toggle — when completed, only the `completed` switch
+  // itself may change (it is the unlock control); other flags stay locked.
   const field = v.parse(flagField, formData.get("field"));
   const value = formData.get("value") === "true";
+  if (locked && field !== "completed") return null;
   await db
     .update(championships)
     .set({ [field]: value })
