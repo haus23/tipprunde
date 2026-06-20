@@ -27,7 +27,7 @@ const listBoxItemClass = cn(
 );
 
 export function MitspielerCard({ playerUserIds: initialIds, allUsers }: MitspielerCardProps) {
-  const isLocked = useLock();
+  const { isChampionshipClosed, isBusy } = useLock();
   const fetcher = useFetcher();
   const { contains } = useFilter({ sensitivity: "base" });
 
@@ -88,59 +88,61 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
       </div>
       <CardContent>
         <div className="space-y-4">
-          <ComboBox
-            value={null}
-            onChange={(key) => key != null && addPlayer(Number(key))}
-            inputValue={query}
-            onInputChange={setQuery}
-            defaultFilter={contains}
-            isDisabled={isLocked}
-            menuTrigger="focus"
-            className="flex flex-col gap-1.5"
-          >
-            <Label>Spieler hinzufügen</Label>
-            <div className="flex gap-4">
-              <div
-                className={cn(
-                  "flex flex-1 rounded-sm",
-                  "focus-within:ring-2 focus-within:ring-accent/60",
-                )}
-              >
-                <Input
-                  ref={inputRef}
-                  placeholder="Name eingeben ..."
-                  className="border-subtle bg-surface w-full rounded-sm border px-2.5 py-1.5 text-sm outline-none"
-                />
-              </div>
-              <Button
-                size="icon"
-                isDisabled={isLocked}
-                onPress={() => setIsCreateOpen(true)}
-                aria-label="Neuer Spieler"
-                className="shrink-0"
-              >
-                <UserPlusIcon className="size-4" />
-              </Button>
-            </div>
-            <Popover
-              placement="top start"
-              className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none"
+          {!isChampionshipClosed && (
+            <ComboBox
+              value={null}
+              onChange={(key) => key != null && addPlayer(Number(key))}
+              inputValue={query}
+              onInputChange={setQuery}
+              defaultFilter={contains}
+              isDisabled={isBusy}
+              menuTrigger="focus"
+              className="flex flex-col gap-1.5"
             >
-              <ListBox
-                items={available}
-                className="max-h-60 overflow-y-auto p-1 outline-none"
-                renderEmptyState={() => (
-                  <p className="text-subtle px-2.5 py-1.5 text-sm">Keine Spieler gefunden.</p>
-                )}
+              <Label>Spieler hinzufügen</Label>
+              <div className="flex gap-4">
+                <div
+                  className={cn(
+                    "flex flex-1 rounded-sm",
+                    "focus-within:ring-2 focus-within:ring-accent/60",
+                  )}
+                >
+                  <Input
+                    ref={inputRef}
+                    placeholder="Name eingeben ..."
+                    className="border-subtle bg-surface w-full rounded-sm border px-2.5 py-1.5 text-sm outline-none"
+                  />
+                </div>
+                <Button
+                  size="icon"
+                  isDisabled={isBusy}
+                  onPress={() => setIsCreateOpen(true)}
+                  aria-label="Neuer Spieler"
+                  className="shrink-0"
+                >
+                  <UserPlusIcon className="size-4" />
+                </Button>
+              </div>
+              <Popover
+                placement="top start"
+                className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none"
               >
-                {(user: User) => (
-                  <ListBoxItem id={user.id} textValue={user.name} className={listBoxItemClass}>
-                    {user.name}
-                  </ListBoxItem>
-                )}
-              </ListBox>
-            </Popover>
-          </ComboBox>
+                <ListBox
+                  items={available}
+                  className="max-h-60 overflow-y-auto p-1 outline-none"
+                  renderEmptyState={() => (
+                    <p className="text-subtle px-2.5 py-1.5 text-sm">Keine Spieler gefunden.</p>
+                  )}
+                >
+                  {(user: User) => (
+                    <ListBoxItem id={user.id} textValue={user.name} className={listBoxItemClass}>
+                      {user.name}
+                    </ListBoxItem>
+                  )}
+                </ListBox>
+              </Popover>
+            </ComboBox>
+          )}
 
           <div className="space-y-2">
             <p className="text-muted text-xs font-medium tracking-wide uppercase">
@@ -158,15 +160,17 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
                     className="flex items-center justify-between gap-2 px-3 py-2 text-sm"
                   >
                     <span>{user.name}</span>
-                    <Button
-                      intent="ghost"
-                      size="icon"
-                      isDisabled={isLocked}
-                      onPress={() => removePlayer(user.id)}
-                      aria-label={`${user.name} entfernen`}
-                    >
-                      <XIcon className="size-4" />
-                    </Button>
+                    {!isChampionshipClosed && (
+                      <Button
+                        intent="ghost"
+                        size="icon"
+                        isDisabled={isBusy}
+                        onPress={() => removePlayer(user.id)}
+                        aria-label={`${user.name} entfernen`}
+                      >
+                        <XIcon className="size-4" />
+                      </Button>
+                    )}
                   </li>
                 ))}
               </ul>

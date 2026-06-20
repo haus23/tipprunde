@@ -239,7 +239,7 @@ type EnrolledPlayer = {
 
 function QuestionCard({ question, players }: { question: Question; players: EnrolledPlayer[] }) {
   const fetcher = useFetcher();
-  const isLocked = useLock();
+  const { isChampionshipClosed, isBusy } = useLock();
   const questionInputRef = useRef<HTMLInputElement>(null);
 
   const [questionText, setQuestionText] = useState(question.question);
@@ -344,7 +344,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
             className="placeholder:text-muted w-full bg-transparent text-sm font-semibold outline-none placeholder:font-normal"
           />
         </TextField>
-        {!isLocked && (
+        {!isChampionshipClosed && (
           <>
             {showDeleteConfirm ? (
               <div className="flex shrink-0 items-center gap-2">
@@ -422,7 +422,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <p className="text-muted text-xs font-medium tracking-wide uppercase">Punkte</p>
-                {!isLocked && availablePlayers.length > 0 && !showAddEarner && (
+                {!isChampionshipClosed && availablePlayers.length > 0 && !showAddEarner && (
                   <RACButton
                     onPress={() => setShowAddEarner(true)}
                     className={cn(
@@ -453,7 +453,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                         intent="ghost"
                         size="icon"
                         onPress={() => handleRemovePoints(ea.userId)}
-                        isDisabled={isLocked}
+                        isDisabled={isBusy}
                         aria-label={`Punkte für ${ea.user.name} entfernen`}
                         className="hover:text-error p-0.5"
                       >
@@ -627,7 +627,7 @@ export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
       {questions.length === 0 ? (
         <p className="text-subtle text-center text-sm">Noch keine Zusatzfragen festgelegt.</p>
       ) : (
-        <LockProvider isLocked={championshipCompleted}>
+        <LockProvider isChampionshipClosed={championshipCompleted}>
           <div className="space-y-6">
             {questions.map((q) => (
               <QuestionCard key={q.id} question={q} players={players} />

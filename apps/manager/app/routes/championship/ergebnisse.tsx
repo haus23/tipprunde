@@ -43,7 +43,6 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 
   const currentRound = rounds.find((r) => r.nr === currentNr)!;
   const currentRoundId = currentRound.id;
-  const isLocked = championship.completed || (currentRound.completed ?? false);
 
   const matches = await db.query.matches.findMany({
     where: { roundId: currentRoundId },
@@ -59,7 +58,8 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     rounds,
     currentNr,
     matches,
-    isLocked,
+    isChampionshipClosed: championship.completed,
+    isRoundClosed: currentRound.completed ?? false,
     slug: championship.slug,
     championshipName: championship.name,
   };
@@ -273,7 +273,7 @@ export default function Ergebnisse({ loaderData }: Route.ComponentProps) {
     );
   }
 
-  const { matches, isLocked, slug } = loaderData;
+  const { matches, isChampionshipClosed, isRoundClosed, slug } = loaderData;
 
   return (
     <div className="space-y-6 p-8">
@@ -285,7 +285,7 @@ export default function Ergebnisse({ loaderData }: Route.ComponentProps) {
           onNavigate={(nr) => void navigate(`/${slug}/ergebnisse/${nr}`)}
         />
       </div>
-      <LockProvider isLocked={isLocked}>
+      <LockProvider isChampionshipClosed={isChampionshipClosed} isRoundClosed={isRoundClosed}>
         <Card>
           <CardContent>
             <ResultGrid key={currentNr} matches={matches} />

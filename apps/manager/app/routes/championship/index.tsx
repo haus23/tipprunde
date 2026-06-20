@@ -312,7 +312,7 @@ type Round = {
 function RoundRow({ round, hasDeviationRule }: { round: Round; hasDeviationRule: boolean }) {
   const fetcher = useFetcher();
   const isPending = fetcher.state !== "idle";
-  const isChampionshipLocked = useLock();
+  const { isDisabled: isChampionshipLocked } = useLock();
 
   const pendingField = fetcher.formData?.get("field") as RoundFlagField | undefined;
   const pendingValue = fetcher.formData?.get("value") === "true";
@@ -468,7 +468,7 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
       </Card>
 
       {/* Runden */}
-      <LockProvider isLocked={championship.completed}>
+      <LockProvider isChampionshipClosed={championship.completed}>
         <Card>
           <div className="border-subtle flex items-center justify-between border-b px-6 py-4">
             <h2 className="text-sm font-semibold">Runden</h2>
@@ -499,7 +499,7 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
       <RundeDialog isOpen={isCreateOpen} onOpenChange={setIsCreateOpen} nextNr={nextNr} />
 
       {/* key resets per-championship local state (enrolled set, filter) on switch */}
-      <LockProvider isLocked={championship.completed}>
+      <LockProvider isChampionshipClosed={championship.completed}>
         <MitspielerCard key={championship.id} playerUserIds={playerUserIds} allUsers={allUsers} />
       </LockProvider>
     </div>

@@ -236,7 +236,7 @@ function TipGrid({
   extraJokerCount,
 }: TipGridProps) {
   const fetcher = useFetcher();
-  const isLocked = useLock();
+  const { isDisabled: isLocked } = useLock();
 
   const lastSubmittedTipRef = useRef<Record<number, string>>(
     Object.fromEntries(matches.map((m) => [m.id, m.tips[0]?.tip ?? ""])),
@@ -498,7 +498,6 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
 
   const currentRound = rounds.find((r) => r.nr === currentNr);
   const currentMatches = allMatches.filter((m) => m.roundId === currentRound?.id);
-  const isLocked = championshipCompleted || (currentRound?.completed ?? false);
 
   // Joker counts derived from server-confirmed data (allMatches)
   const hasExtraJoker = jokerRuleId === "einmal-pro-runde-plus-zwei-zusatzjoker";
@@ -556,7 +555,10 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
         </CardContent>
       </Card>
 
-      <LockProvider isLocked={isLocked}>
+      <LockProvider
+        isChampionshipClosed={championshipCompleted}
+        isRoundClosed={currentRound?.completed ?? false}
+      >
         <Card>
           <CardContent>
             <TipGrid
