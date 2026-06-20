@@ -23,7 +23,7 @@ export function SearchField({ placeholder = "Suchen …", className, ...props }:
           <SearchIcon className="text-muted pointer-events-none absolute left-2.5 size-3.5" />
           <AriaInput
             placeholder={placeholder}
-            className="border-subtle bg-surface text-app placeholder:text-muted data-focused:ring-accent/60 w-full rounded-sm border py-1.5 pr-8 pl-8 text-sm transition ease-out outline-none data-focused:ring-2 [&::-webkit-search-cancel-button]:hidden"
+            className="border-subtle bg-surface text-app placeholder:text-placeholder data-focused:ring-accent/60 w-full rounded-sm border py-1.5 pr-8 pl-8 text-sm transition ease-out outline-none data-focused:ring-2 [&::-webkit-search-cancel-button]:hidden"
           />
           {!isEmpty && (
             <AriaButton

@@ -49,8 +49,10 @@
     color(display-p3 0.388 0.388 0.37),
     color(display-p3 0.707 0.703 0.68)
   );
-  /* Section labels & placeholders — currently aliased to subtle; give its own value to diverge */
+  /* Section labels — low-contrast, same weight as subtle */
   --text-color-muted: var(--text-color-subtle);
+  /* Input placeholders — subtle text dialed back so it reads clearly as a hint */
+  --text-color-placeholder: color-mix(in oklab, var(--text-color-subtle) 60%, transparent);
 
   /* orange11 — Low-contrast accent text */
   --text-color-accent: light-dark(color(display-p3 0.76 0.34 0), color(display-p3 1 0.63 0.38));
