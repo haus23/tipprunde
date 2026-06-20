@@ -29,7 +29,12 @@ export function LockProvider({
   isRoundClosed?: boolean;
   children: React.ReactNode;
 }) {
-  const isBusy = useFetchers().some((f) => f.state !== "idle") || useNavigation().state !== "idle";
+  // Both hooks must run unconditionally — do not collapse into a short-circuiting
+  // `||`, or useNavigation() gets skipped whenever a fetcher is pending (hook
+  // count changes → "rendered fewer hooks than expected").
+  const hasPendingFetcher = useFetchers().some((f) => f.state !== "idle");
+  const isNavigating = useNavigation().state !== "idle";
+  const isBusy = hasPendingFetcher || isNavigating;
   const isDisabled = isChampionshipClosed || isRoundClosed || isBusy;
 
   return (
