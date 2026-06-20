@@ -2,11 +2,11 @@ import {
   extraAnswers as extraAnswersTable,
   extraQuestions as extraQuestionsTable,
 } from "@tipprunde/db/schema";
-import { Button } from "@tipprunde/ui";
+import { Button, Input } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
-import { ChevronDownIcon, ChevronRightIcon, PlusIcon, XIcon } from "lucide-react";
+import { ChevronRightIcon, PlusIcon, XIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Button as RACButton, Input, TextField } from "react-aria-components";
+import { Button as RACButton, Input as RACInput, TextField } from "react-aria-components";
 import { useFetcher } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
@@ -226,6 +226,10 @@ type EnrolledPlayer = {
   user: { id: number; name: string };
 };
 
+function formatPoints(points: number): string {
+  return (Number.isInteger(points) ? String(points) : points.toFixed(1)).replace(".", ",");
+}
+
 // --- Question card ---
 
 function QuestionCard({ question, players }: { question: Question; players: EnrolledPlayer[] }) {
@@ -246,12 +250,11 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
   const [pointsInputs, setPointsInputs] = useState<Record<number, string>>(() => {
     const map: Record<number, string> = {};
     for (const ea of question.extraAnswers) {
-      if (ea.points !== null) map[ea.userId] = String(ea.points).replace(".", ",");
+      if (ea.points !== null) map[ea.userId] = formatPoints(ea.points);
     }
     return map;
   });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [answersOpen, setAnswersOpen] = useState(false);
 
   useEffect(() => {
     if (!question.question) questionInputRef.current?.focus();
@@ -305,7 +308,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
       // Invalid input → revert the field to the server value.
       setPointsInputs((prev) => ({
         ...prev,
-        [userId]: serverPoints !== null ? String(serverPoints).replace(".", ",") : "",
+        [userId]: serverPoints !== null ? formatPoints(serverPoints) : "",
       }));
       return;
     }
@@ -323,6 +326,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
   }
 
   const earnerCount = question.extraAnswers.filter((ea) => ea.points !== null).length;
+  const answersByUser = new Map(question.extraAnswers.map((ea) => [ea.userId, ea]));
 
   return (
     <Card>
@@ -341,7 +345,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
           }}
           className="min-w-0 flex-1"
         >
-          <Input
+          <RACInput
             ref={questionInputRef}
             placeholder="Frage eingeben ..."
             className="placeholder:text-muted w-full bg-transparent text-sm font-semibold outline-none placeholder:font-normal"
@@ -385,98 +389,110 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
           {/* Description */}
           <div className="space-y-1.5">
             <p className="text-muted text-xs font-medium tracking-wide uppercase">Beschreibung</p>
-            <TextField
-              aria-label="Beschreibung"
-              value={description}
-              onChange={setDescription}
-              onBlur={() => {
-                const trimmed = description.trim();
-                if (trimmed !== question.description) saveField("description", trimmed);
-              }}
-            >
-              <Input
-                placeholder="Punkteverteilung beschreiben ..."
-                className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-full rounded-sm border px-3 py-1.5 text-sm outline-none focus:ring-2"
-              />
-            </TextField>
+            {isChampionshipClosed ? (
+              <p className="text-sm">{question.description || "–"}</p>
+            ) : (
+              <TextField
+                aria-label="Beschreibung"
+                value={description}
+                onChange={setDescription}
+                onBlur={() => {
+                  const trimmed = description.trim();
+                  if (trimmed !== question.description) saveField("description", trimmed);
+                }}
+              >
+                <Input placeholder="Punkteverteilung beschreiben ..." className="w-full" />
+              </TextField>
+            )}
           </div>
 
           {/* Official answer */}
           <div className="space-y-1.5">
             <p className="text-muted text-xs font-medium tracking-wide uppercase">Antwort</p>
-            <TextField
-              aria-label="Antwort"
-              value={answer}
-              onChange={setAnswer}
-              onBlur={() => {
-                const trimmed = answer.trim();
-                if (trimmed !== (question.answer ?? "")) saveField("answer", trimmed);
-              }}
-            >
-              <Input
-                placeholder="Noch keine Antwort ..."
-                className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-full rounded-sm border px-3 py-1.5 text-sm outline-none focus:ring-2"
-              />
-            </TextField>
+            {isChampionshipClosed ? (
+              <p className="text-sm">{question.answer || "–"}</p>
+            ) : (
+              <TextField
+                aria-label="Antwort"
+                value={answer}
+                onChange={setAnswer}
+                onBlur={() => {
+                  const trimmed = answer.trim();
+                  if (trimmed !== (question.answer ?? "")) saveField("answer", trimmed);
+                }}
+              >
+                <Input placeholder="Noch keine Antwort ..." className="w-full" />
+              </TextField>
+            )}
           </div>
 
-          {/* Player answers & points — collapsible */}
-          <div className="border-subtle border-t pt-3">
-            <RACButton
-              onPress={() => setAnswersOpen((o) => !o)}
+          {/* Player answers & points — native disclosure */}
+          <details className="group border-subtle border-t pt-1">
+            <summary
               className={cn(
-                "flex w-full items-center gap-1.5 text-muted text-xs font-medium uppercase tracking-wide",
-                "outline-none hover:text-app",
-                "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent rounded-sm",
+                "flex cursor-pointer list-none items-center gap-1.5 rounded-sm px-2 py-1.5 select-none",
+                "text-muted text-xs font-medium tracking-wide uppercase",
+                "outline-none transition-colors hover:text-app",
+                "focus-visible:ring-2 focus-visible:ring-accent",
+                "[&::-webkit-details-marker]:hidden",
               )}
             >
-              {answersOpen ? (
-                <ChevronDownIcon className="size-3.5" />
-              ) : (
-                <ChevronRightIcon className="size-3.5" />
-              )}
+              <ChevronRightIcon className="size-3.5 transition-transform duration-200 ease-out group-open:rotate-90" />
               Antworten &amp; Punkte ({players.length})
               {earnerCount > 0 && (
                 <span className="text-accent normal-case">· {earnerCount}× Punkte</span>
               )}
-            </RACButton>
+            </summary>
 
-            {answersOpen && (
-              <div className="mt-2 space-y-1">
-                {players.map((player) => (
+            <div className="mt-2 space-y-1">
+              {players.map((player) => {
+                const ea = answersByUser.get(player.userId);
+                return (
                   <div key={player.userId} className="flex items-center gap-3">
                     <span className="w-32 shrink-0 truncate text-sm">{player.user.name}</span>
-                    <TextField
-                      aria-label={`Antwort von ${player.user.name}`}
-                      value={answerInputs[player.userId] ?? ""}
-                      onChange={(v) => setAnswerInputs((prev) => ({ ...prev, [player.userId]: v }))}
-                      onBlur={() => handleSavePlayerAnswer(player.userId)}
-                      className="min-w-0 flex-1"
-                    >
-                      <Input
-                        placeholder="Keine Antwort ..."
-                        className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-full rounded-sm border px-3 py-1 text-sm outline-none focus:ring-2"
-                      />
-                    </TextField>
-                    <TextField
-                      aria-label={`Punkte für ${player.user.name}`}
-                      value={pointsInputs[player.userId] ?? ""}
-                      onChange={(v) => setPointsInputs((prev) => ({ ...prev, [player.userId]: v }))}
-                      onBlur={() => handlePointsSave(player.userId)}
-                      className="shrink-0"
-                    >
-                      <Input
-                        inputMode="decimal"
-                        onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-                        placeholder="Pkt."
-                        className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-14 rounded-sm border px-2 py-1 text-center text-sm outline-none focus:ring-2"
-                      />
-                    </TextField>
+                    {isChampionshipClosed ? (
+                      <>
+                        <span className="min-w-0 flex-1 text-sm">{ea?.answer || "–"}</span>
+                        <span className="w-14 shrink-0 text-center text-sm tabular-nums">
+                          {ea?.points != null ? formatPoints(ea.points) : "–"}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <TextField
+                          aria-label={`Antwort von ${player.user.name}`}
+                          value={answerInputs[player.userId] ?? ""}
+                          onChange={(v) =>
+                            setAnswerInputs((prev) => ({ ...prev, [player.userId]: v }))
+                          }
+                          onBlur={() => handleSavePlayerAnswer(player.userId)}
+                          className="min-w-0 flex-1"
+                        >
+                          <Input placeholder="Keine Antwort ..." className="w-full" />
+                        </TextField>
+                        <TextField
+                          aria-label={`Punkte für ${player.user.name}`}
+                          value={pointsInputs[player.userId] ?? ""}
+                          onChange={(v) =>
+                            setPointsInputs((prev) => ({ ...prev, [player.userId]: v }))
+                          }
+                          onBlur={() => handlePointsSave(player.userId)}
+                          className="shrink-0"
+                        >
+                          <Input
+                            inputMode="decimal"
+                            onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                            placeholder="Pkt."
+                            className="w-14 text-center"
+                          />
+                        </TextField>
+                      </>
+                    )}
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
+                );
+              })}
+            </div>
+          </details>
         </div>
       </CardContent>
     </Card>
