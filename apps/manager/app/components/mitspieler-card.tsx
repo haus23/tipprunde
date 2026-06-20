@@ -1,7 +1,7 @@
-import { Button, SearchField } from "@tipprunde/ui";
-import { UserPlusIcon } from "lucide-react";
-import { useMemo, useState } from "react";
-import { ListBox, ListBoxItem, useDragAndDrop } from "react-aria-components";
+import { Button, Label } from "@tipprunde/ui";
+import { UserPlusIcon, XIcon } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ComboBox, Input, ListBox, ListBoxItem, Popover, useFilter } from "react-aria-components";
 import { useFetcher } from "react-router";
 
 import { cn } from "#/lib/utils.ts";
@@ -21,66 +21,65 @@ type MitspielerCardProps = {
   allUsers: User[];
 };
 
-const DRAG_TYPE = "x-tipprunde/user-id";
+const listBoxItemClass = cn(
+  "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
+  "hover:bg-nav-active data-focused:bg-nav-active data-selected:bg-accent-subtle",
+);
 
 export function MitspielerCard({ playerUserIds: initialIds, allUsers }: MitspielerCardProps) {
   const isLocked = useLock();
   const fetcher = useFetcher();
+  const { contains } = useFilter({ sensitivity: "base" });
+
   const [playerIds, setPlayerIds] = useState(() => new Set(initialIds));
-  const [filter, setFilter] = useState("");
+  const [query, setQuery] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-  const inChampionship = useMemo(() => {
-    const userMap = new Map(allUsers.map((u) => [u.id, u]));
-    return [...playerIds].flatMap((id) => {
-      const u = userMap.get(id);
-      return u ? [u] : [];
+  const inputRef = useRef<HTMLInputElement>(null);
+  const refocusRef = useRef(false);
+
+  // Restore focus to the add field once an add settles, so a season's worth of
+  // players can be entered in quick succession without re-clicking the input.
+  useEffect(() => {
+    if (fetcher.state === "idle" && refocusRef.current) {
+      refocusRef.current = false;
+      inputRef.current?.focus();
+    }
+  }, [fetcher.state]);
+
+  const userMap = useMemo(() => new Map(allUsers.map((u) => [u.id, u])), [allUsers]);
+
+  // Enrolled players in insertion order (≈ player id asc), matching the loader's sort.
+  const inChampionship = useMemo(
+    () =>
+      [...playerIds].flatMap((id) => {
+        const u = userMap.get(id);
+        return u ? [u] : [];
+      }),
+    [playerIds, userMap],
+  );
+
+  // Available pool (not yet enrolled); already name-sorted by the loader.
+  const available = useMemo(
+    () => allUsers.filter((u) => !playerIds.has(u.id)),
+    [allUsers, playerIds],
+  );
+
+  function addPlayer(userId: number) {
+    setPlayerIds((prev) => new Set([...prev, userId]));
+    setQuery("");
+    refocusRef.current = true;
+    void fetcher.submit({ intent: "add-player", userId: String(userId) }, { method: "post" });
+  }
+
+  function removePlayer(userId: number) {
+    setPlayerIds((prev) => {
+      const next = new Set(prev);
+      next.delete(userId);
+      return next;
     });
-  }, [allUsers, playerIds]);
-  const available = useMemo(() => {
-    const all = allUsers.filter((u) => !playerIds.has(u.id));
-    if (!filter) return all;
-    const q = filter.toLowerCase();
-    return all.filter((u) => u.name.toLowerCase().includes(q));
-  }, [allUsers, playerIds, filter]);
-
-  const { dragAndDropHooks: inChampionshipHooks } = useDragAndDrop({
-    isDisabled: isLocked,
-    getItems: (keys) => [...keys].map((id) => ({ [DRAG_TYPE]: String(id) })),
-    onRootDrop: async (e) => {
-      for (const item of e.items) {
-        if (item.kind === "text") {
-          const userId = Number(await item.getText(DRAG_TYPE));
-          setPlayerIds((prev) => new Set([...prev, userId]));
-          setFilter("");
-          void fetcher.submit({ intent: "add-player", userId: String(userId) }, { method: "post" });
-        }
-      }
-    },
-    acceptedDragTypes: [DRAG_TYPE],
-  });
-
-  const { dragAndDropHooks: availableHooks } = useDragAndDrop({
-    isDisabled: isLocked,
-    getItems: (keys) => [...keys].map((id) => ({ [DRAG_TYPE]: String(id) })),
-    onRootDrop: async (e) => {
-      for (const item of e.items) {
-        if (item.kind === "text") {
-          const userId = Number(await item.getText(DRAG_TYPE));
-          setPlayerIds((prev) => {
-            const next = new Set(prev);
-            next.delete(userId);
-            return next;
-          });
-          void fetcher.submit(
-            { intent: "remove-player", userId: String(userId) },
-            { method: "post" },
-          );
-        }
-      }
-    },
-    acceptedDragTypes: [DRAG_TYPE],
-  });
+    void fetcher.submit({ intent: "remove-player", userId: String(userId) }, { method: "post" });
+  }
 
   return (
     <Card>
@@ -88,30 +87,31 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
         <h2 className="text-sm font-semibold">Mitspieler</h2>
       </div>
       <CardContent>
-        <div className="grid grid-cols-2 gap-6">
-          <PlayerList
-            label={`Im Turnier (${inChampionship.length})`}
-            users={inChampionship}
-            dragAndDropHooks={inChampionshipHooks}
+        <div className="space-y-4">
+          <ComboBox
+            value={null}
+            onChange={(key) => key != null && addPlayer(Number(key))}
+            inputValue={query}
+            onInputChange={setQuery}
+            defaultFilter={contains}
             isDisabled={isLocked}
-            emptyText="Noch keine Spieler im Turnier."
-          />
-          <div className="space-y-2">
-            <PlayerList
-              label="Alle Spieler"
-              users={available}
-              dragAndDropHooks={availableHooks}
-              isDisabled={isLocked}
-              emptyText={filter ? "Keine Ergebnisse." : "Alle Spieler sind bereits im Turnier."}
-              fixedHeight
-            />
-            <div className="flex items-center gap-4">
-              <SearchField
-                aria-label="Mitspieler filtern"
-                className="flex-1"
-                value={filter}
-                onChange={setFilter}
-              />
+            menuTrigger="focus"
+            className="flex flex-col gap-1.5"
+          >
+            <Label>Spieler hinzufügen</Label>
+            <div className="flex gap-4">
+              <div
+                className={cn(
+                  "flex flex-1 rounded-sm",
+                  "focus-within:ring-2 focus-within:ring-accent/60",
+                )}
+              >
+                <Input
+                  ref={inputRef}
+                  placeholder="Name eingeben ..."
+                  className="border-subtle bg-surface w-full rounded-sm border px-2.5 py-1.5 text-sm outline-none"
+                />
+              </div>
               <Button
                 size="icon"
                 isDisabled={isLocked}
@@ -122,67 +122,64 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
                 <UserPlusIcon className="size-4" />
               </Button>
             </div>
-          </div>
+            <Popover
+              placement="top start"
+              className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none"
+            >
+              <ListBox
+                items={available}
+                className="max-h-60 overflow-y-auto p-1 outline-none"
+                renderEmptyState={() => (
+                  <p className="text-subtle px-2.5 py-1.5 text-sm">Keine Spieler gefunden.</p>
+                )}
+              >
+                {(user: User) => (
+                  <ListBoxItem id={user.id} textValue={user.name} className={listBoxItemClass}>
+                    {user.name}
+                  </ListBoxItem>
+                )}
+              </ListBox>
+            </Popover>
+          </ComboBox>
 
-          <SpielerDialog
-            isOpen={isCreateOpen}
-            onOpenChange={setIsCreateOpen}
-            onSuccess={(user) => setFilter(user.name)}
-          />
+          <div className="space-y-2">
+            <p className="text-muted text-xs font-medium tracking-wide uppercase">
+              Im Turnier ({inChampionship.length})
+            </p>
+            {inChampionship.length === 0 ? (
+              <p className="text-subtle border-subtle rounded-sm border px-3 py-8 text-center text-sm">
+                Noch keine Spieler im Turnier.
+              </p>
+            ) : (
+              <ul className="border-subtle divide-subtle max-h-92 divide-y overflow-y-auto rounded-sm border">
+                {inChampionship.map((user) => (
+                  <li
+                    key={user.id}
+                    className="flex items-center justify-between gap-2 px-3 py-2 text-sm"
+                  >
+                    <span>{user.name}</span>
+                    <Button
+                      intent="ghost"
+                      size="icon"
+                      isDisabled={isLocked}
+                      onPress={() => removePlayer(user.id)}
+                      aria-label={`${user.name} entfernen`}
+                    >
+                      <XIcon className="size-4" />
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
+
+        <SpielerDialog
+          isOpen={isCreateOpen}
+          onOpenChange={setIsCreateOpen}
+          onSuccess={(user) => addPlayer(user.id)}
+        />
       </CardContent>
     </Card>
-  );
-}
-
-type PlayerListProps = {
-  label: string;
-  users: User[];
-  dragAndDropHooks: ReturnType<typeof useDragAndDrop>["dragAndDropHooks"];
-  isDisabled: boolean;
-  emptyText: string;
-  fixedHeight?: boolean;
-};
-
-function PlayerList({
-  label,
-  users,
-  dragAndDropHooks,
-  isDisabled,
-  emptyText,
-  fixedHeight,
-}: PlayerListProps) {
-  return (
-    <div className="space-y-2">
-      <p className="text-muted text-xs font-medium tracking-wide uppercase">{label}</p>
-      <ListBox
-        aria-label={label}
-        items={users}
-        dragAndDropHooks={dragAndDropHooks}
-        renderEmptyState={() => (
-          <p className="text-subtle px-3 py-8 text-center text-sm">{emptyText}</p>
-        )}
-        className={cn(
-          "border-subtle overflow-y-auto rounded-sm border p-1 outline-none",
-          fixedHeight ? "h-92" : "max-h-92",
-          "data-drop-target:border-accent data-drop-target:bg-accent/5",
-        )}
-      >
-        {(user) => (
-          <ListBoxItem
-            id={user.id}
-            textValue={user.name}
-            className={cn(
-              isDisabled ? "cursor-default" : "cursor-grab",
-              "rounded-sm px-3 py-2 text-sm outline-none",
-              "hover:bg-nav-active data-focused:bg-nav-active",
-              "data-dragging:cursor-grabbing data-dragging:opacity-40",
-            )}
-          >
-            {user.name}
-          </ListBoxItem>
-        )}
-      </ListBox>
-    </div>
   );
 }
