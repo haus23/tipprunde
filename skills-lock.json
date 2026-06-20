@@ -10,13 +10,13 @@
     "react-aria": {
       "source": "react-aria.adobe.com",
       "sourceType": "well-known",
-      "computedHash": "bb2a848e42ac9637d7601c61ec51c75b58ca963201ae7b2c65eae68e40644f23"
+      "computedHash": "c778864aedee25fb7dfe980f772954e13ac76cdf3ff00879dd59b72621d797ae"
     },
-    "react-router-framework-mode": {
-      "source": "remix-run/agent-skills",
+    "react-router": {
+      "source": "remix-run/react-router",
       "sourceType": "github",
-      "skillPath": "skills/react-router-framework-mode/SKILL.md",
-      "computedHash": "26c5bdac2f686c47eb4c4b48b6cb52401cde1dc833e6d26408ddfb22ea83c5ca"
+      "skillPath": ".agents/skills/react-router/SKILL.md",
+      "computedHash": "ff4d9bc724f0e56a51c453eef5b93caef1c16d3623ac49345d74fc1a5efbc05a"
     }
   }
 }

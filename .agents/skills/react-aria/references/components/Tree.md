@@ -74,15 +74,21 @@ export function TreeItemContent(
 }
 
 export interface TreeItemProps extends Partial<AriaTreeItemProps> {
-  title: React.ReactNode;
+  title?: React.ReactNode;
 }
 
 export function TreeItem(props: TreeItemProps) {
   let textValue = typeof props.title === "string" ? props.title : "";
   return (
     <AriaTreeItem textValue={textValue} {...props}>
-      <TreeItemContent>{props.title}</TreeItemContent>
-      {props.children}
+      {props.title != null ? (
+        <>
+          <TreeItemContent>{props.title}</TreeItemContent>
+          {props.children}
+        </>
+      ) : (
+        props.children
+      )}
     </AriaTreeItem>
   );
 }
@@ -701,6 +707,51 @@ function Example(props) {
 }
 ```
 
+## Keyboard navigation
+
+By default, Tree uses arrow key navigation to move focus into rows. Set `keyboardNavigationBehavior="tab"` to have <Keyboard>Tab</Keyboard> move focus in and out of a row.
+Use this when rows contain interactive elements such as text fields, where arrow keys and typing in the field should not trigger grid navigation or selection.
+
+```tsx
+import { Tree, TreeItem, TreeItemContent } from "vanilla-starter/Tree";
+import { TextField } from "vanilla-starter/TextField";
+
+<Tree
+  /*- begin highlight -*/
+  keyboardNavigationBehavior="tab"
+  /*- end highlight -*/
+  selectionMode="multiple"
+  defaultExpandedKeys={["documents", "photos"]}
+  aria-label="Shared files"
+>
+  <TreeItem id="documents" textValue="Documents">
+    <TreeItemContent>
+      <TextField aria-label="title" defaultValue="Documents" />
+    </TreeItemContent>
+    <TreeItem id="weekly" textValue="Weekly Report.pdf">
+      <TreeItemContent>
+        <TextField aria-label="title" defaultValue="Weekly Report.pdf" />
+      </TreeItemContent>
+    </TreeItem>
+    <TreeItem id="budget" textValue="Budget.xlsx">
+      <TreeItemContent>
+        <TextField aria-label="title" defaultValue="Budget.xlsx" />
+      </TreeItemContent>
+    </TreeItem>
+  </TreeItem>
+  <TreeItem id="photos">
+    <TreeItemContent>
+      <TextField aria-label="title" defaultValue="Photos" />
+    </TreeItemContent>
+    <TreeItem id="sunset" textValue="Sunset.jpg">
+      <TreeItemContent>
+        <TextField aria-label="title" defaultValue="Sunset.jpg" />
+      </TreeItemContent>
+    </TreeItem>
+  </TreeItem>
+</Tree>;
+```
+
 ## Drag and drop
 
 Tree supports drag and drop interactions when the `dragAndDropHooks` prop is provided using the `useDragAndDrop` hook. Users can drop data on the list as a whole, on individual items, insert new items between existing ones, or reorder items. React Aria supports drag and drop via mouse, touch, keyboard, and screen reader interactions. See the [drag and drop guide](dnd.md?component=Tree) to learn more.
@@ -835,6 +886,7 @@ function Example() {
 | `id`                          | `string                                                                                      | undefined`          | —                 | The element's unique identifier. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id).                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `inert`                       | `boolean                                                                                     | undefined`          | —                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `items`                       | `Iterable<T>                                                                                 | undefined`          | —                 | Item objects in the collection.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `keyboardNavigationBehavior`  | `"arrow"                                                                                     | "tab"               | undefined`        | 'arrow'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Whether keyboard navigation to focusable elements within grid list items is via the left/right arrow keys or the tab key.                                                                                                                                                                                          |
 | `lang`                        | `string                                                                                      | undefined`          | —                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `onAction`                    | `((key: Key) => void)                                                                        | undefined`          | —                 | Handler that is called when a user performs an action on an item. The exact user event depends on the collection's `selectionBehavior` prop and the interaction modality.                                                                                                                                                                                                                                                                                                                                                    |
 | `onAnimationEnd`              | `React.AnimationEventHandler<HTMLDivElement>                                                 | undefined`          | —                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |

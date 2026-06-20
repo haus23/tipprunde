@@ -58,7 +58,7 @@ export function ComboBox<T, M extends "single" | "multiple" = "single">({
 }: ComboBoxProps<T, M>) {
   return (
     <AriaComboBox {...props}>
-      <Label>{label}</Label>
+      {label && <Label>{label}</Label>}
       <div className="combobox-field">
         <Input className="react-aria-Input inset" placeholder={placeholder} />
         <FieldButton>
@@ -91,6 +91,8 @@ export function ComboBoxItem(props: ListBoxItemProps) {
 @import "./TextField.css";
 
 .react-aria-ComboBox {
+  display: flex;
+  flex-direction: column;
   color: var(--text-color);
   width: calc(var(--spacing) * 50);
 
