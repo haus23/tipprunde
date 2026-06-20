@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.19.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.19.0...v0.19.1)
+
+### 🚀 Enhancements
+
+- **manager:** Rebuild MitspielerCard as type-to-add combobox with remove list ([bcc5f6b](https://github.com/haus23/tipprunde/commit/bcc5f6b))
+
+### 🩹 Fixes
+
+- **manager:** Pass dragAndDropHooks unconditionally to avoid conditional-hooks crash ([8814380](https://github.com/haus23/tipprunde/commit/8814380))
+
+### 🏡 Chore
+
+- Update skills. ([6e9be34](https://github.com/haus23/tipprunde/commit/6e9be34))
+- Update react aria components. ([632b50f](https://github.com/haus23/tipprunde/commit/632b50f))
+- Update pnpm. ([31169ed](https://github.com/haus23/tipprunde/commit/31169ed))
+
 ## v0.19.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.18.2...v0.19.0)
