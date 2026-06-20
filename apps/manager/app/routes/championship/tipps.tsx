@@ -236,7 +236,7 @@ function TipGrid({
   extraJokerCount,
 }: TipGridProps) {
   const fetcher = useFetcher();
-  const { isDisabled: isLocked } = useLock();
+  const { isDisabled: isLocked, isEntryLocked } = useLock();
 
   const lastSubmittedTipRef = useRef<Record<number, string>>(
     Object.fromEntries(matches.map((m) => [m.id, m.tips[0]?.tip ?? ""])),
@@ -428,7 +428,7 @@ function TipGrid({
             <td className="py-3 pl-2 text-center">
               <Checkbox
                 isSelected={getTip(match.id).joker}
-                isDisabled={isLocked || !isJokerAllowed(match.id)}
+                isDisabled={isEntryLocked || !isJokerAllowed(match.id)}
                 onChange={(checked) => {
                   const updated = { ...getTip(match.id), joker: checked };
                   updateTip(match.id, { joker: checked });
@@ -441,7 +441,7 @@ function TipGrid({
               <td className="py-3 pl-2 text-center">
                 <Checkbox
                   isSelected={getTip(match.id).extraJoker}
-                  isDisabled={isLocked || !isExtraJokerAllowed(match.id)}
+                  isDisabled={isEntryLocked || !isExtraJokerAllowed(match.id)}
                   onChange={(checked) => {
                     const updated = { ...getTip(match.id), extraJoker: checked };
                     updateTip(match.id, { extraJoker: checked });
