@@ -45,6 +45,7 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
   }, [allUsers, playerIds, filter]);
 
   const { dragAndDropHooks: inChampionshipHooks } = useDragAndDrop({
+    isDisabled: isLocked,
     getItems: (keys) => [...keys].map((id) => ({ [DRAG_TYPE]: String(id) })),
     onRootDrop: async (e) => {
       for (const item of e.items) {
@@ -60,6 +61,7 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
   });
 
   const { dragAndDropHooks: availableHooks } = useDragAndDrop({
+    isDisabled: isLocked,
     getItems: (keys) => [...keys].map((id) => ({ [DRAG_TYPE]: String(id) })),
     onRootDrop: async (e) => {
       for (const item of e.items) {
@@ -90,14 +92,16 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
           <PlayerList
             label={`Im Turnier (${inChampionship.length})`}
             users={inChampionship}
-            dragAndDropHooks={isLocked ? undefined : inChampionshipHooks}
+            dragAndDropHooks={inChampionshipHooks}
+            isDisabled={isLocked}
             emptyText="Noch keine Spieler im Turnier."
           />
           <div className="space-y-2">
             <PlayerList
               label="Alle Spieler"
               users={available}
-              dragAndDropHooks={isLocked ? undefined : availableHooks}
+              dragAndDropHooks={availableHooks}
+              isDisabled={isLocked}
               emptyText={filter ? "Keine Ergebnisse." : "Alle Spieler sind bereits im Turnier."}
               fixedHeight
             />
@@ -134,12 +138,20 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
 type PlayerListProps = {
   label: string;
   users: User[];
-  dragAndDropHooks: ReturnType<typeof useDragAndDrop>["dragAndDropHooks"] | undefined;
+  dragAndDropHooks: ReturnType<typeof useDragAndDrop>["dragAndDropHooks"];
+  isDisabled: boolean;
   emptyText: string;
   fixedHeight?: boolean;
 };
 
-function PlayerList({ label, users, dragAndDropHooks, emptyText, fixedHeight }: PlayerListProps) {
+function PlayerList({
+  label,
+  users,
+  dragAndDropHooks,
+  isDisabled,
+  emptyText,
+  fixedHeight,
+}: PlayerListProps) {
   return (
     <div className="space-y-2">
       <p className="text-muted text-xs font-medium tracking-wide uppercase">{label}</p>
@@ -161,7 +173,7 @@ function PlayerList({ label, users, dragAndDropHooks, emptyText, fixedHeight }: 
             id={user.id}
             textValue={user.name}
             className={cn(
-              dragAndDropHooks ? "cursor-grab" : "cursor-default",
+              isDisabled ? "cursor-default" : "cursor-grab",
               "rounded-sm px-3 py-2 text-sm outline-none",
               "hover:bg-nav-active data-focused:bg-nav-active",
               "data-dragging:cursor-grabbing data-dragging:opacity-40",
