@@ -6,16 +6,7 @@ import { Button } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { ChevronDownIcon, ChevronRightIcon, PlusIcon, XIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import {
-  Button as RACButton,
-  Input,
-  ListBox,
-  ListBoxItem,
-  Popover,
-  Select,
-  SelectValue,
-  TextField,
-} from "react-aria-components";
+import { Button as RACButton, Input, TextField } from "react-aria-components";
 import { useFetcher } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
@@ -239,7 +230,7 @@ type EnrolledPlayer = {
 
 function QuestionCard({ question, players }: { question: Question; players: EnrolledPlayer[] }) {
   const fetcher = useFetcher();
-  const { isChampionshipClosed, isBusy } = useLock();
+  const { isChampionshipClosed } = useLock();
   const questionInputRef = useRef<HTMLInputElement>(null);
 
   const [questionText, setQuestionText] = useState(question.question);
@@ -252,11 +243,15 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
     }
     return map;
   });
+  const [pointsInputs, setPointsInputs] = useState<Record<number, string>>(() => {
+    const map: Record<number, string> = {};
+    for (const ea of question.extraAnswers) {
+      if (ea.points !== null) map[ea.userId] = String(ea.points).replace(".", ",");
+    }
+    return map;
+  });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [answersOpen, setAnswersOpen] = useState(false);
-  const [showAddEarner, setShowAddEarner] = useState(false);
-  const [newEarnerUserId, setNewEarnerUserId] = useState<string | null>(null);
-  const [newEarnerPoints, setNewEarnerPoints] = useState("");
 
   useEffect(() => {
     if (!question.question) questionInputRef.current?.focus();
@@ -291,35 +286,43 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
     );
   }
 
-  function handleAddEarner() {
-    if (!newEarnerUserId) return;
-    const parsed = Number(newEarnerPoints.replace(",", "."));
-    if (!Number.isFinite(parsed) || parsed <= 0) return;
+  function handlePointsSave(userId: number) {
+    const raw = pointsInputs[userId]?.trim() ?? "";
+    const serverPoints = question.extraAnswers.find((ea) => ea.userId === userId)?.points ?? null;
+
+    if (raw === "") {
+      if (serverPoints !== null) {
+        void fetcher.submit(
+          { intent: "remove-points", questionId: String(question.id), userId: String(userId) },
+          { method: "post" },
+        );
+      }
+      return;
+    }
+
+    const parsed = Number(raw.replace(",", "."));
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+      // Invalid input → revert the field to the server value.
+      setPointsInputs((prev) => ({
+        ...prev,
+        [userId]: serverPoints !== null ? String(serverPoints).replace(".", ",") : "",
+      }));
+      return;
+    }
+    if (parsed === serverPoints) return;
 
     void fetcher.submit(
       {
         intent: "upsert-points",
         questionId: String(question.id),
-        userId: newEarnerUserId,
+        userId: String(userId),
         points: String(parsed),
       },
       { method: "post" },
     );
-    setNewEarnerUserId(null);
-    setNewEarnerPoints("");
-    setShowAddEarner(false);
   }
 
-  function handleRemovePoints(userId: number) {
-    void fetcher.submit(
-      { intent: "remove-points", questionId: String(question.id), userId: String(userId) },
-      { method: "post" },
-    );
-  }
-
-  const earners = question.extraAnswers.filter((ea) => ea.points !== null);
-  const earnerUserIds = new Set(earners.map((ea) => ea.userId));
-  const availablePlayers = players.filter((p) => !earnerUserIds.has(p.userId));
+  const earnerCount = question.extraAnswers.filter((ea) => ea.points !== null).length;
 
   return (
     <Card>
@@ -417,132 +420,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
             </TextField>
           </div>
 
-          {/* Points — always visible once answer is set */}
-          {question.answer && (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <p className="text-muted text-xs font-medium tracking-wide uppercase">Punkte</p>
-                {!isChampionshipClosed && availablePlayers.length > 0 && !showAddEarner && (
-                  <RACButton
-                    onPress={() => setShowAddEarner(true)}
-                    className={cn(
-                      "flex items-center gap-1 rounded-sm text-muted text-xs transition-colors",
-                      "hover:text-app",
-                      "data-focused:outline-none data-focused:ring-2 data-focused:ring-accent",
-                    )}
-                  >
-                    <PlusIcon className="size-3" />
-                    Spieler
-                  </RACButton>
-                )}
-              </div>
-
-              {earners.length === 0 && !showAddEarner && (
-                <p className="text-subtle text-sm">Noch keine Punkte vergeben.</p>
-              )}
-
-              {earners.length > 0 && (
-                <div className="space-y-1">
-                  {earners.map((ea) => (
-                    <div key={ea.userId} className="flex items-center gap-2">
-                      <span className="flex-1 text-sm">{ea.user.name}</span>
-                      <span className="text-sm tabular-nums">
-                        {Number.isInteger(ea.points) ? ea.points : ea.points!.toFixed(1)}
-                      </span>
-                      <Button
-                        intent="ghost"
-                        size="icon"
-                        onPress={() => handleRemovePoints(ea.userId)}
-                        isDisabled={isBusy}
-                        aria-label={`Punkte für ${ea.user.name} entfernen`}
-                        className="hover:text-error p-0.5"
-                      >
-                        <XIcon className="size-3" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {showAddEarner && (
-                <div className="flex items-center gap-2">
-                  <Select
-                    aria-label="Spieler auswählen"
-                    value={newEarnerUserId}
-                    onChange={(v) => setNewEarnerUserId(v !== null ? String(v) : null)}
-                    placeholder="Spieler ..."
-                    className="min-w-0 flex-1"
-                  >
-                    <RACButton
-                      className={cn(
-                        "border-subtle bg-surface flex w-full items-center justify-between rounded-sm border px-2 py-1 text-sm outline-none",
-                        "data-focused:ring-2 data-focused:ring-accent",
-                      )}
-                    >
-                      <SelectValue className="data-placeholder:text-muted" />
-                      <ChevronDownIcon className="text-muted size-3.5 shrink-0" />
-                    </RACButton>
-                    <Popover className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none">
-                      <ListBox
-                        items={availablePlayers}
-                        className="max-h-48 overflow-y-auto p-1 outline-none"
-                      >
-                        {(player) => (
-                          <ListBoxItem
-                            id={String(player.userId)}
-                            textValue={player.user.name}
-                            className={cn(
-                              "cursor-pointer rounded-sm px-2.5 py-1 text-sm outline-none",
-                              "hover:bg-nav-active data-focused:bg-nav-active",
-                            )}
-                          >
-                            {player.user.name}
-                          </ListBoxItem>
-                        )}
-                      </ListBox>
-                    </Popover>
-                  </Select>
-
-                  <TextField
-                    aria-label="Punkte"
-                    value={newEarnerPoints}
-                    onChange={setNewEarnerPoints}
-                  >
-                    <Input
-                      onKeyDown={(e) => e.key === "Enter" && handleAddEarner()}
-                      placeholder="Pkt."
-                      className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-14 rounded-sm border px-2 py-1 text-center text-sm outline-none focus:ring-2"
-                    />
-                  </TextField>
-
-                  <Button
-                    size="sm"
-                    onPress={handleAddEarner}
-                    isDisabled={!newEarnerUserId || !newEarnerPoints}
-                    className="shrink-0 px-2.5 py-1"
-                  >
-                    Hinzufügen
-                  </Button>
-
-                  <Button
-                    intent="ghost"
-                    size="icon"
-                    onPress={() => {
-                      setShowAddEarner(false);
-                      setNewEarnerUserId(null);
-                      setNewEarnerPoints("");
-                    }}
-                    aria-label="Abbrechen"
-                    className="shrink-0 p-1"
-                  >
-                    <XIcon className="size-4" />
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Player answers — collapsible */}
+          {/* Player answers & points — collapsible */}
           <div className="border-subtle border-t pt-3">
             <RACButton
               onPress={() => setAnswersOpen((o) => !o)}
@@ -557,7 +435,10 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
               ) : (
                 <ChevronRightIcon className="size-3.5" />
               )}
-              Antworten ({players.length})
+              Antworten &amp; Punkte ({players.length})
+              {earnerCount > 0 && (
+                <span className="text-accent normal-case">· {earnerCount}× Punkte</span>
+              )}
             </RACButton>
 
             {answersOpen && (
@@ -575,6 +456,20 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                       <Input
                         placeholder="Keine Antwort ..."
                         className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-full rounded-sm border px-3 py-1 text-sm outline-none focus:ring-2"
+                      />
+                    </TextField>
+                    <TextField
+                      aria-label={`Punkte für ${player.user.name}`}
+                      value={pointsInputs[player.userId] ?? ""}
+                      onChange={(v) => setPointsInputs((prev) => ({ ...prev, [player.userId]: v }))}
+                      onBlur={() => handlePointsSave(player.userId)}
+                      className="shrink-0"
+                    >
+                      <Input
+                        inputMode="decimal"
+                        onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                        placeholder="Pkt."
+                        className="border-subtle bg-surface placeholder:text-muted focus:ring-accent w-14 rounded-sm border px-2 py-1 text-center text-sm outline-none focus:ring-2"
                       />
                     </TextField>
                   </div>
