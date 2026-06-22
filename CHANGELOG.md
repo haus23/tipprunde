@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.19.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.19.2...v0.19.3)
+
+### 🚀 Enhancements
+
+- **web:** Touch affordance and press feedback for linked table cells ([e113043](https://github.com/haus23/tipprunde/commit/e113043))
+- **web:** Preload routes on intent to mask loader latency ([16d1aa7](https://github.com/haus23/tipprunde/commit/16d1aa7))
+- **web:** Top progress bar during pending navigation ([0466aaf](https://github.com/haus23/tipprunde/commit/0466aaf))
+
+### 🩹 Fixes
+
+- **web:** Remove unused import. ([27eb87b](https://github.com/haus23/tipprunde/commit/27eb87b))
+- **web:** Render tip flag as SVG icon for consistent cross-device sizing ([09f57dd](https://github.com/haus23/tipprunde/commit/09f57dd))
+- **web:** Add aria-label and close popover manually on trigger click. ([87a5406](https://github.com/haus23/tipprunde/commit/87a5406))
+
 ## v0.19.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.19.1...v0.19.2)
