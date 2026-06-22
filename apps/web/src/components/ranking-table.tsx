@@ -118,11 +118,8 @@ function MatchdayButton({
   useLayoutEffect(() => {
     if (!isOpen) return;
     function handleOutsideClick(ev: PointerEvent) {
-      if (
-        buttonRef.current?.contains(ev.target as Node) ||
-        popoverRef.current?.contains(ev.target as Node)
-      )
-        return;
+      if (popoverRef.current?.contains(ev.target as Node)) return;
+      if (buttonRef.current?.contains(ev.target as Node)) ev.stopPropagation();
       setIsOpen(false);
     }
     window.addEventListener("pointerdown", handleOutsideClick, { capture: true });
@@ -167,7 +164,7 @@ function MatchdayButton({
             <path d="M0 0 L6 6 L12 0" />
           </svg>
         </OverlayArrow>
-        <Dialog className="flex flex-col outline-none">
+        <Dialog aria-label={`Aktuelle Tipps von ${name}`} className="flex flex-col outline-none">
           <p className="text-subtle border-subtle bg-surface absolute -top-2 self-center rounded-sm border px-2 py-1 text-xs font-medium">
             {name}
           </p>
