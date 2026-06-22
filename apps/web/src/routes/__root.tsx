@@ -7,7 +7,6 @@ import {
   HeadContent,
   Scripts,
   useRouter,
-  ErrorComponent,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { Button, Logo } from "@tipprunde/ui";
