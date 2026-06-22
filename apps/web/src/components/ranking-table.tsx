@@ -86,7 +86,7 @@ export function RankingTable({
               <td className="xs:px-3 xs:py-3 px-2 py-2 text-center font-medium tabular-nums">
                 <span className="relative inline-block">
                   {entry.total}
-                  {entry.roundPoints !== null && entry.roundPoints !== 0 && (
+                  {entry.roundPoints !== null && (
                     <CellFlag
                       label={`Rundenpunkte: ${entry.roundPoints > 0 ? `+${entry.roundPoints}` : entry.roundPoints}`}
                       className="left-full ml-0.5"
