@@ -1,3 +1,4 @@
+import { StarIcon } from "lucide-react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { Button, Popover } from "react-aria-components";
 
@@ -34,9 +35,9 @@ export function TipFlag({ label }: Props) {
         ref={buttonRef}
         onPress={() => setIsOpen((v) => !v)}
         aria-label={label}
-        className="text-accent focus-visible:ring-accent xs:right-0 absolute top-1/2 -right-2 -translate-y-1/2 cursor-default rounded-sm p-0.5 transition-transform outline-none focus-visible:ring-2 active:scale-[0.97]"
+        className="text-accent focus-visible:ring-accent xs:right-0 absolute top-1/2 -right-2 inline-flex -translate-y-1/2 cursor-default items-center justify-center rounded-sm p-0.5 transition-transform outline-none focus-visible:ring-2 active:scale-[0.97]"
       >
-        ★
+        <StarIcon className="size-3 fill-current" />
       </Button>
       <Popover
         ref={popoverRef}

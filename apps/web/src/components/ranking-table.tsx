@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, StarIcon } from "lucide-react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { Button, Dialog, OverlayArrow, Popover } from "react-aria-components";
 
@@ -211,7 +211,9 @@ function MatchdayButton({
                     <td className="px-2 py-1.5 text-center tabular-nums">
                       <span className="relative">
                         {m.tip ?? "–"}
-                        {m.isFlagged && <span className="text-accent absolute -right-3.5">★</span>}
+                        {m.isFlagged && (
+                          <StarIcon className="text-accent absolute top-1/2 -right-3.5 size-3 -translate-y-1/2 fill-current" />
+                        )}
                       </span>
                     </td>
                     <td className="py-1.5 text-center tabular-nums">
