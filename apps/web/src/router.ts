@@ -17,6 +17,10 @@ export function getRouter() {
   const router = createRouter({
     routeTree,
     scrollRestoration: true,
+    // Warm a route's loader on intent — on touch this fires at touchstart, so the
+    // (slow) Turso query is already in flight before the tap completes. RQ owns
+    // caching, so preloadStaleTime stays 0 to defer to the query's staleTime.
+    defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
     context: { queryClient },
   });
