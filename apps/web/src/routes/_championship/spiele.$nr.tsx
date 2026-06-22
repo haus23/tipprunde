@@ -9,9 +9,9 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+import { CellFlag } from "#/components/cell-flag.tsx";
 import { CellLink } from "#/components/cell-link.tsx";
 import { MatchSwitch } from "#/components/match-switch.tsx";
-import { TipFlag } from "#/components/tip-flag.tsx";
 import { formatDate, pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import { matchQueryOptions, roundsQueryOptions } from "#/lib/spiele.ts";
@@ -193,8 +193,8 @@ function MatchView({ championshipId, nr }: { championshipId: number; nr: number 
                 {match.tipsPublished && (
                   <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
                     {row.tip ?? "–"}
-                    {row.joker && <TipFlag label="Joker-Tipp" />}
-                    {row.extraJoker && <TipFlag label="Zusatzjoker-Tipp" />}
+                    {row.joker && <CellFlag label="Joker-Tipp" />}
+                    {row.extraJoker && <CellFlag label="Zusatzjoker-Tipp" />}
                   </td>
                 )}
                 {match.tipsPublished && (

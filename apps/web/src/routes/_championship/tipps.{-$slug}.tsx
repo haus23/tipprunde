@@ -2,10 +2,10 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { calcGoalDeviation } from "@tipprunde/domain/scoring";
 
+import { CellFlag } from "#/components/cell-flag.tsx";
 import { CellLink } from "#/components/cell-link.tsx";
 import { PlayerSwitch } from "#/components/player-switch.tsx";
 import { RoundAccordion } from "#/components/round-accordion.tsx";
-import { TipFlag } from "#/components/tip-flag.tsx";
 import { formatDate, pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import type { RankedPlayer } from "#/lib/ranking.ts";
@@ -263,8 +263,8 @@ function PlayerRoundItem({
                 </td>
                 <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
                   {showTip ? tip.tip : "–"}
-                  {showTip && tip.joker && <TipFlag label="Joker-Tipp" />}
-                  {showTip && tip.extraJoker && <TipFlag label="Zusatzjoker-Tipp" />}
+                  {showTip && tip.joker && <CellFlag label="Joker-Tipp" />}
+                  {showTip && tip.extraJoker && <CellFlag label="Zusatzjoker-Tipp" />}
                 </td>
                 <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                   {tip?.points != null ? tip.points : "–"}

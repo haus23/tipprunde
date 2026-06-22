@@ -3,6 +3,7 @@ import { CalendarIcon, StarIcon } from "lucide-react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { Button, Dialog, OverlayArrow, Popover } from "react-aria-components";
 
+import { CellFlag } from "#/components/cell-flag.tsx";
 import { CellLink } from "#/components/cell-link.tsx";
 import type { RankedPlayer } from "#/lib/ranking.ts";
 import { matchdayTipsQueryOptions } from "#/lib/spiele.ts";
@@ -83,7 +84,15 @@ export function RankingTable({
                 </td>
               )}
               <td className="xs:px-3 xs:py-3 px-2 py-2 text-center font-medium tabular-nums">
-                {entry.total}
+                <span className="relative inline-block">
+                  {entry.total}
+                  {entry.roundPoints !== null && entry.roundPoints !== 0 && (
+                    <CellFlag
+                      label={`Rundenpunkte: ${entry.roundPoints > 0 ? `+${entry.roundPoints}` : entry.roundPoints}`}
+                      className="left-full ml-0.5"
+                    />
+                  )}
+                </span>
               </td>
               {isOngoing && (
                 <td className="xs:px-3 xs:py-3 py-2 pr-4">

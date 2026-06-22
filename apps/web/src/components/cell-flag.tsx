@@ -4,13 +4,10 @@ import { Button, Popover } from "react-aria-components";
 
 interface Props {
   label: string;
+  className?: string;
 }
 
-/**
- * Accent star marking a joker tip. Tap/click toggles a small label popover —
- * a controlled Popover (not a hover Tooltip) so the hint is reachable on touch.
- */
-export function TipFlag({ label }: Props) {
+export function CellFlag({ label, className = "xs:right-0 -right-2" }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLElement>(null);
@@ -35,7 +32,7 @@ export function TipFlag({ label }: Props) {
         ref={buttonRef}
         onPress={() => setIsOpen((v) => !v)}
         aria-label={label}
-        className="text-accent focus-visible:ring-accent xs:right-0 absolute top-1/2 -right-2 inline-flex -translate-y-1/2 cursor-default items-center justify-center rounded-sm p-0.5 transition-transform outline-none focus-visible:ring-2 active:scale-[0.97]"
+        className={`text-accent focus-visible:ring-accent absolute top-1/2 inline-flex -translate-y-1/2 cursor-default items-center justify-center rounded-sm p-0.5 transition-transform outline-none focus-visible:ring-2 active:scale-[0.97] ${className}`}
       >
         <StarIcon className="size-3 fill-current" />
       </Button>
