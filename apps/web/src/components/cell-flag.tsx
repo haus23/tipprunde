@@ -42,7 +42,7 @@ export function CellFlag({ label, className = "xs:right-0 -right-2" }: Props) {
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         isNonModal
-        placement="bottom"
+        placement="top"
         className="bg-inverted text-inverted shadow-popover rounded-sm px-2 py-1 text-xs transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0 data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
       >
         {label}
