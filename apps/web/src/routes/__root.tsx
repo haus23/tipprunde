@@ -22,6 +22,7 @@ const navItems = [
 ] as const;
 
 import { ColorSchemeMenu } from "#/components/color-scheme-menu.tsx";
+import { NavigationProgress } from "#/components/navigation-progress.tsx";
 import { logout } from "#/lib/auth.ts";
 import type { ColorScheme } from "#/lib/session.ts";
 import { getSessionData } from "#/lib/session.ts";
@@ -54,6 +55,7 @@ function RootComponent() {
   const { colorScheme } = Route.useRouteContext();
   return (
     <RootDocument colorScheme={colorScheme}>
+      <NavigationProgress />
       <div className="flex min-h-svh flex-col">
         <header className="border-subtle bg-surface sticky top-0 z-10 h-14 border-b">
           <div className="xs:px-4 mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center px-2">

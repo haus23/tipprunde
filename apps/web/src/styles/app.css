@@ -7,6 +7,16 @@
   --text-base--line-height: calc(1.25 / 0.875);
 }
 
+/* Indeterminate sweep for the top navigation progress bar. */
+@keyframes nav-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
 /* Animate the native accordions (any exclusive, i.e. named, <details>) where
    supported: the `::details-content` pseudo-element + `interpolate-size:
    allow-keywords` unlock transitioning the panel to/from its auto height with
