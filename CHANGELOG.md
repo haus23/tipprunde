@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.20.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.19.3...v0.20.0)
+
+### 🚀 Enhancements
+
+- **web:** Show extra and round points on player card ([87d11a9](https://github.com/haus23/tipprunde/commit/87d11a9))
+- **web:** Improve player card stats display with responsive layout ([45070a4](https://github.com/haus23/tipprunde/commit/45070a4))
+- **web:** Add round-points flag to ranking table, rename TipFlag to CellFlag ([bcdb54f](https://github.com/haus23/tipprunde/commit/bcdb54f))
+
+### 💅 Refactors
+
+- **web:** Flip CellFlag to the top. ([c646d9e](https://github.com/haus23/tipprunde/commit/c646d9e))
+
 ## v0.19.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.19.2...v0.19.3)
