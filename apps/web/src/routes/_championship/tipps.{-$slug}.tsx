@@ -145,6 +145,9 @@ function PlayerCard({
         </div>
         <p className="text-subtle text-center text-sm">
           {championshipName} · Platz {player.rank} · {player.tipPoints} Punkte
+          {player.extraQuestionPoints > 0 && ` · ${player.extraQuestionPoints} Zusatzpunkte`}
+          {player.roundPoints !== null &&
+            ` · ${player.roundPoints > 0 ? `+${player.roundPoints}` : player.roundPoints < 0 ? String(player.roundPoints) : "±0"} Rundenpunkte`}
           <br className="xs:hidden" />
           <span className="xs:inline hidden"> · </span>
           {playerSpiele} Spiele{playerAvg !== null && ` · Ø ${playerAvg}`}
