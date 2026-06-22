@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.19.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.19.1...v0.19.2)
+
+### 🚀 Enhancements
+
+- **manager:** Enter extra-question points inline per player answer ([e405651](https://github.com/haus23/tipprunde/commit/e405651))
+- **theme:** Dedicated placeholder text token, adopt in ui inputs ([a7bfaca](https://github.com/haus23/tipprunde/commit/a7bfaca))
+
+### 🩹 Fixes
+
+- **manager:** Call useNavigation unconditionally in LockProvider ([e00d0b9](https://github.com/haus23/tipprunde/commit/e00d0b9))
+- **manager:** Keep focus during entry by excluding pending fetcher from input lock ([7ae2442](https://github.com/haus23/tipprunde/commit/7ae2442))
+
+### 💅 Refactors
+
+- **manager:** Split lock state into championship/round/busy dimensions ([487ab9d](https://github.com/haus23/tipprunde/commit/487ab9d))
+- **manager:** Native details + shared inputs + read-only text on zusatzfragen ([54097d9](https://github.com/haus23/tipprunde/commit/54097d9))
+
 ## v0.19.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.19.0...v0.19.1)
