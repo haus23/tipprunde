@@ -132,6 +132,7 @@ function PlayerCard({
     matchesWithResult === totalMatches ? `${totalMatches}` : `${matchesWithResult}/${totalMatches}`;
   const lastResultIndex = rounds.findLastIndex((r) => r.matches.some((m) => m.result !== null));
   const defaultOpenIndex = lastResultIndex >= 0 ? lastResultIndex : 0;
+  const hasRoundPoints = rounds.some((r) => r.roundPoints.length > 0);
 
   return (
     <div className="mx-auto w-full max-w-4xl py-8">
@@ -143,14 +144,21 @@ function PlayerCard({
             currentSlug={player.slug}
           />
         </div>
-        <p className="text-subtle text-center text-sm">
-          {championshipName} · Platz {player.rank} · {player.tipPoints} Punkte
-          {player.extraQuestionPoints > 0 && ` · ${player.extraQuestionPoints} Zusatzpunkte`}
-          {player.roundPoints !== null &&
-            ` · ${player.roundPoints > 0 ? `+${player.roundPoints}` : player.roundPoints < 0 ? String(player.roundPoints) : "±0"} Rundenpunkte`}
+        <p className="text-subtle text-center text-sm leading-relaxed">
+          {championshipName} · Platz {player.rank}
           <br className="xs:hidden" />
           <span className="xs:inline hidden"> · </span>
-          {playerSpiele} Spiele{playerAvg !== null && ` · Ø ${playerAvg}`}
+          {player.tipPoints} Tippunkte · {playerSpiele} Spiele
+          {playerAvg !== null && ` · Ø ${playerAvg}`}
+          {(player.extraQuestionPoints > 0 || hasRoundPoints) && (
+            <>
+              <br />
+              {player.extraQuestionPoints > 0 && `${player.extraQuestionPoints} Zusatzpunkte`}
+              {player.extraQuestionPoints > 0 && hasRoundPoints && " · "}
+              {hasRoundPoints &&
+                `${player.roundPoints! > 0 ? `+${player.roundPoints}` : player.roundPoints! < 0 ? String(player.roundPoints) : "±0"} Rundenpunkte`}
+            </>
+          )}
         </p>
       </div>
 
