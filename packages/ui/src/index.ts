@@ -1,4 +1,5 @@
 export { Button } from "./components/button.tsx";
+export { Disclosure } from "./components/disclosure.tsx";
 export { Checkbox } from "./components/checkbox.tsx";
 export { FieldError } from "./components/field-error.tsx";
 export { Input } from "./components/input.tsx";

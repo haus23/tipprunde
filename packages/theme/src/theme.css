@@ -142,3 +142,24 @@
     @apply bg-surface text-app;
   }
 }
+
+/* Animate named <details> accordions where supported: ::details-content +
+   interpolate-size let the panel transition to/from auto height with zero JS.
+   Falls back to an instant toggle in browsers that don't support it yet. */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  details[name]::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 250ms var(--ease-out),
+      content-visibility 250ms allow-discrete;
+  }
+
+  details[name][open]::details-content {
+    block-size: auto;
+  }
+}
