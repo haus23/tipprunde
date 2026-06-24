@@ -50,7 +50,9 @@ export function RankingTable({
               "Punkte"
             )}
           </th>
-          {isOngoing && <th className="border-subtle w-px border-b px-2 py-2" />}
+          {isOngoing && (
+            <th aria-label="Aktuelle Tipps" className="border-subtle w-px border-b px-2 py-2" />
+          )}
         </tr>
       </thead>
       <tbody>
@@ -177,26 +179,41 @@ function MatchdayButton({
           <p className="text-subtle border-subtle bg-surface absolute -top-2 self-center rounded-sm border px-2 py-1 text-xs font-medium">
             {name}
           </p>
-          <table className="w-full text-xs">
+          <table className="w-full text-xs" aria-busy={isPending}>
             <thead>
               <tr className="text-muted border-subtle border-b">
-                <th className="pr-3 pb-1.5 text-left font-medium">Spiel</th>
-                <th className="px-2 pb-1.5 text-center font-medium">Tipp</th>
-                <th className="pb-1.5 text-center font-medium">Pkt</th>
+                <th scope="col" className="pr-3 pb-1.5 text-left font-medium">
+                  Spiel
+                </th>
+                <th scope="col" className="px-2 pb-1.5 text-center font-medium">
+                  Tipp
+                </th>
+                <th scope="col" className="pb-1.5 text-center font-medium">
+                  Pkt
+                </th>
               </tr>
             </thead>
             <tbody>
               {isPending ? (
                 [1, 2, 3, 4].map((i) => (
-                  <tr key={i} className="border-subtle border-b last:border-0">
-                    <td className="py-1.5 pr-3">
-                      <div className="bg-surface-raised h-3 w-24 animate-pulse rounded" />
+                  <tr key={i} aria-label="Lädt" className="border-subtle border-b last:border-0">
+                    <td aria-label="Lädt" className="py-1.5 pr-3">
+                      <div
+                        aria-hidden="true"
+                        className="bg-surface-raised h-3 w-24 animate-pulse rounded"
+                      />
                     </td>
-                    <td className="px-2 py-1.5">
-                      <div className="bg-surface-raised mx-auto h-3 w-6 animate-pulse rounded" />
+                    <td aria-label="Lädt" className="px-2 py-1.5">
+                      <div
+                        aria-hidden="true"
+                        className="bg-surface-raised mx-auto h-3 w-6 animate-pulse rounded"
+                      />
                     </td>
-                    <td className="py-1.5">
-                      <div className="bg-surface-raised mx-auto h-3 w-4 animate-pulse rounded" />
+                    <td aria-label="Lädt" className="py-1.5">
+                      <div
+                        aria-hidden="true"
+                        className="bg-surface-raised mx-auto h-3 w-4 animate-pulse rounded"
+                      />
                     </td>
                   </tr>
                 ))
