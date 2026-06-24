@@ -17,6 +17,3 @@ node_modules/
 # React Router Apps
 .react-router/
 build/
-
-# Temporary task list (before using issues)
-TODO.md
