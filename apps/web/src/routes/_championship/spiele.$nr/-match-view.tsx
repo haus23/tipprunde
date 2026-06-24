@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
+import { cx } from "@tipprunde/ui";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -108,7 +109,7 @@ export function MatchView({ championshipId, nr }: { championshipId: number; nr: 
   return (
     <div className="mx-auto w-full max-w-4xl py-8">
       <div className="xs:px-0 relative flex flex-col items-center gap-2 px-4 md:mb-6">
-        <Link to="/spiele" className={`${navLinkClass} mb-1 self-auto text-xs`}>
+        <Link to="/spiele" className={cx(navLinkClass, "mb-1 self-auto text-xs")}>
           <ChevronLeftIcon className="size-3" />
           Spielübersicht
         </Link>
@@ -125,7 +126,7 @@ export function MatchView({ championshipId, nr }: { championshipId: number; nr: 
             <Link
               to="/spiele/$nr"
               params={{ nr: String(match.prevNr) }}
-              className={`${navLinkClass} xs:ml-4 pointer-events-auto text-sm`}
+              className={cx(navLinkClass, "xs:ml-4 pointer-events-auto text-sm")}
             >
               <ChevronLeftIcon className="size-4" />
               Vorheriges
@@ -137,7 +138,7 @@ export function MatchView({ championshipId, nr }: { championshipId: number; nr: 
             <Link
               to="/spiele/$nr"
               params={{ nr: String(match.nextNr) }}
-              className={`${navLinkClass} xs:mr-4 pointer-events-auto text-sm`}
+              className={cx(navLinkClass, "xs:mr-4 pointer-events-auto text-sm")}
             >
               Nächstes
               <ChevronRightIcon className="size-4" />

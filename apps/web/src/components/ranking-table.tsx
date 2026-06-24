@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { cx } from "@tipprunde/ui";
 import { CalendarIcon, StarIcon } from "lucide-react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { Button, Dialog, OverlayArrow, Popover } from "react-aria-components";
@@ -62,16 +63,17 @@ export function RankingTable({
           return (
             <tr
               key={entry.userId}
-              className={`border-subtle border-b transition-colors last:border-0 ${
+              className={cx(
+                "border-subtle border-b transition-colors last:border-0",
                 isCurrentUser
                   ? "bg-accent-subtle"
-                  : "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-raised"
-              }`}
+                  : "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-raised",
+              )}
             >
               <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-right tabular-nums">
                 {sharesRankAbove ? "" : entry.rank}
               </td>
-              <td className={`xs:px-3 xs:py-3 px-2 py-2 ${isCurrentUser ? "font-medium" : ""}`}>
+              <td className={cx("xs:px-3 xs:py-3 px-2 py-2", isCurrentUser && "font-medium")}>
                 {linkPlayers ? (
                   <CellLink to="/tipps/{-$slug}" params={{ slug: entry.slug }}>
                     {entry.name}
