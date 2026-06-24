@@ -1,5 +1,30 @@
 # Changelog
 
+## v0.20.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.20.2...v0.20.3)
+
+### 🚀 Enhancements
+
+- **ui:** Add Disclosure component backed by native details/summary ([1d55f7c](https://github.com/haus23/tipprunde/commit/1d55f7c))
+- **ui:** Export cx for consumers ([b5be046](https://github.com/haus23/tipprunde/commit/b5be046))
+
+### 🩹 Fixes
+
+- **domain:** RoundPoints is undefined for players with no round-point entries ([33e4ecd](https://github.com/haus23/tipprunde/commit/33e4ecd))
+
+### 💅 Refactors
+
+- **web:** Use route directories and colocated components. ([d1a1865](https://github.com/haus23/tipprunde/commit/d1a1865))
+- Use Disclosure component in both apps ([00d0e6e](https://github.com/haus23/tipprunde/commit/00d0e6e))
+- **manager:** Replace cn() with cx() from @tipprunde/ui ([ec10a6a](https://github.com/haus23/tipprunde/commit/ec10a6a))
+- **web:** Use cx() for dynamic class composition ([4738cb7](https://github.com/haus23/tipprunde/commit/4738cb7))
+
+### 🏡 Chore
+
+- Update catalog deps. ([30a90e9](https://github.com/haus23/tipprunde/commit/30a90e9))
+- **web:** Update tanstack query. ([75934ef](https://github.com/haus23/tipprunde/commit/75934ef))
+
 ## v0.20.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.20.1...v0.20.2)
