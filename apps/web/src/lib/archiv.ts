@@ -4,24 +4,9 @@ import { championships, players, users } from "@tipprunde/db/schema";
 import { count, eq, sum } from "drizzle-orm";
 
 import { db } from "#/lib/db.server.ts";
+import type { RankedPlayer } from "#/lib/ranking.ts";
 
-export const getChampionshipBySlug = createServerFn()
-  .validator((slug: string) => slug)
-  .handler(async ({ data: slug }) => {
-    const championship = await db.query.championships.findFirst({
-      where: { slug, completed: true },
-      columns: { id: true, slug: true, name: true, extraQuestionPointsPublished: true },
-    });
-    return { championship: championship ?? null };
-  });
-
-export const championshipBySlugQueryOptions = (slug: string) =>
-  queryOptions({
-    queryKey: ["archiv-championship", slug],
-    queryFn: () => getChampionshipBySlug({ data: slug }),
-  });
-
-export const getArchivPreview = createServerFn()
+const getArchivPreview = createServerFn()
   .validator((currentChampionshipId: number) => currentChampionshipId)
   .handler(async ({ data: currentChampionshipId }) => {
     const recentCompleted = await db.query.championships.findMany({
@@ -70,7 +55,7 @@ export const archivPreviewQueryOptions = (currentChampionshipId: number) =>
     queryFn: () => getArchivPreview({ data: currentChampionshipId }),
   });
 
-export const getAllCompletedChampionships = createServerFn().handler(async () => {
+const getAllCompletedChampionships = createServerFn().handler(async () => {
   const allCompleted = await db.query.championships.findMany({
     where: { completed: true },
     orderBy: { nr: "desc" },
@@ -110,7 +95,7 @@ export const allCompletedChampionshipsQueryOptions = queryOptions({
   queryFn: () => getAllCompletedChampionships(),
 });
 
-export const getEwigeTabelle = createServerFn().handler(async () => {
+const getEwigeTabelle = createServerFn().handler(async () => {
   const rows = await db
     .select({
       userId: players.userId,
@@ -146,3 +131,50 @@ export const ewigeTabellQueryOptions = queryOptions({
   queryKey: ["ewige-tabelle"],
   queryFn: () => getEwigeTabelle(),
 });
+
+// Combined single-RPC fetch used by the archiv.$slug route: fetches championship
+// info and its ranking in one server round-trip instead of two sequential calls.
+const getArchivChampionship = createServerFn()
+  .validator((slug: string) => slug)
+  .handler(async ({ data: slug }) => {
+    const championship = await db.query.championships.findFirst({
+      where: { slug, completed: true },
+      columns: { id: true, slug: true, name: true, extraQuestionPointsPublished: true },
+    });
+    if (!championship) return { championship: null, ranking: [] as RankedPlayer[] };
+
+    const playerRows = await db.query.players.findMany({
+      where: { championshipId: championship.id },
+      columns: {
+        userId: true,
+        rank: true,
+        tipPoints: true,
+        extraQuestionPoints: true,
+        roundPoints: true,
+        total: true,
+      },
+      with: { user: { columns: { name: true, slug: true } } },
+    });
+
+    const ranking: RankedPlayer[] = playerRows
+      .filter((p) => p.rank !== null)
+      .map((p) => ({
+        userId: p.userId,
+        name: p.user?.name ?? "",
+        slug: p.user?.slug ?? "",
+        tipPoints: p.tipPoints ?? 0,
+        extraQuestionPoints: p.extraQuestionPoints ?? 0,
+        roundPoints: p.roundPoints ?? null,
+        total: p.total ?? 0,
+        rank: p.rank!,
+      }))
+      .sort((a, b) => a.rank - b.rank);
+
+    return { championship, ranking };
+  });
+
+export const archivChampionshipQueryOptions = (slug: string) =>
+  queryOptions({
+    queryKey: ["archiv-championship-data", slug],
+    queryFn: () => getArchivChampionship({ data: slug }),
+  });

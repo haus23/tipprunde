@@ -3,17 +3,16 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ChevronLeftIcon } from "lucide-react";
 
 import { RankingTable } from "#/components/ranking-table.tsx";
-import { championshipBySlugQueryOptions } from "#/lib/archiv.ts";
+import { archivChampionshipQueryOptions } from "#/lib/archiv.ts";
 import { pageTitle } from "#/lib/format.ts";
-import { rankingQueryOptions } from "#/lib/ranking.ts";
+import type { RankedPlayer } from "#/lib/ranking.ts";
 
 export const Route = createFileRoute("/archiv/$slug")({
   loader: async ({ context, params }) => {
     const { championship } = await context.queryClient.ensureQueryData(
-      championshipBySlugQueryOptions(params.slug),
+      archivChampionshipQueryOptions(params.slug),
     );
     if (!championship) throw notFound();
-    await context.queryClient.ensureQueryData(rankingQueryOptions(championship.id));
     return { championshipName: championship.name };
   },
   head: ({ loaderData }) => ({
@@ -25,20 +24,21 @@ export const Route = createFileRoute("/archiv/$slug")({
 function RouteComponent() {
   const { slug } = Route.useParams();
   const {
-    data: { championship },
-  } = useSuspenseQuery(championshipBySlugQueryOptions(slug));
+    data: { championship, ranking },
+  } = useSuspenseQuery(archivChampionshipQueryOptions(slug));
 
   if (!championship) return null;
 
-  return <ChampionshipArchivView championship={championship} />;
+  return <ChampionshipArchivView championship={championship} ranking={ranking} />;
 }
 
 function ChampionshipArchivView({
   championship,
+  ranking,
 }: {
   championship: { id: number; name: string; extraQuestionPointsPublished: boolean };
+  ranking: RankedPlayer[];
 }) {
-  const { data: ranking } = useSuspenseQuery(rankingQueryOptions(championship.id));
   const showExtras = championship.extraQuestionPointsPublished;
 
   return (
