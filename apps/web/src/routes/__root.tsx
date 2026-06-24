@@ -1,18 +1,7 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import {
-  Link,
-  Outlet,
-  createRootRouteWithContext,
-  HeadContent,
-  Scripts,
-  useRouter,
-  type ErrorComponentProps,
-} from "@tanstack/react-router";
-import { Button, Logo } from "@tipprunde/ui";
-import { ChevronDownIcon, LogInIcon, LogOutIcon } from "lucide-react";
-import { Menu, MenuItem, MenuTrigger, Popover } from "react-aria-components";
-import { I18nProvider } from "react-aria-components";
+import { Link, Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import { Logo } from "@tipprunde/ui";
 
 const navItems = [
   { to: "/tabelle", label: "Tabelle" },
@@ -21,9 +10,12 @@ const navItems = [
 ] as const;
 
 import { ColorSchemeMenu } from "#/components/color-scheme-menu.tsx";
+import { NavLink } from "#/components/nav-link.tsx";
 import { NavigationProgress } from "#/components/navigation-progress.tsx";
-import { logout } from "#/lib/auth.ts";
-import type { ColorScheme } from "#/lib/session.ts";
+import { RootDocument } from "#/components/root-document.tsx";
+import { RootErrorBoundary } from "#/components/root-error-boundary.tsx";
+import { RootNotFound } from "#/components/root-not-found.tsx";
+import { UserArea } from "#/components/user-area.tsx";
 import { getSessionData } from "#/lib/session.ts";
 
 import appCss from "../styles/app.css?url";
@@ -51,7 +43,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootComponent() {
-  const { colorScheme } = Route.useRouteContext();
+  const { colorScheme, user, managerUrl } = Route.useRouteContext();
   return (
     <RootDocument colorScheme={colorScheme}>
       <NavigationProgress />
@@ -83,7 +75,7 @@ function RootComponent() {
             {/* Right: scheme + user */}
             <div className="col-start-3 flex items-center justify-end gap-1">
               <ColorSchemeMenu colorScheme={colorScheme} />
-              <UserArea />
+              <UserArea user={user} managerUrl={managerUrl} />
             </div>
           </div>
         </header>
@@ -93,132 +85,5 @@ function RootComponent() {
       </div>
       {import.meta.env.DEV && <ReactQueryDevtools />}
     </RootDocument>
-  );
-}
-
-function UserArea() {
-  const { user, managerUrl } = Route.useRouteContext();
-  const router = useRouter();
-
-  async function handleLogout() {
-    await logout();
-    await router.invalidate();
-  }
-
-  if (!user) {
-    return (
-      <Link
-        to="/login"
-        className="text-muted hover:bg-nav-active hover:text-app focus-visible:ring-accent flex items-center gap-2 rounded-sm px-3 py-1.5 text-sm transition ease-out outline-none focus-visible:ring-2 max-sm:px-1.5"
-      >
-        <span className="max-sm:sr-only">Anmelden</span>
-        <LogInIcon className="size-4" />
-      </Link>
-    );
-  }
-
-  if (user.role === "user") {
-    return (
-      <Button intent="ghost" size="sm" className="max-sm:px-1.5" onPress={handleLogout}>
-        <span className="max-sm:sr-only">Abmelden</span>
-        <LogOutIcon className="size-4" />
-      </Button>
-    );
-  }
-
-  return (
-    <MenuTrigger>
-      <Button intent="ghost" size="sm" className="max-sm:px-1.5">
-        <span className="max-sm:sr-only">{user.name}</span>
-        <ChevronDownIcon className="size-4" />
-      </Button>
-      <Popover
-        placement="bottom end"
-        offset={4}
-        className="border-subtle bg-surface-raised shadow-popover w-44 origin-top-right rounded-md border p-1 transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0"
-      >
-        <Menu className="outline-none">
-          <MenuItem
-            href={managerUrl}
-            className="text-app data-focused:bg-nav-active flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none"
-          >
-            Manager
-          </MenuItem>
-          <MenuItem
-            onAction={handleLogout}
-            className="text-app data-focused:bg-nav-active flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none"
-          >
-            Abmelden
-          </MenuItem>
-        </Menu>
-      </Popover>
-    </MenuTrigger>
-  );
-}
-
-function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
-  return (
-    <div className="has-aria-[current=page]:border-accent flex h-full items-center border-b-2 border-transparent">
-      <Link
-        to={to}
-        activeProps={{ "aria-current": "page", className: "text-app" }}
-        inactiveProps={{ className: "text-muted" }}
-        className="focus-visible:ring-accent hover:bg-nav-active hover:text-app rounded-sm px-3 py-1.5 text-sm font-medium transition ease-out outline-none focus-visible:ring-2"
-      >
-        {children}
-      </Link>
-    </div>
-  );
-}
-
-function RootErrorBoundary({ error, reset }: ErrorComponentProps) {
-  return (
-    <RootDocument colorScheme="system">
-      <div className="flex min-h-svh flex-col items-center justify-center gap-4 p-8 text-center">
-        <h1 className="text-xl font-semibold">Etwas ist schiefgelaufen</h1>
-        {import.meta.env.DEV && (
-          <pre className="bg-surface-raised text-subtle max-w-xl overflow-auto rounded-md p-4 text-left text-xs">
-            {error instanceof Error ? error.message : String(error)}
-          </pre>
-        )}
-        <div className="flex gap-4 text-sm">
-          <button onClick={reset} className="text-accent transition-colors hover:underline">
-            Erneut versuchen
-          </button>
-          <a href="/" className="text-muted hover:text-app transition-colors">
-            Zur Startseite
-          </a>
-        </div>
-      </div>
-    </RootDocument>
-  );
-}
-
-function RootNotFound() {
-  return (
-    <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-center">
-      <h1 className="text-xl font-semibold">Seite nicht gefunden</h1>
-      <p className="text-subtle text-sm">Diese Seite existiert nicht.</p>
-      <Link to="/" className="text-accent text-sm transition-colors hover:underline">
-        Zur Startseite
-      </Link>
-    </div>
-  );
-}
-
-function RootDocument({
-  children,
-  colorScheme,
-}: Readonly<{ children: React.ReactNode; colorScheme: ColorScheme }>) {
-  return (
-    <html lang="de" data-color-scheme={colorScheme}>
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <I18nProvider locale="de-DE">{children}</I18nProvider>
-        <Scripts />
-      </body>
-    </html>
   );
 }
