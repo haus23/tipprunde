@@ -21,7 +21,8 @@ export type RankingEntry = {
   userId: number;
   tipPoints: number;
   extraQuestionPoints: number;
-  roundPoints: number;
+  /** undefined when the player has no round-point entries for this championship. */
+  roundPoints: number | undefined;
   total: number;
   /** Tie-aware rank: equal totals share a rank, the next rank skips accordingly. */
   rank: number;
@@ -75,13 +76,13 @@ export function calcRanking(input: RankingInput): RankingEntry[] {
   const totals = players.map((p) => {
     const tipPoints = tipPointsByUser.get(p.userId) ?? 0;
     const extraQuestionPoints = extraPointsByUser.get(p.userId) ?? 0;
-    const roundPts = roundPointsByUser.get(p.userId) ?? 0;
+    const roundPts = roundPointsByUser.get(p.userId);
     return {
       userId: p.userId,
       tipPoints,
       extraQuestionPoints,
       roundPoints: roundPts,
-      total: tipPoints + extraQuestionPoints + roundPts,
+      total: tipPoints + extraQuestionPoints + (roundPts ?? 0),
     };
   });
 

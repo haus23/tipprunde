@@ -119,6 +119,46 @@ void describe("calcRanking — extra points gating", () => {
   });
 });
 
+void describe("calcRanking — round points", () => {
+  void it("player with round-point entries gets the summed value", () => {
+    const ranking = calcRanking({
+      ...base,
+      roundPoints: [
+        { userId: 1, points: 2 },
+        { userId: 1, points: -1 },
+      ],
+    });
+    assert.equal(ranking.find((e) => e.userId === 1)?.roundPoints, 1);
+  });
+
+  void it("player with no round-point entries gets undefined", () => {
+    const ranking = calcRanking({
+      ...base,
+      roundPoints: [{ userId: 1, points: 2 }],
+    });
+    assert.equal(ranking.find((e) => e.userId === 2)?.roundPoints, undefined);
+  });
+
+  void it("round points count toward total", () => {
+    const ranking = calcRanking({
+      ...base,
+      tips: [{ userId: 1, points: 3 }],
+      roundPoints: [{ userId: 1, points: 2 }],
+    });
+    assert.equal(ranking.find((e) => e.userId === 1)?.total, 5);
+  });
+
+  void it("player without round-point entries still gets correct total", () => {
+    const ranking = calcRanking({
+      ...base,
+      tips: [{ userId: 2, points: 4 }],
+      roundPoints: [{ userId: 1, points: 2 }],
+    });
+    assert.equal(ranking.find((e) => e.userId === 2)?.roundPoints, undefined);
+    assert.equal(ranking.find((e) => e.userId === 2)?.total, 4);
+  });
+});
+
 void describe("calcRanking — tie-aware ranks", () => {
   void it("sorts by descending total", () => {
     const ranking = calcRanking({
