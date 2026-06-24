@@ -1,7 +1,7 @@
 import type { rulesets } from "@tipprunde/db/schema";
 import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
 import { Button, FieldError, Label, TextArea, TextField } from "@tipprunde/ui";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   Form,
@@ -56,20 +56,19 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
   const fetcher = useFetcher<RulesetActionData>();
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
-  const [serverErrors, setServerErrors] = useState<Record<string, string[]>>({});
+  const serverErrors =
+    fetcher.state === "idle" && fetcher.data && "errors" in fetcher.data ? fetcher.data.errors : {};
 
   useEffect(() => {
     if (fetcher.state !== "idle" || !fetcher.data) return;
-    if ("errors" in fetcher.data) {
-      setServerErrors(fetcher.data.errors);
-    } else if ("ruleset" in fetcher.data) {
+    if ("ruleset" in fetcher.data) {
       onSuccess?.(fetcher.data.ruleset);
       onClose();
     }
   }, [fetcher.state, fetcher.data, onClose, onSuccess]);
 
   const [idValue, setIdValue] = useState("");
-  const [idDirty, setIdDirty] = useState(false);
+  const idDirty = useRef(false);
 
   return (
     <Form
@@ -93,9 +92,8 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
         label="Name"
         inputProps={{
           onBlur: (e) => {
-            if (!idDirty) {
+            if (!idDirty.current) {
               setIdValue(slugify(e.target.value));
-              setServerErrors({});
             }
           },
         }}
@@ -107,8 +105,7 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
           value={idValue}
           onChange={(v) => {
             setIdValue(v);
-            setIdDirty(true);
-            setServerErrors({});
+            idDirty.current = true;
           }}
           isRequired
           label="Kennung (eindeutig)"

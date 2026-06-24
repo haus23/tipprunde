@@ -1,6 +1,6 @@
 import type { teams } from "@tipprunde/db/schema";
 import { Button, TextField } from "@tipprunde/ui";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dialog, Form, Heading, Modal, ModalOverlay } from "react-aria-components";
 import { useFetcher } from "react-router";
 
@@ -21,20 +21,19 @@ function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
   const fetcher = useFetcher<TeamActionData>();
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
-  const [serverErrors, setServerErrors] = useState<Record<string, string[]>>({});
+  const serverErrors =
+    fetcher.state === "idle" && fetcher.data && "errors" in fetcher.data ? fetcher.data.errors : {};
 
   useEffect(() => {
     if (fetcher.state !== "idle" || !fetcher.data) return;
-    if ("errors" in fetcher.data) {
-      setServerErrors(fetcher.data.errors);
-    } else if ("team" in fetcher.data) {
+    if ("team" in fetcher.data) {
       onSuccess?.(fetcher.data.team);
       onClose();
     }
   }, [fetcher.state, fetcher.data, onClose, onSuccess]);
 
   const [idValue, setIdValue] = useState(defaultValues?.id ?? "");
-  const [idDirty, setIdDirty] = useState(isEdit);
+  const idDirty = useRef(isEdit);
 
   return (
     <Form
@@ -60,9 +59,8 @@ function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
         label="Kurzname"
         inputProps={{
           onBlur: (e) => {
-            if (!idDirty) {
+            if (!idDirty.current) {
               setIdValue(slugify(e.target.value));
-              setServerErrors({});
             }
           },
         }}
@@ -74,8 +72,7 @@ function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
           value={idValue}
           onChange={(v) => {
             setIdValue(v);
-            setIdDirty(true);
-            setServerErrors({});
+            idDirty.current = true;
           }}
           isRequired
           label="Kennung (eindeutig)"

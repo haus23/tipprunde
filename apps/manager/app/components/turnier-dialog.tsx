@@ -1,7 +1,7 @@
 import type { championships, rulesets } from "@tipprunde/db/schema";
 import { Button, FieldError, Label, TextField } from "@tipprunde/ui";
 import { ChevronDownIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Button as RACButton,
   Dialog,
@@ -51,20 +51,19 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
   const fetcher = useFetcher<ChampionshipActionData>();
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
-  const [serverErrors, setServerErrors] = useState<Record<string, string[]>>({});
+  const serverErrors =
+    fetcher.state === "idle" && fetcher.data && "errors" in fetcher.data ? fetcher.data.errors : {};
 
   useEffect(() => {
     if (fetcher.state !== "idle" || !fetcher.data) return;
-    if ("errors" in fetcher.data) {
-      setServerErrors(fetcher.data.errors);
-    } else if ("championship" in fetcher.data) {
+    if ("championship" in fetcher.data) {
       onSuccess?.(fetcher.data.championship);
       onClose();
     }
   }, [fetcher.state, fetcher.data, onClose, onSuccess]);
 
   const [slugValue, setSlugValue] = useState(defaultValues?.slug ?? "");
-  const [slugDirty, setSlugDirty] = useState(isEdit);
+  const slugDirty = useRef(isEdit);
 
   // Shared with the regelwerk Select trigger below; will fold into a Select primitive later.
   const inputClass = cn(
@@ -92,7 +91,6 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         type="number"
         defaultValue={String(defaultValues?.nr ?? nextNr ?? "")}
         isRequired
-        onChange={() => setServerErrors({})}
         label="Nummer"
         inputProps={{ min: 1, className: "w-24" }}
       />
@@ -104,9 +102,8 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         label="Name"
         inputProps={{
           onBlur: (e) => {
-            if (!slugDirty) {
+            if (!slugDirty.current) {
               setSlugValue(deriveSlug(e.target.value));
-              setServerErrors({});
             }
           },
         }}
@@ -117,8 +114,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         value={slugValue}
         onChange={(v) => {
           setSlugValue(v);
-          setSlugDirty(true);
-          setServerErrors({});
+          slugDirty.current = true;
         }}
         isReadOnly={isEdit}
         isRequired

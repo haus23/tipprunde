@@ -1,7 +1,7 @@
 import type { users } from "@tipprunde/db/schema";
 import { Button, FieldError, Label, TextField } from "@tipprunde/ui";
 import { ChevronDownIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Button as RACButton,
   Dialog,
@@ -40,20 +40,19 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
   const fetcher = useFetcher<SpielerActionData>();
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
-  const [serverErrors, setServerErrors] = useState<Record<string, string[]>>({});
+  const serverErrors =
+    fetcher.state === "idle" && fetcher.data && "errors" in fetcher.data ? fetcher.data.errors : {};
 
   useEffect(() => {
     if (fetcher.state !== "idle" || !fetcher.data) return;
-    if ("errors" in fetcher.data) {
-      setServerErrors(fetcher.data.errors);
-    } else if ("user" in fetcher.data) {
+    if ("user" in fetcher.data) {
       onSuccess?.(fetcher.data.user);
       onClose();
     }
   }, [fetcher.state, fetcher.data, onClose, onSuccess]);
 
   const [slugValue, setSlugValue] = useState(defaultValues?.slug ?? "");
-  const [slugDirty, setSlugDirty] = useState(isEdit);
+  const slugDirty = useRef(isEdit);
 
   // Shared with the role Select trigger below; will fold into a Select primitive later.
   const inputClass = cn(
@@ -83,9 +82,8 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
         label="Name"
         inputProps={{
           onBlur: (e) => {
-            if (!slugDirty) {
+            if (!slugDirty.current) {
               setSlugValue(slugify(e.target.value));
-              setServerErrors({});
             }
           },
         }}
@@ -96,8 +94,7 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
         value={slugValue}
         onChange={(v) => {
           setSlugValue(v);
-          setSlugDirty(true);
-          setServerErrors({});
+          slugDirty.current = true;
         }}
         isReadOnly={isEdit}
         isRequired
