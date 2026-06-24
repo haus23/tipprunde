@@ -3,7 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 
 import { db } from "#/lib/db.server.ts";
 
-export const getRuleset = createServerFn()
+const getRuleset = createServerFn()
   .validator((championshipId: number) => championshipId)
   .handler(async ({ data: championshipId }) => {
     const championship = await db.query.championships.findFirst({

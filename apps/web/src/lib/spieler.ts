@@ -3,7 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 
 import { db } from "#/lib/db.server.ts";
 
-export const getPlayerMatches = createServerFn()
+const getPlayerMatches = createServerFn()
   .validator((data: { championshipId: number; userId: number }) => data)
   .handler(async ({ data: { championshipId, userId } }) => {
     const rounds = await db.query.rounds.findMany({

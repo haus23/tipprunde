@@ -4,7 +4,7 @@ import { hasExtraQuestions } from "@tipprunde/domain/ranking";
 
 import { db } from "#/lib/db.server.ts";
 
-export const getExtraQuestions = createServerFn()
+const getExtraQuestions = createServerFn()
   .validator((championshipId: number) => championshipId)
   .handler(async ({ data: championshipId }) => {
     const championship = await db.query.championships.findFirst({

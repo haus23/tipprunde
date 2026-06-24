@@ -14,7 +14,7 @@ export type RankedPlayer = {
   rank: number;
 };
 
-export const getRanking = createServerFn()
+const getRanking = createServerFn()
   .validator((championshipId: number) => championshipId)
   .handler(async ({ data: championshipId }) => {
     const players = await db.query.players.findMany({

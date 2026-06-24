@@ -5,7 +5,7 @@ import { eq, sum } from "drizzle-orm";
 
 import { db } from "#/lib/db.server.ts";
 
-export const getRounds = createServerFn()
+const getRounds = createServerFn()
   .validator((championshipId: number) => championshipId)
   .handler(async ({ data: championshipId }) => {
     const [roundRows, pointRows] = await Promise.all([
@@ -62,7 +62,7 @@ export const roundsQueryOptions = (championshipId: number) =>
     queryFn: () => getRounds({ data: championshipId }),
   });
 
-export const getMatch = createServerFn()
+const getMatch = createServerFn()
   .validator((data: { championshipId: number; nr: number }) => data)
   .handler(async ({ data: { championshipId, nr } }) => {
     const [match, prev, next] = await Promise.all([
@@ -122,7 +122,7 @@ export const matchQueryOptions = (championshipId: number, nr: number) =>
     queryFn: () => getMatch({ data: { championshipId, nr } }),
   });
 
-export const getCurrentMatches = createServerFn()
+const getCurrentMatches = createServerFn()
   .validator((championshipId: number) => championshipId)
   .handler(async ({ data: championshipId }) => {
     const dated = await db.query.matches.findMany({
@@ -162,7 +162,7 @@ export const currentMatchesQueryOptions = (championshipId: number) =>
     queryFn: () => getCurrentMatches({ data: championshipId }),
   });
 
-export const getMatchdayTips = createServerFn()
+const getMatchdayTips = createServerFn()
   .validator((data: { championshipId: number; userId: number }) => data)
   .handler(async ({ data: { championshipId, userId } }) => {
     const dated = await db.query.matches.findMany({
