@@ -12,13 +12,11 @@ interface Props extends Omit<LinkProps, "className"> {
  * persistent underline so linked cells are recognizable. `data-pressed` gives
  * immediate tap feedback before the (sometimes slow) navigation starts.
  */
-function Link(props: Props) {
+export const CellLink = createLink(function Link(props: Props) {
   return (
     <AriaLink
       {...props}
       className="hover:text-accent data-pressed:bg-accent-subtle data-pressed:text-accent focus-visible:ring-accent rounded-sm p-1 transition-colors outline-none focus-visible:ring-2 [@media(hover:none)]:underline [@media(hover:none)]:underline-offset-2"
     />
   );
-}
-
-export const CellLink = createLink(Link);
+});
