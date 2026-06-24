@@ -52,3 +52,14 @@ export const rankingQueryOptions = (championshipId: number) =>
     queryKey: ["ranking", championshipId],
     queryFn: () => getRanking({ data: championshipId }),
   });
+
+/** Player to show: explicit slug, else the logged-in user if enrolled, else rank 1. */
+export function resolvePlayer(
+  ranking: RankedPlayer[],
+  slug: string | undefined,
+  userId: number | undefined,
+): RankedPlayer | undefined {
+  if (slug) return ranking.find((p) => p.slug === slug);
+  const self = userId !== undefined ? ranking.find((p) => p.userId === userId) : undefined;
+  return self ?? ranking[0];
+}
