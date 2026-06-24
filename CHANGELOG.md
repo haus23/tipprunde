@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.20.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.20.1...v0.20.2)
+
+### 🩹 Fixes
+
+- **ui:** Remove currently unused export. ([78b9e13](https://github.com/haus23/tipprunde/commit/78b9e13))
+- **web:** Replace progressbar div with semantic <progress> element ([8ea20ed](https://github.com/haus23/tipprunde/commit/8ea20ed))
+- **web:** Fix skeleton loading row accessibility in ranking tooltip ([9e027d1](https://github.com/haus23/tipprunde/commit/9e027d1))
+- **web:** Scope internal server functions as module-private ([3efd831](https://github.com/haus23/tipprunde/commit/3efd831))
+
+### 💅 Refactors
+
+- **manager:** Fix React Doctor issues in form dialogs ([432d242](https://github.com/haus23/tipprunde/commit/432d242))
+- **web:** Move to inline component function. ([3767ad4](https://github.com/haus23/tipprunde/commit/3767ad4))
+- **web:** Combine archiv slug queries into one server round-trip ([e09e9e5](https://github.com/haus23/tipprunde/commit/e09e9e5))
+- **web:** Extract root layout components from \_\_root.tsx ([e0309e4](https://github.com/haus23/tipprunde/commit/e0309e4))
+- **web:** Extract championship dashboard components ([d364b8b](https://github.com/haus23/tipprunde/commit/d364b8b))
+- **web:** Extract match view components from spiele.$nr route ([b7747a9](https://github.com/haus23/tipprunde/commit/b7747a9))
+- **web:** Extract spiele overview components from spiele.index route ([acb2361](https://github.com/haus23/tipprunde/commit/acb2361))
+- **web:** Extract player view components from tipps route ([026e7d7](https://github.com/haus23/tipprunde/commit/026e7d7))
+- **web:** Extract Zusatzfragen components from zusatzfragen route ([4982b81](https://github.com/haus23/tipprunde/commit/4982b81))
+
 ## v0.20.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.20.0...v0.20.1)
