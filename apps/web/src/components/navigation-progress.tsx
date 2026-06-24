@@ -22,12 +22,9 @@ export function NavigationProgress() {
   if (!visible) return null;
 
   return (
-    <div
-      role="progressbar"
+    <progress
       aria-label="Lädt"
-      className="fixed inset-x-0 top-0 z-50 h-0.5 overflow-hidden"
-    >
-      <div className="h-full w-2/5 animate-[nav-progress_1s_ease-in-out_infinite] rounded-r-full bg-(--text-color-accent)" />
-    </div>
+      className="fixed inset-x-0 top-0 z-50 block h-0.5 appearance-none overflow-hidden before:block before:h-full before:w-2/5 before:animate-[nav-progress_1s_ease-in-out_infinite] before:rounded-r-full before:bg-(--text-color-accent) before:content-['']"
+    />
   );
 }
