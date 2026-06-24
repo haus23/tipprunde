@@ -1,4 +1,5 @@
 import { Button, Logo } from "@tipprunde/ui";
+import { cx } from "@tipprunde/ui";
 import {
   CalendarIcon,
   DicesIcon,
@@ -18,7 +19,6 @@ import { Focusable, Tooltip, TooltipTrigger } from "react-aria-components";
 import { Form, NavLink } from "react-router";
 
 import { useShell } from "#/components/shell-provider.tsx";
-import { cn } from "#/lib/utils.ts";
 
 const tooltipClass =
   "bg-inverted text-inverted rounded-sm px-2 py-1 text-xs shadow-popover transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0";
@@ -38,7 +38,7 @@ function NavItem({ to, end, icon: Icon, label, collapsed, onNavigate }: NavItemP
       to={to}
       end={end}
       onClick={onNavigate}
-      className={cn(
+      className={cx(
         "group flex items-center gap-2.5 rounded-sm px-3 py-2 text-sm transition-colors",
         "text-app hover:bg-nav-active",
         "aria-[current=page]:bg-nav-active",
@@ -47,7 +47,7 @@ function NavItem({ to, end, icon: Icon, label, collapsed, onNavigate }: NavItemP
     >
       <Icon className="group-aria-[current=page]:text-accent size-4 shrink-0" />
       <span
-        className={cn(
+        className={cx(
           "overflow-hidden whitespace-nowrap transition-opacity duration-200",
           collapsed ? "opacity-0" : "opacity-100",
         )}
@@ -86,7 +86,7 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
     >
       <LogOutIcon className="size-4 shrink-0" />
       <span
-        className={cn(
+        className={cx(
           "overflow-hidden whitespace-nowrap transition-opacity duration-200",
           collapsed ? "opacity-0" : "opacity-100",
         )}
@@ -153,7 +153,7 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
 
       <div className="p-2">
         <p
-          className={cn(
+          className={cx(
             "text-muted overflow-hidden px-2 py-1 text-xs font-medium tracking-wider whitespace-nowrap uppercase transition-opacity duration-200",
             collapsed && "opacity-0",
           )}
@@ -237,7 +237,7 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
             <Logo />
           </div>
           <span
-            className={cn(
+            className={cx(
               "overflow-hidden text-sm font-semibold whitespace-nowrap transition-opacity duration-200",
               isSidebarCollapsed ? "opacity-0" : "opacity-100",
             )}

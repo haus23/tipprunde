@@ -1,10 +1,9 @@
 import { Button, Label } from "@tipprunde/ui";
+import { cx } from "@tipprunde/ui";
 import { UserPlusIcon, XIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ComboBox, Input, ListBox, ListBoxItem, Popover, useFilter } from "react-aria-components";
 import { useFetcher } from "react-router";
-
-import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "./card";
 import { useLock } from "./lock-provider";
@@ -21,7 +20,7 @@ type MitspielerCardProps = {
   allUsers: User[];
 };
 
-const listBoxItemClass = cn(
+const listBoxItemClass = cx(
   "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
   "hover:bg-nav-active data-focused:bg-nav-active data-selected:bg-accent-subtle",
 );
@@ -102,7 +101,7 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
               <Label>Spieler hinzufügen</Label>
               <div className="flex gap-4">
                 <div
-                  className={cn(
+                  className={cx(
                     "flex flex-1 rounded-sm",
                     "focus-within:ring-2 focus-within:ring-accent/60",
                   )}

@@ -5,6 +5,7 @@ import {
   teams,
 } from "@tipprunde/db/schema";
 import { Button, Label } from "@tipprunde/ui";
+import { cx } from "@tipprunde/ui";
 import { desc, eq, max } from "drizzle-orm";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { useCallback, useState } from "react";
@@ -21,7 +22,7 @@ import { redirect, useFetcher, useNavigate } from "react-router";
 
 import { db } from "#/lib/db.server.ts";
 import { getRound, isLocked } from "#/lib/lock.server.ts";
-import { cn, formatDate } from "#/lib/utils.ts";
+import { formatDate } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
 import { DateField } from "../../components/date-field";
@@ -179,7 +180,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 // --- Match combobox helper ---
 
-const listBoxItemClass = cn(
+const listBoxItemClass = cx(
   "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
   "hover:bg-nav-active data-focused:bg-nav-active data-selected:bg-accent-subtle",
 );
@@ -220,10 +221,10 @@ function MatchComboBox({
       className="flex flex-col gap-1.5"
     >
       <Label>{label}</Label>
-      <div className={cn("flex rounded-sm", "focus-within:ring-2 focus-within:ring-accent/60")}>
+      <div className={cx("flex rounded-sm", "focus-within:ring-2 focus-within:ring-accent/60")}>
         <Input
           placeholder={placeholder}
-          className={cn(
+          className={cx(
             "border-subtle bg-surface w-full border px-2.5 py-1.5 text-sm outline-none",
             onCreate ? "rounded-l-sm border-r-0" : "rounded-sm",
           )}
@@ -232,7 +233,7 @@ function MatchComboBox({
           <RACButton
             onPress={onCreate}
             aria-label="Neu anlegen"
-            className={cn(
+            className={cx(
               "border-subtle bg-surface shrink-0 rounded-r-sm border px-2.5 transition-colors outline-none",
               "hover:bg-nav-active",
             )}

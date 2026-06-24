@@ -1,6 +1,7 @@
 import type { rulesets } from "@tipprunde/db/schema";
 import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
 import { Button, FieldError, Label, TextArea, TextField } from "@tipprunde/ui";
+import { cx } from "@tipprunde/ui";
 import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
@@ -15,7 +16,7 @@ import {
 } from "react-aria-components";
 import { useFetcher } from "react-router";
 
-import { cn, slugify } from "#/lib/utils.ts";
+import { slugify } from "#/lib/utils.ts";
 
 type Ruleset = typeof rulesets.$inferSelect;
 
@@ -140,7 +141,7 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
             {category.rules.map((rule) => (
               <RadioField key={rule.value} value={rule.value}>
                 <RadioButton
-                  className={cn(
+                  className={cx(
                     "group flex cursor-pointer items-start gap-3 rounded-sm border p-3 text-sm",
                     "border-subtle transition-colors outline-none",
                     "hover:bg-nav-active",
@@ -149,14 +150,14 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
                   )}
                 >
                   <div
-                    className={cn(
+                    className={cx(
                       "mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
                       "border-subtle",
                       "group-data-selected:border-accent",
                     )}
                   >
                     <div
-                      className={cn(
+                      className={cx(
                         "size-2 scale-0 rounded-full transition-transform",
                         "bg-accent",
                         "group-data-selected:scale-100",

@@ -1,5 +1,6 @@
 import { parseDate } from "@internationalized/date";
 import { Button, Label } from "@tipprunde/ui";
+import { cx } from "@tipprunde/ui";
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import {
   Calendar,
@@ -15,8 +16,6 @@ import {
   Group,
   Popover,
 } from "react-aria-components";
-
-import { cn } from "#/lib/utils.ts";
 
 type DateFieldProps = {
   name: string;
@@ -38,7 +37,7 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
 
       {/* Input group: segmented input + calendar trigger */}
       <Group
-        className={cn(
+        className={cx(
           "border-subtle bg-surface flex items-center rounded-sm border",
           "focus-within:ring-2 focus-within:ring-accent/60",
         )}
@@ -48,7 +47,7 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
             <DateSegment
               segment={segment}
               className={({ isFocused, isPlaceholder }) =>
-                cn(
+                cx(
                   "inline whitespace-nowrap rounded-xs caret-transparent outline-none tabular-nums",
                   "type-literal:px-0 type-literal:text-muted",
                   isPlaceholder && "text-muted",
@@ -89,7 +88,7 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
                 <CalendarCell
                   date={date}
                   className={({ isSelected, isFocused, isDisabled, isOutsideMonth }) =>
-                    cn(
+                    cx(
                       "flex size-7 m-0.5 cursor-default items-center justify-center rounded-full text-sm outline-none",
                       isOutsideMonth && "invisible pointer-events-none",
                       isDisabled && "opacity-30 pointer-events-none",

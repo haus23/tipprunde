@@ -1,9 +1,4 @@
 import { useMatches } from "react-router";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: (string | false | null | undefined)[]) {
-  return twMerge(...inputs);
-}
 
 function getPageTitle(matches: { handle: unknown }[]): string | undefined {
   return matches.findLast(

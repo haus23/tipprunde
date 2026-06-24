@@ -1,4 +1,5 @@
 import { Button } from "@tipprunde/ui";
+import { cx } from "@tipprunde/ui";
 import {
   FrownIcon,
   MenuIcon,
@@ -36,7 +37,7 @@ import {
 } from "./lib/championship.server";
 import { championshipContext, userContext } from "./lib/context";
 import { clearCookieHeader, cookieHeader, getCookie } from "./lib/cookies.server";
-import { cn, usePageTitle } from "./lib/utils";
+import { usePageTitle } from "./lib/utils";
 import { webAppUrl } from "./lib/web-app.server";
 
 import "./app.css";
@@ -173,7 +174,7 @@ function Shell({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] 
 
   return (
     <div
-      className={cn(
+      className={cx(
         "border-subtle isolate mx-auto grid h-dvh w-full max-w-400 grid-cols-[1fr] grid-rows-[56px_1fr] border-x transition-[grid-template-columns] duration-300 ease-out",
         isSidebarCollapsed ? "md:grid-cols-[56px_1fr]" : "md:grid-cols-[208px_1fr]",
       )}

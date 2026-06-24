@@ -1,5 +1,6 @@
 import type { championships, rulesets } from "@tipprunde/db/schema";
 import { Button, FieldError, Label, TextField } from "@tipprunde/ui";
+import { cx } from "@tipprunde/ui";
 import { ChevronDownIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -16,8 +17,6 @@ import {
   SelectValue,
 } from "react-aria-components";
 import { useFetcher } from "react-router";
-
-import { cn } from "#/lib/utils.ts";
 
 // Championships follow a fixed naming convention, so the slug can be derived:
 // "Hinrunde 2002/03" → "hr0203", "Rückrunde 2022/23" → "rr2223"
@@ -66,7 +65,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
   const slugDirty = useRef(isEdit);
 
   // Shared with the regelwerk Select trigger below; will fold into a Select primitive later.
-  const inputClass = cn(
+  const inputClass = cx(
     "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
     "outline-none data-focused:ring-2 data-focused:ring-accent/60",
   );
@@ -119,7 +118,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         isReadOnly={isEdit}
         isRequired
         label="Kennung"
-        inputProps={{ className: cn("font-mono", isEdit && "text-subtle cursor-default") }}
+        inputProps={{ className: cx("font-mono", isEdit && "text-subtle cursor-default") }}
       />
 
       {isEdit ? (
@@ -129,7 +128,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         <div className="flex flex-col gap-1.5">
           <Label>Regelwerk</Label>
           <input type="hidden" name="rulesetId" value={defaultValues?.rulesetId ?? ""} />
-          <div className={cn(inputClass, "text-subtle cursor-default")}>
+          <div className={cx(inputClass, "text-subtle cursor-default")}>
             {rulesets.find((r) => r.id === defaultValues?.rulesetId)?.name ?? "—"}
           </div>
           <p className="text-muted text-xs">Nach Erstellung nicht änderbar.</p>
@@ -137,7 +136,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
       ) : (
         <Select name="rulesetId" isRequired className="flex flex-col gap-1.5">
           <Label>Regelwerk</Label>
-          <RACButton className={cn(inputClass, "flex w-full items-center justify-between gap-2")}>
+          <RACButton className={cx(inputClass, "flex w-full items-center justify-between gap-2")}>
             <SelectValue className="text-sm">
               {({ isPlaceholder, defaultChildren }) =>
                 isPlaceholder ? (
@@ -156,7 +155,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
                 <ListBoxItem
                   key={ruleset.id}
                   id={ruleset.id}
-                  className={cn(
+                  className={cx(
                     "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
                     "hover:bg-nav-active",
                     "data-focused:bg-nav-active",

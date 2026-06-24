@@ -1,6 +1,7 @@
 import { tips as tipsTable } from "@tipprunde/db/schema";
 import { applyMatchRule, calcTipPoints, type TipRuleId } from "@tipprunde/domain/scoring";
 import { Button, Checkbox, Label } from "@tipprunde/ui";
+import { cx } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { ChevronDownIcon, ClipboardIcon } from "lucide-react";
 import { useRef, useState } from "react";
@@ -19,7 +20,6 @@ import { redirect, useFetcher, useNavigate } from "react-router";
 import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
-import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
 import { LockProvider, useLock } from "../../components/lock-provider";
@@ -416,7 +416,7 @@ function TipGrid({
               >
                 <Input
                   onPaste={(e) => handleTipPaste(match.id, e)}
-                  className={cn(
+                  className={cx(
                     "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
                     getTip(match.id).invalid
                       ? "bg-error dark:bg-surface dark:text-error"
@@ -526,7 +526,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
           >
             <Label>Spieler</Label>
             <RACButton
-              className={cn(
+              className={cx(
                 "border-subtle bg-surface flex w-full items-center justify-between rounded-sm border px-3 py-1.5 text-sm outline-none",
                 "hover:bg-nav-active",
                 "data-focused:ring-2 data-focused:ring-accent",
@@ -541,7 +541,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
                   <ListBoxItem
                     id={player.user.slug}
                     textValue={player.user.name}
-                    className={cn(
+                    className={cx(
                       "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
                       "hover:bg-nav-active data-focused:bg-nav-active data-selected:bg-accent-subtle",
                     )}

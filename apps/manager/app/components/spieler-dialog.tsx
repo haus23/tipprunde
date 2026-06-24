@@ -1,5 +1,6 @@
 import type { users } from "@tipprunde/db/schema";
 import { Button, FieldError, Label, TextField } from "@tipprunde/ui";
+import { cx } from "@tipprunde/ui";
 import { ChevronDownIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -17,7 +18,7 @@ import {
 } from "react-aria-components";
 import { useFetcher } from "react-router";
 
-import { cn, slugify } from "#/lib/utils.ts";
+import { slugify } from "#/lib/utils.ts";
 
 type User = typeof users.$inferSelect;
 
@@ -55,7 +56,7 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
   const slugDirty = useRef(isEdit);
 
   // Shared with the role Select trigger below; will fold into a Select primitive later.
-  const inputClass = cn(
+  const inputClass = cx(
     "border-subtle bg-surface rounded-sm border px-2.5 py-1.5 text-sm",
     "outline-none data-focused:ring-2 data-focused:ring-accent/60",
   );
@@ -99,7 +100,7 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
         isReadOnly={isEdit}
         isRequired
         label="Kennung"
-        inputProps={{ className: cn("font-mono", isEdit && "text-subtle cursor-default") }}
+        inputProps={{ className: cx("font-mono", isEdit && "text-subtle cursor-default") }}
       />
 
       <TextField
@@ -116,7 +117,7 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
         className="flex flex-col gap-1.5"
       >
         <Label>Rolle</Label>
-        <RACButton className={cn(inputClass, "flex w-full items-center justify-between gap-2")}>
+        <RACButton className={cx(inputClass, "flex w-full items-center justify-between gap-2")}>
           <SelectValue className="text-sm" />
           <ChevronDownIcon className="text-muted size-4 shrink-0" />
         </RACButton>
@@ -127,7 +128,7 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
               <ListBoxItem
                 key={option.value}
                 id={option.value}
-                className={cn(
+                className={cx(
                   "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
                   "hover:bg-nav-active",
                   "data-focused:bg-nav-active",

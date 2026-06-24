@@ -6,6 +6,7 @@ import {
 } from "@tipprunde/db/schema";
 import { calcGoalDeviation } from "@tipprunde/domain/scoring";
 import { Button } from "@tipprunde/ui";
+import { cx } from "@tipprunde/ui";
 import { and, eq, max } from "drizzle-orm";
 import { CalendarIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
@@ -16,7 +17,6 @@ import * as v from "valibot";
 import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
-import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
 import { LockProvider, useLock } from "../../components/lock-provider";
@@ -225,7 +225,7 @@ function FlagSwitch({ label, description, isSelected, onChange, isDisabled }: Fl
       className="py-3"
     >
       <SwitchButton
-        className={cn(
+        className={cx(
           "flex items-center gap-4",
           "data-disabled:opacity-50",
           "data-focus-visible:rounded-sm data-focus-visible:outline-2 data-focus-visible:outline-offset-2 data-focus-visible:outline-accent",
@@ -234,13 +234,13 @@ function FlagSwitch({ label, description, isSelected, onChange, isDisabled }: Fl
         {({ isSelected }) => (
           <>
             <div
-              className={cn(
+              className={cx(
                 "flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors",
                 isSelected ? "border-accent bg-accent" : "border-subtle bg-surface",
               )}
             >
               <div
-                className={cn(
+                className={cx(
                   "ml-0.5 size-4 rounded-full transition-transform",
                   isSelected ? "translate-x-4 bg-white" : "bg-control",
                 )}
@@ -270,7 +270,7 @@ function CompactSwitch({ label, isSelected, onChange, isDisabled }: CompactSwitc
   return (
     <SwitchField isSelected={isSelected} onChange={onChange} isDisabled={isDisabled}>
       <SwitchButton
-        className={cn(
+        className={cx(
           "flex items-center gap-1.5",
           "data-disabled:opacity-50",
           "data-focus-visible:rounded-sm data-focus-visible:outline-2 data-focus-visible:outline-offset-2 data-focus-visible:outline-accent",
@@ -279,19 +279,19 @@ function CompactSwitch({ label, isSelected, onChange, isDisabled }: CompactSwitc
         {({ isSelected }) => (
           <>
             <div
-              className={cn(
+              className={cx(
                 "flex h-4 w-7 shrink-0 items-center rounded-full border transition-colors",
                 isSelected ? "border-accent bg-accent" : "border-subtle bg-surface",
               )}
             >
               <div
-                className={cn(
+                className={cx(
                   "ml-0.5 size-3 rounded-full transition-transform",
                   isSelected ? "translate-x-3 bg-white" : "bg-control",
                 )}
               />
             </div>
-            <span className={cn("text-xs", isSelected ? "text-app" : "text-muted")}>{label}</span>
+            <span className={cx("text-xs", isSelected ? "text-app" : "text-muted")}>{label}</span>
           </>
         )}
       </SwitchButton>
@@ -378,7 +378,7 @@ function RoundRow({ round, hasDeviationRule }: { round: Round; hasDeviationRule:
         to={`spiele/${round.nr}`}
         title={`Spiele der Runde ${round.nr}`}
         aria-label={`Spiele der Runde ${round.nr}`}
-        className={cn(
+        className={cx(
           "text-muted rounded-sm p-1 transition-colors",
           "hover:bg-nav-active hover:text-app",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",

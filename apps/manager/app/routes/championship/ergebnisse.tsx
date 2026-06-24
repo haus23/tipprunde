@@ -1,5 +1,6 @@
 import { matches as matchesTable, tips as tipsTable } from "@tipprunde/db/schema";
 import { applyMatchRule, calcTipPoints, type TipRuleId } from "@tipprunde/domain/scoring";
+import { cx } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { useRef, useState } from "react";
 import { Input, TextField } from "react-aria-components";
@@ -8,7 +9,6 @@ import { redirect, useFetcher, useNavigate } from "react-router";
 import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
-import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
 import { LockProvider } from "../../components/lock-provider";
@@ -241,7 +241,7 @@ function ResultGrid({ matches }: { matches: ResultMatch[] }) {
                 className="inline-flex"
               >
                 <Input
-                  className={cn(
+                  className={cx(
                     "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
                     getResult(match.id).invalid
                       ? "bg-error dark:bg-surface dark:text-error"
