@@ -1,6 +1,6 @@
 import { Link, type ErrorComponentProps } from "@tanstack/react-router";
 
-import { RootDocument } from "#/components/root-document.tsx";
+import { RootDocument } from "./-root-document.tsx";
 
 export function RootErrorBoundary({ error, reset }: ErrorComponentProps) {
   return (

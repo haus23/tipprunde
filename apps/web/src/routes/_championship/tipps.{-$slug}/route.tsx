@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { SpielerView } from "#/components/spieler-view.tsx";
 import { pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions, resolvePlayer } from "#/lib/ranking.ts";
 import { rulesetQueryOptions } from "#/lib/ruleset.ts";
 import { playerMatchesQueryOptions } from "#/lib/spieler.ts";
+
+import { SpielerView } from "./-spieler-view.tsx";
 
 export const Route = createFileRoute("/_championship/tipps/{-$slug}")({
   loader: async ({ context, params }) => {

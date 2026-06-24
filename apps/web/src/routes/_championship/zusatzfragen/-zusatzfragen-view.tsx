@@ -1,8 +1,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { QuestionBlock } from "#/components/question-block.tsx";
 import { extraQuestionsQueryOptions } from "#/lib/extra-questions.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
+
+import { QuestionBlock } from "./-question-block.tsx";
 
 export function ZusatzfragenView({
   championshipId,

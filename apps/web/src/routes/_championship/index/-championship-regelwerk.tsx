@@ -1,9 +1,10 @@
 import { hasExtraQuestions } from "@tipprunde/domain/ranking";
 import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
 
-import { SectionHeading } from "#/components/section-heading.tsx";
-import { SectionLink } from "#/components/section-link.tsx";
 import type { Ruleset } from "#/lib/ruleset.ts";
+
+import { SectionHeading } from "./-section-heading.tsx";
+import { SectionLink } from "./-section-link.tsx";
 
 export function ChampionshipRegelwerk({ ruleset }: { ruleset: Ruleset }) {
   const activeRules = RULE_CATEGORIES.flatMap(({ field, label, rules }) => {

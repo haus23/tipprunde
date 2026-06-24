@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { SpieleView } from "#/components/spiele-view.tsx";
 import { pageTitle } from "#/lib/format.ts";
 import { roundsQueryOptions } from "#/lib/spiele.ts";
+
+import { SpieleView } from "./-spiele-view.tsx";
 
 export const Route = createFileRoute("/_championship/spiele/")({
   loader: async ({ context }) => {

@@ -1,14 +1,15 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { ChampionshipArchivPreview } from "#/components/championship-archiv-preview.tsx";
-import { ChampionshipCurrentMatches } from "#/components/championship-current-matches.tsx";
-import { ChampionshipRegelwerk } from "#/components/championship-regelwerk.tsx";
-import { ChampionshipStandings } from "#/components/championship-standings.tsx";
 import { archivPreviewQueryOptions } from "#/lib/archiv.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import { rulesetQueryOptions } from "#/lib/ruleset.ts";
 import type { SessionUser } from "#/lib/session.ts";
 import { currentMatchesQueryOptions } from "#/lib/spiele.ts";
+
+import { ChampionshipArchivPreview } from "./-championship-archiv-preview.tsx";
+import { ChampionshipCurrentMatches } from "./-championship-current-matches.tsx";
+import { ChampionshipRegelwerk } from "./-championship-regelwerk.tsx";
+import { ChampionshipStandings } from "./-championship-standings.tsx";
 
 export function ChampionshipDashboard({
   championshipId,

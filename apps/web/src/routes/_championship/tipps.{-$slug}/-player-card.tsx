@@ -1,10 +1,11 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { PlayerRoundItem } from "#/components/player-round-item.tsx";
-import { PlayerSwitch } from "#/components/player-switch.tsx";
 import type { RankedPlayer } from "#/lib/ranking.ts";
 import { rulesetQueryOptions } from "#/lib/ruleset.ts";
 import { playerMatchesQueryOptions } from "#/lib/spieler.ts";
+
+import { PlayerRoundItem } from "./-player-round-item.tsx";
+import { PlayerSwitch } from "./-player-switch.tsx";
 
 export function PlayerCard({
   championshipId,

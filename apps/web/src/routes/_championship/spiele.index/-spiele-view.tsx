@@ -1,7 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { SpieleRoundItem } from "#/components/spiele-round-item.tsx";
 import { roundsQueryOptions } from "#/lib/spiele.ts";
+
+import { SpieleRoundItem } from "./-spiele-round-item.tsx";
 
 export function SpieleView({
   championshipId,

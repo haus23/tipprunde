@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ChampionshipDashboard } from "#/components/championship-dashboard.tsx";
 import { archivPreviewQueryOptions } from "#/lib/archiv.ts";
 import { pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import { rulesetQueryOptions } from "#/lib/ruleset.ts";
 import { currentMatchesQueryOptions } from "#/lib/spiele.ts";
+
+import { ChampionshipDashboard } from "./-championship-dashboard.tsx";
 
 export const Route = createFileRoute("/_championship/")({
   loader: async ({ context }) => {

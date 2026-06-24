@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ZusatzfragenView } from "#/components/zusatzfragen-view.tsx";
 import { extraQuestionsQueryOptions } from "#/lib/extra-questions.ts";
 import { pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
+
+import { ZusatzfragenView } from "./-zusatzfragen-view.tsx";
 
 export const Route = createFileRoute("/_championship/zusatzfragen")({
   loader: async ({ context }) => {

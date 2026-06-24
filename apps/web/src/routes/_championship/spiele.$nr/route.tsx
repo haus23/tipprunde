@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { MatchView } from "#/components/match-view.tsx";
 import { pageTitle } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import { matchQueryOptions, roundsQueryOptions } from "#/lib/spiele.ts";
+
+import { MatchView } from "./-match-view.tsx";
 
 export const Route = createFileRoute("/_championship/spiele/$nr")({
   loader: async ({ context, params }) => {

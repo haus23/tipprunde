@@ -1,8 +1,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { PlayerCard } from "#/components/player-card.tsx";
 import { rankingQueryOptions, resolvePlayer } from "#/lib/ranking.ts";
 import type { SessionUser } from "#/lib/session.ts";
+
+import { PlayerCard } from "./-player-card.tsx";
 
 export function SpielerView({
   championshipId,

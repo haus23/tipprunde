@@ -5,11 +5,12 @@ import { useState } from "react";
 
 import { CellFlag } from "#/components/cell-flag.tsx";
 import { CellLink } from "#/components/cell-link.tsx";
-import { MatchSwitch } from "#/components/match-switch.tsx";
-import { type SortCol, type SortDir, SortableTh } from "#/components/sortable-th.tsx";
 import { formatDate } from "#/lib/format.ts";
 import { rankingQueryOptions } from "#/lib/ranking.ts";
 import { matchQueryOptions, roundsQueryOptions } from "#/lib/spiele.ts";
+
+import { MatchSwitch } from "./-match-switch.tsx";
+import { type SortCol, type SortDir, SortableTh } from "./-sortable-th.tsx";
 
 const navLinkClass =
   "text-subtle hover:text-app focus-visible:ring-accent flex items-center gap-1 rounded-sm outline-none transition-colors focus-visible:ring-2";

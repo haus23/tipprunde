@@ -9,16 +9,17 @@ const navItems = [
   { to: "/spiele", label: "Spiele" },
 ] as const;
 
-import { ColorSchemeMenu } from "#/components/color-scheme-menu.tsx";
-import { NavLink } from "#/components/nav-link.tsx";
-import { NavigationProgress } from "#/components/navigation-progress.tsx";
-import { RootDocument } from "#/components/root-document.tsx";
-import { RootErrorBoundary } from "#/components/root-error-boundary.tsx";
-import { RootNotFound } from "#/components/root-not-found.tsx";
-import { UserArea } from "#/components/user-area.tsx";
 import { getSessionData } from "#/lib/session.ts";
 
-import appCss from "../styles/app.css?url";
+import { ColorSchemeMenu } from "./-color-scheme-menu.tsx";
+import { NavLink } from "./-nav-link.tsx";
+import { NavigationProgress } from "./-navigation-progress.tsx";
+import { RootDocument } from "./-root-document.tsx";
+import { RootErrorBoundary } from "./-root-error-boundary.tsx";
+import { RootNotFound } from "./-root-not-found.tsx";
+import { UserArea } from "./-user-area.tsx";
+
+import appCss from "../../styles/app.css?url";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   beforeLoad: async () => await getSessionData(),

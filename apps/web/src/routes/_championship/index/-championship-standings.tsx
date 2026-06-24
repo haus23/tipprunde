@@ -1,7 +1,8 @@
 import { CellLink } from "#/components/cell-link.tsx";
-import { SectionHeading } from "#/components/section-heading.tsx";
-import { SectionLink } from "#/components/section-link.tsx";
 import type { RankedPlayer } from "#/lib/ranking.ts";
+
+import { SectionHeading } from "./-section-heading.tsx";
+import { SectionLink } from "./-section-link.tsx";
 
 export function ChampionshipStandings({
   ranking,
