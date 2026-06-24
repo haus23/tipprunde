@@ -8,3 +8,4 @@ export { Logo } from "./components/logo.tsx";
 export { SearchField } from "./components/search-field.tsx";
 export { TextArea } from "./components/text-area.tsx";
 export { TextField } from "./components/text-field.tsx";
+export { cx } from "./lib/cva.ts";
