@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.20.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.20.0...v0.20.1)
+
+### 🩹 Fixes
+
+- **web:** Show round-points flag for ±0 case in ranking table ([b726b24](https://github.com/haus23/tipprunde/commit/b726b24))
+- **web:** Hide zero extra-question points in ranking table ([742b9c5](https://github.com/haus23/tipprunde/commit/742b9c5))
+- **web:** Use text-accent color for navigation progress bar visibility ([461c3c7](https://github.com/haus23/tipprunde/commit/461c3c7))
+
+### 🏡 Chore
+
+- **dx:** Ignore TODO.md with ".git/info/exclude" ([d28792f](https://github.com/haus23/tipprunde/commit/d28792f))
+
 ## v0.20.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.19.3...v0.20.0)
