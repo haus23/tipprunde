@@ -16,27 +16,3 @@
     transform: translateX(350%);
   }
 }
-
-/* Animate the native accordions (any exclusive, i.e. named, <details>) where
-   supported: the `::details-content` pseudo-element + `interpolate-size:
-   allow-keywords` unlock transitioning the panel to/from its auto height with
-   zero JS. Chromium supports this today; Safari/Firefox are rolling it out.
-   Where unsupported, it falls back to an instant toggle — today's behavior, so
-   no regression anywhere. */
-@supports (interpolate-size: allow-keywords) {
-  :root {
-    interpolate-size: allow-keywords;
-  }
-
-  details[name]::details-content {
-    block-size: 0;
-    overflow: clip;
-    transition:
-      block-size 250ms var(--ease-out),
-      content-visibility 250ms allow-discrete;
-  }
-
-  details[name][open]::details-content {
-    block-size: auto;
-  }
-}

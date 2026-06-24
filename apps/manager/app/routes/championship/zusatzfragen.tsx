@@ -2,9 +2,9 @@ import {
   extraAnswers as extraAnswersTable,
   extraQuestions as extraQuestionsTable,
 } from "@tipprunde/db/schema";
-import { Button, Input } from "@tipprunde/ui";
+import { Button, Disclosure, Input } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
-import { ChevronRightIcon, PlusIcon, XIcon } from "lucide-react";
+import { PlusIcon, XIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button as RACButton, Input as RACInput, TextField } from "react-aria-components";
 import { useFetcher } from "react-router";
@@ -12,7 +12,6 @@ import { useFetcher } from "react-router";
 import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
-import { cn } from "#/lib/utils.ts";
 
 import { Card, CardContent } from "../../components/card";
 import { LockProvider, useLock } from "../../components/lock-provider";
@@ -427,24 +426,20 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
           </div>
 
           {/* Player answers & points — native disclosure */}
-          <details className="group border-subtle border-t pt-1">
-            <summary
-              className={cn(
-                "flex cursor-pointer list-none items-center gap-1.5 rounded-sm px-2 py-1.5 select-none",
-                "text-muted text-xs font-medium tracking-wide uppercase",
-                "outline-none transition-colors hover:text-app",
-                "focus-visible:ring-2 focus-visible:ring-accent",
-                "[&::-webkit-details-marker]:hidden",
-              )}
-            >
-              <ChevronRightIcon className="size-3.5 transition-transform duration-200 ease-out group-open:rotate-90" />
-              Antworten &amp; Punkte ({players.length})
-              {earnerCount > 0 && (
-                <span className="text-accent normal-case">· {earnerCount}× Punkte</span>
-              )}
-            </summary>
-
-            <div className="mt-2 space-y-1">
+          <Disclosure
+            title={
+              <span className="text-muted text-xs font-medium tracking-wide uppercase">
+                Antworten &amp; Punkte ({players.length})
+                {earnerCount > 0 && (
+                  <span className="text-accent ml-1 normal-case">· {earnerCount}× Punkte</span>
+                )}
+              </span>
+            }
+            className="border-subtle border-t"
+            summaryClassName="px-2 py-1.5 hover:bg-transparent"
+            bodyClassName="mt-2 pb-0 px-0 xs:px-0"
+          >
+            <div className="space-y-1">
               {players.map((player) => {
                 const ea = answersByUser.get(player.userId);
                 return (
@@ -492,7 +487,7 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
                 );
               })}
             </div>
-          </details>
+          </Disclosure>
         </div>
       </CardContent>
     </Card>
