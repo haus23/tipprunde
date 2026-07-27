@@ -58,7 +58,8 @@ export const requestCode = createServerFn({ method: "POST" })
     try {
       const code = await createLoginCode(user.id);
       await sendLoginCodeEmail(email, code);
-    } catch {
+    } catch (err) {
+      console.error("[auth] sendLoginCodeEmail failed:", err);
       return {
         step: "email",
         email,
