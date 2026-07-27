@@ -10,5 +10,6 @@
     "SESSION_DURATION_DEFAULT": "86400",
     "SESSION_DURATION_REMEMBER": "2592000",
     "FROM_EMAIL": "hallo@runde.tips",
+    "PUBLIC_MANAGER_URL": "https://next.runde.tips/manager",
   },
 }
