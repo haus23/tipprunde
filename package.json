@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "check": "vp check",
-    "prepare": "vp config"
+    "prepare": "[ -z \"$CI\" ] && vp config || true"
   },
   "devDependencies": {
     "typescript": "catalog:",
