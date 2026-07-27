@@ -7,6 +7,14 @@ allowBuilds:
   esbuild: true
   workerd: true
 
+supportedArchitectures:
+  os:
+    - darwin
+    - linux
+  cpu:
+    - x64
+    - arm64
+
 catalog:
   "@react-aria/optimize-locales-plugin": 2.0.0
   "@vitejs/plugin-react": ^6.0.3
