@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tipprunde",
+  "compatibility_date": "2026-06-16",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@tanstack/react-start/server-entry",
+  "vars": {
+    "TOTP_EXPIRES_IN": "600",
+    "TOTP_MAX_ATTEMPTS": "3",
+    "SESSION_DURATION_DEFAULT": "86400",
+    "SESSION_DURATION_REMEMBER": "2592000",
+    "FROM_EMAIL": "hallo@runde.tips",
+  },
+}

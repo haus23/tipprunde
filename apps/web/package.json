@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "typecheck": "tsc"
+    "preview": "vite preview",
+    "typecheck": "tsc",
+    "deploy": "pnpm run build && wrangler deploy --config dist/server/wrangler.json"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.1",
@@ -22,13 +24,13 @@
     "@tipprunde/ui": "workspace:*",
     "drizzle-orm": "catalog:orm",
     "lucide-react": "catalog:icons",
-    "nitro": "3.0.260610-beta",
     "react": "catalog:react",
     "react-aria-components": "catalog:react",
     "react-dom": "catalog:react",
     "valibot": "^1.4.1"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1",
     "@react-aria/optimize-locales-plugin": "catalog:",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/node": "catalog:types",
@@ -37,6 +39,7 @@
     "@vitejs/plugin-react": "catalog:",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
-    "vite": "catalog:"
+    "vite": "catalog:",
+    "wrangler": "^4"
   }
 }
