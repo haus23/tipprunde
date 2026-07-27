@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.21.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.20.3...v0.21.0)
+
+### 🩹 Fixes
+
+- Log concrete error to allow easy debugging. ([74c6e0b](https://github.com/haus23/tipprunde/commit/74c6e0b))
+- **web:** Add missing manager url env var. ([15324f1](https://github.com/haus23/tipprunde/commit/15324f1))
+- Include Linux native bindings in lockfile for CI ([7ec4c5e](https://github.com/haus23/tipprunde/commit/7ec4c5e))
+- Skip vp config prepare script in CI environments ([671b8bc](https://github.com/haus23/tipprunde/commit/671b8bc))
+
+### 💅 Refactors
+
+- **web:** Switch to cloudlfare deployment for the web app. ([41fcfd4](https://github.com/haus23/tipprunde/commit/41fcfd4))
+
+### 🏡 Chore
+
+- Update skills. ([9f70863](https://github.com/haus23/tipprunde/commit/9f70863))
+- Update pnpm. ([aa4683a](https://github.com/haus23/tipprunde/commit/aa4683a))
+
 ## v0.20.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.20.2...v0.20.3)
