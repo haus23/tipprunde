@@ -27,10 +27,10 @@
     "react": "catalog:react",
     "react-aria-components": "catalog:react",
     "react-dom": "catalog:react",
-    "valibot": "^1.4.2"
+    "valibot": "catalog:"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.47.0",
+    "@cloudflare/vite-plugin": "catalog:cloudflare",
     "@react-aria/optimize-locales-plugin": "catalog:",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/node": "catalog:types",
@@ -40,6 +40,6 @@
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
     "vite": "catalog:",
-    "wrangler": "^4.114.0"
+    "wrangler": "catalog:cloudflare"
   }
 }

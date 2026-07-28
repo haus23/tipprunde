@@ -19,10 +19,14 @@ catalog:
   "@react-aria/optimize-locales-plugin": ^2.0.0
   "@vitejs/plugin-react": ^6.0.4
   typescript: ~7.0.2
+  valibot: ^1.4.2
   vite: ^8.1.5
   vite-plus: 0.2.6
 
 catalogs:
+  cloudflare:
+    "@cloudflare/vite-plugin": ^1.47.0
+    wrangler: ^4.114.0
   icons:
     lucide-react: ^1.27.0
   orm:
