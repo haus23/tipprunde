@@ -18,7 +18,7 @@
     "@tipprunde/theme": "workspace:*",
     "@tipprunde/ui": "workspace:*",
     "drizzle-orm": "catalog:orm",
-    "isbot": "~5.1.43",
+    "isbot": "^5",
     "lucide-react": "catalog:icons",
     "react": "catalog:react",
     "react-aria-components": "catalog:react",
