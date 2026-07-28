@@ -199,7 +199,7 @@ export async function action({ request, context }: Route.ActionArgs) {
     const userId = Number(formData.get("userId"));
     let entries: { matchId: number; tip: string; joker: boolean; extraJoker: boolean }[];
     try {
-      entries = JSON.parse(String(formData.get("tips")));
+      entries = JSON.parse(formData.get("tips") as string);
     } catch {
       return { ok: false };
     }
