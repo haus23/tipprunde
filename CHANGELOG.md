@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.22.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.22.0...v0.22.1)
+
+### 🩹 Fixes
+
+- **web:** Remove misleading row hover from RankingTable. ([189f806](https://github.com/haus23/tipprunde/commit/189f806))
+
 ## v0.22.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.21.2...v0.22.0)
