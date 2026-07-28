@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.22.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.22.2...v0.22.3)
+
+### 🩹 Fixes
+
+- **manager:** Give each grid row its own fetcher to stop Worker crashes. ([3b6d9f4](https://github.com/haus23/tipprunde/commit/3b6d9f4))
+- **manager:** Stop MitspielerCard add/remove submissions from cancelling each other. ([b9c597e](https://github.com/haus23/tipprunde/commit/b9c597e))
+- **manager:** Cast formData tips value instead of coercing with String(). ([2188254](https://github.com/haus23/tipprunde/commit/2188254))
+
 ## v0.22.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.22.1...v0.22.2)
