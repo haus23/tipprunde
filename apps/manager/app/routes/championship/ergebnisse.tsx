@@ -159,58 +159,6 @@ type ResultMatch = {
 };
 
 function ResultGrid({ matches }: { matches: ResultMatch[] }) {
-  const fetcher = useFetcher();
-
-  const lastSubmittedResultRef = useRef<Record<number, string>>(
-    Object.fromEntries(matches.map((m) => [m.id, m.result ?? ""])),
-  );
-
-  const [resultEntries, setResultEntries] = useState<Record<number, ResultEntry>>(() => {
-    const entries: Record<number, ResultEntry> = {};
-    for (const match of matches) {
-      if (match.result) entries[match.id] = { result: match.result };
-    }
-    return entries;
-  });
-
-  function getResult(matchId: number): ResultEntry {
-    return resultEntries[matchId] ?? { result: "" };
-  }
-
-  function updateResult(matchId: number, update: Partial<ResultEntry>) {
-    setResultEntries((prev) => ({ ...prev, [matchId]: { ...getResult(matchId), ...update } }));
-  }
-
-  function saveResult(matchId: number, result: string) {
-    void fetcher.submit(
-      { intent: "update-result", matchId: String(matchId), result },
-      { method: "post" },
-    );
-  }
-
-  function handleResultBlur(matchId: number) {
-    const entry = getResult(matchId);
-    const raw = entry.result.trim();
-
-    if (!raw) {
-      updateResult(matchId, { result: "", invalid: false });
-      if (lastSubmittedResultRef.current[matchId] !== "") {
-        lastSubmittedResultRef.current[matchId] = "";
-        saveResult(matchId, "");
-      }
-      return;
-    }
-
-    const normalized = normalizeResult(raw);
-    const isValid = RESULT_PATTERN.test(normalized);
-    updateResult(matchId, { result: normalized, invalid: !isValid });
-
-    if (isValid && normalized !== lastSubmittedResultRef.current[matchId]) {
-      lastSubmittedResultRef.current[matchId] = normalized;
-      saveResult(matchId, normalized);
-    }
-  }
-
   if (matches.length === 0) {
     return <p className="text-subtle text-center text-sm">Noch keine Spiele in dieser Runde.</p>;
   }
@@ -226,34 +174,75 @@ function ResultGrid({ matches }: { matches: ResultMatch[] }) {
       </thead>
       <tbody>
         {matches.map((match) => (
-          <tr key={match.id} className="border-subtle border-b last:border-0">
-            <td className="text-muted py-3 pr-2 text-right tabular-nums">{match.nr}</td>
-            <td className="px-2 py-3">
-              {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
-            </td>
-            <td className="px-2 py-3 text-center">
-              <TextField
-                aria-label={`Ergebnis für Spiel ${match.nr}`}
-                value={getResult(match.id).result}
-                onChange={(v) => updateResult(match.id, { result: v, invalid: false })}
-                onBlur={() => handleResultBlur(match.id)}
-                isInvalid={getResult(match.id).invalid}
-                className="inline-flex"
-              >
-                <Input
-                  className={cx(
-                    "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
-                    getResult(match.id).invalid
-                      ? "bg-error dark:bg-surface dark:text-error"
-                      : "bg-surface",
-                  )}
-                />
-              </TextField>
-            </td>
-          </tr>
+          <ResultRow key={match.id} match={match} />
         ))}
       </tbody>
     </table>
+  );
+}
+
+// Each row owns its own fetcher (keyed via useId() internally) so that
+// editing one match's result can never abort another's in-flight save.
+function ResultRow({ match }: { match: ResultMatch }) {
+  const fetcher = useFetcher();
+  const lastSubmittedResultRef = useRef(match.result ?? "");
+  const [entry, setEntry] = useState<ResultEntry>(() =>
+    match.result ? { result: match.result } : { result: "" },
+  );
+
+  function saveResult(result: string) {
+    void fetcher.submit(
+      { intent: "update-result", matchId: String(match.id), result },
+      { method: "post" },
+    );
+  }
+
+  function handleBlur() {
+    const raw = entry.result.trim();
+
+    if (!raw) {
+      setEntry({ result: "", invalid: false });
+      if (lastSubmittedResultRef.current !== "") {
+        lastSubmittedResultRef.current = "";
+        saveResult("");
+      }
+      return;
+    }
+
+    const normalized = normalizeResult(raw);
+    const isValid = RESULT_PATTERN.test(normalized);
+    setEntry({ result: normalized, invalid: !isValid });
+
+    if (isValid && normalized !== lastSubmittedResultRef.current) {
+      lastSubmittedResultRef.current = normalized;
+      saveResult(normalized);
+    }
+  }
+
+  return (
+    <tr className="border-subtle border-b last:border-0">
+      <td className="text-muted py-3 pr-2 text-right tabular-nums">{match.nr}</td>
+      <td className="px-2 py-3">
+        {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
+      </td>
+      <td className="px-2 py-3 text-center">
+        <TextField
+          aria-label={`Ergebnis für Spiel ${match.nr}`}
+          value={entry.result}
+          onChange={(v) => setEntry((prev) => ({ ...prev, result: v, invalid: false }))}
+          onBlur={handleBlur}
+          isInvalid={entry.invalid}
+          className="inline-flex"
+        >
+          <Input
+            className={cx(
+              "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
+              entry.invalid ? "bg-error dark:bg-surface dark:text-error" : "bg-surface",
+            )}
+          />
+        </TextField>
+      </td>
+    </tr>
   );
 }
 

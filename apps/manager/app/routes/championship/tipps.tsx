@@ -332,7 +332,9 @@ function TipGrid({
   hasExtraJoker,
   extraJokerCount,
 }: TipGridProps) {
-  const fetcher = useFetcher();
+  // Only used for bulk paste — a single grid-wide action, so a shared fetcher
+  // is safe here (per-row saves get their own fetcher in TipRow instead).
+  const bulkFetcher = useFetcher();
   const { isDisabled: isLocked, isEntryLocked } = useLock();
 
   const lastSubmittedTipRef = useRef<Record<number, string>>(
@@ -379,20 +381,6 @@ function TipGrid({
     setTipEntries((prev) => ({ ...prev, [matchId]: { ...getTip(matchId), ...update } }));
   }
 
-  function saveTip(matchId: number, entry: TipEntry) {
-    void fetcher.submit(
-      {
-        intent: "update-tip",
-        matchId: String(matchId),
-        userId: String(currentUserId),
-        tip: entry.tip,
-        joker: String(entry.joker),
-        extraJoker: String(entry.extraJoker),
-      },
-      { method: "post" },
-    );
-  }
-
   function applyPastedTips(text: string, startMatchId: number) {
     const startIndex = matches.findIndex((m) => m.id === startMatchId);
     if (startIndex === -1) return;
@@ -431,47 +419,17 @@ function TipGrid({
     setTipEntries((prev) => ({ ...prev, ...newEntries }));
 
     if (toSave.length > 0) {
-      void fetcher.submit(
+      void bulkFetcher.submit(
         { intent: "update-tips-bulk", userId: String(currentUserId), tips: JSON.stringify(toSave) },
         { method: "post" },
       );
     }
   }
 
-  function handleTipPaste(matchId: number, e: React.ClipboardEvent<HTMLInputElement>) {
-    const text = e.clipboardData.getData("text");
-    if (text.trimEnd().split(/\r?\n/).length <= 1) return; // single value — let native paste + onBlur handle it
-    e.preventDefault();
-    applyPastedTips(text, matchId);
-  }
-
   async function handleClipboardPaste() {
     const text = await navigator.clipboard.readText();
     if (!text.trim() || matches.length === 0) return;
     applyPastedTips(text, matches[0].id);
-  }
-
-  function handleTipBlur(matchId: number) {
-    const entry = getTip(matchId);
-    const raw = entry.tip.trim();
-
-    if (!raw) {
-      updateTip(matchId, { tip: "", invalid: false });
-      if (lastSubmittedTipRef.current[matchId] !== "") {
-        lastSubmittedTipRef.current[matchId] = "";
-        saveTip(matchId, { ...entry, tip: "" });
-      }
-      return;
-    }
-
-    const normalized = normalizeTip(raw);
-    const isValid = TIP_PATTERN.test(normalized);
-    updateTip(matchId, { tip: normalized, invalid: !isValid });
-
-    if (isValid && normalized !== lastSubmittedTipRef.current[matchId]) {
-      lastSubmittedTipRef.current[matchId] = normalized;
-      saveTip(matchId, { ...entry, tip: normalized });
-    }
   }
 
   if (matches.length === 0) {
@@ -505,61 +463,148 @@ function TipGrid({
       </thead>
       <tbody>
         {matches.map((match) => (
-          <tr key={match.id} className="border-subtle border-b last:border-0">
-            <td className="text-muted py-3 pr-2 text-right tabular-nums">{match.nr}</td>
-            <td className="px-2 py-3">
-              {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
-            </td>
-            <td className="px-2 py-3 text-center">
-              <TextField
-                aria-label={`Tipp für Spiel ${match.nr}`}
-                value={getTip(match.id).tip}
-                onChange={(v) => updateTip(match.id, { tip: v, invalid: false })}
-                onBlur={() => handleTipBlur(match.id)}
-                isInvalid={getTip(match.id).invalid}
-                className="inline-flex"
-              >
-                <Input
-                  onPaste={(e) => handleTipPaste(match.id, e)}
-                  className={cx(
-                    "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
-                    getTip(match.id).invalid
-                      ? "bg-error dark:bg-surface dark:text-error"
-                      : "bg-surface",
-                  )}
-                />
-              </TextField>
-            </td>
-            <td className="py-3 pl-2 text-center">
-              <Checkbox
-                isSelected={getTip(match.id).joker}
-                isDisabled={isEntryLocked || !isJokerAllowed(match.id)}
-                onChange={(checked) => {
-                  const updated = { ...getTip(match.id), joker: checked };
-                  updateTip(match.id, { joker: checked });
-                  saveTip(match.id, updated);
-                }}
-                aria-label={`Joker für Spiel ${match.nr}`}
-              />
-            </td>
-            {hasExtraJoker && (
-              <td className="py-3 pl-2 text-center">
-                <Checkbox
-                  isSelected={getTip(match.id).extraJoker}
-                  isDisabled={isEntryLocked || !isExtraJokerAllowed(match.id)}
-                  onChange={(checked) => {
-                    const updated = { ...getTip(match.id), extraJoker: checked };
-                    updateTip(match.id, { extraJoker: checked });
-                    saveTip(match.id, updated);
-                  }}
-                  aria-label={`Extra-Joker für Spiel ${match.nr}`}
-                />
-              </td>
-            )}
-          </tr>
+          <TipRow
+            key={match.id}
+            match={match}
+            entry={getTip(match.id)}
+            currentUserId={currentUserId}
+            hasExtraJoker={hasExtraJoker}
+            isEntryLocked={isEntryLocked}
+            isJokerAllowed={isJokerAllowed(match.id)}
+            isExtraJokerAllowed={isExtraJokerAllowed(match.id)}
+            onUpdateTip={(update) => updateTip(match.id, update)}
+            onMultilinePaste={(text) => applyPastedTips(text, match.id)}
+            lastSubmittedTipRef={lastSubmittedTipRef}
+          />
         ))}
       </tbody>
     </table>
+  );
+}
+
+// Each row owns its own fetcher (keyed via useId() internally) so that
+// editing one match's tip/joker can never abort another's in-flight save.
+type TipRowProps = {
+  match: TipMatch;
+  entry: TipEntry;
+  currentUserId: number;
+  hasExtraJoker: boolean;
+  isEntryLocked: boolean;
+  isJokerAllowed: boolean;
+  isExtraJokerAllowed: boolean;
+  onUpdateTip: (update: Partial<TipEntry>) => void;
+  onMultilinePaste: (text: string) => void;
+  lastSubmittedTipRef: React.RefObject<Record<number, string>>;
+};
+
+function TipRow({
+  match,
+  entry,
+  currentUserId,
+  hasExtraJoker,
+  isEntryLocked,
+  isJokerAllowed,
+  isExtraJokerAllowed,
+  onUpdateTip,
+  onMultilinePaste,
+  lastSubmittedTipRef,
+}: TipRowProps) {
+  const fetcher = useFetcher();
+
+  function saveTip(update: TipEntry) {
+    void fetcher.submit(
+      {
+        intent: "update-tip",
+        matchId: String(match.id),
+        userId: String(currentUserId),
+        tip: update.tip,
+        joker: String(update.joker),
+        extraJoker: String(update.extraJoker),
+      },
+      { method: "post" },
+    );
+  }
+
+  function handleBlur() {
+    const raw = entry.tip.trim();
+
+    if (!raw) {
+      onUpdateTip({ tip: "", invalid: false });
+      if (lastSubmittedTipRef.current[match.id] !== "") {
+        lastSubmittedTipRef.current[match.id] = "";
+        saveTip({ ...entry, tip: "" });
+      }
+      return;
+    }
+
+    const normalized = normalizeTip(raw);
+    const isValid = TIP_PATTERN.test(normalized);
+    onUpdateTip({ tip: normalized, invalid: !isValid });
+
+    if (isValid && normalized !== lastSubmittedTipRef.current[match.id]) {
+      lastSubmittedTipRef.current[match.id] = normalized;
+      saveTip({ ...entry, tip: normalized });
+    }
+  }
+
+  function handlePaste(e: React.ClipboardEvent<HTMLInputElement>) {
+    const text = e.clipboardData.getData("text");
+    if (text.trimEnd().split(/\r?\n/).length <= 1) return; // single value — let native paste + onBlur handle it
+    e.preventDefault();
+    onMultilinePaste(text);
+  }
+
+  return (
+    <tr className="border-subtle border-b last:border-0">
+      <td className="text-muted py-3 pr-2 text-right tabular-nums">{match.nr}</td>
+      <td className="px-2 py-3">
+        {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
+      </td>
+      <td className="px-2 py-3 text-center">
+        <TextField
+          aria-label={`Tipp für Spiel ${match.nr}`}
+          value={entry.tip}
+          onChange={(v) => onUpdateTip({ tip: v, invalid: false })}
+          onBlur={handleBlur}
+          isInvalid={entry.invalid}
+          className="inline-flex"
+        >
+          <Input
+            onPaste={handlePaste}
+            className={cx(
+              "border-subtle w-12 rounded-sm border px-2 py-1 text-sm text-center outline-none focus:ring-2 focus:ring-accent",
+              entry.invalid ? "bg-error dark:bg-surface dark:text-error" : "bg-surface",
+            )}
+          />
+        </TextField>
+      </td>
+      <td className="py-3 pl-2 text-center">
+        <Checkbox
+          isSelected={entry.joker}
+          isDisabled={isEntryLocked || !isJokerAllowed}
+          onChange={(checked) => {
+            const updated = { ...entry, joker: checked };
+            onUpdateTip({ joker: checked });
+            saveTip(updated);
+          }}
+          aria-label={`Joker für Spiel ${match.nr}`}
+        />
+      </td>
+      {hasExtraJoker && (
+        <td className="py-3 pl-2 text-center">
+          <Checkbox
+            isSelected={entry.extraJoker}
+            isDisabled={isEntryLocked || !isExtraJokerAllowed}
+            onChange={(checked) => {
+              const updated = { ...entry, extraJoker: checked };
+              onUpdateTip({ extraJoker: checked });
+              saveTip(updated);
+            }}
+            aria-label={`Extra-Joker für Spiel ${match.nr}`}
+          />
+        </td>
+      )}
+    </tr>
   );
 }
 

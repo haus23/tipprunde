@@ -239,20 +239,6 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
   const [questionText, setQuestionText] = useState(question.question);
   const [description, setDescription] = useState(question.description);
   const [answer, setAnswer] = useState(question.answer ?? "");
-  const [answerInputs, setAnswerInputs] = useState<Record<number, string>>(() => {
-    const map: Record<number, string> = {};
-    for (const ea of question.extraAnswers) {
-      map[ea.userId] = ea.answer ?? "";
-    }
-    return map;
-  });
-  const [pointsInputs, setPointsInputs] = useState<Record<number, string>>(() => {
-    const map: Record<number, string> = {};
-    for (const ea of question.extraAnswers) {
-      if (ea.points !== null) map[ea.userId] = formatPoints(ea.points);
-    }
-    return map;
-  });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
@@ -269,57 +255,6 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
   function handleDelete() {
     void fetcher.submit(
       { intent: "delete-question", questionId: String(question.id) },
-      { method: "post" },
-    );
-  }
-
-  function handleSavePlayerAnswer(userId: number) {
-    const playerAnswer = answerInputs[userId]?.trim() ?? "";
-    const serverAnswer = question.extraAnswers.find((ea) => ea.userId === userId)?.answer ?? "";
-    if (playerAnswer === serverAnswer) return;
-    void fetcher.submit(
-      {
-        intent: "save-answer",
-        questionId: String(question.id),
-        userId: String(userId),
-        answer: playerAnswer,
-      },
-      { method: "post" },
-    );
-  }
-
-  function handlePointsSave(userId: number) {
-    const raw = pointsInputs[userId]?.trim() ?? "";
-    const serverPoints = question.extraAnswers.find((ea) => ea.userId === userId)?.points ?? null;
-
-    if (raw === "") {
-      if (serverPoints !== null) {
-        void fetcher.submit(
-          { intent: "remove-points", questionId: String(question.id), userId: String(userId) },
-          { method: "post" },
-        );
-      }
-      return;
-    }
-
-    const parsed = Number(raw.replace(",", "."));
-    if (!Number.isFinite(parsed) || parsed <= 0) {
-      // Invalid input → revert the field to the server value.
-      setPointsInputs((prev) => ({
-        ...prev,
-        [userId]: serverPoints !== null ? formatPoints(serverPoints) : "",
-      }));
-      return;
-    }
-    if (parsed === serverPoints) return;
-
-    void fetcher.submit(
-      {
-        intent: "upsert-points",
-        questionId: String(question.id),
-        userId: String(userId),
-        points: String(parsed),
-      },
       { method: "post" },
     );
   }
@@ -440,57 +375,131 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
             bodyClassName="mt-2 pb-0 px-0 xs:px-0"
           >
             <div className="space-y-1">
-              {players.map((player) => {
-                const ea = answersByUser.get(player.userId);
-                return (
-                  <div key={player.userId} className="flex items-center gap-3">
-                    <span className="w-32 shrink-0 truncate text-sm">{player.user.name}</span>
-                    {isChampionshipClosed ? (
-                      <>
-                        <span className="min-w-0 flex-1 text-sm">{ea?.answer || "–"}</span>
-                        <span className="w-14 shrink-0 text-center text-sm tabular-nums">
-                          {ea?.points != null ? formatPoints(ea.points) : "–"}
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <TextField
-                          aria-label={`Antwort von ${player.user.name}`}
-                          value={answerInputs[player.userId] ?? ""}
-                          onChange={(v) =>
-                            setAnswerInputs((prev) => ({ ...prev, [player.userId]: v }))
-                          }
-                          onBlur={() => handleSavePlayerAnswer(player.userId)}
-                          className="min-w-0 flex-1"
-                        >
-                          <Input placeholder="Keine Antwort ..." className="w-full" />
-                        </TextField>
-                        <TextField
-                          aria-label={`Punkte für ${player.user.name}`}
-                          value={pointsInputs[player.userId] ?? ""}
-                          onChange={(v) =>
-                            setPointsInputs((prev) => ({ ...prev, [player.userId]: v }))
-                          }
-                          onBlur={() => handlePointsSave(player.userId)}
-                          className="shrink-0"
-                        >
-                          <Input
-                            inputMode="decimal"
-                            onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-                            placeholder="Pkt."
-                            className="w-14 text-center"
-                          />
-                        </TextField>
-                      </>
-                    )}
-                  </div>
-                );
-              })}
+              {players.map((player) => (
+                <PlayerAnswerRow
+                  key={player.userId}
+                  questionId={question.id}
+                  player={player}
+                  extraAnswer={answersByUser.get(player.userId)}
+                />
+              ))}
             </div>
           </Disclosure>
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+// Each row owns its own fetcher (keyed via useId() internally) so that
+// saving one player's answer/points can never abort another's in-flight save.
+function PlayerAnswerRow({
+  questionId,
+  player,
+  extraAnswer,
+}: {
+  questionId: number;
+  player: EnrolledPlayer;
+  extraAnswer: ExtraAnswer | undefined;
+}) {
+  const fetcher = useFetcher();
+  const { isChampionshipClosed } = useLock();
+
+  const [answerInput, setAnswerInput] = useState(extraAnswer?.answer ?? "");
+  const [pointsInput, setPointsInput] = useState(
+    extraAnswer?.points != null ? formatPoints(extraAnswer.points) : "",
+  );
+
+  function handleSaveAnswer() {
+    const playerAnswer = answerInput.trim();
+    const serverAnswer = extraAnswer?.answer ?? "";
+    if (playerAnswer === serverAnswer) return;
+    void fetcher.submit(
+      {
+        intent: "save-answer",
+        questionId: String(questionId),
+        userId: String(player.userId),
+        answer: playerAnswer,
+      },
+      { method: "post" },
+    );
+  }
+
+  function handleSavePoints() {
+    const raw = pointsInput.trim();
+    const serverPoints = extraAnswer?.points ?? null;
+
+    if (raw === "") {
+      if (serverPoints !== null) {
+        void fetcher.submit(
+          {
+            intent: "remove-points",
+            questionId: String(questionId),
+            userId: String(player.userId),
+          },
+          { method: "post" },
+        );
+      }
+      return;
+    }
+
+    const parsed = Number(raw.replace(",", "."));
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+      // Invalid input → revert the field to the server value.
+      setPointsInput(serverPoints !== null ? formatPoints(serverPoints) : "");
+      return;
+    }
+    if (parsed === serverPoints) return;
+
+    void fetcher.submit(
+      {
+        intent: "upsert-points",
+        questionId: String(questionId),
+        userId: String(player.userId),
+        points: String(parsed),
+      },
+      { method: "post" },
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <span className="w-32 shrink-0 truncate text-sm">{player.user.name}</span>
+      {isChampionshipClosed ? (
+        <>
+          <span className="min-w-0 flex-1 text-sm">{extraAnswer?.answer || "–"}</span>
+          <span className="w-14 shrink-0 text-center text-sm tabular-nums">
+            {extraAnswer?.points != null ? formatPoints(extraAnswer.points) : "–"}
+          </span>
+        </>
+      ) : (
+        <>
+          <TextField
+            aria-label={`Antwort von ${player.user.name}`}
+            value={answerInput}
+            onChange={setAnswerInput}
+            onBlur={handleSaveAnswer}
+            className="min-w-0 flex-1"
+          >
+            <Input placeholder="Keine Antwort ..." className="w-full" />
+          </TextField>
+          <TextField
+            aria-label={`Punkte für ${player.user.name}`}
+            value={pointsInput}
+            onChange={setPointsInput}
+            onBlur={handleSavePoints}
+            className="shrink-0"
+          >
+            <Input
+              inputMode="decimal"
+              onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+              placeholder="Pkt."
+              className="w-14 text-center"
+            />
+          </TextField>
+        </>
+      )}
+    </div>
   );
 }
 
