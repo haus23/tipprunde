@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.21.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.21.1...v0.21.2)
+
+### 🩹 Fixes
+
+- Restore web app dev server to port 3000. ([ef8bbea](https://github.com/haus23/tipprunde/commit/ef8bbea))
+
+### 🏡 Chore
+
+- Update tailwindcss. ([62246ee](https://github.com/haus23/tipprunde/commit/62246ee))
+
 ## v0.21.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.21.0...v0.21.1)
