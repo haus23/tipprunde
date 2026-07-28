@@ -64,10 +64,8 @@ export function RankingTable({
             <tr
               key={entry.userId}
               className={cx(
-                "border-subtle border-b transition-colors last:border-0",
-                isCurrentUser
-                  ? "bg-accent-subtle"
-                  : "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-surface-raised",
+                "border-subtle border-b last:border-0",
+                isCurrentUser && "bg-accent-subtle",
               )}
             >
               <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-right tabular-nums">
