@@ -20,7 +20,7 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 
 ## Architecture
 
-**Stack:** React Router 7 (Framework Mode) + React Aria Components + Tailwind CSS 4 + Drizzle ORM + Turso (libSQL/SQLite) + Vercel adapter
+**Stack:** React Router 7 (Framework Mode) + React Aria Components + Tailwind CSS 4 + Drizzle ORM + Turso (libSQL/SQLite) + Cloudflare Workers
 
 **App directory layout (`app/`):**
 
