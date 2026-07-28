@@ -1,9 +1,9 @@
 import { Button, Label } from "@tipprunde/ui";
 import { cx } from "@tipprunde/ui";
 import { UserPlusIcon, XIcon } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { ComboBox, Input, ListBox, ListBoxItem, Popover, useFilter } from "react-aria-components";
-import { useFetcher } from "react-router";
+import { useSubmit } from "react-router";
 
 import { Card, CardContent } from "./card";
 import { useLock } from "./lock-provider";
@@ -27,7 +27,10 @@ const listBoxItemClass = cx(
 
 export function MitspielerCard({ playerUserIds: initialIds, allUsers }: MitspielerCardProps) {
   const { isChampionshipClosed, isBusy } = useLock();
-  const fetcher = useFetcher();
+  // useSubmit (not useFetcher) — each call gets its own anonymous fetcher key,
+  // so adding/removing several players in quick succession never cancels an
+  // earlier, still in-flight submission the way a single shared fetcher would.
+  const submit = useSubmit();
   const { contains } = useFilter({ sensitivity: "base" });
 
   const [playerIds, setPlayerIds] = useState(() => new Set(initialIds));
@@ -35,16 +38,6 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const refocusRef = useRef(false);
-
-  // Restore focus to the add field once an add settles, so a season's worth of
-  // players can be entered in quick succession without re-clicking the input.
-  useEffect(() => {
-    if (fetcher.state === "idle" && refocusRef.current) {
-      refocusRef.current = false;
-      inputRef.current?.focus();
-    }
-  }, [fetcher.state]);
 
   const userMap = useMemo(() => new Map(allUsers.map((u) => [u.id, u])), [allUsers]);
 
@@ -67,8 +60,12 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
   function addPlayer(userId: number) {
     setPlayerIds((prev) => new Set([...prev, userId]));
     setQuery("");
-    refocusRef.current = true;
-    void fetcher.submit({ intent: "add-player", userId: String(userId) }, { method: "post" });
+    // Refocus once this specific add settles, so a season's worth of players
+    // can be entered in quick succession without re-clicking the input.
+    void submit(
+      { intent: "add-player", userId: String(userId) },
+      { method: "post", navigate: false },
+    ).then(() => inputRef.current?.focus());
   }
 
   function removePlayer(userId: number) {
@@ -77,7 +74,10 @@ export function MitspielerCard({ playerUserIds: initialIds, allUsers }: Mitspiel
       next.delete(userId);
       return next;
     });
-    void fetcher.submit({ intent: "remove-player", userId: String(userId) }, { method: "post" });
+    void submit(
+      { intent: "remove-player", userId: String(userId) },
+      { method: "post", navigate: false },
+    );
   }
 
   return (
