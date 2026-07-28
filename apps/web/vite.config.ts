@@ -6,6 +6,7 @@ import react from "@vitejs/plugin-react";
 import { type UserConfig } from "vite";
 
 export default {
+  server: { port: 3000 },
   plugins: [
     { ...optimizeLocales.vite({ locales: ["de-DE"] }), enforce: "pre" },
     tailwindcss(),
