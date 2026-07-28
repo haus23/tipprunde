@@ -195,6 +195,103 @@ export async function action({ request, context }: Route.ActionArgs) {
     }
   }
 
+  if (formData.get("intent") === "update-tips-bulk") {
+    const userId = Number(formData.get("userId"));
+    let entries: { matchId: number; tip: string; joker: boolean; extraJoker: boolean }[];
+    try {
+      entries = JSON.parse(String(formData.get("tips")));
+    } catch {
+      return { ok: false };
+    }
+
+    if (
+      !Number.isInteger(userId) ||
+      userId <= 0 ||
+      !Array.isArray(entries) ||
+      entries.length === 0
+    ) {
+      return { ok: false };
+    }
+
+    const [player, ruleset] = await Promise.all([
+      db.query.players.findFirst({ where: { userId, championshipId: championship.id } }),
+      championship.rulesetId
+        ? db.query.rulesets.findFirst({
+            where: { id: championship.rulesetId },
+            columns: { tipRuleId: true },
+          })
+        : Promise.resolve(null),
+    ]);
+
+    if (!player) {
+      return { ok: false };
+    }
+
+    const matchIds = entries
+      .map((e) => Number(e.matchId))
+      .filter((id) => Number.isInteger(id) && id > 0);
+    const matchList = await db.query.matches.findMany({
+      where: { id: { in: matchIds } },
+      with: { round: { columns: { championshipId: true, isDoubleRound: true, completed: true } } },
+    });
+    const matchById = new Map(matchList.map((m) => [m.id, m]));
+
+    const tipRuleId = ruleset?.tipRuleId as TipRuleId | undefined;
+    let locked = false;
+    let recompute = false;
+
+    for (const entry of entries) {
+      const matchId = Number(entry.matchId);
+      const match = matchById.get(matchId);
+      if (!match || !match.round || match.round.championshipId !== championship.id) continue;
+
+      if (
+        isLocked({
+          championshipCompleted: championship.completed,
+          roundCompleted: match.round.completed,
+        })
+      ) {
+        locked = true;
+        continue;
+      }
+
+      const tip = entry.tip || null;
+      const joker = !!entry.joker;
+      const extraJoker = !!entry.extraJoker;
+
+      await db
+        .insert(tipsTable)
+        .values({ matchId, userId, tip, joker, extraJoker })
+        .onConflictDoUpdate({
+          target: [tipsTable.matchId, tipsTable.userId],
+          set: { tip, joker, extraJoker },
+        });
+
+      if (match.result && tipRuleId) {
+        const points = calcTipPoints(
+          tip,
+          match.result,
+          tipRuleId,
+          match.round.isDoubleRound,
+          joker,
+          extraJoker,
+        );
+        await db
+          .update(tipsTable)
+          .set({ points })
+          .where(and(eq(tipsTable.matchId, matchId), eq(tipsTable.userId, userId)));
+        recompute = true;
+      }
+    }
+
+    if (recompute) {
+      applyMatchRule();
+      await updateRanking(championship.id);
+    }
+
+    return { ok: !locked, locked: locked || undefined };
+  }
+
   return { ok: true };
 }
 
@@ -301,6 +398,7 @@ function TipGrid({
     if (startIndex === -1) return;
 
     const newEntries: Record<number, TipEntry> = {};
+    const toSave: { matchId: number; tip: string; joker: boolean; extraJoker: boolean }[] = [];
 
     text
       .trimEnd()
@@ -326,11 +424,18 @@ function TipGrid({
           normalized !== lastSubmittedTipRef.current[match.id]
         ) {
           lastSubmittedTipRef.current[match.id] = normalized;
-          saveTip(match.id, { tip: normalized, joker, extraJoker });
+          toSave.push({ matchId: match.id, tip: normalized, joker, extraJoker });
         }
       });
 
     setTipEntries((prev) => ({ ...prev, ...newEntries }));
+
+    if (toSave.length > 0) {
+      void fetcher.submit(
+        { intent: "update-tips-bulk", userId: String(currentUserId), tips: JSON.stringify(toSave) },
+        { method: "post" },
+      );
+    }
   }
 
   function handleTipPaste(matchId: number, e: React.ClipboardEvent<HTMLInputElement>) {
