@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.22.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.22.1...v0.22.2)
+
+### 🩹 Fixes
+
+- **manager:** Batch pasted tips into one request to stop server crashes. ([13f7b0a](https://github.com/haus23/tipprunde/commit/13f7b0a))
+
 ## v0.22.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.22.0...v0.22.1)
