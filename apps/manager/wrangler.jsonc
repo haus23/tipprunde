@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tipprunde-manager",
+  "compatibility_date": "2026-06-16",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./workers/app.ts",
+  "assets": {
+    "directory": "./dist/client",
+  },
+  "vars": {
+    "WEB_APP_URL": "https://next.runde.tips",
+  },
+}

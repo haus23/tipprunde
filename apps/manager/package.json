@@ -8,16 +8,15 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "react-router build",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "deploy": "pnpm run build && wrangler deploy --config dist/server/wrangler.json"
   },
   "dependencies": {
     "@internationalized/date": "^3.12.2",
-    "@react-router/node": "7.17.0",
     "@tipprunde/db": "workspace:*",
     "@tipprunde/domain": "workspace:*",
     "@tipprunde/theme": "workspace:*",
     "@tipprunde/ui": "workspace:*",
-    "@vercel/react-router": "1.3.1",
     "drizzle-orm": "catalog:orm",
     "isbot": "~5.1.43",
     "lucide-react": "catalog:icons",
@@ -28,12 +27,14 @@
     "valibot": "^1.4.1"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1",
     "@react-router/dev": "7.17.0",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/react": "catalog:types",
     "@types/react-dom": "catalog:types",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
-    "vite": "catalog:"
+    "vite": "catalog:",
+    "wrangler": "^4"
   }
 }
