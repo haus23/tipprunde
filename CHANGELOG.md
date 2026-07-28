@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.21.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.21.0...v0.21.1)
+
+### 💅 Refactors
+
+- **manager:** Switch to Cloudflare deployment for the manager app. ([d73458a](https://github.com/haus23/tipprunde/commit/d73458a))
+
+### 📖 Documentation
+
+- **manager:** Update stack description from Vercel to Cloudflare Workers. ([f1ae7db](https://github.com/haus23/tipprunde/commit/f1ae7db))
+
 ## v0.21.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.20.3...v0.21.0)
