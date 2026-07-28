@@ -23,18 +23,18 @@
     "react": "catalog:react",
     "react-aria-components": "catalog:react",
     "react-dom": "catalog:react",
-    "react-router": "8.3.0",
+    "react-router": "^8.3.0",
     "valibot": "^1.4.2"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1",
-    "@react-router/dev": "8.3.0",
+    "@cloudflare/vite-plugin": "^1.47.0",
+    "@react-router/dev": "^8.3.0",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/react": "catalog:types",
     "@types/react-dom": "catalog:types",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
     "vite": "catalog:",
-    "wrangler": "^4"
+    "wrangler": "^4.114.0"
   }
 }

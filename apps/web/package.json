@@ -30,7 +30,7 @@
     "valibot": "^1.4.2"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1",
+    "@cloudflare/vite-plugin": "^1.47.0",
     "@react-aria/optimize-locales-plugin": "catalog:",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/node": "catalog:types",
@@ -40,6 +40,6 @@
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
     "vite": "catalog:",
-    "wrangler": "^4"
+    "wrangler": "^4.114.0"
   }
 }

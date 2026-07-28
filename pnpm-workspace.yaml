@@ -16,9 +16,9 @@ supportedArchitectures:
     - arm64
 
 catalog:
-  "@react-aria/optimize-locales-plugin": 2.0.0
+  "@react-aria/optimize-locales-plugin": ^2.0.0
   "@vitejs/plugin-react": ^6.0.4
-  typescript: 7.0.2
+  typescript: ~7.0.2
   vite: ^8.1.5
   vite-plus: 0.2.6
 
@@ -30,14 +30,14 @@ catalogs:
     drizzle-orm: 1.0.0-rc.4
     drizzle-kit: 1.0.0-rc.4
   react:
-    react: 19.2.8
-    react-dom: 19.2.8
+    react: ~19.2.8
+    react-dom: ~19.2.8
     react-aria-components: ^1.19.0
   tailwind:
-    "@tailwindcss/vite": ~4.3.3
-    tailwind-merge: 3.6.0
-    "tailwindcss": ~4.3.3
+    "@tailwindcss/vite": ^4.3.3
+    tailwind-merge: ^3.6.0
+    "tailwindcss": ^4.3.3
   types:
     "@types/node": ^26.1.1
-    "@types/react": 19.2.17
-    "@types/react-dom": 19.2.3
+    "@types/react": ^19.2.17
+    "@types/react-dom": ^19.2.3
