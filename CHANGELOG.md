@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.22.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.21.2...v0.22.0)
+
+### 🏡 Chore
+
+- **manager:** Upgrade React Router to v8. ([7ce6642](https://github.com/haus23/tipprunde/commit/7ce6642))
+- **manager:** Remove custom entry.server.tsx. ([b101bbd](https://github.com/haus23/tipprunde/commit/b101bbd))
+- Upgrade TypeScript to v7 and vite-plus to v0.2.6. ([c9b673b](https://github.com/haus23/tipprunde/commit/c9b673b))
+- Update ignore patterns for oxfmt. ([cc68917](https://github.com/haus23/tipprunde/commit/cc68917))
+- Bump shared dependencies (react, valibot, vite, lucide-react, isbot, @types/node). ([500023e](https://github.com/haus23/tipprunde/commit/500023e))
+- **web:** Bump TanStack ecosystem and @vitejs/plugin-react. ([61a0c8c](https://github.com/haus23/tipprunde/commit/61a0c8c))
+- Update drizzle packages. ([ca62f9f](https://github.com/haus23/tipprunde/commit/ca62f9f))
+- **ui:** Update cva package. ([e6fe023](https://github.com/haus23/tipprunde/commit/e6fe023))
+- Align version pinning policy across the workspace. ([3420574](https://github.com/haus23/tipprunde/commit/3420574))
+- Move shared deps used by both apps into pnpm catalogs. ([eef59f8](https://github.com/haus23/tipprunde/commit/eef59f8))
+
 ## v0.21.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.21.1...v0.21.2)
