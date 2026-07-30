@@ -69,6 +69,8 @@ Shared documentation in `docs/`:
 - `web-shell.md` — Web app shell: header contents, Priority+ nav collapse, docked/drawer chat panel
 - `archiv.md` — Planned Archiv feature: ranking columns on `players`, dashboard entry (not yet built)
 - `chat-plan.md` — Planned in-app chat: separate DB, phased transport (polling → SSE/WS on Railway), TanStack Virtual (not yet built)
+- `app-merge.md` — Decided: merge apps/web (TanStack Start) into the RR8 app; step 1 of merge → Railway → Litestream (in progress)
+- `railway-plan.md` — Planned prod hosting: single Node service on Railway, SQLite file + Litestream→R2, cost breakdown (step 2/3)
 
 ## Skills
 

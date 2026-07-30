@@ -2,7 +2,13 @@
 
 **Status: planned, not started.** Picks up after the pending rule changes land.
 This doc records the architecture decisions and reasoning from the 2026-07 discussion
-so the feature can start without re-deriving them. The shell/layout side (docked
+so the feature can start without re-deriving them.
+
+**Update 2026-07-30:** chat lands in the **merged RR8 app**
+([app-merge.md](./app-merge.md)) — TanStack-Start-specific mentions below
+(server functions) translate to RR8 loaders/actions; TanStack Query (for the
+v1 polling) and TanStack Virtual work in RR8 unchanged. The "where does the
+chat schema live" open question resolves to: app-local in the single app. The shell/layout side (docked
 rail vs. drawer, keep-mounted constraint) is already specced in
 [web-shell.md](./web-shell.md) — this doc covers storage, transport, and the
 message UI.
