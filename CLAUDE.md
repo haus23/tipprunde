@@ -67,6 +67,8 @@ Shared documentation in `docs/`:
 - `tokens.md` — Design tokens: border-radius scale, breakpoints
 - `deployment.md` — Environment variables, first-deploy bootstrap, user management
 - `web-shell.md` — Web app shell: header contents, Priority+ nav collapse, docked/drawer chat panel
+- `archiv.md` — Planned Archiv feature: ranking columns on `players`, dashboard entry (not yet built)
+- `chat-plan.md` — Planned in-app chat: separate DB, phased transport (polling → SSE/WS on Railway), TanStack Virtual (not yet built)
 
 ## Skills
 
