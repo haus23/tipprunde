@@ -54,12 +54,22 @@ Routes are no longer needed) the placeholder DNS record can be deleted — a
 single Worker could even go back to a plain Custom Domain. RR8 + CF vite
 plugin is proven by the manager's current setup.
 
-## Open questions
+## Decisions (2026-07-30)
 
-- **Rename** `apps/manager` → `apps/app` (or similar) once it's the only app?
-  (Affects workspace filters, Workers Builds config, CLAUDE.md files.)
-- **Per-case data strategy:** plain RR loaders + revalidation as default;
-  TanStack Query only where client-caching genuinely helps (e.g. chat
-  polling, matchday popovers) — decide per feature, not globally.
-- What of `packages/ui` remains shared vs. moves app-local once there is
-  only one consumer (theme/domain/db stay packages regardless).
+- **Name:** directory `apps/tipprunde`, package **`@tipprunde/app`**. Renamed
+  only at the very end, after the old `apps/web` is deleted. The package name
+  deliberately avoids `@tipprunde/tipprunde` — no scope stutter, and no
+  `--filter` ambiguity with the root workspace package (`tipprunde`).
+  Filter: `pnpm --filter app` (or `--filter ./apps/tipprunde`). Update
+  Workers Builds config + CLAUDE.md files at rename time.
+- **Data strategy: plain RR8 loaders, no TanStack Query.** Snappiness comes
+  from `<Link prefetch="intent">` (loader data + route modules prefetched on
+  hover/focus) plus `shouldRevalidate` to skip unchanged parent data. Query
+  was dropped because it would split the app into two data patterns for a
+  benefit imperceptible at this scale (small payloads, EU latency, DB
+  becomes a local file in step 3). Decision is cheap to reverse: Query
+  re-enters surgically if a specific route measurably needs client caching —
+  at the latest with chat v1's `refetchInterval` polling
+  ([chat-plan.md](./chat-plan.md)).
+- **`packages/ui` stays a package.** Folding it app-local mid-port is churn
+  for cosmetic gain; revisit only if the indirection ever annoys.
