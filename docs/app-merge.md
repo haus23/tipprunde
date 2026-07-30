@@ -54,6 +54,104 @@ Routes are no longer needed) the placeholder DNS record can be deleted — a
 single Worker could even go back to a plain Custom Domain. RR8 + CF vite
 plugin is proven by the manager's current setup.
 
+## Port plan
+
+### Inventory (what moves from `apps/web`)
+
+- **Shell** (`__root/`): header (logo, nav, color-scheme menu, user area),
+  navigation progress, root document, error boundary, not-found. Becomes the
+  _public layout_ in the merged app.
+- **Routes** (9 modules + co-located components): `_championship` layout
+  (current published championship into context) with `index` (dashboard:
+  standings/current-matches/archiv-preview/regelwerk), `tabelle`,
+  `spiele.index`, `spiele.$nr`, `tipps.{-$slug}`, `zusatzfragen`; plus
+  `archiv.index`, `archiv.$slug`, `login` (TOTP flow).
+- **Lib** (12 files): `auth.server`/`auth`, `session`, `ranking`, `spiele`,
+  `spieler`, `archiv`, `extra-questions`, `ruleset`, `color-scheme`,
+  `format`; `db.server` already duplicates the manager's.
+- **Components:** `ranking-table`, `cell-link`, `cell-flag`.
+
+Findings from the inventory: **no path collisions** — public routes
+(`/tabelle`, `/spiele`, `/tipps`, `/archiv`, `/login`) vs. manager routes
+(`/manager/:slug/…`, `/manager/turniere`, …) are disjoint _once_ the
+manager's root-level `:slug` route moves under the prefix. Duplicated
+mechanisms that must **unify**: color-scheme (manager action route vs. web
+server fn → one action route serving both shells), logout (same), session
+lookup (`getSessionUser` vs. web's `session.ts` → one root middleware).
+
+### Start → RR8 translation
+
+| TanStack Start                    | RR8 equivalent                                                        |
+| --------------------------------- | --------------------------------------------------------------------- |
+| `createServerFn` (read)           | `loader`                                                              |
+| `createServerFn` (mutation)       | `action` (or fetcher-target route)                                    |
+| `beforeLoad` + router context     | middleware + `context` / loader data                                  |
+| `createFileRoute` file convention | entry in `routes.ts` (config routing, as the manager does)            |
+| `head()` / `pageTitle`            | inline `<title>` JSX (React 19 hoisting — manager's existing pattern) |
+| `router.invalidate()`             | automatic revalidation after actions                                  |
+| typed `<Link to>`                 | RR `<Link>` (+ `href()` helper where wanted) with `prefetch="intent"` |
+| `routeTree.gen.ts`                | gone (config routing)                                                 |
+
+### Layout structure: one document, two shells
+
+The two apps have **deliberately different shells, and they stay different** —
+no unification attempt. What today is spread across two root files becomes a
+three-level route structure:
+
+- **Root route — document only.** `<html>`/`<head>`, color-scheme attribute
+  from the cookie, the merged `app.css`, root error boundary + 404. No
+  visible chrome. (Today this lives twice: web's `-root-document.tsx` and
+  the manager's `root.tsx`.)
+- **Public layout (pathless).** Web's header shell moves here as-is: logo,
+  top nav (Tabelle · Spieler · Spiele), color-scheme menu, user area,
+  navigation progress, `max-w-4xl` container. Wraps all public routes
+  including `/login`. The future chat rail ([web-shell.md](./web-shell.md))
+  attaches to _this_ shell only.
+- **Manager layout (`/manager`).** Everything the manager's `root.tsx` does
+  today _except_ the document: `ShellProvider`, sidebar + mobile nav,
+  championship switcher header, and the role-gating middleware. The
+  sidebar-collapse cookie action (`manager-shell`) stays scoped under the
+  prefix.
+
+The shells share only the document and the color-scheme mechanism. One merge
+task falls out of this: both apps have their own `app.css` importing
+`@tipprunde/theme` — consolidate into a single stylesheet and reconcile any
+app-local additions.
+
+### Order of work
+
+Work happens **on a branch** — main keeps deploying the untouched two-app
+setup, so live data entry on `next.runde.tips` is never disturbed. Rule
+changes landing on main meanwhile → rebase.
+
+- **Phase A — skeleton restructure (RR8 app only):** move all manager routes
+  under a `route("manager", …)` prefix with a role-gated layout; drop
+  `basename` + `assetsDir`; split auth into root middleware (optional
+  session, no redirect) + manager-layout middleware (role check, redirect to
+  the now in-app `/login`); shared root document owning color-scheme.
+- **Phase B — port public routes, simplest first:** shell/public layout →
+  `tabelle` (proves RankingTable + championship context) → `spiele` (index +
+  `$nr`) → `tipps.{-$slug}` → `zusatzfragen` → dashboard `index` → `archiv`
+  → `login` (TOTP actions) + unify `logout`/`color-scheme`.
+- **Phase C — cutover (one sitting):** consolidate env
+  (web's `TOTP_*`/`SESSION_*`/`FROM_EMAIL`/mail secret join `TURSO_*` in one
+  `wrangler.jsonc`); merge branch; point the `tipprunde` Worker's build at
+  the merged app; delete the `tipprunde-manager` Worker, its `/manager*`
+  route and (optionally, reverting to a Custom Domain) the placeholder DNS
+  record; delete `apps/web`; rename to `apps/tipprunde` / `@tipprunde/app`;
+  update Workers Builds commands, `.claude/launch.json`, CLAUDE.md files.
+
+### Parity checklist (cutover requires all)
+
+- [ ] All public URLs unchanged: `/`, `/tabelle`, `/spiele/:nr?`,
+      `/tipps/:slug?`, `/zusatzfragen`, `/archiv`, `/archiv/:slug`, `/login`
+- [ ] TOTP login + logout work in-app; `__auth` cookie unchanged
+- [ ] Manager fully functional under `/manager` (locks, per-row fetchers,
+      bulk paste — no regressions)
+- [ ] Color scheme persists and applies across both shells
+- [ ] Error boundary + 404 behave like today
+- [ ] `next.runde.tips` serves the merged app from the single Worker
+
 ## Decisions (2026-07-30)
 
 - **Name:** directory `apps/tipprunde`, package **`@tipprunde/app`**. Renamed
