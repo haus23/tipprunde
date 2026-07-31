@@ -2,6 +2,7 @@ import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
   index("routes/home.tsx"),
+  route("login", "routes/login.tsx"),
   route("color-scheme", "routes/color-scheme.tsx"),
   route("manager", "routes/manager-layout.tsx", [
     index("routes/index.tsx"),

@@ -30,24 +30,29 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 - `components/` — Reusable React Aria UI components (dialogs, inputs, sidebar, card, filter, etc.)
 - `routes/` — Route handlers (loaders + actions + UI)
 
-**Authentication:** Session-based via `__auth` cookie. The frontend app handles TOTP login and sets the cookie. `getSessionUser()` in `lib/auth.server.ts` validates the session on every request (checks expiry, requires `manager` or `admin` role). Auth runs as root middleware in `root.tsx` — unauthenticated requests redirect to the frontend login.
+**Authentication:** DB-backed sessions (`sessions` table); the `__auth` cookie is a signed RR `createCookieSessionStorage` cookie carrying _only_ the session id, so sessions stay revocable server-side. `getSessionUser()` in `lib/session.server.ts` resolves the user (any role, or null) and runs as **root middleware** — anonymous is fine for public routes. The `/manager` layout adds the role gate on top: no user → redirect to `/login`, wrong role → 403.
 
 **Route structure:**
 
-- `/` → redirects to latest championship or `/start`
-- `/start` — Onboarding (guides through initial ruleset setup)
-- `/:slug` — Championship parent route (validates slug, sets championship context)
-- `/:slug` (index) — Tournament overview: flags, rounds, enrolled players
-- `/:slug/spiele/:nr?` — Match management
-- `/:slug/tipps/:nr?` — Tip entry grid
-- `/:slug/ergebnisse/:nr?` — Result entry and auto-scoring
-- `/:slug/zusatzpunkte` — Bonus/extra question points
-- `/turniere` — Championship master data (CRUD)
-- `/spieler` — User management (players, managers, admins)
-- `/teams` — Team master data
-- `/ligen` — League master data
-- `/regelwerke` — Ruleset master data
-- `/logout`, `/color-scheme` — Action-only routes
+Public routes live at the root; the manager sits under `/manager` (app merge in progress, see `docs/app-merge.md`).
+
+- `/` — public placeholder (public routes port in during phase C)
+- `/login` — placeholder (TOTP flow ports in during phase B2)
+- `/color-scheme` — action-only, shared by both shells
+- `/manager` → redirects to latest championship or `/manager/start`
+- `/manager/start` — Onboarding (guides through initial ruleset setup)
+- `/manager/:slug` — Championship parent route (validates slug, sets championship context)
+- `/manager/:slug` (index) — Tournament overview: flags, rounds, enrolled players
+- `/manager/:slug/spiele/:nr?` — Match management
+- `/manager/:slug/tipps/:nr?` — Tip entry grid
+- `/manager/:slug/ergebnisse/:nr?` — Result entry and auto-scoring
+- `/manager/:slug/zusatzfragen` — Bonus/extra question points
+- `/manager/turniere` — Championship master data (CRUD)
+- `/manager/spieler` — User management (players, managers, admins)
+- `/manager/teams` — Team master data
+- `/manager/ligen` — League master data
+- `/manager/regelwerke` — Ruleset master data
+- `/manager/logout`, `/manager/shell` — Action-only routes
 
 **Database layer** (`app/lib/db.server.ts`):
 
@@ -82,7 +87,7 @@ Shared docs are in the root `docs/` folder:
 
 ## Environment variables
 
-Required in `.env` for local dev: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `WEB_APP_URL`
+Required in `.env` for local dev: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `SESSION_SECRET`
 
 ## External Documentation (LLM-Ready)
 

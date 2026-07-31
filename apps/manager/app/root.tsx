@@ -14,9 +14,21 @@ import {
 import type { Route } from "./+types/root";
 import faviconUrl from "./assets/favicon.ico?url";
 import { COLOR_SCHEME_COOKIE, type ColorScheme } from "./lib/color-scheme";
+import { userContext } from "./lib/context";
 import { getCookie } from "./lib/cookies.server";
+import { getSessionUser } from "./lib/session.server";
 
 import "./app.css";
+
+/**
+ * Resolves the session for every route. Anonymous is fine here — the manager
+ * layout adds the role requirement on top.
+ */
+const sessionMiddleware: Route.MiddlewareFunction = async ({ request, context }) => {
+  context.set(userContext, await getSessionUser(request));
+};
+
+export const middleware: Route.MiddlewareFunction[] = [sessionMiddleware];
 
 export const meta: Route.MetaFunction = () => [{ tagName: "link", rel: "icon", href: faviconUrl }];
 
@@ -41,9 +53,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function loader({ request }: Route.LoaderArgs) {
+export function loader({ request, context }: Route.LoaderArgs) {
   const colorScheme = (getCookie(request, COLOR_SCHEME_COOKIE) ?? "system") as ColorScheme;
-  return { colorScheme };
+  return { colorScheme, user: context.get(userContext) };
 }
 
 export function ErrorBoundary() {

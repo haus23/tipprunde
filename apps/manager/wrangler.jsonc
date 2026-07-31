@@ -7,7 +7,4 @@
   "assets": {
     "directory": "./dist/client",
   },
-  "vars": {
-    "WEB_APP_URL": "https://next.runde.tips",
-  },
 }
