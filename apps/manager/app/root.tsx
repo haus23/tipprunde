@@ -13,11 +13,10 @@ import {
 
 import type { Route } from "./+types/root";
 import faviconUrl from "./assets/favicon.ico?url";
+import { COLOR_SCHEME_COOKIE, type ColorScheme } from "./lib/color-scheme";
 import { getCookie } from "./lib/cookies.server";
 
 import "./app.css";
-
-type ColorScheme = "system" | "light" | "dark";
 
 export const meta: Route.MetaFunction = () => [{ tagName: "link", rel: "icon", href: faviconUrl }];
 
@@ -43,7 +42,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export function loader({ request }: Route.LoaderArgs) {
-  const colorScheme = (getCookie(request, "__color-scheme") ?? "system") as ColorScheme;
+  const colorScheme = (getCookie(request, COLOR_SCHEME_COOKIE) ?? "system") as ColorScheme;
   return { colorScheme };
 }
 

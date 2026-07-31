@@ -8,10 +8,15 @@ export function getCookie(request: Request, name: string): string | null {
   return null;
 }
 
-export function cookieHeader(name: string, value: string): string {
-  return `${name}=${encodeURIComponent(value)}; Path=/; HttpOnly; SameSite=Lax`;
+export function cookieHeader(
+  name: string,
+  value: string,
+  options: { maxAge?: number } = {},
+): string {
+  const header = `${name}=${encodeURIComponent(value)}; Path=/; HttpOnly; SameSite=Lax`;
+  return options.maxAge === undefined ? header : `${header}; Max-Age=${options.maxAge}`;
 }
 
 export function clearCookieHeader(name: string): string {
-  return `${name}=; Path=/; HttpOnly; SameSite=Lax; MaxAge=0`;
+  return `${name}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`;
 }
