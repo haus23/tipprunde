@@ -73,7 +73,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     : null;
 
   if (!currentPlayer) {
-    throw redirect(`/${championship.slug}/tipps/${players[0].user!.slug}`);
+    throw redirect(`/manager/${championship.slug}/tipps/${players[0].user!.slug}`);
   }
 
   if (rounds.length === 0) {
@@ -671,7 +671,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
           <Select
             aria-label="Spieler auswählen"
             value={currentPlayerSlug}
-            onChange={(v) => v !== null && void navigate(`/${slug}/tipps/${v}`)}
+            onChange={(v) => v !== null && void navigate(`/manager/${slug}/tipps/${v}`)}
             className="flex flex-col gap-1.5"
           >
             <Label>Spieler</Label>

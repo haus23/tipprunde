@@ -169,7 +169,7 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
         onOpenChange={setIsCreateOpen}
         rulesets={rulesetList}
         nextNr={nextNr}
-        onSuccess={(championship) => navigate(`/${championship.slug}`)}
+        onSuccess={(championship) => navigate(`/manager/${championship.slug}`)}
       />
 
       <TurnierDialog

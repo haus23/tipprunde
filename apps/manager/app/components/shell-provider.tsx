@@ -27,7 +27,7 @@ export function ShellProvider({ initialSidebarCollapsed, children }: Props) {
       // Optimistic: state flips now; cookie persists via the action route.
       void fetcher.submit(
         { collapsed: String(next) },
-        { method: "post", action: "/manager-shell" },
+        { method: "post", action: "/manager/shell" },
       );
       return next;
     });

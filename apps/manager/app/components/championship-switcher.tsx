@@ -39,7 +39,7 @@ export function ChampionshipSwitcher({ current, championships }: ChampionshipSwi
             aria-label="Turnier wechseln"
             items={championshipList}
             onAction={(key) => {
-              void navigate(`/${key}`);
+              void navigate(`/manager/${key}`);
               setIsOpen(false);
             }}
             className={cx(

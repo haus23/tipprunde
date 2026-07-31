@@ -6,7 +6,7 @@ import { webAppUrl } from "../lib/web-app.server";
 import type { Route } from "./+types/logout";
 
 export function loader() {
-  throw redirect("/");
+  throw redirect("/manager");
 }
 
 export async function action({ request }: Route.ActionArgs) {

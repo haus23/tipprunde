@@ -5,5 +5,5 @@ import type { Route } from "./+types/index";
 
 export function loader({ context }: Route.LoaderArgs) {
   const championship = context.get(championshipContext);
-  throw redirect(championship ? `/${championship.slug}` : "/start");
+  throw redirect(championship ? `/manager/${championship.slug}` : "/manager/start");
 }

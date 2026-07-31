@@ -38,7 +38,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   const currentNr = requestedNr ?? lastRound.nr;
 
   if (!rounds.some((r) => r.nr === currentNr)) {
-    throw redirect(`/${championship.slug}/ergebnisse/${lastRound.nr}`);
+    throw redirect(`/manager/${championship.slug}/ergebnisse/${lastRound.nr}`);
   }
 
   const currentRound = rounds.find((r) => r.nr === currentNr)!;
@@ -271,7 +271,7 @@ export default function Ergebnisse({ loaderData }: Route.ComponentProps) {
         <RoundNavigator
           currentNr={currentNr}
           totalRounds={rounds.length}
-          onNavigate={(nr) => void navigate(`/${slug}/ergebnisse/${nr}`)}
+          onNavigate={(nr) => void navigate(`/manager/${slug}/ergebnisse/${nr}`)}
         />
       </div>
       <LockProvider isChampionshipClosed={isChampionshipClosed} isRoundClosed={isRoundClosed}>

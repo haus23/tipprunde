@@ -41,7 +41,7 @@ function TeamForm({ defaultValues, onClose, onSuccess }: TeamFormProps) {
         e.preventDefault();
         void fetcher.submit(e.currentTarget, {
           method: "post",
-          action: "/teams",
+          action: "/manager/teams",
         });
       }}
       className="flex flex-col gap-5"

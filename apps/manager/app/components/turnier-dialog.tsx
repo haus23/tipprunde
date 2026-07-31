@@ -76,7 +76,7 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         e.preventDefault();
         void fetcher.submit(e.currentTarget, {
           method: "post",
-          action: "/turniere",
+          action: "/manager/turniere",
         });
       }}
       className="flex flex-col gap-5"

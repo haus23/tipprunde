@@ -28,7 +28,7 @@ export default function Start({ loaderData }: Route.ComponentProps) {
                 Tipprunde beginnen.
               </p>
               <Link
-                to="/turniere"
+                to="/manager/turniere"
                 className="bg-accent text-accent-fg hover:bg-accent-hover mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
               >
                 Erstes Turnier anlegen →
@@ -47,7 +47,7 @@ export default function Start({ loaderData }: Route.ComponentProps) {
                 werden, ob es Joker gibt und was sonst noch bei deinem Turnier gelten soll.
               </p>
               <Link
-                to="/regelwerke"
+                to="/manager/regelwerke"
                 className="bg-accent text-accent-fg hover:bg-accent-hover mt-4 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
               >
                 Hier geht's lang →

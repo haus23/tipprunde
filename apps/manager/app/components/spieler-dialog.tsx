@@ -67,7 +67,7 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
         e.preventDefault();
         void fetcher.submit(e.currentTarget, {
           method: "post",
-          action: "/spieler",
+          action: "/manager/spieler",
         });
       }}
       className="flex flex-col gap-5"
