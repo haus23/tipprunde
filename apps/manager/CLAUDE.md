@@ -2,7 +2,7 @@
 
 ## Project description
 
-This is the backend management app for https://runde.tips - the Haus23 Tipprunde. It is a React Router 7 Framework Mode application for managing championships, players, matches, teams, leagues, results, tips, and rulesets.
+This is the app behind https://runde.tips - the Haus23 Tipprunde. It is a React Router 8 Framework Mode application. Public routes live at the root, the management UI (championships, players, matches, teams, leagues, results, tips, rulesets) under `/manager`.
 
 ## Commands
 
@@ -20,13 +20,14 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 
 ## Architecture
 
-**Stack:** React Router 7 (Framework Mode) + React Aria Components + Tailwind CSS 4 + Drizzle ORM + Turso (libSQL/SQLite) + Cloudflare Workers
+**Stack:** React Router 8 (Framework Mode) + React Aria Components + Tailwind CSS 4 + Drizzle ORM + Turso (libSQL/SQLite) + Cloudflare Workers
 
 **App directory layout (`app/`):**
 
-- `root.tsx` — Root layout with auth + championship middleware, error boundary, color scheme toggle
+- `root.tsx` — Document only (html/head, color scheme attribute, error boundary) + session middleware. No visible chrome.
+- `routes/manager-layout.tsx` — The manager shell: sidebar, mobile nav, championship switcher, role gate + championship middleware
 - `routes.ts` — Programmatic route config (RouteConfig)
-- `lib/` — Server-only utilities: `auth.server.ts`, `db.server.ts`, `championship.server.ts`, `cookies.server.ts`, `context.ts`, `utils.ts`, `web-app.server.ts`
+- `lib/` — Server-only utilities: `session.server.ts`, `db.server.ts`, `championship.server.ts`, `cookies.server.ts`, `lock.server.ts`, `ranking.server.ts`, plus `context.ts`, `color-scheme.ts`, `utils.ts`
 - `components/` — Reusable React Aria UI components (dialogs, inputs, sidebar, card, filter, etc.)
 - `routes/` — Route handlers (loaders + actions + UI)
 
@@ -74,7 +75,8 @@ Public routes live at the root; the manager sits under `/manager` (app merge in 
 - Use `cn()` from `app/lib/utils.ts` for merging Tailwind classes; group classes semantically
 - All Tailwind default colors are disabled — use only `--color-*` tokens from `app/app.css` (Radix Sand + Orange palette)
 - German locale (`de-DE`) is hardcoded via `I18nProvider`; use `formatDate()` / `slugify()` from `app/lib/utils.ts`
-- React Router v7 middleware is enabled via the `v8_middleware: true` future flag
+- Middleware is default behaviour in RR8 (the `v8_*` future flags are gone); `context` is a `RouterContextProvider`
+- One fetcher per independently-savable row — never share a `useFetcher()` across a list (see `docs/app-merge.md` history and the grid routes)
 
 ## Docs
 
