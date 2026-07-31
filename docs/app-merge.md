@@ -118,28 +118,70 @@ task falls out of this: both apps have their own `app.css` importing
 `@tipprunde/theme` — consolidate into a single stylesheet and reconcile any
 app-local additions.
 
-### Order of work
+### Step plan (commit-sized, on branch `app-merge`)
 
 Work happens **on a branch** — main keeps deploying the untouched two-app
 setup, so live data entry on `next.runde.tips` is never disturbed. Rule
-changes landing on main meanwhile → rebase.
+changes landing on main meanwhile → rebase. Workers Builds branch previews
+(on the manager Worker's project) give a shareable preview URL per push.
+Auth is ported _early_ (step B) because the preview runs on its own domain —
+no existing cookie — and without in-app login the manager routes would be
+unreachable in previews.
 
-- **Phase A — skeleton restructure (RR8 app only):** move all manager routes
-  under a `route("manager", …)` prefix with a role-gated layout; drop
-  `basename` + `assetsDir`; split auth into root middleware (optional
-  session, no redirect) + manager-layout middleware (role check, redirect to
-  the now in-app `/login`); shared root document owning color-scheme.
-- **Phase B — port public routes, simplest first:** shell/public layout →
-  `tabelle` (proves RankingTable + championship context) → `spiele` (index +
-  `$nr`) → `tipps.{-$slug}` → `zusatzfragen` → dashboard `index` → `archiv`
-  → `login` (TOTP actions) + unify `logout`/`color-scheme`.
-- **Phase C — cutover (one sitting):** consolidate env
-  (web's `TOTP_*`/`SESSION_*`/`FROM_EMAIL`/mail secret join `TURSO_*` in one
-  `wrangler.jsonc`); merge branch; point the `tipprunde` Worker's build at
-  the merged app; delete the `tipprunde-manager` Worker, its `/manager*`
-  route and (optionally, reverting to a Custom Domain) the placeholder DNS
-  record; delete `apps/web`; rename to `apps/tipprunde` / `@tipprunde/app`;
-  update Workers Builds commands, `.claude/launch.json`, CLAUDE.md files.
+**Phase A — skeleton (public "/" appears):**
+
+- **A1** — Move all manager routes under `route("manager", …)`; drop
+  `basename` + `assetsDir`; split `root.tsx` into a chrome-less document
+  root and a manager layout (shell + auth middleware move there);
+  placeholder page at `/` (public, no auth).
+- **A2** — Color-scheme unification: the manager's action route + cookie
+  moves to root level, serving both shells.
+
+**Phase B — auth (previews become fully usable):**
+
+- **B1** — Session middleware split: root middleware resolves the session
+  _optionally_ (anonymous fine); manager layout middleware requires
+  `manager`/`admin` and redirects to the in-app `/login` (replaces the
+  `WEB_APP_URL` redirect). Sessions stay **DB-backed** (`sessions` table,
+  revocable), but the cookie moves to RR's `createCookieSessionStorage`
+  holding _only the session id_ — signed (integrity, not encryption), the
+  idiomatic RR session API. New `SESSION_SECRET` secret; the hand-rolled
+  `cookies.server.ts` retires. Cookie format changes → one-time re-login
+  for existing sessions at cutover (acceptable at this user count).
+- **B2** — Port the TOTP login flow (login route + request/verify/start-over
+  actions, `auth.server` logic) and unify `/logout`. The `__pending_auth`
+  cookie may fold into the same session object (decide at implementation).
+  Env prerequisite: the web app's vars/secrets (`TOTP_*`, `SESSION_*`,
+  `FROM_EMAIL`, mail secret) plus `SESSION_SECRET` must exist on the manager
+  Worker so branch previews can send login mails.
+
+**Phase C — public routes, simplest first (one commit each, verified in
+preview):**
+
+- **C1** — Public shell layout: header, nav, user area, color-scheme menu,
+  navigation progress, error/404; `app.css` consolidation lands here.
+- **C2** — Championship layout + `tabelle` (proves RankingTable, cell-link,
+  cell-flag, championship context).
+- **C3** — `spiele` (index + `$nr` match view).
+- **C4** — `tipps.{-$slug}` (player view).
+- **C5** — `zusatzfragen`.
+- **C6** — Dashboard `index` (replaces the placeholder at `/`).
+- **C7** — `archiv` (index + `$slug`).
+
+**Phase D — cutover & rename (one sitting):**
+
+- **D1** — Parity checklist walk (below); final env consolidation on the
+  surviving `tipprunde` Worker (add `TURSO_*` secrets; wrangler `name` →
+  `tipprunde`).
+- **D2** — Delete old `apps/web`; rename `apps/manager` → `apps/web`,
+  package → `@tipprunde/web`; merge branch into main.
+- **D3** — CF: point the `tipprunde` Worker's build at the merged app
+  (barely changes — `--filter web` + `dist/server/wrangler.json` still fit);
+  delete the `tipprunde-manager` Worker + `/manager*` route; optionally
+  revert `next.runde.tips` to a plain Custom Domain and drop the placeholder
+  DNS record.
+- **D4** — Housekeeping: CLAUDE.md files, `.claude/launch.json`, docs,
+  memory.
 
 ### Parity checklist (cutover requires all)
 
@@ -152,14 +194,15 @@ changes landing on main meanwhile → rebase.
 - [ ] Error boundary + 404 behave like today
 - [ ] `next.runde.tips` serves the merged app from the single Worker
 
-## Decisions (2026-07-30)
+## Decisions (2026-07-30, naming revised 2026-08)
 
-- **Name:** directory `apps/tipprunde`, package **`@tipprunde/app`**. Renamed
-  only at the very end, after the old `apps/web` is deleted. The package name
-  deliberately avoids `@tipprunde/tipprunde` — no scope stutter, and no
-  `--filter` ambiguity with the root workspace package (`tipprunde`).
-  Filter: `pnpm --filter app` (or `--filter ./apps/tipprunde`). Update
-  Workers Builds config + CLAUDE.md files at rename time.
+- **Name (revised):** directory `apps/web`, package **`@tipprunde/web`** —
+  the merged app takes over the retiring app's identity. Because those names
+  are occupied until the old app is deleted, the rename is necessarily the
+  _last_ step; during the port the code stays in `apps/manager`. Nice side
+  effect: the surviving `tipprunde` Worker already builds with
+  `--filter web` and deploys `dist/server/wrangler.json`, so its build
+  config barely changes at cutover.
 - **Data strategy: plain RR8 loaders, no TanStack Query.** Snappiness comes
   from `<Link prefetch="intent">` (loader data + route modules prefetched on
   hover/focus) plus `shouldRevalidate` to skip unchanged parent data. Query
