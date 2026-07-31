@@ -23,11 +23,12 @@ import type { loader as rootLoader } from "../root";
 import type { Route } from "./+types/manager-layout";
 
 /** The session itself is resolved by the root middleware — this only gates on role. */
-const authMiddleware: Route.MiddlewareFunction = ({ request, context }) => {
+const authMiddleware: Route.MiddlewareFunction = ({ url, context }) => {
   const user = context.get(userContext);
   if (!user) {
-    const { pathname, search } = new URL(request.url);
-    throw redirect(`/login?redirectTo=${encodeURIComponent(pathname + search)}`);
+    // `url` is normalized; `request.url` would still carry the `.data` suffix
+    // on client-side navigations and send the user to a dead path after login.
+    throw redirect(`/login?redirectTo=${encodeURIComponent(url.pathname + url.search)}`);
   }
   if (!isManager(user)) throw data("Kein Zugriff auf den Manager.", { status: 403 });
 };
