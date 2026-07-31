@@ -102,7 +102,7 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
         {slug ? (
           <>
             <NavItem
-              to={`/${slug}`}
+              to={`/manager/${slug}`}
               end
               icon={TrophyIcon}
               label="Turnier"
@@ -110,28 +110,28 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
               onNavigate={onNavigate}
             />
             <NavItem
-              to={`/${slug}/spiele`}
+              to={`/manager/${slug}/spiele`}
               icon={CalendarIcon}
               label="Spiele"
               collapsed={collapsed}
               onNavigate={onNavigate}
             />
             <NavItem
-              to={`/${slug}/tipps`}
+              to={`/manager/${slug}/tipps`}
               icon={DicesIcon}
               label="Tipps"
               collapsed={collapsed}
               onNavigate={onNavigate}
             />
             <NavItem
-              to={`/${slug}/ergebnisse`}
+              to={`/manager/${slug}/ergebnisse`}
               icon={ListChecksIcon}
               label="Ergebnisse"
               collapsed={collapsed}
               onNavigate={onNavigate}
             />
             <NavItem
-              to={`/${slug}/zusatzfragen`}
+              to={`/manager/${slug}/zusatzfragen`}
               icon={StarIcon}
               label="Zusatzfragen"
               collapsed={collapsed}
@@ -140,7 +140,7 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
           </>
         ) : (
           <NavItem
-            to="/start"
+            to="/manager/start"
             icon={RocketIcon}
             label="Start"
             collapsed={collapsed}
@@ -162,35 +162,35 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
         </p>
         <nav className="mt-1 flex flex-col gap-1">
           <NavItem
-            to="/turniere"
+            to="/manager/turniere"
             icon={FoldersIcon}
             label="Turniere"
             collapsed={collapsed}
             onNavigate={onNavigate}
           />
           <NavItem
-            to="/spieler"
+            to="/manager/spieler"
             icon={UsersIcon}
             label="Spieler"
             collapsed={collapsed}
             onNavigate={onNavigate}
           />
           <NavItem
-            to="/teams"
+            to="/manager/teams"
             icon={ShirtIcon}
             label="Teams"
             collapsed={collapsed}
             onNavigate={onNavigate}
           />
           <NavItem
-            to="/ligen"
+            to="/manager/ligen"
             icon={ShieldIcon}
             label="Ligen"
             collapsed={collapsed}
             onNavigate={onNavigate}
           />
           <NavItem
-            to="/regelwerke"
+            to="/manager/regelwerke"
             icon={PilcrowIcon}
             label="Regelwerke"
             collapsed={collapsed}
@@ -200,7 +200,7 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
       </div>
 
       <div className="border-subtle border-t p-2">
-        <Form method="post" action="/logout">
+        <Form method="post" action="/manager/logout">
           {collapsed ? (
             <TooltipTrigger delay={600}>
               <Focusable>{logoutButton}</Focusable>

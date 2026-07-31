@@ -77,7 +77,7 @@ function RulesetForm({ defaultValues, onClose, onSuccess }: RulesetFormProps) {
         e.preventDefault();
         void fetcher.submit(e.currentTarget, {
           method: "post",
-          action: "/regelwerke",
+          action: "/manager/regelwerke",
         });
       }}
       className="flex flex-col gap-5"

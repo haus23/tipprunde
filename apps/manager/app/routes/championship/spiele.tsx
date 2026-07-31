@@ -73,7 +73,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   const currentNr = requestedNr ?? lastRound.nr;
 
   if (!rounds.some((r) => r.nr === currentNr)) {
-    throw redirect(`/${championship.slug}/spiele/${lastRound.nr}`);
+    throw redirect(`/manager/${championship.slug}/spiele/${lastRound.nr}`);
   }
 
   const currentRound = rounds.find((r) => r.nr === currentNr)!;
@@ -459,7 +459,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
         <RoundNavigator
           currentNr={currentNr}
           totalRounds={rounds.length}
-          onNavigate={(nr) => void navigate(`/${slug}/spiele/${nr}`)}
+          onNavigate={(nr) => void navigate(`/manager/${slug}/spiele/${nr}`)}
         />
       </div>
 

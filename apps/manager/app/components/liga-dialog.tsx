@@ -41,7 +41,7 @@ function LigaForm({ defaultValues, onClose, onSuccess }: LigaFormProps) {
         e.preventDefault();
         void fetcher.submit(e.currentTarget, {
           method: "post",
-          action: "/ligen",
+          action: "/manager/ligen",
         });
       }}
       className="flex flex-col gap-5"
