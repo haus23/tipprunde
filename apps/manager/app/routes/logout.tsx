@@ -1,8 +1,7 @@
 import { redirect } from "react-router";
 
-import { deleteSession } from "../lib/auth.server";
-import { clearCookieHeader, getCookie } from "../lib/cookies.server";
-import { webAppUrl } from "../lib/web-app.server";
+import { deleteSession, destroySession, getSessionFromRequest } from "#/lib/session.server.ts";
+
 import type { Route } from "./+types/logout";
 
 export function loader() {
@@ -10,9 +9,9 @@ export function loader() {
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  const sessionId = getCookie(request, "__auth");
+  const session = await getSessionFromRequest(request);
+  const sessionId = session.get("sessionId");
   if (sessionId) await deleteSession(sessionId);
-  throw redirect(webAppUrl("/login"), {
-    headers: { "Set-Cookie": clearCookieHeader("__auth") },
-  });
+
+  throw redirect("/", { headers: { "Set-Cookie": await destroySession(session) } });
 }

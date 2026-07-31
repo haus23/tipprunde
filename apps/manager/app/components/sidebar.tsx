@@ -16,7 +16,7 @@ import {
   UsersIcon,
 } from "lucide-react";
 import { Focusable, Tooltip, TooltipTrigger } from "react-aria-components";
-import { Form, NavLink } from "react-router";
+import { Form, Link, NavLink } from "react-router";
 
 import { useShell } from "#/components/shell-provider.tsx";
 
@@ -219,18 +219,17 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
 
 type SidebarProps = {
   slug: string | undefined;
-  webAppUrl: string;
 };
 
 /** Persistent sidebar (md+), collapsible between full (208px) and rail (56px). */
-export function Sidebar({ slug, webAppUrl }: SidebarProps) {
+export function Sidebar({ slug }: SidebarProps) {
   const { isSidebarCollapsed } = useShell();
 
   return (
     <aside className="border-subtle bg-surface-raised row-span-2 hidden flex-col overflow-hidden border-r md:flex">
       <div className="border-subtle flex h-14 shrink-0 items-center border-b px-2">
-        <a
-          href={webAppUrl}
+        <Link
+          to="/"
           className="hover:bg-nav-active focus-visible:ring-accent flex h-9 w-full items-center gap-2.5 rounded-sm px-2 focus-visible:ring-2 focus-visible:outline-none"
         >
           <div className="text-accent size-7 shrink-0">
@@ -244,7 +243,7 @@ export function Sidebar({ slug, webAppUrl }: SidebarProps) {
           >
             runde.tips
           </span>
-        </a>
+        </Link>
       </div>
 
       <SidebarNav slug={slug} collapsed={isSidebarCollapsed} />

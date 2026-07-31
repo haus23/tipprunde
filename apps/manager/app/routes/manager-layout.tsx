@@ -2,13 +2,12 @@ import { Button } from "@tipprunde/ui";
 import { cx } from "@tipprunde/ui";
 import { MenuIcon, MoonIcon, PanelLeftCloseIcon, PanelLeftOpenIcon, SunIcon } from "lucide-react";
 import { Suspense, useEffect } from "react";
-import { Outlet, redirect, useFetcher, useRouteLoaderData } from "react-router";
+import { data, Outlet, redirect, useFetcher, useRouteLoaderData } from "react-router";
 
 import { ChampionshipSwitcher } from "#/components/championship-switcher.tsx";
 import { MobileNav } from "#/components/mobile-nav.tsx";
 import { ShellProvider, useShell } from "#/components/shell-provider.tsx";
 import { Sidebar } from "#/components/sidebar.tsx";
-import { getSessionUser } from "#/lib/auth.server.ts";
 import {
   getChampionshipBySlug,
   getChampionships,
@@ -17,16 +16,20 @@ import {
 import type { ColorScheme } from "#/lib/color-scheme.ts";
 import { championshipContext, userContext } from "#/lib/context.ts";
 import { clearCookieHeader, cookieHeader, getCookie } from "#/lib/cookies.server.ts";
+import { isManager } from "#/lib/session.server.ts";
 import { usePageTitle } from "#/lib/utils.ts";
-import { webAppUrl } from "#/lib/web-app.server.ts";
 
 import type { loader as rootLoader } from "../root";
 import type { Route } from "./+types/manager-layout";
 
-const authMiddleware: Route.MiddlewareFunction = async ({ request, context }) => {
-  const user = await getSessionUser(request);
-  if (!user) throw redirect(webAppUrl("/login"));
-  context.set(userContext, user);
+/** The session itself is resolved by the root middleware — this only gates on role. */
+const authMiddleware: Route.MiddlewareFunction = ({ request, context }) => {
+  const user = context.get(userContext);
+  if (!user) {
+    const { pathname, search } = new URL(request.url);
+    throw redirect(`/login?redirectTo=${encodeURIComponent(pathname + search)}`);
+  }
+  if (!isManager(user)) throw data("Kein Zugriff auf den Manager.", { status: 403 });
 };
 
 const championshipMiddleware: Route.MiddlewareFunction = async ({ request, context }, next) => {
@@ -55,7 +58,6 @@ export function loader({ context, request }: Route.LoaderArgs) {
   return {
     slug: championship?.slug,
     name: championship?.name,
-    webAppUrl: webAppUrl(),
     sidebarCollapsed,
     championships: getChampionships(),
   };
@@ -70,7 +72,7 @@ export default function ManagerLayout({ loaderData }: Route.ComponentProps) {
 }
 
 function Shell({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] }) {
-  const { slug, name, webAppUrl, championships } = loaderData;
+  const { slug, name, championships } = loaderData;
   const colorScheme = useRouteLoaderData<typeof rootLoader>("root")?.colorScheme ?? "system";
   const pageTitle = usePageTitle();
   const fetcher = useFetcher();
@@ -104,8 +106,8 @@ function Shell({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] 
         isSidebarCollapsed ? "md:grid-cols-[56px_1fr]" : "md:grid-cols-[208px_1fr]",
       )}
     >
-      <Sidebar slug={slug} webAppUrl={webAppUrl} />
-      <MobileNav slug={slug} webAppUrl={webAppUrl} />
+      <Sidebar slug={slug} />
+      <MobileNav slug={slug} />
       <header className="border-subtle bg-surface-raised flex items-center gap-1 border-b px-4">
         <Button
           intent="ghost"
