@@ -5,8 +5,15 @@ import { createCookieSessionStorage } from "react-router";
 import type { User } from "./context";
 import { db } from "./db.server";
 
-/** Only the session id travels in the cookie; everything else stays in the DB. */
-type SessionData = { sessionId: string };
+const SESSION_DURATION_DEFAULT = Number(process.env["SESSION_DURATION_DEFAULT"]);
+const SESSION_DURATION_REMEMBER = Number(process.env["SESSION_DURATION_REMEMBER"]);
+
+/**
+ * Only ids travel in the cookie; everything else stays in the DB.
+ * `pendingEmail` carries the address between the two login steps — it replaces
+ * the separate `__pending_auth` cookie the old web app used.
+ */
+type SessionData = { sessionId: string; pendingEmail: string };
 
 const storage = createCookieSessionStorage<SessionData>({
   cookie: {
@@ -47,6 +54,26 @@ export async function getSessionUser(request: Request): Promise<User | null> {
 
 export function isManager(user: User | null): boolean {
   return user?.role === "manager" || user?.role === "admin";
+}
+
+function generateSessionId(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+/** Creates the DB-side session. Returns the id to put into the cookie. */
+export async function createSession(userId: number, rememberMe: boolean): Promise<string> {
+  const id = generateSessionId();
+  const duration = rememberMe ? SESSION_DURATION_REMEMBER : SESSION_DURATION_DEFAULT;
+  const expiresAt = new Date(Date.now() + duration * 1000).toISOString();
+  await db.insert(sessions).values({ id, userId, rememberMe, expiresAt });
+  return id;
+}
+
+/** Cookie lifetime mirrors the DB session's — a session cookie unless remembered. */
+export function sessionCookieMaxAge(rememberMe: boolean): number | undefined {
+  return rememberMe ? SESSION_DURATION_REMEMBER : undefined;
 }
 
 export async function deleteSession(sessionId: string) {

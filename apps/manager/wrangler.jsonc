@@ -7,4 +7,13 @@
   "assets": {
     "directory": "./dist/client",
   },
+  // Secrets (APP_SECRET, RESEND_API_KEY, SESSION_SECRET, TURSO_*) are set in
+  // the dashboard, not here.
+  "vars": {
+    "TOTP_EXPIRES_IN": "600",
+    "TOTP_MAX_ATTEMPTS": "3",
+    "SESSION_DURATION_DEFAULT": "86400",
+    "SESSION_DURATION_REMEMBER": "2592000",
+    "FROM_EMAIL": "hallo@runde.tips",
+  },
 }
