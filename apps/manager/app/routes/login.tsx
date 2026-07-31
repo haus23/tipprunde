@@ -35,8 +35,7 @@ function fail(error: LoginError, init?: ResponseInit) {
   return data<LoginError>(error, { status: 400, ...init });
 }
 
-export async function loader({ request, context }: Route.LoaderArgs) {
-  const url = new URL(request.url);
+export async function loader({ request, url, context }: Route.LoaderArgs) {
   const redirectTo = safeRedirectTo(url.searchParams.get("redirectTo"));
 
   // Already signed in — nothing to do here.
@@ -48,11 +47,11 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   return { step: pendingEmail ? ("code" as const) : ("email" as const), email: pendingEmail ?? "" };
 }
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request, url }: Route.ActionArgs) {
   const formData = await request.formData();
   const intent = formData.get("intent");
   // Forms post to the current URL, so the query survives the round trip.
-  const redirectTo = safeRedirectTo(new URL(request.url).searchParams.get("redirectTo"));
+  const redirectTo = safeRedirectTo(url.searchParams.get("redirectTo"));
   const session = await getSessionFromRequest(request);
 
   if (intent === "start-over") {
