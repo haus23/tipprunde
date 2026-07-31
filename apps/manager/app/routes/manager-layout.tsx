@@ -14,6 +14,7 @@ import {
   getChampionships,
   getLatestChampionship,
 } from "#/lib/championship.server.ts";
+import type { ColorScheme } from "#/lib/color-scheme.ts";
 import { championshipContext, userContext } from "#/lib/context.ts";
 import { clearCookieHeader, cookieHeader, getCookie } from "#/lib/cookies.server.ts";
 import { usePageTitle } from "#/lib/utils.ts";
@@ -21,8 +22,6 @@ import { webAppUrl } from "#/lib/web-app.server.ts";
 
 import type { loader as rootLoader } from "../root";
 import type { Route } from "./+types/manager-layout";
-
-type ColorScheme = "system" | "light" | "dark";
 
 const authMiddleware: Route.MiddlewareFunction = async ({ request, context }) => {
   const user = await getSessionUser(request);
@@ -94,7 +93,7 @@ function Shell({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] 
         window.matchMedia("(prefers-color-scheme: dark)").matches);
     void fetcher.submit(
       { scheme: isDark ? "light" : "dark" },
-      { method: "post", action: "/manager/color-scheme" },
+      { method: "post", action: "/color-scheme" },
     );
   };
 
