@@ -7,8 +7,18 @@
   "assets": {
     "directory": "./dist/client",
   },
-  // Secrets (APP_SECRET, RESEND_API_KEY, SESSION_SECRET, TURSO_*) are set in
-  // the dashboard, not here.
+  // Values live in the dashboard (or .env locally) — declaring them here makes
+  // `wrangler deploy` fail loudly when one is missing, instead of the Worker
+  // throwing at runtime.
+  "secrets": {
+    "required": [
+      "APP_SECRET",
+      "RESEND_API_KEY",
+      "SESSION_SECRET",
+      "TURSO_AUTH_TOKEN",
+      "TURSO_DATABASE_URL",
+    ],
+  },
   "vars": {
     "TOTP_EXPIRES_IN": "600",
     "TOTP_MAX_ATTEMPTS": "3",
