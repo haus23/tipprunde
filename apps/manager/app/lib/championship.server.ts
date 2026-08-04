@@ -8,6 +8,14 @@ export async function getLatestChampionship() {
   return db.query.championships.findFirst({ orderBy: { nr: "desc" } });
 }
 
+/** The championship the public site shows — latest *published* one. */
+export async function getPublishedChampionship() {
+  return db.query.championships.findFirst({
+    where: { published: true },
+    orderBy: { nr: "desc" },
+  });
+}
+
 export async function getChampionships() {
   return db.query.championships.findMany({
     orderBy: { nr: "desc" },
