@@ -80,3 +80,44 @@ export async function updateRanking(championshipId: number): Promise<void> {
     }),
   );
 }
+
+export type RankedPlayer = {
+  userId: number;
+  name: string;
+  slug: string;
+  tipPoints: number;
+  extraQuestionPoints: number;
+  roundPoints: number | null;
+  total: number;
+  rank: number;
+};
+
+/** Reads the materialized ranking — the write-time recompute already did the work. */
+export async function getRanking(championshipId: number): Promise<RankedPlayer[]> {
+  const players = await db.query.players.findMany({
+    where: { championshipId },
+    columns: {
+      userId: true,
+      rank: true,
+      tipPoints: true,
+      extraQuestionPoints: true,
+      roundPoints: true,
+      total: true,
+    },
+    with: { user: { columns: { name: true, slug: true } } },
+  });
+
+  return players
+    .filter((p) => p.rank !== null)
+    .map((p) => ({
+      userId: p.userId,
+      name: p.user?.name ?? "",
+      slug: p.user?.slug ?? "",
+      tipPoints: p.tipPoints ?? 0,
+      extraQuestionPoints: p.extraQuestionPoints ?? 0,
+      roundPoints: p.roundPoints ?? null,
+      total: p.total ?? 0,
+      rank: p.rank!,
+    }))
+    .sort((a, b) => a.rank - b.rank);
+}

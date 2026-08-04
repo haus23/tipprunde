@@ -4,7 +4,12 @@ export default [
   layout("routes/public-layout.tsx", [
     index("routes/home.tsx"),
     route("login", "routes/login.tsx"),
+    layout("routes/public/championship-layout.tsx", [
+      route("tabelle", "routes/public/tabelle.tsx"),
+    ]),
   ]),
+  // Resource route for the ranking table's per-player popover.
+  route("matchday-tips/:userId", "routes/matchday-tips.tsx"),
   // Action-only, and shared by both shells — logout must stay reachable for
   // plain players, who never get past the manager's role gate.
   route("logout", "routes/logout.tsx"),

@@ -1,5 +1,5 @@
 import { FrownIcon } from "lucide-react";
-import { I18nProvider } from "react-aria-components";
+import { I18nProvider, RouterProvider } from "react-aria-components";
 import {
   isRouteErrorResponse,
   Links,
@@ -7,6 +7,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigate,
   useRouteError,
   useRouteLoaderData,
 } from "react-router";
@@ -89,5 +90,13 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
-  return <Outlet />;
+  const navigate = useNavigate();
+
+  // Lets React Aria's own links (cell links, menu items with href) navigate
+  // client-side instead of triggering a document load.
+  return (
+    <RouterProvider navigate={(to, options) => void navigate(to, options)}>
+      <Outlet />
+    </RouterProvider>
+  );
 }
