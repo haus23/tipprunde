@@ -71,8 +71,21 @@ export async function action({ request, url }: Route.ActionArgs) {
       return fail({ error: "Unbekannte E-Mail Adresse. Frag Micha!", email });
     }
 
+    // Kept separate: a failure in here used to be reported as "mail could not
+    // be sent", which sent debugging down the wrong path when the real cause
+    // was a missing APP_SECRET.
+    let code: string;
     try {
-      const code = await createLoginCode(user.id);
+      code = await createLoginCode(user.id);
+    } catch (err) {
+      console.error("[auth] createLoginCode failed:", err);
+      return fail(
+        { error: "Anmeldung gerade nicht möglich. Bitte versuche es später erneut.", email },
+        { status: 500 },
+      );
+    }
+
+    try {
       await sendLoginCodeEmail(email, code);
     } catch (err) {
       console.error("[auth] sendLoginCodeEmail failed:", err);
