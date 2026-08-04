@@ -1,16 +1,13 @@
-import { Logo } from "@tipprunde/ui";
 import { Link } from "react-router";
 
+// Placeholder — the dashboard lands here once the public routes are ported.
 export default function Home() {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-4 p-8 text-center">
+    <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-4 py-24 text-center">
       <title>runde.tips</title>
-      <div className="text-accent size-16">
-        <Logo />
-      </div>
       <h1 className="text-2xl font-semibold tracking-tight">runde.tips</h1>
-      <p className="text-subtle text-sm">Der neue Auftritt entsteht gerade an dieser Stelle.</p>
-      <Link to="/manager" className="text-sm underline underline-offset-4">
+      <p className="text-subtle text-base">Der neue Auftritt entsteht gerade an dieser Stelle.</p>
+      <Link to="/manager" className="text-accent text-sm hover:underline">
         Zum Manager
       </Link>
     </div>
