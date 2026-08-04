@@ -5,7 +5,7 @@ import { deleteSession, destroySession, getSessionFromRequest } from "#/lib/sess
 import type { Route } from "./+types/logout";
 
 export function loader() {
-  throw redirect("/manager");
+  throw redirect("/");
 }
 
 export async function action({ request }: Route.ActionArgs) {

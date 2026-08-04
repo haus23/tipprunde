@@ -200,7 +200,7 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
       </div>
 
       <div className="border-subtle border-t p-2">
-        <Form method="post" action="/manager/logout">
+        <Form method="post" action="/logout">
           {collapsed ? (
             <TooltipTrigger delay={600}>
               <Focusable>{logoutButton}</Focusable>

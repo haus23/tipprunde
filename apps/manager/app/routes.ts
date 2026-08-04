@@ -1,8 +1,13 @@
-import { type RouteConfig, index, route } from "@react-router/dev/routes";
+import { type RouteConfig, index, layout, route } from "@react-router/dev/routes";
 
 export default [
-  index("routes/home.tsx"),
-  route("login", "routes/login.tsx"),
+  layout("routes/public-layout.tsx", [
+    index("routes/home.tsx"),
+    route("login", "routes/login.tsx"),
+  ]),
+  // Action-only, and shared by both shells — logout must stay reachable for
+  // plain players, who never get past the manager's role gate.
+  route("logout", "routes/logout.tsx"),
   route("color-scheme", "routes/color-scheme.tsx"),
   route("manager", "routes/manager-layout.tsx", [
     index("routes/index.tsx"),
@@ -19,7 +24,6 @@ export default [
     route("teams", "routes/teams.tsx"),
     route("ligen", "routes/ligen.tsx"),
     route("regelwerke", "routes/regelwerke.tsx"),
-    route("logout", "routes/logout.tsx"),
     route("shell", "routes/manager-shell.tsx"),
   ]),
 ] satisfies RouteConfig;
