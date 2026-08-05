@@ -40,3 +40,5 @@ export async function getRuleset(championshipId: number) {
   });
   return championship?.ruleset ?? null;
 }
+
+export type Ruleset = NonNullable<Awaited<ReturnType<typeof getRuleset>>>;

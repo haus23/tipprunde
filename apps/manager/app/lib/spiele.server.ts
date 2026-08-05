@@ -159,3 +159,35 @@ export async function getMatchdayTips(
     };
   });
 }
+
+/**
+ * A window of up to 4 matches around "now": prefer 2 played + 2 upcoming,
+ * backfilling from whichever side has fewer.
+ */
+export async function getCurrentMatches(championshipId: number) {
+  const dated = await db.query.matches.findMany({
+    where: { date: { isNotNull: true }, round: { championshipId, published: true } },
+    orderBy: { date: "asc" },
+    columns: { nr: true, date: true, result: true },
+    with: {
+      hometeam: { columns: { name: true, shortName: true } },
+      awayteam: { columns: { name: true, shortName: true } },
+    },
+  });
+
+  const played = dated.filter((m) => m.result !== null);
+  const upcoming = dated.filter((m) => m.result === null);
+  const openCount = Math.min(upcoming.length, 4 - Math.min(played.length, 2));
+  const closedCount = Math.min(played.length, 4 - openCount);
+  const window = [...played.slice(played.length - closedCount), ...upcoming.slice(0, openCount)];
+
+  return window.map((m) => ({
+    nr: m.nr,
+    date: m.date,
+    paarung: `${m.hometeam?.name ?? "–"} – ${m.awayteam?.name ?? "–"}`,
+    paarungShort: `${m.hometeam?.shortName ?? "–"} – ${m.awayteam?.shortName ?? "–"}`,
+    result: m.result,
+  }));
+}
+
+export type CurrentMatch = Awaited<ReturnType<typeof getCurrentMatches>>[number];
