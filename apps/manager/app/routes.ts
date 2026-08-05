@@ -9,6 +9,7 @@ export default [
       route("spiele", "routes/public/spiele/index.tsx"),
       route("spiele/:nr", "routes/public/spiele/detail.tsx"),
       route("tipps/:slug?", "routes/public/tipps/index.tsx"),
+      route("zusatzfragen", "routes/public/zusatzfragen/index.tsx"),
     ]),
   ]),
   // Resource route for the ranking table's per-player popover.
