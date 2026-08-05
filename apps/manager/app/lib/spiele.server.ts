@@ -1,4 +1,105 @@
+import { matches, rounds, tips } from "@tipprunde/db/schema";
+import { eq, sum } from "drizzle-orm";
+
 import { db } from "./db.server";
+
+/** Published rounds with their matches and the field's total points per match. */
+export async function getRounds(championshipId: number) {
+  const [roundRows, pointRows] = await Promise.all([
+    db.query.rounds.findMany({
+      where: { championshipId, published: true },
+      orderBy: { nr: "asc" },
+      columns: { id: true, nr: true },
+      with: {
+        matches: {
+          orderBy: { nr: "asc" },
+          columns: { id: true, nr: true, date: true, result: true },
+          with: {
+            league: { columns: { shortName: true } },
+            hometeam: { columns: { name: true, shortName: true } },
+            awayteam: { columns: { name: true, shortName: true } },
+          },
+        },
+      },
+    }),
+    // Total points the field earned per match — a flat aggregation scan.
+    db
+      .select({ matchId: tips.matchId, points: sum(tips.points) })
+      .from(tips)
+      .innerJoin(matches, eq(tips.matchId, matches.id))
+      .innerJoin(rounds, eq(matches.roundId, rounds.id))
+      .where(eq(rounds.championshipId, championshipId))
+      .groupBy(tips.matchId),
+  ]);
+
+  const pointsByMatch = new Map(pointRows.map((r) => [r.matchId, Number(r.points ?? 0)]));
+
+  return roundRows.map((r) => ({
+    nr: r.nr,
+    matches: r.matches.map((m) => ({
+      id: m.id,
+      nr: m.nr,
+      date: m.date,
+      liga: m.league?.shortName ?? null,
+      paarung: `${m.hometeam?.name ?? "–"} – ${m.awayteam?.name ?? "–"}`,
+      paarungShort: `${m.hometeam?.shortName ?? "–"} – ${m.awayteam?.shortName ?? "–"}`,
+      result: m.result,
+      points: m.result !== null ? (pointsByMatch.get(m.id) ?? 0) : null,
+    })),
+  }));
+}
+
+export type SpieleRound = Awaited<ReturnType<typeof getRounds>>[number];
+
+/** One match with every player's tip, plus its neighbours for prev/next nav. */
+export async function getMatch(championshipId: number, nr: number) {
+  const [match, prev, next] = await Promise.all([
+    db.query.matches.findFirst({
+      where: { nr, round: { championshipId, published: true } },
+      columns: { nr: true, date: true, result: true },
+      with: {
+        round: { columns: { tipsPublished: true } },
+        league: { columns: { name: true } },
+        hometeam: { columns: { name: true, shortName: true } },
+        awayteam: { columns: { name: true, shortName: true } },
+        // All tips for this match; joined to the ranking by userId in the view.
+        tips: {
+          columns: { userId: true, tip: true, points: true, joker: true, extraJoker: true },
+        },
+      },
+    }),
+    // Nearest lower/higher match number — null at the ends.
+    db.query.matches.findFirst({
+      where: { nr: { lt: nr }, round: { championshipId, published: true } },
+      orderBy: { nr: "desc" },
+      columns: { nr: true },
+    }),
+    db.query.matches.findFirst({
+      where: { nr: { gt: nr }, round: { championshipId, published: true } },
+      orderBy: { nr: "asc" },
+      columns: { nr: true },
+    }),
+  ]);
+  if (!match) return null;
+
+  const points = match.result !== null ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0) : null;
+
+  return {
+    nr: match.nr,
+    date: match.date,
+    liga: match.league?.name ?? null,
+    paarung: `${match.hometeam?.name ?? "–"} – ${match.awayteam?.name ?? "–"}`,
+    paarungShort: `${match.hometeam?.shortName ?? "–"} – ${match.awayteam?.shortName ?? "–"}`,
+    result: match.result,
+    points,
+    prevNr: prev?.nr ?? null,
+    nextNr: next?.nr ?? null,
+    tipsPublished: match.round.tipsPublished,
+    tips: match.tips,
+  };
+}
+
+export type MatchDetail = NonNullable<Awaited<ReturnType<typeof getMatch>>>;
 
 export type MatchdayTip = {
   nr: number;

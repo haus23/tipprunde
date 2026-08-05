@@ -6,6 +6,8 @@ export default [
     route("login", "routes/login.tsx"),
     layout("routes/public/championship-layout.tsx", [
       route("tabelle", "routes/public/tabelle.tsx"),
+      route("spiele", "routes/public/spiele/index.tsx"),
+      route("spiele/:nr", "routes/public/spiele/detail.tsx"),
     ]),
   ]),
   // Resource route for the ranking table's per-player popover.
