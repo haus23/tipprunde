@@ -3,6 +3,10 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
 export default [
   layout("routes/public-layout.tsx", [
     route("login", "routes/login.tsx"),
+    // Archiv spans all completed championships — it sits outside the
+    // championship layout, which scopes everything to the current one.
+    route("archiv", "routes/public/archiv/index.tsx"),
+    route("archiv/:slug", "routes/public/archiv/detail.tsx"),
     layout("routes/public/championship-layout.tsx", [
       index("routes/public/dashboard/index.tsx"),
       route("tabelle", "routes/public/tabelle.tsx"),
