@@ -1,10 +1,18 @@
 import { Logo } from "@tipprunde/ui";
-import { Link, Outlet, useRouteLoaderData } from "react-router";
+import {
+  Link,
+  Outlet,
+  isRouteErrorResponse,
+  useRouteError,
+  useRouteLoaderData,
+} from "react-router";
 
 import { ColorSchemeMenu } from "#/components/color-scheme-menu.tsx";
 import { NavigationProgress } from "#/components/navigation-progress.tsx";
 import { PublicNavLink } from "#/components/public-nav-link.tsx";
 import { UserArea } from "#/components/user-area.tsx";
+import type { ColorScheme } from "#/lib/color-scheme.ts";
+import type { User } from "#/lib/context.ts";
 import { userContext } from "#/lib/context.ts";
 
 import type { loader as rootLoader } from "../root";
@@ -23,6 +31,59 @@ export function loader({ context }: Route.LoaderArgs) {
 export default function PublicLayout({ loaderData }: Route.ComponentProps) {
   const colorScheme = useRouteLoaderData<typeof rootLoader>("root")?.colorScheme ?? "system";
 
+  return (
+    <PublicShell user={loaderData.user} colorScheme={colorScheme}>
+      <Outlet />
+    </PublicShell>
+  );
+}
+
+/**
+ * Errors below this layout keep the shell — a 404 should still look like the
+ * site, the way the old web app's notFoundComponent did.
+ */
+export function ErrorBoundary() {
+  const error = useRouteError();
+  const root = useRouteLoaderData<typeof rootLoader>("root");
+  const isNotFound = isRouteErrorResponse(error) && error.status === 404;
+
+  return (
+    <PublicShell user={root?.user ?? null} colorScheme={root?.colorScheme ?? "system"}>
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-center">
+        <title>{isNotFound ? "Seite nicht gefunden · runde.tips" : "Fehler · runde.tips"}</title>
+        <h1 className="text-xl font-semibold">
+          {isNotFound ? "Seite nicht gefunden" : "Etwas ist schiefgelaufen"}
+        </h1>
+        <p className="text-subtle text-sm">
+          {isNotFound && typeof error.data === "string" && error.data
+            ? error.data
+            : isNotFound
+              ? "Diese Seite existiert nicht."
+              : "Bitte versuche es später noch einmal."}
+        </p>
+        {/* Never leak internals to visitors — details are a dev affordance. */}
+        {import.meta.env.DEV && !isNotFound && (
+          <pre className="bg-surface-raised text-subtle max-w-xl overflow-auto rounded-md p-4 text-left text-xs">
+            {error instanceof Error ? (error.stack ?? error.message) : String(error)}
+          </pre>
+        )}
+        <Link to="/" className="text-accent text-sm transition-colors hover:underline">
+          Zur Startseite
+        </Link>
+      </div>
+    </PublicShell>
+  );
+}
+
+function PublicShell({
+  user,
+  colorScheme,
+  children,
+}: {
+  user: User | null;
+  colorScheme: ColorScheme;
+  children: React.ReactNode;
+}) {
   return (
     <>
       <NavigationProgress />
@@ -54,13 +115,11 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
             {/* Right: scheme + user */}
             <div className="col-start-3 flex items-center justify-end gap-1">
               <ColorSchemeMenu colorScheme={colorScheme} />
-              <UserArea user={loaderData.user} />
+              <UserArea user={user} />
             </div>
           </div>
         </header>
-        <main className="xs:px-4">
-          <Outlet />
-        </main>
+        <main className="xs:px-4">{children}</main>
       </div>
     </>
   );

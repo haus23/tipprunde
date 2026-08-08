@@ -185,14 +185,43 @@ preview):**
 
 ### Parity checklist (cutover requires all)
 
-- [ ] All public URLs unchanged: `/`, `/tabelle`, `/spiele/:nr?`,
-      `/tipps/:slug?`, `/zusatzfragen`, `/archiv`, `/archiv/:slug`, `/login`
-- [ ] TOTP login + logout work in-app; `__auth` cookie unchanged
-- [ ] Manager fully functional under `/manager` (locks, per-row fetchers,
-      bulk paste — no regressions)
-- [ ] Color scheme persists and applies across both shells
-- [ ] Error boundary + 404 behave like today
-- [ ] `next.runde.tips` serves the merged app from the single Worker
+Walked 2026-08-06 (D1) by running both apps side by side (old on :3000, new on
+:5173) and diffing the stripped HTML of every route, anonymous and logged in.
+
+- [x] All public URLs unchanged: `/`, `/tabelle`, `/spiele/:nr?`,
+      `/tipps/:slug?`, `/zusatzfragen`, `/archiv`, `/archiv/:slug`, `/login` —
+      rendered text **byte-identical** on all of them, both anonymous and
+      authenticated. Fixed on the way: the "Spiel nicht gefunden" branch
+      dropped the championship from its `<title>`.
+- [x] TOTP login + logout work in-app; `__auth` **name** unchanged — note the
+      _format_ changed in B1 (raw session id → signed RR session cookie), so
+      every existing session is invalidated at cutover and everyone logs in
+      once more. Verified: role gate (403 for `user`), logout revokes the DB
+      session server-side, `redirectTo` carries no `.data` suffix.
+- [x] Manager fully functional under `/manager` — all 12 routes render for an
+      admin; anonymous → `/login?redirectTo=…`; plain player → 403 page.
+- [x] Color scheme persists and applies across both shells (`/`, `/tabelle`,
+      `/archiv`, `/manager/:slug`); "system" clears the cookie.
+- [x] Error boundary + 404 behave like today — **this one failed and was
+      fixed**: 404s rendered a bare boundary that leaked
+      `No route matches URL …`, and a thrown 404 was titled "404 – Internal
+      Server Error" (`statusText` is empty on `data()` throws). Now a splat
+      route inside the public layout plus a layout-level `ErrorBoundary`
+      render 404s _inside the shell_ like the old app; the root boundary is
+      the last resort and never shows internals in prod. The manager's 403
+      also moved from middleware to the layout loader — a `data()` thrown
+      from middleware short-circuits as a raw body and never reaches a
+      boundary.
+- [ ] `next.runde.tips` serves the merged app from the single Worker — D3.
+
+**Env consolidation (D1, done):** every var the code reads is declared in
+`wrangler.jsonc` (`vars` × 5, `secrets.required` × 5), and the surviving
+`tipprunde` Worker already has all five secrets set — including `TURSO_*`,
+which the plan still listed as outstanding. Nothing left to add.
+
+The wrangler `name` → `tipprunde` flip is deliberately **not** part of D1: on
+this branch it would point branch-preview builds at the production Worker's
+name. It belongs with the build repoint in D3.
 
 ## Decisions (2026-07-30, naming revised 2026-08)
 

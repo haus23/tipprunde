@@ -15,6 +15,9 @@ export default [
       route("tipps/:slug?", "routes/public/tipps/index.tsx"),
       route("zusatzfragen", "routes/public/zusatzfragen/index.tsx"),
     ]),
+    // Unmatched URLs render the 404 inside the public shell. Static siblings
+    // (/manager, /logout, …) outrank the splat, so they are unaffected.
+    route("*", "routes/public/not-found.tsx"),
   ]),
   // Resource route for the ranking table's per-player popover.
   route("matchday-tips/:userId", "routes/matchday-tips.tsx"),

@@ -59,18 +59,30 @@ export function loader({ request, context }: Route.LoaderArgs) {
   return { colorScheme, user: context.get(userContext) };
 }
 
+/**
+ * Last-resort boundary — public routes keep the shell via the public layout's
+ * own boundary, so this mostly covers the manager and document-level failures.
+ */
 export function ErrorBoundary() {
   const error = useRouteError();
 
+  // `statusText` is empty on thrown `data(...)` responses and defaults to
+  // "Internal Server Error", which mislabels a 404. Derive the title instead.
   const title = isRouteErrorResponse(error)
-    ? `${error.status} – ${error.statusText}`
-    : "Unerwarteter Fehler";
+    ? error.status === 404
+      ? "Seite nicht gefunden"
+      : error.status === 403
+        ? "Kein Zugriff"
+        : `Fehler ${error.status}`
+    : "Etwas ist schiefgelaufen";
 
+  // Route errors carry our own German copy; anything else is an internal
+  // detail and must not reach visitors.
   const message = isRouteErrorResponse(error)
-    ? String(error.data)
-    : error instanceof Error
-      ? error.message
-      : "Ein unbekannter Fehler ist aufgetreten.";
+    ? typeof error.data === "string" && error.data
+      ? error.data
+      : "Diese Seite konnte nicht geladen werden."
+    : "Bitte versuche es später noch einmal.";
 
   return (
     <div className="flex h-dvh flex-col items-center justify-center gap-4 p-8 text-center">
