@@ -200,6 +200,10 @@ Walked 2026-08-06 (D1) by running both apps side by side (old on :3000, new on
       session server-side, `redirectTo` carries no `.data` suffix.
 - [x] Manager fully functional under `/manager` — all 12 routes render for an
       admin; anonymous → `/login?redirectTo=…`; plain player → 403 page.
+      Manager 404s (unknown URL _and_ unknown championship slug) render inside
+      the manager shell via a `/manager/*` splat plus an `ErrorBoundary` on the
+      `:slug` route; the slug check moved from middleware to that route's
+      loader for the same reason the 403 did.
 - [x] Color scheme persists and applies across both shells (`/`, `/tabelle`,
       `/archiv`, `/manager/:slug`); "system" clears the cookie.
 - [x] Error boundary + 404 behave like today — **this one failed and was
