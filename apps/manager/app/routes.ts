@@ -41,5 +41,7 @@ export default [
     route("ligen", "routes/ligen.tsx"),
     route("regelwerke", "routes/regelwerke.tsx"),
     route("shell", "routes/manager-shell.tsx"),
+    // Outranks the public splat, so /manager typos keep the manager shell.
+    route("*", "routes/manager/not-found.tsx"),
   ]),
 ] satisfies RouteConfig;

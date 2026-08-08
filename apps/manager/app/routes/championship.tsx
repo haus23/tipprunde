@@ -1,5 +1,6 @@
 import { data, Outlet } from "react-router";
 
+import { ManagerErrorContent } from "../components/manager-error";
 import { getChampionshipBySlug } from "../lib/championship.server";
 import { championshipContext } from "../lib/context";
 import { cookieHeader } from "../lib/cookies.server";
@@ -13,7 +14,9 @@ export const middleware: Route.MiddlewareFunction[] = [
     if (current?.slug === slug) return next();
 
     const championship = await getChampionshipBySlug(slug);
-    if (!championship) throw data(null, { status: 404 });
+    // An unknown slug is 404'd by the loader below, not here: an error thrown
+    // from middleware bypasses this route's ErrorBoundary and loses the shell.
+    if (!championship) return next();
 
     context.set(championshipContext, championship);
 
@@ -22,6 +25,19 @@ export const middleware: Route.MiddlewareFunction[] = [
     return response;
   },
 ];
+
+/**
+ * The middleware leaves the context on the layout's fallback championship when
+ * the slug resolves to nothing, so a mismatch here means the slug is unknown.
+ */
+export function loader({ params, context }: Route.LoaderArgs) {
+  if (context.get(championshipContext)?.slug !== params.slug) {
+    throw data(null, { status: 404 });
+  }
+  return null;
+}
+
+export const ErrorBoundary = ManagerErrorContent;
 
 export default function Championship() {
   return <Outlet />;
