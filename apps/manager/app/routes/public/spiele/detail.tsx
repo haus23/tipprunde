@@ -78,7 +78,9 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
   if (!match) {
     return (
       <div className="mx-auto w-full max-w-4xl py-8">
-        <title>Spiele · runde.tips</title>
+        <title>
+          {championshipName ? `Spiele · ${championshipName} · runde.tips` : "Spiele · runde.tips"}
+        </title>
         <p className="text-subtle py-16 text-center text-base">Spiel nicht gefunden.</p>
       </div>
     );

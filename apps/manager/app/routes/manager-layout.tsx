@@ -30,7 +30,9 @@ const authMiddleware: Route.MiddlewareFunction = ({ url, context }) => {
     // on client-side navigations and send the user to a dead path after login.
     throw redirect(`/login?redirectTo=${encodeURIComponent(url.pathname + url.search)}`);
   }
-  if (!isManager(user)) throw data("Kein Zugriff auf den Manager.", { status: 403 });
+  // The 403 is *not* thrown here: a `data()` thrown from middleware short-circuits
+  // as a raw response body and never reaches an ErrorBoundary. The loader below
+  // throws it instead, where it becomes a proper ErrorResponse.
 };
 
 const championshipMiddleware: Route.MiddlewareFunction = async ({ request, context }, next) => {
@@ -54,6 +56,10 @@ const championshipMiddleware: Route.MiddlewareFunction = async ({ request, conte
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware, championshipMiddleware];
 
 export function loader({ context, request }: Route.LoaderArgs) {
+  if (!isManager(context.get(userContext))) {
+    throw data("Kein Zugriff auf den Manager.", { status: 403 });
+  }
+
   const championship = context.get(championshipContext);
   const sidebarCollapsed = getCookie(request, "__manager-sidebar") === "true";
   return {
