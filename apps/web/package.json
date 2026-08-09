@@ -3,40 +3,35 @@
   "private": true,
   "type": "module",
   "imports": {
-    "#/*": "./src/*"
+    "#/*": "./app/*"
   },
   "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc",
+    "dev": "react-router dev",
+    "build": "react-router build",
+    "typecheck": "react-router typegen && tsc",
     "deploy": "pnpm run build && wrangler deploy --config dist/server/wrangler.json"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.101.4",
-    "@tanstack/react-query-devtools": "^5.101.4",
-    "@tanstack/react-router": "^1.170.18",
-    "@tanstack/react-router-ssr-query": "^1.167.1",
-    "@tanstack/react-start": "^1.168.32",
+    "@internationalized/date": "^3.12.2",
     "@tipprunde/db": "workspace:*",
     "@tipprunde/domain": "workspace:*",
     "@tipprunde/theme": "workspace:*",
     "@tipprunde/ui": "workspace:*",
     "drizzle-orm": "catalog:orm",
+    "isbot": "^5.2.1",
     "lucide-react": "catalog:icons",
     "react": "catalog:react",
     "react-aria-components": "catalog:react",
     "react-dom": "catalog:react",
+    "react-router": "^8.3.0",
     "valibot": "catalog:"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "catalog:cloudflare",
-    "@react-aria/optimize-locales-plugin": "catalog:",
+    "@react-router/dev": "^8.3.0",
     "@tailwindcss/vite": "catalog:tailwind",
-    "@types/node": "catalog:types",
     "@types/react": "catalog:types",
     "@types/react-dom": "catalog:types",
-    "@vitejs/plugin-react": "catalog:",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
     "vite": "catalog:",

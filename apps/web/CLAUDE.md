@@ -6,7 +6,7 @@ This is the app behind https://runde.tips - the Haus23 Tipprunde. It is a React 
 
 ## Commands
 
-All commands run from `apps/manager` (or root with `pnpm --filter @tipprunde/manager`):
+All commands run from `apps/web` (or root with `pnpm --filter web`):
 
 ```bash
 pnpm dev          # Start dev server (vite-plus)
@@ -24,7 +24,8 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 
 **App directory layout (`app/`):**
 
-- `root.tsx` — Document only (html/head, color scheme attribute, error boundary) + session middleware. No visible chrome.
+- `root.tsx` — Document only (html/head, color scheme attribute, last-resort error boundary) + session middleware. No visible chrome.
+- `routes/public-layout.tsx` — The public shell: header, nav, color-scheme menu, user area; its `ErrorBoundary` renders 404s inside the shell
 - `routes/manager-layout.tsx` — The manager shell: sidebar, mobile nav, championship switcher, role gate + championship middleware
 - `routes.ts` — Programmatic route config (RouteConfig)
 - `lib/` — Server-only utilities: `session.server.ts`, `db.server.ts`, `championship.server.ts`, `cookies.server.ts`, `lock.server.ts`, `ranking.server.ts`, plus `context.ts`, `color-scheme.ts`, `utils.ts`
@@ -35,11 +36,17 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 
 **Route structure:**
 
-Public routes live at the root; the manager sits under `/manager` (app merge in progress, see `docs/app-merge.md`).
+Public routes live at the root; the manager sits under `/manager`.
 
-- `/` — public placeholder (public routes port in during phase C)
-- `/login` — placeholder (TOTP flow ports in during phase B2)
-- `/color-scheme` — action-only, shared by both shells
+- `/` — Dashboard: standings, current matches, ruleset, Archiv preview
+- `/tabelle` — Current/final table of the published championship
+- `/spiele`, `/spiele/:nr` — Match overview (accordion) and per-match tips
+- `/tipps/:slug?` — One player's tips (defaults to self, else rank 1)
+- `/zusatzfragen` — Extra questions and answers
+- `/archiv`, `/archiv/:slug` — Completed championships + all-time table
+- `/login` — TOTP login (two steps, intent-based action)
+- `/color-scheme`, `/logout` — action-only, shared by both shells
+- `/matchday-tips/:userId` — Resource route for the ranking table's popover
 - `/manager` → redirects to latest championship or `/manager/start`
 - `/manager/start` — Onboarding (guides through initial ruleset setup)
 - `/manager/:slug` — Championship parent route (validates slug, sets championship context)
@@ -53,7 +60,8 @@ Public routes live at the root; the manager sits under `/manager` (app merge in 
 - `/manager/teams` — Team master data
 - `/manager/ligen` — League master data
 - `/manager/regelwerke` — Ruleset master data
-- `/manager/logout`, `/manager/shell` — Action-only routes
+- `/manager/shell` — Action-only route (sidebar collapse cookie)
+- `/manager/*` — Catch-all rendering the 404 inside the manager shell
 
 **Database layer** (`app/lib/db.server.ts`):
 
@@ -77,6 +85,8 @@ Public routes live at the root; the manager sits under `/manager` (app merge in 
 - German locale (`de-DE`) is hardcoded via `I18nProvider`; use `formatDate()` / `slugify()` from `app/lib/utils.ts`
 - Middleware is default behaviour in RR8 (the `v8_*` future flags are gone); `context` is a `RouterContextProvider`
 - One fetcher per independently-savable row — never share a `useFetcher()` across a list (see `docs/app-merge.md` history and the grid routes)
+- Errors that should **render** are thrown from a loader, never from middleware — a `data()` thrown in middleware short-circuits as a raw response body and never reaches an `ErrorBoundary`. `redirect()` from middleware is fine.
+- Mount an `ErrorBoundary` on a **child** route, not on the layout whose chrome should survive the error — a layout-level boundary replaces that layout. Public 404s go through `public-layout.tsx` + the `*` route, manager 404s through `manager/not-found.tsx` and `championship.tsx`.
 
 ## Docs
 

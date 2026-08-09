@@ -1,17 +1,8 @@
 import { cloudflare } from "@cloudflare/vite-plugin";
-import optimizeLocales from "@react-aria/optimize-locales-plugin";
+import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import react from "@vitejs/plugin-react";
 import { type UserConfig } from "vite";
 
 export default {
-  server: { port: 3000 },
-  plugins: [
-    { ...optimizeLocales.vite({ locales: ["de-DE"] }), enforce: "pre" },
-    tailwindcss(),
-    cloudflare({ viteEnvironment: { name: "ssr" } }),
-    tanstackStart(),
-    react(),
-  ],
+  plugins: [cloudflare({ viteEnvironment: { name: "ssr" } }), reactRouter(), tailwindcss()],
 } satisfies UserConfig;
