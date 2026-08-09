@@ -4,24 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Monorepo structure
 
-pnpm workspace with two apps and shared packages:
+pnpm workspace with one app and shared packages:
 
-- `apps/web` — New web frontend (TanStack Start) — **work in progress**
-- `apps/manager` — Backend management app (React Router 7)
+- `apps/web` — The whole site: public routes at the root, management UI under
+  `/manager` (React Router 8)
 - `packages/db` — Drizzle ORM schema + relations (SQLite/Turso)
 - `packages/domain` — Domain logic: scoring rules, tip point calculation
 - `packages/theme` — Shared Tailwind CSS v4 design tokens (Radix Sand + Orange palette)
-- `packages/ui` — Shared React components reused across both apps
+- `packages/ui` — Shared React components
 
-### Frontend application (`apps/web`)
+### Application (`apps/web`)
 
 Related agent instructions:
 @apps/web/CLAUDE.md
-
-### Backend application (`apps/manager`)
-
-Related agent instructions:
-@apps/manager/CLAUDE.md
 
 ### DB package (`packages/db`)
 
@@ -47,13 +42,12 @@ Consumed in apps via `@import "@tipprunde/theme"` in the app's main CSS file. Co
 
 ## Commands (from repo root)
 
-Use pnpm workspace filters instead of `cd`-ing into a package — `--filter web` /
-`--filter manager` match by directory name:
+Use pnpm workspace filters instead of `cd`-ing into a package — `--filter web`
+matches by directory name:
 
 ```bash
-pnpm --filter web run dev          # web app dev server (apps/web)
-pnpm --filter manager run dev      # manager app dev server (apps/manager)
-pnpm --filter web typecheck        # type-check a single app
+pnpm --filter web run dev          # dev server (apps/web)
+pnpm --filter web typecheck        # type-check the app
 ```
 
 The same pattern works for any package script (`build`, `typecheck`, etc.).
@@ -67,9 +61,9 @@ Shared documentation in `docs/`:
 - `tokens.md` — Design tokens: border-radius scale, breakpoints
 - `deployment.md` — Environment variables, first-deploy bootstrap, user management
 - `web-shell.md` — Web app shell: header contents, Priority+ nav collapse, docked/drawer chat panel
-- `archiv.md` — Planned Archiv feature: ranking columns on `players`, dashboard entry (not yet built)
+- `archiv.md` — Archiv feature: ranking columns on `players`, dashboard entry (built — `/archiv`, `/archiv/:slug`)
 - `chat-plan.md` — Planned in-app chat: separate DB, phased transport (polling → SSE/WS on Railway), TanStack Virtual (not yet built)
-- `app-merge.md` — Decided: merge apps/web (TanStack Start) into the RR8 app; step 1 of merge → Railway → Litestream (in progress)
+- `app-merge.md` — The TanStack Start app merged into the RR8 app (phases A–D); step 1 of merge → Railway → Litestream
 - `railway-plan.md` — Planned prod hosting: single Node service on Railway, SQLite file + Litestream→R2, cost breakdown (step 2/3)
 
 ## Skills

@@ -1,11 +1,13 @@
 {
+  "include": ["**/*.ts", "**/*.tsx", ".react-router/types/**/*"],
   "compilerOptions": {
+    "skipLibCheck": true,
+    "types": ["vite/client"],
+    "isolatedModules": true,
     "jsx": "react-jsx",
     "module": "Preserve",
-    "types": ["vite/client"],
     "allowImportingTsExtensions": true,
-    "isolatedModules": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "rootDirs": [".", "./.react-router/types"]
   }
 }

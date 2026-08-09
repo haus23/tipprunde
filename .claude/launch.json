@@ -5,12 +5,6 @@
       "name": "web",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--filter", "web", "run", "dev"],
-      "port": 3000
-    },
-    {
-      "name": "manager",
-      "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "manager", "run", "dev"],
       "port": 5173
     }
   ]
