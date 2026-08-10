@@ -4,7 +4,7 @@ export default defineConfig({
   fmt: {
     sortImports: {},
     sortTailwindcss: {},
-    ignorePatterns: ["routeTree.gen.ts", "AGENTS.md", ".agents/**"],
+    ignorePatterns: ["AGENTS.md", ".agents/**"],
   },
   lint: { options: { typeAware: true, typeCheck: true } },
   staged: {

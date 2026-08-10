@@ -16,7 +16,7 @@ supportedArchitectures:
     - arm64
 
 catalog:
-  typescript: ~7.0.2
+  typescript: ~7.0.2 # Align with .zed/settings.json
   vite: ^8.2.1
 
 catalogs:

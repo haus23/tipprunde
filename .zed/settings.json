@@ -1,6 +1,26 @@
 {
-  "language_servers": ["!eslint", "!vscode-css-language-server", "!vtsls", "..."],
+  // TypeScript is served by the `tsgo` extension (install it from Zed's
+  // extension list — https://zed.dev/extensions/tsgo). vtsls and Zed's default
+  // tsserver stay off: TypeScript 7 ships no lib/tsserver.js (its only bin is
+  // `tsc`, shelling out to the native Go binary), so both silently fall back to
+  // their own bundled TypeScript, which cannot resolve the "#/..." subpath
+  // imports — TS2307 all over the editor while `pnpm --filter web typecheck` is
+  // clean. Verified: TS 5.9 reports 124 of those on this repo, TS 7.0.2 none.
+  // NOTE: `language_servers` only takes effect *inside* a `languages` block —
+  // a top-level one is ignored, which is why "!vtsls" here never disabled it.
+  // The real selection lives under languages.{JavaScript,TypeScript,TSX} —
+  // Zed has no separate "JSX" language (JavaScript covers .jsx), even though
+  // the tsgo extension lists one.
   "lsp": {
+    "typescript-ls": {
+      "settings": {
+        // The extension otherwise fetches the *latest* typescript package,
+        // which would type-check the editor against a different compiler than
+        // the CLI does. Keep this in lockstep with the `typescript` entry in
+        // pnpm-workspace.yaml's default catalog — bump both together.
+        "package_version": "7.0.2"
+      }
+    },
     "oxlint": {
       "initialization_options": {
         "settings": {
@@ -49,6 +69,7 @@
       ]
     },
     "JavaScript": {
+      "language_servers": ["typescript-ls", "!vtsls", "!eslint", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
@@ -88,6 +109,7 @@
       ]
     },
     "TypeScript": {
+      "language_servers": ["typescript-ls", "!vtsls", "!eslint", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
@@ -101,6 +123,7 @@
       ]
     },
     "TSX": {
+      "language_servers": ["typescript-ls", "!vtsls", "!eslint", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
