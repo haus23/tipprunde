@@ -24,11 +24,11 @@
     "react-aria-components": "catalog:react",
     "react-dom": "catalog:react",
     "react-router": "^8.3.0",
-    "valibot": "catalog:"
+    "valibot": "^1.4.2"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "catalog:cloudflare",
-    "@react-aria/optimize-locales-plugin": "catalog:",
+    "@react-aria/optimize-locales-plugin": "^2.0.1",
     "@react-router/dev": "^8.3.0",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/react": "catalog:types",
