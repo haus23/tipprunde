@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.23.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.23.0...v0.23.1)
+
+### 🔥 Performance
+
+- **web:** Bundle only the German React Aria locale. ([2e9a717](https://github.com/haus23/tipprunde/commit/2e9a717))
+
+### 🏡 Chore
+
+- Keep only shared deps in the default catalog. ([c2115b6](https://github.com/haus23/tipprunde/commit/c2115b6))
+- Update type deps. ([abf00a4](https://github.com/haus23/tipprunde/commit/abf00a4))
+- Update vite-plus. ([1756aea](https://github.com/haus23/tipprunde/commit/1756aea))
+- **web:** Update dev deps. ([a4f2d53](https://github.com/haus23/tipprunde/commit/a4f2d53))
+- **web:** Update deps. ([4c05eb8](https://github.com/haus23/tipprunde/commit/4c05eb8))
+
 ## v0.23.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.22.3...v0.23.0)
