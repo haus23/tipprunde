@@ -1,9 +1,14 @@
-# Web App Shell & Header
+# Public Shell & Header
 
-Responsive layout spec for the **web frontend** (`apps/web`). Describes the header
-contents, the navigation collapse strategy, and the chat panel's docked/drawer
-behaviour. Breakpoint _values_ live in [tokens.md](./tokens.md); this doc describes
-how the shell uses them.
+Responsive layout spec for the **public shell** — `routes/public-layout.tsx`,
+which wraps everything outside `/manager`. (The manager has its own shell with a
+sidebar; the two share only the document and the color-scheme mechanism.)
+Describes the header contents, the navigation strategy, and the planned chat
+panel's docked/drawer behaviour. Breakpoint _values_ live in
+[tokens.md](./tokens.md); this doc describes how the shell uses them.
+
+Built today: header, nav, color-scheme menu, user area. The chat panel is
+planned — see [chat-plan.md](./chat-plan.md).
 
 ## Header contents (widest state)
 

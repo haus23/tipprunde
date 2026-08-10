@@ -1,11 +1,22 @@
 # Archiv
 
-Documents the planned Archiv feature for the web app (`apps/web`).
+The Archiv surfaces completed championships: a dashboard preview, a full list
+with an all-time table, and a final table per championship.
 
 ## Status
 
-**Not yet built.** The Archiv link has been **removed from the main nav** — entry
-will be via a dashboard section once it's built.
+**Built** (2026-08, phases C6/C7 of the app merge).
+
+- `/archiv` — "Turniere" (all completed championships with their winners) and
+  "Ewige Tabelle" (all-time standings)
+- `/archiv/:slug` — one championship's final table
+- Dashboard section "Archiv" — the three most recent completed championships,
+  plus a "Komplettes Archiv →" link
+
+Both routes live inside the public layout but **outside** the championship
+layout, since the Archiv spans all championships rather than the current one.
+Queries are in `apps/web/app/lib/archiv.server.ts`: `getArchivPreview`,
+`getAllCompletedChampionships`, `getEwigeTabelle`, `getArchivChampionship`.
 
 ## Data design decision
 
@@ -23,89 +34,55 @@ players (
   rank                 integer | null
   tipPoints            integer | null   -- sum of tips.points
   extraQuestionPoints  integer | null   -- sum of extraAnswers.points (when published)
-  roundPoints          integer | null   -- sum of roundPoints entries (future)
+  roundPoints          integer | null   -- sum of roundPoints entries
   total                integer | null   -- tipPoints + extraQuestionPoints + roundPoints
 )
 ```
 
-Every point category that feeds into `total` has its own explicit column. `total`
-is technically derivable from the components, but is stored explicitly so the
-ranking is always self-consistent — a rank-1 player can never appear to have
-fewer points than rank-2 due to a missing category.
+Every point category that feeds into `total` has its own explicit column.
+`total` is technically derivable from the components, but is stored explicitly
+so the ranking is always self-consistent — a rank-1 player can never appear to
+have fewer points than rank-2 due to a missing category.
 
 Columns are nullable because they have no meaningful value before any results
 are scored. The frontend handles nulls; null is not the same as 0 (which means
 "scored, but zero points").
 
-New point categories (e.g. `roundPoints`) are added as new nullable columns when
-the corresponding rule variant arrives — the iterative schema concept holds.
-
-### Why not a separate table
-
-A dedicated `rankings` table would have the same `(championshipId, userId)` key
-and same cardinality as `players` — it would be the same entity split across two
-tables for no benefit. One row per player per championship is the right shape;
-`players` already owns it.
-
-### Why not store only at completion
-
-See "Ranking write strategy" below. Ranking is kept current throughout the
-championship, not only written at completion time.
+New point categories are added as new nullable columns when they arrive.
 
 ## Ranking write strategy
 
 Ranking columns in `players` are updated **incrementally after every relevant
-manager write**, not just when a championship is marked completed.
+write**, not just when a championship is marked completed. `updateRanking()`
+lives in `app/lib/ranking.server.ts` and is called from the manager routes:
 
-**Triggers (manager app):**
+- Result scored or edited (`ergebnisse`) → re-rank all players
+- Tip entered when a result already exists (`tipps`) → re-rank
+- `extraQuestionPointsPublished` flipped (championship `index`) → re-rank
+- Extra question points assigned (`zusatzfragen`) → re-rank
 
-- Result scored or edited (`ergebnisse` route) → re-rank all players for the championship
-- Tip entered when result already exists (`tipps` route) → re-rank
-- `extraQuestionPointsPublished` flag flipped → re-rank (extra points now count / stop counting)
-- Extra question points assigned (`zusatzfragen` route) → re-rank (if `extraQuestionPointsPublished`)
+Consequences, all of which the Archiv relies on:
 
-**Benefits:**
-
-- Web app becomes pure display — no aggregation at read time, no `calcRanking` in the frontend
-- Fewer Turso reads per web request
-- Historical rankings (completed championships) are naturally preserved with no extra work
-- Serves all three future use cases from the same data:
-  - **Archiv dashboard** — `WHERE rank = 1` per championship
+- Public views are pure display — no aggregation at read time
+- Fewer Turso reads per request
+- Historical rankings are preserved with no extra work
+- One shape serves all three views:
+  - **Dashboard preview / Turniere** — `WHERE rank = 1` per championship
   - **Ewige Tabelle** — `SUM(total) GROUP BY userId ORDER BY SUM(total) DESC`
-  - **Full Archiv drill-down** — `WHERE championshipId = ?`
+  - **Championship drill-down** — `WHERE championshipId = ?`
 
-**Manager refactor plan:**
+Because the ranking is materialized, **a direct DB write that changes results
+or tips does not update it**. Always go through the app, or call
+`updateRanking()` afterwards.
 
-1. Add `rank`, `tipPoints`, `extraQuestionPoints`, `roundPoints`, `total` columns to `players` in `packages/db/src/schema.ts`; make `rounds.completed` nullable
-2. After each write trigger, update all `players` rows for the championship with the recalculated values
-3. Update the web app to read ranking directly from `players` instead of aggregating tips
+## Details worth remembering
 
-## Planned: Dashboard section (index route)
-
-A new section at the bottom of the dashboard (below Regelwerk) showing a quick
-summary of past championships, linking to the full archive.
-
-**Contents:**
-
-- Section heading (e.g. "Frühere Turniere")
-- Last ~3 completed championships: championship name + winner name
-- "Komplettes Archiv →" link to `/archiv`
-
-**Placement:** Below Regelwerk, inside the `xs:px-6 px-4` content wrapper — same
-horizontal padding as the other dashboard sections.
-
-## Full `/archiv` route (future)
-
-A route listing all past championships with their final standings, possibly with
-drill-down into each championship's Tabelle. Out of scope until the manager
-refactor and dashboard section are built.
-
-## Notes
-
-- "Past championship" = `completed: true` AND not the currently active one —
-  order by descending start date.
-- The currently active championship context (`/_championship` layout) is pinned
-  to the latest published championship; `/archiv` will need its own data loading
-  strategy outside that layout.
-- "Ewige Tabelle" will live at its own route (TBD); it aggregates `players.total`
-  across all championships per user.
+- "Past championship" = `completed: true`; the dashboard preview additionally
+  excludes the currently active one.
+- Ties share a rank in both the championship tables and the Ewige Tabelle, and
+  the next distinct score skips ahead (6, 6, 8). Repeated ranks render blank
+  rather than repeating the number.
+- A championship can have several winners; the preview and Turniere list join
+  their names.
+- The Archiv is deliberately **not** in the header nav — it is reached from the
+  dashboard section, as it was in the old app.

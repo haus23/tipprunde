@@ -5,9 +5,11 @@ self-hosted Hetzner idea. Step 2 of the three-step sequence: **app merge
 ([app-merge.md](./app-merge.md)) → Railway → Turso→Litestream switch**. Each
 step ships independently:
 
-1. **App merge** — no infra change, ships on current CF hosting.
-2. **Railway move** — no data-layer change: the merged app runs on Railway
-   **still against Turso** (`drizzle-orm/libsql/web` works from anywhere).
+1. ~~**App merge** — no infra change, ships on current CF hosting.~~
+   **Done 2026-08-09**, live on the single `tipprunde` Worker.
+2. **Railway move** ← next. No data-layer change: the merged app runs on
+   Railway **still against Turso** (`drizzle-orm/libsql/web` works from
+   anywhere).
 3. **Turso → local SQLite + Litestream** — pure DB-layer change on stable
    hosting: volume, driver swap, Litestream, migration-workflow change.
 

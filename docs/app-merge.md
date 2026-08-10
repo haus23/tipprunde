@@ -1,9 +1,18 @@
 # App Merge — Web into the RR8 App
 
-**Status: decided 2026-07-30, starting immediately.** The TanStack Start web
-app (`apps/web`) merges into the React Router 8 app (`apps/manager` becomes
-the single app). Step 1 of the three-step sequence: **merge → Railway hosting
-([railway-plan.md](./railway-plan.md)) → Turso→Litestream switch**.
+**Status: done. Live since 2026-08-09.** The TanStack Start web app merged into
+the React Router 8 app; what was `apps/manager` is now the single `apps/web`
+(`@tipprunde/web`), serving public routes at the root and the manager under
+`/manager` from the one `tipprunde` Worker. Step 1 of the three-step sequence:
+**merge → Railway hosting ([railway-plan.md](./railway-plan.md)) →
+Turso→Litestream switch**.
+
+Delivered as [PR #1](https://github.com/haus23/tipprunde/pull/1) (24 commits,
+145 files), rebase-merged so the phase-by-phase history survives in `main`.
+
+This document is kept as the **record of why the codebase looks the way it
+does** — the decisions, the Start→RR8 translation, and the parity evidence. It
+is history, not a to-do list; planning language below is preserved as written.
 
 ## Why
 
@@ -47,16 +56,24 @@ routes move under a `/manager` path prefix.
 
 ## Deployment during/after the merge
 
-Ships on the **current CF setup first** (no infra change): the merged app
-deploys to the `tipprunde` Worker at the root route. Afterwards the
-`tipprunde-manager` Worker, its `next.runde.tips/manager*` route, and (once
-Routes are no longer needed) the placeholder DNS record can be deleted — a
-single Worker could even go back to a plain Custom Domain. RR8 + CF vite
-plugin is proven by the manager's current setup.
+Shipped on the **current CF setup** (no infra change): the merged app deploys
+to the `tipprunde` Worker at the root route. The `tipprunde-manager` Worker and
+its `next.runde.tips/manager*` route are gone. Optionally the hostname can go
+back to a plain Custom Domain and drop the placeholder DNS record, now that
+path-splitting across two Workers is no longer needed.
+
+One ordering trap worth remembering if this is ever repeated: CF prefers the
+**more specific** route, so `/manager*` kept being answered by the old Worker
+after the root had already cut over. Delete the route as part of the cutover,
+not later.
 
 ## Port plan
 
-### Inventory (what moves from `apps/web`)
+### Inventory (what moved from the old `apps/web`)
+
+> Below, `apps/web` means the **retiring TanStack Start app** and `apps/manager`
+> the RR8 app that survived — the names they had while this was written. Today
+> there is one `apps/web`, and it is the former `apps/manager`.
 
 - **Shell** (`__root/`): header (logo, nav, color-scheme menu, user area),
   navigation progress, root document, error boundary, not-found. Becomes the
@@ -168,20 +185,19 @@ preview):**
 - **C6** — Dashboard `index` (replaces the placeholder at `/`).
 - **C7** — `archiv` (index + `$slug`).
 
-**Phase D — cutover & rename (one sitting):**
+**Phase D — cutover & rename (all done 2026-08-09):**
 
-- **D1** — Parity checklist walk (below); final env consolidation on the
-  surviving `tipprunde` Worker (add `TURSO_*` secrets; wrangler `name` →
-  `tipprunde`).
-- **D2** — Delete old `apps/web`; rename `apps/manager` → `apps/web`,
-  package → `@tipprunde/web`; merge branch into main.
-- **D3** — CF: point the `tipprunde` Worker's build at the merged app
-  (barely changes — `--filter web` + `dist/server/wrangler.json` still fit);
-  delete the `tipprunde-manager` Worker + `/manager*` route; optionally
-  revert `next.runde.tips` to a plain Custom Domain and drop the placeholder
-  DNS record.
-- **D4** — Housekeeping: CLAUDE.md files, `.claude/launch.json`, docs,
-  memory.
+- **D1** — Parity checklist walk (below). Env consolidation turned out to be a
+  no-op: every var the code reads was already declared, and all five secrets
+  were already on `tipprunde`. The wrangler `name` flip moved to D3, since on
+  the branch it would have aimed preview builds at the production Worker.
+- **D2** — Deleted old `apps/web`; renamed `apps/manager` → `apps/web`,
+  package → `@tipprunde/web`.
+- **D3** — wrangler `name` → `tipprunde`; branch build verified as an
+  upload-only preview version on the production Worker (`Source:
+version_upload`, live deployment untouched) before merging; then merged,
+  `/manager*` route and the `tipprunde-manager` Worker removed.
+- **D4** — Housekeeping: CLAUDE.md files, `.claude/launch.json`, docs, memory.
 
 ### Parity checklist (cutover requires all)
 
@@ -216,7 +232,11 @@ Walked 2026-08-06 (D1) by running both apps side by side (old on :3000, new on
       also moved from middleware to the layout loader — a `data()` thrown
       from middleware short-circuits as a raw body and never reaches a
       boundary.
-- [ ] `next.runde.tips` serves the merged app from the single Worker — D3.
+- [x] `next.runde.tips` serves the merged app from the single Worker — live
+      since 2026-08-09 18:10. Quick check, since framework markers are useless
+      (`__reactRouterContext` is in both bundles):
+      `curl -s https://next.runde.tips/gibtsnicht | grep -o '<title>[^<]*</title>'`
+      → `Seite nicht gefunden · runde.tips` = merged app.
 
 **Env consolidation (D1, done):** every var the code reads is declared in
 `wrangler.jsonc` (`vars` × 5, `secrets.required` × 5), and the surviving

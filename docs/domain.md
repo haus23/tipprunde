@@ -160,7 +160,7 @@ Affects: points calculation in Ergebnisse.
 
 ---
 
-## Route-level implications (manager app)
+## Route-level implications (manager routes)
 
 ### Turnier (index)
 
@@ -246,36 +246,37 @@ championship (match-level rules like sole scorer make this unavoidable):
 | Extra answer points changed (if `extraQuestionPointsPublished`) | `extraQuestionPoints` + `total` + `rank`              | `zusatzfragen`     |
 | Round completed with active ROUND_RULE (future)                 | `roundPoints` + `total` + `rank`                      | rounds             |
 
-The web app reads ranking directly from `players` — no aggregation at read time.
+The public routes read ranking directly from `players` — no aggregation at read time.
 
-> **Note:** `applyRoundRule` is currently called at the wrong place in the
-> codebase (no-op for all existing championships). This will be corrected as
-> part of the ranking refactor.
+> **Note:** `applyRoundRule` in `packages/domain/src/scoring.ts` is still an
+> empty stub — no championship uses a special `roundRuleId` yet. The plumbing
+> around it (the `roundPoints` table, `players.roundPoints`, the ranking
+> recompute) exists and is wired up; only the rule body is missing.
 
 ---
 
-## Open design questions
+## Resolved design questions
 
-### `round.completed`
+Both of the questions that used to sit here are decided **and implemented** in
+the schema. Kept for the reasoning.
 
-**Decision: make nullable.** `null` = no special ROUND_RULE, no explicit
-completion point needed. `true` = manager has explicitly completed the round
-to trigger a round-level bonus calculation.
+### `round.completed` — nullable
+
+`null` = no special ROUND_RULE, no explicit completion point needed. `true` =
+manager has explicitly completed the round to trigger a round-level bonus
+calculation.
 
 - For `roundRuleId === "keine-besonderheiten"` (all current championships):
   the field stays `null` — it has no meaning and is never set.
 - For future special `roundRuleId` variants: the manager explicitly toggles it
   in the UI, which triggers `applyRoundRule` and a ranking update.
 
-This requires a schema change: `completed` on `rounds` becomes nullable
-(remove `notNull().default(false)`).
+Implemented — `rounds.completed` is nullable in `packages/db/src/schema.ts`.
 
-### Missing: `roundPoints` table
+### `roundPoints` table — exists
 
-Round-level bonus points (needed for future special `roundRuleId` variants)
-require a dedicated table — not currently in the schema.
-
-Proposed shape:
+Round-level bonus points (needed for special `roundRuleId` variants) live in
+their own table, since they are per round _and_ per user:
 
 ```
 roundPoints (
@@ -285,5 +286,7 @@ roundPoints (
 )
 ```
 
-**Deferred** until the first championship with a special roundRule is
-introduced (~championship #30 in the data backfill).
+Implemented, and `updateRanking()` already folds it into `players.roundPoints`
+and `players.total`. What is still missing is only the rule logic itself — see
+the `applyRoundRule` note above. That arrives with the first championship using
+a special roundRule (~championship #30 in the data backfill).

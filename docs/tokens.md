@@ -61,10 +61,10 @@ moving the chrome.
 When adding readable content, set `text-base` on it explicitly — do not rely on
 inheritance, or it won't track the token.
 
-### Web app content size
+### Content size
 
-`apps/web` sets a smaller content base in its own `src/styles/app.css` (web-only —
-**not** in the shared `@tipprunde/theme`, so the manager is unaffected):
+The app sets a smaller content base in `apps/web/app/app.css` (app-local —
+**not** in the shared `@tipprunde/theme`, which stays generic):
 
 ```css
 @theme {
@@ -72,6 +72,9 @@ inheritance, or it won't track the token.
   --text-base--line-height: calc(1.25 / 0.875); /* Tailwind's text-sm ratio */
 }
 ```
+
+Since the app merge this applies to the public site and the manager alike —
+manager dialog headings moved 16px → 14px with it, which is intended.
 
 Adjust `--text-base` to experiment with content size; the unitless line-height
 ratio keeps the rhythm proportional.

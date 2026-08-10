@@ -1,22 +1,19 @@
 # In-App Chat — Plan
 
 **Status: planned, not started.** Picks up after the pending rule changes land.
-This doc records the architecture decisions and reasoning from the 2026-07 discussion
-so the feature can start without re-deriving them.
+This doc records the architecture decisions and reasoning from the 2026-07
+discussion so the feature can start without re-deriving them.
 
-**Update 2026-07-30:** chat lands in the **merged RR8 app**
-([app-merge.md](./app-merge.md)) — TanStack-Start-specific mentions below
-(server functions) translate to RR8 loaders/actions; TanStack Query (for the
-v1 polling) and TanStack Virtual work in RR8 unchanged. The "where does the
-chat schema live" open question resolves to: app-local in the single app. The shell/layout side (docked
-rail vs. drawer, keep-mounted constraint) is already specced in
-[web-shell.md](./web-shell.md) — this doc covers storage, transport, and the
+Chat lands in the single RR8 app (`apps/web`) — the merge that made it single
+is done ([app-merge.md](./app-merge.md)). The shell/layout side (docked rail vs.
+drawer, keep-mounted constraint) is specced in
+[web-shell.md](./web-shell.md); this doc covers storage, transport, and the
 message UI.
 
 ## Requirements & constraints
 
 - **In-app.** A link-out to Discord/Telegram was considered and explicitly
-  rejected — chat must live inside the web app.
+  rejected — chat must live inside the app.
 - **Message archive must not live in the main domain DB.** Satisfied via
   separation (a second database), not externalization.
 - **No paid service.** Chat-SaaS SDKs (Stream, Sendbird) have free tiers but were
@@ -62,13 +59,14 @@ Notes:
   render time from the session/domain data already loaded in the app.
 - **Cursor pagination by `id`** (autoincrement doubles as the cursor) for the
   history query; newest page first, older pages prepended.
-- The chat schema should **not** go into `packages/db`(domain). App-local schema
-  in `apps/web`, or a tiny separate package — open question below.
+- The chat schema does **not** go into `packages/db` (domain). It lives
+  app-local in `apps/web` — with one app there is no second consumer that would
+  justify a package.
 
 ## Transport (the phased part)
 
-TanStack Start has **no first-class WebSocket abstraction** — that constraint
-shapes the phases:
+The constraint is the **host**, not the framework: Cloudflare Workers has no
+plain long-lived WebSocket without Durable Objects. That shapes the phases:
 
 | Option                      | Works on CF Workers (today)                                        | Works on Railway                                           | Effort |
 | --------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------- | ------ |
@@ -76,20 +74,23 @@ shapes the phases:
 | SSE stream                  | ⚠️ stream works, but fan-out needs DO or DB-poll inside the stream | ✅ easy                                                    | low    |
 | WebSockets                  | ❌ needs Durable Objects                                           | ✅ `ws` attached via custom Node entry (~30 lines of glue) | medium |
 
-- **v1 — polling.** TanStack Query with `refetchInterval` of 3–5s on the
-  messages query; sending is a plain server function that inserts + invalidates.
-  At this user count polling is indistinguishable from realtime, needs zero new
-  infrastructure, and ships on the current CF hosting.
+- **v1 — polling.** A 3–5s poll on the messages query; sending is a plain action
+  that inserts and lets RR revalidate. At this user count polling is
+  indistinguishable from realtime, needs zero new infrastructure, and ships on
+  the current CF hosting. This is the one place the merge left the door open for
+  TanStack Query to re-enter surgically (`refetchInterval`) — see the data
+  strategy decision in [app-merge.md](./app-merge.md); a bare `setInterval` +
+  `fetcher.load()` may well be enough.
 - **v2 — after Railway.** Swap polling for SSE (preferred: chat clients mostly
-  _receive_; no custom server glue, proxy-friendly) or WebSockets (needs the
-  custom Node entry beside Start's request handler). This is a transport-layer
+  _receive_; no custom server glue, proxy-friendly) or WebSockets (needs a
+  custom Node entry beside RR8's request handler). This is a transport-layer
   change only.
 - **Contingency if Railway slips:** Durable Objects with WebSocket hibernation +
   built-in DO SQLite storage is Cloudflare's canonical chat pattern and would
-  provide "WebSockets + a second SQLite" on current hosting (the manager app's
-  custom `workers/app.ts` shows the pattern for exporting extra classes beside
-  the app). Rejected as the default because it is CF-proprietary and prod is
-  heading to Railway — only revisit if that changes.
+  provide "WebSockets + a second SQLite" on current hosting (the app's custom
+  `workers/app.ts` shows the pattern for exporting extra classes beside the
+  app). Rejected as the default because it is CF-proprietary and prod is heading
+  to Railway — only revisit if that changes.
 
 ## Message list UI
 
@@ -112,7 +113,7 @@ scroll position, and — in v2 — the live connection survive dock/undock).
 ## Phasing summary
 
 1. **v1 (can ship on CF, before Railway):** second Turso DB + drizzle schema,
-   server functions for send + cursor-paginated history, TanStack Query polling,
+   loader for cursor-paginated history and an action for send, polling,
    TanStack Virtual end-anchored list, shell integration per web-shell.md.
 2. **v2 (after Railway):** transport swap to SSE/WS. Nothing else changes.
 
@@ -121,8 +122,6 @@ scroll position, and — in v2 — the live connection survive dock/undock).
 - **Room model:** one global room, or per-championship rooms? (Start global —
   it's one friend group; the schema gains a `roomId`/`championshipId` column
   only if ever needed.)
-- **Where does the chat drizzle schema live** — `apps/web`-local or a separate
-  package? (Manager app probably never needs it; app-local is the simplest.)
 - **Retention/moderation:** keep forever? Manager-role soft delete via
   `deletedAt`?
 - **Unread indicator** on the drawer toggle (badge) — v1 nicety or later?

@@ -56,15 +56,15 @@ The same pattern works for any package script (`build`, `typecheck`, etc.).
 
 Shared documentation in `docs/`:
 
-- `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain, open design questions
+- `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain
 - `theme.md` — Color system: Radix Sand/Orange tokens, `@tipprunde/theme` package usage
-- `tokens.md` — Design tokens: border-radius scale, breakpoints
+- `tokens.md` — Design tokens: breakpoints, easing, shadows, border-radius, typography scale
 - `deployment.md` — Environment variables, first-deploy bootstrap, user management
-- `web-shell.md` — Web app shell: header contents, Priority+ nav collapse, docked/drawer chat panel
+- `web-shell.md` — Public shell: header contents, nav strategy, planned docked/drawer chat panel
 - `archiv.md` — Archiv feature: ranking columns on `players`, dashboard entry (built — `/archiv`, `/archiv/:slug`)
 - `chat-plan.md` — Planned in-app chat: separate DB, phased transport (polling → SSE/WS on Railway), TanStack Virtual (not yet built)
-- `app-merge.md` — The TanStack Start app merged into the RR8 app (phases A–D); step 1 of merge → Railway → Litestream
-- `railway-plan.md` — Planned prod hosting: single Node service on Railway, SQLite file + Litestream→R2, cost breakdown (step 2/3)
+- `app-merge.md` — History: how the TanStack Start app merged into the RR8 app (phases A–D, done 2026-08-09); step 1 of merge → Railway → Litestream
+- `railway-plan.md` — **Next up.** Planned prod hosting: single Node service on Railway, SQLite file + Litestream→R2, cost breakdown (steps 2/3)
 
 ## Skills
 

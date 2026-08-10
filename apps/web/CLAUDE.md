@@ -28,7 +28,7 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 - `routes/public-layout.tsx` — The public shell: header, nav, color-scheme menu, user area; its `ErrorBoundary` renders 404s inside the shell
 - `routes/manager-layout.tsx` — The manager shell: sidebar, mobile nav, championship switcher, role gate + championship middleware
 - `routes.ts` — Programmatic route config (RouteConfig)
-- `lib/` — Server-only utilities: `session.server.ts`, `db.server.ts`, `championship.server.ts`, `cookies.server.ts`, `lock.server.ts`, `ranking.server.ts`, plus `context.ts`, `color-scheme.ts`, `utils.ts`
+- `lib/` — Server-only utilities (`*.server.ts`): `session`, `auth` (TOTP), `db`, `championship`, `cookies`, `lock`, `ranking`, plus the per-view query modules `archiv`, `spiele`, `spieler`, `extra-questions`. Isomorphic: `context.ts`, `color-scheme.ts`, `utils.ts`
 - `components/` — Reusable React Aria UI components (dialogs, inputs, sidebar, card, filter, etc.)
 - `routes/` — Route handlers (loaders + actions + UI)
 
@@ -92,14 +92,26 @@ Public routes live at the root; the manager sits under `/manager`.
 
 Shared docs are in the root `docs/` folder:
 
-- `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain logic, open design questions
+- `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain logic
 - `theme.md` — Color system: Radix Sand/Orange tokens, `--color-*` CSS properties, Tailwind setup
-- `tokens.md` — Design tokens for border-radius
-- `deployment.md` — Environment variables, first-deploy bootstrap (manual admin user insert), user management
+- `tokens.md` — Design tokens: breakpoints, easing, shadows, border-radius, typography scale
+- `deployment.md` — Environment variables (full table), first-deploy bootstrap (manual admin user insert), user management
+- `web-shell.md` — Public shell: header contents, nav strategy, planned chat panel
+- `archiv.md` — Archiv: the materialized ranking columns on `players` and what depends on them
+- `app-merge.md` — History: how this app absorbed the separate web app (why things look the way they do)
 
 ## Environment variables
 
-Required in `.env` for local dev: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `SESSION_SECRET`
+All of these belong in `apps/web/.env` for local dev — the TOTP login needs the
+mail and code settings, not just the DB:
+
+`TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `SESSION_SECRET`, `APP_SECRET`,
+`RESEND_API_KEY`, `FROM_EMAIL`, `TOTP_EXPIRES_IN`, `TOTP_MAX_ATTEMPTS`,
+`SESSION_DURATION_DEFAULT`, `SESSION_DURATION_REMEMBER`
+
+In production the first five are Worker **secrets** and the rest are `vars` in
+`wrangler.jsonc`, which also lists them in `secrets.required` so a deploy fails
+by name when one is missing. See `docs/deployment.md`.
 
 ## External Documentation (LLM-Ready)
 
