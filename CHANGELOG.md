@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.23.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.23.1...v0.23.2)
+
+### 🚀 Enhancements
+
+- **web:** Replace both color-scheme controls with one toggle. ([645b54f](https://github.com/haus23/tipprunde/commit/645b54f))
+
 ## v0.23.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.23.0...v0.23.1)
