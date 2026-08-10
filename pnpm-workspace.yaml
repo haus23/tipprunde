@@ -16,8 +16,7 @@ supportedArchitectures:
     - arm64
 
 catalog:
-  "@react-aria/optimize-locales-plugin": ^2.0.0
-  "@vitejs/plugin-react": ^6.0.4
+  "@react-aria/optimize-locales-plugin": ^2.0.1
   typescript: ~7.0.2
   valibot: ^1.4.2
   vite: ^8.1.5

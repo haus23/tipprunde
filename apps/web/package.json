@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "catalog:cloudflare",
+    "@react-aria/optimize-locales-plugin": "catalog:",
     "@react-router/dev": "^8.3.0",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/react": "catalog:types",
