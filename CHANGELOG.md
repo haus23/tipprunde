@@ -1,5 +1,53 @@
 # Changelog
 
+## v0.23.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.22.3...v0.23.0)
+
+### 🚀 Enhancements
+
+- **manager:** Port the TOTP login flow in-app. ([b88dbd7](https://github.com/haus23/tipprunde/commit/b88dbd7))
+- **manager:** Add the public shell layout. ([6f2f202](https://github.com/haus23/tipprunde/commit/6f2f202))
+- **manager:** Port the public championship layout and Tabelle. ([83fdcdb](https://github.com/haus23/tipprunde/commit/83fdcdb))
+- **manager:** Port the public Spiele views. ([4184b03](https://github.com/haus23/tipprunde/commit/4184b03))
+- **manager:** Port the public Spieler view. ([47c5a5b](https://github.com/haus23/tipprunde/commit/47c5a5b))
+- **manager:** Port the public Zusatzfragen view. ([d51c28c](https://github.com/haus23/tipprunde/commit/d51c28c))
+- **manager:** Port the dashboard to the public root. ([a1a9e96](https://github.com/haus23/tipprunde/commit/a1a9e96))
+- **manager:** Port the public Archiv views. ([e919f75](https://github.com/haus23/tipprunde/commit/e919f75))
+
+### 🩹 Fixes
+
+- **manager:** Use the normalized url, not request.url, for redirects. ([081ed7c](https://github.com/haus23/tipprunde/commit/081ed7c))
+- **manager:** Declare required secrets, split the login failure paths. ([03583f9](https://github.com/haus23/tipprunde/commit/03583f9))
+- **manager:** Make errors and 404s behave like the old web app. ([0e096bd](https://github.com/haus23/tipprunde/commit/0e096bd))
+- **manager:** Render manager 404s inside the manager shell. ([3a85dfe](https://github.com/haus23/tipprunde/commit/3a85dfe))
+
+### 💅 Refactors
+
+- **manager:** Move manager routes under /manager, add public root. ([c3259c8](https://github.com/haus23/tipprunde/commit/c3259c8))
+- **manager:** Move color-scheme to a shared root-level route. ([59b8184](https://github.com/haus23/tipprunde/commit/59b8184))
+- **manager:** Split session middleware, adopt RR cookie sessions. ([73d6e68](https://github.com/haus23/tipprunde/commit/73d6e68))
+- Collapse the two apps into a single apps/web. ([3ef9f47](https://github.com/haus23/tipprunde/commit/3ef9f47))
+
+### 📖 Documentation
+
+- Add in-app chat plan. ([882cced](https://github.com/haus23/tipprunde/commit/882cced))
+- Add app-merge and Railway hosting plans. ([ead934c](https://github.com/haus23/tipprunde/commit/ead934c))
+- Record app-merge decisions (name, data strategy, ui package). ([7c26672](https://github.com/haus23/tipprunde/commit/7c26672))
+- Add the port plan to the app-merge doc. ([58978d4](https://github.com/haus23/tipprunde/commit/58978d4))
+- Concretize the merge into commit-sized steps A1-D4. ([34ea78b](https://github.com/haus23/tipprunde/commit/34ea78b))
+- **manager:** Refresh CLAUDE.md for the new app structure. ([9cb7c94](https://github.com/haus23/tipprunde/commit/9cb7c94))
+- Bring the docs back in line with the single app. ([97e980b](https://github.com/haus23/tipprunde/commit/97e980b))
+
+### 📦 Build
+
+- Point the merged app at the tipprunde Worker. ([787aa92](https://github.com/haus23/tipprunde/commit/787aa92))
+
+### 🏡 Chore
+
+- Pin Node version for Workers Builds to current 24.x LTS. ([58c78a5](https://github.com/haus23/tipprunde/commit/58c78a5))
+- Update dev deps. ([8b66bf1](https://github.com/haus23/tipprunde/commit/8b66bf1))
+
 ## v0.22.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.22.2...v0.22.3)
