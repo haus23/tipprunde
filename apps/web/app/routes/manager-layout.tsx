@@ -1,10 +1,11 @@
 import { Button } from "@tipprunde/ui";
 import { cx } from "@tipprunde/ui";
-import { MenuIcon, MoonIcon, PanelLeftCloseIcon, PanelLeftOpenIcon, SunIcon } from "lucide-react";
-import { Suspense, useEffect } from "react";
-import { data, Outlet, redirect, useFetcher, useRouteLoaderData } from "react-router";
+import { MenuIcon, PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
+import { Suspense } from "react";
+import { data, Outlet, redirect } from "react-router";
 
 import { ChampionshipSwitcher } from "#/components/championship-switcher.tsx";
+import { ColorSchemeToggle } from "#/components/color-scheme-toggle.tsx";
 import { MobileNav } from "#/components/mobile-nav.tsx";
 import { ShellProvider, useShell } from "#/components/shell-provider.tsx";
 import { Sidebar } from "#/components/sidebar.tsx";
@@ -13,13 +14,11 @@ import {
   getChampionships,
   getLatestChampionship,
 } from "#/lib/championship.server.ts";
-import type { ColorScheme } from "#/lib/color-scheme.ts";
 import { championshipContext, userContext } from "#/lib/context.ts";
 import { clearCookieHeader, cookieHeader, getCookie } from "#/lib/cookies.server.ts";
 import { isManager } from "#/lib/session.server.ts";
 import { usePageTitle } from "#/lib/utils.ts";
 
-import type { loader as rootLoader } from "../root";
 import type { Route } from "./+types/manager-layout";
 
 /** The session itself is resolved by the root middleware — this only gates on role. */
@@ -80,31 +79,8 @@ export default function ManagerLayout({ loaderData }: Route.ComponentProps) {
 
 function Shell({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] }) {
   const { slug, name, championships } = loaderData;
-  const colorScheme = useRouteLoaderData<typeof rootLoader>("root")?.colorScheme ?? "system";
   const pageTitle = usePageTitle();
-  const fetcher = useFetcher();
   const { isSidebarCollapsed, toggleSidebar, toggleMobileMenu } = useShell();
-
-  const pendingScheme = fetcher.formData?.get("scheme") as ColorScheme | undefined;
-
-  // Optimistic: immediately update <html> before the loader revalidates
-  useEffect(() => {
-    if (pendingScheme) {
-      document.documentElement.setAttribute("data-color-scheme", pendingScheme);
-    }
-  }, [pendingScheme]);
-
-  const handleToggle = () => {
-    const isDark =
-      colorScheme === "dark" ||
-      (colorScheme === "system" &&
-        typeof window !== "undefined" &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches);
-    void fetcher.submit(
-      { scheme: isDark ? "light" : "dark" },
-      { method: "post", action: "/color-scheme" },
-    );
-  };
 
   return (
     <div
@@ -146,15 +122,7 @@ function Shell({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] 
         </Suspense>
         {pageTitle && <h1 className="hidden text-sm font-medium sm:block">{pageTitle}</h1>}
         <div className="flex flex-1 justify-end">
-          <Button
-            intent="ghost"
-            size="icon"
-            onPress={handleToggle}
-            aria-label="Farbschema wechseln"
-          >
-            <MoonIcon className="hidden size-4 dark:block" />
-            <SunIcon className="block size-4 dark:hidden" />
-          </Button>
+          <ColorSchemeToggle />
         </div>
       </header>
       <main className="relative overflow-y-auto">

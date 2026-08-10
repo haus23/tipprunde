@@ -97,6 +97,7 @@ Shared docs are in the root `docs/` folder:
 - `tokens.md` — Design tokens: breakpoints, easing, shadows, border-radius, typography scale
 - `deployment.md` — Environment variables (full table), first-deploy bootstrap (manual admin user insert), user management
 - `web-shell.md` — Public shell: header contents, nav strategy, planned chat panel
+- `color-scheme.md` — Single-button light/dark switch spec (replaces both current controls)
 - `archiv.md` — Archiv: the materialized ranking columns on `players` and what depends on them
 - `app-merge.md` — History: how this app absorbed the separate web app (why things look the way they do)
 

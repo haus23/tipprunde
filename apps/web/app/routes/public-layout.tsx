@@ -7,11 +7,10 @@ import {
   useRouteLoaderData,
 } from "react-router";
 
-import { ColorSchemeMenu } from "#/components/color-scheme-menu.tsx";
+import { ColorSchemeToggle } from "#/components/color-scheme-toggle.tsx";
 import { NavigationProgress } from "#/components/navigation-progress.tsx";
 import { PublicNavLink } from "#/components/public-nav-link.tsx";
 import { UserArea } from "#/components/user-area.tsx";
-import type { ColorScheme } from "#/lib/color-scheme.ts";
 import type { User } from "#/lib/context.ts";
 import { userContext } from "#/lib/context.ts";
 
@@ -29,10 +28,8 @@ export function loader({ context }: Route.LoaderArgs) {
 }
 
 export default function PublicLayout({ loaderData }: Route.ComponentProps) {
-  const colorScheme = useRouteLoaderData<typeof rootLoader>("root")?.colorScheme ?? "system";
-
   return (
-    <PublicShell user={loaderData.user} colorScheme={colorScheme}>
+    <PublicShell user={loaderData.user}>
       <Outlet />
     </PublicShell>
   );
@@ -48,7 +45,7 @@ export function ErrorBoundary() {
   const isNotFound = isRouteErrorResponse(error) && error.status === 404;
 
   return (
-    <PublicShell user={root?.user ?? null} colorScheme={root?.colorScheme ?? "system"}>
+    <PublicShell user={root?.user ?? null}>
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-center">
         <title>{isNotFound ? "Seite nicht gefunden · runde.tips" : "Fehler · runde.tips"}</title>
         <h1 className="text-xl font-semibold">
@@ -75,15 +72,7 @@ export function ErrorBoundary() {
   );
 }
 
-function PublicShell({
-  user,
-  colorScheme,
-  children,
-}: {
-  user: User | null;
-  colorScheme: ColorScheme;
-  children: React.ReactNode;
-}) {
+function PublicShell({ user, children }: { user: User | null; children: React.ReactNode }) {
   return (
     <>
       <NavigationProgress />
@@ -114,7 +103,7 @@ function PublicShell({
             </nav>
             {/* Right: scheme + user */}
             <div className="col-start-3 flex items-center justify-end gap-1">
-              <ColorSchemeMenu colorScheme={colorScheme} />
+              <ColorSchemeToggle />
               <UserArea user={user} />
             </div>
           </div>

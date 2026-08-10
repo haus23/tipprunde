@@ -23,6 +23,33 @@ All breakpoints are mobile-first (`min-width`). Use `max-xs:`, `max-sm:` etc. fo
 
 No other easing tokens — `ease-in-out` and `linear` retain their Tailwind defaults.
 
+### Open: no `prefers-reduced-motion` support
+
+Nothing in `@tipprunde/theme`, `packages/ui`, or the app honours
+`prefers-reduced-motion` today. Motion-sensitive users get the full set of
+transforms — the icon crossfade in the color-scheme toggle, dialog and popover
+scale-ins, the sidebar's `grid-template-columns` slide.
+
+Worth one small pass over the theme rather than per-component patches, so the
+behaviour stays consistent. Reduced motion means **fewer and gentler**
+animations, not none: keep opacity and colour transitions, which aid
+comprehension, and drop movement and scale. Sketch:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+```
+
+— but the blunt global version above also kills the opacity fades worth
+keeping, so prefer targeting the transform-carrying utilities. Not urgent for
+this audience; recorded so it is not rediscovered from scratch.
+
 ## Shadows
 
 | Token              | Utility          | Use case                          |
