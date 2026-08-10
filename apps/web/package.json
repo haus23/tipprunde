@@ -12,7 +12,7 @@
     "deploy": "pnpm run build && wrangler deploy --config dist/server/wrangler.json"
   },
   "dependencies": {
-    "@internationalized/date": "^3.12.2",
+    "@internationalized/date": "^3.12.3",
     "@tipprunde/db": "workspace:*",
     "@tipprunde/domain": "workspace:*",
     "@tipprunde/theme": "workspace:*",
