@@ -3,8 +3,8 @@ import { getRanking, type RankedPlayer, resolvePlayer } from "#/lib/ranking.serv
 import { getPlayerMatches, getRuleset, type PlayerRound } from "#/lib/spieler.server.ts";
 
 import type { Route } from "./+types/index";
-import { PlayerSwitch } from "./player-switch.tsx";
-import { PlayerRoundItem } from "./round-item.tsx";
+import { PlayerSwitch } from "./_player-switch.tsx";
+import { PlayerRoundItem } from "./_round-item.tsx";
 
 export async function loader({ context, params }: Route.LoaderArgs) {
   const championship = context.get(publicChampionshipContext);

@@ -14,15 +14,15 @@ import { SwitchButton, SwitchField } from "react-aria-components";
 import { Link, useFetcher } from "react-router";
 import * as v from "valibot";
 
+import { Card, CardContent } from "#/components/card.tsx";
+import { LockProvider, useLock } from "#/components/lock-provider.tsx";
+import { MitspielerCard } from "#/components/mitspieler-card.tsx";
+import { RundeDialog } from "#/components/runde-dialog.tsx";
+import { championshipContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
 
-import { Card, CardContent } from "../../components/card";
-import { LockProvider, useLock } from "../../components/lock-provider";
-import { MitspielerCard } from "../../components/mitspieler-card";
-import { RundeDialog } from "../../components/runde-dialog";
-import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/index";
 
 export const handle = { title: "Übersicht" };

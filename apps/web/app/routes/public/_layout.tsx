@@ -13,9 +13,9 @@ import { PublicNavLink } from "#/components/public-nav-link.tsx";
 import { UserArea } from "#/components/user-area.tsx";
 import type { User } from "#/lib/context.ts";
 import { userContext } from "#/lib/context.ts";
+import type { loader as rootLoader } from "#/root.tsx";
 
-import type { loader as rootLoader } from "../root";
-import type { Route } from "./+types/public-layout";
+import type { Route } from "./+types/_layout";
 
 const navItems = [
   { to: "/tabelle", label: "Tabelle" },

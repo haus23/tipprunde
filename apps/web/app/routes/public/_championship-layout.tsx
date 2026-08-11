@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 import { getPublishedChampionship } from "#/lib/championship.server.ts";
 import { publicChampionshipContext } from "#/lib/context.ts";
 
-import type { Route } from "./+types/championship-layout";
+import type { Route } from "./+types/_championship-layout";
 
 /**
  * Pathless layout for the public championship views. Resolves the currently

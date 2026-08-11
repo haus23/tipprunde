@@ -5,10 +5,10 @@ import { getCurrentMatches } from "#/lib/spiele.server.ts";
 import { getRuleset } from "#/lib/spieler.server.ts";
 
 import type { Route } from "./+types/index";
-import { ChampionshipArchivPreview } from "./archiv-preview.tsx";
-import { ChampionshipCurrentMatches } from "./current-matches.tsx";
-import { ChampionshipRegelwerk } from "./regelwerk.tsx";
-import { ChampionshipStandings } from "./standings.tsx";
+import { ChampionshipArchivPreview } from "./_dashboard/archiv-preview.tsx";
+import { ChampionshipCurrentMatches } from "./_dashboard/current-matches.tsx";
+import { ChampionshipRegelwerk } from "./_dashboard/regelwerk.tsx";
+import { ChampionshipStandings } from "./_dashboard/standings.tsx";
 
 export async function loader({ context }: Route.LoaderArgs) {
   const championship = context.get(publicChampionshipContext);

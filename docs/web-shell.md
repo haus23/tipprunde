@@ -1,13 +1,13 @@
 # Public Shell & Header
 
-Responsive layout spec for the **public shell** — `routes/public-layout.tsx`,
+Responsive layout spec for the **public shell** — `routes/public/_layout.tsx`,
 which wraps everything outside `/manager`. (The manager has its own shell with a
 sidebar; the two share only the document and the color-scheme mechanism.)
 Describes the header contents, the navigation strategy, and the planned chat
 panel's docked/drawer behaviour. Breakpoint _values_ live in
 [tokens.md](./tokens.md); this doc describes how the shell uses them.
 
-Built today: header, nav, color-scheme menu, user area. The chat panel is
+Built today: header, nav, color-scheme toggle, user area. The chat panel is
 planned — see [chat-plan.md](./chat-plan.md).
 
 ## Header contents (widest state)
@@ -24,10 +24,10 @@ Everything a user can reach from the header at max width:
 
 Two things deliberately do **not** get their own top-level header slot:
 
-1. **Scheme control is one button, not two.** A single sun/moon control opens a small
-   menu with Light / Dark / System. This covers both the quick switch and "reset to
-   system" in one slot — two always-visible theming buttons would spend scarce header
-   width on a rarely-touched setting.
+1. **Scheme control is one button.** A single sun/moon control toggles between light
+   and dark; "system" is reached implicitly, without occupying a slot of its own — see
+   [color-scheme.md](./color-scheme.md). Two always-visible theming buttons, or a
+   three-item menu, would spend scarce header width on a rarely-touched setting.
 2. **Manager link + Logout live inside the user menu.** Manager is role-gated (only
    managers/admins see it) and rarely clicked; Logout is by definition an account
    action. Logged out → "Login"; logged in → avatar/name → { Manager (if role), Logout }.

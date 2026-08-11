@@ -1,10 +1,11 @@
 import { data, Outlet } from "react-router";
 
-import { ManagerErrorContent } from "../components/manager-error";
-import { getChampionshipBySlug } from "../lib/championship.server";
-import { championshipContext } from "../lib/context";
-import { cookieHeader } from "../lib/cookies.server";
-import type { Route } from "./+types/championship";
+import { ManagerErrorContent } from "#/components/manager-error.tsx";
+import { getChampionshipBySlug } from "#/lib/championship.server.ts";
+import { championshipContext } from "#/lib/context.ts";
+import { cookieHeader } from "#/lib/cookies.server.ts";
+
+import type { Route } from "./+types/_layout";
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ params, context }, next) => {

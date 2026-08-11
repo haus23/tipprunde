@@ -20,16 +20,16 @@ import {
 } from "react-aria-components";
 import { redirect, useFetcher, useNavigate } from "react-router";
 
+import { Card, CardContent } from "#/components/card.tsx";
+import { DateField } from "#/components/date-field.tsx";
+import { LigaDialog } from "#/components/liga-dialog.tsx";
+import { RoundNavigator } from "#/components/round-navigator.tsx";
+import { TeamDialog } from "#/components/team-dialog.tsx";
+import { championshipContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { getRound, isLocked } from "#/lib/lock.server.ts";
 import { formatDate } from "#/lib/utils.ts";
 
-import { Card, CardContent } from "../../components/card";
-import { DateField } from "../../components/date-field";
-import { LigaDialog } from "../../components/liga-dialog";
-import { RoundNavigator } from "../../components/round-navigator";
-import { TeamDialog } from "../../components/team-dialog";
-import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/spiele";
 
 export const handle = { title: "Spiele" };

@@ -6,14 +6,14 @@ import { useRef, useState } from "react";
 import { Input, TextField } from "react-aria-components";
 import { redirect, useFetcher, useNavigate } from "react-router";
 
+import { Card, CardContent } from "#/components/card.tsx";
+import { LockProvider } from "#/components/lock-provider.tsx";
+import { RoundNavigator } from "#/components/round-navigator.tsx";
+import { championshipContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
 
-import { Card, CardContent } from "../../components/card";
-import { LockProvider } from "../../components/lock-provider";
-import { RoundNavigator } from "../../components/round-navigator";
-import { championshipContext } from "../../lib/context";
 import type { Route } from "./+types/ergebnisse";
 
 export const handle = { title: "Ergebnisse" };

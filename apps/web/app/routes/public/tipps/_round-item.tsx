@@ -3,10 +3,9 @@ import { useMemo } from "react";
 
 import { CellFlag } from "#/components/cell-flag.tsx";
 import { CellLink } from "#/components/cell-link.tsx";
+import { RoundAccordion } from "#/components/round-accordion.tsx";
 import type { PlayerRound } from "#/lib/spieler.server.ts";
 import { formatDate } from "#/lib/utils.ts";
-
-import { RoundAccordion } from "../spiele/round-accordion.tsx";
 
 export function PlayerRoundItem({
   round,

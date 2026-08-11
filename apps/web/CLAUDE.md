@@ -25,9 +25,10 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 **App directory layout (`app/`):**
 
 - `root.tsx` — Document only (html/head, color scheme attribute, last-resort error boundary) + session middleware. No visible chrome.
-- `routes/public-layout.tsx` — The public shell: header, nav, color-scheme menu, user area; its `ErrorBoundary` renders 404s inside the shell
-- `routes/manager-layout.tsx` — The manager shell: sidebar, mobile nav, championship switcher, role gate + championship middleware
-- `routes.ts` — Programmatic route config (RouteConfig)
+- `routes.ts` — Programmatic route config (RouteConfig). The folder mirrors the URL tree: `routes/public/*` serves the root, `routes/manager/*` serves `/manager`, and `routes/_resources/*` holds the endpoint routes (no UI, targeted by forms and fetchers)
+- An `_` prefix marks a file that is **not a page of its own** — `_layout.tsx`, `_not-found.tsx`, and co-located private components like `spiele/_match-switch.tsx`. Anything without it is a URL you can visit
+- `routes/public/_layout.tsx` — The public shell: header, nav, color-scheme toggle, user area; its `ErrorBoundary` renders 404s inside the shell
+- `routes/manager/_layout.tsx` — The manager shell: sidebar, mobile nav, championship switcher, role gate + championship middleware
 - `lib/` — Server-only utilities (`*.server.ts`): `session`, `auth` (TOTP), `db`, `championship`, `cookies`, `lock`, `ranking`, plus the per-view query modules `archiv`, `spiele`, `spieler`, `extra-questions`. Isomorphic: `context.ts`, `color-scheme.ts`, `utils.ts`
 - `components/` — Reusable React Aria UI components (dialogs, inputs, sidebar, card, filter, etc.)
 - `routes/` — Route handlers (loaders + actions + UI)
@@ -86,7 +87,7 @@ Public routes live at the root; the manager sits under `/manager`.
 - Middleware is default behaviour in RR8 (the `v8_*` future flags are gone); `context` is a `RouterContextProvider`
 - One fetcher per independently-savable row — never share a `useFetcher()` across a list (see `docs/app-merge.md` history and the grid routes)
 - Errors that should **render** are thrown from a loader, never from middleware — a `data()` thrown in middleware short-circuits as a raw response body and never reaches an `ErrorBoundary`. `redirect()` from middleware is fine.
-- Mount an `ErrorBoundary` on a **child** route, not on the layout whose chrome should survive the error — a layout-level boundary replaces that layout. Public 404s go through `public-layout.tsx` + the `*` route, manager 404s through `manager/not-found.tsx` and `championship.tsx`.
+- Mount an `ErrorBoundary` on a **child** route, not on the layout whose chrome should survive the error — a layout-level boundary replaces that layout. Public 404s go through `public/_layout.tsx` + the `*` route, manager 404s through `manager/_not-found.tsx` and `manager/championship/_layout.tsx`.
 
 ## Docs
 

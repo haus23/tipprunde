@@ -3,7 +3,7 @@ import { getExtraQuestions } from "#/lib/extra-questions.server.ts";
 import { getRanking } from "#/lib/ranking.server.ts";
 
 import type { Route } from "./+types/index";
-import { QuestionBlock } from "./question-block.tsx";
+import { QuestionBlock } from "./_question-block.tsx";
 
 export async function loader({ context }: Route.LoaderArgs) {
   const championship = context.get(publicChampionshipContext);

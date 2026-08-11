@@ -19,7 +19,7 @@ import { clearCookieHeader, cookieHeader, getCookie } from "#/lib/cookies.server
 import { isManager } from "#/lib/session.server.ts";
 import { usePageTitle } from "#/lib/utils.ts";
 
-import type { Route } from "./+types/manager-layout";
+import type { Route } from "./+types/_layout";
 
 /** The session itself is resolved by the root middleware — this only gates on role. */
 const authMiddleware: Route.MiddlewareFunction = ({ url, context }) => {

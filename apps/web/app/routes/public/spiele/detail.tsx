@@ -11,8 +11,8 @@ import { getMatch, getRounds } from "#/lib/spiele.server.ts";
 import { formatDate } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/detail";
-import { MatchSwitch } from "./match-switch.tsx";
-import { type SortCol, type SortDir, SortableTh } from "./sortable-th.tsx";
+import { MatchSwitch } from "./_match-switch.tsx";
+import { type SortCol, type SortDir, SortableTh } from "./_sortable-th.tsx";
 
 const navLinkClass =
   "text-subtle hover:text-app focus-visible:ring-accent flex items-center gap-1 rounded-sm outline-none transition-colors focus-visible:ring-2";
