@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.23.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.23.2...v0.23.3)
+
+### 💅 Refactors
+
+- **web:** Mirror the URL tree in the routes folder. ([eabb891](https://github.com/haus23/tipprunde/commit/eabb891))
+
+### 🏡 Chore
+
+- Update toolchain (editor and pnpm). ([c13d5b1](https://github.com/haus23/tipprunde/commit/c13d5b1))
+
 ## v0.23.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.23.1...v0.23.2)
