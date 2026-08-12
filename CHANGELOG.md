@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.24.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.23.3...v0.24.0)
+
+### 🩹 Fixes
+
+- **web:** Keep the manager shell when its own pages error. ([7ec840a](https://github.com/haus23/tipprunde/commit/7ec840a))
+
+### 💅 Refactors
+
+- Give components a home based on who uses them. ([9cb0d2a](https://github.com/haus23/tipprunde/commit/9cb0d2a))
+- **web:** Tidy lib without scattering it. ([fa7dbf3](https://github.com/haus23/tipprunde/commit/fa7dbf3))
+
+### 🏡 Chore
+
+- **web:** Update deps. ([3e21918](https://github.com/haus23/tipprunde/commit/3e21918))
+
 ## v0.23.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.23.2...v0.23.3)
