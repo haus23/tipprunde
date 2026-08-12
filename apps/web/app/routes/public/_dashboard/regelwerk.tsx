@@ -1,7 +1,7 @@
 import { hasExtraQuestions } from "@tipprunde/domain/ranking";
 import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
 
-import type { Ruleset } from "#/lib/spieler.server.ts";
+import type { Ruleset } from "#/lib/championship.server.ts";
 
 import { SectionHeading } from "./section-heading.tsx";
 import { SectionLink } from "./section-link.tsx";

@@ -1,7 +1,7 @@
 import { loginCodes } from "@tipprunde/db/schema";
 import { eq } from "drizzle-orm";
 
-import { db } from "./db.server";
+import { db } from "#/lib/db.server.ts";
 
 const APP_SECRET = process.env["APP_SECRET"]!;
 const RESEND_API_KEY = process.env["RESEND_API_KEY"]!;
@@ -54,7 +54,7 @@ export async function createLoginCode(userId: number): Promise<string> {
   return code;
 }
 
-export type VerifyResult = "valid" | "invalid" | "expired" | "max_attempts" | "error";
+type VerifyResult = "valid" | "invalid" | "expired" | "max_attempts" | "error";
 
 export async function verifyLoginCode(userId: number, code: string): Promise<VerifyResult> {
   const record = await db.query.loginCodes.findFirst({ where: { userId } });

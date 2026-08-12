@@ -1,8 +1,8 @@
 import { getArchivPreview } from "#/lib/archiv.server.ts";
+import { getRuleset } from "#/lib/championship.server.ts";
 import { publicChampionshipContext, userContext } from "#/lib/context.ts";
 import { getRanking } from "#/lib/ranking.server.ts";
 import { getCurrentMatches } from "#/lib/spiele.server.ts";
-import { getRuleset } from "#/lib/spieler.server.ts";
 
 import type { Route } from "./+types/index";
 import { ChampionshipArchivPreview } from "./_dashboard/archiv-preview.tsx";

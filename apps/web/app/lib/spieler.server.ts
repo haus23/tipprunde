@@ -29,16 +29,3 @@ export async function getPlayerMatches(championshipId: number, userId: number) {
 }
 
 export type PlayerRound = Awaited<ReturnType<typeof getPlayerMatches>>[number];
-export type PlayerMatch = PlayerRound["matches"][number];
-
-/** The championship's ruleset — the public views only need its rule ids. */
-export async function getRuleset(championshipId: number) {
-  const championship = await db.query.championships.findFirst({
-    where: { id: championshipId },
-    columns: { id: true },
-    with: { ruleset: true },
-  });
-  return championship?.ruleset ?? null;
-}
-
-export type Ruleset = NonNullable<Awaited<ReturnType<typeof getRuleset>>>;

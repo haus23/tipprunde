@@ -29,7 +29,7 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 - An `_` prefix marks a file that is **not a page of its own** — `_layout.tsx`, `_not-found.tsx`, and co-located private components like `spiele/_match-switch.tsx`. Anything without it is a URL you can visit
 - `routes/public/_layout.tsx` — The public shell: header, nav, color-scheme toggle, user area; its `ErrorBoundary` renders 404s inside the shell
 - `routes/manager/_layout.tsx` — The manager shell: sidebar, mobile nav, championship switcher, role gate + championship middleware
-- `lib/` — Server-only utilities (`*.server.ts`): `session`, `auth` (TOTP), `db`, `championship`, `cookies`, `lock`, `ranking`, plus the per-view query modules `archiv`, `spiele`, `spieler`, `extra-questions`. Isomorphic: `context.ts`, `color-scheme.ts`, `utils.ts`
+- `lib/` — Server-only utilities (`*.server.ts`): `session`, `db`, `championship` (incl. `getRuleset`), `cookies`, `lock`, `ranking`, plus the per-view query modules `archiv`, `spiele`, `spieler`, `extra-questions`. Isomorphic: `context.ts`, `color-scheme.ts`, `utils.ts`. Kept as the one place showing every DB touchpoint — query modules stay here even when a single route uses them; the TOTP flow is not a query module and lives beside `/login`
 - `components/` — Only components used from **more than one route folder**. Anything used by a single route (or only by its layout) lives beside it as an `_`-prefixed file; generic primitives with no app/router/domain imports belong in `@tipprunde/ui`
 - `routes/` — Route handlers (loaders + actions + UI)
 

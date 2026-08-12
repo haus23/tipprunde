@@ -1,6 +1,7 @@
+import { getRuleset } from "#/lib/championship.server.ts";
 import { publicChampionshipContext, userContext } from "#/lib/context.ts";
 import { getRanking, type RankedPlayer, resolvePlayer } from "#/lib/ranking.server.ts";
-import { getPlayerMatches, getRuleset, type PlayerRound } from "#/lib/spieler.server.ts";
+import { getPlayerMatches, type PlayerRound } from "#/lib/spieler.server.ts";
 
 import type { Route } from "./+types/index";
 import { PlayerSwitch } from "./_player-switch.tsx";

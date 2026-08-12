@@ -3,12 +3,6 @@ import { ArrowLeftIcon } from "lucide-react";
 import { data, Form, redirect, useNavigation } from "react-router";
 import * as v from "valibot";
 
-import {
-  createLoginCode,
-  findUserByEmail,
-  sendLoginCodeEmail,
-  verifyLoginCode,
-} from "#/lib/auth.server.ts";
 import { userContext } from "#/lib/context.ts";
 import {
   commitSession,
@@ -18,6 +12,12 @@ import {
 } from "#/lib/session.server.ts";
 
 import type { Route } from "./+types/login";
+import {
+  createLoginCode,
+  findUserByEmail,
+  sendLoginCodeEmail,
+  verifyLoginCode,
+} from "./_auth.server.ts";
 
 const emailSchema = v.pipe(v.string(), v.trim(), v.email());
 const codeSchema = v.pipe(v.string(), v.trim(), v.regex(/^\d{6}$/));
