@@ -83,6 +83,7 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
             <div className="col-start-1 flex items-center">
               <Link
                 to="/"
+                prefetch="intent"
                 className="focus-visible:ring-accent flex items-center gap-2 rounded px-1 pb-0.5 outline-none focus-visible:ring-2"
               >
                 <span className="text-accent size-8">

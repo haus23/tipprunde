@@ -22,6 +22,7 @@ export default function ArchivChampionship({ loaderData }: Route.ComponentProps)
       <div className="mb-6 flex flex-col items-center gap-2">
         <Link
           to="/archiv"
+          prefetch="intent"
           className="text-subtle hover:text-app focus-visible:ring-accent mb-1 flex items-center gap-1 rounded-sm text-xs transition-colors outline-none focus-visible:ring-2"
         >
           <ChevronLeftIcon className="size-3" />

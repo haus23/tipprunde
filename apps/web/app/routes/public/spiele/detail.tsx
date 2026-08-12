@@ -125,7 +125,7 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
     <div className="mx-auto w-full max-w-4xl py-8">
       <title>{`Spiele · ${championshipName} · runde.tips`}</title>
       <div className="xs:px-0 relative flex flex-col items-center gap-2 px-4 md:mb-6">
-        <Link to="/spiele" className={cx(navLinkClass, "mb-1 self-auto text-xs")}>
+        <Link to="/spiele" prefetch="intent" className={cx(navLinkClass, "mb-1 self-auto text-xs")}>
           <ChevronLeftIcon className="size-3" />
           Spielübersicht
         </Link>
@@ -141,6 +141,7 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
           {match.prevNr !== null ? (
             <Link
               to={`/spiele/${match.prevNr}`}
+              prefetch="intent"
               className={cx(navLinkClass, "xs:ml-4 pointer-events-auto text-sm")}
             >
               <ChevronLeftIcon className="size-4" />
@@ -152,6 +153,7 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
           {match.nextNr !== null && (
             <Link
               to={`/spiele/${match.nextNr}`}
+              prefetch="intent"
               className={cx(navLinkClass, "xs:mr-4 pointer-events-auto text-sm")}
             >
               Nächstes

@@ -103,3 +103,26 @@ When docked, chat and the main column sit side by side, so the outer shell max-w
 **content-max + chat-width**, not just content-max. If main content caps around
 `max-w-5xl` (1024px), the shell with the rail wants ~**1360–1400px** total, so the pair
 stays centred as a unit on ultra-wide screens rather than the chat drifting to the edge.
+
+## Perceived performance
+
+RR8 Framework Mode gives route-level code splitting and single-fetch navigation for
+free. On top of that, every navigational `<Link>`/`<NavLink>` outside `/manager` sets
+`prefetch="intent"` (hover/focus triggers the route module + loader fetch ahead of the
+click) — nav items, the header logo, dashboard section links, and the Spiele
+prev/next/back links. `NavigationProgress` is deliberately delayed so a prefetched nav
+doesn't flash a spinner it doesn't need — see its own comment.
+
+Further additions were considered and deliberately left out for now — low stakes at
+this traffic scale (a friends' pool on Turso SQLite), revisit if a page ever feels slow:
+
+- **`headers()` / `Cache-Control` on loaders.** Nothing sets one today, so every visit
+  re-queries Turso even for content that can't change (a completed Archiv championship).
+  Cheapest lever left on the table if it's ever worth pulling.
+- **Streaming (`Suspense`/`Await`/`defer`).** Not needed yet — the dashboard loader
+  already runs its four queries with `Promise.all`, and nothing is slow enough to want
+  unblocking the shell for.
+- **`clientLoader` / `shouldRevalidate` tuning.** Every navigation revalidates
+  everything, including near-static reference data (teams, rulesets).
+- **`viewTransition`.** About perceived smoothness (animated swap vs. hard cut), not
+  load latency — unwired on any link.
