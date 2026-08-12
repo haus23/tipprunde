@@ -2,11 +2,11 @@ import {
   extraAnswers as extraAnswersTable,
   extraQuestions as extraQuestionsTable,
 } from "@tipprunde/db/schema";
-import { Button, Card, CardContent, Disclosure, Input } from "@tipprunde/ui";
+import { Button, Card, CardContent, Disclosure, Input, cx } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { PlusIcon, XIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { Button as RACButton, Input as RACInput, TextField } from "react-aria-components";
+import { useState } from "react";
+import { Button as RACButton, TextField } from "react-aria-components";
 import { useFetcher } from "react-router";
 
 import { championshipContext } from "#/lib/context.ts";
@@ -230,19 +230,22 @@ function formatPoints(points: number): string {
 
 // --- Question card ---
 
-function QuestionCard({ question, players }: { question: Question; players: EnrolledPlayer[] }) {
+function QuestionCard({
+  index,
+  question,
+  players,
+}: {
+  index: number;
+  question: Question;
+  players: EnrolledPlayer[];
+}) {
   const fetcher = useFetcher();
   const { isChampionshipClosed } = useLock();
-  const questionInputRef = useRef<HTMLInputElement>(null);
 
   const [questionText, setQuestionText] = useState(question.question);
   const [description, setDescription] = useState(question.description);
   const [answer, setAnswer] = useState(question.answer ?? "");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
-  useEffect(() => {
-    if (!question.question) questionInputRef.current?.focus();
-  }, []);
 
   function saveField(field: string, value: string) {
     void fetcher.submit(
@@ -263,27 +266,8 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
 
   return (
     <Card>
-      <div className="border-subtle flex items-start justify-between gap-3 border-b px-6 py-3">
-        <TextField
-          aria-label="Frage"
-          value={questionText}
-          onChange={setQuestionText}
-          onBlur={() => {
-            const trimmed = questionText.trim();
-            if (!trimmed) {
-              setQuestionText(question.question);
-              return;
-            }
-            if (trimmed !== question.question) saveField("question", trimmed);
-          }}
-          className="min-w-0 flex-1"
-        >
-          <RACInput
-            ref={questionInputRef}
-            placeholder="Frage eingeben ..."
-            className="placeholder:text-muted w-full bg-transparent text-sm font-semibold outline-none placeholder:font-normal"
-          />
-        </TextField>
+      <div className="border-subtle flex items-center justify-between gap-3 border-b px-6 py-3">
+        <h3 className="text-sm font-semibold">Zusatzfrage {index + 1}</h3>
         {!isChampionshipClosed && (
           <>
             {showDeleteConfirm ? (
@@ -319,6 +303,31 @@ function QuestionCard({ question, players }: { question: Question; players: Enro
 
       <CardContent>
         <div className="space-y-4">
+          {/* Question — required, flagged red while empty so a blank title can't hide */}
+          <div className="space-y-1.5">
+            <p className="text-muted text-xs font-medium tracking-wide uppercase">Frage</p>
+            {isChampionshipClosed ? (
+              <p className="text-sm">{question.question || "–"}</p>
+            ) : (
+              <TextField
+                aria-label="Frage"
+                isRequired
+                value={questionText}
+                onChange={setQuestionText}
+                onBlur={() => {
+                  const trimmed = questionText.trim();
+                  if (trimmed !== question.question) saveField("question", trimmed);
+                }}
+              >
+                <Input
+                  autoFocus={!question.question}
+                  placeholder="Frage eingeben ..."
+                  className={cx("w-full", !questionText.trim() && "border-error")}
+                />
+              </TextField>
+            )}
+          </div>
+
           {/* Description */}
           <div className="space-y-1.5">
             <p className="text-muted text-xs font-medium tracking-wide uppercase">Beschreibung</p>
@@ -543,8 +552,8 @@ export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
       ) : (
         <LockProvider isChampionshipClosed={championshipCompleted}>
           <div className="space-y-6">
-            {questions.map((q) => (
-              <QuestionCard key={q.id} question={q} players={players} />
+            {questions.map((q, i) => (
+              <QuestionCard key={q.id} index={i} question={q} players={players} />
             ))}
           </div>
         </LockProvider>
