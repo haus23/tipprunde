@@ -1,6 +1,6 @@
 import { data } from "react-router";
 
-import { ManagerErrorContent } from "#/components/manager-error.tsx";
+import { ManagerErrorContent } from "./_error-content.tsx";
 
 /**
  * Catch-all for unmatched `/manager/*` URLs. More specific than the public

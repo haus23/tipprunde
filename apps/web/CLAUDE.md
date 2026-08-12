@@ -30,7 +30,7 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 - `routes/public/_layout.tsx` — The public shell: header, nav, color-scheme toggle, user area; its `ErrorBoundary` renders 404s inside the shell
 - `routes/manager/_layout.tsx` — The manager shell: sidebar, mobile nav, championship switcher, role gate + championship middleware
 - `lib/` — Server-only utilities (`*.server.ts`): `session`, `auth` (TOTP), `db`, `championship`, `cookies`, `lock`, `ranking`, plus the per-view query modules `archiv`, `spiele`, `spieler`, `extra-questions`. Isomorphic: `context.ts`, `color-scheme.ts`, `utils.ts`
-- `components/` — Reusable React Aria UI components (dialogs, inputs, sidebar, card, filter, etc.)
+- `components/` — Only components used from **more than one route folder**. Anything used by a single route (or only by its layout) lives beside it as an `_`-prefixed file; generic primitives with no app/router/domain imports belong in `@tipprunde/ui`
 - `routes/` — Route handlers (loaders + actions + UI)
 
 **Authentication:** DB-backed sessions (`sessions` table); the `__auth` cookie is a signed RR `createCookieSessionStorage` cookie carrying _only_ the session id, so sessions stay revocable server-side. `getSessionUser()` in `lib/session.server.ts` resolves the user (any role, or null) and runs as **root middleware** — anonymous is fine for public routes. The `/manager` layout adds the role gate on top: no user → redirect to `/login`, wrong role → 403.

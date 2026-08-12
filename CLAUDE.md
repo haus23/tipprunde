@@ -11,7 +11,7 @@ pnpm workspace with one app and shared packages:
 - `packages/db` — Drizzle ORM schema + relations (SQLite/Turso)
 - `packages/domain` — Domain logic: scoring rules, tip point calculation
 - `packages/theme` — Shared Tailwind CSS v4 design tokens (Radix Sand + Orange palette)
-- `packages/ui` — Shared React components
+- `packages/ui` — Generic UI primitives. The package boundary is the point: nothing in here can import app code, the router or domain types
 
 ### Application (`apps/web`)
 

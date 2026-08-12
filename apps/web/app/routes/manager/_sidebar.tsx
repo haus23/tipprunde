@@ -18,7 +18,7 @@ import {
 import { Focusable, Tooltip, TooltipTrigger } from "react-aria-components";
 import { Form, Link, NavLink } from "react-router";
 
-import { useShell } from "#/components/shell-provider.tsx";
+import { useShell } from "./_shell-provider.tsx";
 
 const tooltipClass =
   "bg-inverted text-inverted rounded-sm px-2 py-1 text-xs shadow-popover transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0";

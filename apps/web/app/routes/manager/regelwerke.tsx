@@ -5,10 +5,10 @@ import { PencilIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import * as v from "valibot";
 
-import { RegelwerkDialog } from "#/components/regelwerk-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
 
 import type { Route } from "./+types/regelwerke";
+import { RegelwerkDialog } from "./_regelwerk-dialog.tsx";
 
 type Ruleset = typeof rulesets.$inferSelect;
 

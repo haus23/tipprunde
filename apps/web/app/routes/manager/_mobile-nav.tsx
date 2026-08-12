@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { Dialog, Modal, ModalOverlay } from "react-aria-components";
 import { Link, useLocation } from "react-router";
 
-import { useShell } from "#/components/shell-provider.tsx";
-import { SidebarNav } from "#/components/sidebar.tsx";
+import { useShell } from "./_shell-provider.tsx";
+import { SidebarNav } from "./_sidebar.tsx";
 
 type MobileNavProps = {
   slug: string | undefined;

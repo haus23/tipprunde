@@ -1,10 +1,10 @@
 import { data, Outlet } from "react-router";
 
-import { ManagerErrorContent } from "#/components/manager-error.tsx";
 import { getChampionshipBySlug } from "#/lib/championship.server.ts";
 import { championshipContext } from "#/lib/context.ts";
 import { cookieHeader } from "#/lib/cookies.server.ts";
 
+import { ManagerErrorContent } from "../_error-content.tsx";
 import type { Route } from "./+types/_layout";
 
 export const middleware: Route.MiddlewareFunction[] = [

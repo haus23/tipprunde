@@ -2,21 +2,20 @@ import {
   extraAnswers as extraAnswersTable,
   extraQuestions as extraQuestionsTable,
 } from "@tipprunde/db/schema";
-import { Button, Disclosure, Input } from "@tipprunde/ui";
+import { Button, Card, CardContent, Disclosure, Input } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { PlusIcon, XIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button as RACButton, Input as RACInput, TextField } from "react-aria-components";
 import { useFetcher } from "react-router";
 
-import { Card, CardContent } from "#/components/card.tsx";
-import { LockProvider, useLock } from "#/components/lock-provider.tsx";
 import { championshipContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
 
 import type { Route } from "./+types/zusatzfragen";
+import { LockProvider, useLock } from "./_lock-provider.tsx";
 
 export const handle = { title: "Zusatzfragen" };
 

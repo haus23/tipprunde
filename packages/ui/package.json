@@ -12,6 +12,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@internationalized/date": "^3.12.3",
     "cva": "1.0.0-beta.8",
     "lucide-react": "catalog:icons",
     "tailwind-merge": "catalog:tailwind"

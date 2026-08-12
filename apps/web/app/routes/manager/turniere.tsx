@@ -7,10 +7,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import * as v from "valibot";
 
-import { TurnierDialog } from "#/components/turnier-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
 
 import type { Route } from "./+types/turniere";
+import { TurnierDialog } from "./_turnier-dialog.tsx";
 
 type Championship = typeof championships.$inferSelect;
 type ChampionshipWithRuleset = Championship & { ruleset: { name: string } | null };

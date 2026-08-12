@@ -4,7 +4,7 @@ import {
   rounds as roundsTable,
   teams,
 } from "@tipprunde/db/schema";
-import { Button, Label } from "@tipprunde/ui";
+import { Button, Card, CardContent, DateField, Label } from "@tipprunde/ui";
 import { cx } from "@tipprunde/ui";
 import { desc, eq, max } from "drizzle-orm";
 import { PencilIcon, PlusIcon } from "lucide-react";
@@ -20,10 +20,7 @@ import {
 } from "react-aria-components";
 import { redirect, useFetcher, useNavigate } from "react-router";
 
-import { Card, CardContent } from "#/components/card.tsx";
-import { DateField } from "#/components/date-field.tsx";
 import { LigaDialog } from "#/components/liga-dialog.tsx";
-import { RoundNavigator } from "#/components/round-navigator.tsx";
 import { TeamDialog } from "#/components/team-dialog.tsx";
 import { championshipContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
@@ -31,6 +28,7 @@ import { getRound, isLocked } from "#/lib/lock.server.ts";
 import { formatDate } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/spiele";
+import { RoundNavigator } from "./_round-navigator.tsx";
 
 export const handle = { title: "Spiele" };
 

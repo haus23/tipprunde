@@ -1,13 +1,13 @@
-import { Button, Label } from "@tipprunde/ui";
+import { Button, Card, CardContent, Label } from "@tipprunde/ui";
 import { cx } from "@tipprunde/ui";
 import { UserPlusIcon, XIcon } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { ComboBox, Input, ListBox, ListBoxItem, Popover, useFilter } from "react-aria-components";
 import { useSubmit } from "react-router";
 
-import { Card, CardContent } from "./card";
-import { useLock } from "./lock-provider";
-import { SpielerDialog } from "./spieler-dialog";
+import { SpielerDialog } from "#/components/spieler-dialog.tsx";
+
+import { useLock } from "./_lock-provider.tsx";
 
 type User = {
   id: number;

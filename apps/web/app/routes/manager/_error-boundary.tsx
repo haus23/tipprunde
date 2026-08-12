@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 
-import { ManagerErrorContent } from "#/components/manager-error.tsx";
+import { ManagerErrorContent } from "./_error-content.tsx";
 
 /**
  * Pathless layout whose only job is to carry an ErrorBoundary for the manager's

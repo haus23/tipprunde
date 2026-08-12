@@ -4,11 +4,7 @@ import { MenuIcon, PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
 import { Suspense } from "react";
 import { data, Outlet, redirect } from "react-router";
 
-import { ChampionshipSwitcher } from "#/components/championship-switcher.tsx";
 import { ColorSchemeToggle } from "#/components/color-scheme-toggle.tsx";
-import { MobileNav } from "#/components/mobile-nav.tsx";
-import { ShellProvider, useShell } from "#/components/shell-provider.tsx";
-import { Sidebar } from "#/components/sidebar.tsx";
 import {
   getChampionshipBySlug,
   getChampionships,
@@ -20,6 +16,10 @@ import { isManager } from "#/lib/session.server.ts";
 import { usePageTitle } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/_layout";
+import { ChampionshipSwitcher } from "./_championship-switcher.tsx";
+import { MobileNav } from "./_mobile-nav.tsx";
+import { ShellProvider, useShell } from "./_shell-provider.tsx";
+import { Sidebar } from "./_sidebar.tsx";
 
 /** The session itself is resolved by the root middleware — this only gates on role. */
 const authMiddleware: Route.MiddlewareFunction = ({ url, context }) => {

@@ -1,20 +1,19 @@
 import { matches as matchesTable, tips as tipsTable } from "@tipprunde/db/schema";
 import { applyMatchRule, calcTipPoints, type TipRuleId } from "@tipprunde/domain/scoring";
-import { cx } from "@tipprunde/ui";
+import { Card, CardContent, cx } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { useRef, useState } from "react";
 import { Input, TextField } from "react-aria-components";
 import { redirect, useFetcher, useNavigate } from "react-router";
 
-import { Card, CardContent } from "#/components/card.tsx";
-import { LockProvider } from "#/components/lock-provider.tsx";
-import { RoundNavigator } from "#/components/round-navigator.tsx";
 import { championshipContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
 
 import type { Route } from "./+types/ergebnisse";
+import { LockProvider } from "./_lock-provider.tsx";
+import { RoundNavigator } from "./_round-navigator.tsx";
 
 export const handle = { title: "Ergebnisse" };
 

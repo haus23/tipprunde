@@ -1,6 +1,4 @@
 import { parseDate } from "@internationalized/date";
-import { Button, Label } from "@tipprunde/ui";
-import { cx } from "@tipprunde/ui";
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import {
   Calendar,
@@ -16,6 +14,10 @@ import {
   Group,
   Popover,
 } from "react-aria-components";
+
+import { cx } from "../lib/cva.ts";
+import { Button } from "./button.tsx";
+import { Label } from "./label.tsx";
 
 type DateFieldProps = {
   name: string;

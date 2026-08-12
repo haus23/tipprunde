@@ -8,14 +8,14 @@ import {
 } from "react-router";
 
 import { ColorSchemeToggle } from "#/components/color-scheme-toggle.tsx";
-import { NavigationProgress } from "#/components/navigation-progress.tsx";
-import { PublicNavLink } from "#/components/public-nav-link.tsx";
-import { UserArea } from "#/components/user-area.tsx";
 import type { User } from "#/lib/context.ts";
 import { userContext } from "#/lib/context.ts";
 import type { loader as rootLoader } from "#/root.tsx";
 
 import type { Route } from "./+types/_layout";
+import { PublicNavLink } from "./_nav-link.tsx";
+import { NavigationProgress } from "./_navigation-progress.tsx";
+import { UserArea } from "./_user-area.tsx";
 
 const navItems = [
   { to: "/tabelle", label: "Tabelle" },

@@ -1,6 +1,6 @@
+import { Card, CardContent } from "@tipprunde/ui";
 import { Link } from "react-router";
 
-import { Card, CardContent } from "#/components/card.tsx";
 import { db } from "#/lib/db.server.ts";
 
 import type { Route } from "./+types/start";
