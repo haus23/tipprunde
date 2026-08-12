@@ -98,7 +98,10 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       orderBy: { nr: "asc" },
     }),
     db.query.teams.findMany({
-      orderBy: { name: "asc" },
+      // Sorted by shortName, not name — see MatchComboBox: teams display and
+      // filter by shortName here, matching how the manager types them and the
+      // teams master-data list (routes/manager/teams.tsx).
+      orderBy: { shortName: "asc" },
     }),
     db.query.leagues.findMany({
       orderBy: { name: "asc" },
@@ -191,7 +194,11 @@ type MatchComboBoxProps = {
   onChange: (id: string | null) => void;
   onCreate?: () => void;
   placeholder?: string;
+  /** Field shown as the option's label and combobox text. Defaults to `name`. */
+  optionLabel?: (option: Team | League) => string;
 };
+
+const defaultOptionLabel = (option: Team | League) => option.name;
 
 function MatchComboBox({
   name,
@@ -201,6 +208,7 @@ function MatchComboBox({
   onChange,
   onCreate,
   placeholder,
+  optionLabel = defaultOptionLabel,
 }: MatchComboBoxProps) {
   return (
     <ComboBox
@@ -208,8 +216,10 @@ function MatchComboBox({
       value={value}
       onChange={(key) => onChange(key ? String(key) : null)}
       defaultFilter={(textValue, search) => {
-        const shortName = options.find((o) => o.name === textValue)?.shortName;
-        return [textValue, shortName]
+        // Matches on name and shortName regardless of which one is displayed,
+        // so typing either always finds the option.
+        const option = options.find((o) => optionLabel(o) === textValue);
+        return [option?.name, option?.shortName]
           .filter(Boolean)
           .join(" ")
           .toLocaleLowerCase()
@@ -243,8 +253,8 @@ function MatchComboBox({
       <Popover className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none">
         <ListBox items={options} className="max-h-60 overflow-y-auto p-1 outline-none">
           {(item) => (
-            <ListBoxItem id={item.id} textValue={item.name} className={listBoxItemClass}>
-              {item.name}
+            <ListBoxItem id={item.id} textValue={optionLabel(item)} className={listBoxItemClass}>
+              {optionLabel(item)}
             </ListBoxItem>
           )}
         </ListBox>
@@ -314,6 +324,7 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
             value={hometeamId}
             onChange={setHometeamId}
             onCreate={() => setCreateDialog("hometeam")}
+            optionLabel={(t) => t.shortName}
           />
 
           <MatchComboBox
@@ -324,6 +335,7 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
             value={awayteamId}
             onChange={setAwayteamId}
             onCreate={() => setCreateDialog("awayteam")}
+            optionLabel={(t) => t.shortName}
           />
         </div>
 
