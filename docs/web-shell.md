@@ -8,7 +8,8 @@ panel's docked/drawer behaviour. Breakpoint _values_ live in
 [tokens.md](./tokens.md); this doc describes how the shell uses them.
 
 Built today: header, nav, color-scheme toggle, user area. The chat panel is
-planned — see [chat-plan.md](./chat-plan.md).
+planned — see [chat-plan.md](./chat-plan.md). View Transitions were considered and
+postponed — see "View Transitions — postponed" below.
 
 ## Header contents (widest state)
 
@@ -124,5 +125,46 @@ this traffic scale (a friends' pool on Turso SQLite), revisit if a page ever fee
   unblocking the shell for.
 - **`clientLoader` / `shouldRevalidate` tuning.** Every navigation revalidates
   everything, including near-static reference data (teams, rulesets).
-- **`viewTransition`.** About perceived smoothness (animated swap vs. hard cut), not
-  load latency — unwired on any link.
+
+## View Transitions — postponed (2026-08-12)
+
+Considered, deliberately **not built**. About perceived smoothness (animated swap vs.
+hard cut) rather than load latency, so it's independent of the perceived-performance
+work above.
+
+**Constraint that shaped this:** the browser's `document.startViewTransition()` must
+wrap the exact moment the DOM swaps — it snapshots "old", runs a callback that
+synchronously mutates the DOM, then snapshots "new". For a page-to-page route change,
+only the router controls that moment. RR8's `unstable_viewTransition` (the `<Link
+viewTransition>` prop, `unstable_useViewTransitionState`) works only because RR8's
+client runtime has its own hands on that internal commit and wraps it in
+`flushSync(() => startViewTransition(...))` for you.
+
+The explicit ask was to build this **without** RR8's `viewTransition` API, since RR8
+plans to retire it once React's own `<ViewTransition>` component stabilizes (see
+[remix-run/react-router#15371](https://github.com/remix-run/react-router/discussions/15371)).
+This app also runs Framework Mode with the default client entry (no
+`entry.client.tsx`), so nothing outside RR8 has access to that commit moment —
+reimplementing route-level crossfades ourselves would mean either ejecting the client
+entry to reach into router internals (not simple, and fragile against future RR8
+changes), or using the very API we're trying to avoid.
+
+What _is_ fully reachable without any RR8 involvement: transitions on **local state
+this app already owns outright**, where the "moment" is just our own `setState` —
+`document.startViewTransition(() => flushSync(() => setX(next)))` needs no framework
+hook at all. Candidates, if this gets picked back up: the color-scheme toggle
+(crossfade instead of a hard flip), the manager sidebar collapse, the Spiele match
+accordion, Disclosure/popover open-close.
+
+Three options were on the table when this was shelved:
+
+1. **Local UI transitions only** — the candidates above, zero RR8 coupling, nothing to
+   swap out later.
+2. **Eject `entry.client.tsx` for real route crossfades** — reach into the router
+   directly. Gets page-to-page transitions but adds a maintained file the app
+   otherwise doesn't need, plus fragility against RR8 internals changing.
+3. **Use RR8's `viewTransition` prop anyway** — simplest code today, but it's exactly
+   the API this was meant to avoid.
+
+No option was chosen — revisit by rereading this section, not by re-deriving the
+constraint above.
