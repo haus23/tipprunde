@@ -28,7 +28,18 @@ export default [
   ]),
 
   route("manager", "routes/manager/_layout.tsx", [
-    index("routes/manager/index.tsx"),
+    // Pathless — carries the ErrorBoundary for the manager's own pages so an
+    // error keeps the shell. The championship subtree and the catch-all below
+    // bring their own; the endpoint has no UI to preserve.
+    layout("routes/manager/_error-boundary.tsx", [
+      index("routes/manager/index.tsx"),
+      route("ligen", "routes/manager/ligen.tsx"),
+      route("regelwerke", "routes/manager/regelwerke.tsx"),
+      route("spieler", "routes/manager/spieler.tsx"),
+      route("start", "routes/manager/start.tsx"),
+      route("teams", "routes/manager/teams.tsx"),
+      route("turniere", "routes/manager/turniere.tsx"),
+    ]),
     route(":slug", "routes/manager/championship/_layout.tsx", [
       index("routes/manager/championship/index.tsx"),
       route("ergebnisse/:nr?", "routes/manager/championship/ergebnisse.tsx"),
@@ -36,13 +47,7 @@ export default [
       route("tipps/:playerSlug?", "routes/manager/championship/tipps.tsx"),
       route("zusatzfragen", "routes/manager/championship/zusatzfragen.tsx"),
     ]),
-    route("ligen", "routes/manager/ligen.tsx"),
-    route("regelwerke", "routes/manager/regelwerke.tsx"),
     route("shell", "routes/_resources/manager-shell.tsx"),
-    route("spieler", "routes/manager/spieler.tsx"),
-    route("start", "routes/manager/start.tsx"),
-    route("teams", "routes/manager/teams.tsx"),
-    route("turniere", "routes/manager/turniere.tsx"),
     // Outranks the public splat, so /manager typos keep the manager shell.
     route("*", "routes/manager/_not-found.tsx"),
   ]),
