@@ -17,7 +17,7 @@ export default function ArchivRegelwerk({ loaderData }: Route.ComponentProps) {
     <>
       <title>{`Regelwerk · ${championship.name} · Archiv · runde.tips`}</title>
       {ruleset ? (
-        <ChampionshipRegelwerk ruleset={ruleset} />
+        <ChampionshipRegelwerk ruleset={ruleset} showHeading={false} />
       ) : (
         <p className="text-subtle py-16 text-center text-base">Kein Regelwerk hinterlegt.</p>
       )}

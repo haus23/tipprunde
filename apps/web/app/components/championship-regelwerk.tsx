@@ -13,9 +13,13 @@ import { SectionHeading } from "./section-heading.tsx";
  */
 export function ChampionshipRegelwerk({
   ruleset,
+  showHeading = true,
   children,
 }: {
   ruleset: Ruleset;
+  /** Archiv's own sub-nav already announces "Regelwerk" — repeating it as a
+   * heading right below the active nav item read as redundant there. */
+  showHeading?: boolean;
   children?: React.ReactNode;
 }) {
   const activeRules = RULE_CATEGORIES.flatMap(({ field, label, rules }) => {
@@ -27,7 +31,7 @@ export function ChampionshipRegelwerk({
 
   return (
     <section className="sm:mx-auto sm:max-w-lg">
-      <SectionHeading>Regelwerk</SectionHeading>
+      {showHeading && <SectionHeading>Regelwerk</SectionHeading>}
       <p className="text-subtle text-base">{ruleset.description}</p>
       <div className="mt-4 flex flex-col gap-3">
         {activeRules.map((rule) => (
