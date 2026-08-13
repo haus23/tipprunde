@@ -117,6 +117,24 @@ export async function getArchivChampionshipBySlug(slug: string) {
   return (await db.query.championships.findFirst({ where: { slug, completed: true } })) ?? null;
 }
 
+/** Nearest lower/higher completed championship by nr — null at the ends. */
+export async function getAdjacentArchivChampionships(nr: number) {
+  const [prev, next] = await Promise.all([
+    db.query.championships.findFirst({
+      where: { nr: { lt: nr }, completed: true },
+      orderBy: { nr: "desc" },
+      columns: { slug: true, name: true },
+    }),
+    db.query.championships.findFirst({
+      where: { nr: { gt: nr }, completed: true },
+      orderBy: { nr: "asc" },
+      columns: { slug: true, name: true },
+    }),
+  ]);
+
+  return { prev: prev ?? null, next: next ?? null };
+}
+
 /** A completed championship's final ranking. */
 export async function getArchivRanking(championshipId: number): Promise<RankedPlayer[]> {
   const playerRows = await db.query.players.findMany({
