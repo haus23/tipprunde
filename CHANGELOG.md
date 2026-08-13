@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.25.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.25.0...v0.25.1)
+
+### 🚀 Enhancements
+
+- **web:** Split Archiv championship into Abschlusstabelle/Regelwerk ([11ef354](https://github.com/haus23/tipprunde/commit/11ef354))
+
+### 🩹 Fixes
+
+- **web:** Drop redundant Regelwerk heading on the Archiv sub-page ([74a3cd6](https://github.com/haus23/tipprunde/commit/74a3cd6))
+
 ## v0.25.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.24.0...v0.25.0)
