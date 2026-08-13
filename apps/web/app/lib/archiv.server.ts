@@ -108,16 +108,19 @@ export async function getEwigeTabelle() {
   });
 }
 
-/** One completed championship with its final ranking. */
-export async function getArchivChampionship(slug: string) {
-  const championship = await db.query.championships.findFirst({
-    where: { slug, completed: true },
-    columns: { id: true, slug: true, name: true, extraQuestionPointsPublished: true },
-  });
-  if (!championship) return null;
+/**
+ * One completed championship by slug — resolved once by the Archiv's layout
+ * route and shared with its child routes (tabelle, regelwerk) via context,
+ * the same pattern as `_championship-layout.tsx`.
+ */
+export async function getArchivChampionshipBySlug(slug: string) {
+  return (await db.query.championships.findFirst({ where: { slug, completed: true } })) ?? null;
+}
 
+/** A completed championship's final ranking. */
+export async function getArchivRanking(championshipId: number): Promise<RankedPlayer[]> {
   const playerRows = await db.query.players.findMany({
-    where: { championshipId: championship.id },
+    where: { championshipId },
     columns: {
       userId: true,
       rank: true,
@@ -129,7 +132,7 @@ export async function getArchivChampionship(slug: string) {
     with: { user: { columns: { name: true, slug: true } } },
   });
 
-  const ranking: RankedPlayer[] = playerRows
+  return playerRows
     .filter((p) => p.rank !== null)
     .map((p) => ({
       userId: p.userId,
@@ -142,6 +145,4 @@ export async function getArchivChampionship(slug: string) {
       rank: p.rank!,
     }))
     .sort((a, b) => a.rank - b.rank);
-
-  return { championship, ranking };
 }

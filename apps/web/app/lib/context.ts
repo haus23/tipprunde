@@ -14,3 +14,6 @@ export const championshipContext = createContext<Championship>();
 
 /** The public site's championship — latest published one, null if none is. */
 export const publicChampionshipContext = createContext<Championship | null>(null);
+
+/** The Archiv's championship (by :slug) — null if the slug is unknown. */
+export const archivChampionshipContext = createContext<Championship | null>(null);

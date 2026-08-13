@@ -1,20 +1,28 @@
-import { hasExtraQuestions } from "@tipprunde/domain/ranking";
 import { RULE_CATEGORIES } from "@tipprunde/domain/rules";
 
 import type { Ruleset } from "#/lib/championship.server.ts";
 
 import { SectionHeading } from "./section-heading.tsx";
-import { SectionLink } from "./section-link.tsx";
 
-export function ChampionshipRegelwerk({ ruleset }: { ruleset: Ruleset }) {
+/**
+ * Shared between the dashboard (current championship) and the Archiv
+ * (completed ones) — kept free of any route-specific assumptions. The
+ * dashboard's own "Zusatzfragen →" link is passed in as children rather than
+ * hardcoded here, since that route only ever shows the *current* season's
+ * questions and would be wrong to link to from an archived one.
+ */
+export function ChampionshipRegelwerk({
+  ruleset,
+  children,
+}: {
+  ruleset: Ruleset;
+  children?: React.ReactNode;
+}) {
   const activeRules = RULE_CATEGORIES.flatMap(({ field, label, rules }) => {
     const ruleId = ruleset[field];
     if (!ruleId || ruleId === "keine-besonderheiten") return [];
     const rule = rules.find((r) => r.value === ruleId);
     return rule ? [{ label, description: rule.description }] : [];
-  });
-  const showExtraQuestions = hasExtraQuestions({
-    extraQuestionRuleId: ruleset.extraQuestionRuleId,
   });
 
   return (
@@ -29,11 +37,7 @@ export function ChampionshipRegelwerk({ ruleset }: { ruleset: Ruleset }) {
           </div>
         ))}
       </div>
-      {showExtraQuestions && (
-        <div className="mt-4 flex justify-end">
-          <SectionLink to="/zusatzfragen">Zusatzfragen →</SectionLink>
-        </div>
-      )}
+      {children}
     </section>
   );
 }

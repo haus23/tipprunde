@@ -1,8 +1,8 @@
 import { CellLink } from "#/components/cell-link.tsx";
+import { SectionHeading } from "#/components/section-heading.tsx";
 import type { CurrentMatch } from "#/lib/spiele.server.ts";
 import { formatDate } from "#/lib/utils.ts";
 
-import { SectionHeading } from "./section-heading.tsx";
 import { SectionLink } from "./section-link.tsx";
 
 export function ChampionshipCurrentMatches({

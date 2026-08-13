@@ -1,3 +1,6 @@
+import { hasExtraQuestions } from "@tipprunde/domain/ranking";
+
+import { ChampionshipRegelwerk } from "#/components/championship-regelwerk.tsx";
 import { getArchivPreview } from "#/lib/archiv.server.ts";
 import { getRuleset } from "#/lib/championship.server.ts";
 import { publicChampionshipContext, userContext } from "#/lib/context.ts";
@@ -7,7 +10,7 @@ import { getCurrentMatches } from "#/lib/spiele.server.ts";
 import type { Route } from "./+types/index";
 import { ChampionshipArchivPreview } from "./_dashboard/archiv-preview.tsx";
 import { ChampionshipCurrentMatches } from "./_dashboard/current-matches.tsx";
-import { ChampionshipRegelwerk } from "./_dashboard/regelwerk.tsx";
+import { SectionLink } from "./_dashboard/section-link.tsx";
 import { ChampionshipStandings } from "./_dashboard/standings.tsx";
 
 export async function loader({ context }: Route.LoaderArgs) {
@@ -72,7 +75,15 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
           />
           <ChampionshipCurrentMatches matches={matches} completed={championship.completed} />
         </div>
-        {ruleset && <ChampionshipRegelwerk ruleset={ruleset} />}
+        {ruleset && (
+          <ChampionshipRegelwerk ruleset={ruleset}>
+            {hasExtraQuestions({ extraQuestionRuleId: ruleset.extraQuestionRuleId }) && (
+              <div className="mt-4 flex justify-end">
+                <SectionLink to="/zusatzfragen">Zusatzfragen →</SectionLink>
+              </div>
+            )}
+          </ChampionshipRegelwerk>
+        )}
         {archiv.length > 0 && <ChampionshipArchivPreview championships={archiv} />}
       </div>
     </div>

@@ -12,7 +12,10 @@ export default [
     // Archiv spans all completed championships — it sits outside the
     // championship layout, which scopes everything to the current one.
     route("archiv", "routes/public/archiv/index.tsx"),
-    route("archiv/:slug", "routes/public/archiv/detail.tsx"),
+    route("archiv/:slug", "routes/public/archiv/_layout.tsx", [
+      index("routes/public/archiv/tabelle.tsx"),
+      route("regelwerk", "routes/public/archiv/regelwerk.tsx"),
+    ]),
     route("login", "routes/public/login.tsx"),
     layout("routes/public/_championship-layout.tsx", [
       index("routes/public/index.tsx"),
