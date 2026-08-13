@@ -1,5 +1,37 @@
 # Changelog
 
+## v0.25.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.24.0...v0.25.0)
+
+### 🚀 Enhancements
+
+- **web:** Show team shortName in the match combobox ([9af11ce](https://github.com/haus23/tipprunde/commit/9af11ce))
+- **web:** Swap Cloudflare Workers build for a custom Node server ([2d1659d](https://github.com/haus23/tipprunde/commit/2d1659d))
+
+### 🔥 Performance
+
+- **web:** Prefetch remaining public nav links on intent ([e186cd7](https://github.com/haus23/tipprunde/commit/e186cd7))
+
+### 🩹 Fixes
+
+- **web:** Require Zusatzfrage title, stop hiding it in the header ([057d4e9](https://github.com/haus23/tipprunde/commit/057d4e9))
+
+### 📖 Documentation
+
+- **web:** Record View Transitions as postponed ([7580c5f](https://github.com/haus23/tipprunde/commit/7580c5f))
+- Reframe Railway plan around the real prod landscape ([5e4a2a1](https://github.com/haus23/tipprunde/commit/5e4a2a1))
+- Record the live Railway deployment and how it's configured ([b65233f](https://github.com/haus23/tipprunde/commit/b65233f))
+
+### 📦 Build
+
+- Pin Node >=22.6 for --experimental-strip-types on Railway ([67a6c40](https://github.com/haus23/tipprunde/commit/67a6c40))
+- Drop redundant engines.node in favor of .node-version ([8487da1](https://github.com/haus23/tipprunde/commit/8487da1))
+
+### 🏡 Chore
+
+- Update node. ([590fe5a](https://github.com/haus23/tipprunde/commit/590fe5a))
+
 ## v0.24.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.23.3...v0.24.0)
