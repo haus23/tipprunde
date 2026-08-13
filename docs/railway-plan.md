@@ -1,22 +1,32 @@
 # Production Hosting — Railway Plan
 
-**Status: decided direction, not started (2026-07-30).** Replaces the earlier
+**Status: step 2 core deploy proven live (2026-08-13).** Replaces the earlier
 self-hosted Hetzner idea. Step 2 of the three-step sequence: **app merge
 ([app-merge.md](./app-merge.md)) → Railway → Turso→Litestream switch**. Each
 step ships independently:
 
-**Prerequisite, not yet done (2026-08-12): no Railway account/project exists
-yet.** Doesn't block branch work (problems 1–2 need only a laptop and Turso),
-but blocks anything that needs a real service — the restore test (problem 6),
-and settling the two deferred open questions below. Create it whenever, no
-rush forced by this doc.
+**Railway project exists (2026-08-13):** `tipprunde` service, branch
+`railway-node-build`, at `https://tipprunde.up.railway.app` — still against
+the **dev** Turso branch for now, deliberately (see "Data cutover" problem
+below; don't point this at the real backlog-entry DB until the service
+itself is proven over time). Verified end-to-end against the live URL:
+SSR render, 404 handling, the `/manager` → `/login` middleware redirect,
+and immutable-cached gzip assets — same checks as the local build, all
+correct. Root Directory is the repo root (not `apps/web` — required for
+pnpm workspace resolution), Build Command `pnpm --filter web build`, Start
+Command `pnpm --filter web start`. Railway auto-injects its own `PORT`;
+`server/app.ts` already trusts whatever it's given, so nothing to configure
+there — a manually-set `PORT` variable in the dashboard is dead weight, not
+a bug, if you see the container listening on a different port than you
+expected.
 
 1. ~~**App merge** — no infra change, ships on current CF hosting.~~
    **Done 2026-08-09**, live on the single `tipprunde` Worker, serving only
    `next.runde.tips` (see below — this did **not** touch real prod).
-2. **Railway move** ← next. No data-layer change: the merged app runs on
-   Railway **still against Turso** (`drizzle-orm/libsql/web` works from
-   anywhere).
+2. **Railway move** ← in progress. No data-layer change: the merged app runs
+   on Railway **still against Turso** (`drizzle-orm/libsql/web` works from
+   anywhere). Core deploy (problems 1–2) proven live, see above; problems
+   6–9 (restore test, DNS cutover) still ahead.
 3. **Turso → local SQLite + Litestream** — pure DB-layer change on stable
    hosting: volume, driver swap, Litestream, migration-workflow change.
 
