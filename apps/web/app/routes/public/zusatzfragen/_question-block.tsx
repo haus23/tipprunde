@@ -29,7 +29,10 @@ export function QuestionBlock({
         </div>
       }
       className="border-subtle border-b last:border-b-0"
-      summaryClassName="items-start"
+      // px-4 below xs so the summary prose clears the viewport edge like the
+      // rest of the site — and it lands at 16px, exactly where the body's own
+      // table text sits (body px-2 + cell px-2), so the two line up.
+      summaryClassName="items-start px-4 xs:px-3"
     >
       <table className="w-full text-base">
         <thead>
