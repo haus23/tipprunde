@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.25.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.25.1...v0.25.2)
+
+### 🚀 Enhancements
+
+- **web:** Prev/next championship navigation on the Archiv pages ([737b379](https://github.com/haus23/tipprunde/commit/737b379))
+
+### 🩹 Fixes
+
+- **web:** Give prose horizontal padding below the xs breakpoint ([fbf48c4](https://github.com/haus23/tipprunde/commit/fbf48c4))
+
 ## v0.25.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.25.0...v0.25.1)
