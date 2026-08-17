@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.25.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.25.2...v0.25.3)
+
+### 🩹 Fixes
+
+- **web:** Truncate prev/next championship names from the start ([223c5da](https://github.com/haus23/tipprunde/commit/223c5da))
+
 ## v0.25.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.25.1...v0.25.2)
