@@ -62,7 +62,12 @@ export default function ArchivChampionshipLayout({ loaderData }: Route.Component
               className={cx(navLinkClass, "xs:ml-4 pointer-events-auto max-w-[40%] text-sm")}
             >
               <ChevronLeftIcon className="size-4 shrink-0" />
-              <span className="truncate">{prev.name}</span>
+              {/* Truncates from the *start*, not the end: for names like
+                  "Rückrunde 2003/04", the distinguishing part is the trailing
+                  year — end-truncation crops exactly that. Flipping direction
+                  moves the ellipsis to the front while the (LTR) text content
+                  itself renders unaffected. */}
+              <span className="truncate text-left [direction:rtl]">{prev.name}</span>
             </Link>
           ) : (
             <span />
@@ -73,7 +78,7 @@ export default function ArchivChampionshipLayout({ loaderData }: Route.Component
               prefetch="intent"
               className={cx(navLinkClass, "xs:mr-4 pointer-events-auto max-w-[40%] text-sm")}
             >
-              <span className="truncate">{next.name}</span>
+              <span className="truncate text-left">{next.name}</span>
               <ChevronRightIcon className="size-4 shrink-0" />
             </Link>
           )}
