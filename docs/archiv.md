@@ -3,6 +3,16 @@
 The Archiv surfaces completed championships: a dashboard preview, a full list
 with an all-time table, and a final table per championship.
 
+> **Routing superseded by a decided plan (not yet built).** Reaching feature
+> parity with the current-season views (Zusatzfragen, Tipps, Spiele) would mean
+> duplicating them into a second route tree. Instead, the championship becomes
+> a URL dimension so both worlds share route files, and the dashboard becomes
+> the shared per-championship overview — including for archived seasons. The
+> Archiv sub-nav goes away; the header nav and a season switcher replace it.
+> See [championship-scope-plan.md](./championship-scope-plan.md). **The routes
+> described below are current-but-superseded**; the data design (materialized
+> ranking columns) is unaffected and stays valid.
+
 ## Status
 
 **Built** (2026-08, phases C6/C7 of the app merge).
