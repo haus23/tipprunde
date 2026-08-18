@@ -191,6 +191,17 @@ before its own step:
 
 - Migrate-on-boot vs `railway ssh` for schema migrations — step 3 only.
 - Proxied (orange cloud) vs DNS-only for the Railway CNAME — step 9 only.
+  **Note recorded 2026-08-20, decision still open:** CF stays in the path for
+  `runde.tips` regardless (it already owns the DNS), so if proxied is chosen,
+  CF's default edge cache already respects `Cache-Control` — which
+  `server/app.ts`'s `sirv` already sets to `public, max-age=31536000,
+immutable` on every hashed asset. Railway also has its own CDN (opt-in per
+  service; was fully disabled for a few months after a March 2026 incident,
+  back since ~July 2026 — see
+  [docs.railway.com/networking/cdn](https://docs.railway.com/networking/cdn)).
+  Running both would just stack two cache layers with no real upside beyond
+  one, plus a staleness-debugging surface neither alone has. If proxied wins,
+  the likely call is CF's cache only, Railway's CDN left off.
 
 Still genuinely open:
 
