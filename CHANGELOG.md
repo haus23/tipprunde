@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.26.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.25.3...v0.26.0)
+
+### 🚀 Enhancements
+
+- **web:** Scope public views to a championship, mount them twice ([4aff4a3](https://github.com/haus23/tipprunde/commit/4aff4a3))
+- **web:** Season switcher, unified visibility rule (steps 7-9) ([162309a](https://github.com/haus23/tipprunde/commit/162309a))
+
+### 🩹 Fixes
+
+- **web:** Center the Archiv link regardless of prev/next presence ([5414632](https://github.com/haus23/tipprunde/commit/5414632))
+- **web:** Prevent horizontal overflow in the Archiv nav bar below 480px ([6f213ac](https://github.com/haus23/tipprunde/commit/6f213ac))
+- **web:** Take the switcher trigger out of flow so the title stays centred ([76127c6](https://github.com/haus23/tipprunde/commit/76127c6))
+
+### 📖 Documentation
+
+- Design championship scope as a URL dimension ([c3a1d3c](https://github.com/haus23/tipprunde/commit/c3a1d3c))
+- Note that championship names never need a width guard ([41ba2d5](https://github.com/haus23/tipprunde/commit/41ba2d5))
+
 ## v0.25.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.25.2...v0.25.3)
