@@ -1,11 +1,11 @@
-import { publicChampionshipContext } from "#/lib/context.ts";
+import { viewedChampionshipContext } from "#/lib/context.ts";
 import { getRounds } from "#/lib/spiele.server.ts";
 
 import type { Route } from "./+types/index";
 import { SpieleRoundItem } from "./_round-item.tsx";
 
 export async function loader({ context }: Route.LoaderArgs) {
-  const championship = context.get(publicChampionshipContext);
+  const championship = context.get(viewedChampionshipContext);
   if (!championship) return { championshipName: null, rounds: [] };
 
   return { championshipName: championship.name, rounds: await getRounds(championship.id) };

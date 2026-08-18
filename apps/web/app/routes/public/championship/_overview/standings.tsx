@@ -1,4 +1,5 @@
 import { CellLink } from "#/components/cell-link.tsx";
+import { useScopedPath } from "#/components/championship-scope.tsx";
 import { SectionHeading } from "#/components/section-heading.tsx";
 import type { RankedPlayer } from "#/lib/ranking.server.ts";
 
@@ -13,6 +14,7 @@ export function ChampionshipStandings({
   completed: boolean;
   userId: number | undefined;
 }) {
+  const scoped = useScopedPath();
   const top3 = ranking.slice(0, 3);
   const userEntry = userId !== undefined ? ranking.find((e) => e.userId === userId) : undefined;
   const userBelowTop3 =
@@ -33,7 +35,7 @@ export function ChampionshipStandings({
                   {sharesRankAbove ? "" : entry.rank}
                 </td>
                 <td className={`py-2 ${isUser ? "text-accent" : ""}`}>
-                  <CellLink href={`/tipps/${entry.slug}`}>{entry.name}</CellLink>
+                  <CellLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</CellLink>
                 </td>
                 <td className="py-2 text-right font-medium tabular-nums">{entry.total}</td>
               </tr>
@@ -54,7 +56,9 @@ export function ChampionshipStandings({
                 {userBelowTop3.rank}
               </td>
               <td className="text-accent py-2">
-                <CellLink href={`/tipps/${userBelowTop3.slug}`}>{userBelowTop3.name}</CellLink>
+                <CellLink href={scoped(`/tipps/${userBelowTop3.slug}`)}>
+                  {userBelowTop3.name}
+                </CellLink>
               </td>
               <td className="py-2 text-right font-medium tabular-nums">{userBelowTop3.total}</td>
             </tr>
@@ -62,7 +66,7 @@ export function ChampionshipStandings({
         )}
       </table>
       <div className="mt-3 flex justify-end">
-        <SectionLink to="/tabelle">Vollständige Tabelle →</SectionLink>
+        <SectionLink to={scoped("/tabelle")}>Vollständige Tabelle →</SectionLink>
       </div>
     </section>
   );

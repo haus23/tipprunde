@@ -5,7 +5,8 @@ import { Link } from "react-router";
 
 import { CellFlag } from "#/components/cell-flag.tsx";
 import { CellLink } from "#/components/cell-link.tsx";
-import { publicChampionshipContext } from "#/lib/context.ts";
+import { useScopedPath } from "#/components/championship-scope.tsx";
+import { viewedChampionshipContext } from "#/lib/context.ts";
 import { getRanking } from "#/lib/ranking.server.ts";
 import { getMatch, getRounds } from "#/lib/spiele.server.ts";
 import { formatDate } from "#/lib/utils.ts";
@@ -54,7 +55,7 @@ function sortRows(rows: TipRow[], col: SortCol, dir: SortDir): TipRow[] {
 }
 
 export async function loader({ context, params }: Route.LoaderArgs) {
-  const championship = context.get(publicChampionshipContext);
+  const championship = context.get(viewedChampionshipContext);
   const nr = Number(params.nr);
 
   if (!championship || !Number.isInteger(nr)) {
@@ -72,6 +73,7 @@ export async function loader({ context, params }: Route.LoaderArgs) {
 
 export default function MatchDetail({ loaderData }: Route.ComponentProps) {
   const { championshipName, match, ranking, rounds } = loaderData;
+  const scoped = useScopedPath();
   const [sortCol, setSortCol] = useState<SortCol | null>(null);
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
@@ -125,7 +127,11 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
     <div className="mx-auto w-full max-w-4xl py-8">
       <title>{`Spiele · ${championshipName} · runde.tips`}</title>
       <div className="xs:px-0 relative flex flex-col items-center gap-2 px-4 md:mb-6">
-        <Link to="/spiele" prefetch="intent" className={cx(navLinkClass, "mb-1 self-auto text-xs")}>
+        <Link
+          to={scoped("/spiele")}
+          prefetch="intent"
+          className={cx(navLinkClass, "mb-1 self-auto text-xs")}
+        >
           <ChevronLeftIcon className="size-3" />
           Spielübersicht
         </Link>
@@ -140,7 +146,7 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
         <div className="xs:px-0 mt-2 mb-4 flex w-full justify-between md:pointer-events-none md:absolute md:inset-x-0 md:top-1/2 md:mt-0 md:mb-0 md:-translate-y-1/2">
           {match.prevNr !== null ? (
             <Link
-              to={`/spiele/${match.prevNr}`}
+              to={scoped(`/spiele/${match.prevNr}`)}
               prefetch="intent"
               className={cx(navLinkClass, "xs:ml-4 pointer-events-auto text-sm")}
             >
@@ -152,7 +158,7 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
           )}
           {match.nextNr !== null && (
             <Link
-              to={`/spiele/${match.nextNr}`}
+              to={scoped(`/spiele/${match.nextNr}`)}
               prefetch="intent"
               className={cx(navLinkClass, "xs:mr-4 pointer-events-auto text-sm")}
             >
@@ -201,7 +207,7 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
             {sortedRows.map((row) => (
               <tr key={row.userId} className="border-subtle border-b last:border-b-0">
                 <td className="xs:px-3 px-2 py-3 font-medium">
-                  <CellLink href={`/tipps/${row.slug}`}>{row.name}</CellLink>
+                  <CellLink href={scoped(`/tipps/${row.slug}`)}>{row.name}</CellLink>
                 </td>
                 {match.tipsPublished && (
                   <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">

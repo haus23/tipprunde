@@ -3,10 +3,12 @@ import {
   Link,
   Outlet,
   isRouteErrorResponse,
+  useLocation,
   useRouteError,
   useRouteLoaderData,
 } from "react-router";
 
+import { championshipBasePath } from "#/components/championship-scope.tsx";
 import { ColorSchemeToggle } from "#/components/color-scheme-toggle.tsx";
 import type { User } from "#/lib/context.ts";
 import { userContext } from "#/lib/context.ts";
@@ -73,6 +75,11 @@ export function ErrorBoundary() {
 }
 
 function PublicShell({ user, children }: { user: User | null; children: React.ReactNode }) {
+  // The nav follows whichever championship is in scope, so browsing an archived
+  // season stays in that season — the same way the manager sidebar keeps to
+  // /manager/:slug. Empty prefix outside any season (/archiv, /login, 404).
+  const basePath = championshipBasePath(useLocation().pathname);
+
   return (
     <>
       <NavigationProgress />
@@ -97,7 +104,7 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
             {/* Center: nav — always visible */}
             <nav className="col-start-2 flex h-full items-center justify-center gap-1">
               {navItems.map((item) => (
-                <PublicNavLink key={item.to} to={item.to}>
+                <PublicNavLink key={item.to} to={`${basePath}${item.to}`}>
                   {item.label}
                 </PublicNavLink>
               ))}

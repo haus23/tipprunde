@@ -7,24 +7,42 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
 //
 // Within each block: index first, then the dynamic section, then the static
 // pages alphabetically, then the catch-all.
+
+/**
+ * The championship-scoped public views, mounted **twice**: once for the running
+ * championship at the root, once per archived championship under /archiv/:slug.
+ *
+ * Same files both times — only the `id` differs, which is what lets React
+ * Router mount one module at two places. The views read the championship from
+ * `viewedChampionshipContext` and never learn which branch rendered them, so a
+ * new public feature is written once and appears in both.
+ *
+ * See docs/championship-scope-plan.md.
+ */
+const championshipViews = (id: string) => [
+  index("routes/public/championship/index.tsx", { id: `${id}-index` }),
+  route("regelwerk", "routes/public/championship/regelwerk.tsx", { id: `${id}-regelwerk` }),
+  route("spiele", "routes/public/championship/spiele/index.tsx", { id: `${id}-spiele` }),
+  route("spiele/:nr", "routes/public/championship/spiele/detail.tsx", { id: `${id}-match` }),
+  route("tabelle", "routes/public/championship/tabelle.tsx", { id: `${id}-tabelle` }),
+  // :playerSlug, not :slug — under /archiv/:slug the parent already owns
+  // `slug`, and an unmatched optional child param does not shadow it.
+  route("tipps/:playerSlug?", "routes/public/championship/tipps/index.tsx", {
+    id: `${id}-tipps`,
+  }),
+  route("zusatzfragen", "routes/public/championship/zusatzfragen/index.tsx", {
+    id: `${id}-zusatzfragen`,
+  }),
+];
+
 export default [
   layout("routes/public/_layout.tsx", [
-    // Archiv spans all completed championships — it sits outside the
-    // championship layout, which scopes everything to the current one.
+    // Archiv spans all championships — the index (list + Ewige Tabelle) sits
+    // outside any championship scope; :slug below opens one.
     route("archiv", "routes/public/archiv/index.tsx"),
-    route("archiv/:slug", "routes/public/archiv/_layout.tsx", [
-      index("routes/public/archiv/tabelle.tsx"),
-      route("regelwerk", "routes/public/archiv/regelwerk.tsx"),
-    ]),
+    route("archiv/:slug", "routes/public/archiv/_layout.tsx", championshipViews("archiv")),
     route("login", "routes/public/login.tsx"),
-    layout("routes/public/_championship-layout.tsx", [
-      index("routes/public/index.tsx"),
-      route("spiele", "routes/public/spiele/index.tsx"),
-      route("spiele/:nr", "routes/public/spiele/detail.tsx"),
-      route("tabelle", "routes/public/tabelle.tsx"),
-      route("tipps/:slug?", "routes/public/tipps/index.tsx"),
-      route("zusatzfragen", "routes/public/zusatzfragen/index.tsx"),
-    ]),
+    layout("routes/public/_championship-layout.tsx", championshipViews("current")),
     // Unmatched URLs render the 404 inside the public shell. Static siblings
     // (/manager, /logout, …) outrank the splat, so they are unaffected.
     route("*", "routes/public/_not-found.tsx"),

@@ -15,6 +15,8 @@ import {
 } from "react-aria-components";
 import { useNavigate } from "react-router";
 
+import { useScopedPath } from "#/components/championship-scope.tsx";
+
 interface SwitchMatch {
   nr: number;
   paarung: string;
@@ -46,6 +48,7 @@ const normalize = (s: string) =>
  */
 export function MatchSwitch({ rounds, currentNr }: Props) {
   const navigate = useNavigate();
+  const scoped = useScopedPath();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -82,7 +85,7 @@ export function MatchSwitch({ rounds, currentNr }: Props) {
               className="min-h-0 flex-1 overflow-auto px-1 pb-1 outline-none"
               onAction={(key) => {
                 setIsOpen(false);
-                void navigate(`/spiele/${key}`);
+                void navigate(scoped(`/spiele/${key}`));
               }}
             >
               {rounds.map((r) => (

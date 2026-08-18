@@ -6,6 +6,7 @@ import { useFetcher } from "react-router";
 
 import { CellFlag } from "#/components/cell-flag.tsx";
 import { CellLink } from "#/components/cell-link.tsx";
+import { useScopedPath } from "#/components/championship-scope.tsx";
 import type { RankedPlayer } from "#/lib/ranking.server.ts";
 import type { MatchdayTip } from "#/lib/spiele.server.ts";
 
@@ -14,14 +15,13 @@ export function RankingTable({
   showExtras,
   currentUserId,
   isOngoing,
-  linkPlayers = true,
 }: {
   ranking: RankedPlayer[];
   showExtras: boolean;
   currentUserId: number | undefined;
   isOngoing: boolean;
-  linkPlayers?: boolean;
 }) {
+  const scoped = useScopedPath();
   const showTotal = showExtras;
   return (
     <table className="w-full border-collapse text-base">
@@ -70,11 +70,7 @@ export function RankingTable({
                 {sharesRankAbove ? "" : entry.rank}
               </td>
               <td className={cx("xs:px-3 xs:py-3 px-2 py-2", isCurrentUser && "font-medium")}>
-                {linkPlayers ? (
-                  <CellLink href={`/tipps/${entry.slug}`}>{entry.name}</CellLink>
-                ) : (
-                  entry.name
-                )}
+                <CellLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</CellLink>
               </td>
               {showExtras && (
                 <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
@@ -106,6 +102,7 @@ export function RankingTable({
 }
 
 function MatchdayButton({ userId, name }: { userId: number; name: string }) {
+  const scoped = useScopedPath();
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLElement>(null);
@@ -215,7 +212,7 @@ function MatchdayButton({ userId, name }: { userId: number; name: string }) {
                 matches.map((m) => (
                   <tr key={m.nr} className="border-subtle border-b last:border-0">
                     <td className="py-1.5 pr-3">
-                      <CellLink href={`/spiele/${m.nr}`}>{m.paarungShort}</CellLink>
+                      <CellLink href={scoped(`/spiele/${m.nr}`)}>{m.paarungShort}</CellLink>
                     </td>
                     <td className="px-2 py-1.5 text-center tabular-nums">
                       <span className="relative">

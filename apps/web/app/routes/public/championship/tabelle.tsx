@@ -1,11 +1,11 @@
 import { RankingTable } from "#/components/ranking-table.tsx";
-import { publicChampionshipContext, userContext } from "#/lib/context.ts";
+import { viewedChampionshipContext, userContext } from "#/lib/context.ts";
 import { getRanking } from "#/lib/ranking.server.ts";
 
 import type { Route } from "./+types/tabelle";
 
 export async function loader({ context }: Route.LoaderArgs) {
-  const championship = context.get(publicChampionshipContext);
+  const championship = context.get(viewedChampionshipContext);
   const user = context.get(userContext);
 
   if (!championship) return { championship: null, ranking: [], currentUserId: user?.id };

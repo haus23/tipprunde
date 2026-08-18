@@ -3,6 +3,7 @@ import { useMemo } from "react";
 
 import { CellFlag } from "#/components/cell-flag.tsx";
 import { CellLink } from "#/components/cell-link.tsx";
+import { useScopedPath } from "#/components/championship-scope.tsx";
 import { RoundAccordion } from "#/components/round-accordion.tsx";
 import type { PlayerRound } from "#/lib/spieler.server.ts";
 import { formatDate } from "#/lib/utils.ts";
@@ -16,6 +17,7 @@ export function PlayerRoundItem({
   defaultOpen: boolean;
   hasDeviationRule: boolean;
 }) {
+  const scoped = useScopedPath();
   const matchesWithResult = round.matches.filter((m) => m.result !== null).length;
   const totalMatches = round.matches.length;
   const roundPoints = round.matches.reduce((sum, m) => sum + (m.tips[0]?.points ?? 0), 0);
@@ -68,13 +70,13 @@ export function PlayerRoundItem({
             return (
               <tr key={match.id} className="border-subtle border-b last:border-b-0">
                 <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
-                  <CellLink href={`/spiele/${match.nr}`}>{match.nr}</CellLink>
+                  <CellLink href={scoped(`/spiele/${match.nr}`)}>{match.nr}</CellLink>
                 </td>
                 <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
                   {match.date ? formatDate(match.date) : "–"}
                 </td>
                 <td className="xs:px-2 px-1 py-3">
-                  <CellLink href={`/spiele/${match.nr}`}>
+                  <CellLink href={scoped(`/spiele/${match.nr}`)}>
                     <span className="hidden sm:inline">
                       {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
                     </span>

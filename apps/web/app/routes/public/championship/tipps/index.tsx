@@ -1,5 +1,5 @@
 import { getRuleset } from "#/lib/championship.server.ts";
-import { publicChampionshipContext, userContext } from "#/lib/context.ts";
+import { viewedChampionshipContext, userContext } from "#/lib/context.ts";
 import { getRanking, type RankedPlayer, resolvePlayer } from "#/lib/ranking.server.ts";
 import { getPlayerMatches, type PlayerRound } from "#/lib/spieler.server.ts";
 
@@ -8,7 +8,7 @@ import { PlayerSwitch } from "./_player-switch.tsx";
 import { PlayerRoundItem } from "./_round-item.tsx";
 
 export async function loader({ context, params }: Route.LoaderArgs) {
-  const championship = context.get(publicChampionshipContext);
+  const championship = context.get(viewedChampionshipContext);
   const user = context.get(userContext);
 
   const empty = {
@@ -17,7 +17,7 @@ export async function loader({ context, params }: Route.LoaderArgs) {
     players: [] as { slug: string; name: string }[],
     rounds: [] as PlayerRound[],
     hasDeviationRule: false,
-    requestedSlug: params.slug,
+    requestedSlug: params.playerSlug,
     hasPlayers: false,
   };
 
@@ -29,7 +29,7 @@ export async function loader({ context, params }: Route.LoaderArgs) {
   ]);
 
   // No redirect — /tipps shows the resolved default player directly.
-  const player = resolvePlayer(ranking, params.slug, user?.id) ?? null;
+  const player = resolvePlayer(ranking, params.playerSlug, user?.id) ?? null;
 
   return {
     ...empty,

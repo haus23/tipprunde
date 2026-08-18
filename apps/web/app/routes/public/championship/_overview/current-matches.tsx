@@ -1,4 +1,5 @@
 import { CellLink } from "#/components/cell-link.tsx";
+import { useScopedPath } from "#/components/championship-scope.tsx";
 import { SectionHeading } from "#/components/section-heading.tsx";
 import type { CurrentMatch } from "#/lib/spiele.server.ts";
 import { formatDate } from "#/lib/utils.ts";
@@ -12,6 +13,7 @@ export function ChampionshipCurrentMatches({
   matches: CurrentMatch[];
   completed: boolean;
 }) {
+  const scoped = useScopedPath();
   return (
     <section className="flex flex-col">
       <SectionHeading>{completed ? "Letzte Spiele" : "Aktuelle Spiele"}</SectionHeading>
@@ -26,7 +28,7 @@ export function ChampionshipCurrentMatches({
                   {match.date ? formatDate(match.date) : "–"}
                 </td>
                 <td className="py-2">
-                  <CellLink href={`/spiele/${match.nr}`}>
+                  <CellLink href={scoped(`/spiele/${match.nr}`)}>
                     <span className="hidden lg:inline">{match.paarung}</span>
                     <span className="lg:hidden">{match.paarungShort}</span>
                   </CellLink>
@@ -40,7 +42,7 @@ export function ChampionshipCurrentMatches({
         </table>
       )}
       <div className="mt-3 flex justify-end">
-        <SectionLink to="/spiele">Komplette Übersicht →</SectionLink>
+        <SectionLink to={scoped("/spiele")}>Komplette Übersicht →</SectionLink>
       </div>
     </section>
   );

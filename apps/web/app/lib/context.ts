@@ -12,8 +12,12 @@ export const userContext = createContext<User | null>(null);
 /** The manager's working championship (switcher-driven, any publish state). */
 export const championshipContext = createContext<Championship>();
 
-/** The public site's championship — latest published one, null if none is. */
-export const publicChampionshipContext = createContext<Championship | null>(null);
-
-/** The Archiv's championship (by :slug) — null if the slug is unknown. */
-export const archivChampionshipContext = createContext<Championship | null>(null);
+/**
+ * The championship the public views are scoped to — the running one under `/`,
+ * an archived one under `/archiv/:slug`. Set by whichever branch layout
+ * matched, so the shared views below work identically in both.
+ *
+ * Nullable only because middleware runs before the layout's loader can reject:
+ * on a miss the layout loader throws, so the views may assert it non-null.
+ */
+export const viewedChampionshipContext = createContext<Championship | null>(null);

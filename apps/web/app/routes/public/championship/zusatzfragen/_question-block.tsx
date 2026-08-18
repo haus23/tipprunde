@@ -1,6 +1,7 @@
 import { Disclosure } from "@tipprunde/ui";
 
 import { CellLink } from "#/components/cell-link.tsx";
+import { useScopedPath } from "#/components/championship-scope.tsx";
 import type { ExtraQuestion } from "#/lib/extra-questions.server.ts";
 import type { RankedPlayer } from "#/lib/ranking.server.ts";
 
@@ -13,6 +14,7 @@ export function QuestionBlock({
   ranking: RankedPlayer[];
   pointsPublished: boolean;
 }) {
+  const scoped = useScopedPath();
   const answersByUser = new Map(question.extraAnswers.map((a) => [a.userId, a]));
 
   return (
@@ -48,7 +50,7 @@ export function QuestionBlock({
             return (
               <tr key={player.userId} className="border-subtle border-b last:border-b-0">
                 <td className="xs:px-3 px-2 py-3 font-medium">
-                  <CellLink href={`/tipps/${player.slug}`}>{player.name}</CellLink>
+                  <CellLink href={scoped(`/tipps/${player.slug}`)}>{player.name}</CellLink>
                 </td>
                 <td className="xs:px-3 px-2 py-3">{answer?.answer ?? "–"}</td>
                 <td className="xs:px-3 w-px px-2 py-3 text-center tabular-nums">
