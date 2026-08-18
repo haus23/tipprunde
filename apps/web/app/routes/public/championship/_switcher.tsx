@@ -23,6 +23,9 @@ interface SwitchChampionship {
 interface Props {
   championships: SwitchChampionship[];
   currentSlug: string;
+  /** Positions the trigger relative to a `relative` ancestor — see the two
+   * call sites in championship/index.tsx for why. */
+  triggerClassName?: string;
 }
 
 /** Diacritic-insensitive contains, so "ru" matches "Rückrunde". */
@@ -43,7 +46,7 @@ const normalize = (s: string) =>
  * file, per docs/championship-scope-plan.md. This is the only way in and out
  * of the Archiv; there is deliberately no header nav entry for it.
  */
-export function ChampionshipSwitcher({ championships, currentSlug }: Props) {
+export function ChampionshipSwitcher({ championships, currentSlug, triggerClassName }: Props) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,7 +54,7 @@ export function ChampionshipSwitcher({ championships, currentSlug }: Props) {
     <DialogTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
       <Button
         aria-label="Turnier wechseln"
-        className="text-subtle data-hovered:bg-nav-active data-hovered:text-app data-focus-visible:ring-accent flex size-7 items-center justify-center rounded-sm transition ease-out outline-none data-focus-visible:ring-2 data-pressed:scale-[0.97]"
+        className={`text-subtle data-hovered:bg-nav-active data-hovered:text-app data-focus-visible:ring-accent flex size-7 items-center justify-center rounded-sm transition ease-out outline-none data-focus-visible:ring-2 data-pressed:scale-[0.97] ${triggerClassName ?? ""}`}
       >
         <ChevronsUpDownIcon className="size-4" />
       </Button>

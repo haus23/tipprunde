@@ -59,28 +59,34 @@ export default function ChampionshipOverview({ loaderData }: Route.ComponentProp
       {/* The site identity belongs to the running season's landing page; an
           archived one gets the same heading shape as every other view. */}
       <div className="mb-10 flex flex-col items-center">
+        {/* relative + inline-block: the switcher trigger sits absolute,
+            outside the flow, so it can't push the name off-centre the way a
+            flex row of [name, button] would — the row's combined width, not
+            the text alone, is what a flex parent centres. */}
         {isArchived ? (
           <>
-            <div className="flex items-center gap-1">
-              <h1 className="text-2xl font-semibold tracking-tight">{championship.name}</h1>
+            <h1 className="relative inline-block text-2xl font-semibold tracking-tight">
+              {championship.name}
               <ChampionshipSwitcher
                 championships={switcherChampionships}
                 currentSlug={championship.slug}
+                triggerClassName="absolute left-full top-1/2 ml-1 -translate-y-1/2"
               />
-            </div>
+            </h1>
             <p className="text-subtle text-sm">Übersicht</p>
           </>
         ) : (
           <>
             <p className="text-subtle text-xs tracking-widest uppercase">Haus23</p>
             <h1 className="text-3xl font-semibold tracking-tight">Tipprunde</h1>
-            <div className="mt-1 flex items-center gap-1">
-              <p className="text-subtle text-lg">{championship.name}</p>
+            <p className="text-subtle relative mt-1 inline-block text-lg">
+              {championship.name}
               <ChampionshipSwitcher
                 championships={switcherChampionships}
                 currentSlug={championship.slug}
+                triggerClassName="absolute left-full top-1/2 ml-1 -translate-y-1/2"
               />
-            </div>
+            </p>
           </>
         )}
       </div>
