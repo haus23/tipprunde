@@ -41,9 +41,14 @@ export async function loader({ context }: Route.LoaderArgs) {
 
 export default function ArchivChampionshipLayout({ loaderData }: Route.ComponentProps) {
   const { slug, prev, next } = loaderData;
-  // Season switching keeps whichever view is open, rather than dropping back to
-  // the overview: /archiv/a/spiele → /archiv/b/spiele.
-  const rest = useLocation().pathname.replace(`/archiv/${slug}`, "");
+  // Season switching keeps whichever view is open, rather than dropping back
+  // to the overview: /archiv/a/tabelle → /archiv/b/tabelle. Match numbers are
+  // the one exception — unlike a player, a match number carries no meaning
+  // across seasons (match 38 of two different Rückrunden have nothing to do
+  // with each other), so it would resolve or 404 by coincidence rather than
+  // intent. Falls back to that season's Spiele overview instead.
+  const rawRest = useLocation().pathname.replace(`/archiv/${slug}`, "");
+  const rest = /^\/spiele\/\d+/.test(rawRest) ? "/spiele" : rawRest;
 
   return (
     <ChampionshipScopeProvider basePath={`/archiv/${slug}`}>
