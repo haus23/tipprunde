@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.26.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.26.1...v0.26.2)
+
+### 🩹 Fixes
+
+- **web:** Give focused answer rows room for their focus ring ([9607836](https://github.com/haus23/tipprunde/commit/9607836))
+
+### 📖 Documentation
+
+- Note CF-proxy vs Railway-CDN redundancy for the DNS decision ([0cbdb70](https://github.com/haus23/tipprunde/commit/0cbdb70))
+
 ## v0.26.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.26.0...v0.26.1)
