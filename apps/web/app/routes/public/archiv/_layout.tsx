@@ -55,7 +55,7 @@ export default function ArchivChampionshipLayout({ loaderData }: Route.Component
           <Link
             to={`/archiv/${prev.slug}${rest}`}
             prefetch="intent"
-            className={cx(navLinkClass, "max-w-[70%] text-sm")}
+            className={cx(navLinkClass, "min-w-0 max-w-[70%] text-sm")}
           >
             <ChevronLeftIcon className="size-4 shrink-0" />
             {/* Truncates from the start so the trailing year — the only part
@@ -79,7 +79,7 @@ export default function ArchivChampionshipLayout({ loaderData }: Route.Component
           <Link
             to={`/archiv/${next.slug}${rest}`}
             prefetch="intent"
-            className={cx(navLinkClass, "max-w-[70%] justify-end justify-self-end text-sm")}
+            className={cx(navLinkClass, "min-w-0 max-w-[70%] justify-end justify-self-end text-sm")}
           >
             <span className="truncate text-left">{next.name}</span>
             <ChevronRightIcon className="size-4 shrink-0" />
