@@ -1,5 +1,5 @@
 import { cx } from "@tipprunde/ui";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, FoldersIcon } from "lucide-react";
 import { data, Link, Outlet, useLocation } from "react-router";
 
 import { ChampionshipScopeProvider } from "#/components/championship-scope.tsx";
@@ -47,12 +47,15 @@ export default function ArchivChampionshipLayout({ loaderData }: Route.Component
 
   return (
     <ChampionshipScopeProvider basePath={`/archiv/${slug}`}>
-      <div className="xs:px-0 mx-auto flex w-full max-w-4xl items-center justify-between gap-3 px-4 pt-8">
+      {/* Grid, not flex+justify-between: a 3-column grid keeps "Archiv"
+          centred even when prev or next is absent — justify-between would
+          pull it toward whichever side still has content. */}
+      <div className="xs:px-0 mx-auto grid w-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 pt-8">
         {prev ? (
           <Link
             to={`/archiv/${prev.slug}${rest}`}
             prefetch="intent"
-            className={cx(navLinkClass, "max-w-[35%] text-sm")}
+            className={cx(navLinkClass, "max-w-[70%] text-sm")}
           >
             <ChevronLeftIcon className="size-4 shrink-0" />
             {/* Truncates from the start so the trailing year — the only part
@@ -63,7 +66,12 @@ export default function ArchivChampionshipLayout({ loaderData }: Route.Component
           <span />
         )}
 
-        <Link to="/archiv" prefetch="intent" className={cx(navLinkClass, "shrink-0 text-xs")}>
+        <Link
+          to="/archiv"
+          prefetch="intent"
+          className={cx(navLinkClass, "shrink-0 text-xs hover:underline")}
+        >
+          <FoldersIcon className="size-3.5 shrink-0" />
           Archiv
         </Link>
 
@@ -71,7 +79,7 @@ export default function ArchivChampionshipLayout({ loaderData }: Route.Component
           <Link
             to={`/archiv/${next.slug}${rest}`}
             prefetch="intent"
-            className={cx(navLinkClass, "max-w-[35%] justify-end text-sm")}
+            className={cx(navLinkClass, "max-w-[70%] justify-end justify-self-end text-sm")}
           >
             <span className="truncate text-left">{next.name}</span>
             <ChevronRightIcon className="size-4 shrink-0" />
