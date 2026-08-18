@@ -178,6 +178,15 @@ The switcher lives on the season title, not in the app header — the header has
 no room to spare next to the planned docked chat panel
 (see [web-shell.md](./web-shell.md)).
 
+**No width guard needed on the title.** Names follow exactly two shapes:
+`{Hin,Rück}runde JJJJ/JJ` (max 18 chars, e.g. "Rückrunde 2021/22") or
+`{EM,WM} JJJJ` (7 chars). Confirmed with the user (2026-08-19) — no other
+naming pattern exists or is planned. 18 chars is already the longest name in
+the dev data and doesn't overflow even at 320px, so the title needs no
+truncate/wrap/responsive-font treatment; the switcher trigger next to it is
+positioned out-of-flow (`absolute`, see `championship/index.tsx`) precisely so
+it never has to share that budget.
+
 ## Secondary content: routes, not modals
 
 Regelwerk and Zusatzfragen are secondary, but they stay **addressable routes**
