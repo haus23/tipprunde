@@ -29,3 +29,12 @@ export async function getPlayerMatches(championshipId: number, userId: number) {
 }
 
 export type PlayerRound = Awaited<ReturnType<typeof getPlayerMatches>>[number];
+
+/**
+ * A user by slug, independent of any championship — distinguishes "this
+ * player never played this season" from "this slug doesn't exist at all"
+ * on the Tipps view, which otherwise only sees players who *did* play.
+ */
+export async function findUserBySlug(slug: string) {
+  return db.query.users.findFirst({ where: { slug }, columns: { name: true, slug: true } });
+}

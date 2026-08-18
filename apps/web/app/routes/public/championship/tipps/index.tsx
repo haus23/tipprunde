@@ -1,7 +1,7 @@
 import { getRuleset } from "#/lib/championship.server.ts";
 import { viewedChampionshipContext, userContext } from "#/lib/context.ts";
 import { getRanking, type RankedPlayer, resolvePlayer } from "#/lib/ranking.server.ts";
-import { getPlayerMatches, type PlayerRound } from "#/lib/spieler.server.ts";
+import { findUserBySlug, getPlayerMatches, type PlayerRound } from "#/lib/spieler.server.ts";
 
 import type { Route } from "./+types/index";
 import { PlayerSwitch } from "./_player-switch.tsx";
@@ -19,6 +19,9 @@ export async function loader({ context, params }: Route.LoaderArgs) {
     hasDeviationRule: false,
     requestedSlug: params.playerSlug,
     hasPlayers: false,
+    // A real user who just didn't play this season, vs. an unknown slug —
+    // only resolved when a specific player was actually requested and missed.
+    requestedUserName: null as string | null,
   };
 
   if (!championship) return empty;
@@ -31,6 +34,9 @@ export async function loader({ context, params }: Route.LoaderArgs) {
   // No redirect — /tipps shows the resolved default player directly.
   const player = resolvePlayer(ranking, params.playerSlug, user?.id) ?? null;
 
+  const requestedUser =
+    !player && params.playerSlug ? await findUserBySlug(params.playerSlug) : null;
+
   return {
     ...empty,
     championshipName: championship.name,
@@ -39,12 +45,21 @@ export async function loader({ context, params }: Route.LoaderArgs) {
     rounds: player ? await getPlayerMatches(championship.id, player.userId) : [],
     hasDeviationRule: ruleset?.roundRuleId === "torabweichung-bonus-malus",
     hasPlayers: ranking.length > 0,
+    requestedUserName: requestedUser?.name ?? null,
   };
 }
 
 export default function Tipps({ loaderData }: Route.ComponentProps) {
-  const { championshipName, player, players, rounds, hasDeviationRule, requestedSlug, hasPlayers } =
-    loaderData;
+  const {
+    championshipName,
+    player,
+    players,
+    rounds,
+    hasDeviationRule,
+    requestedSlug,
+    hasPlayers,
+    requestedUserName,
+  } = loaderData;
 
   if (!championshipName) {
     return (
@@ -60,7 +75,11 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
       <div className="mx-auto w-full max-w-4xl py-8">
         <title>Spieler · runde.tips</title>
         <p className="text-subtle py-16 text-center text-base">
-          {hasPlayers ? `Kein Spieler mit dem Kürzel „${requestedSlug}".` : "Noch keine Spieler."}
+          {requestedUserName
+            ? `${requestedUserName} hat an diesem Turnier nicht teilgenommen.`
+            : hasPlayers
+              ? `Kein Spieler mit dem Kürzel „${requestedSlug}".`
+              : "Noch keine Spieler."}
         </p>
       </div>
     );
