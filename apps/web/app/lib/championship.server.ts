@@ -23,6 +23,20 @@ export async function getChampionships() {
   });
 }
 
+/**
+ * Every publicly visible championship, for the season switcher — same
+ * `published: true` rule as `getPublishedChampionship`. `completed` plays no
+ * part: it means "finished", not "hidden". See
+ * docs/championship-scope-plan.md.
+ */
+export async function getPublicChampionships() {
+  return db.query.championships.findMany({
+    where: { published: true },
+    orderBy: { nr: "desc" },
+    columns: { slug: true, name: true },
+  });
+}
+
 /** The championship's ruleset — the public views only need its rule ids. */
 export async function getRuleset(championshipId: number) {
   const championship = await db.query.championships.findFirst({

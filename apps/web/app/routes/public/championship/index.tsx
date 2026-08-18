@@ -2,7 +2,7 @@ import { hasExtraQuestions } from "@tipprunde/domain/ranking";
 
 import { ChampionshipRegelwerk } from "#/components/championship-regelwerk.tsx";
 import { useChampionshipScope, useScopedPath } from "#/components/championship-scope.tsx";
-import { getRuleset } from "#/lib/championship.server.ts";
+import { getPublicChampionships, getRuleset } from "#/lib/championship.server.ts";
 import { userContext, viewedChampionshipContext } from "#/lib/context.ts";
 import { getRanking } from "#/lib/ranking.server.ts";
 import { getCurrentMatches } from "#/lib/spiele.server.ts";
@@ -11,29 +11,45 @@ import type { Route } from "./+types/index";
 import { ChampionshipCurrentMatches } from "./_overview/current-matches.tsx";
 import { SectionLink } from "./_overview/section-link.tsx";
 import { ChampionshipStandings } from "./_overview/standings.tsx";
+import { ChampionshipSwitcher } from "./_switcher.tsx";
 
 export async function loader({ context }: Route.LoaderArgs) {
   // Non-null: the branch layout above throws when it cannot resolve one.
   const championship = context.get(viewedChampionshipContext)!;
   const user = context.get(userContext);
 
-  const [ranking, matches, ruleset] = await Promise.all([
+  const [ranking, matches, ruleset, publicChampionships] = await Promise.all([
     getRanking(championship.id),
     getCurrentMatches(championship.id),
     getRuleset(championship.id),
+    getPublicChampionships(),
   ]);
 
+  // Sorted nr desc — the first entry is the running championship, the only
+  // one the switcher links to "/" rather than its /archiv/<slug>.
+  const runningSlug = publicChampionships[0]?.slug;
+  const switcherChampionships = publicChampionships.map((c) => ({
+    slug: c.slug,
+    name: c.name,
+    href: c.slug === runningSlug ? "/" : `/archiv/${c.slug}`,
+  }));
+
   return {
-    championship: { name: championship.name, completed: championship.completed },
+    championship: {
+      slug: championship.slug,
+      name: championship.name,
+      completed: championship.completed,
+    },
     ranking,
     matches,
     ruleset,
     userId: user?.id,
+    switcherChampionships,
   };
 }
 
 export default function ChampionshipOverview({ loaderData }: Route.ComponentProps) {
-  const { championship, ranking, matches, ruleset, userId } = loaderData;
+  const { championship, ranking, matches, ruleset, userId, switcherChampionships } = loaderData;
   const scoped = useScopedPath();
   const { isArchived } = useChampionshipScope();
 
@@ -45,14 +61,26 @@ export default function ChampionshipOverview({ loaderData }: Route.ComponentProp
       <div className="mb-10 flex flex-col items-center">
         {isArchived ? (
           <>
-            <h1 className="text-2xl font-semibold tracking-tight">{championship.name}</h1>
+            <div className="flex items-center gap-1">
+              <h1 className="text-2xl font-semibold tracking-tight">{championship.name}</h1>
+              <ChampionshipSwitcher
+                championships={switcherChampionships}
+                currentSlug={championship.slug}
+              />
+            </div>
             <p className="text-subtle text-sm">Übersicht</p>
           </>
         ) : (
           <>
             <p className="text-subtle text-xs tracking-widest uppercase">Haus23</p>
             <h1 className="text-3xl font-semibold tracking-tight">Tipprunde</h1>
-            <p className="text-subtle mt-1 text-lg">{championship.name}</p>
+            <div className="mt-1 flex items-center gap-1">
+              <p className="text-subtle text-lg">{championship.name}</p>
+              <ChampionshipSwitcher
+                championships={switcherChampionships}
+                currentSlug={championship.slug}
+              />
+            </div>
           </>
         )}
       </div>

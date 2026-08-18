@@ -75,12 +75,17 @@ export async function getEwigeTabelle() {
 }
 
 /**
- * One completed championship by slug — resolved once by the Archiv's layout
- * route and shared with its child routes (tabelle, regelwerk) via context,
- * the same pattern as `_championship-layout.tsx`.
+ * A championship by slug, resolved once by the Archiv's layout route and
+ * shared with its child routes via context — same pattern as
+ * `_championship-layout.tsx`.
+ *
+ * `published`, not `completed`: visibility and "finished" are orthogonal
+ * (see docs/championship-scope-plan.md). The running championship is
+ * reachable this way too — a harmless coincidence, not a special case to
+ * guard against.
  */
 export async function getArchivChampionshipBySlug(slug: string) {
-  return (await db.query.championships.findFirst({ where: { slug, completed: true } })) ?? null;
+  return (await db.query.championships.findFirst({ where: { slug, published: true } })) ?? null;
 }
 
 /** Nearest lower/higher completed championship by nr — null at the ends. */

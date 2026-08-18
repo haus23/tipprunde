@@ -15,11 +15,14 @@ export function RankingTable({
   showExtras,
   currentUserId,
   isOngoing,
+  championshipId,
 }: {
   ranking: RankedPlayer[];
   showExtras: boolean;
   currentUserId: number | undefined;
   isOngoing: boolean;
+  /** Only needed while isOngoing — the matchday popover's own fetch. */
+  championshipId?: number;
 }) {
   const scoped = useScopedPath();
   const showTotal = showExtras;
@@ -90,7 +93,11 @@ export function RankingTable({
               </td>
               {isOngoing && (
                 <td className="xs:px-3 xs:py-3 py-2 pr-4">
-                  <MatchdayButton userId={entry.userId} name={entry.name} />
+                  <MatchdayButton
+                    userId={entry.userId}
+                    name={entry.name}
+                    championshipId={championshipId!}
+                  />
                 </td>
               )}
             </tr>
@@ -101,7 +108,15 @@ export function RankingTable({
   );
 }
 
-function MatchdayButton({ userId, name }: { userId: number; name: string }) {
+function MatchdayButton({
+  userId,
+  name,
+  championshipId,
+}: {
+  userId: number;
+  name: string;
+  championshipId: number;
+}) {
   const scoped = useScopedPath();
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -122,7 +137,7 @@ function MatchdayButton({ userId, name }: { userId: number; name: string }) {
   // Load once, the first time the popover opens.
   useEffect(() => {
     if (isOpen && fetcher.state === "idle" && fetcher.data === undefined) {
-      void fetcher.load(`/matchday-tips/${userId}`);
+      void fetcher.load(`/matchday-tips/${userId}?championshipId=${championshipId}`);
     }
   }, [isOpen, fetcher, userId]);
 

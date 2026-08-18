@@ -12,6 +12,7 @@ export async function loader({ context }: Route.LoaderArgs) {
 
   return {
     championship: {
+      id: championship.id,
       name: championship.name,
       completed: championship.completed,
       extraQuestionPointsPublished: championship.extraQuestionPointsPublished,
@@ -51,6 +52,7 @@ export default function Tabelle({ loaderData }: Route.ComponentProps) {
           showExtras={championship.extraQuestionPointsPublished ?? false}
           currentUserId={currentUserId}
           isOngoing={!championship.completed}
+          championshipId={championship.id}
         />
       )}
     </div>

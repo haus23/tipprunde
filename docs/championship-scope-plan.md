@@ -1,8 +1,8 @@
 # Championship Scope — Public Routing Plan
 
-**Status: designed, not started (2026-08-17).** No code written. Supersedes the
-routing parts of [archiv.md](./archiv.md) once adopted; that doc's data design
-(materialized ranking columns) is unaffected either way.
+**Status: steps 1-9 done (2026-08-18).** Supersedes the routing parts of
+[archiv.md](./archiv.md); that doc's data design (materialized ranking
+columns) is unaffected.
 
 ## The problem
 
