@@ -380,9 +380,9 @@ function QuestionCard({
             }
             className="border-subtle border-t"
             summaryClassName="px-2 py-1.5 hover:bg-transparent"
-            bodyClassName="mt-2 pb-0 px-0 xs:px-0"
+            bodyClassName="mt-2 pb-0"
           >
-            <div className="space-y-1">
+            <div className="space-y-2 py-0.5">
               {players.map((player) => (
                 <PlayerAnswerRow
                   key={player.userId}
