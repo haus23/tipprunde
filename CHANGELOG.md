@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.26.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.26.0...v0.26.1)
+
+### 🩹 Fixes
+
+- **web:** Distinguish "didn't play this season" from "unknown player" ([21f33c6](https://github.com/haus23/tipprunde/commit/21f33c6))
+- **web:** Drop to Spiele overview on season switch from a match detail ([b78006c](https://github.com/haus23/tipprunde/commit/b78006c))
+
 ## v0.26.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.25.3...v0.26.0)
