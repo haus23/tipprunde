@@ -140,6 +140,10 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
   const focus = players.find((p) => p.slug === focusSlug);
   /** Labels hang off the last played step, not the plot edge — see below. */
   const labelX = x(Math.max(0, playedSteps - 1)) + 6;
+  /** SVG has no z-index; paint order is document order. */
+  const paintOrder = players.toSorted(
+    (a, b) => (a === focus ? 2 : a === leader ? 1 : 0) - (b === focus ? 2 : b === leader ? 1 : 0),
+  );
 
   // Pick x labels that do not collide. Special steps go first so they win the
   // space, and they are walked right-to-left so a final ZP beats an RP sitting
@@ -244,47 +248,33 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
             ),
           )}
 
-          {/* Context layer: everyone who is neither focused nor leading. */}
-          {players.map((player) =>
-            player === focus || player === leader ? null : (
+          {/* One keyed line per player, ordered context → leader → focus so
+              SVG paint order puts the important ones on top. Deliberately a
+              single list: rendering the layers as separate blocks would remount
+              a line whenever the focus moves, and a remounted element cannot
+              transition — switching players would snap instead of fading. */}
+          {paintOrder.map((player) => {
+            const isFocus = player === focus;
+            const isLeader = !isFocus && player === leader;
+            return (
               <polyline
                 key={player.userId}
                 points={line(player)}
                 fill="none"
                 stroke="currentColor"
-                strokeWidth={1.5}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-subtle opacity-30"
+                className={cx(
+                  "transition-[stroke-width,opacity,color] duration-200 ease-out",
+                  isFocus
+                    ? "text-accent [stroke-width:2.5]"
+                    : isLeader
+                      ? "text-app opacity-70 [stroke-width:2]"
+                      : "text-subtle opacity-30 [stroke-width:1.5]",
+                )}
               />
-            ),
-          )}
-
-          {/* Reference layer: the leader, unless they are already the focus. */}
-          {leader && leader !== focus && (
-            <polyline
-              points={line(leader)}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-app opacity-70"
-            />
-          )}
-
-          {/* Focus layer, drawn last so it wins every crossing. */}
-          {focus && (
-            <polyline
-              points={line(focus)}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-accent"
-            />
-          )}
+            );
+          })}
 
           {/* Hit area for the crosshair. Pointer moves only track a mouse —
               on touch a tap sets the step and it stays put, so dragging over
@@ -375,7 +365,7 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
                     y={y(row)}
                     dominantBaseline="middle"
                     className={cx(
-                      "fill-current text-[11px]",
+                      "fill-current text-[11px] transition-[opacity,color] duration-150 ease-out",
                       player === focus
                         ? "text-accent font-medium"
                         : player === leader
