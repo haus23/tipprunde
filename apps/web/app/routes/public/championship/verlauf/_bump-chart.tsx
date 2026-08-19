@@ -7,8 +7,16 @@ import type { VerlaufPlayer, VerlaufStep } from "#/lib/verlauf.server.ts";
 
 const ROW_HEIGHT = 22;
 const MARGIN = { top: 10, right: 8, bottom: 24, left: 8 };
-/** Reserved for the right-edge name labels — only claimed when they show. */
-const LABEL_WIDTH = 92;
+/** Gap between a line's end and its name. */
+const LABEL_GAP = 8;
+/** Ceiling for the name column, so one long name cannot eat the plot. */
+const LABEL_MAX = 120;
+/**
+ * Rough width of one character at the label's 11px — only seeds the
+ * reservation, since the server cannot measure text. The real width is
+ * measured on mount and corrects this.
+ */
+const LABEL_CHAR_WIDTH = 6.4;
 /** Below this the labels cost more width than they are worth (see plan). */
 const LABEL_BREAKPOINT = 640;
 /** Server render has no measurement; the client re-lays-out on first frame. */
@@ -123,12 +131,19 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
   const { ref, width } = useMeasuredWidth();
   const scoped = useScopedPath();
   const [activeStep, setActiveStep] = useState<number | null>(null);
+  const labelsRef = useRef<SVGGElement>(null);
+  const [measuredLabelWidth, setMeasuredLabelWidth] = useState<number | null>(null);
 
   const showLabels = width >= LABEL_BREAKPOINT;
-  const plotWidth = Math.max(
-    0,
-    width - MARGIN.left - MARGIN.right - (showLabels ? LABEL_WIDTH : 0),
-  );
+  // The name column takes only what the longest name needs. Estimated from
+  // character count for the first paint (the server cannot measure text), then
+  // corrected by a real measurement below — in landscape especially, a fixed
+  // reservation hands the plot's width to whitespace.
+  const longestName = players.reduce((max, p) => Math.max(max, p.name.length), 0);
+  const estimatedLabelWidth = Math.min(LABEL_MAX, longestName * LABEL_CHAR_WIDTH + LABEL_GAP);
+  const labelWidth = showLabels ? (measuredLabelWidth ?? estimatedLabelWidth) : 0;
+
+  const plotWidth = Math.max(0, width - MARGIN.left - MARGIN.right - labelWidth);
   const plotHeight = players.length * ROW_HEIGHT;
   const height = plotHeight + MARGIN.top + MARGIN.bottom;
 
@@ -139,7 +154,7 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
   const leader = players[0];
   const focus = players.find((p) => p.slug === focusSlug);
   /** Labels hang off the last played step, not the plot edge — see below. */
-  const labelX = x(Math.max(0, playedSteps - 1)) + 6;
+  const labelX = x(Math.max(0, playedSteps - 1)) + LABEL_GAP;
   /** SVG has no z-index; paint order is document order. */
   const paintOrder = players.toSorted(
     (a, b) => (a === focus ? 2 : a === leader ? 1 : 0) - (b === focus ? 2 : b === leader ? 1 : 0),
@@ -177,6 +192,29 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
 
   const active = activeStep === null ? null : buildReadout(players, activeStep, focusSlug);
 
+  // Measure the rendered names once they exist, so the reservation matches the
+  // font rather than the estimate. Widths do not depend on where the labels
+  // sit, so this settles after one correction.
+  const nameKey = players.map((p) => p.name).join("|");
+  useEffect(() => {
+    if (!showLabels || !labelsRef.current) {
+      setMeasuredLabelWidth(null);
+      return;
+    }
+    let widest = 0;
+    for (const node of labelsRef.current.querySelectorAll("text")) {
+      widest = Math.max(widest, node.getBBox().width);
+    }
+    if (widest === 0) return;
+    const next = Math.min(LABEL_MAX, Math.ceil(widest) + LABEL_GAP);
+    setMeasuredLabelWidth((previous) =>
+      previous === null || Math.abs(previous - next) > 1 ? next : previous,
+    );
+    // `width` is in here on purpose: at mount the text may not be laid out yet
+    // and getBBox reports 0, and without a re-run the estimate would stand for
+    // good. The measured width settles the values, so this cannot loop.
+  }, [showLabels, nameKey, width]);
+
   return (
     <div ref={ref} className="relative w-full">
       <svg
@@ -209,7 +247,10 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
           event.preventDefault();
         }}
         onBlur={() => setActiveStep(null)}
-        className="focus-visible:outline-accent rounded-sm outline-none focus-visible:outline-2"
+        // max-w-full is the safety net: the width is only known after mount, so
+        // the very first paint uses a default that may exceed the container.
+        // Clipping one frame is fine; a horizontally scrolling page is not.
+        className="focus-visible:outline-accent max-w-full rounded-sm outline-none focus-visible:outline-2"
         aria-label={
           `Verlauf: Rangentwicklung von ${players.length} Spielern über ` +
           `${playedSteps} gewertete Schritte.` +
@@ -340,44 +381,46 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
               Anchored to where the lines actually stop, not to the plot edge:
               in a running championship the axis reaches into unplayed steps,
               and labels parked out there would name nothing. */}
-          {showLabels &&
-            players.map((player) => {
-              const row = player.positions.at(-1);
-              if (row === undefined) return null;
-              return (
-                <Link
-                  key={player.userId}
-                  to={scoped(`/verlauf/${player.slug}`)}
-                  preventScrollReset
-                  aria-label={`${player.name} hervorheben`}
-                  className="focus-visible:outline-accent outline-none focus-visible:outline-2"
-                >
-                  {/* The glyphs alone are a poor target, especially on touch. */}
-                  <rect
-                    x={labelX - 3}
-                    y={y(row) - ROW_HEIGHT / 2}
-                    width={LABEL_WIDTH}
-                    height={ROW_HEIGHT}
-                    fill="transparent"
-                  />
-                  <text
-                    x={labelX}
-                    y={y(row)}
-                    dominantBaseline="middle"
-                    className={cx(
-                      "fill-current text-[11px] transition-[opacity,color] duration-150 ease-out",
-                      player === focus
-                        ? "text-accent font-medium"
-                        : player === leader
-                          ? "text-app"
-                          : "text-subtle opacity-70 hover:opacity-100",
-                    )}
+          <g ref={labelsRef}>
+            {showLabels &&
+              players.map((player) => {
+                const row = player.positions.at(-1);
+                if (row === undefined) return null;
+                return (
+                  <Link
+                    key={player.userId}
+                    to={scoped(`/verlauf/${player.slug}`)}
+                    preventScrollReset
+                    aria-label={`${player.name} hervorheben`}
+                    className="focus-visible:outline-accent outline-none focus-visible:outline-2"
                   >
-                    {player.name}
-                  </text>
-                </Link>
-              );
-            })}
+                    {/* The glyphs alone are a poor target, especially on touch. */}
+                    <rect
+                      x={labelX - 3}
+                      y={y(row) - ROW_HEIGHT / 2}
+                      width={labelWidth}
+                      height={ROW_HEIGHT}
+                      fill="transparent"
+                    />
+                    <text
+                      x={labelX}
+                      y={y(row)}
+                      dominantBaseline="middle"
+                      className={cx(
+                        "fill-current text-[11px] transition-[opacity,color] duration-150 ease-out",
+                        player === focus
+                          ? "text-accent font-medium"
+                          : player === leader
+                            ? "text-app"
+                            : "text-subtle opacity-70 hover:opacity-100",
+                      )}
+                    >
+                      {player.name}
+                    </text>
+                  </Link>
+                );
+              })}
+          </g>
         </g>
       </svg>
 
