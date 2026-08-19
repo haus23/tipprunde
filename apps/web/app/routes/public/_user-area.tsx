@@ -15,7 +15,7 @@ export function UserArea({ user }: { user: User | null }) {
     return (
       <Link
         to="/login"
-        className="text-muted hover:bg-nav-active hover:text-app focus-visible:ring-accent flex items-center gap-2 rounded-sm px-3 py-1.5 text-sm transition ease-out outline-none focus-visible:ring-2 max-sm:px-1.5"
+        className="text-muted hover:bg-nav-active hover:text-app focus-visible:ring-accent flex h-7 items-center gap-2 rounded-sm px-3 py-1.5 text-sm transition ease-out outline-none focus-visible:ring-2 max-sm:px-1.5"
       >
         <span className="max-sm:sr-only">Anmelden</span>
         <LogInIcon className="size-4" />
@@ -27,7 +27,7 @@ export function UserArea({ user }: { user: User | null }) {
   if (user.role === "user") {
     return (
       <Form method="post" action="/logout">
-        <Button type="submit" intent="ghost" size="sm" className="max-sm:px-1.5">
+        <Button type="submit" intent="ghost" size="sm" className="h-7 max-sm:px-1.5">
           <span className="max-sm:sr-only">Abmelden</span>
           <LogOutIcon className="size-4" />
         </Button>
@@ -37,7 +37,7 @@ export function UserArea({ user }: { user: User | null }) {
 
   return (
     <MenuTrigger>
-      <Button intent="ghost" size="sm" className="max-sm:px-1.5">
+      <Button intent="ghost" size="sm" className="h-7 max-sm:px-1.5">
         <span className="max-sm:sr-only">{user.name}</span>
         <ChevronDownIcon className="size-4" />
       </Button>
