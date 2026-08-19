@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.27.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.27.0...v0.27.1)
+
+### 🩹 Fixes
+
+- **web:** Fix baseline shift on the Zusatzpunkte header icon ([429494b](https://github.com/haus23/tipprunde/commit/429494b))
+- **web:** Give UserArea a fixed height matching the theme toggle ([9b372e6](https://github.com/haus23/tipprunde/commit/9b372e6))
+
 ## v0.27.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.26.2...v0.27.0)
