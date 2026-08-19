@@ -100,7 +100,8 @@ Shared docs are in the root `docs/` folder:
 - `web-shell.md` — Public shell: header contents, nav strategy, planned chat panel
 - `color-scheme.md` — Single-button light/dark switch spec (replaces both current controls)
 - `archiv.md` — Archiv: the materialized ranking columns on `players` and what depends on them
-- `championship-scope-plan.md` — Public-routing change: championship as a URL dimension, shared route files for Archiv + current season, dashboard as the shared overview (designed, not started)
+- `championship-scope-plan.md` — Public-routing change: championship as a URL dimension, shared route files for Archiv + current season, dashboard as the shared overview (built)
+- `verlauf-plan.md` — Planned Punkteverlauf: bump chart of rank evolution, step axis with RP/ZP columns, hand-rolled SVG (designed, not started)
 - `app-merge.md` — History: how this app absorbed the separate web app (why things look the way they do)
 
 ## Environment variables
