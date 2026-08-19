@@ -1,6 +1,6 @@
 # In-App Chat — Plan
 
-**Status: planned, not started.** Picks up after the pending rule changes land.
+**Status: planned, not started.**
 This doc records the architecture decisions and reasoning from the 2026-07
 discussion so the feature can start without re-deriving them.
 
