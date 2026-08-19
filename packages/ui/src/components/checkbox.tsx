@@ -1,9 +1,4 @@
-import {
-  CheckboxButton,
-  CheckboxField,
-  type CheckboxFieldProps,
-  Label,
-} from "react-aria-components";
+import { CheckboxButton, CheckboxField, type CheckboxFieldProps } from "react-aria-components";
 
 import { cx } from "#/lib/cva.ts";
 
@@ -32,16 +27,23 @@ interface Props extends CheckboxFieldProps {
   children?: React.ReactNode;
 }
 
+/**
+ * `CheckboxButton` renders as the `<label>` for the hidden input — its
+ * children ARE the label, box + text together. A separate `<Label>` next to
+ * it double-labels the control (RAC Checkbox docs show only this shape, no
+ * sibling `Label`).
+ */
 export function Checkbox({ className, children, ...props }: Props) {
   return (
-    <CheckboxField
-      className={cx("inline-flex items-center gap-2 data-disabled:opacity-50", className)}
-      {...props}
-    >
-      <CheckboxButton className="group border-subtle data-selected:border-accent data-selected:bg-accent data-focus-visible:ring-accent flex size-5 items-center justify-center rounded border transition-colors outline-none data-focus-visible:ring-2">
-        <CheckMark />
+    <CheckboxField {...props}>
+      <CheckboxButton
+        className={cx("group inline-flex items-center gap-2 data-disabled:opacity-50", className)}
+      >
+        <span className="border-subtle group-data-selected:border-accent group-data-selected:bg-accent group-data-focus-visible:ring-accent flex size-5 shrink-0 items-center justify-center rounded border transition-colors outline-none group-data-focus-visible:ring-2">
+          <CheckMark />
+        </span>
+        {children && <span className="text-app select-none">{children}</span>}
       </CheckboxButton>
-      {children && <Label className="text-app select-none">{children}</Label>}
     </CheckboxField>
   );
 }
