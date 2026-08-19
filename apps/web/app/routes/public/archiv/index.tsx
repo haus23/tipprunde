@@ -1,11 +1,11 @@
 import { CellLink } from "#/components/cell-link.tsx";
-import { getAllCompletedChampionships, getEwigeTabelle } from "#/lib/archiv.server.ts";
+import { getArchivChampionshipList, getEwigeTabelle } from "#/lib/archiv.server.ts";
 
 import type { Route } from "./+types/index";
 
 export async function loader(_: Route.LoaderArgs) {
   const [championships, entries] = await Promise.all([
-    getAllCompletedChampionships(),
+    getArchivChampionshipList(),
     getEwigeTabelle(),
   ]);
 
@@ -26,7 +26,7 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
         <section>
           <h2 className="text-muted mb-3 text-xs font-medium tracking-wide uppercase">Turniere</h2>
           {championships.length === 0 ? (
-            <p className="text-subtle text-base">Noch keine abgeschlossenen Turniere.</p>
+            <p className="text-subtle text-base">Noch keine Turniere.</p>
           ) : (
             <table className="w-full text-base">
               <thead>
@@ -43,12 +43,16 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                       <CellLink href={`/archiv/${entry.slug}`}>{entry.name}</CellLink>
                     </td>
                     <td className="py-2 pr-3">
-                      {entry.winners.map((w, i) => (
-                        <span key={w.slug}>
-                          {i > 0 && ", "}
-                          {w.name}
-                        </span>
-                      ))}
+                      {entry.completed ? (
+                        entry.winners.map((w, i) => (
+                          <span key={w.slug}>
+                            {i > 0 && ", "}
+                            {w.name}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-subtle italic">(laufend)</span>
+                      )}
                     </td>
                     <td className="py-2 text-right font-medium tabular-nums">
                       {entry.winners[0]?.total ?? "–"}

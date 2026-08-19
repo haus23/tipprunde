@@ -14,26 +14,34 @@ function groupWinners<T extends { championshipId: number }>(rows: T[]) {
   return byChampionship;
 }
 
-/** Every completed championship with its winner(s) — the archiv index list. */
-export async function getAllCompletedChampionships() {
-  const allCompleted = await db.query.championships.findMany({
-    where: { completed: true },
+/**
+ * Every published championship — the archiv index list. Completed ones carry
+ * their winner(s); the still-running one (if any) has none yet, since `rank`
+ * is live-updated all season and would otherwise read as a false "winner".
+ */
+export async function getArchivChampionshipList() {
+  const all = await db.query.championships.findMany({
+    where: { published: true },
     orderBy: { nr: "desc" },
-    columns: { id: true, slug: true, name: true },
+    columns: { id: true, slug: true, name: true, completed: true },
   });
-  if (allCompleted.length === 0) return [];
+  if (all.length === 0) return [];
 
-  const winners = await db.query.players.findMany({
-    where: { rank: 1, championshipId: { in: allCompleted.map((c) => c.id) } },
-    columns: { championshipId: true, total: true },
-    with: { user: { columns: { name: true, slug: true } } },
-  });
+  const completedIds = all.filter((c) => c.completed).map((c) => c.id);
+  const winners = completedIds.length
+    ? await db.query.players.findMany({
+        where: { rank: 1, championshipId: { in: completedIds } },
+        columns: { championshipId: true, total: true },
+        with: { user: { columns: { name: true, slug: true } } },
+      })
+    : [];
 
   const winnersByChampionship = groupWinners(winners);
 
-  return allCompleted.map((c) => ({
+  return all.map((c) => ({
     slug: c.slug,
     name: c.name,
+    completed: c.completed,
     winners: (winnersByChampionship.get(c.id) ?? []).map((w) => ({
       name: w.user.name,
       slug: w.user.slug,
@@ -42,7 +50,12 @@ export async function getAllCompletedChampionships() {
   }));
 }
 
-/** All-time standings across completed championships. */
+/**
+ * All-time standings across every published championship, including the
+ * still-running one — its provisional totals count already, same as any
+ * "ewige Tabelle" that updates through the current season rather than only
+ * after it ends.
+ */
 export async function getEwigeTabelle() {
   const rows = await db
     .select({
@@ -54,7 +67,7 @@ export async function getEwigeTabelle() {
     .from(players)
     .innerJoin(championships, eq(players.championshipId, championships.id))
     .innerJoin(users, eq(players.userId, users.id))
-    .where(eq(championships.completed, true))
+    .where(eq(championships.published, true))
     .groupBy(players.userId);
 
   const sorted = rows
