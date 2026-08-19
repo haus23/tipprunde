@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.27.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.26.2...v0.27.0)
+
+### 🚀 Enhancements
+
+- **web:** Include the running championship in Archiv list and Ewige Tabelle ([16e2ef6](https://github.com/haus23/tipprunde/commit/16e2ef6))
+- **web:** Link the Zusatzpunkte column header to Zusatzfragen ([43ea668](https://github.com/haus23/tipprunde/commit/43ea668))
+
+### 🩹 Fixes
+
+- **ui:** Stop double-labeling Checkbox ([95b49be](https://github.com/haus23/tipprunde/commit/95b49be))
+- **web:** Fix asymmetric Prev/Next chain in the Archiv ([36657e5](https://github.com/haus23/tipprunde/commit/36657e5))
+- **web:** Give the Zusatzpunkte header link a star icon ([5ac5fb0](https://github.com/haus23/tipprunde/commit/5ac5fb0))
+
+### 📖 Documentation
+
+- Note color-scheme is built, drop stale chat-plan dependency note ([00705bc](https://github.com/haus23/tipprunde/commit/00705bc))
+
 ## v0.26.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.26.1...v0.26.2)
