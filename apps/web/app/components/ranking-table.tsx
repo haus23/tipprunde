@@ -38,8 +38,10 @@ export function RankingTable({
           </th>
           {showExtras && (
             <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
-              <span className="xs:inline hidden">Zusatzpunkte</span>
-              <span className="xs:hidden">Zusatzpkt.</span>
+              <CellLink href={scoped("/zusatzfragen")}>
+                <span className="xs:inline hidden">Zusatzpunkte</span>
+                <span className="xs:hidden">Zusatzpkt.</span>
+              </CellLink>
             </th>
           )}
           <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
