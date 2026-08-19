@@ -52,7 +52,7 @@ export default function Tabelle({ loaderData }: Route.ComponentProps) {
             prefetch="intent"
             className="text-subtle hover:text-app focus-visible:ring-accent rounded-sm transition-colors outline-none focus-visible:ring-2"
           >
-            Punkteverlauf
+            Verlauf
           </Link>
         </div>
       </div>

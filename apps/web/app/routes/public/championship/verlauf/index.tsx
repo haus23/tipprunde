@@ -37,7 +37,7 @@ export default function Verlauf({ loaderData }: Route.ComponentProps) {
   if (!championship) {
     return (
       <div className="mx-auto w-full max-w-5xl py-8">
-        <title>Punkteverlauf · runde.tips</title>
+        <title>Verlauf · runde.tips</title>
         <p className="text-subtle py-16 text-center text-base">Kein aktives Turnier.</p>
       </div>
     );
@@ -48,7 +48,7 @@ export default function Verlauf({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="mx-auto w-full max-w-5xl py-8">
-      <title>{`Punkteverlauf · ${championship.name} · runde.tips`}</title>
+      <title>{`Verlauf · ${championship.name} · runde.tips`}</title>
       <div className="mb-6 flex flex-col items-center gap-2">
         <h1 className="text-2xl font-semibold tracking-tight">{championship.name}</h1>
         <div className="flex items-center gap-4 text-sm">
@@ -59,7 +59,7 @@ export default function Verlauf({ loaderData }: Route.ComponentProps) {
           >
             {championship.completed ? "Abschlusstabelle" : "Aktuelle Tabelle"}
           </Link>
-          <span className="font-medium">Punkteverlauf</span>
+          <span className="font-medium">Verlauf</span>
         </div>
       </div>
 

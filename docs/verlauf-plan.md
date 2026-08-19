@@ -215,7 +215,7 @@ stands. Entry point is a switcher on the Tabelle view, the same shape the old
 app had:
 
 ```
-Abschlusstabelle · Punkteverlauf
+Abschlusstabelle · Verlauf
 ```
 
 ## Rendering & responsiveness

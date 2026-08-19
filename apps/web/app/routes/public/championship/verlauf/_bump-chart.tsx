@@ -211,7 +211,7 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
         onBlur={() => setActiveStep(null)}
         className="focus-visible:outline-accent rounded-sm outline-none focus-visible:outline-2"
         aria-label={
-          `Punkteverlauf: Rangentwicklung von ${players.length} Spielern über ` +
+          `Verlauf: Rangentwicklung von ${players.length} Spielern über ` +
           `${playedSteps} gewertete Schritte.` +
           (focus ? ` Hervorgehoben: ${focus.name}.` : "")
         }
