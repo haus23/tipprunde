@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 import { useScopedPath } from "#/components/championship-scope.tsx";
+import { PlayerSwitch } from "#/components/player-switch.tsx";
 import { userContext, viewedChampionshipContext } from "#/lib/context.ts";
 import { getVerlauf } from "#/lib/verlauf.server.ts";
 
@@ -43,6 +44,7 @@ export default function Verlauf({ loaderData }: Route.ComponentProps) {
   }
 
   const hasData = verlauf !== null && verlauf.playedSteps > 0 && verlauf.players.length > 0;
+  const focusPlayer = verlauf?.players.find((p) => p.slug === focusSlug);
 
   return (
     <div className="mx-auto w-full max-w-5xl py-8">
@@ -60,6 +62,22 @@ export default function Verlauf({ loaderData }: Route.ComponentProps) {
           <span className="font-medium">Punkteverlauf</span>
         </div>
       </div>
+
+      {hasData &&
+        focusPlayer && (
+          // The right-edge labels switch the focus on wide screens, but they are
+          // dropped on narrow ones — so this stays visible at every width.
+          <div className="mb-4 flex items-center justify-center gap-1.5 text-sm">
+            <span className="text-subtle">Hervorgehoben:</span>
+            <span className="text-accent font-medium">{focusPlayer.name}</span>
+            <PlayerSwitch
+              players={verlauf.players}
+              currentSlug={focusPlayer.slug}
+              basePath="/verlauf"
+              label="Hervorgehobenen Spieler wechseln"
+            />
+          </div>
+        )}
 
       {hasData ? (
         <div className="xs:px-2 px-2">
