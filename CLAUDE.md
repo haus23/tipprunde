@@ -61,7 +61,7 @@ Shared documentation in `docs/`:
 - `tokens.md` — Design tokens: breakpoints, easing, shadows, border-radius, typography scale
 - `deployment.md` — Environment variables, first-deploy bootstrap, user management
 - `web-shell.md` — Public shell: header contents, nav strategy, planned docked/drawer chat panel
-- `color-scheme.md` — Single-button light/dark switch: stored vs. resolved state, click algorithm, SSR constraint (specced, not built)
+- `color-scheme.md` — Single-button light/dark switch: stored vs. resolved state, click algorithm, SSR constraint
 - `archiv.md` — Archiv feature: ranking columns on `players`, dashboard entry (built — `/archiv`, `/archiv/:slug`)
 - `championship-scope-plan.md` — Championship as a URL dimension so Archiv and current-season views share route files; dashboard becomes the shared championship overview (designed, not started)
 - `chat-plan.md` — Planned in-app chat: separate DB, phased transport (polling → SSE/WS on Railway), TanStack Virtual (not yet built)
