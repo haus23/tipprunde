@@ -88,16 +88,24 @@ export async function getArchivChampionshipBySlug(slug: string) {
   return (await db.query.championships.findFirst({ where: { slug, published: true } })) ?? null;
 }
 
-/** Nearest lower/higher completed championship by nr — null at the ends. */
+/**
+ * Nearest lower/higher published championship by nr — null at the ends.
+ *
+ * `published`, not `completed` — same visibility rule as
+ * `getArchivChampionshipBySlug`. Filtering on `completed` here would break
+ * the chain asymmetrically: the still-running championship stays reachable
+ * by slug (published), so Prev could step off of it, but Next could never
+ * step back onto it.
+ */
 export async function getAdjacentArchivChampionships(nr: number) {
   const [prev, next] = await Promise.all([
     db.query.championships.findFirst({
-      where: { nr: { lt: nr }, completed: true },
+      where: { nr: { lt: nr }, published: true },
       orderBy: { nr: "desc" },
       columns: { slug: true, name: true },
     }),
     db.query.championships.findFirst({
-      where: { nr: { gt: nr }, completed: true },
+      where: { nr: { gt: nr }, published: true },
       orderBy: { nr: "asc" },
       columns: { slug: true, name: true },
     }),
