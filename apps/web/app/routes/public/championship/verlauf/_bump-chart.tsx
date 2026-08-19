@@ -48,6 +48,16 @@ function stepTitle(step: VerlaufStep): string {
   }
 }
 
+/**
+ * Early in a championship almost the whole field is level — seven or eight
+ * names is normal at match one — so the list is capped rather than allowed to
+ * push the readout out of shape.
+ */
+function formatTiedWith(names: string[]): string {
+  if (names.length <= 3) return names.join(", ");
+  return `${names.slice(0, 2).join(", ")} und ${names.length - 2} weiteren`;
+}
+
 type Readout = {
   focus: { name: string; rank: number; points: number; tiedWith: string[] } | null;
   leader: { name: string; points: number } | null;
@@ -169,6 +179,33 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
         width={width}
         height={height}
         role="img"
+        tabIndex={0}
+        onKeyDown={(event) => {
+          // Functional updates, so a held-down arrow key does not lose steps
+          // to a stale closure between renders.
+          switch (event.key) {
+            case "ArrowRight":
+              setActiveStep((step) => Math.min(lastStep, (step ?? -1) + 1));
+              break;
+            case "ArrowLeft":
+              setActiveStep((step) => Math.max(0, (step ?? 1) - 1));
+              break;
+            case "Home":
+              setActiveStep(0);
+              break;
+            case "End":
+              setActiveStep(lastStep);
+              break;
+            case "Escape":
+              setActiveStep(null);
+              return;
+            default:
+              return;
+          }
+          event.preventDefault();
+        }}
+        onBlur={() => setActiveStep(null)}
+        className="focus-visible:outline-accent rounded-sm outline-none focus-visible:outline-2"
         aria-label={
           `Punkteverlauf: Rangentwicklung von ${players.length} Spielern über ` +
           `${playedSteps} gewertete Schritte.` +
@@ -354,6 +391,34 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
         </g>
       </svg>
 
+      {/* The lines carry no text, so the focused player's run is spelled out
+          for screen readers. Only theirs: one table per player would be ~60
+          rows times 18, which helps nobody. */}
+      {focus && (
+        <table className="sr-only">
+          <caption>Rangverlauf von {focus.name}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Schritt</th>
+              <th scope="col">Rang</th>
+              <th scope="col">Punkte</th>
+            </tr>
+          </thead>
+          <tbody>
+            {focus.ranks.map((rank, i) => {
+              const step = steps[i];
+              return (
+                <tr key={i}>
+                  <th scope="row">{step ? stepTitle(step) : `Schritt ${i + 1}`}</th>
+                  <td>{rank}</td>
+                  <td>{focus.points[i]}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+
       {activeStep !== null && active && (
         <div
           role="status"
@@ -382,7 +447,7 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
               </p>
               {active.focus.tiedWith.length > 0 && (
                 <p className="text-subtle mt-0.5">
-                  punktgleich mit {active.focus.tiedWith.join(", ")}
+                  punktgleich mit {formatTiedWith(active.focus.tiedWith)}
                 </p>
               )}
               {active.leader && active.leader.name !== active.focus.name && (
