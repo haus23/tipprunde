@@ -1,6 +1,8 @@
 import { cx } from "@tipprunde/ui";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
 
+import { useScopedPath } from "#/components/championship-scope.tsx";
 import type { VerlaufPlayer, VerlaufStep } from "#/lib/verlauf.server.ts";
 
 const ROW_HEIGHT = 22;
@@ -13,6 +15,8 @@ const LABEL_BREAKPOINT = 640;
 const DEFAULT_WIDTH = 900;
 /** Minimum horizontal room per x-axis label before we start skipping some. */
 const LABEL_PITCH = 30;
+/** Half the tooltip's fixed width — it is centred, so this is its clamp. */
+const TOOLTIP_HALF = 104;
 
 interface Props {
   steps: VerlaufStep[];
@@ -31,6 +35,51 @@ function stepLabel(step: VerlaufStep): string {
     case "extraPoints":
       return "ZP";
   }
+}
+
+function stepTitle(step: VerlaufStep): string {
+  switch (step.kind) {
+    case "match":
+      return `Nach Spiel ${step.nr}`;
+    case "roundPoints":
+      return `Rundenpunkte Runde ${step.roundNr}`;
+    case "extraPoints":
+      return "Nach Zusatzpunkten";
+  }
+}
+
+type Readout = {
+  focus: { name: string; rank: number; points: number; tiedWith: string[] } | null;
+  leader: { name: string; points: number } | null;
+};
+
+/** What the crosshair reports at one step: the focused player, and the lead. */
+function buildReadout(
+  players: VerlaufPlayer[],
+  step: number,
+  focusSlug: string | undefined,
+): Readout {
+  const focusPlayer = players.find((p) => p.slug === focusSlug);
+  const leaderPlayer = players.find((p) => p.positions[step] === 0);
+  const rank = focusPlayer?.ranks[step];
+
+  return {
+    focus:
+      focusPlayer && rank !== undefined
+        ? {
+            name: focusPlayer.name,
+            rank,
+            points: focusPlayer.points[step] ?? 0,
+            // The row is unique, the rank is not — so name who shares it.
+            tiedWith: players
+              .filter((p) => p !== focusPlayer && p.ranks[step] === rank)
+              .map((p) => p.name),
+          }
+        : null,
+    leader: leaderPlayer
+      ? { name: leaderPlayer.name, points: leaderPlayer.points[step] ?? 0 }
+      : null,
+  };
 }
 
 /** Width of the element, measured on the client; SSR falls back to a default. */
@@ -62,6 +111,8 @@ function useMeasuredWidth() {
  */
 export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
   const { ref, width } = useMeasuredWidth();
+  const scoped = useScopedPath();
+  const [activeStep, setActiveStep] = useState<number | null>(null);
 
   const showLabels = width >= LABEL_BREAKPOINT;
   const plotWidth = Math.max(
@@ -77,6 +128,8 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
 
   const leader = players[0];
   const focus = players.find((p) => p.slug === focusSlug);
+  /** Labels hang off the last played step, not the plot edge — see below. */
+  const labelX = x(Math.max(0, playedSteps - 1)) + 6;
 
   // Pick x labels that do not collide. Special steps go first so they win the
   // space, and they are walked right-to-left so a final ZP beats an RP sitting
@@ -99,8 +152,19 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
   const line = (player: VerlaufPlayer) =>
     player.positions.map((row, i) => `${x(i)},${y(row)}`).join(" ");
 
+  // Only played steps carry data, so the crosshair never leaves them.
+  const lastStep = Math.max(0, playedSteps - 1);
+  const stepAt = (clientX: number) => {
+    const bounds = ref.current?.getBoundingClientRect();
+    if (!bounds || plotWidth <= 0 || steps.length < 2) return 0;
+    const ratio = (clientX - bounds.left - MARGIN.left) / plotWidth;
+    return Math.min(lastStep, Math.max(0, Math.round(ratio * (steps.length - 1))));
+  };
+
+  const active = activeStep === null ? null : buildReadout(players, activeStep, focusSlug);
+
   return (
-    <div ref={ref} className="w-full">
+    <div ref={ref} className="relative w-full">
       <svg
         width={width}
         height={height}
@@ -185,6 +249,48 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
             />
           )}
 
+          {/* Hit area for the crosshair. Pointer moves only track a mouse —
+              on touch a tap sets the step and it stays put, so dragging over
+              the chart still scrolls the page. */}
+          <rect
+            x={0}
+            y={0}
+            width={plotWidth}
+            height={plotHeight}
+            fill="transparent"
+            onPointerDown={(event) => setActiveStep(stepAt(event.clientX))}
+            onPointerMove={(event) => {
+              if (event.pointerType === "mouse") setActiveStep(stepAt(event.clientX));
+            }}
+            onPointerLeave={(event) => {
+              if (event.pointerType === "mouse") setActiveStep(null);
+            }}
+          />
+
+          {activeStep !== null && (
+            <>
+              <line
+                x1={x(activeStep)}
+                x2={x(activeStep)}
+                y1={0}
+                y2={plotHeight}
+                stroke="currentColor"
+                strokeWidth={1}
+                pointerEvents="none"
+                className="text-app opacity-40"
+              />
+              {focus?.positions[activeStep] !== undefined && (
+                <circle
+                  cx={x(activeStep)}
+                  cy={y(focus.positions[activeStep])}
+                  r={3.5}
+                  pointerEvents="none"
+                  className="text-accent fill-current"
+                />
+              )}
+            </>
+          )}
+
           {/* x axis */}
           {steps.map((step, i) =>
             labelled.has(i) ? (
@@ -212,26 +318,93 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
               const row = player.positions.at(-1);
               if (row === undefined) return null;
               return (
-                <text
+                <Link
                   key={player.userId}
-                  x={x(Math.max(0, playedSteps - 1)) + 6}
-                  y={y(row)}
-                  dominantBaseline="middle"
-                  className={cx(
-                    "fill-current text-[11px]",
-                    player === focus
-                      ? "text-accent font-medium"
-                      : player === leader
-                        ? "text-app"
-                        : "text-subtle opacity-70",
-                  )}
+                  to={scoped(`/verlauf/${player.slug}`)}
+                  preventScrollReset
+                  aria-label={`${player.name} hervorheben`}
+                  className="focus-visible:outline-accent outline-none focus-visible:outline-2"
                 >
-                  {player.name}
-                </text>
+                  {/* The glyphs alone are a poor target, especially on touch. */}
+                  <rect
+                    x={labelX - 3}
+                    y={y(row) - ROW_HEIGHT / 2}
+                    width={LABEL_WIDTH}
+                    height={ROW_HEIGHT}
+                    fill="transparent"
+                  />
+                  <text
+                    x={labelX}
+                    y={y(row)}
+                    dominantBaseline="middle"
+                    className={cx(
+                      "fill-current text-[11px]",
+                      player === focus
+                        ? "text-accent font-medium"
+                        : player === leader
+                          ? "text-app"
+                          : "text-subtle opacity-70 hover:opacity-100",
+                    )}
+                  >
+                    {player.name}
+                  </text>
+                </Link>
               );
             })}
         </g>
       </svg>
+
+      {activeStep !== null && active && (
+        <div
+          role="status"
+          className="border-subtle bg-surface-raised shadow-popover text-app pointer-events-none absolute z-10 w-[13rem] -translate-x-1/2 rounded-md border px-3 py-2 text-xs"
+          style={{
+            left: Math.min(
+              Math.max(MARGIN.left + x(activeStep), TOOLTIP_HALF),
+              Math.max(TOOLTIP_HALF, width - TOOLTIP_HALF),
+            ),
+            // Sit in whichever half the focused line is not in, so the tooltip
+            // never covers the very point being read.
+            top:
+              (focus?.positions[activeStep] ?? 0) < players.length / 2
+                ? MARGIN.top + plotHeight * 0.55
+                : MARGIN.top,
+          }}
+        >
+          <p className="text-muted mb-1 font-medium">{stepTitle(steps[activeStep]!)}</p>
+          {active.focus ? (
+            <>
+              <p>
+                <span className="text-accent font-medium">{active.focus.name}</span>
+                <span className="text-subtle"> · Rang {active.focus.rank} · </span>
+                <span className="tabular-nums">{active.focus.points}</span>
+                <span className="text-subtle"> P</span>
+              </p>
+              {active.focus.tiedWith.length > 0 && (
+                <p className="text-subtle mt-0.5">
+                  punktgleich mit {active.focus.tiedWith.join(", ")}
+                </p>
+              )}
+              {active.leader && active.leader.name !== active.focus.name && (
+                <p className="text-subtle mt-0.5">
+                  Rückstand auf {active.leader.name}:{" "}
+                  <span className="tabular-nums">{active.leader.points - active.focus.points}</span>{" "}
+                  P
+                </p>
+              )}
+            </>
+          ) : (
+            active.leader && (
+              <p>
+                <span className="font-medium">{active.leader.name}</span>
+                <span className="text-subtle"> führt mit </span>
+                <span className="tabular-nums">{active.leader.points}</span>
+                <span className="text-subtle"> P</span>
+              </p>
+            )
+          )}
+        </div>
+      )}
     </div>
   );
 }
