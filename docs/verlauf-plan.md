@@ -1,9 +1,25 @@
 # Punkteverlauf — Bump Chart Plan
 
-**Status: designed, not started.** Iteration 1 is deliberately one chart, one
-form. Earlier attempts existed in two now-retired codebases (a TanStack Start
-app using visx, a Svelte app using LayerChart); neither is being ported — see
-"Why not port the old one".
+**Status: iteration 1 built (2026-08-19).** One chart, one form — deliberately.
+Earlier attempts existed in two now-retired codebases (a TanStack Start app
+using visx, a Svelte app using LayerChart); neither was ported — see "Why not
+port the old one".
+
+Shipped: `calcProgression` in `packages/domain` (unit-tested, and validated
+against every championship in the dev DB — the final step reproduces
+`players.rank` and `players.total` exactly), `getVerlauf` in
+`app/lib/verlauf.server.ts`, and the route plus `_bump-chart.tsx` under
+`routes/public/championship/verlauf/`, reached from Tabelle.
+
+Two things the plan did not anticipate, both found by looking at the rendered
+output and fixed:
+
+- **Labels must hang off the last _played_ step, not the plot edge.** In a
+  running championship the axis reaches into unplayed steps, so edge-anchored
+  labels floated in empty space naming nothing.
+- **Axis labels collide around special steps** (`RP12`, `RPZP`). Special steps
+  now carry a rule line of their own and labels are placed with a minimum gap,
+  so a crowded-out `RP` label still leaves its column marked.
 
 ## What this view answers
 
@@ -247,6 +263,17 @@ the user's call was to see (b) working first before adding it.
 - Keyboard: arrow keys move the crosshair between steps.
 - Identity is never color-alone: direct labels on wide screens, tooltip
   everywhere.
+
+## Open for iteration 2
+
+- **The points view**, if it is ever missed — the measurement above says it
+  will read worse, but that is a prediction, not a verdict.
+- **Rank heatmap** as a third view.
+- **Horizontal scrolling on mobile**, held back deliberately until the
+  label-dropping version had been used.
+- **Curved connectors** between columns; straight segments ship today.
+- The first client frame re-lays-out horizontally, because SSR has no width to
+  measure. Height is known server-side, so nothing jumps vertically.
 
 ## Migration steps
 

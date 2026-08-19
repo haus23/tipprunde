@@ -64,7 +64,7 @@ Shared documentation in `docs/`:
 - `color-scheme.md` — Single-button light/dark switch: stored vs. resolved state, click algorithm, SSR constraint
 - `archiv.md` — Archiv feature: ranking columns on `players`, dashboard entry (built — `/archiv`, `/archiv/:slug`)
 - `championship-scope-plan.md` — Championship as a URL dimension so Archiv and current-season views share route files; dashboard is the shared championship overview (built)
-- `verlauf-plan.md` — Planned Punkteverlauf: bump chart of rank evolution, step axis with RP/ZP columns, hand-rolled SVG (designed, not started)
+- `verlauf-plan.md` — Punkteverlauf: bump chart of rank evolution, step axis with RP/ZP columns, hand-rolled SVG (iteration 1 built)
 - `chat-plan.md` — Planned in-app chat: separate DB, phased transport (polling → SSE/WS on Railway), TanStack Virtual (not yet built)
 - `app-merge.md` — History: how the TanStack Start app merged into the RR8 app (phases A–D, done 2026-08-09); step 1 of merge → Railway → Litestream
 - `railway-plan.md` — **Next up.** Planned prod hosting: single Node service on Railway, SQLite file + Litestream→R2, cost breakdown (steps 2/3)
