@@ -30,6 +30,10 @@ const championshipViews = (id: string) => [
   route("tipps/:playerSlug?", "routes/public/championship/tipps/index.tsx", {
     id: `${id}-tipps`,
   }),
+  // :playerSlug only picks the highlighted line — see docs/verlauf-plan.md.
+  route("verlauf/:playerSlug?", "routes/public/championship/verlauf/index.tsx", {
+    id: `${id}-verlauf`,
+  }),
   route("zusatzfragen", "routes/public/championship/zusatzfragen/index.tsx", {
     id: `${id}-zusatzfragen`,
   }),
