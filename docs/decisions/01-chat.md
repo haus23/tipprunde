@@ -4,10 +4,38 @@
 This doc records the architecture decisions and reasoning from the 2026-07
 discussion so the feature can start without re-deriving them.
 
+> **The hosting premise below has already changed (2026-08-20).** It was written
+> while the app ran on CF Workers with Railway as a future step. Railway is the
+> host now, so wherever this doc phases something as "now (CF Workers)" versus
+> "later (Railway)", the later column is simply the present — the CF-Workers
+> phase never has to be built. What has _not_ changed is the storage decision:
+> a separate database, not a second schema in the domain DB.
+>
+> **Decided 2026-08-20: skip the polling phase, go realtime directly.**
+> Railway bills resources, not requests or connections
+> ([pricing](https://docs.railway.com/reference/pricing): $10/GB-month memory,
+> $20/vCPU-month, $0.05/GB egress), so at a handful of users neither option
+> registers against the $5 credit. Cost is simply not the deciding factor here;
+> polling's real cost is querying the database around the clock for nothing.
+>
+> **And the transport is WebSockets, not SSE** — reversing the preference
+> stated below, which assumed SSE was the lower-effort path. On Railway it is
+> not ([SSE vs WebSockets](https://docs.railway.com/guides/sse-vs-websockets)):
+> SSE rides on a normal HTTP response and inherits the request limits — closed
+> after **5 minutes without data**, capped at **15 minutes** even with
+> heartbeats — so it would need heartbeat comment lines _and_ reconnect-on-cap
+> handling. **WebSockets are exempt from those timeouts and may stay open
+> indefinitely, idle included.** The one argument for SSE was avoiding custom
+> server glue, and that server (`server/app.ts`) already exists from the
+> Railway move. The client still needs reconnect logic either way, because
+> deploys drop connections.
+>
+> Unchanged either way: **Railway app sleeping must stay off.**
+
 Chat lands in the single RR8 app (`apps/web`) — the merge that made it single
-is done ([app-merge.md](./app-merge.md)). The shell/layout side (docked rail vs.
+is done ([04-app-merge.md](./04-app-merge.md)). The shell/layout side (docked rail vs.
 drawer, keep-mounted constraint) is specced in
-[web-shell.md](./web-shell.md); this doc covers storage, transport, and the
+[web-shell.md](../web-shell.md); this doc covers storage, transport, and the
 message UI.
 
 ## Requirements & constraints
@@ -79,7 +107,7 @@ plain long-lived WebSocket without Durable Objects. That shapes the phases:
   indistinguishable from realtime, needs zero new infrastructure, and ships on
   the current CF hosting. This is the one place the merge left the door open for
   TanStack Query to re-enter surgically (`refetchInterval`) — see the data
-  strategy decision in [app-merge.md](./app-merge.md); a bare `setInterval` +
+  strategy decision in [04-app-merge.md](./04-app-merge.md); a bare `setInterval` +
   `fetcher.load()` may well be enough.
 - **v2 — after Railway.** Swap polling for SSE (preferred: chat clients mostly
   _receive_; no custom server glue, proxy-friendly) or WebSockets (needs a
@@ -106,7 +134,7 @@ headless; no transport/storage opinions):
 - **Stable keys via `getItemKey` with message ids** — index keys break
   prepending. The autoincrement `id` serves.
 
-Shell integration per [web-shell.md](./web-shell.md): docked ~340px rail ≥ `lg`,
+Shell integration per [web-shell.md](../web-shell.md): docked ~340px rail ≥ `lg`,
 drawer overlay below; the chat component stays **always mounted** (draft text,
 scroll position, and — in v2 — the live connection survive dock/undock).
 

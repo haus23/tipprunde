@@ -8,7 +8,7 @@ panel's docked/drawer behaviour. Breakpoint _values_ live in
 [tokens.md](./tokens.md); this doc describes how the shell uses them.
 
 Built today: header, nav, color-scheme toggle, user area. The chat panel is
-planned — see [chat-plan.md](./chat-plan.md). View Transitions were considered and
+planned — see [01-chat.md](./decisions/01-chat.md). View Transitions were considered and
 postponed — see "View Transitions — postponed" below.
 
 ## Header contents (widest state)
@@ -27,7 +27,7 @@ Two things deliberately do **not** get their own top-level header slot:
 
 1. **Scheme control is one button.** A single sun/moon control toggles between light
    and dark; "system" is reached implicitly, without occupying a slot of its own — see
-   [color-scheme.md](./color-scheme.md). Two always-visible theming buttons, or a
+   [03-color-scheme.md](./decisions/03-color-scheme.md). Two always-visible theming buttons, or a
    three-item menu, would spend scarce header width on a rarely-touched setting.
 2. **Manager link + Logout live inside the user menu.** Manager is role-gated (only
    managers/admins see it) and rarely clicked; Logout is by definition an account

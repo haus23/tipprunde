@@ -1,6 +1,6 @@
 // Single-button color-scheme switch, shared by both shells.
 // Three stored states (system / light / dark), only two ever shown.
-// See docs/color-scheme.md for the model and the state table.
+// See docs/decisions/03-color-scheme.md for the model and the state table.
 import { Button } from "@tipprunde/ui";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useFetcher } from "react-router";

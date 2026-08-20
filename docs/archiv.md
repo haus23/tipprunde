@@ -10,7 +10,7 @@ with an all-time table, and a final table per championship.
 > `/archiv/:slug`, distinguished only by route id. The dashboard is the shared
 > per-championship overview; the Archiv sub-nav is gone, replaced by the
 > header nav plus a season switcher on the championship name. See
-> [championship-scope-plan.md](./championship-scope-plan.md). **The routes
+> [05-championship-scope.md](./decisions/05-championship-scope.md). **The routes
 > described below are stale** — kept for the data design (materialized
 > ranking columns), which is unaffected and stays valid.
 

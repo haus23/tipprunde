@@ -49,7 +49,7 @@ export type Verlauf = {
  * materialized `players` columns only hold end-of-championship totals, never a
  * per-step history. That is a deliberate, documented exception: the largest
  * championship is under 900 tip rows, so this is four indexed queries and a
- * pass over ~1000 gains. See docs/verlauf-plan.md.
+ * pass over ~1000 gains. See docs/decisions/06-verlauf-bump-chart.md.
  */
 export async function getVerlauf(championshipId: number): Promise<Verlauf> {
   const [championship, enrolled, publishedRounds, tipRows, roundPointRows, extraRows] =

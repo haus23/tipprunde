@@ -17,7 +17,7 @@ const navLinkClass =
 /**
  * Archive branch of the shared championship views — scoped to the championship
  * named by :slug. The root branch is `_championship-layout.tsx`; both mount the
- * same view files, see docs/championship-scope-plan.md.
+ * same view files, see docs/decisions/05-championship-scope.md.
  *
  * Chrome here is only what the root branch does *not* need: getting back out of
  * the archive, and moving between seasons. The championship itself is named by

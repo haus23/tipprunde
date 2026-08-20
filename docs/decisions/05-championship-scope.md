@@ -1,7 +1,7 @@
-# Championship Scope — Public Routing Plan
+# Championship Scope — Public Routing
 
 **Status: steps 1-9 done (2026-08-18).** Supersedes the routing parts of
-[archiv.md](./archiv.md); that doc's data design (materialized ranking
+[archiv.md](../archiv.md); that doc's data design (materialized ranking
 columns) is unaffected.
 
 ## The problem
@@ -176,7 +176,7 @@ Consequences:
 
 The switcher lives on the season title, not in the app header — the header has
 no room to spare next to the planned docked chat panel
-(see [web-shell.md](./web-shell.md)).
+(see [web-shell.md](../web-shell.md)).
 
 **No width guard needed on the title.** Names follow exactly two shapes:
 `{Hin,Rück}runde JJJJ/JJ` (max 18 chars, e.g. "Rückrunde 2021/22") or
@@ -195,7 +195,7 @@ rather than popovers or modals. Three reasons:
 1. **The chat makes linkability load-bearing.** Zusatzfragen are asked about
    verbally near the end of a round, precisely because they can still move the
    final ranking — and an in-app chat is planned
-   ([chat-plan.md](./chat-plan.md)). "It's here: …" is an answer in chat; modal
+   ([01-chat.md](./01-chat.md)). "It's here: …" is an answer in chat; modal
    content is not linkable, bookmarkable, or titled.
 2. **The missing ruleset was the legacy app's known shortcoming.** Burying it
    in a modal would partly re-create the problem being fixed.
@@ -239,7 +239,7 @@ Mechanical, but touches many files:
 ## Timing
 
 The app is **not live** — only `next.runde.tips`; real production is still the
-legacy stack (see [railway-plan.md](./railway-plan.md)). URL churn therefore
+legacy stack (see [02-hosting-railway.md](./02-hosting-railway.md)). URL churn therefore
 costs nothing today. After the cutover this becomes a real migration with real
 URLs to preserve. **This is the cheapest moment for this change.**
 

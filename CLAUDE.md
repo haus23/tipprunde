@@ -56,18 +56,24 @@ The same pattern works for any package script (`build`, `typecheck`, etc.).
 
 Shared documentation in `docs/`:
 
+**Reference — kept current as the code changes:**
+
 - `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain
 - `theme.md` — Color system: Radix Sand/Orange tokens, `@tipprunde/theme` package usage
 - `tokens.md` — Design tokens: breakpoints, easing, shadows, border-radius, typography scale
-- `deployment.md` — Environment variables, first-deploy bootstrap, user management
+- `deployment.md` — Railway service + environments, environment variables, first-deploy bootstrap
 - `web-shell.md` — Public shell: header contents, nav strategy, planned docked/drawer chat panel
-- `color-scheme.md` — Single-button light/dark switch: stored vs. resolved state, click algorithm, SSR constraint
-- `archiv.md` — Archiv feature: ranking columns on `players`, dashboard entry (built — `/archiv`, `/archiv/:slug`)
-- `championship-scope-plan.md` — Championship as a URL dimension so Archiv and current-season views share route files; dashboard is the shared championship overview (built)
-- `verlauf-plan.md` — Punkteverlauf: bump chart of rank evolution, step axis with RP/ZP columns, hand-rolled SVG (iteration 1 built)
-- `chat-plan.md` — Planned in-app chat: separate DB, phased transport (polling → SSE/WS on Railway), TanStack Virtual (not yet built)
-- `app-merge.md` — History: how the TanStack Start app merged into the RR8 app (phases A–D, done 2026-08-09); step 1 of merge → Railway → Litestream
-- `railway-plan.md` — **Next up.** Planned prod hosting: single Node service on Railway, SQLite file + Litestream→R2, cost breakdown (steps 2/3)
+- `archiv.md` — Archiv feature: ranking columns on `players`, dashboard entry
+
+**Decisions (`docs/decisions/`) — dated records of why something is the way it
+is. Superseded, never quietly rewritten:**
+
+- `01-chat.md` — In-app chat: separate DB, WebSocket transport, TanStack Virtual (not built)
+- `02-hosting-railway.md` — Single Node service on Railway (live); SQLite+Litestream deferred unless Turso's free tier runs out
+- `03-color-scheme.md` — Single-button light/dark switch: stored vs. resolved state, click algorithm
+- `04-app-merge.md` — How the TanStack Start app merged into the RR8 app (done 2026-08-09)
+- `05-championship-scope.md` — Championship as a URL dimension; Archiv and current season share route files
+- `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, and the measurement that picked that form
 
 ## Skills
 
@@ -78,8 +84,37 @@ After adding or changing interactive UI elements (buttons, popovers, accordions,
 ## Release (from repo root):
 
 ```bash
-# Patch version change: 0.1.2 -> 0.1.3  (It's a minor release arg due to major version 0)
+# Fix:      1.0.0 -> 1.0.1
+pnpx changelogen --noAuthors --release --patch --push
+# Feature:  1.0.0 -> 1.1.0
 pnpx changelogen --noAuthors --release --minor --push
-# Minor version change: 0.1.2 -> 0.2.0  (It's a major release arg due to major version 0)
+# Breaking: 1.0.0 -> 2.0.0
 pnpx changelogen --noAuthors --release --major --push
 ```
+
+Release **after** the PR's check is green but **before** merging, on the PR
+branch — the release commit rides along and production deploys once instead of
+twice. Merge with `--merge`, never `--rebase`: a rebase rewrites the commits,
+which would leave the tag pointing at a commit `main` never took.
+
+For a one-off jump to an exact version, `-r` sets it explicitly:
+
+```bash
+pnpx changelogen --noAuthors --release -r 1.0.0 --push
+```
+
+**What counts as breaking here.** There is no public API, so the test is simply:
+_does something that already worked stop working?_
+
+- **Public URLs** — a shared or bookmarked link 404s. Links get passed around
+  (see `01-chat.md`), so this is the one most likely to bite someone.
+- **Session / cookie format** — everyone is logged out. Happened once already,
+  at the app merge (see `04-app-merge.md`).
+- **The DB schema, but only when the change is destructive** — dropping or
+  renaming a column, changing what an existing one means, a migration that
+  existing rows cannot survive.
+
+**Adding to the schema is a feature, not a break.** A new ruleset that needs
+new columns or new rule IDs supports something new while everything old keeps
+working exactly as before — that is a **minor**. Expect this to be the common
+case: the rulesets drive the domain, and they grow by addition.

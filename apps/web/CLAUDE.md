@@ -2,7 +2,9 @@
 
 ## Project description
 
-This is the app behind https://runde.tips - the Haus23 Tipprunde. It is a React Router 8 Framework Mode application. Public routes live at the root, the management UI (championships, players, matches, teams, leagues, results, tips, rulesets) under `/manager`.
+This is the Haus23 Tipprunde. It is a React Router 8 Framework Mode application. Public routes live at the root, the management UI (championships, players, matches, teams, leagues, results, tips, rulesets) under `/manager`.
+
+It serves **https://next.runde.tips** from the Railway production deployment. The apex **https://runde.tips** still belongs to the legacy stack and moves here at go-live, once the 2002–now history is fully entered — at which point `next.` goes away. So: anything about "production" in here means this app's own deployment, not the site real users are on today.
 
 ## Commands
 
@@ -20,7 +22,7 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 
 ## Architecture
 
-**Stack:** React Router 8 (Framework Mode) + React Aria Components + Tailwind CSS 4 + Drizzle ORM + Turso (libSQL/SQLite) + Cloudflare Workers
+**Stack:** React Router 8 (Framework Mode) + React Aria Components + Tailwind CSS 4 + Drizzle ORM + Turso (libSQL/SQLite), served by a custom Node server (`server/app.ts`) on Railway
 
 **App directory layout (`app/`):**
 
@@ -41,14 +43,14 @@ Public routes live at the root; the manager sits under `/manager`.
 
 The championship-scoped views below are mounted **twice** from one set of
 files — at the root for the running championship, and under `/archiv/:slug`
-for any other published one (see `championship-scope-plan.md`):
+for any other published one (see `05-championship-scope.md`):
 
 - `/` — Championship overview: standings, current matches, ruleset
 - `/tabelle` — Current/final table
 - `/spiele`, `/spiele/:nr` — Match overview (accordion) and per-match tips
 - `/tipps/:playerSlug?` — One player's tips (defaults to self, else rank 1)
 - `/verlauf/:playerSlug?` — Rank progression bump chart; the slug only picks
-  the highlighted line (see `verlauf-plan.md`)
+  the highlighted line (see `06-verlauf-bump-chart.md`)
 - `/zusatzfragen` — Extra questions and answers
 - `/regelwerk` — The championship's ruleset in full
 
@@ -95,24 +97,31 @@ Cross-championship, outside that scope:
 - All Tailwind default colors are disabled — use only `--color-*` tokens from `app/app.css` (Radix Sand + Orange palette)
 - German locale (`de-DE`) is hardcoded via `I18nProvider`; use `formatDate()` / `slugify()` from `app/lib/utils.ts`
 - Middleware is default behaviour in RR8 (the `v8_*` future flags are gone); `context` is a `RouterContextProvider`
-- One fetcher per independently-savable row — never share a `useFetcher()` across a list (see `docs/app-merge.md` history and the grid routes)
+- One fetcher per independently-savable row — never share a `useFetcher()` across a list (see `docs/decisions/04-app-merge.md` history and the grid routes)
 - Errors that should **render** are thrown from a loader, never from middleware — a `data()` thrown in middleware short-circuits as a raw response body and never reaches an `ErrorBoundary`. `redirect()` from middleware is fine.
 - Mount an `ErrorBoundary` on a **child** route, not on the layout whose chrome should survive the error — a layout-level boundary replaces that layout. Public 404s go through `public/_layout.tsx` + the `*` route, manager 404s through `manager/_not-found.tsx` and `manager/championship/_layout.tsx`.
 
 ## Docs
 
-Shared docs are in the root `docs/` folder:
+Shared docs are in the root `docs/` folder.
+
+**Reference — kept current as the code changes:**
 
 - `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain logic
 - `theme.md` — Color system: Radix Sand/Orange tokens, `--color-*` CSS properties, Tailwind setup
 - `tokens.md` — Design tokens: breakpoints, easing, shadows, border-radius, typography scale
-- `deployment.md` — Environment variables (full table), first-deploy bootstrap (manual admin user insert), user management
+- `deployment.md` — Railway service + environments, environment variables (full table), first-deploy bootstrap
 - `web-shell.md` — Public shell: header contents, nav strategy, planned chat panel
-- `color-scheme.md` — Single-button light/dark switch spec (replaces both current controls)
 - `archiv.md` — Archiv: the materialized ranking columns on `players` and what depends on them
-- `championship-scope-plan.md` — Public-routing change: championship as a URL dimension, shared route files for Archiv + current season, dashboard as the shared overview (built)
-- `verlauf-plan.md` — Punkteverlauf: bump chart of rank evolution, step axis with RP/ZP columns, hand-rolled SVG (iteration 1 built)
-- `app-merge.md` — History: how this app absorbed the separate web app (why things look the way they do)
+
+**Decisions (`docs/decisions/`) — dated records of why something is the way it is:**
+
+- `01-chat.md` — In-app chat: separate DB, WebSocket transport (not built)
+- `02-hosting-railway.md` — Railway hosting, custom Node server
+- `03-color-scheme.md` — Single-button light/dark switch spec
+- `04-app-merge.md` — How this app absorbed the separate web app (why things look the way they do)
+- `05-championship-scope.md` — Championship as a URL dimension, shared route files for Archiv + current season
+- `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, hand-rolled SVG
 
 ## Environment variables
 
@@ -123,9 +132,8 @@ mail and code settings, not just the DB:
 `RESEND_API_KEY`, `FROM_EMAIL`, `TOTP_EXPIRES_IN`, `TOTP_MAX_ATTEMPTS`,
 `SESSION_DURATION_DEFAULT`, `SESSION_DURATION_REMEMBER`
 
-In production the first five are Worker **secrets** and the rest are `vars` in
-`wrangler.jsonc`, which also lists them in `secrets.required` so a deploy fails
-by name when one is missing. See `docs/deployment.md`.
+In production they are set per Railway environment. The first five are
+secrets and never belong in the repo. See `docs/deployment.md`.
 
 ## External Documentation (LLM-Ready)
 

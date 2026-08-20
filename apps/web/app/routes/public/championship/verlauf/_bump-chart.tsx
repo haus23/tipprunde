@@ -128,7 +128,7 @@ function useMeasuredWidth() {
  *
  * Rows are display rows, not ranks — tied players share a rank but never a
  * row, or their lines would coincide. `calcProgression` assigns them; see
- * docs/verlauf-plan.md.
+ * docs/decisions/06-verlauf-bump-chart.md.
  */
 export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
   const { ref, width } = useMeasuredWidth();
