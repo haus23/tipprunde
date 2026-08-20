@@ -240,8 +240,9 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
         {shownStepDef && <span className="text-muted">{stepTitle(shownStepDef)}</span>}
         {readout.focus && (
           <>
-            {" · "}
-            <span className="text-accent font-medium">{readout.focus.name}</span>
+            {/* No name here on purpose: the row above already names the
+                highlighted player in accent, and so does their line's label.
+                A third one made the colour stop meaning anything. */}
             {" · Rang "}
             {readout.focus.rank}
             {" · "}

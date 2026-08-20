@@ -1,3 +1,5 @@
+import { ChartLineIcon } from "lucide-react";
+
 import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { PlayerSwitch } from "#/components/player-switch.tsx";
@@ -113,7 +115,12 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
           {/* The Verlauf is the history of exactly this number, so the question
               "how did I end up ninth?" gets its answer where it is asked. The
               slug rides along, so the chart opens with this player highlighted. */}
-          <AppLink href={scoped(`/verlauf/${player.slug}`)}>Platz {player.rank}</AppLink>
+          <AppLink href={scoped(`/verlauf/${player.slug}`)}>
+            <span className="inline-flex items-baseline gap-1">
+              <ChartLineIcon className="relative top-[0.1em] size-3.5 shrink-0" />
+              Platz {player.rank}
+            </span>
+          </AppLink>
           <br className="xs:hidden" />
           <span className="xs:inline hidden"> · </span>
           {player.tipPoints} Tippunkte · {playerSpiele} Spiele
