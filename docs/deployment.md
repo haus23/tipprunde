@@ -4,7 +4,7 @@ The app runs as a **single Node service on Railway** (`tipprunde`), serving the
 custom server in `apps/web/server/app.ts`. The Cloudflare Workers deployment it
 used to have is gone — `@cloudflare/vite-plugin` and `wrangler.jsonc` were
 removed with the Node build target, so `main` can no longer produce a Worker at
-all. Background and the steps that got here: [railway-plan.md](./railway-plan.md).
+all. Background and the steps that got here: [02-hosting-railway.md](./decisions/02-hosting-railway.md).
 
 ## Railway service
 

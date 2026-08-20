@@ -39,11 +39,11 @@ const normalize = (s: string) =>
  * Season switcher next to the championship name — mirrors MatchSwitch /
  * PlayerSwitch (chevron-only trigger, Autocomplete popover). Search earns its
  * keep here specifically: the list only has 5 entries today, but two decades
- * of legacy seasons are still being imported (see docs/railway-plan.md).
+ * of legacy seasons are still being imported (see docs/decisions/02-hosting-railway.md).
  *
  * Lives on the shared championship overview (championship/index.tsx), so it
  * appears once for the running season and once per archived one — the same
- * file, per docs/championship-scope-plan.md. This is the only way in and out
+ * file, per docs/decisions/05-championship-scope.md. This is the only way in and out
  * of the Archiv; there is deliberately no header nav entry for it.
  */
 export function ChampionshipSwitcher({ championships, currentSlug, triggerClassName }: Props) {

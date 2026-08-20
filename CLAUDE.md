@@ -56,18 +56,24 @@ The same pattern works for any package script (`build`, `typecheck`, etc.).
 
 Shared documentation in `docs/`:
 
+**Reference — kept current as the code changes:**
+
 - `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain
 - `theme.md` — Color system: Radix Sand/Orange tokens, `@tipprunde/theme` package usage
 - `tokens.md` — Design tokens: breakpoints, easing, shadows, border-radius, typography scale
 - `deployment.md` — Railway service + environments, environment variables, first-deploy bootstrap
 - `web-shell.md` — Public shell: header contents, nav strategy, planned docked/drawer chat panel
-- `color-scheme.md` — Single-button light/dark switch: stored vs. resolved state, click algorithm, SSR constraint
-- `archiv.md` — Archiv feature: ranking columns on `players`, dashboard entry (built — `/archiv`, `/archiv/:slug`)
-- `championship-scope-plan.md` — Championship as a URL dimension so Archiv and current-season views share route files; dashboard is the shared championship overview (built)
-- `verlauf-plan.md` — Punkteverlauf: bump chart of rank evolution, step axis with RP/ZP columns, hand-rolled SVG (built)
-- `chat-plan.md` — Planned in-app chat: separate DB, phased transport (polling → SSE/WS on Railway), TanStack Virtual (not yet built)
-- `app-merge.md` — History: how the TanStack Start app merged into the RR8 app (phases A–D, done 2026-08-09); step 1 of merge → Railway → Litestream
-- `railway-plan.md` — Prod hosting: single Node service on Railway (done, live); the SQLite+Litestream step is deferred unless Turso's free tier runs out
+- `archiv.md` — Archiv feature: ranking columns on `players`, dashboard entry
+
+**Decisions (`docs/decisions/`) — dated records of why something is the way it
+is. Superseded, never quietly rewritten:**
+
+- `01-chat.md` — In-app chat: separate DB, WebSocket transport, TanStack Virtual (not built)
+- `02-hosting-railway.md` — Single Node service on Railway (live); SQLite+Litestream deferred unless Turso's free tier runs out
+- `03-color-scheme.md` — Single-button light/dark switch: stored vs. resolved state, click algorithm
+- `04-app-merge.md` — How the TanStack Start app merged into the RR8 app (done 2026-08-09)
+- `05-championship-scope.md` — Championship as a URL dimension; Archiv and current season share route files
+- `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, and the measurement that picked that form
 
 ## Skills
 
@@ -99,5 +105,5 @@ pnpx changelogen --noAuthors --release -r 1.0.0 --push
 
 **What counts as breaking here.** There is no public API, so it comes down to
 three things: public URLs (links are shared and bookmarked — see
-`chat-plan.md`), the DB schema, and the session/cookie format. Changing any of
+`01-chat.md`), the DB schema, and the session/cookie format. Changing any of
 those is a major.

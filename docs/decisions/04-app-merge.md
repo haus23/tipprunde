@@ -4,7 +4,7 @@
 the React Router 8 app; what was `apps/manager` is now the single `apps/web`
 (`@tipprunde/web`), serving public routes at the root and the manager under
 `/manager` from the one `tipprunde` Worker. Step 1 of the three-step sequence:
-**merge → Railway hosting ([railway-plan.md](./railway-plan.md)) →
+**merge → Railway hosting ([02-hosting-railway.md](./02-hosting-railway.md)) →
 Turso→Litestream switch**.
 
 Delivered as [PR #1](https://github.com/haus23/tipprunde/pull/1) (24 commits,
@@ -49,7 +49,7 @@ routes move under a `/manager` path prefix.
 - **Porting inventory (mechanical, components carry over ~unchanged):** the
   route modules under `apps/web/src/routes` (championship layout + tabelle,
   tipps/{-$slug}, spiele + $nr, zusatzfragen, archiv, login, index
-  dashboard), the shell per [web-shell.md](./web-shell.md) (unchanged spec,
+  dashboard), the shell per [web-shell.md](../web-shell.md) (unchanged spec,
   new host app), server functions → loaders/actions.
 - **Env consolidation:** one `wrangler.jsonc` — web's vars (`TOTP_*`,
   `SESSION_*`, `FROM_EMAIL`, mail secret) join the manager's (`TURSO_*`).
@@ -122,7 +122,7 @@ three-level route structure:
 - **Public layout (pathless).** Web's header shell moves here as-is: logo,
   top nav (Tabelle · Spieler · Spiele), color-scheme menu, user area,
   navigation progress, `max-w-4xl` container. Wraps all public routes
-  including `/login`. The future chat rail ([web-shell.md](./web-shell.md))
+  including `/login`. The future chat rail ([web-shell.md](../web-shell.md))
   attaches to _this_ shell only.
 - **Manager layout (`/manager`).** Everything the manager's `root.tsx` does
   today _except_ the document: `ShellProvider`, sidebar + mobile nav,
@@ -264,6 +264,6 @@ name. It belongs with the build repoint in D3.
   becomes a local file in step 3). Decision is cheap to reverse: Query
   re-enters surgically if a specific route measurably needs client caching —
   at the latest with chat v1's `refetchInterval` polling
-  ([chat-plan.md](./chat-plan.md)).
+  ([01-chat.md](./01-chat.md)).
 - **`packages/ui` stays a package.** Folding it app-local mid-port is churn
   for cosmetic gain; revisit only if the indirection ever annoys.

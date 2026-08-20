@@ -17,7 +17,7 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
  * `viewedChampionshipContext` and never learn which branch rendered them, so a
  * new public feature is written once and appears in both.
  *
- * See docs/championship-scope-plan.md.
+ * See docs/decisions/05-championship-scope.md.
  */
 const championshipViews = (id: string) => [
   index("routes/public/championship/index.tsx", { id: `${id}-index` }),
@@ -30,7 +30,7 @@ const championshipViews = (id: string) => [
   route("tipps/:playerSlug?", "routes/public/championship/tipps/index.tsx", {
     id: `${id}-tipps`,
   }),
-  // :playerSlug only picks the highlighted line — see docs/verlauf-plan.md.
+  // :playerSlug only picks the highlighted line — see docs/decisions/06-verlauf-bump-chart.md.
   route("verlauf/:playerSlug?", "routes/public/championship/verlauf/index.tsx", {
     id: `${id}-verlauf`,
   }),

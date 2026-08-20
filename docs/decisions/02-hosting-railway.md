@@ -2,7 +2,7 @@
 
 **Status: step 2 done and live; step 3 deferred indefinitely (2026-08-20).**
 Replaces the earlier self-hosted Hetzner idea. Three-step sequence: **app merge
-([app-merge.md](./app-merge.md)) → Railway → Turso→Litestream switch**. Each
+([04-app-merge.md](./04-app-merge.md)) → Railway → Turso→Litestream switch**. Each
 step ships independently:
 
 **Step 3 is no longer treated as required.** Running on Railway against Turso
@@ -60,7 +60,7 @@ into _real_ prod today and imported here later, not double-entered by
 hand). Full detail: `[[project_system_landscape]]` in memory.
 
 What stays on Cloudflare is DNS and R2 — see "What stays on Cloudflare" below.
-The chat feature's realtime transport ([chat-plan.md](./chat-plan.md)) depends
+The chat feature's realtime transport ([01-chat.md](./01-chat.md)) depends
 on this move.
 
 ## Keeping CF (`next.runde.tips`) alive during the transition
@@ -126,7 +126,7 @@ between services anyway.
 ## Architecture: one Node service, one app
 
 Originally planned as a two-fetch-handler dispatcher; the app merge
-([app-merge.md](./app-merge.md)) simplifies this to the boring default —
+([04-app-merge.md](./04-app-merge.md)) simplifies this to the boring default —
 **the standard RR8 Node build of the single merged app**. No dispatcher, no
 path-splitting, no multi-root static serving.
 

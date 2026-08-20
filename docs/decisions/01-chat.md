@@ -33,9 +33,9 @@ discussion so the feature can start without re-deriving them.
 > Unchanged either way: **Railway app sleeping must stay off.**
 
 Chat lands in the single RR8 app (`apps/web`) — the merge that made it single
-is done ([app-merge.md](./app-merge.md)). The shell/layout side (docked rail vs.
+is done ([04-app-merge.md](./04-app-merge.md)). The shell/layout side (docked rail vs.
 drawer, keep-mounted constraint) is specced in
-[web-shell.md](./web-shell.md); this doc covers storage, transport, and the
+[web-shell.md](../web-shell.md); this doc covers storage, transport, and the
 message UI.
 
 ## Requirements & constraints
@@ -107,7 +107,7 @@ plain long-lived WebSocket without Durable Objects. That shapes the phases:
   indistinguishable from realtime, needs zero new infrastructure, and ships on
   the current CF hosting. This is the one place the merge left the door open for
   TanStack Query to re-enter surgically (`refetchInterval`) — see the data
-  strategy decision in [app-merge.md](./app-merge.md); a bare `setInterval` +
+  strategy decision in [04-app-merge.md](./04-app-merge.md); a bare `setInterval` +
   `fetcher.load()` may well be enough.
 - **v2 — after Railway.** Swap polling for SSE (preferred: chat clients mostly
   _receive_; no custom server glue, proxy-friendly) or WebSockets (needs a
@@ -134,7 +134,7 @@ headless; no transport/storage opinions):
 - **Stable keys via `getItemKey` with message ids** — index keys break
   prepending. The autoincrement `id` serves.
 
-Shell integration per [web-shell.md](./web-shell.md): docked ~340px rail ≥ `lg`,
+Shell integration per [web-shell.md](../web-shell.md): docked ~340px rail ≥ `lg`,
 drawer overlay below; the chat component stays **always mounted** (draft text,
 scroll position, and — in v2 — the live connection survive dock/undock).
 

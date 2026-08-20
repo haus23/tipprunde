@@ -93,7 +93,7 @@ export async function getEwigeTabelle() {
  * `_championship-layout.tsx`.
  *
  * `published`, not `completed`: visibility and "finished" are orthogonal
- * (see docs/championship-scope-plan.md). The running championship is
+ * (see docs/decisions/05-championship-scope.md). The running championship is
  * reachable this way too — a harmless coincidence, not a special case to
  * guard against.
  */

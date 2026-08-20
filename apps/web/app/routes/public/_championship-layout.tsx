@@ -10,7 +10,7 @@ import type { Route } from "./+types/_championship-layout";
  * Root branch of the shared championship views — everything below is scoped to
  * the **running** championship (latest published). The archive branch is
  * `archiv/_layout.tsx`; both mount the same view files, see
- * docs/championship-scope-plan.md.
+ * docs/decisions/05-championship-scope.md.
  *
  * Renders no chrome of its own: each view already carries its own heading and
  * names the championship, so anything here would only duplicate it.

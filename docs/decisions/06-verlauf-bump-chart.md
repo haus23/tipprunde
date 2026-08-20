@@ -1,4 +1,4 @@
-# Punkteverlauf — Bump Chart Plan
+# Punkteverlauf — Bump Chart
 
 **Status: iteration 1 built (2026-08-19).** One chart, one form — deliberately.
 Earlier attempts existed in two now-retired codebases (a TanStack Start app
@@ -215,13 +215,13 @@ only?" question: it is available in both by construction.
 
 `:playerSlug?` mirrors `/tipps/:playerSlug?` and makes a specific player's run
 linkable ("schau dir an, wie ich ab Spiel 30 abgestürzt bin") — the same
-argument `championship-scope-plan.md` makes for keeping secondary content
+argument `05-championship-scope.md` makes for keeping secondary content
 addressable rather than modal, with the planned chat in mind.
 
 Focus resolution reuses `resolvePlayer()`: explicit slug → logged-in user →
 rank 1.
 
-**No new header entry** — that constraint from `championship-scope-plan.md`
+**No new header entry** — that constraint from `05-championship-scope.md`
 stands. Entry point is a switcher on the Tabelle view, the same shape the old
 app had:
 

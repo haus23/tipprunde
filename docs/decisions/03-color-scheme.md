@@ -99,7 +99,7 @@ layout shift and the swap can animate:
 Correct on first paint, no JS, and it keeps tracking the OS in `system` mode
 for free. `ease-out` resolves to the project's custom curve and the default
 150 ms duration sits in the right band for an icon swap — see
-[tokens.md](./tokens.md), which also records that nothing here yet honours
+[tokens.md](../tokens.md), which also records that nothing here yet honours
 `prefers-reduced-motion`.
 
 ## Accessibility

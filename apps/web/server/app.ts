@@ -12,7 +12,7 @@ type NodeMiddleware = (req: IncomingMessage, res: ServerResponse, next: () => vo
 // Railway target — replaces the Cloudflare Workers `workers/app.ts` entry.
 // Deliberately a small hand-rolled server, not `@react-router/serve`: chat v2
 // needs raw access to the HTTP server to attach SSE/WS, so this is built once
-// rather than swapped twice. See docs/railway-plan.md.
+// rather than swapped twice. See docs/decisions/02-hosting-railway.md.
 
 const PORT = Number(process.env.PORT) || 3000;
 

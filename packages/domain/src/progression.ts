@@ -43,7 +43,7 @@ export type PlayerProgression = {
  *
  * Returns one entry per input player, in input order.
  *
- * See docs/verlauf-plan.md.
+ * See docs/decisions/06-verlauf-bump-chart.md.
  */
 export function calcProgression({
   players,
