@@ -257,9 +257,17 @@ the user's call was to see (b) working first before adding it.
 
 ## Interaction
 
-- **Pointer/tap anywhere in the plot** → nearest step → crosshair + tooltip.
-  Tooltip carries: step label, focused player, true rank (incl. "punktgleich
+- **Pointer/tap anywhere in the plot** → nearest step → crosshair, plus a
+  readout carrying: step label, focused player, true rank (incl. "punktgleich
   mit …"), cumulative points, gap to the leader.
+- **The readout is a fixed line above the plot, not a floating tooltip.** It
+  was one at first, positioned in whichever half the focused line was not, so
+  it would never cover the point being read — but the focused line changes
+  halves as you scrub, so the readout jumped and had no position the eye could
+  learn. Worse, on a landscape phone the chart is taller than the viewport and
+  the lower position landed below the fold. It is now sticky under the header,
+  so it stays put while you scroll through the lower ranks, and it always shows
+  a step (the final one at rest) so its line never empties and shifts the chart.
 - **Tap a right-edge label** → focus that player (navigates to
   `/verlauf/:playerSlug`, so the focus is linkable). Labels are ~20px tall, an
   adequate target; the 2px line itself is not.

@@ -23,8 +23,6 @@ const LABEL_BREAKPOINT = 640;
 const DEFAULT_WIDTH = 900;
 /** Minimum horizontal room per x-axis label before we start skipping some. */
 const LABEL_PITCH = 30;
-/** Half the tooltip's fixed width — it is centred, so this is its clamp. */
-const TOOLTIP_HALF = 104;
 
 interface Props {
   steps: VerlaufStep[];
@@ -194,7 +192,13 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
     return Math.min(lastStep, Math.max(0, Math.round(ratio * (steps.length - 1))));
   };
 
-  const active = activeStep === null ? null : buildReadout(players, activeStep, focusSlug);
+  // The readout always shows a step — the crosshair's while scrubbing, the
+  // final one at rest — so its line never empties out and shoves the chart
+  // around as you move across it.
+  const shownStep = activeStep ?? lastStep;
+  const readout = buildReadout(players, shownStep, focusSlug);
+  const shownStepDef = steps[shownStep];
+  const gap = readout.leader && readout.focus ? readout.leader.points - readout.focus.points : 0;
 
   // Measure the rendered names once they exist, so the reservation matches the
   // font rather than the estimate. Widths do not depend on where the labels
@@ -221,6 +225,40 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
 
   return (
     <div ref={ref} className="relative w-full">
+      {/* Fixed place, not a floating tooltip. A tooltip that dodges the focused
+          line has no position the eye can learn, and on a landscape phone the
+          chart is taller than the viewport — half the time it landed below the
+          fold. min-h reserves the second line so the chart does not shift when
+          the text wraps. */}
+      <p
+        aria-live="polite"
+        // Sticky under the h-14 header: on a landscape phone the chart is
+        // taller than the viewport, so a readout fixed to the top of the chart
+        // scrolls away exactly when you are reading the lower ranks.
+        className="text-subtle bg-surface xs:min-h-5 sticky top-14 z-10 mb-1.5 min-h-10 py-1 text-center text-xs leading-5"
+      >
+        {shownStepDef && <span className="text-muted">{stepTitle(shownStepDef)}</span>}
+        {readout.focus && (
+          <>
+            {" · "}
+            <span className="text-accent font-medium">{readout.focus.name}</span>
+            {" · Rang "}
+            {readout.focus.rank}
+            {" · "}
+            <span className="tabular-nums">{readout.focus.points}</span> P
+            {readout.focus.tiedWith.length > 0 && (
+              <> · punktgleich mit {formatTiedWith(readout.focus.tiedWith)}</>
+            )}
+            {readout.leader && gap > 0 && (
+              <>
+                {" · Rückstand auf "}
+                {readout.leader.name}: <span className="tabular-nums">{gap}</span> P
+              </>
+            )}
+          </>
+        )}
+      </p>
+
       <svg
         width={width}
         height={height}
@@ -457,60 +495,6 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
             })}
           </tbody>
         </table>
-      )}
-
-      {activeStep !== null && active && (
-        <div
-          role="status"
-          className="border-subtle bg-surface-raised shadow-popover text-app pointer-events-none absolute z-10 w-[13rem] -translate-x-1/2 rounded-md border px-3 py-2 text-xs"
-          style={{
-            left: Math.min(
-              Math.max(MARGIN.left + x(activeStep), TOOLTIP_HALF),
-              Math.max(TOOLTIP_HALF, width - TOOLTIP_HALF),
-            ),
-            // Sit in whichever half the focused line is not in, so the tooltip
-            // never covers the very point being read.
-            top:
-              (focus?.positions[activeStep] ?? 0) < players.length / 2
-                ? MARGIN.top + plotHeight * 0.55
-                : MARGIN.top,
-          }}
-        >
-          <p className="text-muted mb-1 font-medium">{stepTitle(steps[activeStep]!)}</p>
-          {active.focus ? (
-            <>
-              <p>
-                <span className="text-accent font-medium">{active.focus.name}</span>
-                <span className="text-subtle"> · Rang {active.focus.rank} · </span>
-                <span className="tabular-nums">{active.focus.points}</span>
-                <span className="text-subtle"> P</span>
-              </p>
-              {active.focus.tiedWith.length > 0 && (
-                <p className="text-subtle mt-0.5">
-                  punktgleich mit {formatTiedWith(active.focus.tiedWith)}
-                </p>
-              )}
-              {/* A gap of zero means the leader is already named in the
-                  punktgleich line above — saying it twice adds nothing. */}
-              {active.leader && active.leader.points > active.focus.points && (
-                <p className="text-subtle mt-0.5">
-                  Rückstand auf {active.leader.name}:{" "}
-                  <span className="tabular-nums">{active.leader.points - active.focus.points}</span>{" "}
-                  P
-                </p>
-              )}
-            </>
-          ) : (
-            active.leader && (
-              <p>
-                <span className="font-medium">{active.leader.name}</span>
-                <span className="text-subtle"> führt mit </span>
-                <span className="tabular-nums">{active.leader.points}</span>
-                <span className="text-subtle"> P</span>
-              </p>
-            )
-          )}
-        </div>
       )}
     </div>
   );
