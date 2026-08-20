@@ -1,3 +1,5 @@
+import { AppLink } from "#/components/app-link.tsx";
+import { useScopedPath } from "#/components/championship-scope.tsx";
 import { PlayerSwitch } from "#/components/player-switch.tsx";
 import { getRuleset } from "#/lib/championship.server.ts";
 import { viewedChampionshipContext, userContext } from "#/lib/context.ts";
@@ -50,6 +52,7 @@ export async function loader({ context, params }: Route.LoaderArgs) {
 }
 
 export default function Tipps({ loaderData }: Route.ComponentProps) {
+  const scoped = useScopedPath();
   const {
     championshipName,
     player,
@@ -106,7 +109,11 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
           <PlayerSwitch players={players} currentSlug={player.slug} basePath="/tipps" />
         </div>
         <p className="text-subtle text-center text-sm leading-relaxed">
-          {championshipName} · Platz {player.rank}
+          {championshipName} ·{" "}
+          {/* The Verlauf is the history of exactly this number, so the question
+              "how did I end up ninth?" gets its answer where it is asked. The
+              slug rides along, so the chart opens with this player highlighted. */}
+          <AppLink href={scoped(`/verlauf/${player.slug}`)}>Platz {player.rank}</AppLink>
           <br className="xs:hidden" />
           <span className="xs:inline hidden"> · </span>
           {player.tipPoints} Tippunkte · {playerSpiele} Spiele
