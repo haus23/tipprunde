@@ -1,4 +1,4 @@
-import { ChartLineIcon } from "lucide-react";
+import { TrendingUpIcon } from "lucide-react";
 
 import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
@@ -117,7 +117,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
               slug rides along, so the chart opens with this player highlighted. */}
           <AppLink href={scoped(`/verlauf/${player.slug}`)}>
             <span className="inline-flex items-baseline gap-1">
-              <ChartLineIcon className="relative top-[0.1em] size-3.5 shrink-0" />
+              <TrendingUpIcon className="relative top-[0.1em] size-3.5 shrink-0" />
               Platz {player.rank}
             </span>
           </AppLink>
