@@ -17,9 +17,20 @@ output and fixed:
 - **Labels must hang off the last _played_ step, not the plot edge.** In a
   running championship the axis reaches into unplayed steps, so edge-anchored
   labels floated in empty space naming nothing.
-- **Axis labels collide around special steps** (`RP12`, `RPZP`). Special steps
-  now carry a rule line of their own and labels are placed with a minimum gap,
-  so a crowded-out `RP` label still leaves its column marked.
+- **Axis labels collide around special steps** (`RP12`, `RPZP`). Labels are now
+  placed with a minimum gap, and a crowded-out `RP` label still leaves its
+  column marked by the round divider below.
+
+## Round dividers
+
+A vertical divider marks the end of every round — the round's `RP` column where
+it has one, otherwise its last match. It is **not** drawn on the chart's final
+step: a line with nothing after it only boxes the chart in.
+
+That single rule covers the cases without a special case each. `hr0304` keeps a
+divider on each of its four `RP` columns; championships without a round rule get
+the same rhythm off their last matches; and the `ZP` column ends up fenced off
+on its left by the preceding round's divider while staying open on the right.
 
 ## What this view answers
 

@@ -272,12 +272,15 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
             />
           ))}
 
-          {/* Rule line wherever points arrive outside a match, so an RP or ZP
-              column is still marked even when its label lost the space. */}
+          {/* Divider at each round's end — its RP column where there is one,
+              otherwise its last match. Never on the final step: a line with
+              nothing after it just boxes the chart in. That also keeps the ZP
+              column open on the right while still being fenced off on the
+              left by the preceding round's divider. */}
           {steps.map((step, i) =>
-            step.kind === "match" ? null : (
+            step.endsRound && i < steps.length - 1 ? (
               <line
-                key={`rule-${i}`}
+                key={`divider-${i}`}
                 x1={x(i)}
                 x2={x(i)}
                 y1={0}
@@ -286,7 +289,7 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
                 strokeWidth={1}
                 className="text-subtle opacity-25"
               />
-            ),
+            ) : null,
           )}
 
           {/* One keyed line per player, ordered context → leader → focus so

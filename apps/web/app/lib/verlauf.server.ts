@@ -18,9 +18,9 @@ import { db } from "./db.server.ts";
  * scores has a place and the chart ends on the Abschlusstabelle.
  */
 export type VerlaufStep =
-  | { kind: "match"; nr: number }
-  | { kind: "roundPoints"; roundNr: number }
-  | { kind: "extraPoints" };
+  | { kind: "match"; nr: number; endsRound: boolean }
+  | { kind: "roundPoints"; roundNr: number; endsRound: boolean }
+  | { kind: "extraPoints"; endsRound: false };
 
 export type VerlaufPlayer = {
   userId: number;
@@ -112,9 +112,11 @@ export async function getVerlauf(championshipId: number): Promise<Verlauf> {
   let playedSteps = 0;
 
   for (const round of publishedRounds) {
+    const roundStart = steps.length;
+
     for (const match of round.matches) {
       const stepIndex = steps.length;
-      steps.push({ kind: "match", nr: match.nr });
+      steps.push({ kind: "match", nr: match.nr, endsRound: false });
       // An unplayed match still gets its step, so the axis shows the whole
       // season — it just carries no points and no line reaches it.
       if (match.result !== null) playedSteps = stepIndex + 1;
@@ -127,17 +129,22 @@ export async function getVerlauf(championshipId: number): Promise<Verlauf> {
     const awarded = roundPointsByRound.get(round.id);
     if (awarded?.length) {
       const stepIndex = steps.length;
-      steps.push({ kind: "roundPoints", roundNr: round.nr });
+      steps.push({ kind: "roundPoints", roundNr: round.nr, endsRound: false });
       playedSteps = stepIndex + 1;
       for (const entry of awarded) {
         gains.push({ stepIndex, userId: entry.userId, points: entry.points });
       }
     }
+
+    // Mark whatever step the round ended on — its RP column if it has one,
+    // otherwise its last match. The chart draws a divider there.
+    const lastOfRound = steps.length > roundStart ? steps[steps.length - 1] : undefined;
+    if (lastOfRound && lastOfRound.kind !== "extraPoints") lastOfRound.endsRound = true;
   }
 
   if (includesExtraQuestions(championship.ruleset, championship)) {
     const stepIndex = steps.length;
-    steps.push({ kind: "extraPoints" });
+    steps.push({ kind: "extraPoints", endsRound: false });
     playedSteps = stepIndex + 1;
     for (const answer of extraRows) {
       if (answer.points !== null) {
