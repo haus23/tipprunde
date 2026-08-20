@@ -2,7 +2,9 @@
 
 ## Project description
 
-This is the app behind https://runde.tips - the Haus23 Tipprunde. It is a React Router 8 Framework Mode application. Public routes live at the root, the management UI (championships, players, matches, teams, leagues, results, tips, rulesets) under `/manager`.
+This is the Haus23 Tipprunde. It is a React Router 8 Framework Mode application. Public routes live at the root, the management UI (championships, players, matches, teams, leagues, results, tips, rulesets) under `/manager`.
+
+It serves **https://next.runde.tips** from the Railway production deployment. The apex **https://runde.tips** still belongs to the legacy stack and moves here at go-live, once the 2002–now history is fully entered — at which point `next.` goes away. So: anything about "production" in here means this app's own deployment, not the site real users are on today.
 
 ## Commands
 

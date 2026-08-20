@@ -20,7 +20,9 @@ if you find the container listening elsewhere than you expected.
 
 ### Environments
 
-- **production** — deploys from `main`.
+- **production** — deploys from `main`, and serves **https://next.runde.tips**.
+  The apex `runde.tips` still belongs to the legacy stack and joins this
+  service at go-live, after which `next.` is dropped.
 - **pr-base** — the template PR Environments are cloned from. Its variables
   point at the dev database, so a preview never touches the real one.
 - **tipprunde-pr-N** — created per pull request, deleted when it closes.

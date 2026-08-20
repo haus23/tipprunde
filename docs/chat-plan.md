@@ -8,9 +8,29 @@ discussion so the feature can start without re-deriving them.
 > while the app ran on CF Workers with Railway as a future step. Railway is the
 > host now, so wherever this doc phases something as "now (CF Workers)" versus
 > "later (Railway)", the later column is simply the present — the CF-Workers
-> phase never has to be built. In particular the transport can go straight to
-> SSE/WS instead of starting with polling. What has _not_ changed is the
-> storage decision: a separate database, not a second schema in the domain DB.
+> phase never has to be built. What has _not_ changed is the storage decision:
+> a separate database, not a second schema in the domain DB.
+>
+> **Decided 2026-08-20: skip the polling phase, go realtime directly.**
+> Railway bills resources, not requests or connections
+> ([pricing](https://docs.railway.com/reference/pricing): $10/GB-month memory,
+> $20/vCPU-month, $0.05/GB egress), so at a handful of users neither option
+> registers against the $5 credit. Cost is simply not the deciding factor here;
+> polling's real cost is querying the database around the clock for nothing.
+>
+> **But this reverses the SSE-over-WebSockets preference below**, which assumed
+> SSE was the lower-effort path. On Railway that is not true
+> ([SSE vs WebSockets](https://docs.railway.com/guides/sse-vs-websockets)):
+> SSE rides on a normal HTTP response and inherits the request limits — closed
+> after **5 minutes without data**, capped at **15 minutes** even with
+> heartbeats, so it needs heartbeat comment lines _and_ reconnect-on-cap
+> handling. **WebSockets are exempt from those timeouts and may stay open
+> indefinitely, idle included.** The custom Node server (`server/app.ts`) that
+> WS needs already exists — it was built in the Railway move, partly for this.
+> Either way the client needs reconnect logic, because deploys drop
+> connections.
+>
+> Unchanged either way: **Railway app sleeping must stay off.**
 
 Chat lands in the single RR8 app (`apps/web`) — the merge that made it single
 is done ([app-merge.md](./app-merge.md)). The shell/layout side (docked rail vs.

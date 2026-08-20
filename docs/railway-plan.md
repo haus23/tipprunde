@@ -50,26 +50,29 @@ today. Real prod is a separate, older stack that's held real data since
 - `runde.tips` (the real apex domain) — CF Worker, **TanStack Router** SPA,
   reads from `unterbau`.
 
-This repo's Worker (`tipprunde`) only serves **`next.runde.tips`** today —
-it has never had the apex domain. **Step 9's "DNS cutover" below is not a
-routine infra swap: it's the go-live moment for the whole rebuild**,
+This repo has never had the apex domain — **`next.runde.tips`** is its
+hostname, and as of 2026-08-20 that name points at the **Railway production
+deployment**, not at the CF Worker any more. **Step 9's "DNS cutover" below is
+not a routine infra swap: it's the go-live moment for the whole rebuild**,
 retiring all three services above at once, once this app holds the full
 2002–now history (including the currently-running Hinrunde 2026/27, entered
 into _real_ prod today and imported here later, not double-entered by
 hand). Full detail: `[[project_system_landscape]]` in memory.
 
-Current CF Workers hosting (see [deployment.md](./deployment.md)) stays for
-dev/`next.runde.tips` and runs in parallel during the transition. The chat
-feature's transport upgrade ([chat-plan.md](./chat-plan.md) v2) depends on
-this move.
+What stays on Cloudflare is DNS and R2 — see "What stays on Cloudflare" below.
+The chat feature's realtime transport ([chat-plan.md](./chat-plan.md)) depends
+on this move.
 
 ## Keeping CF (`next.runde.tips`) alive during the transition
 
-> **This already played out as written.** The CF build path was removed with
-> the Node build target, so `main` cannot produce a Worker any more and
-> `next.runde.tips` has been frozen on its last pre-merge deployment ever
-> since. It still answers, with stale code — do not read it as a check of
-> anything current. The section is kept as the record of how that came about.
+> **Played out as written, and now over (2026-08-20).** The CF build path was
+> removed with the Node build target, so `main` cannot produce a Worker any
+> more, and the Worker sat frozen on its last pre-merge deployment. Its one
+> hostname has since been repointed: **`next.runde.tips` now serves the Railway
+> production deployment**, which leaves the Worker without a name and with
+> nothing to fall back to. The fallback this section was designed around is
+> therefore gone — deliberately, since Railway has been carrying the app for
+> months. Kept as the record of how it went.
 
 CF's Git integration (Workers Builds) auto-builds and deploys on every push
 to the **production branch** (`main`) — there is no manual `wrangler deploy`
@@ -92,12 +95,11 @@ automatically, frozen, no action required. Disconnecting the Git integration
 at that point is optional cleanup (stops CF flagging every later, unrelated
 push as a failed build) — do it then, not before.
 
-**`next.runde.tips` retirement (decided 2026-08-12):** stays alive as a
-fallback through **both** step 2 and step 3. Moving the real `runde.tips`
-DNS to Railway (step 9) is unrelated to this Worker, so `next.runde.tips`
-keeps working unmodified as a rollback reference the whole time. Delete the
-domain only once step 3 (local SQLite + Litestream) is proven — holding it
-beyond that point stops making sense once the DB layer is settled too.
+~~**`next.runde.tips` retirement (decided 2026-08-12):** stays alive as a
+fallback through **both** step 2 and step 3.~~ **Superseded 2026-08-20:** the
+hostname was handed to Railway instead of being held back as a rollback
+reference. Step 3 is deferred anyway, so waiting for it before releasing the
+name had stopped meaning anything.
 
 ## Cost target & breakdown
 
@@ -180,9 +182,10 @@ serving is most of what the custom server exists to do.
    is on a Custom Domain/Route pointing at the legacy stack today (see "What
    this plan actually cuts over" above), not at anything of ours — moving it
    to Railway (CNAME, proxied or DNS-only) is a first-time assignment for
-   this app, not a swap away from `tipprunde`. `next.runde.tips` (CF
-   Workers) is a separate hostname, untouched, and can stay up in parallel —
-   no big-bang switch for it. **`hinterhof.runde.tips` and
+   this app, not a swap away from `tipprunde`. `next.runde.tips` is a separate
+   hostname already pointing at this Railway deployment, so the apex move only
+   adds a second name to the same service — and `next.` can be dropped once it
+   has. **`hinterhof.runde.tips` and
    `unterbau.runde.tips` are retired outright at this point (decided
    2026-08-12)** — this app's `/manager` supersedes hinterhof's admin
    function, and no Firestore left to shield means unterbau has nothing left
@@ -190,10 +193,10 @@ serving is most of what the custom server exists to do.
 
 ## What stays on Cloudflare
 
-DNS (free plan), R2 (backup target), and — as a fallback until step 3 is
-proven, see "Keeping CF alive during the transition" above — `next.runde.tips`
-on the `tipprunde` Worker. Turso remains for the dev DB only, on the free
-tier, and can retire once dev also runs against local files if ever desired.
+DNS (free plan) and R2 (the backup target, only relevant if step 3 is ever
+taken). Nothing is served from Cloudflare any more: `next.runde.tips` points at
+Railway, and the `tipprunde` Worker has no hostname left. Turso holds both the
+dev and the "prod" database on the free tier.
 
 ## Open questions
 
@@ -220,6 +223,6 @@ Still genuinely open:
 
 - When to cut `runde.tips` DNS over to Railway: after the 50-championships
   backlog entry, together with chat v1 → v2, or earlier as a standalone
-  infra change. (`next.runde.tips`'s own retirement, and the fate of
-  `hinterhof`/`unterbau`, are both decided — see above; this is only about
-  the timing of the production hostname move.)
+  infra change. (The fate of `hinterhof`/`unterbau` is decided — see above;
+  this is only about the timing of the production hostname move. `next.` then
+  becomes redundant and goes away with it.)
