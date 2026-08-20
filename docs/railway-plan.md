@@ -1,15 +1,21 @@
 # Production Hosting — Railway Plan
 
-**Status: step 2 core deploy proven live (2026-08-13).** Replaces the earlier
-self-hosted Hetzner idea. Step 2 of the three-step sequence: **app merge
+**Status: step 2 done and live; step 3 deferred indefinitely (2026-08-20).**
+Replaces the earlier self-hosted Hetzner idea. Three-step sequence: **app merge
 ([app-merge.md](./app-merge.md)) → Railway → Turso→Litestream switch**. Each
 step ships independently:
 
-**Railway project exists (2026-08-13):** `tipprunde` service, branch
-`railway-node-build`, at `https://tipprunde.up.railway.app` — still against
-the **dev** Turso branch for now, deliberately (see "Data cutover" problem
-below; don't point this at the real backlog-entry DB until the service
-itself is proven over time). Verified end-to-end against the live URL:
+**Step 3 is no longer treated as required.** Running on Railway against Turso
+performs very well, so the move to a local SQLite file plus Litestream buys
+little today. The one thing that would force it is **outgrowing Turso's free
+tier**. Everything below about step 3 stays as a worked-out plan for that case,
+not as pending work.
+
+**Railway project (2026-08-13):** `tipprunde` service at
+`https://tipprunde.up.railway.app`. It now runs against this rebuild's own
+"prod" Turso database — switched over deliberately, with a backup taken first,
+once the service had proven itself; the caution below about staying on the dev
+branch describes the initial state, not the current one. Verified end-to-end against the live URL:
 SSR render, 404 handling, the `/manager` → `/login` middleware redirect,
 and immutable-cached gzip assets — same checks as the local build, all
 correct. Root Directory is the repo root (not `apps/web` — required for
@@ -23,12 +29,13 @@ expected.
 1. ~~**App merge** — no infra change, ships on current CF hosting.~~
    **Done 2026-08-09**, live on the single `tipprunde` Worker, serving only
    `next.runde.tips` (see below — this did **not** touch real prod).
-2. **Railway move** ← in progress. No data-layer change: the merged app runs
+2. ~~**Railway move**~~ — **done.** No data-layer change: the merged app runs
    on Railway **still against Turso** (`drizzle-orm/libsql/web` works from
-   anywhere). Core deploy (problems 1–2) proven live, see above; problems
-   6–9 (restore test, DNS cutover) still ahead.
-3. **Turso → local SQLite + Litestream** — pure DB-layer change on stable
-   hosting: volume, driver swap, Litestream, migration-workflow change.
+   anywhere). The DNS cutover (problem 9) is a separate matter — it is the
+   rebuild's go-live, not part of the hosting move.
+3. **Turso → local SQLite + Litestream** — **deferred**, see above. Pure
+   DB-layer change on stable hosting: volume, driver swap, Litestream,
+   migration-workflow change.
 
 ## What this plan actually cuts over — read this before "DNS cutover" below
 
@@ -57,6 +64,12 @@ feature's transport upgrade ([chat-plan.md](./chat-plan.md) v2) depends on
 this move.
 
 ## Keeping CF (`next.runde.tips`) alive during the transition
+
+> **This already played out as written.** The CF build path was removed with
+> the Node build target, so `main` cannot produce a Worker any more and
+> `next.runde.tips` has been frozen on its last pre-merge deployment ever
+> since. It still answers, with stale code — do not read it as a check of
+> anything current. The section is kept as the record of how that came about.
 
 CF's Git integration (Workers Builds) auto-builds and deploys on every push
 to the **production branch** (`main`) — there is no manual `wrangler deploy`

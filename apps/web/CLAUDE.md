@@ -20,7 +20,7 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 
 ## Architecture
 
-**Stack:** React Router 8 (Framework Mode) + React Aria Components + Tailwind CSS 4 + Drizzle ORM + Turso (libSQL/SQLite) + Cloudflare Workers
+**Stack:** React Router 8 (Framework Mode) + React Aria Components + Tailwind CSS 4 + Drizzle ORM + Turso (libSQL/SQLite), served by a custom Node server (`server/app.ts`) on Railway
 
 **App directory layout (`app/`):**
 
@@ -106,12 +106,12 @@ Shared docs are in the root `docs/` folder:
 - `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain logic
 - `theme.md` — Color system: Radix Sand/Orange tokens, `--color-*` CSS properties, Tailwind setup
 - `tokens.md` — Design tokens: breakpoints, easing, shadows, border-radius, typography scale
-- `deployment.md` — Environment variables (full table), first-deploy bootstrap (manual admin user insert), user management
+- `deployment.md` — Railway service + environments, environment variables (full table), first-deploy bootstrap (manual admin user insert)
 - `web-shell.md` — Public shell: header contents, nav strategy, planned chat panel
 - `color-scheme.md` — Single-button light/dark switch spec (replaces both current controls)
 - `archiv.md` — Archiv: the materialized ranking columns on `players` and what depends on them
 - `championship-scope-plan.md` — Public-routing change: championship as a URL dimension, shared route files for Archiv + current season, dashboard as the shared overview (built)
-- `verlauf-plan.md` — Punkteverlauf: bump chart of rank evolution, step axis with RP/ZP columns, hand-rolled SVG (iteration 1 built)
+- `verlauf-plan.md` — Punkteverlauf: bump chart of rank evolution, step axis with RP/ZP columns, hand-rolled SVG (built)
 - `app-merge.md` — History: how this app absorbed the separate web app (why things look the way they do)
 
 ## Environment variables
@@ -123,9 +123,8 @@ mail and code settings, not just the DB:
 `RESEND_API_KEY`, `FROM_EMAIL`, `TOTP_EXPIRES_IN`, `TOTP_MAX_ATTEMPTS`,
 `SESSION_DURATION_DEFAULT`, `SESSION_DURATION_REMEMBER`
 
-In production the first five are Worker **secrets** and the rest are `vars` in
-`wrangler.jsonc`, which also lists them in `secrets.required` so a deploy fails
-by name when one is missing. See `docs/deployment.md`.
+In production they are set per Railway environment. The first five are
+secrets and never belong in the repo. See `docs/deployment.md`.
 
 ## External Documentation (LLM-Ready)
 

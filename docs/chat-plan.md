@@ -4,6 +4,14 @@
 This doc records the architecture decisions and reasoning from the 2026-07
 discussion so the feature can start without re-deriving them.
 
+> **The hosting premise below has already changed (2026-08-20).** It was written
+> while the app ran on CF Workers with Railway as a future step. Railway is the
+> host now, so wherever this doc phases something as "now (CF Workers)" versus
+> "later (Railway)", the later column is simply the present — the CF-Workers
+> phase never has to be built. In particular the transport can go straight to
+> SSE/WS instead of starting with polling. What has _not_ changed is the
+> storage decision: a separate database, not a second schema in the domain DB.
+
 Chat lands in the single RR8 app (`apps/web`) — the merge that made it single
 is done ([app-merge.md](./app-merge.md)). The shell/layout side (docked rail vs.
 drawer, keep-mounted constraint) is specced in

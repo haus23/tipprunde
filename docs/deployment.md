@@ -1,14 +1,41 @@
 # Deployment
 
+The app runs as a **single Node service on Railway** (`tipprunde`), serving the
+custom server in `apps/web/server/app.ts`. The Cloudflare Workers deployment it
+used to have is gone — `@cloudflare/vite-plugin` and `wrangler.jsonc` were
+removed with the Node build target, so `main` can no longer produce a Worker at
+all. Background and the steps that got here: [railway-plan.md](./railway-plan.md).
+
+## Railway service
+
+| Setting        | Value                     | Why                                                |
+| -------------- | ------------------------- | -------------------------------------------------- |
+| Root Directory | repo root                 | pnpm workspace resolution needs it, not `apps/web` |
+| Build Command  | `pnpm --filter web build` |                                                    |
+| Start Command  | `pnpm --filter web start` |                                                    |
+
+Railway injects its own `PORT`; `server/app.ts` uses whatever it is given, so a
+manually set `PORT` variable in the dashboard is dead weight rather than a bug
+if you find the container listening elsewhere than you expected.
+
+### Environments
+
+- **production** — deploys from `main`.
+- **pr-base** — the template PR Environments are cloned from. Its variables
+  point at the dev database, so a preview never touches the real one.
+- **tipprunde-pr-N** — created per pull request, deleted when it closes.
+
+PR Environments copy the base environment's variables at creation. If a base
+variable changes while a PR is open, that PR keeps the old value until it is
+synced — worth remembering when rotating a token.
+
 ## Environment variables
 
-One app (`apps/web`), one set of variables. Locally they live in
-`apps/web/.env`; on Cloudflare the secrets are set on the Worker and the
-plain values come from `vars` in `wrangler.jsonc`. Both lists are mirrored in
-`wrangler.jsonc` (`secrets.required` + `vars`), so `wrangler deploy` fails
-loudly and by name when a secret is missing.
+One app, one set of variables. Locally they live in `apps/web/.env`; on Railway
+they are set per environment in the dashboard. Railway makes no secret/var
+distinction, but the split still matters for where a value may be written down:
 
-### Secrets (never in `wrangler.jsonc`)
+### Secrets — never in the repo
 
 | Variable             | Description                                    |
 | -------------------- | ---------------------------------------------- |
@@ -18,7 +45,7 @@ loudly and by name when a secret is missing.
 | `APP_SECRET`         | HMAC key for TOTP login codes                  |
 | `RESEND_API_KEY`     | Resend API key for sending the login code mail |
 
-### Vars (in `wrangler.jsonc`)
+### Plain values
 
 | Variable                    | Default            | Description                        |
 | --------------------------- | ------------------ | ---------------------------------- |
@@ -28,9 +55,9 @@ loudly and by name when a secret is missing.
 | `SESSION_DURATION_REMEMBER` | `2592000`          | Lifetime with "angemeldet bleiben" |
 | `FROM_EMAIL`                | `hallo@runde.tips` | Sender of the login code mail      |
 
-`wrangler deploy` replaces the dashboard's _vars_ with the ones from
-`wrangler.jsonc`, but leaves _secrets_ alone — so secrets are set once per
-Worker with `wrangler secret put` (or in the dashboard) and survive deploys.
+The login flow needs all of them, not just the database pair: without
+`RESEND_API_KEY` or `APP_SECRET` nobody can get a code, and the failure looks
+like a mail problem rather than a missing variable.
 
 ## First-deploy bootstrap
 
@@ -45,8 +72,7 @@ INSERT INTO users (name, slug, email, role)
 VALUES ('Your Name', 'your-slug', 'your@email.com', 'admin');
 ```
 
-Via Drizzle Studio (`bun run db:studio` in the db package) or any
-SQLite/libSQL client. After that, log in at `/login`.
+Via Drizzle Studio or any SQLite/libSQL client. After that, log in at `/login`.
 
 All further user management happens inside the manager under
 **Stammdaten → Spieler**.
