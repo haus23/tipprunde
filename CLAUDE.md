@@ -103,7 +103,18 @@ For a one-off jump to an exact version, `-r` sets it explicitly:
 pnpx changelogen --noAuthors --release -r 1.0.0 --push
 ```
 
-**What counts as breaking here.** There is no public API, so it comes down to
-three things: public URLs (links are shared and bookmarked — see
-`01-chat.md`), the DB schema, and the session/cookie format. Changing any of
-those is a major.
+**What counts as breaking here.** There is no public API, so the test is simply:
+_does something that already worked stop working?_
+
+- **Public URLs** — a shared or bookmarked link 404s. Links get passed around
+  (see `01-chat.md`), so this is the one most likely to bite someone.
+- **Session / cookie format** — everyone is logged out. Happened once already,
+  at the app merge (see `04-app-merge.md`).
+- **The DB schema, but only when the change is destructive** — dropping or
+  renaming a column, changing what an existing one means, a migration that
+  existing rows cannot survive.
+
+**Adding to the schema is a feature, not a break.** A new ruleset that needs
+new columns or new rule IDs supports something new while everything old keeps
+working exactly as before — that is a **minor**. Expect this to be the common
+case: the rulesets drive the domain, and they grow by addition.
