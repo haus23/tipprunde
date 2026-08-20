@@ -487,29 +487,35 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
       {/* The lines carry no text, so the focused player's run is spelled out
           for screen readers. Only theirs: one table per player would be ~60
           rows times 18, which helps nobody. */}
+      {/* sr-only has to sit on a div, not on the table: `height: 1px` is only a
+          minimum for a table box, so the table keeps its full ~1500px and,
+          being absolutely positioned, drags the page's scroll height along
+          with it. A div honours the height and clips the table inside. */}
       {focus && (
-        <table className="sr-only">
-          <caption>Rangverlauf von {focus.name}</caption>
-          <thead>
-            <tr>
-              <th scope="col">Schritt</th>
-              <th scope="col">Rang</th>
-              <th scope="col">Punkte</th>
-            </tr>
-          </thead>
-          <tbody>
-            {focus.ranks.map((rank, i) => {
-              const step = steps[i];
-              return (
-                <tr key={i}>
-                  <th scope="row">{step ? stepTitle(step) : `Schritt ${i + 1}`}</th>
-                  <td>{rank}</td>
-                  <td>{focus.points[i]}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div className="sr-only">
+          <table>
+            <caption>Rangverlauf von {focus.name}</caption>
+            <thead>
+              <tr>
+                <th scope="col">Schritt</th>
+                <th scope="col">Rang</th>
+                <th scope="col">Punkte</th>
+              </tr>
+            </thead>
+            <tbody>
+              {focus.ranks.map((rank, i) => {
+                const step = steps[i];
+                return (
+                  <tr key={i}>
+                    <th scope="row">{step ? stepTitle(step) : `Schritt ${i + 1}`}</th>
+                    <td>{rank}</td>
+                    <td>{focus.points[i]}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
