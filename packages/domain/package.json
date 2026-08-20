@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./progression": "./src/progression.ts",
     "./ranking": "./src/ranking.ts",
     "./rules": "./src/rules.ts",
     "./scoring": "./src/scoring.ts"

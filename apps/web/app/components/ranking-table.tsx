@@ -4,8 +4,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button, Dialog, OverlayArrow, Popover } from "react-aria-components";
 import { useFetcher } from "react-router";
 
+import { AppLink } from "#/components/app-link.tsx";
 import { CellFlag } from "#/components/cell-flag.tsx";
-import { CellLink } from "#/components/cell-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import type { RankedPlayer } from "#/lib/ranking.server.ts";
 import type { MatchdayTip } from "#/lib/spiele.server.ts";
@@ -38,13 +38,13 @@ export function RankingTable({
           </th>
           {showExtras && (
             <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
-              <CellLink href={scoped("/zusatzfragen")}>
+              <AppLink href={scoped("/zusatzfragen")}>
                 <span className="xs:inline-flex hidden items-baseline gap-1">
                   <StarIcon className="relative top-[0.1em] size-3.5 shrink-0" />
                   Zusatzpunkte
                 </span>
                 <span className="xs:hidden">Zusatzpkt.</span>
-              </CellLink>
+              </AppLink>
             </th>
           )}
           <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
@@ -78,7 +78,7 @@ export function RankingTable({
                 {sharesRankAbove ? "" : entry.rank}
               </td>
               <td className={cx("xs:px-3 xs:py-3 px-2 py-2", isCurrentUser && "font-medium")}>
-                <CellLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</CellLink>
+                <AppLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</AppLink>
               </td>
               {showExtras && (
                 <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
@@ -232,7 +232,7 @@ function MatchdayButton({
                 matches.map((m) => (
                   <tr key={m.nr} className="border-subtle border-b last:border-0">
                     <td className="py-1.5 pr-3">
-                      <CellLink href={scoped(`/spiele/${m.nr}`)}>{m.paarungShort}</CellLink>
+                      <AppLink href={scoped(`/spiele/${m.nr}`)}>{m.paarungShort}</AppLink>
                     </td>
                     <td className="px-2 py-1.5 text-center tabular-nums">
                       <span className="relative">

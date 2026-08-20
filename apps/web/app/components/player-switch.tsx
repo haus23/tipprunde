@@ -23,6 +23,12 @@ interface Player {
 interface Props {
   players: Player[];
   currentSlug: string;
+  /**
+   * Championship-relative route the picked player is appended to — `/tipps`
+   * opens their tips, `/verlauf` highlights their line.
+   */
+  basePath: string;
+  label?: string;
 }
 
 /** Diacritic-insensitive contains, so "mu" matches "Müller". */
@@ -37,7 +43,7 @@ const normalize = (s: string) =>
  * opens a command-palette popover (search field + filtered list). Self-contained
  * so the internals can later be swapped for a `cmdk`-based palette.
  */
-export function PlayerSwitch({ players, currentSlug }: Props) {
+export function PlayerSwitch({ players, currentSlug, basePath, label }: Props) {
   const navigate = useNavigate();
   const scoped = useScopedPath();
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +51,7 @@ export function PlayerSwitch({ players, currentSlug }: Props) {
   return (
     <DialogTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
       <Button
-        aria-label="Spieler wechseln"
+        aria-label={label ?? "Spieler wechseln"}
         className="text-subtle data-hovered:bg-nav-active data-hovered:text-app data-focus-visible:ring-accent flex size-7 items-center justify-center rounded-sm transition ease-out outline-none data-focus-visible:ring-2 data-pressed:scale-[0.97]"
       >
         <ChevronsUpDownIcon className="size-4" />
@@ -76,7 +82,7 @@ export function PlayerSwitch({ players, currentSlug }: Props) {
               className="min-h-0 flex-1 overflow-auto p-1 outline-none"
               onAction={(key) => {
                 setIsOpen(false);
-                void navigate(scoped(`/tipps/${key}`));
+                void navigate(scoped(`${basePath}/${key}`), { preventScrollReset: true });
               }}
             >
               {players.map((p) => (

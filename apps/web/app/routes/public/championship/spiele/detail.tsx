@@ -3,8 +3,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 
+import { AppLink } from "#/components/app-link.tsx";
 import { CellFlag } from "#/components/cell-flag.tsx";
-import { CellLink } from "#/components/cell-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { viewedChampionshipContext } from "#/lib/context.ts";
 import { getRanking } from "#/lib/ranking.server.ts";
@@ -207,7 +207,7 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
             {sortedRows.map((row) => (
               <tr key={row.userId} className="border-subtle border-b last:border-b-0">
                 <td className="xs:px-3 px-2 py-3 font-medium">
-                  <CellLink href={scoped(`/tipps/${row.slug}`)}>{row.name}</CellLink>
+                  <AppLink href={scoped(`/tipps/${row.slug}`)}>{row.name}</AppLink>
                 </td>
                 {match.tipsPublished && (
                   <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">

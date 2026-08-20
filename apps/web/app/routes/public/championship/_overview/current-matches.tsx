@@ -1,4 +1,4 @@
-import { CellLink } from "#/components/cell-link.tsx";
+import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { SectionHeading } from "#/components/section-heading.tsx";
 import type { CurrentMatch } from "#/lib/spiele.server.ts";
@@ -28,10 +28,10 @@ export function ChampionshipCurrentMatches({
                   {match.date ? formatDate(match.date) : "–"}
                 </td>
                 <td className="py-2">
-                  <CellLink href={scoped(`/spiele/${match.nr}`)}>
+                  <AppLink href={scoped(`/spiele/${match.nr}`)}>
                     <span className="hidden lg:inline">{match.paarung}</span>
                     <span className="lg:hidden">{match.paarungShort}</span>
-                  </CellLink>
+                  </AppLink>
                 </td>
                 <td className="text-subtle w-px py-2 pl-3 text-right tabular-nums">
                   {match.result ?? "–:–"}

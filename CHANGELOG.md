@@ -1,5 +1,41 @@
 # Changelog
 
+## v0.28.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.27.1...v0.28.0)
+
+### 🚀 Enhancements
+
+- **domain:** Add calcProgression for the Punkteverlauf ([f833768](https://github.com/haus23/tipprunde/commit/f833768))
+- **web:** Add the Verlauf query module ([23712ad](https://github.com/haus23/tipprunde/commit/23712ad))
+- **web:** Add the Punkteverlauf route and bump chart ([aaadbc7](https://github.com/haus23/tipprunde/commit/aaadbc7))
+- **web:** Add crosshair, readout and focus switching to the Verlauf ([952fde9](https://github.com/haus23/tipprunde/commit/952fde9))
+- **web:** Make the Verlauf keyboard- and screen-reader accessible ([6c1fd2d](https://github.com/haus23/tipprunde/commit/6c1fd2d))
+- **web:** Draw a divider at every round's end, none at the chart's ([d48a2fd](https://github.com/haus23/tipprunde/commit/d48a2fd))
+- **web:** Link a player's Platz to their Verlauf ([4768664](https://github.com/haus23/tipprunde/commit/4768664))
+
+### 🩹 Fixes
+
+- **web:** Let the Verlauf lines transition when the focus moves ([9f762a4](https://github.com/haus23/tipprunde/commit/9f762a4))
+- **web:** Call the view "Verlauf", not "Punkteverlauf" ([9b716b1](https://github.com/haus23/tipprunde/commit/9b716b1))
+- **web:** Size the Verlauf name column to the names, not a fixed 92px ([ed795aa](https://github.com/haus23/tipprunde/commit/ed795aa))
+- **web:** Tighten the Verlauf readout ([beb70aa](https://github.com/haus23/tipprunde/commit/beb70aa))
+- **web:** Put the Verlauf readout in a fixed place, not a floating tooltip ([93e70bf](https://github.com/haus23/tipprunde/commit/93e70bf))
+- **web:** Give the Verlauf link an icon, drop the name from the readout ([4cdeadb](https://github.com/haus23/tipprunde/commit/4cdeadb))
+- **web:** Keep the highlighted player pinned with the readout ([3186cb3](https://github.com/haus23/tipprunde/commit/3186cb3))
+- **web:** Stop the hidden Verlauf table inflating the page height ([e430c16](https://github.com/haus23/tipprunde/commit/e430c16))
+
+### 💅 Refactors
+
+- **web:** Share PlayerSwitch between Tipps and Verlauf ([c95f144](https://github.com/haus23/tipprunde/commit/c95f144))
+- **web:** Rename CellLink to AppLink ([edf5d4a](https://github.com/haus23/tipprunde/commit/edf5d4a))
+- Change chart icon to trending icon. ([12abf91](https://github.com/haus23/tipprunde/commit/12abf91))
+
+### 📖 Documentation
+
+- Design the Punkteverlauf as a bump chart ([1dc5a18](https://github.com/haus23/tipprunde/commit/1dc5a18))
+- Record the Punkteverlauf as built, refresh the public route list ([328ba6e](https://github.com/haus23/tipprunde/commit/328ba6e))
+
 ## v0.27.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.27.0...v0.27.1)

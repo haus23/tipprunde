@@ -1,6 +1,6 @@
 import { Disclosure } from "@tipprunde/ui";
 
-import { CellLink } from "#/components/cell-link.tsx";
+import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import type { ExtraQuestion } from "#/lib/extra-questions.server.ts";
 import type { RankedPlayer } from "#/lib/ranking.server.ts";
@@ -50,7 +50,7 @@ export function QuestionBlock({
             return (
               <tr key={player.userId} className="border-subtle border-b last:border-b-0">
                 <td className="xs:px-3 px-2 py-3 font-medium">
-                  <CellLink href={scoped(`/tipps/${player.slug}`)}>{player.name}</CellLink>
+                  <AppLink href={scoped(`/tipps/${player.slug}`)}>{player.name}</AppLink>
                 </td>
                 <td className="xs:px-3 px-2 py-3">{answer?.answer ?? "–"}</td>
                 <td className="xs:px-3 w-px px-2 py-3 text-center tabular-nums">

@@ -39,12 +39,22 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 
 Public routes live at the root; the manager sits under `/manager`.
 
-- `/` — Dashboard: standings, current matches, ruleset, Archiv preview
-- `/tabelle` — Current/final table of the published championship
+The championship-scoped views below are mounted **twice** from one set of
+files — at the root for the running championship, and under `/archiv/:slug`
+for any other published one (see `championship-scope-plan.md`):
+
+- `/` — Championship overview: standings, current matches, ruleset
+- `/tabelle` — Current/final table
 - `/spiele`, `/spiele/:nr` — Match overview (accordion) and per-match tips
-- `/tipps/:slug?` — One player's tips (defaults to self, else rank 1)
+- `/tipps/:playerSlug?` — One player's tips (defaults to self, else rank 1)
+- `/verlauf/:playerSlug?` — Rank progression bump chart; the slug only picks
+  the highlighted line (see `verlauf-plan.md`)
 - `/zusatzfragen` — Extra questions and answers
-- `/archiv`, `/archiv/:slug` — Completed championships + all-time table
+- `/regelwerk` — The championship's ruleset in full
+
+Cross-championship, outside that scope:
+
+- `/archiv` — All published championships + all-time table
 - `/login` — TOTP login (two steps, intent-based action)
 - `/color-scheme`, `/logout` — action-only, shared by both shells
 - `/matchday-tips/:userId` — Resource route for the ranking table's popover
@@ -100,7 +110,8 @@ Shared docs are in the root `docs/` folder:
 - `web-shell.md` — Public shell: header contents, nav strategy, planned chat panel
 - `color-scheme.md` — Single-button light/dark switch spec (replaces both current controls)
 - `archiv.md` — Archiv: the materialized ranking columns on `players` and what depends on them
-- `championship-scope-plan.md` — Public-routing change: championship as a URL dimension, shared route files for Archiv + current season, dashboard as the shared overview (designed, not started)
+- `championship-scope-plan.md` — Public-routing change: championship as a URL dimension, shared route files for Archiv + current season, dashboard as the shared overview (built)
+- `verlauf-plan.md` — Punkteverlauf: bump chart of rank evolution, step axis with RP/ZP columns, hand-rolled SVG (iteration 1 built)
 - `app-merge.md` — History: how this app absorbed the separate web app (why things look the way they do)
 
 ## Environment variables

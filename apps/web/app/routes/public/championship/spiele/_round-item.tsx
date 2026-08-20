@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { CellLink } from "#/components/cell-link.tsx";
+import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { RoundAccordion } from "#/components/round-accordion.tsx";
 import type { SpieleRound } from "#/lib/spiele.server.ts";
@@ -42,7 +42,7 @@ export function SpieleRoundItem({
           {round.matches.map((match) => (
             <tr key={match.id} className="border-subtle border-b last:border-b-0">
               <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
-                <CellLink href={scoped(`/spiele/${match.nr}`)}>{match.nr}</CellLink>
+                <AppLink href={scoped(`/spiele/${match.nr}`)}>{match.nr}</AppLink>
               </td>
               <td className="xs:table-cell hidden w-px px-2 py-3 tabular-nums">
                 {match.date ? formatDate(match.date) : "–"}
@@ -51,10 +51,10 @@ export function SpieleRoundItem({
                 {match.liga ?? "–"}
               </td>
               <td className="xs:px-2 px-1 py-3">
-                <CellLink href={scoped(`/spiele/${match.nr}`)}>
+                <AppLink href={scoped(`/spiele/${match.nr}`)}>
                   <span className="hidden sm:inline">{match.paarung}</span>
                   <span className="sm:hidden">{match.paarungShort}</span>
-                </CellLink>
+                </AppLink>
               </td>
               <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                 {match.result ?? "–:–"}

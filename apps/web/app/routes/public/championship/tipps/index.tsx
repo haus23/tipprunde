@@ -1,10 +1,14 @@
+import { TrendingUpIcon } from "lucide-react";
+
+import { AppLink } from "#/components/app-link.tsx";
+import { useScopedPath } from "#/components/championship-scope.tsx";
+import { PlayerSwitch } from "#/components/player-switch.tsx";
 import { getRuleset } from "#/lib/championship.server.ts";
 import { viewedChampionshipContext, userContext } from "#/lib/context.ts";
 import { getRanking, type RankedPlayer, resolvePlayer } from "#/lib/ranking.server.ts";
 import { findUserBySlug, getPlayerMatches, type PlayerRound } from "#/lib/spieler.server.ts";
 
 import type { Route } from "./+types/index";
-import { PlayerSwitch } from "./_player-switch.tsx";
 import { PlayerRoundItem } from "./_round-item.tsx";
 
 export async function loader({ context, params }: Route.LoaderArgs) {
@@ -50,6 +54,7 @@ export async function loader({ context, params }: Route.LoaderArgs) {
 }
 
 export default function Tipps({ loaderData }: Route.ComponentProps) {
+  const scoped = useScopedPath();
   const {
     championshipName,
     player,
@@ -103,10 +108,19 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
       <div className="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
         <div className="flex items-center gap-1.5">
           <h1 className="text-2xl font-semibold tracking-tight">{player.name}</h1>
-          <PlayerSwitch players={players} currentSlug={player.slug} />
+          <PlayerSwitch players={players} currentSlug={player.slug} basePath="/tipps" />
         </div>
         <p className="text-subtle text-center text-sm leading-relaxed">
-          {championshipName} · Platz {player.rank}
+          {championshipName} ·{" "}
+          {/* The Verlauf is the history of exactly this number, so the question
+              "how did I end up ninth?" gets its answer where it is asked. The
+              slug rides along, so the chart opens with this player highlighted. */}
+          <AppLink href={scoped(`/verlauf/${player.slug}`)}>
+            <span className="inline-flex items-baseline gap-1">
+              <TrendingUpIcon className="relative top-[0.1em] size-3.5 shrink-0" />
+              Platz {player.rank}
+            </span>
+          </AppLink>
           <br className="xs:hidden" />
           <span className="xs:inline hidden"> · </span>
           {player.tipPoints} Tippunkte · {playerSpiele} Spiele

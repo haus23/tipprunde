@@ -1,8 +1,8 @@
 import { calcGoalDeviation } from "@tipprunde/domain/scoring";
 import { useMemo } from "react";
 
+import { AppLink } from "#/components/app-link.tsx";
 import { CellFlag } from "#/components/cell-flag.tsx";
-import { CellLink } from "#/components/cell-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { RoundAccordion } from "#/components/round-accordion.tsx";
 import type { PlayerRound } from "#/lib/spieler.server.ts";
@@ -70,20 +70,20 @@ export function PlayerRoundItem({
             return (
               <tr key={match.id} className="border-subtle border-b last:border-b-0">
                 <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
-                  <CellLink href={scoped(`/spiele/${match.nr}`)}>{match.nr}</CellLink>
+                  <AppLink href={scoped(`/spiele/${match.nr}`)}>{match.nr}</AppLink>
                 </td>
                 <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
                   {match.date ? formatDate(match.date) : "–"}
                 </td>
                 <td className="xs:px-2 px-1 py-3">
-                  <CellLink href={scoped(`/spiele/${match.nr}`)}>
+                  <AppLink href={scoped(`/spiele/${match.nr}`)}>
                     <span className="hidden sm:inline">
                       {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
                     </span>
                     <span className="sm:hidden">
                       {match.hometeam?.shortName ?? "–"} – {match.awayteam?.shortName ?? "–"}
                     </span>
-                  </CellLink>
+                  </AppLink>
                 </td>
                 <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                   {match.result ?? "–:–"}

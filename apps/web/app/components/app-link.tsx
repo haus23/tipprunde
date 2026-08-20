@@ -5,15 +5,15 @@ interface Props extends Omit<LinkProps, "className"> {
 }
 
 /**
- * Links a table cell column to its navigation target.
+ * The app's inline text link — in a table cell, in a heading, in prose.
  *
  * Affordance: hover devices highlight on hover; touch devices (no hover) get a
- * persistent underline so linked cells are recognizable. `data-pressed` gives
+ * persistent underline so linked text is recognizable. `data-pressed` gives
  * immediate tap feedback before the (sometimes slow) navigation starts.
  *
  * Client-side routing comes from the RAC RouterProvider wired up in root.
  */
-export function CellLink(props: Props) {
+export function AppLink(props: Props) {
   return (
     <AriaLink
       {...props}
