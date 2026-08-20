@@ -1,4 +1,4 @@
-import { CellLink } from "#/components/cell-link.tsx";
+import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { SectionHeading } from "#/components/section-heading.tsx";
 import type { RankedPlayer } from "#/lib/ranking.server.ts";
@@ -35,7 +35,7 @@ export function ChampionshipStandings({
                   {sharesRankAbove ? "" : entry.rank}
                 </td>
                 <td className={`py-2 ${isUser ? "text-accent" : ""}`}>
-                  <CellLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</CellLink>
+                  <AppLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</AppLink>
                 </td>
                 <td className="py-2 text-right font-medium tabular-nums">{entry.total}</td>
               </tr>
@@ -56,9 +56,9 @@ export function ChampionshipStandings({
                 {userBelowTop3.rank}
               </td>
               <td className="text-accent py-2">
-                <CellLink href={scoped(`/tipps/${userBelowTop3.slug}`)}>
+                <AppLink href={scoped(`/tipps/${userBelowTop3.slug}`)}>
                   {userBelowTop3.name}
-                </CellLink>
+                </AppLink>
               </td>
               <td className="py-2 text-right font-medium tabular-nums">{userBelowTop3.total}</td>
             </tr>

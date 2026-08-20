@@ -1,4 +1,4 @@
-import { CellLink } from "#/components/cell-link.tsx";
+import { AppLink } from "#/components/app-link.tsx";
 import { getArchivChampionshipList, getEwigeTabelle } from "#/lib/archiv.server.ts";
 
 import type { Route } from "./+types/index";
@@ -40,7 +40,7 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                 {championships.map((entry) => (
                   <tr key={entry.slug} className="border-subtle border-b last:border-b-0">
                     <td className="text-subtle py-2 pr-3 text-sm">
-                      <CellLink href={`/archiv/${entry.slug}`}>{entry.name}</CellLink>
+                      <AppLink href={`/archiv/${entry.slug}`}>{entry.name}</AppLink>
                     </td>
                     <td className="py-2 pr-3">
                       {entry.completed ? (
