@@ -18,7 +18,7 @@ import { db } from "./db.server.ts";
  * scores has a place and the chart ends on the Abschlusstabelle.
  */
 export type VerlaufStep =
-  | { kind: "match"; nr: number; endsRound: boolean }
+  | { kind: "match"; nr: number; roundNr: number; endsRound: boolean }
   | { kind: "roundPoints"; roundNr: number; endsRound: boolean }
   | { kind: "extraPoints"; endsRound: false };
 
@@ -116,7 +116,7 @@ export async function getVerlauf(championshipId: number): Promise<Verlauf> {
 
     for (const match of round.matches) {
       const stepIndex = steps.length;
-      steps.push({ kind: "match", nr: match.nr, endsRound: false });
+      steps.push({ kind: "match", nr: match.nr, roundNr: round.nr, endsRound: false });
       // An unplayed match still gets its step, so the axis shows the whole
       // season — it just carries no points and no line reaches it.
       if (match.result !== null) playedSteps = stepIndex + 1;

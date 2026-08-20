@@ -48,11 +48,15 @@ function stepLabel(step: VerlaufStep): string {
 function stepTitle(step: VerlaufStep): string {
   switch (step.kind) {
     case "match":
-      return `Nach Spiel ${step.nr}`;
+      // Naming the round only where one closes keeps it informative instead of
+      // repeating the same parenthetical down every match of the round.
+      return step.endsRound
+        ? `Nach Spiel ${step.nr} (Runde ${step.roundNr})`
+        : `Nach Spiel ${step.nr}`;
     case "roundPoints":
       return `Rundenpunkte Runde ${step.roundNr}`;
     case "extraPoints":
-      return "Nach Zusatzpunkten";
+      return "Mit Zusatzpunkten";
   }
 }
 
@@ -486,7 +490,9 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
                   punktgleich mit {formatTiedWith(active.focus.tiedWith)}
                 </p>
               )}
-              {active.leader && active.leader.name !== active.focus.name && (
+              {/* A gap of zero means the leader is already named in the
+                  punktgleich line above — saying it twice adds nothing. */}
+              {active.leader && active.leader.points > active.focus.points && (
                 <p className="text-subtle mt-0.5">
                   Rückstand auf {active.leader.name}:{" "}
                   <span className="tabular-nums">{active.leader.points - active.focus.points}</span>{" "}
