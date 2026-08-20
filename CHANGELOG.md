@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.0.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v0.28.0...v1.0.0)
+
+### 📖 Documentation
+
+- Bring the docs in line with reality before 1.0 ([c79a96b](https://github.com/haus23/tipprunde/commit/c79a96b))
+- Record next.runde.tips moving to Railway, and go realtime for chat ([5461458](https://github.com/haus23/tipprunde/commit/5461458))
+- Correct the CF Worker's reachability, settle chat on WebSockets ([c50b0e5](https://github.com/haus23/tipprunde/commit/c50b0e5))
+- Split docs into living reference and dated decisions ([9918876](https://github.com/haus23/tipprunde/commit/9918876))
+- Correct what counts as a breaking change ([459d5bd](https://github.com/haus23/tipprunde/commit/459d5bd))
+
 ## v0.28.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.27.1...v0.28.0)
