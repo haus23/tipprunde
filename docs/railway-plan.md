@@ -68,11 +68,12 @@ on this move.
 > **Played out as written, and now over (2026-08-20).** The CF build path was
 > removed with the Node build target, so `main` cannot produce a Worker any
 > more, and the Worker sat frozen on its last pre-merge deployment. Its one
-> hostname has since been repointed: **`next.runde.tips` now serves the Railway
-> production deployment**, which leaves the Worker without a name and with
-> nothing to fall back to. The fallback this section was designed around is
-> therefore gone — deliberately, since Railway has been carrying the app for
-> months. Kept as the record of how it went.
+> custom domain has since been repointed: **`next.runde.tips` now serves the
+> Railway production deployment.** The Worker itself is still reachable on its
+> `*.workers.dev` URL, so the last pre-merge build has not disappeared — it
+> simply is not on a name anyone uses, and its code is months stale. The
+> fallback this section was designed around is over as a plan, deliberately,
+> since Railway has been carrying the app all along. Kept as the record.
 
 CF's Git integration (Workers Builds) auto-builds and deploys on every push
 to the **production branch** (`main`) — there is no manual `wrangler deploy`
@@ -194,9 +195,10 @@ serving is most of what the custom server exists to do.
 ## What stays on Cloudflare
 
 DNS (free plan) and R2 (the backup target, only relevant if step 3 is ever
-taken). Nothing is served from Cloudflare any more: `next.runde.tips` points at
-Railway, and the `tipprunde` Worker has no hostname left. Turso holds both the
-dev and the "prod" database on the free tier.
+taken). No custom domain resolves to Cloudflare any more — `next.runde.tips`
+points at Railway — though the `tipprunde` Worker still answers on its
+`*.workers.dev` URL with its last pre-merge build. Turso holds both the dev and
+the "prod" database on the free tier.
 
 ## Open questions
 

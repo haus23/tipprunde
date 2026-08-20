@@ -18,17 +18,17 @@ discussion so the feature can start without re-deriving them.
 > registers against the $5 credit. Cost is simply not the deciding factor here;
 > polling's real cost is querying the database around the clock for nothing.
 >
-> **But this reverses the SSE-over-WebSockets preference below**, which assumed
-> SSE was the lower-effort path. On Railway that is not true
-> ([SSE vs WebSockets](https://docs.railway.com/guides/sse-vs-websockets)):
+> **And the transport is WebSockets, not SSE** — reversing the preference
+> stated below, which assumed SSE was the lower-effort path. On Railway it is
+> not ([SSE vs WebSockets](https://docs.railway.com/guides/sse-vs-websockets)):
 > SSE rides on a normal HTTP response and inherits the request limits — closed
 > after **5 minutes without data**, capped at **15 minutes** even with
-> heartbeats, so it needs heartbeat comment lines _and_ reconnect-on-cap
+> heartbeats — so it would need heartbeat comment lines _and_ reconnect-on-cap
 > handling. **WebSockets are exempt from those timeouts and may stay open
-> indefinitely, idle included.** The custom Node server (`server/app.ts`) that
-> WS needs already exists — it was built in the Railway move, partly for this.
-> Either way the client needs reconnect logic, because deploys drop
-> connections.
+> indefinitely, idle included.** The one argument for SSE was avoiding custom
+> server glue, and that server (`server/app.ts`) already exists from the
+> Railway move. The client still needs reconnect logic either way, because
+> deploys drop connections.
 >
 > Unchanged either way: **Railway app sleeping must stay off.**
 
