@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 
 import { useScopedPath } from "#/components/championship-scope.tsx";
+import { PlayerSwitch } from "#/components/player-switch.tsx";
 import type { VerlaufPlayer, VerlaufStep } from "#/lib/verlauf.server.ts";
 
 const ROW_HEIGHT = 22;
@@ -225,40 +226,53 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
 
   return (
     <div ref={ref} className="relative w-full">
-      {/* Fixed place, not a floating tooltip. A tooltip that dodges the focused
-          line has no position the eye can learn, and on a landscape phone the
-          chart is taller than the viewport — half the time it landed below the
-          fold. min-h reserves the second line so the chart does not shift when
-          the text wraps. */}
-      <p
-        aria-live="polite"
-        // Sticky under the h-14 header: on a landscape phone the chart is
-        // taller than the viewport, so a readout fixed to the top of the chart
-        // scrolls away exactly when you are reading the lower ranks.
-        className="text-subtle bg-surface xs:min-h-5 sticky top-14 z-10 mb-1.5 min-h-10 py-1 text-center text-xs leading-5"
-      >
-        {shownStepDef && <span className="text-muted">{stepTitle(shownStepDef)}</span>}
-        {readout.focus && (
-          <>
-            {/* No name here on purpose: the row above already names the
+      {/* Fixed place, not a floating tooltip: one that dodges the focused line
+          has no position the eye can learn, and on a landscape phone the chart
+          is taller than the viewport, so half the time it landed below the
+          fold. Sticky under the h-14 header, and the focused player travels
+          with it — otherwise scrolling into the lower ranks leaves the numbers
+          below with nothing naming who they belong to. */}
+      <div className="bg-surface sticky top-14 z-10 pb-1.5">
+        {focus && (
+          <div className="flex items-center justify-center gap-1.5 py-1 text-sm">
+            <span className="text-subtle">Hervorgehoben:</span>
+            <span className="text-accent font-medium">{focus.name}</span>
+            <PlayerSwitch
+              players={players}
+              currentSlug={focus.slug}
+              basePath="/verlauf"
+              label="Hervorgehobenen Spieler wechseln"
+            />
+          </div>
+        )}
+        {/* min-h reserves the wrapped line so the chart does not shift. */}
+        <p
+          aria-live="polite"
+          className="text-subtle xs:min-h-5 min-h-10 text-center text-xs leading-5"
+        >
+          {shownStepDef && <span className="text-muted">{stepTitle(shownStepDef)}</span>}
+          {readout.focus && (
+            <>
+              {/* No name here on purpose: the row above already names the
                 highlighted player in accent, and so does their line's label.
                 A third one made the colour stop meaning anything. */}
-            {" · Rang "}
-            {readout.focus.rank}
-            {" · "}
-            <span className="tabular-nums">{readout.focus.points}</span> P
-            {readout.focus.tiedWith.length > 0 && (
-              <> · punktgleich mit {formatTiedWith(readout.focus.tiedWith)}</>
-            )}
-            {readout.leader && gap > 0 && (
-              <>
-                {" · Rückstand auf "}
-                {readout.leader.name}: <span className="tabular-nums">{gap}</span> P
-              </>
-            )}
-          </>
-        )}
-      </p>
+              {" · Rang "}
+              {readout.focus.rank}
+              {" · "}
+              <span className="tabular-nums">{readout.focus.points}</span> P
+              {readout.focus.tiedWith.length > 0 && (
+                <> · punktgleich mit {formatTiedWith(readout.focus.tiedWith)}</>
+              )}
+              {readout.leader && gap > 0 && (
+                <>
+                  {" · Rückstand auf "}
+                  {readout.leader.name}: <span className="tabular-nums">{gap}</span> P
+                </>
+              )}
+            </>
+          )}
+        </p>
+      </div>
 
       <svg
         width={width}
