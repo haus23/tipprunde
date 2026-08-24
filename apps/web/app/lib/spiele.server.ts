@@ -13,7 +13,7 @@ export async function getRounds(championshipId: number) {
       with: {
         matches: {
           orderBy: { nr: "asc" },
-          columns: { id: true, nr: true, date: true, result: true },
+          columns: { id: true, nr: true, date: true, result: true, lowestSumBonus: true },
           with: {
             league: { columns: { shortName: true } },
             hometeam: { columns: { name: true, shortName: true } },
@@ -44,7 +44,15 @@ export async function getRounds(championshipId: number) {
       paarung: `${m.hometeam?.name ?? "–"} – ${m.awayteam?.name ?? "–"}`,
       paarungShort: `${m.hometeam?.shortName ?? "–"} – ${m.awayteam?.shortName ?? "–"}`,
       result: m.result,
-      points: m.result !== null ? (pointsByMatch.get(m.id) ?? 0) : null,
+      // Stored points are doubled for a lowestSumBonus match — show the raw
+      // sum the field actually scored, the one the bonus was picked from.
+      points:
+        m.result !== null
+          ? m.lowestSumBonus
+            ? (pointsByMatch.get(m.id) ?? 0) / 2
+            : (pointsByMatch.get(m.id) ?? 0)
+          : null,
+      lowestSumBonus: m.lowestSumBonus ?? false,
     })),
   }));
 }
