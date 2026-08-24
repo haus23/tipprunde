@@ -101,6 +101,7 @@ export const matches = sqliteTable("matches", {
   hometeamId: text("hometeam_id").references(() => teams.id),
   awayteamId: text("awayteam_id").references(() => teams.id),
   result: text("result"),
+  lowestSumBonus: integer("lowest_sum_bonus", { mode: "boolean" }),
 });
 
 export const tips = sqliteTable(
