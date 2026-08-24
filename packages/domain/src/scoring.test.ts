@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { calcGoalDeviation, calcTipPoints, selectLowestSumMatches } from "./scoring.ts";
+import {
+  calcGoalDeviation,
+  calcTipPoints,
+  isRoundCompletable,
+  selectLowestSumMatches,
+} from "./scoring.ts";
 
 void describe("calcTipPoints — null/0 distinction", () => {
   const rule = "drei-oder-ein-punkt" as const;
@@ -158,6 +163,35 @@ void describe("calcGoalDeviation", () => {
 
   void it("0:0 tip on 0:0 result → 0", () => {
     assert.equal(calcGoalDeviation("0:0", "0:0"), 0);
+  });
+});
+
+void describe("isRoundCompletable", () => {
+  void it("keine-besonderheiten never needs the toggle", () => {
+    assert.equal(isRoundCompletable("keine-besonderheiten", 1), false);
+    assert.equal(isRoundCompletable("keine-besonderheiten", 10), false);
+  });
+
+  void it("undefined roundRuleId never needs the toggle", () => {
+    assert.equal(isRoundCompletable(undefined, 1), false);
+  });
+
+  void it("torabweichung-bonus-malus needs it from round 1", () => {
+    assert.equal(isRoundCompletable("torabweichung-bonus-malus", 1), true);
+  });
+
+  void it("niedrigste-spielsumme-doppelte-punkte needs it from round 1", () => {
+    assert.equal(isRoundCompletable("niedrigste-spielsumme-doppelte-punkte", 1), true);
+  });
+
+  void it("...-ab-runde-3 does not need it before round 3", () => {
+    assert.equal(isRoundCompletable("niedrigste-spielsumme-doppelte-punkte-ab-runde-3", 1), false);
+    assert.equal(isRoundCompletable("niedrigste-spielsumme-doppelte-punkte-ab-runde-3", 2), false);
+  });
+
+  void it("...-ab-runde-3 needs it from round 3 onward", () => {
+    assert.equal(isRoundCompletable("niedrigste-spielsumme-doppelte-punkte-ab-runde-3", 3), true);
+    assert.equal(isRoundCompletable("niedrigste-spielsumme-doppelte-punkte-ab-runde-3", 4), true);
   });
 });
 

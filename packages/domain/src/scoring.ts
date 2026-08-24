@@ -1,6 +1,7 @@
-import { TIP_RULES } from "./rules.ts";
+import { ROUND_RULES, TIP_RULES } from "./rules.ts";
 
 export type TipRuleId = (typeof TIP_RULES)[number]["value"];
+export type RoundRuleId = (typeof ROUND_RULES)[number]["value"];
 
 // --- Helpers ---
 
@@ -88,6 +89,24 @@ export function applyMatchRule(): void {}
  * handles "Runde abschließen", not in this package.
  */
 export function applyRoundRule(): void {}
+
+/**
+ * Whether a round needs the "Abgeschlossen" toggle at all — true for every
+ * round rule that only evaluates once the whole round is scored, false for
+ * "keine-besonderheiten" and for rounds a round rule doesn't reach yet (the
+ * first two rounds under "...-ab-runde-3").
+ */
+export function isRoundCompletable(roundRuleId: RoundRuleId | undefined, roundNr: number): boolean {
+  switch (roundRuleId) {
+    case "torabweichung-bonus-malus":
+    case "niedrigste-spielsumme-doppelte-punkte":
+      return true;
+    case "niedrigste-spielsumme-doppelte-punkte-ab-runde-3":
+      return roundNr >= 3;
+    default:
+      return false;
+  }
+}
 
 /**
  * Select which matches in a round qualify for the lowest-match-sum round
