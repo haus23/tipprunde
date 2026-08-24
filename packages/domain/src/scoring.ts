@@ -83,7 +83,39 @@ export function applyMatchRule(): void {}
 /**
  * Apply round-level modifier after all tips for a round are scored.
  *
- * Not yet implemented — will need full tip objects AND all match data
- * for the round. No non-trivial roundRuleId exists yet.
+ * Not yet implemented here — "torabweichung-bonus-malus" is the one live
+ * roundRuleId today, but its logic lives inline in the manager route that
+ * handles "Runde abschließen", not in this package.
  */
 export function applyRoundRule(): void {}
+
+/**
+ * Select which matches in a round qualify for the lowest-match-sum round
+ * rules ("niedrigste-spielsumme-doppelte-punkte[-ab-runde-3]"). Given each
+ * match's tip points summed across all players, picks the match(es) with
+ * the lowest sum greater than 0 — a tie qualifies every tied match; if
+ * every match in the round summed to 0, nothing qualifies.
+ *
+ * Both rule variants share this selection; only the starting round differs,
+ * decided by the caller before it ever calls this — this function has no
+ * notion of "round 3".
+ *
+ * Historical rule text (Hinrunde 2004/05, introduced round 3 onward): "Die
+ * Punkte des Spieles, bei dem die wenigsten Punkte (alle Tipper
+ * zusammengerechnet) erzielt werden, werden verdoppelt."
+ *
+ * Known flaw the rule carried for years, later fixed by a separate
+ * "lonelyHit" match rule: a single player's lone correct exact-score tip (3
+ * points, sum 3) can lose out to two players each landing 1 point on a
+ * different match (sum 2) — the rule only ever looks at the sum, never at
+ * how many players contributed to it.
+ */
+export function selectLowestSumMatches(
+  matches: { matchId: number; tipPointSum: number }[],
+): number[] {
+  const nonZero = matches.filter((m) => m.tipPointSum > 0);
+  if (nonZero.length === 0) return [];
+
+  const lowestSum = Math.min(...nonZero.map((m) => m.tipPointSum));
+  return nonZero.filter((m) => m.tipPointSum === lowestSum).map((m) => m.matchId);
+}
