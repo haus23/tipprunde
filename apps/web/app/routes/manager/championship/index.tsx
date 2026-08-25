@@ -1,13 +1,20 @@
 import {
   championships,
+  matches as matchesTable,
   players as playersTable,
   roundPoints as roundPointsTable,
   rounds as roundsTable,
+  tips as tipsTable,
 } from "@tipprunde/db/schema";
-import { calcGoalDeviation } from "@tipprunde/domain/scoring";
+import {
+  calcGoalDeviation,
+  isRoundCompletable,
+  selectLowestSumMatches,
+  type RoundRuleId,
+} from "@tipprunde/domain/scoring";
 import { Button, Card, CardContent } from "@tipprunde/ui";
 import { cx } from "@tipprunde/ui";
-import { and, eq, max } from "drizzle-orm";
+import { and, eq, inArray, max } from "drizzle-orm";
 import { CalendarIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { SwitchButton, SwitchField } from "react-aria-components";
@@ -57,7 +64,10 @@ export async function loader({ context }: Route.LoaderArgs) {
   return {
     championship,
     hasExtraQuestions: ruleset?.extraQuestionRuleId === "mit-zusatzfragen",
-    hasDeviationRule: ruleset?.roundRuleId === "torabweichung-bonus-malus",
+    // Per-round: isRoundCompletable(roundRuleId, round.nr) decides whether
+    // the round needs the "Abgeschlossen" toggle — some round rules only
+    // reach later rounds (e.g. "...-ab-runde-3"), not the whole championship.
+    roundRuleId: ruleset?.roundRuleId as RoundRuleId | undefined,
     roundList,
     playerUserIds: playerList.map((p) => p.userId),
     allUsers,
@@ -109,48 +119,137 @@ export async function action({ request, context }: Route.ActionArgs) {
     const roundId = Number(formData.get("roundId"));
     const value = formData.get("value") === "true";
 
-    // Always clean up old roundPoints entries for this round first
-    await db.delete(roundPointsTable).where(eq(roundPointsTable.roundId, roundId));
+    const [round, ruleset] = await Promise.all([
+      db.query.rounds.findFirst({
+        where: { id: roundId },
+        columns: { nr: true, championshipId: true },
+      }),
+      championship.rulesetId
+        ? db.query.rulesets.findFirst({
+            where: { id: championship.rulesetId },
+            columns: { roundRuleId: true },
+          })
+        : Promise.resolve(null),
+    ]);
+    const roundRuleId = ruleset?.roundRuleId as RoundRuleId | undefined;
+    const canComplete = round ? isRoundCompletable(roundRuleId, round.nr) : false;
 
-    if (value) {
-      // Fetch all matches in this round with results, nested with all tips
-      const roundMatches = await db.query.matches.findMany({
-        where: { roundId },
-        columns: { id: true, result: true },
-        with: {
-          tips: { columns: { userId: true, tip: true } },
-        },
-      });
+    // The round rules are mutually exclusive per ruleset, so only one of
+    // these branches ever does real work — each handles its own revert
+    // (always, to make re-completing idempotent and un-completing a clean
+    // rollback) and its own re-apply (only when completing a round it
+    // actually reaches).
+    if (roundRuleId === "torabweichung-bonus-malus") {
+      await db.delete(roundPointsTable).where(eq(roundPointsTable.roundId, roundId));
 
-      const matchesWithResult = roundMatches.filter((m) => m.result !== null);
-
-      if (matchesWithResult.length > 0) {
-        // Collect all player userIds from tips across all matches
-        const allUserIds = [
-          ...new Set(matchesWithResult.flatMap((m) => m.tips.map((t) => t.userId))),
-        ];
-
-        // Calculate deviation sum per player
-        const deviations = allUserIds.map((userId) => {
-          const sum = matchesWithResult.reduce((acc, m) => {
-            const tip = m.tips.find((t) => t.userId === userId);
-            return acc + calcGoalDeviation(tip?.tip ?? null, m.result!);
-          }, 0);
-          return { userId, sum };
+      if (value && canComplete) {
+        // Fetch all matches in this round with results, nested with all tips
+        const roundMatches = await db.query.matches.findMany({
+          where: { roundId },
+          columns: { id: true, result: true },
+          with: {
+            tips: { columns: { userId: true, tip: true } },
+          },
         });
 
-        if (deviations.length > 0) {
-          const minDev = Math.min(...deviations.map((d) => d.sum));
-          const maxDev = Math.max(...deviations.map((d) => d.sum));
+        const matchesWithResult = roundMatches.filter((m) => m.result !== null);
 
-          const entries: { roundId: number; userId: number; points: number }[] = [];
-          for (const { userId, sum } of deviations) {
-            if (sum === minDev && minDev !== maxDev) entries.push({ roundId, userId, points: 1 });
-            else if (sum === maxDev && minDev !== maxDev)
-              entries.push({ roundId, userId, points: -1 });
+        if (matchesWithResult.length > 0) {
+          // Collect all player userIds from tips across all matches
+          const allUserIds = [
+            ...new Set(matchesWithResult.flatMap((m) => m.tips.map((t) => t.userId))),
+          ];
+
+          // Calculate deviation sum per player
+          const deviations = allUserIds.map((userId) => {
+            const sum = matchesWithResult.reduce((acc, m) => {
+              const tip = m.tips.find((t) => t.userId === userId);
+              return acc + calcGoalDeviation(tip?.tip ?? null, m.result!);
+            }, 0);
+            return { userId, sum };
+          });
+
+          if (deviations.length > 0) {
+            const minDev = Math.min(...deviations.map((d) => d.sum));
+            const maxDev = Math.max(...deviations.map((d) => d.sum));
+
+            const entries: { roundId: number; userId: number; points: number }[] = [];
+            for (const { userId, sum } of deviations) {
+              if (sum === minDev && minDev !== maxDev) entries.push({ roundId, userId, points: 1 });
+              else if (sum === maxDev && minDev !== maxDev)
+                entries.push({ roundId, userId, points: -1 });
+            }
+            if (entries.length > 0) {
+              await db.insert(roundPointsTable).values(entries);
+            }
           }
-          if (entries.length > 0) {
-            await db.insert(roundPointsTable).values(entries);
+        }
+      }
+    } else if (
+      roundRuleId === "niedrigste-spielsumme-doppelte-punkte" ||
+      roundRuleId === "niedrigste-spielsumme-doppelte-punkte-ab-runde-3"
+    ) {
+      const bonusedMatches = await db.query.matches.findMany({
+        where: { roundId, lowestSumBonus: true },
+        columns: { id: true },
+        with: { tips: { columns: { userId: true, points: true } } },
+      });
+      if (bonusedMatches.length > 0) {
+        await Promise.all(
+          bonusedMatches.flatMap((m) =>
+            m.tips.map((tip) =>
+              db
+                .update(tipsTable)
+                .set({ points: tip.points === null ? null : tip.points / 2 })
+                .where(and(eq(tipsTable.matchId, m.id), eq(tipsTable.userId, tip.userId))),
+            ),
+          ),
+        );
+        await db
+          .update(matchesTable)
+          .set({ lowestSumBonus: null })
+          .where(
+            inArray(
+              matchesTable.id,
+              bonusedMatches.map((m) => m.id),
+            ),
+          );
+      }
+
+      if (value && canComplete) {
+        const roundMatches = await db.query.matches.findMany({
+          where: { roundId },
+          columns: { id: true, result: true },
+          with: {
+            tips: { columns: { userId: true, points: true } },
+          },
+        });
+
+        const matchesWithResult = roundMatches.filter((m) => m.result !== null);
+
+        if (matchesWithResult.length > 0) {
+          const sums = matchesWithResult.map((m) => ({
+            matchId: m.id,
+            tipPointSum: m.tips.reduce((acc, t) => acc + (t.points ?? 0), 0),
+          }));
+          const bonusMatchIds = selectLowestSumMatches(sums);
+
+          if (bonusMatchIds.length > 0) {
+            const bonusMatches = matchesWithResult.filter((m) => bonusMatchIds.includes(m.id));
+            await Promise.all(
+              bonusMatches.flatMap((m) =>
+                m.tips.map((tip) =>
+                  db
+                    .update(tipsTable)
+                    .set({ points: tip.points === null ? null : tip.points * 2 })
+                    .where(and(eq(tipsTable.matchId, m.id), eq(tipsTable.userId, tip.userId))),
+                ),
+              ),
+            );
+            await db
+              .update(matchesTable)
+              .set({ lowestSumBonus: true })
+              .where(inArray(matchesTable.id, bonusMatchIds));
           }
         }
       }
@@ -161,11 +260,6 @@ export async function action({ request, context }: Route.ActionArgs) {
       .set({ completed: value || false })
       .where(eq(roundsTable.id, roundId));
 
-    // Re-fetch the championshipId for this round to update the ranking
-    const round = await db.query.rounds.findFirst({
-      where: { id: roundId },
-      columns: { championshipId: true },
-    });
     if (round) await updateRanking(round.championshipId);
 
     return null;
@@ -308,10 +402,11 @@ type Round = {
   completed: boolean | null;
 };
 
-function RoundRow({ round, hasDeviationRule }: { round: Round; hasDeviationRule: boolean }) {
+function RoundRow({ round, roundRuleId }: { round: Round; roundRuleId: RoundRuleId | undefined }) {
   const fetcher = useFetcher();
   const isPending = fetcher.state !== "idle";
   const { isDisabled: isChampionshipLocked } = useLock();
+  const canComplete = isRoundCompletable(roundRuleId, round.nr);
 
   const pendingField = fetcher.formData?.get("field") as RoundFlagField | undefined;
   const pendingValue = fetcher.formData?.get("value") === "true";
@@ -364,7 +459,7 @@ function RoundRow({ round, hasDeviationRule }: { round: Round; hasDeviationRule:
           onChange={() => toggle("tipsPublished", tipsPublished)}
           isDisabled={tipsPublishedDisabled}
         />
-        {hasDeviationRule && (
+        {canComplete && (
           <CompactSwitch
             label="Abgeschlossen"
             isSelected={completed}
@@ -392,7 +487,7 @@ function RoundRow({ round, hasDeviationRule }: { round: Round; hasDeviationRule:
 // --- Page ---
 
 export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) {
-  const { championship, hasExtraQuestions, hasDeviationRule, roundList, playerUserIds, allUsers } =
+  const { championship, hasExtraQuestions, roundRuleId, roundList, playerUserIds, allUsers } =
     loaderData;
 
   const flagFetcher = useFetcher();
@@ -487,7 +582,7 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
             ) : (
               <div className="divide-subtle divide-y">
                 {roundList.map((round) => (
-                  <RoundRow key={round.id} round={round} hasDeviationRule={hasDeviationRule} />
+                  <RoundRow key={round.id} round={round} roundRuleId={roundRuleId} />
                 ))}
               </div>
             )}

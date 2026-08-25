@@ -1,5 +1,27 @@
 # Changelog
 
+## v1.1.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0...v1.1.0)
+
+### 🚀 Enhancements
+
+- **domain:** Add two lowest-match-sum round rules ([d4249ab](https://github.com/haus23/tipprunde/commit/d4249ab))
+- **domain:** Add selectLowestSumMatches for the new round rules ([ba99744](https://github.com/haus23/tipprunde/commit/ba99744))
+- **db:** Add matches.lowest_sum_bonus for the lowest-match-sum round rules ([9a0b0dc](https://github.com/haus23/tipprunde/commit/9a0b0dc))
+- **domain:** Add isRoundCompletable for the round-completion toggle gate ([3993ce9](https://github.com/haus23/tipprunde/commit/3993ce9))
+- **web:** Wire the lowest-match-sum round rules into round completion ([8295a11](https://github.com/haus23/tipprunde/commit/8295a11))
+- **web:** Show the raw match-sum on the Spielübersicht, not the doubled one ([8c8dcd0](https://github.com/haus23/tipprunde/commit/8c8dcd0))
+- **web:** Show the lowest-match-sum bonus on the match detail page ([ca6167e](https://github.com/haus23/tipprunde/commit/ca6167e))
+- **web:** Show the lowest-match-sum bonus on the Spieler page ([e40033e](https://github.com/haus23/tipprunde/commit/e40033e))
+- **web:** Mark the lowest-match-sum bonus on the matchday popover ([bdc280a](https://github.com/haus23/tipprunde/commit/bdc280a))
+
+### 🩹 Fixes
+
+- **web:** Reduce spacing between annotated text and flag. ([fac3182](https://github.com/haus23/tipprunde/commit/fac3182))
+- **web:** Uppercase the sortable column headers on the match detail page ([1d1fd27](https://github.com/haus23/tipprunde/commit/1d1fd27))
+- Clear three pre-existing vp check lint warnings ([b2b13dd](https://github.com/haus23/tipprunde/commit/b2b13dd))
+
 ## v1.0.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v0.28.0...v1.0.0)

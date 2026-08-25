@@ -57,6 +57,18 @@ export const ROUND_RULES = [
     description:
       "Pro Runde wird für jeden Tipp die Summe der absoluten Abweichungen von Heim- und Auswärtstoren berechnet (Beispiel: Ergebnis 3:1, Tipp 0:2 → |3−0| + |1−2| = 4). Die Abweichungen aller Spiele einer Runde werden je Spieler aufaddiert. Wer die geringste Gesamtabweichung erzielt, erhält 1 Bonuspunkt. Wer die größte Abweichung hat, erhält 1 Punkt Abzug. Ein ausgelassener Tipp wird dabei als 0:0 gewertet.",
   },
+  {
+    value: "niedrigste-spielsumme-doppelte-punkte-ab-runde-3" as const,
+    label: "Niedrigste Spielsumme verdoppelt (ab Runde 3)",
+    description:
+      "Ab der dritten Runde wird pro Spiel die Summe der Tipp-Punkte aller Spieler gebildet. Die Tipp-Punkte für das Spiel mit der niedrigsten Summe größer 0 werden verdoppelt — bei Gleichstand bei allen betroffenen Spielen. Die ersten beiden Runden bleiben unangetastet.",
+  },
+  {
+    value: "niedrigste-spielsumme-doppelte-punkte" as const,
+    label: "Niedrigste Spielsumme verdoppelt",
+    description:
+      "Pro Runde wird für jedes Spiel die Summe der Tipp-Punkte aller Spieler gebildet. Die Tipp-Punkte für das Spiel mit der niedrigsten Summe größer 0 werden verdoppelt — bei Gleichstand bei allen betroffenen Spielen.",
+  },
 ];
 
 export const EXTRA_QUESTION_RULES = [

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { AppLink } from "#/components/app-link.tsx";
+import { CellFlag } from "#/components/cell-flag.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { RoundAccordion } from "#/components/round-accordion.tsx";
 import type { SpieleRound } from "#/lib/spiele.server.ts";
@@ -35,7 +36,7 @@ export function SpieleRoundItem({
             </th>
             <th className="xs:px-2 px-1 pt-2 pb-3 font-medium">Paarung</th>
             <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-center font-medium">Erg.</th>
-            <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-right font-medium">Pkt</th>
+            <th className="w-px pt-2 pb-3 text-center font-medium">Pkt</th>
           </tr>
         </thead>
         <tbody>
@@ -59,8 +60,11 @@ export function SpieleRoundItem({
               <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                 {match.result ?? "–:–"}
               </td>
-              <td className="xs:px-2 w-px px-1 py-3 text-right tabular-nums">
+              <td className="xs:pr-6 xs:pl-2 relative w-px py-3 pr-4 pl-1 text-right tabular-nums">
                 {match.points ?? "–"}
+                {match.lowestSumBonus && (
+                  <CellFlag label="Niedrigste Spielsumme — Punkte werden verdoppelt" />
+                )}
               </td>
             </tr>
           ))}

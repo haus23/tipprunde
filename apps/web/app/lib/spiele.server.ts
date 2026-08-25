@@ -13,7 +13,7 @@ export async function getRounds(championshipId: number) {
       with: {
         matches: {
           orderBy: { nr: "asc" },
-          columns: { id: true, nr: true, date: true, result: true },
+          columns: { id: true, nr: true, date: true, result: true, lowestSumBonus: true },
           with: {
             league: { columns: { shortName: true } },
             hometeam: { columns: { name: true, shortName: true } },
@@ -44,7 +44,15 @@ export async function getRounds(championshipId: number) {
       paarung: `${m.hometeam?.name ?? "–"} – ${m.awayteam?.name ?? "–"}`,
       paarungShort: `${m.hometeam?.shortName ?? "–"} – ${m.awayteam?.shortName ?? "–"}`,
       result: m.result,
-      points: m.result !== null ? (pointsByMatch.get(m.id) ?? 0) : null,
+      // Stored points are doubled for a lowestSumBonus match — show the raw
+      // sum the field actually scored, the one the bonus was picked from.
+      points:
+        m.result !== null
+          ? m.lowestSumBonus
+            ? (pointsByMatch.get(m.id) ?? 0) / 2
+            : (pointsByMatch.get(m.id) ?? 0)
+          : null,
+      lowestSumBonus: m.lowestSumBonus ?? false,
     })),
   }));
 }
@@ -56,7 +64,7 @@ export async function getMatch(championshipId: number, nr: number) {
   const [match, prev, next] = await Promise.all([
     db.query.matches.findFirst({
       where: { nr, round: { championshipId, published: true } },
-      columns: { nr: true, date: true, result: true },
+      columns: { nr: true, date: true, result: true, lowestSumBonus: true },
       with: {
         round: { columns: { tipsPublished: true } },
         league: { columns: { name: true } },
@@ -82,7 +90,12 @@ export async function getMatch(championshipId: number, nr: number) {
   ]);
   if (!match) return null;
 
-  const points = match.result !== null ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0) : null;
+  // The aggregate stays the raw, pre-bonus figure — same reasoning as
+  // getRounds() above, it's what explains the match being picked. Individual
+  // tips are returned as stored (i.e. doubled for a lowestSumBonus match):
+  // the detail view shows each player's real, counted points.
+  const rawSum = match.result !== null ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0) : null;
+  const points = rawSum !== null && match.lowestSumBonus ? rawSum / 2 : rawSum;
 
   return {
     nr: match.nr,
@@ -92,6 +105,7 @@ export async function getMatch(championshipId: number, nr: number) {
     paarungShort: `${match.hometeam?.shortName ?? "–"} – ${match.awayteam?.shortName ?? "–"}`,
     result: match.result,
     points,
+    lowestSumBonus: match.lowestSumBonus ?? false,
     prevNr: prev?.nr ?? null,
     nextNr: next?.nr ?? null,
     tipsPublished: match.round.tipsPublished,
@@ -108,6 +122,7 @@ export type MatchdayTip = {
   tip: string | null;
   isFlagged: boolean;
   points: number | null;
+  lowestSumBonus: boolean;
 };
 
 /**
@@ -121,7 +136,7 @@ export async function getMatchdayTips(
   const dated = await db.query.matches.findMany({
     where: { date: { isNotNull: true }, round: { championshipId, published: true } },
     orderBy: { date: "asc" },
-    columns: { id: true, nr: true, result: true },
+    columns: { id: true, nr: true, result: true, lowestSumBonus: true },
     with: {
       round: { columns: { tipsPublished: true } },
       hometeam: { columns: { shortName: true } },
@@ -156,6 +171,7 @@ export async function getMatchdayTips(
       tip: userTip?.tip ?? null,
       isFlagged: (userTip?.joker || userTip?.extraJoker) ?? false,
       points: userTip?.points ?? null,
+      lowestSumBonus: m.lowestSumBonus ?? false,
     };
   });
 }

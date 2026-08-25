@@ -28,7 +28,7 @@ export function SortableTh({
       <button
         type="button"
         onClick={() => onSort(col)}
-        className={`hover:text-app focus-visible:ring-accent inline-flex items-center gap-1 rounded-sm transition-colors outline-none focus-visible:ring-2 ${active ? "text-app" : ""}`}
+        className={`hover:text-app focus-visible:ring-accent inline-flex items-center gap-1 rounded-sm uppercase transition-colors outline-none focus-visible:ring-2 ${active ? "text-app" : ""}`}
       >
         {label}
         <Icon className={active ? "text-accent size-3" : "text-muted/50 size-3"} />

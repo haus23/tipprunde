@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { calcGoalDeviation, calcTipPoints } from "./scoring.ts";
+import {
+  calcGoalDeviation,
+  calcTipPoints,
+  isRoundCompletable,
+  selectLowestSumMatches,
+} from "./scoring.ts";
 
 void describe("calcTipPoints — null/0 distinction", () => {
   const rule = "drei-oder-ein-punkt" as const;
@@ -158,5 +163,96 @@ void describe("calcGoalDeviation", () => {
 
   void it("0:0 tip on 0:0 result → 0", () => {
     assert.equal(calcGoalDeviation("0:0", "0:0"), 0);
+  });
+});
+
+void describe("isRoundCompletable", () => {
+  void it("keine-besonderheiten never needs the toggle", () => {
+    assert.equal(isRoundCompletable("keine-besonderheiten", 1), false);
+    assert.equal(isRoundCompletable("keine-besonderheiten", 10), false);
+  });
+
+  void it("undefined roundRuleId never needs the toggle", () => {
+    assert.equal(isRoundCompletable(undefined, 1), false);
+  });
+
+  void it("torabweichung-bonus-malus needs it from round 1", () => {
+    assert.equal(isRoundCompletable("torabweichung-bonus-malus", 1), true);
+  });
+
+  void it("niedrigste-spielsumme-doppelte-punkte needs it from round 1", () => {
+    assert.equal(isRoundCompletable("niedrigste-spielsumme-doppelte-punkte", 1), true);
+  });
+
+  void it("...-ab-runde-3 does not need it before round 3", () => {
+    assert.equal(isRoundCompletable("niedrigste-spielsumme-doppelte-punkte-ab-runde-3", 1), false);
+    assert.equal(isRoundCompletable("niedrigste-spielsumme-doppelte-punkte-ab-runde-3", 2), false);
+  });
+
+  void it("...-ab-runde-3 needs it from round 3 onward", () => {
+    assert.equal(isRoundCompletable("niedrigste-spielsumme-doppelte-punkte-ab-runde-3", 3), true);
+    assert.equal(isRoundCompletable("niedrigste-spielsumme-doppelte-punkte-ab-runde-3", 4), true);
+  });
+});
+
+void describe("selectLowestSumMatches", () => {
+  void it("single lowest sum wins", () => {
+    const matches = [
+      { matchId: 1, tipPointSum: 5 },
+      { matchId: 2, tipPointSum: 2 },
+      { matchId: 3, tipPointSum: 8 },
+    ];
+    assert.deepEqual(selectLowestSumMatches(matches), [2]);
+  });
+
+  void it("a tie at the lowest sum qualifies every tied match", () => {
+    const matches = [
+      { matchId: 1, tipPointSum: 2 },
+      { matchId: 2, tipPointSum: 5 },
+      { matchId: 3, tipPointSum: 2 },
+    ];
+    assert.deepEqual(selectLowestSumMatches(matches), [1, 3]);
+  });
+
+  void it("a sum of 0 is excluded, even if it is the lowest", () => {
+    const matches = [
+      { matchId: 1, tipPointSum: 0 },
+      { matchId: 2, tipPointSum: 1 },
+      { matchId: 3, tipPointSum: 4 },
+    ];
+    assert.deepEqual(selectLowestSumMatches(matches), [2]);
+  });
+
+  void it("every match at 0 → nothing qualifies", () => {
+    const matches = [
+      { matchId: 1, tipPointSum: 0 },
+      { matchId: 2, tipPointSum: 0 },
+    ];
+    assert.deepEqual(selectLowestSumMatches(matches), []);
+  });
+
+  void it("no matches → nothing qualifies", () => {
+    assert.deepEqual(selectLowestSumMatches([]), []);
+  });
+
+  // Real data, Turnier 7 (Hinrunde 2004/05) — the case that surfaced the
+  // "niedrigste nicht-null" clarification with the user.
+  void it("Turnier 7, Runde 3: two matches tied at sum 2, both qualify", () => {
+    const matches = [
+      { matchId: 101, tipPointSum: 2 },
+      { matchId: 102, tipPointSum: 6 },
+      { matchId: 103, tipPointSum: 2 },
+      { matchId: 104, tipPointSum: 9 },
+    ];
+    assert.deepEqual(selectLowestSumMatches(matches), [101, 103]);
+  });
+
+  void it("Turnier 7, Runde 4: an all-zero match loses to the sum-1 match", () => {
+    const matches = [
+      { matchId: 201, tipPointSum: 0 }, // all 16 players scored 0 — excluded
+      { matchId: 202, tipPointSum: 1 },
+      { matchId: 203, tipPointSum: 7 },
+    ];
+    assert.deepEqual(selectLowestSumMatches(matches), [202]);
   });
 });

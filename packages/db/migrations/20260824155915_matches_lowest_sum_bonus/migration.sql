@@ -1,0 +1,1 @@
+ALTER TABLE `matches` ADD `lowest_sum_bonus` integer;
