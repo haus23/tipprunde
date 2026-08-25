@@ -88,13 +88,18 @@ export function PlayerRoundItem({
                 <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
                   {match.result ?? "–:–"}
                 </td>
-                <td className="xs:px-6 relative w-px px-3 py-3 text-center tabular-nums">
+                <td className="xs:px-6 relative w-px py-3 pr-5 pl-3 text-center tabular-nums">
                   {showTip ? tip.tip : "–"}
                   {showTip && tip.joker && <CellFlag label="Joker-Tipp" />}
                   {showTip && tip.extraJoker && <CellFlag label="Zusatzjoker-Tipp" />}
                 </td>
-                <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
+                <td className="xs:pr-6 xs:pl-2 relative w-px py-3 pr-4 pl-1 text-center tabular-nums">
                   {tip?.points != null ? tip.points : "–"}
+                  {match.lowestSumBonus && !!tip?.points && (
+                    <CellFlag
+                      label={`Niedrigste Spielsumme — Verdoppelt (${tip.points / 2} → ${tip.points})`}
+                    />
+                  )}
                 </td>
               </tr>
             );
