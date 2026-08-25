@@ -88,14 +88,16 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
     );
   }
 
-  const meta = [
+  // The points segment gets its own CellFlag when this match doubled for
+  // the lowest-match-sum round rule — everything else is plain text.
+  const metaLead = [
     match.date ? formatDate(match.date) : null,
     match.liga,
     match.result ? `Ergebnis ${match.result}` : null,
-    match.points !== null ? `${match.points} Pkt` : null,
   ]
     .filter(Boolean)
     .join(" · ");
+  const pointsLabel = match.points !== null ? `${match.points} Pkt` : null;
 
   function handleSort(col: SortCol) {
     if (sortCol !== col) {
@@ -142,7 +144,23 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
           </h1>
           <MatchSwitch rounds={rounds} currentNr={match.nr} />
         </div>
-        <p className="text-subtle text-center text-sm">{meta}</p>
+        <p className="text-subtle text-center text-sm">
+          {metaLead}
+          {pointsLabel && (
+            <>
+              {metaLead && " · "}
+              <span className="relative inline-block pr-6">
+                {pointsLabel}
+                {match.lowestSumBonus && (
+                  <CellFlag
+                    label="Niedrigste Spielsumme — Punkte werden verdoppelt"
+                    className="right-1.5"
+                  />
+                )}
+              </span>
+            </>
+          )}
+        </p>
         <div className="xs:px-0 mt-2 mb-4 flex w-full justify-between md:pointer-events-none md:absolute md:inset-x-0 md:top-1/2 md:mt-0 md:mb-0 md:-translate-y-1/2">
           {match.prevNr !== null ? (
             <Link
@@ -217,8 +235,14 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
                   </td>
                 )}
                 {match.tipsPublished && (
-                  <td className="xs:px-3 w-px px-2 py-3 text-center tabular-nums">
+                  <td className="xs:pr-6 xs:pl-2 relative w-px py-3 pr-6 pl-1 text-right tabular-nums">
                     {row.points ?? "–"}
+                    {match.lowestSumBonus && !!row.points && (
+                      <CellFlag
+                        label={`Niedrigste Spielsumme — Verdoppelt (${row.points / 2} → ${row.points})`}
+                        className="right-1.5"
+                      />
+                    )}
                   </td>
                 )}
               </tr>

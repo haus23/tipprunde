@@ -63,9 +63,7 @@ export function SpieleRoundItem({
               <td className="xs:pr-6 xs:pl-2 relative w-px py-3 pr-4 pl-1 text-right tabular-nums">
                 {match.points ?? "–"}
                 {match.lowestSumBonus && (
-                  <CellFlag
-                    label={`Niedrigste Spielsumme — Punkte verdoppelt (${match.points} → ${(match.points ?? 0) * 2})`}
-                  />
+                  <CellFlag label="Niedrigste Spielsumme — Punkte werden verdoppelt" />
                 )}
               </td>
             </tr>

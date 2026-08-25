@@ -64,7 +64,7 @@ export async function getMatch(championshipId: number, nr: number) {
   const [match, prev, next] = await Promise.all([
     db.query.matches.findFirst({
       where: { nr, round: { championshipId, published: true } },
-      columns: { nr: true, date: true, result: true },
+      columns: { nr: true, date: true, result: true, lowestSumBonus: true },
       with: {
         round: { columns: { tipsPublished: true } },
         league: { columns: { name: true } },
@@ -90,7 +90,12 @@ export async function getMatch(championshipId: number, nr: number) {
   ]);
   if (!match) return null;
 
-  const points = match.result !== null ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0) : null;
+  // The aggregate stays the raw, pre-bonus figure — same reasoning as
+  // getRounds() above, it's what explains the match being picked. Individual
+  // tips are returned as stored (i.e. doubled for a lowestSumBonus match):
+  // the detail view shows each player's real, counted points.
+  const rawSum = match.result !== null ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0) : null;
+  const points = rawSum !== null && match.lowestSumBonus ? rawSum / 2 : rawSum;
 
   return {
     nr: match.nr,
@@ -100,6 +105,7 @@ export async function getMatch(championshipId: number, nr: number) {
     paarungShort: `${match.hometeam?.shortName ?? "–"} – ${match.awayteam?.shortName ?? "–"}`,
     result: match.result,
     points,
+    lowestSumBonus: match.lowestSumBonus ?? false,
     prevNr: prev?.nr ?? null,
     nextNr: next?.nr ?? null,
     tipsPublished: match.round.tipsPublished,
