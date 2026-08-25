@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.2.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.1.0...v1.2.0)
+
+### 🚀 Enhancements
+
+- **web:** Switch from the HTTP-only libsql client to the Node client ([55c2a76](https://github.com/haus23/tipprunde/commit/55c2a76))
+- **web:** Add the legacy-import tool (admin-only, temporary) ([ed270f3](https://github.com/haus23/tipprunde/commit/ed270f3))
+- **web:** Add a sidebar link for the legacy-import tool ([60aa7ce](https://github.com/haus23/tipprunde/commit/60aa7ce))
+
 ## v1.1.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.0.0...v1.1.0)
