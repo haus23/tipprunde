@@ -70,6 +70,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@libsql/client':
+        specifier: catalog:orm
+        version: 0.17.4
       '@react-router/node':
         specifier: ^8.3.0
         version: 8.3.0(react-router@8.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(typescript@7.0.2)

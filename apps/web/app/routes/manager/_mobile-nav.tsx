@@ -8,10 +8,11 @@ import { SidebarNav } from "./_sidebar.tsx";
 
 type MobileNavProps = {
   slug: string | undefined;
+  isAdmin: boolean;
 };
 
 /** Mobile-only drawer (< md). Slides in from the left, closes on navigation. */
-export function MobileNav({ slug }: MobileNavProps) {
+export function MobileNav({ slug, isAdmin }: MobileNavProps) {
   const { isMobileMenuOpen, closeMobileMenu } = useShell();
   const { pathname } = useLocation();
 
@@ -43,7 +44,12 @@ export function MobileNav({ slug }: MobileNavProps) {
             </Link>
           </div>
 
-          <SidebarNav slug={slug} collapsed={false} onNavigate={closeMobileMenu} />
+          <SidebarNav
+            slug={slug}
+            isAdmin={isAdmin}
+            collapsed={false}
+            onNavigate={closeMobileMenu}
+          />
         </Dialog>
       </Modal>
     </ModalOverlay>
