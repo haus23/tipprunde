@@ -7,7 +7,7 @@ interface Props {
   className?: string;
 }
 
-export function CellFlag({ label, className = "xs:right-0 -right-2" }: Props) {
+export function CellFlag({ label, className = "xs:right-1 right-0" }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLElement>(null);
