@@ -56,6 +56,10 @@ export function isManager(user: User | null): boolean {
   return user?.role === "manager" || user?.role === "admin";
 }
 
+export function isAdmin(user: User | null): boolean {
+  return user?.role === "admin";
+}
+
 function generateSessionId(): string {
   const bytes = new Uint8Array(32);
   crypto.getRandomValues(bytes);

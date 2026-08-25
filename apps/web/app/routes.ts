@@ -70,6 +70,9 @@ export default [
       route("ergebnisse/:nr?", "routes/manager/championship/ergebnisse.tsx"),
       route("spiele/:nr?", "routes/manager/championship/spiele.tsx"),
       route("tipps/:playerSlug?", "routes/manager/championship/tipps.tsx"),
+      // Temporary: the legacy-import tool, removed once the last historical
+      // tournament is imported. Admin-only, see import.tsx's own gate.
+      route("import", "routes/manager/championship/import.tsx"),
       route("zusatzfragen", "routes/manager/championship/zusatzfragen.tsx"),
     ]),
     route("shell", "routes/_resources/manager-shell.tsx"),
