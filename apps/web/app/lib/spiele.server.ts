@@ -122,6 +122,7 @@ export type MatchdayTip = {
   tip: string | null;
   isFlagged: boolean;
   points: number | null;
+  lowestSumBonus: boolean;
 };
 
 /**
@@ -135,7 +136,7 @@ export async function getMatchdayTips(
   const dated = await db.query.matches.findMany({
     where: { date: { isNotNull: true }, round: { championshipId, published: true } },
     orderBy: { date: "asc" },
-    columns: { id: true, nr: true, result: true },
+    columns: { id: true, nr: true, result: true, lowestSumBonus: true },
     with: {
       round: { columns: { tipsPublished: true } },
       hometeam: { columns: { shortName: true } },
@@ -170,6 +171,7 @@ export async function getMatchdayTips(
       tip: userTip?.tip ?? null,
       isFlagged: (userTip?.joker || userTip?.extraJoker) ?? false,
       points: userTip?.points ?? null,
+      lowestSumBonus: m.lowestSumBonus ?? false,
     };
   });
 }

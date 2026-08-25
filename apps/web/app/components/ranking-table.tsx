@@ -168,7 +168,7 @@ function MatchdayButton({
         crossOffset={16}
         containerPadding={4}
         placement="bottom end"
-        className="bg-surface border-subtle shadow-popover relative min-w-60 rounded-lg border p-3 text-sm transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0 data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
+        className="bg-surface border-subtle shadow-popover relative min-w-64 rounded-lg border p-3 text-sm transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0 data-[placement=bottom]:origin-top data-[placement=top]:origin-bottom"
       >
         <OverlayArrow className="group">
           <svg
@@ -243,7 +243,12 @@ function MatchdayButton({
                       </span>
                     </td>
                     <td className="py-1.5 text-center tabular-nums">
-                      {m.points !== null ? m.points : "–"}
+                      <span className="relative">
+                        {m.points !== null ? m.points : "–"}
+                        {m.lowestSumBonus && !!m.points && (
+                          <StarIcon className="text-accent absolute top-1/2 -right-3.5 size-3 -translate-y-1/2 fill-current" />
+                        )}
+                      </span>
                     </td>
                   </tr>
                 ))
