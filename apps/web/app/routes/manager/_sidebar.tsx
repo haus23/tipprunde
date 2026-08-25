@@ -13,6 +13,7 @@ import {
   RocketIcon,
   StarIcon,
   TrophyIcon,
+  UploadIcon,
   UsersIcon,
 } from "lucide-react";
 import { Focusable, Tooltip, TooltipTrigger } from "react-aria-components";
@@ -71,12 +72,13 @@ function NavItem({ to, end, icon: Icon, label, collapsed, onNavigate }: NavItemP
 
 type SidebarNavProps = {
   slug: string | undefined;
+  isAdmin: boolean;
   collapsed: boolean;
   onNavigate?: () => void;
 };
 
 /** Shared nav body for the persistent sidebar (rail) and the mobile drawer. */
-export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
+export function SidebarNav({ slug, isAdmin, collapsed, onNavigate }: SidebarNavProps) {
   const logoutButton = (
     <Button
       type="submit"
@@ -137,6 +139,15 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
               collapsed={collapsed}
               onNavigate={onNavigate}
             />
+            {isAdmin && (
+              <NavItem
+                to={`/manager/${slug}/import`}
+                icon={UploadIcon}
+                label="Legacy-Import"
+                collapsed={collapsed}
+                onNavigate={onNavigate}
+              />
+            )}
           </>
         ) : (
           <NavItem
@@ -219,10 +230,11 @@ export function SidebarNav({ slug, collapsed, onNavigate }: SidebarNavProps) {
 
 type SidebarProps = {
   slug: string | undefined;
+  isAdmin: boolean;
 };
 
 /** Persistent sidebar (md+), collapsible between full (208px) and rail (56px). */
-export function Sidebar({ slug }: SidebarProps) {
+export function Sidebar({ slug, isAdmin }: SidebarProps) {
   const { isSidebarCollapsed } = useShell();
 
   return (
@@ -246,7 +258,7 @@ export function Sidebar({ slug }: SidebarProps) {
         </Link>
       </div>
 
-      <SidebarNav slug={slug} collapsed={isSidebarCollapsed} />
+      <SidebarNav slug={slug} isAdmin={isAdmin} collapsed={isSidebarCollapsed} />
     </aside>
   );
 }

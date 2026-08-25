@@ -12,7 +12,7 @@ import {
 } from "#/lib/championship.server.ts";
 import { championshipContext, userContext } from "#/lib/context.ts";
 import { clearCookieHeader, cookieHeader, getCookie } from "#/lib/cookies.server.ts";
-import { isManager } from "#/lib/session.server.ts";
+import { isAdmin, isManager } from "#/lib/session.server.ts";
 import { usePageTitle } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/_layout";
@@ -55,7 +55,8 @@ const championshipMiddleware: Route.MiddlewareFunction = async ({ request, conte
 export const middleware: Route.MiddlewareFunction[] = [authMiddleware, championshipMiddleware];
 
 export function loader({ context, request }: Route.LoaderArgs) {
-  if (!isManager(context.get(userContext))) {
+  const user = context.get(userContext);
+  if (!isManager(user)) {
     throw data("Kein Zugriff auf den Manager.", { status: 403 });
   }
 
@@ -66,6 +67,7 @@ export function loader({ context, request }: Route.LoaderArgs) {
     name: championship?.name,
     sidebarCollapsed,
     championships: getChampionships(),
+    isAdmin: isAdmin(user),
   };
 }
 
@@ -78,7 +80,7 @@ export default function ManagerLayout({ loaderData }: Route.ComponentProps) {
 }
 
 function Shell({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] }) {
-  const { slug, name, championships } = loaderData;
+  const { slug, name, championships, isAdmin } = loaderData;
   const pageTitle = usePageTitle();
   const { isSidebarCollapsed, toggleSidebar, toggleMobileMenu } = useShell();
 
@@ -89,8 +91,8 @@ function Shell({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] 
         isSidebarCollapsed ? "md:grid-cols-[56px_1fr]" : "md:grid-cols-[208px_1fr]",
       )}
     >
-      <Sidebar slug={slug} />
-      <MobileNav slug={slug} />
+      <Sidebar slug={slug} isAdmin={isAdmin} />
+      <MobileNav slug={slug} isAdmin={isAdmin} />
       <header className="border-subtle bg-surface-raised flex items-center gap-1 border-b px-4">
         <Button
           intent="ghost"
