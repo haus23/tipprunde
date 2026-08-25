@@ -12,6 +12,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@libsql/client": "catalog:orm",
     "@react-router/node": "^8.3.0",
     "@tipprunde/db": "workspace:*",
     "@tipprunde/domain": "workspace:*",

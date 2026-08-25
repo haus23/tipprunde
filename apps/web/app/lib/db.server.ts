@@ -1,5 +1,5 @@
 import { relations } from "@tipprunde/db/relations";
-import { drizzle } from "drizzle-orm/libsql/web";
+import { drizzle } from "drizzle-orm/libsql";
 
 export const db = drizzle({
   connection: {
