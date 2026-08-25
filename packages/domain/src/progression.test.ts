@@ -119,7 +119,10 @@ void describe("calcProgression — ranks vs. display rows", () => {
       playedSteps: 1,
     });
     const rows = result.map((e) => e.positions[0]);
-    assert.deepEqual(rows.toSorted(), [0, 1, 2]);
+    assert.deepEqual(
+      rows.toSorted((a, b) => a - b),
+      [0, 1, 2],
+    );
   });
 
   void it("orders rows by points, best on row 0", () => {

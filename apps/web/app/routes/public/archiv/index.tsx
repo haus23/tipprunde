@@ -3,7 +3,7 @@ import { getArchivChampionshipList, getEwigeTabelle } from "#/lib/archiv.server.
 
 import type { Route } from "./+types/index";
 
-export async function loader(_: Route.LoaderArgs) {
+export async function loader() {
   const [championships, entries] = await Promise.all([
     getArchivChampionshipList(),
     getEwigeTabelle(),

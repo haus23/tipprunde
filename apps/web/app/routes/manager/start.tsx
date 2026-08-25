@@ -7,7 +7,7 @@ import type { Route } from "./+types/start";
 
 export const handle = { title: "Manager" };
 
-export async function loader(_: Route.LoaderArgs) {
+export async function loader() {
   const hasRulesets = !!(await db.query.rulesets.findFirst());
   return { hasRulesets };
 }
