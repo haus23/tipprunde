@@ -4,6 +4,7 @@ import { Link } from "react-router";
 
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { PlayerSwitch } from "#/components/player-switch.tsx";
+import { formatPoints } from "#/lib/utils.ts";
 import type { VerlaufPlayer, VerlaufStep } from "#/lib/verlauf.server.ts";
 
 const ROW_HEIGHT = 22;
@@ -259,14 +260,14 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
               {" · Rang "}
               {readout.focus.rank}
               {" · "}
-              <span className="tabular-nums">{readout.focus.points}</span> P
+              <span className="tabular-nums">{formatPoints(readout.focus.points)}</span> P
               {readout.focus.tiedWith.length > 0 && (
                 <> · punktgleich mit {formatTiedWith(readout.focus.tiedWith)}</>
               )}
               {readout.leader && gap > 0 && (
                 <>
                   {" · Rückstand auf "}
-                  {readout.leader.name}: <span className="tabular-nums">{gap}</span> P
+                  {readout.leader.name}: <span className="tabular-nums">{formatPoints(gap)}</span> P
                 </>
               )}
             </>
@@ -509,7 +510,7 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
                   <tr key={i}>
                     <th scope="row">{step ? stepTitle(step) : `Schritt ${i + 1}`}</th>
                     <td>{rank}</td>
-                    <td>{focus.points[i]}</td>
+                    <td>{formatPoints(focus.points[i])}</td>
                   </tr>
                 );
               })}

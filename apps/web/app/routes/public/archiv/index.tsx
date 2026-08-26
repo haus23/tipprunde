@@ -1,5 +1,6 @@
 import { AppLink } from "#/components/app-link.tsx";
 import { getArchivChampionshipList, getEwigeTabelle } from "#/lib/archiv.server.ts";
+import { formatPoints } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/index";
 
@@ -55,7 +56,7 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                       )}
                     </td>
                     <td className="py-2 text-right font-medium tabular-nums">
-                      {entry.winners[0]?.total ?? "–"}
+                      {entry.winners[0] ? formatPoints(entry.winners[0].total) : "–"}
                     </td>
                   </tr>
                 ))}
@@ -93,7 +94,7 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                         {entry.played}
                       </td>
                       <td className="w-px py-2 pl-3 text-right font-medium tabular-nums">
-                        {entry.totalPoints}
+                        {formatPoints(entry.totalPoints)}
                       </td>
                     </tr>
                   );

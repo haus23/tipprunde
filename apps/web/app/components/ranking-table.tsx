@@ -9,6 +9,7 @@ import { CellFlag } from "#/components/cell-flag.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import type { RankedPlayer } from "#/lib/ranking.server.ts";
 import type { MatchdayTip } from "#/lib/spiele.server.ts";
+import { formatPoints } from "#/lib/utils.ts";
 
 export function RankingTable({
   ranking,
@@ -82,12 +83,12 @@ export function RankingTable({
               </td>
               {showExtras && (
                 <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
-                  {entry.extraQuestionPoints > 0 ? entry.extraQuestionPoints : "–"}
+                  {entry.extraQuestionPoints > 0 ? formatPoints(entry.extraQuestionPoints) : "–"}
                 </td>
               )}
               <td className="xs:px-3 xs:py-3 px-2 py-2 text-center font-medium tabular-nums">
                 <span className="relative inline-block">
-                  {entry.total}
+                  {formatPoints(entry.total)}
                   {entry.roundPoints !== null && (
                     <CellFlag
                       label={`Rundenpunkte: ${entry.roundPoints > 0 ? `+${entry.roundPoints}` : entry.roundPoints}`}

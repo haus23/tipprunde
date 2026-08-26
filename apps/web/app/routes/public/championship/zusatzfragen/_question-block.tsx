@@ -4,6 +4,7 @@ import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import type { ExtraQuestion } from "#/lib/extra-questions.server.ts";
 import type { RankedPlayer } from "#/lib/ranking.server.ts";
+import { formatPoints } from "#/lib/utils.ts";
 
 export function QuestionBlock({
   question,
@@ -54,7 +55,7 @@ export function QuestionBlock({
                 </td>
                 <td className="xs:px-3 px-2 py-3">{answer?.answer ?? "–"}</td>
                 <td className="xs:px-3 w-px px-2 py-3 text-center tabular-nums">
-                  {answer?.points != null ? answer.points : "–"}
+                  {answer?.points != null ? formatPoints(answer.points) : "–"}
                 </td>
               </tr>
             );

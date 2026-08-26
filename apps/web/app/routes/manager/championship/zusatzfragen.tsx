@@ -13,6 +13,7 @@ import { championshipContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
+import { formatPoints } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/zusatzfragen";
 import { LockProvider, useLock } from "./_lock-provider.tsx";
@@ -223,10 +224,6 @@ type EnrolledPlayer = {
   userId: number;
   user: { id: number; name: string };
 };
-
-function formatPoints(points: number): string {
-  return (Number.isInteger(points) ? String(points) : points.toFixed(1)).replace(".", ",");
-}
 
 // --- Question card ---
 
