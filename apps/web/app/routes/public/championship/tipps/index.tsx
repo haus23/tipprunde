@@ -7,6 +7,7 @@ import { getRuleset } from "#/lib/championship.server.ts";
 import { viewedChampionshipContext, userContext } from "#/lib/context.ts";
 import { getRanking, type RankedPlayer, resolvePlayer } from "#/lib/ranking.server.ts";
 import { findUserBySlug, getPlayerMatches, type PlayerRound } from "#/lib/spieler.server.ts";
+import { formatAverage, formatPoints } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/index";
 import { PlayerRoundItem } from "./_round-item.tsx";
@@ -95,7 +96,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
   const totalMatches = allMatches.length;
   // Per-match average uses tip points only — extra-question points aren't per-match.
   const playerAvg =
-    matchesWithResult > 0 ? (player.tipPoints / matchesWithResult).toFixed(2) : null;
+    matchesWithResult > 0 ? formatAverage(player.tipPoints / matchesWithResult) : null;
   const playerSpiele =
     matchesWithResult === totalMatches ? `${totalMatches}` : `${matchesWithResult}/${totalMatches}`;
   const lastResultIndex = rounds.findLastIndex((r) => r.matches.some((m) => m.result !== null));
@@ -128,7 +129,8 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
           {(player.extraQuestionPoints > 0 || hasRoundPoints) && (
             <>
               <br />
-              {player.extraQuestionPoints > 0 && `${player.extraQuestionPoints} Zusatzpunkte`}
+              {player.extraQuestionPoints > 0 &&
+                `${formatPoints(player.extraQuestionPoints)} Zusatzpunkte`}
               {player.extraQuestionPoints > 0 && hasRoundPoints && " · "}
               {hasRoundPoints &&
                 `${player.roundPoints! > 0 ? `+${player.roundPoints}` : player.roundPoints! < 0 ? String(player.roundPoints) : "±0"} Rundenpunkte`}

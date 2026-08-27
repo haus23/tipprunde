@@ -6,7 +6,7 @@ import { CellFlag } from "#/components/cell-flag.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { RoundAccordion } from "#/components/round-accordion.tsx";
 import type { PlayerRound } from "#/lib/spieler.server.ts";
-import { formatDate } from "#/lib/utils.ts";
+import { formatAverage, formatDate } from "#/lib/utils.ts";
 
 export function PlayerRoundItem({
   round,
@@ -23,7 +23,7 @@ export function PlayerRoundItem({
   const roundPoints = round.matches.reduce((sum, m) => sum + (m.tips[0]?.points ?? 0), 0);
   const roundAvg =
     round.tipsPublished && matchesWithResult > 0
-      ? (roundPoints / matchesWithResult).toFixed(2)
+      ? formatAverage(roundPoints / matchesWithResult)
       : null;
   const deviationSum = hasDeviationRule
     ? round.matches

@@ -2,6 +2,7 @@ import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { SectionHeading } from "#/components/section-heading.tsx";
 import type { RankedPlayer } from "#/lib/ranking.server.ts";
+import { formatPoints } from "#/lib/utils.ts";
 
 import { SectionLink } from "./section-link.tsx";
 
@@ -37,7 +38,9 @@ export function ChampionshipStandings({
                 <td className={`py-2 ${isUser ? "text-accent" : ""}`}>
                   <AppLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</AppLink>
                 </td>
-                <td className="py-2 text-right font-medium tabular-nums">{entry.total}</td>
+                <td className="py-2 text-right font-medium tabular-nums">
+                  {formatPoints(entry.total)}
+                </td>
               </tr>
             );
           })}
@@ -60,7 +63,9 @@ export function ChampionshipStandings({
                   {userBelowTop3.name}
                 </AppLink>
               </td>
-              <td className="py-2 text-right font-medium tabular-nums">{userBelowTop3.total}</td>
+              <td className="py-2 text-right font-medium tabular-nums">
+                {formatPoints(userBelowTop3.total)}
+              </td>
             </tr>
           </tbody>
         )}

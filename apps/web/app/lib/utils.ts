@@ -22,6 +22,24 @@ export function formatDate(date: string) {
   return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "2-digit" });
 }
 
+/**
+ * Point values in German notation. Only extra-question points are ever
+ * fractional, and always in halves — so a single decimal is enough, and
+ * whole numbers stay free of a pointless ",0".
+ */
+export function formatPoints(points: number): string {
+  return (Number.isInteger(points) ? String(points) : points.toFixed(1)).replace(".", ",");
+}
+
+/**
+ * Per-match averages in German notation. Unlike points these keep both
+ * decimals even when round — an average of exactly "2,00" reads as measured,
+ * "2" reads as counted.
+ */
+export function formatAverage(value: number): string {
+  return value.toFixed(2).replace(".", ",");
+}
+
 export function slugify(value: string): string {
   return value
     .toLowerCase()
