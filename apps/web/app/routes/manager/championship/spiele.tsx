@@ -303,8 +303,23 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
         <input type="hidden" name="intent" value={isEdit ? "update-match" : "create-match"} />
         <input type="hidden" name="roundId" value={roundId} />
 
-        <div className="grid grid-cols-4 gap-4">
-          <DateField name="date" label="Datum" defaultValue={editMatch?.date ?? defaultDate} />
+        {/* Three steps, and the last one is late on purpose. The date field has
+            a hard minimum of 137px, so four columns need ~596px of grid — and
+            from md the sidebar takes 208px off the viewport, leaving only 448px
+            here at 768px. Four abreast therefore waits for lg; in between the
+            date and league share a row, the pairing the next. At lg the columns
+            are sized to what they hold: the date takes only its segments, the
+            league its short codes ("BL", "WM Quali"), and the two team boxes
+            split what is left — those carry the long values. */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[auto_0.6fr_1fr_1fr]">
+          {/* Sized to its own segments instead of stretching — a date is short
+              and a full-width box for "20.12.2005" reads as an error. */}
+          <DateField
+            name="date"
+            label="Datum"
+            defaultValue={editMatch?.date ?? defaultDate}
+            className="justify-self-start"
+          />
 
           <MatchComboBox
             name="leagueId"
@@ -387,9 +402,9 @@ function MatchesTable({
       <thead>
         <tr className="border-subtle border-b">
           <th className="text-muted pr-4 pb-3 text-right font-medium">#</th>
-          <th className="text-muted pr-4 pb-3 text-left font-medium">Datum</th>
+          <th className="text-muted xs:table-cell hidden pr-4 pb-3 text-left font-medium">Datum</th>
           <th className="text-muted pr-4 pb-3 text-left font-medium">Spiel</th>
-          <th className="text-muted pb-3 text-left font-medium">Liga</th>
+          <th className="text-muted xs:table-cell hidden pb-3 text-left font-medium">Liga</th>
           {canEdit && <th />}
         </tr>
       </thead>
@@ -397,11 +412,19 @@ function MatchesTable({
         {matches.map((match) => (
           <tr key={match.id} className="border-subtle border-b last:border-0">
             <td className="text-muted py-3 pr-4 text-right tabular-nums">{match.nr}</td>
-            <td className="py-3 pr-4 tabular-nums">{match.date ? formatDate(match.date) : "—"}</td>
+            <td className="xs:table-cell hidden py-3 pr-4 tabular-nums">
+              {match.date ? formatDate(match.date) : "—"}
+            </td>
             <td className="py-3 pr-4">
               {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
+              {/* Below xs the date and league columns are gone; they come back
+                  here as a meta line rather than being dropped entirely. */}
+              <span className="text-muted xs:hidden mt-0.5 block text-xs">
+                <span className="tabular-nums">{match.date ? formatDate(match.date) : "—"}</span>
+                {match.league?.shortName && ` · ${match.league.shortName}`}
+              </span>
             </td>
-            <td className="py-3">{match.league?.shortName ?? "—"}</td>
+            <td className="xs:table-cell hidden py-3">{match.league?.shortName ?? "—"}</td>
             {canEdit && (
               <td className="py-3 text-right">
                 <Button
@@ -466,7 +489,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
 
   if (currentNr === null) {
     return (
-      <div className="space-y-6 p-8">
+      <div className="space-y-6 px-2 py-6 sm:p-8">
         <title>{`Spiele | ${championshipName}`}</title>
         <div className="mb-6 flex min-h-9 items-center" />
         <p className="text-subtle text-center text-sm">Noch keine Runden angelegt.</p>
@@ -478,7 +501,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
   const showForm = !isChampionshipCompleted && (!isRoundCompleted || editMatch !== null);
 
   return (
-    <div ref={pageRef} className="space-y-6 p-8">
+    <div ref={pageRef} className="space-y-6 px-2 py-6 sm:p-8">
       <title>{`Spiele | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center">
         <RoundNavigator

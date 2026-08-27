@@ -23,9 +23,11 @@ type DateFieldProps = {
   name: string;
   label: string;
   defaultValue?: string | null;
+  /** For placement only — the field sizes itself to its segments. */
+  className?: string;
 };
 
-export function DateField({ name, label, defaultValue }: DateFieldProps) {
+export function DateField({ name, label, defaultValue, className }: DateFieldProps) {
   const parsedDefault = defaultValue ? parseDate(defaultValue) : undefined;
 
   return (
@@ -33,7 +35,7 @@ export function DateField({ name, label, defaultValue }: DateFieldProps) {
       name={name}
       defaultValue={parsedDefault}
       shouldForceLeadingZeros
-      className="flex flex-col gap-1.5"
+      className={cx("flex flex-col gap-1.5", className)}
     >
       <Label>{label}</Label>
 
