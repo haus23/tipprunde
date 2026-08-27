@@ -444,9 +444,11 @@ function RoundRow({ round, roundRuleId }: { round: Round; roundRuleId: RoundRule
   const completedDisabled = isChampionshipLocked || isPending || !tipsPublished;
 
   return (
-    <div className="flex items-center gap-4 py-3">
-      <span className="text-muted w-8 text-right text-sm tabular-nums">{round.nr}</span>
-      <div className="flex flex-1 gap-6">
+    <div className="flex items-start gap-4 py-3 sm:items-center">
+      <span className="text-muted w-8 shrink-0 text-right text-sm tabular-nums">{round.nr}</span>
+      {/* Three switches abreast need ~410px; below sm they stack instead of
+          running off the right edge, which cut "Abgeschlossen" in half. */}
+      <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:gap-6">
         <CompactSwitch
           label="Spiele öffentlich"
           isSelected={published}
@@ -522,7 +524,7 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
     isFlagPending || !published || (hasExtraQuestions && !extraQuestionPointsPublished);
 
   return (
-    <div className="space-y-6 p-8">
+    <div className="space-y-6 px-2 py-6 sm:p-8">
       <title>{`Übersicht | ${championship.name}`}</title>
 
       {/* Turnier-Status */}
