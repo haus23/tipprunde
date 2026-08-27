@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.3.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.2.0...v1.3.0)
+
+### 🚀 Enhancements
+
+- **web:** Send the login code as a designed HTML mail ([9bae2a6](https://github.com/haus23/tipprunde/commit/9bae2a6))
+
+### 🩹 Fixes
+
+- **web:** Format point values in German notation ([bd32360](https://github.com/haus23/tipprunde/commit/bd32360))
+- **web:** Scroll to the top when editing a match ([f80798e](https://github.com/haus23/tipprunde/commit/f80798e))
+
 ## v1.2.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.1.0...v1.2.0)
