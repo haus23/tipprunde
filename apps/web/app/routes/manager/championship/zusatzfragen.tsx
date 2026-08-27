@@ -397,6 +397,11 @@ function QuestionCard({
 }
 
 // Each row owns its own fetcher (keyed via useId() internally) so that
+/** Grid placement, shared by the read-only and the editable branch. */
+const answerCellClass =
+  "col-span-2 row-start-2 min-w-0 sm:col-span-1 sm:col-start-2 sm:row-start-1";
+const pointsCellClass = "col-start-2 row-start-1 sm:col-start-3";
+
 // saving one player's answer/points can never abort another's in-flight save.
 function PlayerAnswerRow({
   questionId,
@@ -468,12 +473,20 @@ function PlayerAnswerRow({
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="w-32 shrink-0 truncate text-sm">{player.user.name}</span>
+    /* Below sm the answer moves to its own row and takes the full width:
+       awarding points means reading the answer, and sharing one row with the
+       name and the points box left it under 110px on a phone. Name and points
+       keep the row above — everything else about the answer is unreadable
+       without them side by side.
+
+           Spieler              [Pkt]
+           [        Antwort        ]  */
+    <div className="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1.5 sm:grid-cols-[8rem_1fr_auto] sm:gap-y-0">
+      <span className="col-start-1 row-start-1 min-w-0 truncate text-sm">{player.user.name}</span>
       {isChampionshipClosed ? (
         <>
-          <span className="min-w-0 flex-1 text-sm">{extraAnswer?.answer || "–"}</span>
-          <span className="w-14 shrink-0 text-center text-sm tabular-nums">
+          <span className={cx(answerCellClass, "text-sm")}>{extraAnswer?.answer || "–"}</span>
+          <span className={cx(pointsCellClass, "w-14 text-center text-sm tabular-nums")}>
             {extraAnswer?.points != null ? formatPoints(extraAnswer.points) : "–"}
           </span>
         </>
@@ -484,7 +497,7 @@ function PlayerAnswerRow({
             value={answerInput}
             onChange={setAnswerInput}
             onBlur={handleSaveAnswer}
-            className="min-w-0 flex-1"
+            className={answerCellClass}
           >
             <Input placeholder="Keine Antwort ..." className="w-full" />
           </TextField>
@@ -493,7 +506,7 @@ function PlayerAnswerRow({
             value={pointsInput}
             onChange={setPointsInput}
             onBlur={handleSavePoints}
-            className="shrink-0"
+            className={pointsCellClass}
           >
             <Input
               inputMode="decimal"
