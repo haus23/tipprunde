@@ -2,10 +2,11 @@ import { loginCodes } from "@tipprunde/db/schema";
 import { eq } from "drizzle-orm";
 
 import { db } from "#/lib/db.server.ts";
+import { sendMail } from "#/lib/mail.server.ts";
+
+import { loginCodeMail } from "./_login-mail.server.ts";
 
 const APP_SECRET = process.env["APP_SECRET"]!;
-const RESEND_API_KEY = process.env["RESEND_API_KEY"]!;
-const FROM_EMAIL = process.env["FROM_EMAIL"]!;
 const TOTP_EXPIRES_IN = Number(process.env["TOTP_EXPIRES_IN"]);
 const TOTP_MAX_ATTEMPTS = Number(process.env["TOTP_MAX_ATTEMPTS"]);
 
@@ -83,19 +84,5 @@ export async function verifyLoginCode(userId: number, code: string): Promise<Ver
 }
 
 export async function sendLoginCodeEmail(to: string, code: string): Promise<void> {
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: FROM_EMAIL,
-      to,
-      subject: "Dein Login-Code",
-      html: `<p>Dein Code: <strong>${code}</strong></p><p>Er ist 10 Minuten gültig.</p>`,
-    }),
-  });
-
-  if (!res.ok) throw new Error(`Resend error: ${res.status}`);
+  await sendMail({ to, ...loginCodeMail(code, TOTP_EXPIRES_IN) });
 }
