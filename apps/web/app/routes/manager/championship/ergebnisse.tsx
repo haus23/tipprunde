@@ -253,7 +253,7 @@ export default function Ergebnisse({ loaderData }: Route.ComponentProps) {
 
   if (currentNr === null) {
     return (
-      <div className="space-y-6 p-8">
+      <div className="space-y-6">
         <title>{`Ergebnisse | ${championshipName}`}</title>
         <div className="mb-6 flex min-h-9 items-center" />
         <p className="text-subtle text-center text-sm">Noch keine Runden angelegt.</p>
@@ -264,7 +264,7 @@ export default function Ergebnisse({ loaderData }: Route.ComponentProps) {
   const { matches, isChampionshipClosed, isRoundClosed, slug } = loaderData;
 
   return (
-    <div className="space-y-6 p-8">
+    <div className="space-y-6">
       <title>{`Ergebnisse | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center">
         <RoundNavigator

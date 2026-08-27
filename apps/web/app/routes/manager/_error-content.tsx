@@ -11,7 +11,7 @@ export function ManagerErrorContent() {
   const isNotFound = isRouteErrorResponse(error) && error.status === 404;
 
   return (
-    <div className="flex min-h-full flex-col items-center justify-center gap-3 p-8 text-center">
+    <div className="flex min-h-full flex-col items-center justify-center gap-3 text-center">
       {/* The replaced route component would have rendered the document title. */}
       <title>{isNotFound ? "Nicht gefunden | Manager" : "Fehler | Manager"}</title>
       <h1 className="text-xl font-semibold">

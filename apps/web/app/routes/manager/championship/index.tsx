@@ -524,7 +524,7 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
     isFlagPending || !published || (hasExtraQuestions && !extraQuestionPointsPublished);
 
   return (
-    <div className="space-y-6 px-2 py-6 sm:p-8">
+    <div className="space-y-6">
       <title>{`Übersicht | ${championship.name}`}</title>
 
       {/* Turnier-Status */}

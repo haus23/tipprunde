@@ -517,7 +517,7 @@ export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
 
   if (!hasExtraQuestions) {
     return (
-      <div className="p-8">
+      <div>
         <title>{`Zusatzfragen | ${championshipName}`}</title>
         <div className="mb-6 flex min-h-9 items-center" />
         <p className="text-subtle mt-8 text-center text-sm">
@@ -528,7 +528,7 @@ export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
   }
 
   return (
-    <div className="space-y-6 p-8">
+    <div className="space-y-6">
       <title>{`Zusatzfragen | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center justify-end">
         <Button

@@ -63,7 +63,7 @@ export default function Import() {
   const summary = fetcher.data?.summary;
 
   return (
-    <div className="p-8">
+    <div>
       <title>Legacy-Import</title>
       <div className="max-w-2xl">
         <Card>

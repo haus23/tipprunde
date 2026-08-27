@@ -627,7 +627,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
 
   if (players.length === 0) {
     return (
-      <div className="space-y-6 p-8">
+      <div className="space-y-6">
         <title>{`Tipps | ${championshipName}`}</title>
         <div className="mb-6 flex min-h-9 items-center" />
         <p className="text-subtle text-center text-sm">Noch keine Spieler im Turnier.</p>
@@ -637,7 +637,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
 
   if (rounds.length === 0) {
     return (
-      <div className="space-y-6 p-8">
+      <div className="space-y-6">
         <title>{`Tipps | ${championshipName}`}</title>
         <div className="mb-6 flex min-h-9 items-center" />
         <p className="text-subtle text-center text-sm">Noch keine Spiele angelegt.</p>
@@ -655,7 +655,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
   const extraJokerCount = allMatches.filter((m) => m.tips[0]?.extraJoker).length;
 
   return (
-    <div className="space-y-6 p-8">
+    <div className="space-y-6">
       <title>{`Tipps | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center">
         <RoundNavigator

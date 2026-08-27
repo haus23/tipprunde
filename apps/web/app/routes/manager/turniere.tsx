@@ -97,7 +97,7 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
   );
 
   return (
-    <div className="p-8">
+    <div>
       <title>Turniere | Stammdaten</title>
       <div className="mb-6 flex min-h-9 items-center justify-between gap-4">
         <SearchField

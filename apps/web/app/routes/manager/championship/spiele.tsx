@@ -489,7 +489,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
 
   if (currentNr === null) {
     return (
-      <div className="space-y-6 px-2 py-6 sm:p-8">
+      <div className="space-y-6">
         <title>{`Spiele | ${championshipName}`}</title>
         <div className="mb-6 flex min-h-9 items-center" />
         <p className="text-subtle text-center text-sm">Noch keine Runden angelegt.</p>
@@ -501,7 +501,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
   const showForm = !isChampionshipCompleted && (!isRoundCompleted || editMatch !== null);
 
   return (
-    <div ref={pageRef} className="space-y-6 px-2 py-6 sm:p-8">
+    <div ref={pageRef} className="space-y-6">
       <title>{`Spiele | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center">
         <RoundNavigator
