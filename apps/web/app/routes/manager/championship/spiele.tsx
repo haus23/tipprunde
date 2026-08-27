@@ -8,7 +8,7 @@ import { Button, Card, CardContent, DateField, Label } from "@tipprunde/ui";
 import { cx } from "@tipprunde/ui";
 import { desc, eq, max } from "drizzle-orm";
 import { PencilIcon, PlusIcon } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Button as RACButton,
   ComboBox,
@@ -441,8 +441,23 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const [editMatch, setEditMatch] = useState<MatchRow | null>(null);
   const [createKey, setCreateKey] = useState(0);
+  const pageRef = useRef<HTMLDivElement>(null);
 
   const formKey = editMatch ? `edit-${editMatch.id}` : `create-${createKey}`;
+
+  // The form sits above the list, so editing a match far down the round would
+  // otherwise fill in a card the user cannot see. Scrolls the page rather than
+  // the form itself, which would leave the round navigator behind the header.
+  // Has to run after the render, not in the click handler: on a completed round
+  // the form does not exist until `editMatch` makes `showForm` true.
+  const editId = editMatch?.id ?? null;
+  useEffect(() => {
+    if (editId === null) return;
+    pageRef.current?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [editId]);
 
   const handleDone = useCallback(() => {
     setEditMatch(null);
@@ -463,7 +478,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
   const showForm = !isChampionshipCompleted && (!isRoundCompleted || editMatch !== null);
 
   return (
-    <div className="space-y-6 p-8">
+    <div ref={pageRef} className="space-y-6 p-8">
       <title>{`Spiele | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center">
         <RoundNavigator
