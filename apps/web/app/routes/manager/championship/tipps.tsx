@@ -302,6 +302,15 @@ function normalizeTip(raw: string): string {
   return raw.replace(/\s+/g, "").replace(/[-.]/g, ":").replace(/:+/g, ":");
 }
 
+/**
+ * The checkbox itself is 20px, which is a small target for a finger. The
+ * padding grows the hit area to 36x44 without touching the visual size; the
+ * negative margin cancels it again for layout, so nothing moves. Not the full
+ * 44 wide on purpose — the joker and extra-joker cells are 45px and 42px, and
+ * two 44px targets side by side would start catching each other's taps.
+ */
+const jokerHitArea = "-mx-2 -my-3 px-2 py-3";
+
 type TipEntry = { tip: string; joker: boolean; extraJoker: boolean; invalid?: boolean };
 
 type TipMatch = {
@@ -579,6 +588,7 @@ function TipRow({
       </td>
       <td className="py-3 pl-2 text-center">
         <Checkbox
+          className={jokerHitArea}
           isSelected={entry.joker}
           isDisabled={isEntryLocked || !isJokerAllowed}
           onChange={(checked) => {
@@ -592,6 +602,7 @@ function TipRow({
       {hasExtraJoker && (
         <td className="py-3 pl-2 text-center">
           <Checkbox
+            className={jokerHitArea}
             isSelected={entry.extraJoker}
             isDisabled={isEntryLocked || !isExtraJokerAllowed}
             onChange={(checked) => {
