@@ -95,7 +95,9 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
             <th className="border-subtle text-muted w-56 border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase">
               Name
             </th>
-            <th className="border-subtle text-muted border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase">
+            {/* 85px of description at 375px is a truncated fragment, not
+                information — the name carries the row instead. */}
+            <th className="border-subtle text-muted xs:table-cell hidden border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase">
               Beschreibung
             </th>
             <th className="border-subtle w-12 border-b" />
@@ -115,7 +117,7 @@ export default function Regelwerke({ loaderData }: Route.ComponentProps) {
                 className="border-subtle hover:bg-surface-raised border-b transition-colors last:border-0"
               >
                 <td className="px-3 py-3 font-medium">{ruleset.name}</td>
-                <td className="px-3 py-3">
+                <td className="xs:table-cell hidden px-3 py-3">
                   <div className="text-subtle truncate text-sm">{ruleset.description}</div>
                 </td>
                 <td className="px-3 py-3 text-right">
