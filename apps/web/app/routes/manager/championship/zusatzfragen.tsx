@@ -379,7 +379,16 @@ function QuestionCard({
             summaryClassName="px-2 py-1.5 hover:bg-transparent"
             bodyClassName="mt-2 pb-0"
           >
-            <div className="space-y-2 py-0.5">
+            {/* Desktop had no labels at all — only position said which column was
+                which. Below sm the rows stack, so they carry their own labels
+                and get dividers instead: without the input borders of the
+                editable state there is nothing else grouping one player. */}
+            <div className="text-muted hidden grid-cols-[8rem_1fr_auto] gap-x-3 pb-1.5 text-xs font-medium tracking-wide uppercase sm:grid">
+              <span>Spieler</span>
+              <span>Antwort</span>
+              <span className="w-14 text-center">Punkte</span>
+            </div>
+            <div className="divide-subtle divide-y py-0.5 sm:space-y-2 sm:divide-y-0">
               {players.map((player) => (
                 <PlayerAnswerRow
                   key={player.userId}
@@ -397,6 +406,11 @@ function QuestionCard({
 }
 
 // Each row owns its own fetcher (keyed via useId() internally) so that
+/** Grid placement, shared by the read-only and the editable branch. */
+const answerCellClass =
+  "col-span-2 row-start-2 min-w-0 sm:col-span-1 sm:col-start-2 sm:row-start-1";
+const pointsCellClass = "col-start-2 row-start-1 sm:col-start-3";
+
 // saving one player's answer/points can never abort another's in-flight save.
 function PlayerAnswerRow({
   questionId,
@@ -468,40 +482,78 @@ function PlayerAnswerRow({
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="w-32 shrink-0 truncate text-sm">{player.user.name}</span>
+    /* Below sm the answer moves to its own row and takes the full width:
+       awarding points means reading the answer, and sharing one row with the
+       name and the points box left it under 110px on a phone. Name and points
+       keep the row above — everything else about the answer is unreadable
+       without them side by side.
+
+           Spieler              [Pkt]
+           [        Antwort        ]  */
+    <div className="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 py-2 sm:grid-cols-[8rem_1fr_auto] sm:gap-y-0 sm:py-0">
+      <span className="col-start-1 row-start-1 min-w-0 truncate text-sm">{player.user.name}</span>
       {isChampionshipClosed ? (
         <>
-          <span className="min-w-0 flex-1 text-sm">{extraAnswer?.answer || "–"}</span>
-          <span className="w-14 shrink-0 text-center text-sm tabular-nums">
-            {extraAnswer?.points != null ? formatPoints(extraAnswer.points) : "–"}
+          {/* No leading label here: a label beside a three-line answer floats in
+              the middle of it and eats the width the long ones need. The unit
+              on the points identifies them instead, so the other value can
+              only be the answer. */}
+          <span className={cx(answerCellClass, "text-sm")}>{extraAnswer?.answer || "–"}</span>
+          <span
+            className={cx(
+              pointsCellClass,
+              "justify-self-end text-sm tabular-nums",
+              "sm:w-14 sm:justify-self-auto sm:text-center",
+            )}
+          >
+            {extraAnswer?.points != null ? (
+              <>
+                {formatPoints(extraAnswer.points)}
+                <span className="text-muted text-xs sm:hidden"> Pkt</span>
+              </>
+            ) : (
+              "–"
+            )}
           </span>
         </>
       ) : (
         <>
-          <TextField
-            aria-label={`Antwort von ${player.user.name}`}
-            value={answerInput}
-            onChange={setAnswerInput}
-            onBlur={handleSaveAnswer}
-            className="min-w-0 flex-1"
-          >
-            <Input placeholder="Keine Antwort ..." className="w-full" />
-          </TextField>
-          <TextField
-            aria-label={`Punkte für ${player.user.name}`}
-            value={pointsInput}
-            onChange={setPointsInput}
-            onBlur={handleSavePoints}
-            className="shrink-0"
-          >
-            <Input
-              inputMode="decimal"
-              onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-              placeholder="Pkt."
-              className="w-14 text-center"
-            />
-          </TextField>
+          <div className={cx(answerCellClass, "flex items-center gap-1.5")}>
+            {/* Stacked, the answer and the points are two bare numbers under
+                each other and position no longer says which is which — the
+                "Pkt." placeholder is gone exactly when a value is present.
+                Decorative only: both fields carry an aria-label already. */}
+            <span className="text-muted shrink-0 text-xs sm:hidden" aria-hidden="true">
+              Antwort
+            </span>
+            <TextField
+              aria-label={`Antwort von ${player.user.name}`}
+              value={answerInput}
+              onChange={setAnswerInput}
+              onBlur={handleSaveAnswer}
+              className="min-w-0 flex-1"
+            >
+              <Input placeholder="Keine Antwort ..." className="w-full" />
+            </TextField>
+          </div>
+          <div className={cx(pointsCellClass, "flex items-center gap-1.5")}>
+            <span className="text-muted shrink-0 text-xs sm:hidden" aria-hidden="true">
+              Pkt
+            </span>
+            <TextField
+              aria-label={`Punkte für ${player.user.name}`}
+              value={pointsInput}
+              onChange={setPointsInput}
+              onBlur={handleSavePoints}
+            >
+              <Input
+                inputMode="decimal"
+                onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                aria-label={`Punkte für ${player.user.name}`}
+                className="w-14 text-center"
+              />
+            </TextField>
+          </div>
         </>
       )}
     </div>
@@ -517,7 +569,7 @@ export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
 
   if (!hasExtraQuestions) {
     return (
-      <div className="p-8">
+      <div>
         <title>{`Zusatzfragen | ${championshipName}`}</title>
         <div className="mb-6 flex min-h-9 items-center" />
         <p className="text-subtle mt-8 text-center text-sm">
@@ -528,7 +580,7 @@ export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
   }
 
   return (
-    <div className="space-y-6 p-8">
+    <div className="space-y-6">
       <title>{`Zusatzfragen | ${championshipName}`}</title>
       <div className="mb-6 flex min-h-9 items-center justify-end">
         <Button

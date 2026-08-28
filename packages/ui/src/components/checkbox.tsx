@@ -37,9 +37,16 @@ export function Checkbox({ className, children, ...props }: Props) {
   return (
     <CheckboxField {...props}>
       <CheckboxButton
-        className={cx("group inline-flex items-center gap-2 data-disabled:opacity-50", className)}
+        className={cx(
+          "group inline-flex items-center gap-2 data-disabled:opacity-50",
+          // Same press feedback and curve as Button — a tap that only changes a
+          // colour reads as if nothing was registered, the more so now that the
+          // hit area is larger than the box.
+          "transition-transform ease-out data-pressed:scale-[0.97]",
+          className,
+        )}
       >
-        <span className="border-subtle group-data-selected:border-accent group-data-selected:bg-accent group-data-focus-visible:ring-accent flex size-5 shrink-0 items-center justify-center rounded border transition-colors outline-none group-data-focus-visible:ring-2">
+        <span className="border-subtle group-data-selected:border-accent group-data-selected:bg-accent group-data-focus-visible:ring-accent flex size-5 shrink-0 items-center justify-center rounded border transition-colors ease-out outline-none group-data-focus-visible:ring-2">
           <CheckMark />
         </span>
         {children && <span className="text-app select-none">{children}</span>}

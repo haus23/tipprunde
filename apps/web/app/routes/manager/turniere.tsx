@@ -97,7 +97,7 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
   );
 
   return (
-    <div className="p-8">
+    <div>
       <title>Turniere | Stammdaten</title>
       <div className="mb-6 flex min-h-9 items-center justify-between gap-4">
         <SearchField
@@ -121,7 +121,11 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
             <th className="border-subtle text-muted border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase">
               Name
             </th>
-            <th className="border-subtle text-muted w-48 border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase">
+            {/* table-fixed reserves 64 + 192 + 48 for the other three, leaving
+                the name 55px at 375px — and the name has no truncate, so it ran
+                straight over the ruleset text. Dropping this column below xs
+                gives the name the room; the edit dialog shows the ruleset. */}
+            <th className="border-subtle text-muted xs:table-cell hidden w-48 border-b px-3 py-2.5 text-left text-xs font-medium tracking-wide uppercase">
               Regelwerk
             </th>
             <th className="border-subtle w-12 border-b" />
@@ -145,7 +149,7 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
                   <div className="font-medium">{championship.name}</div>
                   <div className="text-subtle font-mono text-xs">{championship.slug}</div>
                 </td>
-                <td className="px-3 py-3">
+                <td className="xs:table-cell hidden px-3 py-3">
                   <div className="text-subtle truncate text-sm">{championship.ruleset?.name}</div>
                 </td>
                 <td className="px-3 py-3 text-right">

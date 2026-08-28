@@ -328,13 +328,13 @@ function FlagSwitch({ label, description, isSelected, onChange, isDisabled }: Fl
           <>
             <div
               className={cx(
-                "flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors",
+                "flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors ease-out",
                 isSelected ? "border-accent bg-accent" : "border-subtle bg-surface",
               )}
             >
               <div
                 className={cx(
-                  "ml-0.5 size-4 rounded-full transition-transform",
+                  "ml-0.5 size-4 rounded-full transition-transform ease-out",
                   isSelected ? "translate-x-4 bg-white" : "bg-control",
                 )}
               />
@@ -373,13 +373,13 @@ function CompactSwitch({ label, isSelected, onChange, isDisabled }: CompactSwitc
           <>
             <div
               className={cx(
-                "flex h-4 w-7 shrink-0 items-center rounded-full border transition-colors",
+                "flex h-4 w-7 shrink-0 items-center rounded-full border transition-colors ease-out",
                 isSelected ? "border-accent bg-accent" : "border-subtle bg-surface",
               )}
             >
               <div
                 className={cx(
-                  "ml-0.5 size-3 rounded-full transition-transform",
+                  "ml-0.5 size-3 rounded-full transition-transform ease-out",
                   isSelected ? "translate-x-3 bg-white" : "bg-control",
                 )}
               />
@@ -444,9 +444,11 @@ function RoundRow({ round, roundRuleId }: { round: Round; roundRuleId: RoundRule
   const completedDisabled = isChampionshipLocked || isPending || !tipsPublished;
 
   return (
-    <div className="flex items-center gap-4 py-3">
-      <span className="text-muted w-8 text-right text-sm tabular-nums">{round.nr}</span>
-      <div className="flex flex-1 gap-6">
+    <div className="flex items-start gap-4 py-3 sm:items-center">
+      <span className="text-muted w-8 shrink-0 text-right text-sm tabular-nums">{round.nr}</span>
+      {/* Three switches abreast need ~410px; below sm they stack instead of
+          running off the right edge, which cut "Abgeschlossen" in half. */}
+      <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:gap-6">
         <CompactSwitch
           label="Spiele öffentlich"
           isSelected={published}
@@ -522,7 +524,7 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
     isFlagPending || !published || (hasExtraQuestions && !extraQuestionPointsPublished);
 
   return (
-    <div className="space-y-6 p-8">
+    <div className="space-y-6">
       <title>{`Übersicht | ${championship.name}`}</title>
 
       {/* Turnier-Status */}

@@ -127,7 +127,7 @@ function Shell({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] 
           <ColorSchemeToggle />
         </div>
       </header>
-      <main className="relative overflow-y-auto">
+      <main className="relative overflow-y-auto px-2 py-6 sm:p-8">
         <Outlet />
       </main>
     </div>
