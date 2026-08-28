@@ -328,13 +328,13 @@ function FlagSwitch({ label, description, isSelected, onChange, isDisabled }: Fl
           <>
             <div
               className={cx(
-                "flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors",
+                "flex h-5 w-9 shrink-0 items-center rounded-full border transition-colors ease-out",
                 isSelected ? "border-accent bg-accent" : "border-subtle bg-surface",
               )}
             >
               <div
                 className={cx(
-                  "ml-0.5 size-4 rounded-full transition-transform",
+                  "ml-0.5 size-4 rounded-full transition-transform ease-out",
                   isSelected ? "translate-x-4 bg-white" : "bg-control",
                 )}
               />
@@ -373,13 +373,13 @@ function CompactSwitch({ label, isSelected, onChange, isDisabled }: CompactSwitc
           <>
             <div
               className={cx(
-                "flex h-4 w-7 shrink-0 items-center rounded-full border transition-colors",
+                "flex h-4 w-7 shrink-0 items-center rounded-full border transition-colors ease-out",
                 isSelected ? "border-accent bg-accent" : "border-subtle bg-surface",
               )}
             >
               <div
                 className={cx(
-                  "ml-0.5 size-3 rounded-full transition-transform",
+                  "ml-0.5 size-3 rounded-full transition-transform ease-out",
                   isSelected ? "translate-x-3 bg-white" : "bg-control",
                 )}
               />
