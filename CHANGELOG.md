@@ -1,5 +1,29 @@
 # Changelog
 
+## v1.4.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.3.0...v1.4.0)
+
+### 🚀 Enhancements
+
+- **web:** Make the manager match page usable on a phone ([f9ae316](https://github.com/haus23/tipprunde/commit/f9ae316))
+- **web:** Stack the round switches on narrow screens ([812cc4d](https://github.com/haus23/tipprunde/commit/812cc4d))
+- **web:** Drop email and role from the player list on phones ([a315ca1](https://github.com/haus23/tipprunde/commit/a315ca1))
+- **web:** Give the extra-question answer its own row on phones ([efd46c7](https://github.com/haus23/tipprunde/commit/efd46c7))
+- **web:** Label the extra-question columns and mend the read-only view ([1ff6ab2](https://github.com/haus23/tipprunde/commit/1ff6ab2))
+- **web:** Enlarge the joker checkbox hit area for touch ([9de43d5](https://github.com/haus23/tipprunde/commit/9de43d5))
+- **web:** Enlarge the round navigator arrows for touch ([d4aedb5](https://github.com/haus23/tipprunde/commit/d4aedb5))
+- **web:** Drop the crowded-out columns from two master-data lists ([6298403](https://github.com/haus23/tipprunde/commit/6298403))
+- **web:** Put the switches and checkbox on the project's easing curve ([6f4f5fd](https://github.com/haus23/tipprunde/commit/6f4f5fd))
+
+### 💅 Refactors
+
+- **web:** Move the manager page padding into the layout ([ca1d6dd](https://github.com/haus23/tipprunde/commit/ca1d6dd))
+
+### 🏡 Chore
+
+- Stop Zed from starting a second TypeScript server ([32b1d4e](https://github.com/haus23/tipprunde/commit/32b1d4e))
+
 ## v1.3.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.2.0...v1.3.0)
