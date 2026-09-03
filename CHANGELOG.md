@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.4.0...v1.4.1)
+
+### 🩹 Fixes
+
+- **web:** Trust the proxy so actions survive the origin check ([f640a40](https://github.com/haus23/tipprunde/commit/f640a40))
+
 ## v1.4.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.3.0...v1.4.0)

@@ -14,6 +14,7 @@
   "dependencies": {
     "@libsql/client": "catalog:orm",
     "@react-router/node": "^8.3.1",
+    "@remix-run/node-fetch-server": "^0.14.1",
     "@tipprunde/db": "workspace:*",
     "@tipprunde/domain": "workspace:*",
     "@tipprunde/theme": "workspace:*",

@@ -2,9 +2,9 @@ import { createServer } from "node:http";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import path from "node:path";
 
-import { createRequestListener } from "@react-router/node";
+import { createRequestListener } from "@remix-run/node-fetch-server";
 import compressionMiddleware from "compression";
-import { RouterContextProvider } from "react-router";
+import { createRequestHandler, RouterContextProvider } from "react-router";
 import sirv from "sirv";
 
 type NodeMiddleware = (req: IncomingMessage, res: ServerResponse, next: () => void) => void;
@@ -32,11 +32,20 @@ const serveAssets = sirv(CLIENT_ASSETS_PATH, {
   immutable: true,
 });
 
-const handleRequest = createRequestListener({
-  build,
-  mode: process.env.NODE_ENV,
-  getLoadContext: () => new RouterContextProvider(),
-});
+// Built here rather than with `@react-router/node`'s wrapper, which is the
+// same three lines but passes no listener options — and `trustProxy` is the
+// one we need. Without it the request URL takes its protocol from the socket,
+// which behind Railway's TLS-terminating proxy is plain http. React Router
+// then compares that against the browser's `Origin: https://…`, reads the
+// mismatch as a CSRF attempt and answers every action with 400. Railway
+// overwrites the `X-Forwarded-*` headers, so trusting them is sound; locally
+// nothing sends them and the behaviour is unchanged.
+const requestHandler = createRequestHandler(build, process.env.NODE_ENV);
+
+const handleRequest = createRequestListener(
+  (request) => requestHandler(request, new RouterContextProvider()),
+  { trustProxy: true },
+);
 
 // @types/compression assumes an Express req/res; the middleware itself only
 // touches plain Node http properties at runtime, so this is a types-only cast.
