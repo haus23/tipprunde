@@ -25,10 +25,15 @@ const spielerSchema = createInsertSchema(users, {
   id: v.optional(v.pipe(v.string(), v.toNumber(), v.integer())),
   name: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Name ist erforderlich")),
   slug: (schema) => v.pipe(schema, v.trim(), v.nonEmpty("Kennung ist erforderlich")),
+  // Empty has to land as null, not undefined: Drizzle reads undefined in
+  // `.set()` as "leave this column alone", so clearing an address silently
+  // kept the old one. Every other optional field in the manager is built by
+  // hand with `|| null` — this one goes through a schema, which is how it
+  // came to differ.
   email: v.pipe(
     v.optional(v.string()),
-    v.transform((v) => v?.trim() || undefined),
-    v.optional(v.pipe(v.string(), v.email("Keine gültige E-Mail-Adresse"))),
+    v.transform((value) => value?.trim() || null),
+    v.nullable(v.pipe(v.string(), v.email("Keine gültige E-Mail-Adresse"))),
   ),
   role: v.picklist(["user", "manager", "admin"]),
 });
