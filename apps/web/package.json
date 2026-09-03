@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@libsql/client": "catalog:orm",
-    "@react-router/node": "^8.3.0",
+    "@react-router/node": "^8.3.1",
     "@tipprunde/db": "workspace:*",
     "@tipprunde/domain": "workspace:*",
     "@tipprunde/theme": "workspace:*",
@@ -25,13 +25,13 @@
     "react": "catalog:react",
     "react-aria-components": "catalog:react",
     "react-dom": "catalog:react",
-    "react-router": "^8.3.0",
+    "react-router": "^8.3.1",
     "sirv": "^3.0.2",
     "valibot": "^1.4.2"
   },
   "devDependencies": {
     "@react-aria/optimize-locales-plugin": "^2.0.1",
-    "@react-router/dev": "^8.3.0",
+    "@react-router/dev": "^8.3.1",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/compression": "^1.8.1",
     "@types/react": "catalog:types",
