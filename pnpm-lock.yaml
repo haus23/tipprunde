@@ -119,8 +119,8 @@ catalogs:
       version: 1.39.0
   orm:
     '@libsql/client':
-      specifier: 0.17.4
-      version: 0.17.4
+      specifier: 0.18.0
+      version: 0.18.0
     drizzle-kit:
       specifier: 1.0.0-rc.4
       version: 1.0.0-rc.4
@@ -173,7 +173,7 @@ importers:
     dependencies:
       '@libsql/client':
         specifier: catalog:orm
-        version: 0.17.4
+        version: 0.18.0
       '@react-router/node':
         specifier: ^8.3.1
         version: 8.3.1(react-router@8.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(typescript@7.0.2)
@@ -194,7 +194,7 @@ importers:
         version: 1.8.1(supports-color@10.2.2)
       drizzle-orm:
         specifier: catalog:orm
-        version: 1.0.0-rc.4(@libsql/client@0.17.4)(valibot@1.4.2(typescript@7.0.2))(zod@4.4.3)
+        version: 1.0.0-rc.4(@libsql/client@0.18.0)(valibot@1.4.2(typescript@7.0.2))(zod@4.4.3)
       isbot:
         specifier: ^5.2.1
         version: 5.2.1
@@ -252,11 +252,11 @@ importers:
     dependencies:
       drizzle-orm:
         specifier: catalog:orm
-        version: 1.0.0-rc.4(@libsql/client@0.17.4)(valibot@1.4.2(typescript@7.0.2))(zod@4.4.3)
+        version: 1.0.0-rc.4(@libsql/client@0.18.0)(valibot@1.4.2(typescript@7.0.2))(zod@4.4.3)
     devDependencies:
       '@libsql/client':
         specifier: catalog:orm
-        version: 0.17.4
+        version: 0.18.0
       '@types/node':
         specifier: catalog:types
         version: 26.4.0
@@ -953,11 +953,11 @@ packages:
     resolution: {integrity: sha512-hloP58zRVCRSpgDxmqCWJNlizAlUgJFqG2ypq79DCvyv9tHjRYMDOcPFjzfl/A1/YxDvRCZz8wvZvmapQnKwFQ==}
     engines: {node: '>=12'}
 
-  '@libsql/client@0.17.4':
-    resolution: {integrity: sha512-lYayFWasDV78A+TjlEhr6ubb3odBV6OHjb+wdp8VQcyWWAEIjuwbCHaraEUS4m4yWoo0BvZo96It4VdzZRmRWw==}
+  '@libsql/client@0.18.0':
+    resolution: {integrity: sha512-zMCCo58vv7w27j7+cnt/GW+X6/Rih6cHZ86PKi0AxCMOqMfrVgG9OZ5lW2bDMJhSeOjsv2szH2nJF3A9l36UmA==}
 
-  '@libsql/core@0.17.4':
-    resolution: {integrity: sha512-LqF9gIvnJ38nmAH1y/ChizHqDO/MO1wLgA96XrraulEEbqXxLjleSH92YWTolbuJKgPUmGu4aJk9W3UnAcxLOQ==}
+  '@libsql/core@0.18.0':
+    resolution: {integrity: sha512-N8RR2CIpcgtbKZnXs2KVpw2lJQfinUj3I56e7qRDRpK18Hty0Rr8nr00VmFb4R/DsqOanPB/TaP3+QAQLZeXMg==}
 
   '@libsql/darwin-arm64@0.5.29':
     resolution: {integrity: sha512-K+2RIB1OGFPYQbfay48GakLhqf3ArcbHqPFu7EZiaUcRgFcdw8RoltsMyvbj5ix2fY0HV3Q3Ioa/ByvQdaSM0A==}
@@ -3575,9 +3575,9 @@ snapshots:
     dependencies:
       jsbi: 4.3.2
 
-  '@libsql/client@0.17.4':
+  '@libsql/client@0.18.0':
     dependencies:
-      '@libsql/core': 0.17.4
+      '@libsql/core': 0.18.0
       '@libsql/hrana-client': 0.10.0
       js-base64: 3.7.8
       libsql: 0.5.29
@@ -3586,7 +3586,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@libsql/core@0.17.4':
+  '@libsql/core@0.18.0':
     dependencies:
       js-base64: 3.7.8
 
@@ -4062,7 +4062,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 26.2.0
+      '@types/node': 26.4.0
 
   '@typescript/typescript-aix-ppc64@7.0.2':
     optional: true
@@ -4462,9 +4462,9 @@ snapshots:
       get-tsconfig: 4.14.1
       jiti: 2.7.0
 
-  drizzle-orm@1.0.0-rc.4(@libsql/client@0.17.4)(valibot@1.4.2(typescript@7.0.2))(zod@4.4.3):
+  drizzle-orm@1.0.0-rc.4(@libsql/client@0.18.0)(valibot@1.4.2(typescript@7.0.2))(zod@4.4.3):
     optionalDependencies:
-      '@libsql/client': 0.17.4
+      '@libsql/client': 0.18.0
       valibot: 1.4.2(typescript@7.0.2)
       zod: 4.4.3
 
