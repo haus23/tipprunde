@@ -10,7 +10,6 @@ import type { Mail } from "#/lib/mail.server.ts";
  * below are their sRGB equivalents, kept in sync by hand.
  */
 
-const ACCENT = "#f76b15"; // orange9
 const ACCENT_TEXT = "#cc4e00"; // orange11 — accent on light, for text
 const SAND_1 = "#fdfdfc";
 const SAND_2 = "#f9f9f8";

@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.4.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.4.1...v1.4.2)
+
+### 🩹 Fixes
+
+- **web:** Let an empty email actually clear the address ([e860ee7](https://github.com/haus23/tipprunde/commit/e860ee7))
+
+### 🏡 Chore
+
+- **web:** Drop the unused accent constant from the login mail ([944a673](https://github.com/haus23/tipprunde/commit/944a673))
+
 ## v1.4.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.4.0...v1.4.1)
