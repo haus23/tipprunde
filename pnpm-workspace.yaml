@@ -7,14 +7,6 @@ allowBuilds:
   esbuild: true
   workerd: true
 
-supportedArchitectures:
-  os:
-    - darwin
-    - linux
-  cpu:
-    - x64
-    - arm64
-
 catalog:
   typescript: ~7.0.2 # Align with .zed/settings.json
   vite: ^8.2.2
