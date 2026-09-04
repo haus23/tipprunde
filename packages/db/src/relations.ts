@@ -3,6 +3,14 @@ import { defineRelations } from "drizzle-orm";
 import * as schema from "./schema";
 
 export const relations = defineRelations(schema, (r) => ({
+  authEvents: {
+    // Optional on purpose: an unknown address has no user, and a deleted one
+    // leaves its events behind with a null reference.
+    user: r.one.users({
+      from: r.authEvents.userId,
+      to: r.users.id,
+    }),
+  },
   sessions: {
     user: r.one.users({
       from: r.sessions.userId,

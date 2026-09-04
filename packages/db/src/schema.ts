@@ -1,5 +1,13 @@
 import { sql } from "drizzle-orm";
-import { integer, primaryKey, real, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
+import {
+  index,
+  integer,
+  primaryKey,
+  real,
+  sqliteTable,
+  text,
+  unique,
+} from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -35,6 +43,52 @@ export const loginCodes = sqliteTable("login_codes", {
   expiresAt: text("expires_at").notNull(),
   attempts: integer("attempts").notNull().default(0),
 });
+
+/**
+ * Everything that happens around signing in, successes included.
+ *
+ * Deliberately no IP addresses: the app sits behind a proxy, the addresses
+ * would be of little use without a lookup service, and they are the one field
+ * here that turns a log into personal data worth protecting. What is left is
+ * enough to answer the questions that actually come up — who got in, who kept
+ * failing, and whether an address nobody knows is being tried repeatedly.
+ *
+ * `email` is stored even when no user matches: on a login attempt with an
+ * unknown address, that string is the only thing there is to record.
+ *
+ * Rows expire after 90 days (see `pruneAuthEvents`).
+ */
+export const authEvents = sqliteTable(
+  "auth_events",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    type: text("type", {
+      enum: [
+        "code_requested",
+        "unknown_email",
+        "request_failed",
+        "login_succeeded",
+        "code_invalid",
+        "code_expired",
+        "code_max_attempts",
+        "sessions_revoked",
+      ],
+    }).notNull(),
+    /** Null when no user matched, and again once a user is deleted. */
+    userId: integer("user_id").references(() => users.id, { onDelete: "set null" }),
+    email: text("email"),
+    /** Free text for the cases that need one — a mail error, who revoked what. */
+    detail: text("detail"),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+  },
+  // Every read is "the recent ones", newest first, so the index carries the
+  // order too — the alert query and the overview both ride on it.
+  (table) => [index("auth_events_created_at_idx").on(table.createdAt)],
+);
+
+export type AuthEventType = (typeof authEvents.$inferSelect)["type"];
 
 export const teams = sqliteTable("teams", {
   id: text("id").primaryKey(),
