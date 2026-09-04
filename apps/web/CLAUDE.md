@@ -122,6 +122,7 @@ Shared docs are in the root `docs/` folder.
 - `04-app-merge.md` — How this app absorbed the separate web app (why things look the way they do)
 - `05-championship-scope.md` — Championship as a URL dimension, shared route files for Archiv + current season
 - `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, hand-rolled SVG
+- `07-observability.md` — Auth-event log, error and alert mails; why no Sentry, no IPs, and no rate limit yet
 
 ## Environment variables
 
