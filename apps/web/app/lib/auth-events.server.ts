@@ -148,3 +148,34 @@ async function checkForAttack(): Promise<void> {
     ...opsMail(body),
   });
 }
+
+/**
+ * The security overview's data. Capped rather than paged: the point of the
+ * page is "what happened lately", and a window that reaches back further than
+ * anyone scrolls is not worth a pagination control.
+ */
+export async function getAuthEvents(limit = 200) {
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
+  const [events, lastDay, total] = await Promise.all([
+    db.query.authEvents.findMany({
+      orderBy: { createdAt: "desc" },
+      limit,
+      with: { user: { columns: { name: true } } },
+    }),
+    db.query.authEvents.findMany({
+      where: { createdAt: { gte: since } },
+      columns: { type: true },
+    }),
+    db.$count(authEvents),
+  ]);
+
+  return {
+    events,
+    total,
+    limit,
+    logins: lastDay.filter((e) => e.type === "login_succeeded").length,
+    failures: lastDay.filter((e) => FAILURE_TYPES.includes(e.type)).length,
+    retentionDays: RETENTION_DAYS,
+  };
+}
