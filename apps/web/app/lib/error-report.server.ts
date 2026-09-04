@@ -1,6 +1,6 @@
 import { isRouteErrorResponse } from "react-router";
 
-import { sendMail } from "./mail.server.ts";
+import { opsMail, sendMail } from "./mail.server.ts";
 
 /**
  * Mails unhandled server errors to whoever runs the site.
@@ -58,10 +58,6 @@ function shouldSend(key: string): boolean {
   return true;
 }
 
-function escapeHtml(value: string): string {
-  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
 export function reportServerError(error: unknown, request: Request): void {
   // A visitor navigating away mid-request aborts it. Nothing is wrong.
   if (request.signal.aborted) return;
@@ -107,7 +103,6 @@ export function reportServerError(error: unknown, request: Request): void {
   void sendMail({
     to: ALERT_EMAIL,
     subject: `[runde.tips] ${message.slice(0, 120)}`,
-    html: `<pre style="font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; white-space:pre-wrap;">${escapeHtml(body)}</pre>`,
-    text: body,
+    ...opsMail(body),
   }).catch((err) => console.error("[error-report] mail failed:", err));
 }

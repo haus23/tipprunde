@@ -12,6 +12,19 @@ export type Mail = {
   text: string;
 };
 
+/**
+ * Body for the mails nobody reads for pleasure — error reports and alerts.
+ * Monospaced and preformatted, because what matters in them is a stack trace
+ * or a column of timestamps, not typography.
+ */
+export function opsMail(body: string): Pick<Mail, "html" | "text"> {
+  const escaped = body.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return {
+    html: `<pre style="font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; white-space:pre-wrap;">${escaped}</pre>`,
+    text: body,
+  };
+}
+
 export async function sendMail({ to, subject, html, text }: Mail): Promise<void> {
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
