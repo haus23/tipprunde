@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.5.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.4.2...v1.5.0)
+
+### 🚀 Enhancements
+
+- **web:** End a player's sessions when their address changes ([cd2be18](https://github.com/haus23/tipprunde/commit/cd2be18))
+- **web:** Say that changing an address ends sessions ([0b00f3c](https://github.com/haus23/tipprunde/commit/0b00f3c))
+
 ## v1.4.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.4.1...v1.4.2)

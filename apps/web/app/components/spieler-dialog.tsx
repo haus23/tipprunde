@@ -108,6 +108,13 @@ function SpielerForm({ defaultValues, onClose, onSuccess }: SpielerFormProps) {
         type="email"
         defaultValue={defaultValues?.email ?? ""}
         label="E-Mail"
+        // Only on edit: creating a player has no sessions to end. Worth saying
+        // out loud, because the effect lands on someone else's screen.
+        description={
+          defaultValues
+            ? "Ändern oder Leeren beendet bestehende Anmeldungen dieses Spielers."
+            : undefined
+        }
       />
 
       <Select

@@ -1,5 +1,5 @@
 import { sessions } from "@tipprunde/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 import { createCookieSessionStorage } from "react-router";
 
 import type { User } from "./context";
@@ -78,6 +78,27 @@ export async function createSession(userId: number, rememberMe: boolean): Promis
 /** Cookie lifetime mirrors the DB session's — a session cookie unless remembered. */
 export function sessionCookieMaxAge(rememberMe: boolean): number | undefined {
   return rememberMe ? SESSION_DURATION_REMEMBER : undefined;
+}
+
+/**
+ * Ends every session a user holds, optionally sparing one.
+ *
+ * The address is the only credential — the login code goes there — so changing
+ * or clearing it has to cut off whoever held the old one. Without this, a
+ * "remember me" session outlives the change by up to 30 days.
+ *
+ * `keepSessionId` spares the caller's own session, so an admin correcting their
+ * own address does not log themselves out mid-edit. Editing someone else, that
+ * id belongs to a different user and the clause simply never matches.
+ */
+export async function revokeUserSessions(userId: number, keepSessionId?: string) {
+  await db
+    .delete(sessions)
+    .where(
+      keepSessionId
+        ? and(eq(sessions.userId, userId), ne(sessions.id, keepSessionId))
+        : eq(sessions.userId, userId),
+    );
 }
 
 export async function deleteSession(sessionId: string) {
