@@ -56,10 +56,16 @@ distinction, but the split still matters for where a value may be written down:
 | `SESSION_DURATION_DEFAULT`  | `86400`            | Session lifetime, seconds          |
 | `SESSION_DURATION_REMEMBER` | `2592000`          | Lifetime with "angemeldet bleiben" |
 | `FROM_EMAIL`                | `hallo@runde.tips` | Sender of the login code mail      |
+| `ALERT_EMAIL`               | —                  | Where server errors are mailed     |
 
 The login flow needs all of them, not just the database pair: without
 `RESEND_API_KEY` or `APP_SECRET` nobody can get a code, and the failure looks
 like a mail problem rather than a missing variable.
+
+`ALERT_EMAIL` has no default on purpose — a wrong guess would send reports into
+a mailbox nobody reads, which is worse than none. Unset, errors are logged and
+no mail goes out. It is only read by the custom server, so it does nothing in
+local development.
 
 ## First-deploy bootstrap
 

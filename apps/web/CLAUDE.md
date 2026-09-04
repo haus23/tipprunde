@@ -132,6 +132,9 @@ mail and code settings, not just the DB:
 `RESEND_API_KEY`, `FROM_EMAIL`, `TOTP_EXPIRES_IN`, `TOTP_MAX_ATTEMPTS`,
 `SESSION_DURATION_DEFAULT`, `SESSION_DURATION_REMEMBER`
 
+`ALERT_EMAIL` is production-only — it is read by `server/app.ts`, which
+`react-router dev` never runs. Errors in development go to the console.
+
 In production they are set per Railway environment. The first five are
 secrets and never belong in the repo. See `docs/deployment.md`.
 
