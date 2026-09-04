@@ -8,6 +8,7 @@ import * as v from "valibot";
 
 import { SpielerDialog } from "#/components/spieler-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
+import { getSessionFromRequest, revokeUserSessions } from "#/lib/session.server.ts";
 
 import type { Route } from "./+types/spieler";
 
@@ -72,7 +73,34 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   if (intent === "update" && id) {
+    const existing = await db.query.users.findFirst({ where: { id } });
+    if (!existing) return null;
+
+    // Both columns are unique in the database. Without this the constraint
+    // decides, which surfaces as an unhandled error instead of a message on
+    // the field. Excluding the row itself, or saving a player unchanged would
+    // collide with their own values.
+    const [slugConflict, emailConflict] = await Promise.all([
+      db.query.users.findFirst({ where: { slug: values.slug, id: { ne: id } } }),
+      values.email
+        ? db.query.users.findFirst({ where: { email: values.email, id: { ne: id } } })
+        : Promise.resolve(null),
+    ]);
+    const conflicts: Record<string, string[]> = {};
+    if (slugConflict) conflicts.slug = ["Diese Kennung ist bereits vergeben"];
+    if (emailConflict) conflicts.email = ["Diese E-Mail ist bereits vergeben"];
+    if (Object.keys(conflicts).length) return { errors: conflicts };
+
     const [user] = await db.update(users).set(values).where(eq(users.id, id)).returning();
+
+    // Only the address is a credential; name, slug and role are not. A role
+    // change needs no help here either — getSessionUser reads it fresh from
+    // the database on every request, so a demotion already takes effect at once.
+    if (existing.email !== values.email) {
+      const session = await getSessionFromRequest(request);
+      await revokeUserSessions(id, session.get("sessionId"));
+    }
+
     return { user };
   }
 
