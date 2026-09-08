@@ -64,6 +64,7 @@ Shared documentation in `docs/`:
 - `deployment.md` — Railway service + environments, environment variables, first-deploy bootstrap
 - `web-shell.md` — Public shell: header contents, nav strategy, planned docked/drawer chat panel
 - `archiv.md` — Archiv feature: ranking columns on `players`, dashboard entry
+- `backlog.md` — Loose ends, grouped by what belongs in one branch (not an issue tracker)
 
 **Decisions (`docs/decisions/`) — dated records of why something is the way it
 is. Superseded, never quietly rewritten:**
