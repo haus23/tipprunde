@@ -35,7 +35,16 @@ const labels: Record<AuthEventType, string> = {
  * is the opposite of what a glance at this should tell you. Everything normal
  * stays in the body colour, so what is left in red is what to look at.
  */
-const failureTypes: AuthEventType[] = [
+/**
+ * Deliberately not the same list as `FAILURE_TYPES` in `auth-events.server.ts`,
+ * which is what counts towards the alert. This one is what earns a second look
+ * — and the two differ at both ends. A technical fault is no attempt at
+ * signing in, but it is something to see; an expired code is a real failed
+ * attempt, and the most ordinary thing here: somebody asked for a code and got
+ * to it ten minutes later. Colouring that too would leave half the list red
+ * within a fortnight, and red stops meaning anything once it is everywhere.
+ */
+const notable: AuthEventType[] = [
   "unknown_email",
   "code_invalid",
   "code_max_attempts",
@@ -109,10 +118,7 @@ export default function Sicherheit({ loaderData }: Route.ComponentProps) {
                 <tr key={event.id} className="border-subtle border-b last:border-0">
                   <td className="px-3 py-3">
                     <div
-                      className={cx(
-                        "font-medium",
-                        failureTypes.includes(event.type) && "text-error",
-                      )}
+                      className={cx("font-medium", notable.includes(event.type) && "text-error")}
                     >
                       {labels[event.type]}
                     </div>
