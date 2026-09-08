@@ -113,6 +113,7 @@ Shared docs are in the root `docs/` folder.
 - `deployment.md` — Railway service + environments, environment variables (full table), first-deploy bootstrap
 - `web-shell.md` — Public shell: header contents, nav strategy, planned chat panel
 - `archiv.md` — Archiv: the materialized ranking columns on `players` and what depends on them
+- `backlog.md` — Loose ends, grouped by what belongs in one branch (not an issue tracker)
 
 **Decisions (`docs/decisions/`) — dated records of why something is the way it is:**
 

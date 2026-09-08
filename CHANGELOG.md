@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.6.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.6.0...v1.6.1)
+
+### 🩹 Fixes
+
+- **web:** Leave the code step when the code is gone ([90e576b](https://github.com/haus23/tipprunde/commit/90e576b))
+
+### 📖 Documentation
+
+- Collect the loose ends in docs/backlog.md ([f376b70](https://github.com/haus23/tipprunde/commit/f376b70))
+
 ## v1.6.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.5.0...v1.6.0)
