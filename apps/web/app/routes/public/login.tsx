@@ -32,8 +32,33 @@ function safeRedirectTo(raw: FormDataEntryValue | string | null): string {
 /** `email` echoes the attempted address back so the field isn't cleared. */
 type LoginError = { error: string; email?: string };
 
+type LoginSession = Awaited<ReturnType<typeof getSessionFromRequest>>;
+
+/** Stays on the step the user is on. */
 function fail(error: LoginError, init?: ResponseInit) {
   return data<LoginError>(error, { status: 400, ...init });
+}
+
+/**
+ * Sends the user back to the address step, having dropped the pending login.
+ *
+ * **200, not 400, on purpose.** React Router skips loader revalidation when an
+ * action answers 400 or above (`shouldSkipRevalidation` in the router), so
+ * `fail()` here cleared `pendingEmail` in the cookie and still left the code
+ * form standing — a form whose session no longer existed, which answered the
+ * next submit with a second and more confusing message. Nothing failed about
+ * this response in any case: the request was handled, and the answer is "start
+ * over".
+ *
+ * `email` comes back only where the person at the keyboard cannot have changed
+ * since they typed it. See the call sites.
+ */
+async function restart(session: LoginSession, error: string, email?: string) {
+  session.unset("pendingEmail");
+  return data<LoginError>(
+    { error, email },
+    { headers: { "Set-Cookie": await commitSession(session) } },
+  );
 }
 
 export async function loader({ request, url, context }: Route.LoaderArgs) {
@@ -117,17 +142,11 @@ export async function action({ request, url }: Route.ActionArgs) {
 
   if (intent === "verify-code") {
     const email = session.get("pendingEmail");
-    if (!email) return fail({ error: "Keine oder abgelaufene Anmeldung!" });
+    if (!email) return restart(session, "Keine oder abgelaufene Anmeldung!");
 
     const user = await findUserByEmail(email);
     // Hijacked/stale cookie pointing at no real user — bail out cleanly.
-    if (!user) {
-      session.unset("pendingEmail");
-      return fail(
-        { error: "Bitte melde dich erneut an." },
-        { headers: { "Set-Cookie": await commitSession(session) } },
-      );
-    }
+    if (!user) return restart(session, "Bitte melde dich erneut an.");
 
     const rememberMe = formData.get("rememberMe") != null;
     const parsed = v.safeParse(codeSchema, formData.get("code"));
@@ -164,14 +183,22 @@ export async function action({ request, url }: Route.ActionArgs) {
     // others have no usable code left, so send them back to step one.
     if (result === "invalid") return fail({ error: "Ungültiger Code." });
 
-    session.unset("pendingEmail");
-    const error =
+    // The address only travels back from the failed attempts: seconds have
+    // passed in one sitting, somebody is at the keyboard, and the address is
+    // already on their screen. An expired code means ten minutes or more went
+    // by — exactly long enough for the person at the machine to be someone
+    // else, and putting the address back would hand it to them rather than
+    // remind its owner of it.
+    if (result === "max_attempts") {
+      return restart(session, "Zu viele Fehlversuche. Bitte fordere einen neuen Code an.", email);
+    }
+
+    return restart(
+      session,
       result === "expired"
         ? "Der Code ist abgelaufen. Bitte fordere einen neuen an."
-        : result === "max_attempts"
-          ? "Zu viele Fehlversuche. Bitte fordere einen neuen Code an."
-          : "Etwas ist schiefgelaufen. Bitte versuche es erneut.";
-    return fail({ error }, { headers: { "Set-Cookie": await commitSession(session) } });
+        : "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    );
   }
 
   return fail({ error: "Unbekannte Aktion." });
