@@ -56,7 +56,10 @@ Two consequences, both accepted:
   not by `pnpm dev`.
 - **No `context`.** The app's contexts live inside the bundle; a copy created
   out in `server/app.ts` would be a different object and never match. So the
-  report carries the request, not the user. The auth log covers the rest.
+  report carries the request, not the user. The auth log covers the rest. This
+  one is expected to lift on its own: when the chat forces the dev server onto
+  `server/app.ts`, that file joins the Vite SSR build and there is only one
+  `context.ts` again — see [01-chat.md](./01-chat.md).
 
 `error-report.server.ts` is therefore loaded by Node directly, with type
 stripping: no JSX, no `import.meta.env`, and relative imports need their file
