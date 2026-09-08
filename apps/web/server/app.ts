@@ -7,6 +7,8 @@ import compressionMiddleware from "compression";
 import { createRequestHandler, RouterContextProvider } from "react-router";
 import sirv from "sirv";
 
+import { reportServerError } from "#/lib/error-report.server.ts";
+
 type NodeMiddleware = (req: IncomingMessage, res: ServerResponse, next: () => void) => void;
 
 // Railway target — replaces the Cloudflare Workers `workers/app.ts` entry.
@@ -24,6 +26,32 @@ const CLIENT_ASSETS_PATH = path.join(dir, "../dist/client");
 
 const build = await import(BUILD_PATH);
 
+// React Router reads its error hook off the build object — `build.entry.module
+// .handleError`, with a console.error fallback when it is absent — so putting
+// one there covers loaders, actions, resource routes and document rendering
+// alike. The documented route is to reveal `entry.server.tsx` and export it
+// from there, but that means owning 86 lines of streaming, bot detection and
+// timeout handling for the sake of this one hook. The build object is already
+// in our hands, one line above.
+//
+// The trade: this file is production-only (`react-router dev` runs its own
+// Vite server), which suits an alert mail — nobody wants one for every typo in
+// a loader — but does mean the path is exercised by `pnpm build && pnpm start`,
+// not by `pnpm dev`. And `context` cannot be read here: the app's contexts live
+// inside the bundle, so a copy created out here would never match.
+const buildWithErrorReporting = {
+  ...build,
+  entry: {
+    ...build.entry,
+    module: {
+      ...build.entry.module,
+      handleError: (error: unknown, { request }: { request: Request }) => {
+        reportServerError(error, request);
+      },
+    },
+  },
+};
+
 // Everything under dist/client is Vite-content-hashed (no public/ dir in this
 // app), so a one-year immutable cache is always safe.
 const serveAssets = sirv(CLIENT_ASSETS_PATH, {
@@ -40,7 +68,7 @@ const serveAssets = sirv(CLIENT_ASSETS_PATH, {
 // mismatch as a CSRF attempt and answers every action with 400. Railway
 // overwrites the `X-Forwarded-*` headers, so trusting them is sound; locally
 // nothing sends them and the behaviour is unchanged.
-const requestHandler = createRequestHandler(build, process.env.NODE_ENV);
+const requestHandler = createRequestHandler(buildWithErrorReporting, process.env.NODE_ENV);
 
 const handleRequest = createRequestListener(
   (request) => requestHandler(request, new RouterContextProvider()),

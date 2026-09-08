@@ -3,6 +3,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import { data, Form, redirect, useNavigation } from "react-router";
 import * as v from "valibot";
 
+import { logAuthEvent } from "#/lib/auth-events.server.ts";
 import { userContext } from "#/lib/context.ts";
 import {
   commitSession,
@@ -68,6 +69,7 @@ export async function action({ request, url }: Route.ActionArgs) {
 
     const user = await findUserByEmail(email);
     if (!user) {
+      await logAuthEvent({ type: "unknown_email", email });
       return fail({ error: "Unbekannte E-Mail Adresse. Frag Micha!", email });
     }
 
@@ -79,6 +81,12 @@ export async function action({ request, url }: Route.ActionArgs) {
       code = await createLoginCode(user.id);
     } catch (err) {
       console.error("[auth] createLoginCode failed:", err);
+      await logAuthEvent({
+        type: "request_failed",
+        userId: user.id,
+        email,
+        detail: `Code konnte nicht erzeugt werden: ${err}`,
+      });
       return fail(
         { error: "Anmeldung gerade nicht möglich. Bitte versuche es später erneut.", email },
         { status: 500 },
@@ -89,11 +97,19 @@ export async function action({ request, url }: Route.ActionArgs) {
       await sendLoginCodeEmail(email, code);
     } catch (err) {
       console.error("[auth] sendLoginCodeEmail failed:", err);
+      await logAuthEvent({
+        type: "request_failed",
+        userId: user.id,
+        email,
+        detail: `Code konnte nicht gesendet werden: ${err}`,
+      });
       return fail(
         { error: "Code konnte nicht gesendet werden. Bitte versuche es erneut.", email },
         { status: 502 },
       );
     }
+
+    await logAuthEvent({ type: "code_requested", userId: user.id, email });
 
     session.set("pendingEmail", email);
     return data(null, { headers: { "Set-Cookie": await commitSession(session) } });
@@ -120,6 +136,7 @@ export async function action({ request, url }: Route.ActionArgs) {
     const result = await verifyLoginCode(user.id, parsed.output);
 
     if (result === "valid") {
+      await logAuthEvent({ type: "login_succeeded", userId: user.id, email });
       const sessionId = await createSession(user.id, rememberMe);
       session.unset("pendingEmail");
       session.set("sessionId", sessionId);
@@ -127,6 +144,19 @@ export async function action({ request, url }: Route.ActionArgs) {
         headers: {
           "Set-Cookie": await commitSession(session, { maxAge: sessionCookieMaxAge(rememberMe) }),
         },
+      });
+    }
+
+    if (result === "invalid" || result === "expired" || result === "max_attempts") {
+      await logAuthEvent({
+        type:
+          result === "invalid"
+            ? "code_invalid"
+            : result === "expired"
+              ? "code_expired"
+              : "code_max_attempts",
+        userId: user.id,
+        email,
       });
     }
 

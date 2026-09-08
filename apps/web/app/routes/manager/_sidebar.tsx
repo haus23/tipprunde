@@ -8,6 +8,7 @@ import {
   LogOutIcon,
   type LucideIcon,
   PilcrowIcon,
+  ShieldAlertIcon,
   ShieldIcon,
   ShirtIcon,
   RocketIcon,
@@ -209,6 +210,28 @@ export function SidebarNav({ slug, isAdmin, collapsed, onNavigate }: SidebarNavP
           />
         </nav>
       </div>
+
+      {isAdmin && (
+        <div className="p-2 pt-0">
+          <p
+            className={cx(
+              "text-muted overflow-hidden px-2 py-1 text-xs font-medium tracking-wider whitespace-nowrap uppercase transition-opacity duration-200",
+              collapsed && "opacity-0",
+            )}
+          >
+            Administration
+          </p>
+          <nav className="mt-1 flex flex-col gap-1">
+            <NavItem
+              to="/manager/sicherheit"
+              icon={ShieldAlertIcon}
+              label="Sicherheit"
+              collapsed={collapsed}
+              onNavigate={onNavigate}
+            />
+          </nav>
+        </div>
+      )}
 
       <div className="border-subtle border-t p-2">
         <Form method="post" action="/logout">

@@ -60,6 +60,8 @@ export default [
       index("routes/manager/index.tsx"),
       route("ligen", "routes/manager/ligen.tsx"),
       route("regelwerke", "routes/manager/regelwerke.tsx"),
+      // Admin-only, see sicherheit.tsx's own gate.
+      route("sicherheit", "routes/manager/sicherheit.tsx"),
       route("spieler", "routes/manager/spieler.tsx"),
       route("start", "routes/manager/start.tsx"),
       route("teams", "routes/manager/teams.tsx"),

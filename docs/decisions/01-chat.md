@@ -120,6 +120,46 @@ plain long-lived WebSocket without Durable Objects. That shapes the phases:
   app). Rejected as the default because it is CF-proprietary and prod is heading
   to Railway — only revisit if that changes.
 
+### Consequence (noted 2026-09-08): the dev server has to move too
+
+WebSockets need the raw `http.Server` to handle `upgrade`. In production
+`server/app.ts` already owns it. **In development nothing does** — `pnpm dev`
+runs `react-router dev`, which brings its own Vite server, and `server/app.ts`
+is never loaded. A chat cannot be developed locally with a socket that only
+exists in production, so the custom server has to serve dev as well before this
+work can start.
+
+That is the documented path
+([Running a Custom Server in Development](https://reactrouter.com/api/other-api/adapter#migrating-from-the-react-router-app-server)),
+and it is a restructure, not a flag:
+
+- `server/app.ts` stops importing the build by path (`../dist/server/index.js`,
+  which does not exist in dev) and imports `virtual:react-router/server-build`
+  instead. That makes it part of the Vite SSR build — an input in
+  `vite.config.ts` — rather than a file Node reads directly with type stripping.
+- A thin outer `server.js`, plain JS and outside the build, boots Vite in
+  middleware mode for dev and the built server for production. `--conditions
+development` goes in the dev script.
+- In dev the build must be loaded **per request**, or HMR never takes effect.
+  `createRequestHandler` accepts a function for exactly this and re-derives on
+  each call, so the `handleError` injection (see
+  [07-observability.md](./07-observability.md)) moves inside that function
+  unchanged.
+
+**No Express.** The doc's example uses it, but Vite's middleware is
+Connect-style `(req, res, next)` — the same shape as the `compression` and
+`sirv` handlers `server/app.ts` already chains by hand.
+
+Two things this fixes in passing, both from the observability work:
+
+- `handleError` and `trustProxy` would finally run in development. (Not that
+  `trustProxy` becomes testable — nothing sends `X-Forwarded-*` locally either
+  way.)
+- The report should regain the **user**. It cannot carry one today because
+  `app/lib/context.ts` exists twice — once inside the SSR bundle, once in the
+  raw-Node `server/app.ts` — so `context.get(userContext)` never matches. One
+  Rollup graph means one instance. Expected, not yet measured.
+
 ## Message list UI
 
 TanStack Virtual shipped first-class chat support

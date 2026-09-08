@@ -122,6 +122,7 @@ Shared docs are in the root `docs/` folder.
 - `04-app-merge.md` — How this app absorbed the separate web app (why things look the way they do)
 - `05-championship-scope.md` — Championship as a URL dimension, shared route files for Archiv + current season
 - `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, hand-rolled SVG
+- `07-observability.md` — Auth-event log, error and alert mails; why no Sentry, no IPs, and no rate limit yet
 
 ## Environment variables
 
@@ -131,6 +132,9 @@ mail and code settings, not just the DB:
 `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `SESSION_SECRET`, `APP_SECRET`,
 `RESEND_API_KEY`, `FROM_EMAIL`, `TOTP_EXPIRES_IN`, `TOTP_MAX_ATTEMPTS`,
 `SESSION_DURATION_DEFAULT`, `SESSION_DURATION_REMEMBER`
+
+`ALERT_EMAIL` is production-only — it is read by `server/app.ts`, which
+`react-router dev` never runs. Errors in development go to the console.
 
 In production they are set per Railway environment. The first five are
 secrets and never belong in the repo. See `docs/deployment.md`.

@@ -1,5 +1,25 @@
 # Changelog
 
+## v1.6.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.5.0...v1.6.0)
+
+### 🚀 Enhancements
+
+- **db,web:** Record what happens around signing in ([56cdf08](https://github.com/haus23/tipprunde/commit/56cdf08))
+- **web:** Mail unhandled server errors ([cc37638](https://github.com/haus23/tipprunde/commit/cc37638))
+- **web:** Alert when failed sign-ins pile up ([fd0dab6](https://github.com/haus23/tipprunde/commit/fd0dab6))
+- **web:** Add the security overview ([85d2904](https://github.com/haus23/tipprunde/commit/85d2904))
+
+### 💅 Refactors
+
+- **web:** Name the colouring list for what it means ([3cae2ad](https://github.com/haus23/tipprunde/commit/3cae2ad))
+
+### 📖 Documentation
+
+- Record the observability decisions ([78a7e86](https://github.com/haus23/tipprunde/commit/78a7e86))
+- Note that the chat moves the dev server too ([21a95bd](https://github.com/haus23/tipprunde/commit/21a95bd))
+
 ## v1.5.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.4.2...v1.5.0)

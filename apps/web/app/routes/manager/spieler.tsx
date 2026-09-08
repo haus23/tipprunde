@@ -7,6 +7,8 @@ import { useState } from "react";
 import * as v from "valibot";
 
 import { SpielerDialog } from "#/components/spieler-dialog.tsx";
+import { logAuthEvent } from "#/lib/auth-events.server.ts";
+import { userContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { getSessionFromRequest, revokeUserSessions } from "#/lib/session.server.ts";
 
@@ -44,7 +46,7 @@ export async function loader() {
   return { users: data };
 }
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
   const intent = v.parse(v.picklist(["create", "update"]), formData.get("intent"));
 
@@ -99,6 +101,15 @@ export async function action({ request }: Route.ActionArgs) {
     if (existing.email !== values.email) {
       const session = await getSessionFromRequest(request);
       await revokeUserSessions(id, session.get("sessionId"));
+      await logAuthEvent({
+        type: "sessions_revoked",
+        userId: id,
+        // The new address, so the log reads as "this account is reachable here
+        // now". The old one is not kept — it is exactly the kind of trace the
+        // change was meant to end.
+        email: values.email,
+        detail: `Adresse geändert durch ${context.get(userContext)?.name ?? "unbekannt"}`,
+      });
     }
 
     return { user };
