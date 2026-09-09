@@ -58,6 +58,9 @@ export default [
     // bring their own; the endpoint has no UI to preserve.
     layout("routes/manager/_error-boundary.tsx", [
       index("routes/manager/index.tsx"),
+      // Admin-only, see import.tsx's own gate. Championship-agnostic — the
+      // page itself picks which open championship an import lands in.
+      route("import", "routes/manager/import.tsx"),
       route("ligen", "routes/manager/ligen.tsx"),
       route("regelwerke", "routes/manager/regelwerke.tsx"),
       // Admin-only, see sicherheit.tsx's own gate.
@@ -72,9 +75,6 @@ export default [
       route("ergebnisse/:nr?", "routes/manager/championship/ergebnisse.tsx"),
       route("spiele/:nr?", "routes/manager/championship/spiele.tsx"),
       route("tipps/:playerSlug?", "routes/manager/championship/tipps.tsx"),
-      // Temporary: the legacy-import tool, removed once the last historical
-      // tournament is imported. Admin-only, see import.tsx's own gate.
-      route("import", "routes/manager/championship/import.tsx"),
       route("zusatzfragen", "routes/manager/championship/zusatzfragen.tsx"),
     ]),
     route("shell", "routes/_resources/manager-shell.tsx"),
