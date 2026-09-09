@@ -9,7 +9,11 @@ type SessionsFormProps = {
 };
 
 function SessionsForm({ userId, name, onClose }: SessionsFormProps) {
-  const fetcher = useFetcher<{ revoked?: boolean; errors?: { revoke: string[] } }>();
+  const fetcher = useFetcher<{
+    revoked?: boolean;
+    count?: number;
+    errors?: { revoke: string[] };
+  }>();
   const isPending = fetcher.state !== "idle";
   const isDone = fetcher.state === "idle" && fetcher.data !== undefined;
   const error = fetcher.data?.errors?.revoke?.[0];
@@ -18,10 +22,20 @@ function SessionsForm({ userId, name, onClose }: SessionsFormProps) {
   // else on this page visibly changes, so closing silently would leave no
   // sign that anything happened at all.
   if (isDone && !error) {
+    const count = fetcher.data?.count ?? 0;
     return (
       <div className="flex flex-col gap-5">
         <p className="text-sm">
-          Alle Sitzungen von <span className="font-medium">{name}</span> wurden beendet.
+          {count > 0 ? (
+            <>
+              Alle Sitzungen von <span className="font-medium">{name}</span> wurden beendet.
+            </>
+          ) : (
+            <>
+              <span className="font-medium">{name}</span> hatte keine aktive Sitzung — nichts zu
+              tun.
+            </>
+          )}
         </p>
         <div className="flex justify-end">
           <Button onPress={onClose}>Schließen</Button>

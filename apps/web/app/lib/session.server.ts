@@ -115,15 +115,21 @@ export function sessionCookieMaxAge(rememberMe: boolean): number | undefined {
  * `keepSessionId` spares the caller's own session, so an admin correcting their
  * own address does not log themselves out mid-edit. Editing someone else, that
  * id belongs to a different user and the clause simply never matches.
+ *
+ * Returns how many rows it removed, so a caller acting on demand (the manual
+ * "Sitzungen beenden" button, not the address-change side effect) can tell a
+ * real revocation from a click that had nothing to do.
  */
-export async function revokeUserSessions(userId: number, keepSessionId?: string) {
-  await db
+export async function revokeUserSessions(userId: number, keepSessionId?: string): Promise<number> {
+  const deleted = await db
     .delete(sessions)
     .where(
       keepSessionId
         ? and(eq(sessions.userId, userId), ne(sessions.id, keepSessionId))
         : eq(sessions.userId, userId),
-    );
+    )
+    .returning({ id: sessions.id });
+  return deleted.length;
 }
 
 export async function deleteSession(sessionId: string) {

@@ -70,14 +70,20 @@ export async function action({ request, context }: Route.ActionArgs) {
     if (!target) return { errors: { revoke: ["Spieler nicht gefunden."] } };
 
     const session = await getSessionFromRequest(request);
-    await revokeUserSessions(id, session.get("sessionId"));
-    await logAuthEvent({
-      type: "sessions_revoked",
-      userId: id,
-      email: target.email,
-      detail: `Manuell beendet durch ${context.get(userContext)?.name ?? "unbekannt"}`,
-    });
-    return { revoked: true };
+    const count = await revokeUserSessions(id, session.get("sessionId"));
+
+    // Nothing to log when nothing happened — an admin action that changed
+    // zero rows is not worth the same audit weight as one that actually
+    // ended a session.
+    if (count > 0) {
+      await logAuthEvent({
+        type: "sessions_revoked",
+        userId: id,
+        email: target.email,
+        detail: `Manuell beendet durch ${context.get(userContext)?.name ?? "unbekannt"}`,
+      });
+    }
+    return { revoked: true, count };
   }
 
   const result = v.safeParse(spielerSchema, Object.fromEntries(formData));
@@ -220,7 +226,10 @@ export default function Spieler({ loaderData }: Route.ComponentProps) {
                 </td>
                 <td className="px-3 py-3 text-right">
                   <div className="flex justify-end gap-1">
-                    {canRevokeSessions && (
+                    {/* Without an address there is no login path at all, and
+                        clearing one already revokes whatever existed — so no
+                        email means provably no session to end. */}
+                    {canRevokeSessions && user.email && (
                       <Button
                         intent="ghost"
                         size="icon"
