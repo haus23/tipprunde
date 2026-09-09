@@ -76,6 +76,7 @@ is. Superseded, never quietly rewritten:**
 - `05-championship-scope.md` — Championship as a URL dimension; Archiv and current season share route files
 - `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, and the measurement that picked that form
 - `07-observability.md` — Auth-event log, error and alert mails; why no Sentry, no IPs, and no rate limit yet
+- `08-import.md` — Import JSON schema, why a textarea over file upload, scaling options if payloads outgrow it
 
 ## Skills
 

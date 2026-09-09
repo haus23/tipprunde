@@ -110,7 +110,7 @@ export async function action({ request, url }: Route.ActionArgs) {
         type: "request_failed",
         userId: user.id,
         email,
-        detail: `Code konnte nicht erzeugt werden: ${err}`,
+        detail: `Code konnte nicht erzeugt werden: ${err instanceof Error ? err.message : String(err)}`,
       });
       return fail(
         { error: "Anmeldung gerade nicht möglich. Bitte versuche es später erneut.", email },
@@ -126,7 +126,7 @@ export async function action({ request, url }: Route.ActionArgs) {
         type: "request_failed",
         userId: user.id,
         email,
-        detail: `Code konnte nicht gesendet werden: ${err}`,
+        detail: `Code konnte nicht gesendet werden: ${err instanceof Error ? err.message : String(err)}`,
       });
       return fail(
         { error: "Code konnte nicht gesendet werden. Bitte versuche es erneut.", email },

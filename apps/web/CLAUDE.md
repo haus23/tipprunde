@@ -124,6 +124,7 @@ Shared docs are in the root `docs/` folder.
 - `05-championship-scope.md` — Championship as a URL dimension, shared route files for Archiv + current season
 - `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, hand-rolled SVG
 - `07-observability.md` — Auth-event log, error and alert mails; why no Sentry, no IPs, and no rate limit yet
+- `08-import.md` — Import JSON schema, why a textarea over file upload, scaling options if payloads outgrow it
 
 ## Environment variables
 
