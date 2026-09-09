@@ -6,6 +6,7 @@ import { useState } from "react";
 import * as v from "valibot";
 
 import { db } from "#/lib/db.server.ts";
+import { sortGerman } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/regelwerke";
 import { RegelwerkDialog } from "./_regelwerk-dialog.tsx";
@@ -25,8 +26,8 @@ const rulesetSchema = createInsertSchema(rulesets, {
 });
 
 export async function loader() {
-  const data = await db.query.rulesets.findMany({ orderBy: { name: "asc" } });
-  return { rulesets: data };
+  const data = await db.query.rulesets.findMany();
+  return { rulesets: sortGerman(data, (r) => r.name) };
 }
 
 export async function action({ request }: Route.ActionArgs) {

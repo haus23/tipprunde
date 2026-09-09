@@ -11,6 +11,7 @@ import { logAuthEvent } from "#/lib/auth-events.server.ts";
 import { userContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { getSessionFromRequest, revokeUserSessions } from "#/lib/session.server.ts";
+import { sortGerman } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/spieler";
 
@@ -42,8 +43,8 @@ const spielerSchema = createInsertSchema(users, {
 });
 
 export async function loader() {
-  const data = await db.query.users.findMany({ orderBy: { name: "asc" } });
-  return { users: data };
+  const data = await db.query.users.findMany();
+  return { users: sortGerman(data, (u) => u.name) };
 }
 
 export async function action({ request, context }: Route.ActionArgs) {

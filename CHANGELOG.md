@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.6.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.6.1...v1.6.2)
+
+### 🩹 Fixes
+
+- **web:** Sort German names the way a dictionary would ([abb212b](https://github.com/haus23/tipprunde/commit/abb212b))
+
 ## v1.6.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.6.0...v1.6.1)

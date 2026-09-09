@@ -40,6 +40,25 @@ export function formatAverage(value: number): string {
   return value.toFixed(2).replace(".", ",");
 }
 
+/**
+ * Compares German text the way a dictionary would, not by UTF-16 code point.
+ * SQLite's `ORDER BY` sorts by code point, which puts every umlaut in the
+ * wrong place — "Ö" is U+00D6, past "Z" at U+005A, so "Österreich" sorts
+ * after "Zypern" instead of near "Osterhase". `Intl.Collator` with the
+ * German locale fixes ordering for umlauts, `ß`, and case at once.
+ */
+const germanCollator = new Intl.Collator("de-DE");
+
+/**
+ * Sorts a fetched list by a German-language field. Sorted in JS, after the
+ * query, rather than in SQL: these are master-data lists (teams, players,
+ * rulesets — a few hundred rows at most), so the cost is nil and correct
+ * German collation only exists in JS here, not in SQLite.
+ */
+export function sortGerman<T>(items: T[], key: (item: T) => string): T[] {
+  return items.toSorted((a, b) => germanCollator.compare(key(a), key(b)));
+}
+
 export function slugify(value: string): string {
   return value
     .toLowerCase()

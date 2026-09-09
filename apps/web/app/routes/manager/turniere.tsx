@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import * as v from "valibot";
 
 import { db } from "#/lib/db.server.ts";
+import { sortGerman } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/turniere";
 import { TurnierDialog } from "./_turnier-dialog.tsx";
@@ -36,12 +37,12 @@ export async function loader() {
       orderBy: { nr: "desc" },
       with: { ruleset: { columns: { name: true } } },
     }),
-    db.query.rulesets.findMany({ orderBy: { name: "asc" } }),
+    db.query.rulesets.findMany(),
   ]);
 
   return {
     championships: data,
-    rulesets: rulesetList,
+    rulesets: sortGerman(rulesetList, (r) => r.name),
     nextNr: (data[0]?.nr ?? 0) + 1,
   };
 }
