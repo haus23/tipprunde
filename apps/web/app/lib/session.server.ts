@@ -1,5 +1,5 @@
 import { sessions } from "@tipprunde/db/schema";
-import { and, eq, ne } from "drizzle-orm";
+import { and, eq, lt, ne } from "drizzle-orm";
 import { createCookieSessionStorage } from "react-router";
 
 import type { User } from "./context";
@@ -7,6 +7,10 @@ import { db } from "./db.server";
 
 const SESSION_DURATION_DEFAULT = Number(process.env["SESSION_DURATION_DEFAULT"]);
 const SESSION_DURATION_REMEMBER = Number(process.env["SESSION_DURATION_REMEMBER"]);
+
+const PRUNE_INTERVAL = 24 * 60 * 60 * 1000;
+/** In memory, so it resets on every deploy — one extra prune after a release. */
+let lastPrune = 0;
 
 /**
  * Only ids travel in the cookie; everything else stays in the DB.
@@ -72,7 +76,28 @@ export async function createSession(userId: number, rememberMe: boolean): Promis
   const duration = rememberMe ? SESSION_DURATION_REMEMBER : SESSION_DURATION_DEFAULT;
   const expiresAt = new Date(Date.now() + duration * 1000).toISOString();
   await db.insert(sessions).values({ id, userId, rememberMe, expiresAt });
+
+  // Piggybacks on login rather than every request: the table only grows when
+  // someone signs in, so that is exactly when a sweep of the dead rows is
+  // worth considering. There is no judgment call here — expired means
+  // expired, always safe to delete — so this needs no admin action to trigger
+  // it, unlike revokeUserSessions.
+  await pruneExpiredSessions();
+
   return id;
+}
+
+async function pruneExpiredSessions(): Promise<void> {
+  const now = Date.now();
+  if (now - lastPrune < PRUNE_INTERVAL) return;
+  lastPrune = now;
+
+  try {
+    await db.delete(sessions).where(lt(sessions.expiresAt, new Date(now).toISOString()));
+  } catch (err) {
+    // A failed sweep must not break the login it rode in on.
+    console.error("[session] prune failed:", err);
+  }
 }
 
 /** Cookie lifetime mirrors the DB session's — a session cookie unless remembered. */
