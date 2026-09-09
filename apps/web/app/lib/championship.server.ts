@@ -24,6 +24,19 @@ export async function getChampionships() {
 }
 
 /**
+ * Championships still open — not yet marked completed. The import tool's
+ * picker: newest first, so the one most likely being worked on right now
+ * defaults to selected.
+ */
+export async function getOpenChampionships() {
+  return db.query.championships.findMany({
+    where: { completed: false },
+    orderBy: { nr: "desc" },
+    columns: { slug: true, name: true },
+  });
+}
+
+/**
  * Every publicly visible championship, for the season switcher — same
  * `published: true` rule as `getPublishedChampionship`. `completed` plays no
  * part: it means "finished", not "hidden". See

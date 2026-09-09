@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.7.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.6.2...v1.7.0)
+
+### 🚀 Enhancements
+
+- **web:** Make the import tool championship-agnostic ([30bb839](https://github.com/haus23/tipprunde/commit/30bb839))
+
 ## v1.6.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.6.1...v1.6.2)

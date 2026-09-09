@@ -13,19 +13,32 @@ remembered.
 
 ## A · Manager navigation and Administration
 
-One branch. All of it lands in `routes/manager/_sidebar.tsx` and the question
-"what belongs under Administration", so splitting it means editing that file
-three times.
+### Move the Legacy import into Administration — done
 
-### Move the Legacy import into Administration
+Was championship-scoped (`/manager/:slug/import`) purely because it predated
+the `Administration` nav group; nothing about the tool itself needed a
+championship in the URL. Rather than guard the nav item for the missing
+`slug`, the route became championship-agnostic: `/manager/import` now carries
+its own picker — a `Select` of open (not completed) championships, newest
+first and preselected, built with the same RAC pattern as the ruleset picker
+in `_turnier-dialog.tsx`. `getOpenChampionships()` in `championship.server.ts`
+backs it.
 
-The `Administration` group exists since v1.6.0 and holds `Sicherheit`. The
-import is an admin tool too and sits in the championship group only because it
-predates the group.
+This also fits where the tool is headed. The JSON shape it imports
+(`import.server.ts`) still mirrors the legacy MySQL dump, but the dump is not
+the only source queued up — the running runde.tips prod DB and the
+organiser's own spreadsheet are both later imports (see
+`project_legacy_import.md`, outside the repo). Every source has to become the
+same JSON; only the destination championship was ever tied to a URL, and now
+it is a field instead. The page and nav label are "Import", not
+"Legacy-Import".
 
-**Wrinkle:** the route is championship-scoped (`/manager/:slug/import`) while
-the Administration block renders regardless of a championship. The nav item
-needs a `slug` guard the other entries in that block do not.
+Found and fixed in passing: RAC's `FieldError` renders nothing unless the
+field it sits in is `isInvalid` — passing it error text as children is not
+enough on its own. The original page had exactly this bug on the JSON field
+(a single `JSON.parse` failure showed nothing; only two or more validation
+issues fell back to the bullet list below). Both fields now set
+`isInvalid={!!errors?.field?.length}` explicitly.
 
 ### "Alle Sitzungen beenden" for one player
 
@@ -185,10 +198,9 @@ Deferred earlier with reasons that still hold.
 
 ## Suggested order
 
-1. **C (login)** — a real bug that strands a user in a form the server has
-   already forgotten. Small, and on the one flow everybody touches.
-2. **B (sorting)** — a daily irritation, mechanical, no decisions left.
-3. **A (navigation)** — the import move is trivial; the session action needs a
-   route out of the edit dialog first.
+1. **C (login)** — done.
+2. **B (sorting)** — done.
+3. **A (navigation)** — import move done; the session action still needs a
+   route out of the edit dialog.
 4. **D (Archiv)** — the discussion, then the heading.
 5. **E** — as time and mood allow; the chat last, and knowingly.

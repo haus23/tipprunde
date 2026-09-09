@@ -140,15 +140,6 @@ export function SidebarNav({ slug, isAdmin, collapsed, onNavigate }: SidebarNavP
               collapsed={collapsed}
               onNavigate={onNavigate}
             />
-            {isAdmin && (
-              <NavItem
-                to={`/manager/${slug}/import`}
-                icon={UploadIcon}
-                label="Legacy-Import"
-                collapsed={collapsed}
-                onNavigate={onNavigate}
-              />
-            )}
           </>
         ) : (
           <NavItem
@@ -222,6 +213,13 @@ export function SidebarNav({ slug, isAdmin, collapsed, onNavigate }: SidebarNavP
             Administration
           </p>
           <nav className="mt-1 flex flex-col gap-1">
+            <NavItem
+              to="/manager/import"
+              icon={UploadIcon}
+              label="Import"
+              collapsed={collapsed}
+              onNavigate={onNavigate}
+            />
             <NavItem
               to="/manager/sicherheit"
               icon={ShieldAlertIcon}
