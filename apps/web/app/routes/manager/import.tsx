@@ -50,13 +50,17 @@ export async function action({ request, context }: Route.ActionArgs) {
   }
   const formData = await request.formData();
 
-  const slug = String(formData.get("championshipSlug") ?? "");
+  // `nullish`, not a plain `?? ""` cast: FormData.get() can hand back a File,
+  // and stringifying that silently would produce "[object File]" instead of
+  // failing. `v.string()` rejects anything but a real string; only the
+  // missing-field case (null) falls back to "".
+  const slug = v.parse(v.nullish(v.string(), ""), formData.get("championshipSlug"));
   const championship = await getChampionshipBySlug(slug);
   if (!championship) {
     return { errors: { championshipSlug: ["Bitte ein Turnier wählen."] } };
   }
 
-  const raw = String(formData.get("json") ?? "");
+  const raw = v.parse(v.nullish(v.string(), ""), formData.get("json"));
   let parsed: unknown;
   try {
     parsed = JSON.parse(raw);
