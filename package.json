@@ -5,12 +5,30 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "check": "vp check",
-    "prepare": "[ -z \"$CI\" ] && vp config || true"
+    "check": "oxfmt --check . && oxlint .",
+    "format": "oxfmt .",
+    "lint": "oxlint .",
+    "prepare": "[ -z \"$CI\" ] && simple-git-hooks || true"
   },
   "devDependencies": {
-    "typescript": "catalog:",
-    "vite-plus": "0.3.0"
+    "lint-staged": "^17.5.0",
+    "oxfmt": "^0.67.0",
+    "oxlint": "^1.82.0",
+    "oxlint-tsgolint": "^7.0.2001",
+    "simple-git-hooks": "^2.14.0",
+    "typescript": "catalog:"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mjs,cjs}": [
+      "oxlint --fix",
+      "oxfmt"
+    ],
+    "*.{json,md,css}": [
+      "oxfmt"
+    ]
   },
   "packageManager": "pnpm@12.2.1"
 }
