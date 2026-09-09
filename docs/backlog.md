@@ -40,27 +40,45 @@ enough on its own. The original page had exactly this bug on the JSON field
 issues fell back to the bullet list below). Both fields now set
 `isInvalid={!!errors?.field?.length}` explicitly.
 
-### "Alle Sitzungen beenden" for one player
+### "Alle Sitzungen beenden" for one player — done
 
 Deferred since v1.5.0, when changing an address started revoking sessions
-automatically. `revokeUserSessions()` in `lib/session.server.ts` already does
-the work and takes an optional session to spare.
+automatically. `revokeUserSessions()` already did the work and already took
+an optional session to spare — only the trigger and the path to it were
+missing.
 
-**Settled:** it ends _one player's_ sessions, and it belongs on the Spieler
-page — same place as the address that would prompt it.
+**Admin-only, and address untouched.** A second icon button beside the pencil
+on `/manager/spieler`, gated in the loader (`canRevokeSessions`) and re-gated
+in the action itself, the same way `sicherheit.tsx`/`import.tsx` gate their
+own routes — a plain manager can still edit players, but not end their
+sessions. Behind a confirmation dialog (`_sessions-dialog.tsx`, the
+`_runde-dialog.tsx` shape reused), because it cannot be undone and logs a real
+person out. Logged the same way an address change already is —
+`sessions_revoked` in `auth_events`, distinguished by its `detail` text
+("Manuell beendet durch …" vs "Adresse geändert durch …").
 
-**The real problem is the path to it.** Today every player action hides behind
-a two-step route: find the row, open the edit dialog, act. For "throw this
-account out now" that is both slow and unintuitive — it is not an edit, and it
-does not belong on a form whose Save button does something else. Wanted
-instead: reachable from the row, with its own confirmation dialog, because it
-cannot be undone and logs a real person out.
+Stayed off `/manager/sicherheit` as planned — that page still only reads.
 
-**Not on `/manager/sicherheit`.** That page is a log and should stay one —
-mixing "what happened" with "do something about it" makes a read-only page
-dangerous to click around in. What would earn its place there is the opposite
-direction: an event row linking _to_ the player, so the log leads to the action
-instead of containing it.
+### Stale sessions, across all users — done
+
+Came up while building the above, not originally on this list.
+
+Not "when it could happen" but "when doesn't it": every session has a fixed
+`expiresAt` set once at login and nothing ever renews it, so every session a
+user does not explicitly log out of eventually sits in the table dead. Logout
+is the only path that removes a row before its natural expiry, and most
+people just close the tab.
+
+No button. Unlike ending one player's sessions, there is no judgment call
+here — expired means expired, always safe to delete. A button would imply a
+reason not to.
+
+Piggybacks on `createSession()` — the exact `pruneAuthEvents()` shape from
+`auth-events.server.ts`, an in-memory `lastPrune` throttled to once a day, so
+a login is "the table just grew, worth considering a sweep" the same way an
+auth event write already is. No cron: this app has none on purpose (Railway,
+single process). At ~23 users the table never gets large enough to matter
+either way — this is tidiness, not a performance fix.
 
 ## B · Sorting German names
 
@@ -200,7 +218,6 @@ Deferred earlier with reasons that still hold.
 
 1. **C (login)** — done.
 2. **B (sorting)** — done.
-3. **A (navigation)** — import move done; the session action still needs a
-   route out of the edit dialog.
+3. **A (navigation)** — done.
 4. **D (Archiv)** — the discussion, then the heading.
 5. **E** — as time and mood allow; the chat last, and knowingly.

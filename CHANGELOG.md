@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.8.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.7.0...v1.8.0)
+
+### 🚀 Enhancements
+
+- **web:** Let an admin end a player's sessions, and sweep stale ones ([326269e](https://github.com/haus23/tipprunde/commit/326269e))
+
+### 🩹 Fixes
+
+- **web:** Hide the session button where it can't do anything, say so when it doesn't ([acfcfb0](https://github.com/haus23/tipprunde/commit/acfcfb0))
+
 ## v1.7.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.6.2...v1.7.0)

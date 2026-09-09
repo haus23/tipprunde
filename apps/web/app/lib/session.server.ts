@@ -1,5 +1,5 @@
 import { sessions } from "@tipprunde/db/schema";
-import { and, eq, ne } from "drizzle-orm";
+import { and, eq, lt, ne } from "drizzle-orm";
 import { createCookieSessionStorage } from "react-router";
 
 import type { User } from "./context";
@@ -7,6 +7,10 @@ import { db } from "./db.server";
 
 const SESSION_DURATION_DEFAULT = Number(process.env["SESSION_DURATION_DEFAULT"]);
 const SESSION_DURATION_REMEMBER = Number(process.env["SESSION_DURATION_REMEMBER"]);
+
+const PRUNE_INTERVAL = 24 * 60 * 60 * 1000;
+/** In memory, so it resets on every deploy — one extra prune after a release. */
+let lastPrune = 0;
 
 /**
  * Only ids travel in the cookie; everything else stays in the DB.
@@ -72,7 +76,28 @@ export async function createSession(userId: number, rememberMe: boolean): Promis
   const duration = rememberMe ? SESSION_DURATION_REMEMBER : SESSION_DURATION_DEFAULT;
   const expiresAt = new Date(Date.now() + duration * 1000).toISOString();
   await db.insert(sessions).values({ id, userId, rememberMe, expiresAt });
+
+  // Piggybacks on login rather than every request: the table only grows when
+  // someone signs in, so that is exactly when a sweep of the dead rows is
+  // worth considering. There is no judgment call here — expired means
+  // expired, always safe to delete — so this needs no admin action to trigger
+  // it, unlike revokeUserSessions.
+  await pruneExpiredSessions();
+
   return id;
+}
+
+async function pruneExpiredSessions(): Promise<void> {
+  const now = Date.now();
+  if (now - lastPrune < PRUNE_INTERVAL) return;
+  lastPrune = now;
+
+  try {
+    await db.delete(sessions).where(lt(sessions.expiresAt, new Date(now).toISOString()));
+  } catch (err) {
+    // A failed sweep must not break the login it rode in on.
+    console.error("[session] prune failed:", err);
+  }
 }
 
 /** Cookie lifetime mirrors the DB session's — a session cookie unless remembered. */
@@ -90,15 +115,21 @@ export function sessionCookieMaxAge(rememberMe: boolean): number | undefined {
  * `keepSessionId` spares the caller's own session, so an admin correcting their
  * own address does not log themselves out mid-edit. Editing someone else, that
  * id belongs to a different user and the clause simply never matches.
+ *
+ * Returns how many rows it removed, so a caller acting on demand (the manual
+ * "Sitzungen beenden" button, not the address-change side effect) can tell a
+ * real revocation from a click that had nothing to do.
  */
-export async function revokeUserSessions(userId: number, keepSessionId?: string) {
-  await db
+export async function revokeUserSessions(userId: number, keepSessionId?: string): Promise<number> {
+  const deleted = await db
     .delete(sessions)
     .where(
       keepSessionId
         ? and(eq(sessions.userId, userId), ne(sessions.id, keepSessionId))
         : eq(sessions.userId, userId),
-    );
+    )
+    .returning({ id: sessions.id });
+  return deleted.length;
 }
 
 export async function deleteSession(sessionId: string) {
