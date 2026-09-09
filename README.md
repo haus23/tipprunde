@@ -17,7 +17,7 @@ pnpm workspace, one app and shared packages:
 | `packages/ui`     | Shared React components                                            |
 
 **Stack:** React Router 8 (Framework Mode) · React Aria Components ·
-Tailwind CSS 4 · Drizzle ORM · Turso (libSQL) · Cloudflare Workers
+Tailwind CSS 4 · Drizzle ORM · Turso (libSQL) · Railway (custom Node server)
 
 ## Development
 
