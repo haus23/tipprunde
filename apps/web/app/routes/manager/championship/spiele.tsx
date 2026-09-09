@@ -25,7 +25,7 @@ import { TeamDialog } from "#/components/team-dialog.tsx";
 import { championshipContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { getRound, isLocked } from "#/lib/lock.server.ts";
-import { formatDate } from "#/lib/utils.ts";
+import { formatDate, sortGerman } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/spiele";
 import { RoundNavigator } from "./_round-navigator.tsx";
@@ -97,15 +97,11 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       },
       orderBy: { nr: "asc" },
     }),
-    db.query.teams.findMany({
-      // Sorted by shortName, not name — see MatchComboBox: teams display and
-      // filter by shortName here, matching how the manager types them and the
-      // teams master-data list (routes/manager/teams.tsx).
-      orderBy: { shortName: "asc" },
-    }),
-    db.query.leagues.findMany({
-      orderBy: { name: "asc" },
-    }),
+    // Sorted by shortName, not name — see MatchComboBox: teams display and
+    // filter by shortName here, matching how the manager types them and the
+    // teams master-data list (routes/manager/teams.tsx).
+    db.query.teams.findMany(),
+    db.query.leagues.findMany(),
     db
       .select({ date: matchesTable.date })
       .from(matchesTable)
@@ -121,8 +117,8 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     currentRoundId,
     matches: matchList as MatchRow[],
     lastMatchDate: lastMatchResult[0]?.date ?? "",
-    teams: teamList,
-    leagues: leagueList,
+    teams: sortGerman(teamList, (t) => t.shortName),
+    leagues: sortGerman(leagueList, (l) => l.name),
     isRoundCompleted,
     isChampionshipCompleted,
     slug: championship.slug,

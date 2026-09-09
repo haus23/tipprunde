@@ -25,6 +25,7 @@ import { championshipContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
+import { sortGerman } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/index";
 import { LockProvider, useLock } from "./_lock-provider.tsx";
@@ -57,7 +58,6 @@ export async function loader({ context }: Route.LoaderArgs) {
       orderBy: { id: "asc" },
     }),
     db.query.users.findMany({
-      orderBy: { name: "asc" },
       columns: { id: true, name: true, slug: true },
     }),
   ]);
@@ -70,7 +70,7 @@ export async function loader({ context }: Route.LoaderArgs) {
     roundRuleId: ruleset?.roundRuleId as RoundRuleId | undefined,
     roundList,
     playerUserIds: playerList.map((p) => p.userId),
-    allUsers,
+    allUsers: sortGerman(allUsers, (u) => u.name),
   };
 }
 

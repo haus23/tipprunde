@@ -7,6 +7,7 @@ import * as v from "valibot";
 
 import { LigaDialog } from "#/components/liga-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
+import { sortGerman } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/ligen";
 
@@ -21,8 +22,8 @@ const leagueSchema = createInsertSchema(leagues, {
 });
 
 export async function loader() {
-  const data = await db.query.leagues.findMany({ orderBy: { shortName: "asc" } });
-  return { leagues: data };
+  const data = await db.query.leagues.findMany();
+  return { leagues: sortGerman(data, (l) => l.shortName) };
 }
 
 export async function action({ request }: Route.ActionArgs) {

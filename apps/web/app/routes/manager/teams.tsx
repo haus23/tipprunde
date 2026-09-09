@@ -7,6 +7,7 @@ import * as v from "valibot";
 
 import { TeamDialog } from "#/components/team-dialog.tsx";
 import { db } from "#/lib/db.server.ts";
+import { sortGerman } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/teams";
 
@@ -21,8 +22,8 @@ const teamSchema = createInsertSchema(teams, {
 });
 
 export async function loader() {
-  const data = await db.query.teams.findMany({ orderBy: { shortName: "asc" } });
-  return { teams: data };
+  const data = await db.query.teams.findMany();
+  return { teams: sortGerman(data, (t) => t.shortName) };
 }
 
 export async function action({ request }: Route.ActionArgs) {
