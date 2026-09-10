@@ -13,10 +13,9 @@
   },
   "dependencies": {
     "@internationalized/date": "^3.12.4",
-    "clsx": "catalog:tailwind",
+    "cn": "catalog:tailwind",
     "cva": "1.0.0-beta.9",
-    "lucide-react": "catalog:icons",
-    "tailwind-merge": "catalog:tailwind"
+    "lucide-react": "catalog:icons"
   },
   "devDependencies": {
     "@tipprunde/theme": "workspace:*",
