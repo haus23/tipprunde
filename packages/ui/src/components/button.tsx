@@ -20,7 +20,14 @@ const buttonClasses = cva({
     size: {
       md: "px-4 py-2 text-sm",
       sm: "px-3 py-1.5 text-sm",
-      icon: "p-1.5",
+      // Visually still a 28px square (matches WCAG 2.5.8's 24px minimum with
+      // room to spare) — the padding/negative-margin pair only grows the
+      // *hit* area, toward Apple/Material's 44px target, without pushing
+      // neighbors around: -m-2 (-8px) cancels p-3.5 (+14px) back down to the
+      // original p-1.5 (6px) footprint. Where a neighbor sits closer than
+      // 16px away, cap the facing side locally (see color-scheme-toggle.tsx,
+      // spieler.tsx) rather than shrinking this for everyone.
+      icon: "-m-2 p-3.5",
     },
   },
   defaultVariants: {

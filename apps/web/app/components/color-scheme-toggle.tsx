@@ -42,7 +42,14 @@ export function ColorSchemeToggle() {
   }
 
   return (
-    <Button intent="ghost" size="icon" onPress={toggle}>
+    <Button
+      intent="ghost"
+      size="icon"
+      onPress={toggle}
+      // Only 4px from the user-area button on its right — cap that one side
+      // so the expanded hit areas meet instead of overlapping (see button.tsx).
+      className="-mr-0.5 pr-2"
+    >
       {/*
         Icon and label are CSS-driven on purpose: while "system" is stored the
         server cannot know the resolved scheme, so picking either in JS would

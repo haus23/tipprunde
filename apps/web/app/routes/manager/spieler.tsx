@@ -235,6 +235,9 @@ export default function Spieler({ loaderData }: Route.ComponentProps) {
                         size="icon"
                         onPress={() => setSessionsUser(user)}
                         aria-label={`Sitzungen von ${user.name} beenden`}
+                        // 4px from the edit button — cap the facing side so
+                        // the expanded hit areas meet, not overlap.
+                        className="-mr-0.5 pr-2"
                       >
                         <LogOutIcon className="size-4" />
                       </Button>
@@ -244,6 +247,7 @@ export default function Spieler({ loaderData }: Route.ComponentProps) {
                       size="icon"
                       onPress={() => setEditingUser(user)}
                       aria-label={`${user.name} bearbeiten`}
+                      className={canRevokeSessions && user.email ? "-ml-0.5 pl-2" : undefined}
                     >
                       <PencilIcon className="size-4" />
                     </Button>
