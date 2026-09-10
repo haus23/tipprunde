@@ -163,3 +163,19 @@
     block-size: auto;
   }
 }
+
+/* Global motion-reduction switch. Collapses every transition and animation
+   in the project to effectively nothing — the accordion above, the switch
+   knob, the press-scale on buttons, all of it — without hunting down each
+   site individually. `!important` is the point: this has to win over every
+   component-level `transition-*` utility without them opting in. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
