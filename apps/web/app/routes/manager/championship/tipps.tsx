@@ -327,6 +327,8 @@ type TipGridProps = {
   jokerRuleId: string | null;
   jokerCount: number;
   roundJokerCount: number;
+  currentRoundNr: number;
+  vorrundeJokerCount: number;
   hasExtraJoker: boolean;
   extraJokerCount: number;
 };
@@ -337,6 +339,8 @@ function TipGrid({
   jokerRuleId,
   jokerCount,
   roundJokerCount,
+  currentRoundNr,
+  vorrundeJokerCount,
   hasExtraJoker,
   extraJokerCount,
 }: TipGridProps) {
@@ -372,6 +376,10 @@ function TipGrid({
     )
       return roundJokerCount === 0 || currentlyChecked;
     if (jokerRuleId === "zwei-pro-turnier") return jokerCount < 2 || currentlyChecked;
+    if (jokerRuleId === "drei-joker-vorrunde-dann-einmal-pro-runde") {
+      if (currentRoundNr <= 3) return vorrundeJokerCount < 3 || currentlyChecked;
+      return roundJokerCount === 0 || currentlyChecked;
+    }
     return false;
   }
 
@@ -664,6 +672,12 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
   const jokerCount = allMatches.filter((m) => m.tips[0]?.joker).length;
   const roundJokerCount = currentMatches.filter((m) => m.tips[0]?.joker).length;
   const extraJokerCount = allMatches.filter((m) => m.tips[0]?.extraJoker).length;
+  // "drei-joker-vorrunde-dann-einmal-pro-runde" pools its budget across the
+  // first three rounds (the WM group stage) rather than per round.
+  const vorrundeRoundIds = new Set(rounds.filter((r) => r.nr <= 3).map((r) => r.id));
+  const vorrundeJokerCount = allMatches.filter(
+    (m) => vorrundeRoundIds.has(m.roundId) && m.tips[0]?.joker,
+  ).length;
 
   return (
     <div className="space-y-6">
@@ -728,6 +742,8 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
               jokerRuleId={jokerRuleId}
               jokerCount={jokerCount}
               roundJokerCount={roundJokerCount}
+              currentRoundNr={currentRound?.nr ?? 0}
+              vorrundeJokerCount={vorrundeJokerCount}
               hasExtraJoker={hasExtraJoker}
               extraJokerCount={extraJokerCount}
             />
