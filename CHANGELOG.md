@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.10.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.9.0...v1.10.0)
+
+### 🚀 Enhancements
+
+- **theme:** Respect prefers-reduced-motion globally ([a9ed07b](https://github.com/haus23/tipprunde/commit/a9ed07b))
+- **web:** Grow icon-button hit areas toward 44px ([6743530](https://github.com/haus23/tipprunde/commit/6743530))
+
 ## v1.9.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.8.0...v1.9.0)
