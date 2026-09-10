@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.9.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.8.0...v1.9.0)
+
+### 🚀 Enhancements
+
+- **web:** Add a joker rule for a pooled group-stage budget ([a9fe451](https://github.com/haus23/tipprunde/commit/a9fe451))
+
+### 📖 Documentation
+
+- Say Railway, not Cloudflare Workers, in the README ([12d4eda](https://github.com/haus23/tipprunde/commit/12d4eda))
+- Document the import route's JSON schema and its scaling options ([0744f24](https://github.com/haus23/tipprunde/commit/0744f24))
+
+### 🏡 Chore
+
+- **web:** Fix the four pnpm check warnings ([d68fcf3](https://github.com/haus23/tipprunde/commit/d68fcf3))
+- Bump lucide-react, react-aria-components, @types/node, @types/react-dom ([9058c15](https://github.com/haus23/tipprunde/commit/9058c15))
+- Replace vite-plus with oxfmt + oxlint directly ([59f1d6d](https://github.com/haus23/tipprunde/commit/59f1d6d))
+
 ## v1.8.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.7.0...v1.8.0)

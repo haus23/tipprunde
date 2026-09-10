@@ -37,6 +37,12 @@ export const JOKER_RULES = [
     description:
       "Auf einen Tipp kann ein Joker gesetzt werden. Die Punkte dieses Tipps werden verdoppelt. Pro Runde kann maximal ein Joker gesetzt werden. Zusätzlich können im gesamten Turnier bis zu zwei zusätzliche Joker für je 1 Euro gekauft werden. Auf einen Tipp können nicht beide Joker gesetzt werden.",
   },
+  {
+    value: "drei-joker-vorrunde-dann-einmal-pro-runde" as const,
+    label: "Drei Joker in der Vorrunde, danach einmal pro Runde",
+    description:
+      "Auf einen Tipp kann ein Joker gesetzt werden. Die Punkte dieses Tipps werden verdoppelt. In den ersten drei Runden stehen insgesamt maximal drei Joker zur Verfügung. Ab der vierten Runde kann pro Runde maximal ein Joker gesetzt werden.",
+  },
 ];
 
 export const MATCH_RULES = [
