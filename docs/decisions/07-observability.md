@@ -30,6 +30,12 @@ The prune runs from the write path rather than a schedule: the table only grows
 when somebody signs in, so the moment a row is added is exactly when a prune is
 worth considering. An in-memory timestamp keeps that to one `DELETE` a day.
 
+That is the project's answer to expiry in general, not a one-off here — there is
+no cron and no scheduled worker on purpose (Railway, single process). `sessions`
+sweeps its expired rows the same way, from `createSession()`, since every
+session row is also only ever added by a login. A new table that accumulates
+should piggyback on its own write path too rather than reintroduce a scheduler.
+
 Timestamps are written by the app as ISO strings, not left to the column's
 `CURRENT_TIMESTAMP` default. SQLite writes `2026-09-04 12:52:06`, which does
 not compare correctly against an ISO string — and every read of this table is a
