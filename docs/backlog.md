@@ -15,15 +15,15 @@ to be read in full.
 
 ---
 
-## Archiv overview
+## Archiv
 
-Two items, one file (`routes/public/archiv/index.tsx`), but only one of them is
-ready to build.
+One scale problem with three faces — the overview list, the switcher, and what
+the all-time table has to compensate for — plus two additions that only make
+sense once the first is decided. Mostly `routes/public/archiv/index.tsx` and
+`routes/public/championship/_switcher.tsx`.
 
-### Redundant heading — ready
-
-`<h2>Turniere</h2>` sits directly above a table whose first column header is
-`Turnier`. One of the two goes. Verified, one line.
+**Waits for the remaining legacy imports.** Fourteen championships make the
+shape decidable; four do not.
 
 ### More than ten championships — decide first
 
@@ -40,11 +40,70 @@ discussing:
 - `/archiv/:slug` already works as a destination, so the overview may not need
   to show much per row at all.
 
-Do this one before the heading fix if both land together — otherwise the heading
-gets decided twice.
+Everything else in this section follows from how this is answered.
 
-**Waits for the remaining legacy imports.** Fourteen championships make the
-shape decidable; four do not.
+### The switcher drops "Alle Turniere" — verified, and worse than it looks
+
+`ChampionshipSwitcher` lists every published championship and pins **Alle
+Turniere** underneath as the last `MenuItem`. Both ways to reach it fail as the
+list grows, and they fail in opposite directions:
+
+- **Without a query** it sits below all of them — nine entries today, roughly
+  forty-five once the history is in, so it scrolls out of reach.
+- **With a query** it disappears entirely. It is a `MenuItem` inside the same
+  `Autocomplete`, so the filter applies to it too. Verified in the browser:
+  typing `rück` leaves four championships and no **Alle Turniere** at all.
+
+That matters more than a bit of scrolling, because the component's own docblock
+records that this is the only way in and out of the Archiv — there is
+deliberately no header nav entry. Losing the item means losing the entrance.
+
+Two directions, neither decided: keep it inside the menu but exempt from the
+filter, or lift it out of the filtered collection into a fixed footer of the
+popover, next to the search field that is already pinned outside the scroll
+area.
+
+### Wins column in the all-time table — depends on the first item
+
+If the overview stops showing every championship, the all-time table is where a
+reader would look for "who actually won things", and today it only shows rank,
+name, points and games played.
+
+The data is one aggregate away — `getArchivChampionshipList()` already reads
+`players` at `rank: 1`. Two details to get right, both of which the existing
+code already knows about:
+
+- **Count only completed championships.** `rank` is live-updated all season, so
+  the running championship would contribute a false win.
+  `getEwigeTabelle()` deliberately does the opposite for points — provisional
+  totals count. The two aggregates would therefore disagree on which
+  championships they span, on purpose, and that is worth a comment at the site.
+- **Shared first places count for everyone who shares them** — `groupWinners()`
+  exists precisely because several players can hold `rank: 1`.
+
+### Per-player results view — new
+
+Clicking a player in the all-time table opens their record: one row per
+championship with placing and points, a player select on top. Today the table
+links championships but not players.
+
+- **The select-on-top shape already exists twice**, at `/tipps/:playerSlug?` and
+  `/verlauf/:playerSlug?`. Follow it rather than invent a third. Note those two
+  are championship-scoped and therefore mounted twice
+  (see [05-championship-scope.md](./decisions/05-championship-scope.md)); this
+  one is cross-championship like `/archiv` itself, so it mounts once.
+- **The URL needs a decision.** `archiv/:slug` already owns that segment. A
+  static sibling such as `archiv/spieler/:playerSlug?` does win over the dynamic
+  route in React Router's ranking, but it permanently reserves `spieler` as a
+  championship slug. A separate top-level path avoids that.
+
+### Redundant heading — ready
+
+`<h2>Turniere</h2>` sits directly above a table whose first column header is
+`Turnier`. One of the two goes. Verified, one line.
+
+Do this last, or at least after the shape question — otherwise the heading gets
+decided twice.
 
 ## Import payload cleanup — noticed in passing, not urgent
 
@@ -94,7 +153,8 @@ goes away.
 
 1. **Legacy imports** — running, championship by championship. Tracked outside
    the repo, not here.
-2. **Archiv** — the discussion, then the heading. After the imports.
+2. **Archiv** — the shape question first; the switcher, the wins column, the
+   per-player view and the heading all read off that answer. After the imports.
 3. **Chat** — last of the features, and knowingly.
 4. **Apex move** — when the history is in.
 
