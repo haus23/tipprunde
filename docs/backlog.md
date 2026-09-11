@@ -201,16 +201,42 @@ heading gets decided twice.
 
 Deferred earlier with reasons that still hold.
 
-- **Global `prefers-reduced-motion`** — from the responsive-manager branch.
-- **The 13 remaining 28px icon buttons** — same branch; below the 44px touch
-  target, deliberately postponed rather than fixed piecemeal.
-- **Next legacy import** (championship 8) — the dump and the method are proven;
-  this is data entry, not code.
+- **`prefers-reduced-motion` and the icon-button hit areas — done** (v1.10.0,
+  PR #26). One global block in `theme.css`; the 28px buttons stayed visually
+  the same size but grew their hit area toward 44px, capped locally at the
+  two spots closer than 16px to a neighbor.
+- **Legacy imports** — ongoing, championship by championship; not tracked
+  here, see `project_legacy_import.md` (outside the repo).
 - **Chat** — and, unavoidably before it, moving the dev server onto
   `server/app.ts`. See [decisions/01-chat.md](./decisions/01-chat.md); the
   reasoning is there in full and is not repeated here.
 - **Apex move as go-live** — once the history is complete, `runde.tips` leaves
   the legacy stack and `next.` goes away.
+
+## F · Import payload cleanup — noticed in passing, not urgent
+
+Two fields go into every `import.json` unconditionally null, verified against
+`import.server.ts` while building the Hinrunde 2006/07 payload:
+
+- **`tips[].points`** — genuinely dead. Grep across `import.server.ts` turns
+  up no read of it anywhere; points are always recomputed via
+  `calcTipPoints()`, never trusted from the JSON (see the domain principle in
+  `project_legacy_import.md`). Required by `tipSchema` (`v.nullable`, not
+  `v.optional`) even though the value never matters. Could be dropped from
+  the schema entirely — a pure simplification, no behavior change.
+- **`matches[].lowestSumBonus`** — not dead, this one really is written
+  straight into the DB from the payload. Always `null` by our own convention
+  (the "niedrigste Spielsumme verdoppelt" doubling only ever gets applied via
+  the round-completion toggle in the manager, never at import time). Could
+  become `v.optional()` with a `null` default, so the JSON can omit it
+  instead of spelling it out on every match.
+
+Measured on the Hinrunde 2006/07 payload (61 matches, 1159 tips): stripping
+both fields would cut the compact JSON from 120 KB to 103 KB — about 15%.
+Worth doing if a later, bigger championship pushes payload size toward the
+territory `08-import.md` discusses scaling alternatives for; cheaper than any
+of those alternatives, so it's the first lever to pull, not something to do
+speculatively now.
 
 ---
 
@@ -219,5 +245,8 @@ Deferred earlier with reasons that still hold.
 1. **C (login)** — done.
 2. **B (sorting)** — done.
 3. **A (navigation)** — done.
-4. **D (Archiv)** — the discussion, then the heading.
-5. **E** — as time and mood allow; the chat last, and knowingly.
+4. **E (motion + hit areas)** — done.
+5. **D (Archiv)** — the discussion, then the heading; after the remaining
+   legacy imports land, per the user's own ordering.
+6. **F** — only if payload size ever actually becomes a problem.
+7. **Chat** — last, and knowingly.
