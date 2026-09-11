@@ -88,14 +88,16 @@ Cross-championship, outside that scope:
 - All mutations use `useFetcher()` — no full-page navigation
 - Server-side validation via **Valibot** schemas (often derived from drizzle insert schemas)
 - Actions return `{ errors: Record<string, string[]> }` on failure or the updated entity on success
-- React Router auto-revalidates loaders after successful actions
+- React Router auto-revalidates loaders after successful actions — **except** when the action answers 400 or above (`shouldSkipRevalidation`), which silently leaves the page on a state the session no longer has. An action that wants the loader to re-run answers 200, even when it reports a failure
+- RAC's `FieldError` renders nothing unless its field is `isInvalid` — passing it error text as children is not enough. Always set `isInvalid={!!errors?.field?.length}` alongside it
 
 ## Code style
 
 - Double quotes in all TypeScript/TSX files (oxfmt formatter — user formats after writing)
-- Use `cn()` from `app/lib/utils.ts` for merging Tailwind classes; group classes semantically
+- Use `cx()` from `@tipprunde/ui` for merging Tailwind classes; group classes semantically
 - All Tailwind default colors are disabled — use only `--color-*` tokens from `app/app.css` (Radix Sand + Orange palette)
 - German locale (`de-DE`) is hardcoded via `I18nProvider`; use `formatDate()` / `slugify()` from `app/lib/utils.ts`
+- **Never `ORDER BY` a German name in SQL.** SQLite sorts by code point, so every umlaut lands past `Z` (`Österreich` after `Zypern`, `Südafrika` after `SpVgg…`). `COLLATE NOCASE` fixes case, not umlauts. Fetch, then sort in JS with `sortGerman()` from `app/lib/utils.ts` (`Intl.Collator("de-DE")`, DIN 5007-1) — master-data lists are a few hundred rows, the cost is nil
 - Middleware is default behaviour in RR8 (the `v8_*` future flags are gone); `context` is a `RouterContextProvider`
 - One fetcher per independently-savable row — never share a `useFetcher()` across a list (see `docs/decisions/04-app-merge.md` history and the grid routes)
 - Errors that should **render** are thrown from a loader, never from middleware — a `data()` thrown in middleware short-circuits as a raw response body and never reaches an `ErrorBoundary`. `redirect()` from middleware is fine.

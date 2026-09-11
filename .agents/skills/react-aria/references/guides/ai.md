@@ -17,10 +17,10 @@ npx skills add https://react-aria.adobe.com
 [Node.js](https://nodejs.org/) must be installed on your system to run the MCP server.
 
 <Tabs
-aria-label="MCP Clients"
-density="compact"
-
-> <TabList><Tab id="cursor">Cursor</Tab><Tab id="vscode">VS Code</Tab><Tab id="claude-desktop">Claude Code (Desktop)</Tab><Tab id="claude-code">Claude Code (CLI)</Tab><Tab id="codex">Codex</Tab><Tab id="gemini-cli">Gemini CLI</Tab><Tab id="other">Other</Tab></TabList>
+  aria-label="MCP Clients"
+  density="compact"
+>
+  <TabList><Tab id="cursor">Cursor</Tab><Tab id="vscode">VS Code</Tab><Tab id="claude-desktop">Claude Code (Desktop)</Tab><Tab id="claude-code">Claude Code (CLI)</Tab><Tab id="codex">Codex</Tab><Tab id="gemini-cli">Gemini CLI</Tab><Tab id="other">Other</Tab></TabList>
 
   <TabPanel id="cursor">
     Click the button to install:
@@ -39,7 +39,6 @@ density="compact"
       }
     }
     ```
-
   </TabPanel>
 
   <TabPanel id="vscode">
@@ -63,14 +62,12 @@ density="compact"
       }
     }
     ```
-
   </TabPanel>
 
   <TabPanel id="claude-desktop">
     Click the button to add to Claude Desktop:
 
     [Add to Claude Desktop](claude://claude.ai/directory/connectors/ant.dir.gh.adobe.react-aria.md)
-
   </TabPanel>
 
   <TabPanel id="claude-code">
@@ -81,7 +78,6 @@ density="compact"
     ```
 
     For more information, see the [Claude Code MCP documentation](https://docs.claude.com/en/docs/claude-code/mcp).
-
   </TabPanel>
 
   <TabPanel id="codex">
@@ -94,7 +90,6 @@ density="compact"
     ```
 
     For more information, see the [Codex MCP documentation](https://github.com/openai/codex/blob/main/docs/config.md#mcp_servers).
-
   </TabPanel>
 
   <TabPanel id="gemini-cli">
@@ -105,7 +100,6 @@ density="compact"
     ```
 
     For more information, see the [Gemini CLI MCP documentation](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md#how-to-set-up-your-mcp-server).
-
   </TabPanel>
 
   <TabPanel id="other">
@@ -121,7 +115,6 @@ density="compact"
       }
     }
     ```
-
   </TabPanel>
 </Tabs>
 

@@ -58,10 +58,9 @@ afterEach(() => {
 ```
 
 ### Tips and Tricks
-
 - The testers typically offers these things: a way to simulate common user interactions for the given component via a specified user modality (e.g. using mouse vs keyboard to toggle a menu), a way to get the various common elements that make up the component (e.g. the rows in a table), and a way to query the state of the component (e.g. get the selected rows in a table). Prefer using the testers for these use cases so that the user doesn't need to know what specific roles/elements/etc to target in their tests.
 - You can still simulate interactions manually in your test alongside the utilities provided by the tester. This can come in handy if you find that the tester doesn't cover a specific user flow or if one of its utilities isn't quite working as expected. After simulating your interaction, you can still
-  use the tester to query for the component's state or trigger a different interaction utility.
+use the tester to query for the component's state or trigger a different interaction utility.
 - Mouse drag interactions, simulated scrolling, and other mock reliant interactions are not available in these test utils since they depend heavily on how the user mocks things like clientHeight/Width/etc in their tests. These interactions need to be simulated manually by the user.
 - Some testers may support the notion of "long press" for certain interactions (e.g. long pressing a button to trigger its menu). To simulate this, you will need mock PointerEvent globally (see the installPointerEvent util) and provide a way to advance timers to the User via `advanceTimer`.
 - These test utils are compatible with not only JSDOM unit tests but browser tests as well (e.g. vitest-browser-react).
@@ -83,36 +82,31 @@ Skip the testers and write manual interactions for the following cases:
 Components with draggable handles (Slider, ColorArea, ColorSlider, ColorWheel) need `getBoundingClientRect` mocked so move calculations work:
 
 ```ts
-import { installMouseEvent } from "@react-aria/test-utils";
+import {installMouseEvent} from '@react-aria/test-utils';
 installMouseEvent();
 
 beforeAll(() => {
-  jest.spyOn(window.HTMLElement.prototype, "getBoundingClientRect").mockImplementation(() => ({
-    top: 0,
-    left: 0,
-    width: 100,
-    height: 10,
-    bottom: 10,
-    right: 100,
-  }));
+  jest.spyOn(window.HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(
+    () => ({top: 0, left: 0, width: 100, height: 10, bottom: 10, right: 100})
+  );
 });
 ```
 
 ### Available testers
 
-| Pattern name      | Component      | Key methods                                                                                                                                                       |
-| ----------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `'CheckboxGroup'` | CheckboxGroup  | `getCheckboxGroup()`, `getCheckboxes()`, `getSelectedCheckboxes()`, `toggleCheckbox({checkbox})`                                                                  |
-| `'ComboBox'`      | ComboBox       | `getCombobox()`, `getListbox()`, `getOptions()`, `open()`, `toggleOptionSelection({option})`                                                                      |
-| `'Dialog'`        | Modal, Popover | `getTrigger()`, `getDialog()`, `open()`, `close()` — pass `overlayType: 'modal'` or `'popover'` to `createTester`                                                 |
-| `'GridList'`      | GridList       | `getGridlist()`, `getRows()`, `getSelectedRows()`, `toggleRowSelection({row})`, `triggerRowAction({row})`                                                         |
-| `'ListBox'`       | ListBox        | `getListbox()`, `getOptions()`, `getSelectedOptions()`, `toggleOptionSelection({option})`, `triggerOptionAction({option})`                                        |
-| `'Menu'`          | Menu           | `getTrigger()`, `getMenu()`, `getOptions()`, `open()`, `toggleOptionSelection({option})`, `openSubmenu({submenuTrigger})`, `close()`                              |
-| `'RadioGroup'`    | RadioGroup     | `getRadioGroup()`, `getRadios()`, `getSelectedRadio()`, `triggerRadio({radio})`                                                                                   |
-| `'Select'`        | Select         | `getTrigger()`, `getListbox()`, `getOptions()`, `toggleOptionSelection({option})`                                                                                 |
-| `'Table'`         | Table          | `getTable()`, `getRows()`, `getFooterRows()`, `getColumns()`, `getSelectedRows()`, `toggleRowSelection({row})`, `toggleSort({column})`, `triggerRowAction({row})` |
-| `'Tabs'`          | Tabs           | `getTablist()`, `getTabs()`, `getTabpanels()`, `getSelectedTab()`, `triggerTab({tab})`                                                                            |
-| `'Tree'`          | Tree           | `getTree()`, `getRows()`, `getSelectedRows()`, `toggleRowSelection({row})`, `toggleRowExpansion({row})`, `triggerRowAction({row})`                                |
+| Pattern name | Component | Key methods |
+|---|---|---|
+| `'CheckboxGroup'` | CheckboxGroup | `getCheckboxGroup()`, `getCheckboxes()`, `getSelectedCheckboxes()`, `toggleCheckbox({checkbox})` |
+| `'ComboBox'` | ComboBox | `getCombobox()`, `getListbox()`, `getOptions()`, `open()`, `toggleOptionSelection({option})` |
+| `'Dialog'` | Modal, Popover | `getTrigger()`, `getDialog()`, `open()`, `close()` — pass `overlayType: 'modal'` or `'popover'` to `createTester` |
+| `'GridList'` | GridList | `getGridlist()`, `getRows()`, `getSelectedRows()`, `toggleRowSelection({row})`, `triggerRowAction({row})` |
+| `'ListBox'` | ListBox | `getListbox()`, `getOptions()`, `getSelectedOptions()`, `toggleOptionSelection({option})`, `triggerOptionAction({option})` |
+| `'Menu'` | Menu | `getTrigger()`, `getMenu()`, `getOptions()`, `open()`, `toggleOptionSelection({option})`, `openSubmenu({submenuTrigger})`, `close()` |
+| `'RadioGroup'` | RadioGroup | `getRadioGroup()`, `getRadios()`, `getSelectedRadio()`, `triggerRadio({radio})` |
+| `'Select'` | Select | `getTrigger()`, `getListbox()`, `getOptions()`, `toggleOptionSelection({option})` |
+| `'Table'` | Table | `getTable()`, `getRows()`, `getFooterRows()`, `getColumns()`, `getSelectedRows()`, `toggleRowSelection({row})`, `toggleSort({column})`, `triggerRowAction({row})` |
+| `'Tabs'` | Tabs | `getTablist()`, `getTabs()`, `getTabpanels()`, `getSelectedTab()`, `triggerTab({tab})` |
+| `'Tree'` | Tree | `getTree()`, `getRows()`, `getSelectedRows()`, `toggleRowSelection({row})`, `toggleRowExpansion({row})`, `triggerRowAction({row})` |
 
 ### Per-component reference
 
@@ -134,13 +128,13 @@ beforeAll(() => {
 The `references/` directory contains detailed documentation organized as follows:
 
 ### Guides
-
 - [Collections](references/guides/collections.md)
 - [Customization](references/guides/customization.md)
 - [Drag and Drop](references/guides/dnd.md)
 - [Forms](references/guides/forms.md)
 - [Framework setup](references/guides/frameworks.md)
 - [Getting started](references/guides/getting-started.md)
+- [Hooks](references/guides/hooks.md)
 - [Quality](references/guides/quality.md)
 - [Selection](references/guides/selection.md)
 - [Styling](references/guides/styling.md)
@@ -151,15 +145,17 @@ The `references/` directory contains detailed documentation organized as follows
 
 Component documentation is in `references/components/` — one Markdown file per component (e.g. `references/components/Button.md`). Read the file for a component when you need its API, props, examples, or accessibility notes.
 
-Available components: Autocomplete, Breadcrumbs, Button, Calendar, Checkbox, CheckboxGroup, ColorArea, ColorField, ColorPicker, ColorSlider, ColorSwatch, ColorSwatchPicker, ColorWheel, ComboBox, DateField, DatePicker, DateRangePicker, Disclosure, DisclosureGroup, DropZone, FileTrigger, Form, GridList, Group, Link, ListBox, Menu, Meter, Modal, NumberField, Popover, ProgressBar, RadioGroup, RangeCalendar, SearchField, Select, Separator, Slider, Switch, Table, Tabs, TagGroup, TextField, TimeField, Toast, ToggleButton, ToggleButtonGroup, Toolbar, Tooltip, Tree, Virtualizer.
+Available components: Autocomplete, Breadcrumbs, Button, Calendar, Checkbox, CheckboxGroup, ColorArea, ColorField, ColorPicker, ColorSlider, ColorSwatch, ColorSwatchPicker, ColorWheel, ComboBox, DateField, DatePicker, DateRangePicker, Disclosure, DisclosureGroup, DropZone, FileTrigger, Form, GridList, Group, Link, ListBox, Menu, Meter, Modal, NumberField, Popover, PreviewTrigger, ProgressBar, RadioGroup, RangeCalendar, SearchField, Select, Separator, Slider, Switch, Table, Tabs, TagGroup, TextField, TimeField, Toast, ToggleButton, ToggleButtonGroup, TokenField, Toolbar, Tooltip, Tree, useBreadcrumbs, useButton, useCalendar, useCheckbox, useCheckboxGroup, useColorArea, useColorField, useColorSlider, useColorSwatch, useColorWheel, useComboBox, useDateField, useDatePicker, useDateRangePicker, useDisclosure, useGridList, useLink, useListBox, useMenu, useMeter, useModalOverlay, useNumberField, usePopover, useProgressBar, useRadioGroup, useRangeCalendar, useSearchField, useSelect, useSeparator, useSlider, useSwitch, useTable, useTabList, useTagGroup, useTextField, useTimeField, useToast, useToggleButton, useToggleButtonGroup, useToolbar, useTooltipTrigger, Virtualizer.
 
 ### Interactions
-
 - [FocusRing](references/interactions/FocusRing.md): A utility component that applies a CSS class when an element has keyboard focus.
 - [FocusScope](references/interactions/FocusScope.md): A FocusScope manages focus for its descendants. It supports containing focus inside
 - [useClipboard](references/interactions/useClipboard.md): Handles clipboard interactions for a focusable element. Supports items of multiple
+- [useContextMenu](references/interactions/useContextMenu.md): Handles context menu events across mouse, touch, keyboard, and screen reader interactions.
 - [useDrag](references/interactions/useDrag.md): Handles drag interactions for an element, with support for traditional mouse and touch
+- [useDraggableCollection](references/interactions/useDraggableCollection.md): Handles drag interactions for a collection component, with support for traditional mouse and
 - [useDrop](references/interactions/useDrop.md): Handles drop interactions for an element, with support for traditional mouse and touch
+- [useDroppableCollection](references/interactions/useDroppableCollection.md): Handles drop interactions for a collection component, with support for traditional mouse and
 - [useFocus](references/interactions/useFocus.md): Handles focus events for the immediate target.
 - [useFocusRing](references/interactions/useFocusRing.md): Determines whether a focus ring should be shown to indicate keyboard focus.
 - [useFocusVisible](references/interactions/useFocusVisible.md): Manages focus visible state for the page, and subscribes individual components for updates.
@@ -172,11 +168,11 @@ Available components: Autocomplete, Breadcrumbs, Button, Calendar, Checkbox, Che
 - [usePress](references/interactions/usePress.md): Handles press interactions across mouse, touch, keyboard, and screen readers.
 
 ### Utilities
-
 - [I18nProvider](references/utilities/I18nProvider.md): Provides the locale for the application to all child components.
 - [mergeProps](references/utilities/mergeProps.md): Merges multiple props objects together. Event handlers are chained,
 - [PortalProvider](references/utilities/PortalProvider.md): Sets the portal container for all overlay elements rendered by its children.
 - [SSRProvider](references/utilities/SSRProvider.md): When using SSR with React Aria in React 16 or 17, applications must be wrapped in an SSRProvider.
+- [useAsyncList](references/utilities/useAsyncList.md): Manages state for an immutable async loaded list data structure, and provides convenience methods
 - [useCollator](references/utilities/useCollator.md): Provides localized string collation for the current locale. Automatically updates when the locale
 - [useDateFormatter](references/utilities/useDateFormatter.md): Provides localized date formatting for the current locale. Automatically updates when the locale
 - [useField](references/utilities/useField.md): Provides the accessibility implementation for input fields. Fields accept user input, gain
@@ -184,13 +180,15 @@ Available components: Autocomplete, Breadcrumbs, Button, Calendar, Checkbox, Che
 - [useId](references/utilities/useId.md): If a default is not provided, generate an id.
 - [useIsSSR](references/utilities/useIsSSR.md): Returns whether the component is currently being server side rendered or
 - [useLabel](references/utilities/useLabel.md): Provides the accessibility implementation for labels and their associated elements.
+- [useListData](references/utilities/useListData.md): Manages state for an immutable list data structure, and provides convenience methods to
+- [useListFormatter](references/utilities/useListFormatter.md): Provides localized list formatting for the current locale. Automatically updates when the locale
 - [useLocale](references/utilities/useLocale.md): Returns the current locale and layout direction.
 - [useNumberFormatter](references/utilities/useNumberFormatter.md): Provides localized number formatting for the current locale. Automatically updates when the
 - [useObjectRef](references/utilities/useObjectRef.md): Offers an object ref for a given callback ref or an object ref. Especially
+- [useTreeData](references/utilities/useTreeData.md): Manages state for an immutable tree data structure, and provides convenience methods to
 - [VisuallyHidden](references/utilities/VisuallyHidden.md): VisuallyHidden hides its children visually, while keeping content visible
 
 ### Internationalization
-
 - [Calendar](references/internationalized/date/Calendar.md)
 - [CalendarDate](references/internationalized/date/CalendarDate.md)
 - [CalendarDateTime](references/internationalized/date/CalendarDateTime.md)
