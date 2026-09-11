@@ -284,11 +284,13 @@ export async function action({ request, context }: Route.ActionArgs) {
     return null;
   }
 
-  // Championship flag toggle — when completed, only the `completed` switch
-  // itself may change (it is the unlock control); other flags stay locked.
+  // Championship flag toggle. A completed championship freezes its data, but
+  // two switches stay operable: `completed` itself (the unlock control) and
+  // `published`, which is visibility only and deliberately depends on nothing
+  // — see the switch block for the reasoning.
   const field = v.parse(flagField, formData.get("field"));
   const value = formData.get("value") === "true";
-  if (locked && field !== "completed") return null;
+  if (locked && field !== "completed" && field !== "published") return null;
   await db
     .update(championships)
     .set({ [field]: value })
@@ -516,12 +518,19 @@ export default function ChampionshipIndex({ loaderData }: Route.ComponentProps) 
     championship.extraQuestionPointsPublished,
   );
 
-  // Dependency chain: published → extraQuestionPointsPublished (if present) → completed
-  // Turning completed on disables all other switches
-  const publishedDisabled = isFlagPending || completed;
-  const extraQuestionsDisabled = isFlagPending || !published || completed;
-  const completedDisabled =
-    isFlagPending || !published || (hasExtraQuestions && !extraQuestionPointsPublished);
+  // `published` is visibility and nothing else, so it hangs off nothing: a
+  // legacy championship is entered and finished long before it should show up
+  // on the front page, and the release is timed deliberately. It stays
+  // togglable in both directions whether or not the championship is completed.
+  //
+  // One real dependency is left: a championship with extra questions cannot be
+  // completed while their points are unpublished, because completing freezes
+  // them. The same invariant is why the extra-points switch locks once
+  // completed — otherwise the state it was completed under could be revoked
+  // underneath it. Uncomplete first, then unpublish the points.
+  const publishedDisabled = isFlagPending;
+  const extraQuestionsDisabled = isFlagPending || completed;
+  const completedDisabled = isFlagPending || (hasExtraQuestions && !extraQuestionPointsPublished);
 
   return (
     <div className="space-y-6">
