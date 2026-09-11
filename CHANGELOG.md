@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.10.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.10.0...v1.10.1)
+
+### 🩹 Fixes
+
+- **web:** Let a championship be published independently of its state ([1537c60](https://github.com/haus23/tipprunde/commit/1537c60))
+
+### 🏡 Chore
+
+- Bump react, react-dom, valibot, @types/node, @types/react(-dom) ([b4197d2](https://github.com/haus23/tipprunde/commit/b4197d2))
+- **ui:** Bump cva to 1.0.0-beta.9, migrate off deprecated config ([d5da4cd](https://github.com/haus23/tipprunde/commit/d5da4cd))
+- **ui:** Replace clsx + tailwind-merge with cn ([0142334](https://github.com/haus23/tipprunde/commit/0142334))
+
 ## v1.10.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.9.0...v1.10.0)
