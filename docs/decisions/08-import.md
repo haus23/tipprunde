@@ -91,15 +91,28 @@ string field doesn't already do just as well.
 
 ## Outlook: if the payload outgrows a textarea
 
-The largest run so far (`rr0506`: 49 matches, 931 tips, 5 new teams, 3 new
-leagues) produced a **106 KB** JSON payload. Worth being precise about what
-that number does and doesn't mean:
+Eight legacy championships in (2026-09-14), the actual payloads run
+**148–201 KB** — noticeably past the 106 KB first measured on `rr0506`
+(49 matches, 931 tips), because every later run pastes the pretty-printed
+file straight into the textarea rather than a minified one. The largest so
+far, `hr0708` (67 matches, 1206 tips, 9 new teams), is 201 KB.
+
+Micha's own estimate for where the full ~2002–2020 history lands once
+every remaining championship is in: **~25 players and ~90 matches on
+average** — roughly double today's typical tip count per championship, so
+payloads in the 300–400 KB range should be expected before the legacy
+import is done, not just the ~200 KB seen so far. Still nowhere near where
+any of the three options below would actually earn their cost (see the
+closing paragraph), but worth having as the number to watch instead of the
+original 106 KB. Worth being precise about what these numbers do and don't
+mean:
 
 - **Nothing in this app's own stack caps the request body.** `server/app.ts`
   passes no size limit to `createRequestListener`, and neither Node's raw
   HTTP server nor React Router's `request.formData()` impose one by
   default. Whatever ceiling exists sits on Railway's side, and I haven't
-  measured or looked up what that is — not a risk at 106 KB regardless.
+  measured or looked up what that is — not a risk at 200 KB, or even the
+  300–400 KB projected above, regardless.
 - **The friction that will actually show up first is not transport or the
   database — it's the human at the textarea.** Scrolling and eyeballing a
   few hundred KB of JSON in a small box stops being pleasant well before it
@@ -111,7 +124,8 @@ against what the textarea choice above was actually optimizing for
 (reviewability before commit, and reusing the plain-form-field shape):
 
 - **Compress the JSON and upload it as a file.** Solves bandwidth, which
-  isn't the constraint — 106 KB is nothing to transfer, compressed or not.
+  isn't the constraint — a few hundred KB is nothing to transfer, compressed
+  or not.
   Worse, it actively works against the one property this design cares
   about: a zip is _less_ reviewable than plain text, not more. Would only
   earn its cost if payloads reached multi-MB territory, which nothing about
@@ -139,9 +153,10 @@ against what the textarea choice above was actually optimizing for
   would need a manual check for whether rounds 1–2 already landed, instead
   of the current clean rollback.
 
-**Not doing any of this now.** Nothing here is close to a real limit — 106
-KB is small by any measure, and the workflow only ever produces one
-championship's worth of data at a time by design. If it ever does become a
+**Not doing any of this now.** Nothing here is close to a real limit — even
+the 300–400 KB projected for the biggest remaining championships is small
+by any measure, and the workflow only ever produces one championship's
+worth of data at a time by design. If it ever does become a
 real problem, plain file upload is the first thing to reach for: smallest
 change, keeps the transaction and the "already reviewed before this point"
 property intact, and only removes the one thing (a big textarea) that would
