@@ -81,33 +81,60 @@ export function PlayerRoundItem({
                 key={match.id}
                 className={cx(
                   "border-subtle border-b last:border-b-0",
-                  match.excludedFromScoring && "text-subtle line-through",
+                  match.excludedFromScoring && "text-subtle",
                 )}
               >
                 <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
                   <AppLink href={scoped(`/spiele/${match.nr}`)}>{match.nr}</AppLink>
                 </td>
                 <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
-                  {match.date ? formatDate(match.date) : "–"}
+                  {match.date ? (
+                    <span className={match.excludedFromScoring ? "line-through" : undefined}>
+                      {formatDate(match.date)}
+                    </span>
+                  ) : (
+                    "–"
+                  )}
                 </td>
                 <td className="xs:px-2 px-1 py-3">
                   <AppLink href={scoped(`/spiele/${match.nr}`)}>
-                    <span className="hidden sm:inline">
+                    <span
+                      className={cx(
+                        "hidden sm:inline",
+                        match.excludedFromScoring && "line-through",
+                      )}
+                    >
                       {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
                     </span>
-                    <span className="sm:hidden">
+                    <span className={cx("sm:hidden", match.excludedFromScoring && "line-through")}>
                       {match.hometeam?.shortName ?? "–"} – {match.awayteam?.shortName ?? "–"}
                     </span>
                   </AppLink>
                 </td>
                 <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
-                  {match.result ?? "–:–"}
+                  {match.result ? (
+                    <span className={match.excludedFromScoring ? "line-through" : undefined}>
+                      {match.result}
+                    </span>
+                  ) : (
+                    "–:–"
+                  )}
                 </td>
                 <td className="xs:px-6 relative w-px py-3 pr-5 pl-3 text-center tabular-nums">
-                  {showTip ? tip.tip : "–"}
+                  {showTip ? (
+                    <span className={match.excludedFromScoring ? "line-through" : undefined}>
+                      {tip.tip}
+                    </span>
+                  ) : (
+                    "–"
+                  )}
                   {showTip && tip.joker && <CellFlag label="Joker-Tipp" />}
                   {showTip && tip.extraJoker && <CellFlag label="Zusatzjoker-Tipp" />}
                 </td>
+                {/* No line-through here: an excluded match's tip points are
+                    always null (see calcTipPoints), so this cell never has a
+                    real value to strike — just the same "–" an unplayed
+                    match already shows. */}
                 <td className="xs:pr-6 xs:pl-2 relative w-px py-3 pr-4 pl-1 text-center tabular-nums">
                   {tip?.points != null ? tip.points : "–"}
                   {match.lowestSumBonus && !!tip?.points && (
