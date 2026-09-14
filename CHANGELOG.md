@@ -1,5 +1,41 @@
 # Changelog
 
+## v1.11.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.10.1...v1.11.0)
+
+### 🚀 Enhancements
+
+- Exclude a match from scoring ([9544bc2](https://github.com/haus23/tipprunde/commit/9544bc2))
+
+### 🩹 Fixes
+
+- Excluded match not visualized on the player tips page, and not excluded from the deviation round rule ([b362c7c](https://github.com/haus23/tipprunde/commit/b362c7c))
+- Excluded matches still counted in "Sp." totals and point averages ([a6aa312](https://github.com/haus23/tipprunde/commit/a6aa312))
+- Consistent row strikethrough, and "–" not "0" for an excluded match's field points ([f82e0a4](https://github.com/haus23/tipprunde/commit/f82e0a4))
+- Detail page showed "– Pkt" for an excluded match with no result ([5b84399](https://github.com/haus23/tipprunde/commit/5b84399))
+- Match-switch strikethrough, and rework the detail page's exclusion marker ([2658301](https://github.com/haus23/tipprunde/commit/2658301))
+- Row-level line-through was striking placeholder dashes too ([30f7233](https://github.com/haus23/tipprunde/commit/30f7233))
+- Excluded matches leaking into the "current matchday" views ([6c12213](https://github.com/haus23/tipprunde/commit/6c12213))
+- Drop excluded matches from the verlauf chart entirely ([96ce271](https://github.com/haus23/tipprunde/commit/96ce271))
+
+### 💅 Refactors
+
+- Extract round-rule apply/revert into lib/round.server.ts ([033cf8b](https://github.com/haus23/tipprunde/commit/033cf8b))
+
+### 📖 Documentation
+
+- Note the always-null import fields, mark E done ([9f7fb04](https://github.com/haus23/tipprunde/commit/9f7fb04))
+- **web:** Outline the blog before building it ([e51d61b](https://github.com/haus23/tipprunde/commit/e51d61b))
+- Strip the finished items out of the backlog ([2521bd1](https://github.com/haus23/tipprunde/commit/2521bd1))
+- Fold the Archiv notes from the private backlog in ([e054636](https://github.com/haus23/tipprunde/commit/e054636))
+- Update import payload size numbers with real measurements ([f6632be](https://github.com/haus23/tipprunde/commit/f6632be))
+
+### 🏡 Chore
+
+- Update skills via npx skills update ([7d1eb9e](https://github.com/haus23/tipprunde/commit/7d1eb9e))
+- **db:** Generate migration for matches.excludedFromScoring ([2766288](https://github.com/haus23/tipprunde/commit/2766288))
+
 ## v1.10.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.10.0...v1.10.1)
