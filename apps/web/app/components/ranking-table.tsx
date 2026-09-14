@@ -1,5 +1,5 @@
 import { cx } from "@tipprunde/ui";
-import { BanIcon, CalendarIcon, StarIcon } from "lucide-react";
+import { CalendarIcon, StarIcon } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button, Dialog, OverlayArrow, Popover } from "react-aria-components";
 import { useFetcher } from "react-router";
@@ -231,14 +231,8 @@ function MatchdayButton({
                 </tr>
               ) : (
                 matches.map((m) => (
-                  <tr
-                    key={m.nr}
-                    className={cx(
-                      "border-subtle border-b last:border-0",
-                      m.excludedFromScoring && "text-subtle",
-                    )}
-                  >
-                    <td className={cx("py-1.5 pr-3", m.excludedFromScoring && "line-through")}>
+                  <tr key={m.nr} className="border-subtle border-b last:border-0">
+                    <td className="py-1.5 pr-3">
                       <AppLink href={scoped(`/spiele/${m.nr}`)}>{m.paarungShort}</AppLink>
                     </td>
                     <td className="px-2 py-1.5 text-center tabular-nums">
@@ -254,9 +248,6 @@ function MatchdayButton({
                         {m.points !== null ? m.points : "–"}
                         {m.lowestSumBonus && !!m.points && (
                           <StarIcon className="text-accent absolute top-1/2 -right-3.5 size-3 -translate-y-1/2 fill-current" />
-                        )}
-                        {m.excludedFromScoring && (
-                          <BanIcon className="text-subtle absolute top-1/2 -right-3.5 size-3 -translate-y-1/2" />
                         )}
                       </span>
                     </td>

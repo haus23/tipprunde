@@ -146,7 +146,6 @@ export type MatchdayTip = {
   isFlagged: boolean;
   points: number | null;
   lowestSumBonus: boolean;
-  excludedFromScoring: boolean;
 };
 
 /**
@@ -158,9 +157,16 @@ export async function getMatchdayTips(
   userId: number,
 ): Promise<MatchdayTip[]> {
   const dated = await db.query.matches.findMany({
-    where: { date: { isNotNull: true }, round: { championshipId, published: true } },
+    // Same reasoning as getCurrentMatches() — excluded matches don't belong
+    // in "the current matchday" at all, filtered out here rather than
+    // passed through for the popover to visually mark.
+    where: {
+      date: { isNotNull: true },
+      round: { championshipId, published: true },
+      excludedFromScoring: false,
+    },
     orderBy: { date: "asc" },
-    columns: { id: true, nr: true, result: true, lowestSumBonus: true, excludedFromScoring: true },
+    columns: { id: true, nr: true, result: true, lowestSumBonus: true },
     with: {
       round: { columns: { tipsPublished: true } },
       hometeam: { columns: { shortName: true } },
@@ -196,7 +202,6 @@ export async function getMatchdayTips(
       isFlagged: (userTip?.joker || userTip?.extraJoker) ?? false,
       points: userTip?.points ?? null,
       lowestSumBonus: m.lowestSumBonus ?? false,
-      excludedFromScoring: m.excludedFromScoring,
     };
   });
 }
@@ -207,7 +212,14 @@ export async function getMatchdayTips(
  */
 export async function getCurrentMatches(championshipId: number) {
   const dated = await db.query.matches.findMany({
-    where: { date: { isNotNull: true }, round: { championshipId, published: true } },
+    // Excluded matches carry no relevance to "what's currently going on" —
+    // not last-played, not next-up. Filtered out of the window entirely,
+    // not just visually marked, unlike every other public view.
+    where: {
+      date: { isNotNull: true },
+      round: { championshipId, published: true },
+      excludedFromScoring: false,
+    },
     orderBy: { date: "asc" },
     columns: { nr: true, date: true, result: true },
     with: {
