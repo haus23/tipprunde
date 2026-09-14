@@ -17,8 +17,12 @@ export function SpieleRoundItem({
   defaultOpen: boolean;
 }) {
   const scoped = useScopedPath();
-  const matchesWithResult = round.matches.filter((m) => m.result !== null).length;
-  const totalMatches = round.matches.length;
+  // An excluded match still shows in the table below (struck through), but
+  // carries no statistical relevance — it drops out of every count here,
+  // the same as it already drops out of every points sum.
+  const statMatches = round.matches.filter((m) => !m.excludedFromScoring);
+  const matchesWithResult = statMatches.filter((m) => m.result !== null).length;
+  const totalMatches = statMatches.length;
   const roundSpiele =
     matchesWithResult === totalMatches ? `${totalMatches}` : `${matchesWithResult}/${totalMatches}`;
   const meta = useMemo(

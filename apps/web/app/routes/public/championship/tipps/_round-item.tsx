@@ -20,8 +20,13 @@ export function PlayerRoundItem({
   hasDeviationRule: boolean;
 }) {
   const scoped = useScopedPath();
-  const matchesWithResult = round.matches.filter((m) => m.result !== null).length;
-  const totalMatches = round.matches.length;
+  // An excluded match still shows in the table below (struck through), but
+  // carries no statistical relevance — it drops out of every count and
+  // average here, the same as it already drops out of every points sum
+  // (its tip points are always null, see calcTipPoints).
+  const statMatches = round.matches.filter((m) => !m.excludedFromScoring);
+  const matchesWithResult = statMatches.filter((m) => m.result !== null).length;
+  const totalMatches = statMatches.length;
   const roundPoints = round.matches.reduce((sum, m) => sum + (m.tips[0]?.points ?? 0), 0);
   const roundAvg =
     round.tipsPublished && matchesWithResult > 0
@@ -30,8 +35,8 @@ export function PlayerRoundItem({
   // Matches the exclusion filter in applyRoundRule() (round.server.ts) — an
   // excluded match must not move this player's deviation sum either.
   const deviationSum = hasDeviationRule
-    ? round.matches
-        .filter((m) => m.result !== null && !m.excludedFromScoring)
+    ? statMatches
+        .filter((m) => m.result !== null)
         .reduce((sum, m) => sum + calcGoalDeviation(m.tips[0]?.tip ?? null, m.result!), 0)
     : null;
   const roundBonus = round.roundPoints[0]?.points ?? null;
