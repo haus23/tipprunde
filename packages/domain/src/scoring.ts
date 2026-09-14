@@ -77,18 +77,11 @@ export function calcGoalDeviation(tip: string | null, result: string): number {
  * e.g. "alleiniger-treffer-drei-punkte": sole scorer gets +3 bonus.
  *
  * Not yet implemented — will need full tip objects (with userId, flags)
- * and write-back to DB when a non-trivial matchRuleId is introduced.
+ * and write-back to DB when a non-trivial matchRuleId is introduced. Likely
+ * to end up as a server-side lib rather than here, once it exists — see how
+ * applyRoundRule left this same spot for `round.server.ts`.
  */
 export function applyMatchRule(): void {}
-
-/**
- * Apply round-level modifier after all tips for a round are scored.
- *
- * Not yet implemented here — "torabweichung-bonus-malus" is the one live
- * roundRuleId today, but its logic lives inline in the manager route that
- * handles "Runde abschließen", not in this package.
- */
-export function applyRoundRule(): void {}
 
 /**
  * Whether a round needs the "Abgeschlossen" toggle at all — true for every
