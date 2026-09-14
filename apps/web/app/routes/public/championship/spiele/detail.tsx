@@ -97,16 +97,7 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
   ]
     .filter(Boolean)
     .join(" · ");
-  // "– Pkt" only for an excluded match that actually has a result — it then
-  // reads as "does not count", not "not played yet". Without a result the
-  // segment stays hidden entirely, exclusion or not — nothing to explain on
-  // a match nobody has scored regardless.
-  const pointsLabel =
-    match.points !== null
-      ? `${match.points} Pkt`
-      : match.excludedFromScoring && match.result !== null
-        ? "– Pkt"
-        : null;
+  const pointsLabel = match.points !== null ? `${match.points} Pkt` : null;
 
   function handleSort(col: SortCol) {
     if (sortCol !== col) {
@@ -171,14 +162,25 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
                     className="right-1.5"
                   />
                 )}
-                {match.excludedFromScoring && (
-                  <CellFlag
-                    icon={BanIcon}
-                    tone="muted"
-                    label="Spiel wurde aus der Wertung genommen"
-                    className="right-1.5"
-                  />
-                )}
+              </span>
+            </>
+          )}
+          {/* Last field, independent of whether a result/points exist yet —
+              a standing fact about the match. Same star-on-a-short-label
+              pattern as the lowest-sum-bonus points above, just with its own
+              fixed text instead of a number — no "– Pkt" alongside it, that
+              would only repeat what this already says. */}
+          {match.excludedFromScoring && (
+            <>
+              {(metaLead || pointsLabel) && " · "}
+              <span className="relative inline-block pr-6">
+                Nicht gewertet
+                <CellFlag
+                  icon={BanIcon}
+                  tone="muted"
+                  label="Das Spiel wurde aus der Wertung genommen"
+                  className="right-1.5"
+                />
               </span>
             </>
           )}

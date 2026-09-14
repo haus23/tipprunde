@@ -1,3 +1,4 @@
+import { cx } from "@tipprunde/ui";
 import { CheckIcon, ChevronsUpDownIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import {
@@ -22,6 +23,7 @@ interface SwitchMatch {
   paarung: string;
   paarungShort: string;
   points: number | null;
+  excludedFromScoring: boolean;
 }
 
 interface SwitchRound {
@@ -98,12 +100,17 @@ export function MatchSwitch({ rounds, currentNr }: Props) {
                       key={m.nr}
                       id={m.nr}
                       textValue={m.paarung}
-                      className="text-app data-focused:bg-nav-active relative flex cursor-default items-center gap-3 rounded-sm py-1.5 pr-2.5 pl-8 text-sm outline-none select-none"
+                      className={cx(
+                        "data-focused:bg-nav-active relative flex cursor-default items-center gap-3 rounded-sm py-1.5 pr-2.5 pl-8 text-sm outline-none select-none",
+                        m.excludedFromScoring ? "text-subtle" : "text-app",
+                      )}
                     >
                       {m.nr === currentNr && (
                         <CheckIcon className="text-accent absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2" />
                       )}
-                      <span className="flex-1 truncate">
+                      <span
+                        className={cx("flex-1 truncate", m.excludedFromScoring && "line-through")}
+                      >
                         <span className="xs:hidden">{m.paarungShort}</span>
                         <span className="xs:inline hidden">{m.paarung}</span>
                       </span>
