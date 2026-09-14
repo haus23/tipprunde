@@ -13,7 +13,14 @@ export async function getRounds(championshipId: number) {
       with: {
         matches: {
           orderBy: { nr: "asc" },
-          columns: { id: true, nr: true, date: true, result: true, lowestSumBonus: true },
+          columns: {
+            id: true,
+            nr: true,
+            date: true,
+            result: true,
+            lowestSumBonus: true,
+            excludedFromScoring: true,
+          },
           with: {
             league: { columns: { shortName: true } },
             hometeam: { columns: { name: true, shortName: true } },
@@ -46,13 +53,18 @@ export async function getRounds(championshipId: number) {
       result: m.result,
       // Stored points are doubled for a lowestSumBonus match — show the raw
       // sum the field actually scored, the one the bonus was picked from.
-      points:
-        m.result !== null
+      // An excluded match shows "–" like an unplayed one, not "0" — every
+      // tip on it scores null, so 0 would read as "the field flopped" rather
+      // than "this doesn't count".
+      points: m.excludedFromScoring
+        ? null
+        : m.result !== null
           ? m.lowestSumBonus
             ? (pointsByMatch.get(m.id) ?? 0) / 2
             : (pointsByMatch.get(m.id) ?? 0)
           : null,
       lowestSumBonus: m.lowestSumBonus ?? false,
+      excludedFromScoring: m.excludedFromScoring,
     })),
   }));
 }
@@ -64,7 +76,13 @@ export async function getMatch(championshipId: number, nr: number) {
   const [match, prev, next] = await Promise.all([
     db.query.matches.findFirst({
       where: { nr, round: { championshipId, published: true } },
-      columns: { nr: true, date: true, result: true, lowestSumBonus: true },
+      columns: {
+        nr: true,
+        date: true,
+        result: true,
+        lowestSumBonus: true,
+        excludedFromScoring: true,
+      },
       with: {
         round: { columns: { tipsPublished: true } },
         league: { columns: { name: true } },
@@ -93,8 +111,12 @@ export async function getMatch(championshipId: number, nr: number) {
   // The aggregate stays the raw, pre-bonus figure — same reasoning as
   // getRounds() above, it's what explains the match being picked. Individual
   // tips are returned as stored (i.e. doubled for a lowestSumBonus match):
-  // the detail view shows each player's real, counted points.
-  const rawSum = match.result !== null ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0) : null;
+  // the detail view shows each player's real, counted points. An excluded
+  // match shows "–" like an unplayed one — see getRounds() above.
+  const rawSum =
+    !match.excludedFromScoring && match.result !== null
+      ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0)
+      : null;
   const points = rawSum !== null && match.lowestSumBonus ? rawSum / 2 : rawSum;
 
   return {
@@ -106,6 +128,7 @@ export async function getMatch(championshipId: number, nr: number) {
     result: match.result,
     points,
     lowestSumBonus: match.lowestSumBonus ?? false,
+    excludedFromScoring: match.excludedFromScoring,
     prevNr: prev?.nr ?? null,
     nextNr: next?.nr ?? null,
     tipsPublished: match.round.tipsPublished,
@@ -134,7 +157,14 @@ export async function getMatchdayTips(
   userId: number,
 ): Promise<MatchdayTip[]> {
   const dated = await db.query.matches.findMany({
-    where: { date: { isNotNull: true }, round: { championshipId, published: true } },
+    // Same reasoning as getCurrentMatches() — excluded matches don't belong
+    // in "the current matchday" at all, filtered out here rather than
+    // passed through for the popover to visually mark.
+    where: {
+      date: { isNotNull: true },
+      round: { championshipId, published: true },
+      excludedFromScoring: false,
+    },
     orderBy: { date: "asc" },
     columns: { id: true, nr: true, result: true, lowestSumBonus: true },
     with: {
@@ -182,7 +212,14 @@ export async function getMatchdayTips(
  */
 export async function getCurrentMatches(championshipId: number) {
   const dated = await db.query.matches.findMany({
-    where: { date: { isNotNull: true }, round: { championshipId, published: true } },
+    // Excluded matches carry no relevance to "what's currently going on" —
+    // not last-played, not next-up. Filtered out of the window entirely,
+    // not just visually marked, unlike every other public view.
+    where: {
+      date: { isNotNull: true },
+      round: { championshipId, published: true },
+      excludedFromScoring: false,
+    },
     orderBy: { date: "asc" },
     columns: { nr: true, date: true, result: true },
     with: {

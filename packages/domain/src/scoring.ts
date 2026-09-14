@@ -20,7 +20,11 @@ function signOf(n: number): -1 | 0 | 1 {
  * Calculate points for a single tip.
  *
  * Returns null when no result exists yet — meaning "not yet calculated",
- * which is distinct from 0 (result exists, tip was wrong).
+ * which is distinct from 0 (result exists, tip was wrong). Also returns null
+ * when the match is excluded from scoring — same "contributes nothing"
+ * value, for a different reason (see `matches.excludedFromScoring`); every
+ * summation in the app already treats null as zero, so nothing downstream
+ * needs to know which of the two reasons applies.
  * Returns 0 for a null or empty tip with a valid result.
  */
 export function calcTipPoints(
@@ -30,8 +34,9 @@ export function calcTipPoints(
   isDoubleRound: boolean | null,
   joker: boolean | null,
   extraJoker: boolean | null = null,
+  excluded = false,
 ): number | null {
-  if (!result || !tip) return null;
+  if (excluded || !result || !tip) return null;
 
   const [tipHome, tipAway] = parseScore(tip);
   const [resHome, resAway] = parseScore(result);
@@ -77,18 +82,11 @@ export function calcGoalDeviation(tip: string | null, result: string): number {
  * e.g. "alleiniger-treffer-drei-punkte": sole scorer gets +3 bonus.
  *
  * Not yet implemented — will need full tip objects (with userId, flags)
- * and write-back to DB when a non-trivial matchRuleId is introduced.
+ * and write-back to DB when a non-trivial matchRuleId is introduced. Likely
+ * to end up as a server-side lib rather than here, once it exists — see how
+ * applyRoundRule left this same spot for `round.server.ts`.
  */
 export function applyMatchRule(): void {}
-
-/**
- * Apply round-level modifier after all tips for a round are scored.
- *
- * Not yet implemented here — "torabweichung-bonus-malus" is the one live
- * roundRuleId today, but its logic lives inline in the manager route that
- * handles "Runde abschließen", not in this package.
- */
-export function applyRoundRule(): void {}
 
 /**
  * Whether a round needs the "Abgeschlossen" toggle at all — true for every

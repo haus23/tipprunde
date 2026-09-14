@@ -13,7 +13,14 @@ export async function getPlayerMatches(championshipId: number, userId: number) {
       },
       matches: {
         orderBy: { nr: "asc" },
-        columns: { id: true, nr: true, date: true, result: true, lowestSumBonus: true },
+        columns: {
+          id: true,
+          nr: true,
+          date: true,
+          result: true,
+          lowestSumBonus: true,
+          excludedFromScoring: true,
+        },
         with: {
           hometeam: { columns: { name: true, shortName: true } },
           awayteam: { columns: { name: true, shortName: true } },

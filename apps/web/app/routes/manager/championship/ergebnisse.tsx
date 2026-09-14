@@ -45,7 +45,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 
   const matches = await db.query.matches.findMany({
     where: { roundId: currentRoundId },
-    columns: { id: true, nr: true, result: true },
+    columns: { id: true, nr: true, result: true, excludedFromScoring: true },
     with: {
       hometeam: { columns: { name: true } },
       awayteam: { columns: { name: true } },
@@ -124,6 +124,7 @@ export async function action({ request, context }: Route.ActionArgs) {
             isDoubleRound,
             tip.joker,
             tip.extraJoker,
+            match.excludedFromScoring,
           );
           return db
             .update(tipsTable)
@@ -153,6 +154,7 @@ type ResultMatch = {
   id: number;
   nr: number;
   result: string | null;
+  excludedFromScoring: boolean;
   hometeam: { name: string } | null;
   awayteam: { name: string } | null;
 };
@@ -219,10 +221,18 @@ function ResultRow({ match }: { match: ResultMatch }) {
   }
 
   return (
-    <tr className="border-subtle border-b last:border-0">
+    <tr
+      className={cx(
+        "border-subtle border-b last:border-0",
+        match.excludedFromScoring && "text-subtle",
+      )}
+    >
       <td className="text-muted py-3 pr-2 text-right tabular-nums">{match.nr}</td>
-      <td className="px-2 py-3">
+      <td className={cx("px-2 py-3", match.excludedFromScoring && "line-through")}>
         {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
+        {match.excludedFromScoring && (
+          <span className="text-subtle ml-2 text-xs no-underline">(aus der Wertung)</span>
+        )}
       </td>
       <td className="px-2 py-3 text-center">
         <TextField

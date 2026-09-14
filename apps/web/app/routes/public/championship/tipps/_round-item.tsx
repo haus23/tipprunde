@@ -1,4 +1,6 @@
 import { calcGoalDeviation } from "@tipprunde/domain/scoring";
+import { cx } from "@tipprunde/ui";
+import { BanIcon } from "lucide-react";
 import { useMemo } from "react";
 
 import { AppLink } from "#/components/app-link.tsx";
@@ -18,15 +20,22 @@ export function PlayerRoundItem({
   hasDeviationRule: boolean;
 }) {
   const scoped = useScopedPath();
-  const matchesWithResult = round.matches.filter((m) => m.result !== null).length;
-  const totalMatches = round.matches.length;
+  // An excluded match still shows in the table below (struck through), but
+  // carries no statistical relevance — it drops out of every count and
+  // average here, the same as it already drops out of every points sum
+  // (its tip points are always null, see calcTipPoints).
+  const statMatches = round.matches.filter((m) => !m.excludedFromScoring);
+  const matchesWithResult = statMatches.filter((m) => m.result !== null).length;
+  const totalMatches = statMatches.length;
   const roundPoints = round.matches.reduce((sum, m) => sum + (m.tips[0]?.points ?? 0), 0);
   const roundAvg =
     round.tipsPublished && matchesWithResult > 0
       ? formatAverage(roundPoints / matchesWithResult)
       : null;
+  // Matches the exclusion filter in applyRoundRule() (round.server.ts) — an
+  // excluded match must not move this player's deviation sum either.
   const deviationSum = hasDeviationRule
-    ? round.matches
+    ? statMatches
         .filter((m) => m.result !== null)
         .reduce((sum, m) => sum + calcGoalDeviation(m.tips[0]?.tip ?? null, m.result!), 0)
     : null;
@@ -68,36 +77,76 @@ export function PlayerRoundItem({
             const tip = match.tips[0];
             const showTip = round.tipsPublished && tip?.tip;
             return (
-              <tr key={match.id} className="border-subtle border-b last:border-b-0">
+              <tr
+                key={match.id}
+                className={cx(
+                  "border-subtle border-b last:border-b-0",
+                  match.excludedFromScoring && "text-subtle",
+                )}
+              >
                 <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
                   <AppLink href={scoped(`/spiele/${match.nr}`)}>{match.nr}</AppLink>
                 </td>
                 <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
-                  {match.date ? formatDate(match.date) : "–"}
+                  {match.date ? (
+                    <span className={match.excludedFromScoring ? "line-through" : undefined}>
+                      {formatDate(match.date)}
+                    </span>
+                  ) : (
+                    "–"
+                  )}
                 </td>
                 <td className="xs:px-2 px-1 py-3">
                   <AppLink href={scoped(`/spiele/${match.nr}`)}>
-                    <span className="hidden sm:inline">
+                    <span
+                      className={cx(
+                        "hidden sm:inline",
+                        match.excludedFromScoring && "line-through",
+                      )}
+                    >
                       {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
                     </span>
-                    <span className="sm:hidden">
+                    <span className={cx("sm:hidden", match.excludedFromScoring && "line-through")}>
                       {match.hometeam?.shortName ?? "–"} – {match.awayteam?.shortName ?? "–"}
                     </span>
                   </AppLink>
                 </td>
                 <td className="xs:px-2 w-px px-1 py-3 text-center tabular-nums">
-                  {match.result ?? "–:–"}
+                  {match.result ? (
+                    <span className={match.excludedFromScoring ? "line-through" : undefined}>
+                      {match.result}
+                    </span>
+                  ) : (
+                    "–:–"
+                  )}
                 </td>
                 <td className="xs:px-6 relative w-px py-3 pr-5 pl-3 text-center tabular-nums">
-                  {showTip ? tip.tip : "–"}
+                  {showTip ? (
+                    <span className={match.excludedFromScoring ? "line-through" : undefined}>
+                      {tip.tip}
+                    </span>
+                  ) : (
+                    "–"
+                  )}
                   {showTip && tip.joker && <CellFlag label="Joker-Tipp" />}
                   {showTip && tip.extraJoker && <CellFlag label="Zusatzjoker-Tipp" />}
                 </td>
+                {/* No line-through here: an excluded match's tip points are
+                    always null (see calcTipPoints), so this cell never has a
+                    real value to strike — just the same "–" an unplayed
+                    match already shows. */}
                 <td className="xs:pr-6 xs:pl-2 relative w-px py-3 pr-4 pl-1 text-center tabular-nums">
                   {tip?.points != null ? tip.points : "–"}
                   {match.lowestSumBonus && !!tip?.points && (
                     <CellFlag
                       label={`Niedrigste Spielsumme — Verdoppelt (${tip.points / 2} → ${tip.points})`}
+                    />
+                  )}
+                  {match.excludedFromScoring && (
+                    <CellFlag
+                      icon={BanIcon}
+                      tone="muted"
+                      label="Spiel wurde aus der Wertung genommen"
                     />
                   )}
                 </td>

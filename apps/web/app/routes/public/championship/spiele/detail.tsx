@@ -1,5 +1,5 @@
 import { cx } from "@tipprunde/ui";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { BanIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -138,7 +138,12 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
           Spielübersicht
         </Link>
         <div className="flex items-center gap-1.5">
-          <h1 className="text-center text-2xl font-semibold tracking-tight">
+          <h1
+            className={cx(
+              "text-center text-2xl font-semibold tracking-tight",
+              match.excludedFromScoring && "text-subtle line-through",
+            )}
+          >
             <span className="sm:hidden">{match.paarungShort}</span>
             <span className="hidden sm:inline">{match.paarung}</span>
           </h1>
@@ -157,6 +162,25 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
                     className="right-1.5"
                   />
                 )}
+              </span>
+            </>
+          )}
+          {/* Last field, independent of whether a result/points exist yet —
+              a standing fact about the match. Same star-on-a-short-label
+              pattern as the lowest-sum-bonus points above, just with its own
+              fixed text instead of a number — no "– Pkt" alongside it, that
+              would only repeat what this already says. */}
+          {match.excludedFromScoring && (
+            <>
+              {(metaLead || pointsLabel) && " · "}
+              <span className="relative inline-block pr-6">
+                Nicht gewertet
+                <CellFlag
+                  icon={BanIcon}
+                  tone="muted"
+                  label="Das Spiel wurde aus der Wertung genommen"
+                  className="right-1.5"
+                />
               </span>
             </>
           )}
@@ -223,7 +247,13 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
           </thead>
           <tbody>
             {sortedRows.map((row) => (
-              <tr key={row.userId} className="border-subtle border-b last:border-b-0">
+              <tr
+                key={row.userId}
+                className={cx(
+                  "border-subtle border-b last:border-b-0",
+                  match.excludedFromScoring && "text-subtle",
+                )}
+              >
                 <td className="xs:px-3 px-2 py-3 font-medium">
                   <AppLink href={scoped(`/tipps/${row.slug}`)}>{row.name}</AppLink>
                 </td>

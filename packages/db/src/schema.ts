@@ -156,6 +156,15 @@ export const matches = sqliteTable("matches", {
   awayteamId: text("awayteam_id").references(() => teams.id),
   result: text("result"),
   lowestSumBonus: integer("lowest_sum_bonus", { mode: "boolean" }),
+  // A user decision, not a computed value (unlike lowestSumBonus above) — so
+  // it is never null, just true/false. Excludes the match from scoring: its
+  // tips always score null (see calcTipPoints), which every summation in the
+  // app already treats as "contributes nothing". The match itself, its
+  // result, and its tips stay otherwise untouched — this is not "did not
+  // happen", just "does not count".
+  excludedFromScoring: integer("excluded_from_scoring", { mode: "boolean" })
+    .notNull()
+    .default(false),
 });
 
 export const tips = sqliteTable(

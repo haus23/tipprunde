@@ -1,13 +1,23 @@
-import { StarIcon } from "lucide-react";
+import { StarIcon, type LucideIcon } from "lucide-react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { Button, Popover } from "react-aria-components";
 
 interface Props {
   label: string;
   className?: string;
+  /** Defaults to the star used for the lowest-sum-bonus flag. */
+  icon?: LucideIcon;
+  /** Icon/focus-ring color. `accent` (default) reads as a bonus; `muted`
+   * fits a neutral or negative flag (e.g. a match excluded from scoring). */
+  tone?: "accent" | "muted";
 }
 
-export function CellFlag({ label, className = "xs:right-1 right-0" }: Props) {
+export function CellFlag({
+  label,
+  className = "xs:right-1 right-0",
+  icon: Icon = StarIcon,
+  tone = "accent",
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLElement>(null);
@@ -26,15 +36,20 @@ export function CellFlag({ label, className = "xs:right-1 right-0" }: Props) {
     return () => window.removeEventListener("pointerdown", handleOutsideClick, { capture: true });
   }, [isOpen]);
 
+  const toneClass =
+    tone === "accent"
+      ? "text-accent focus-visible:ring-accent"
+      : "text-muted focus-visible:ring-accent";
+
   return (
     <>
       <Button
         ref={buttonRef}
         onPress={() => setIsOpen((v) => !v)}
         aria-label={label}
-        className={`text-accent focus-visible:ring-accent absolute top-1/2 inline-flex -translate-y-1/2 cursor-default items-center justify-center rounded-sm p-0.5 transition-transform outline-none focus-visible:ring-2 active:scale-[0.97] ${className}`}
+        className={`${toneClass} absolute top-1/2 inline-flex -translate-y-1/2 cursor-default items-center justify-center rounded-sm p-0.5 transition-transform outline-none focus-visible:ring-2 active:scale-[0.97] ${className}`}
       >
-        <StarIcon className="size-3 fill-current" />
+        <Icon className="size-3 fill-current" />
       </Button>
       <Popover
         ref={popoverRef}

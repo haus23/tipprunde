@@ -1,0 +1,1 @@
+ALTER TABLE `matches` ADD `excluded_from_scoring` integer DEFAULT false NOT NULL;

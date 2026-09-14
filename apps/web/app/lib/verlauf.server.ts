@@ -69,7 +69,10 @@ export async function getVerlauf(championshipId: number): Promise<Verlauf> {
         orderBy: { nr: "asc" },
         columns: { id: true, nr: true },
         with: {
-          matches: { orderBy: { nr: "asc" }, columns: { id: true, nr: true, result: true } },
+          matches: {
+            orderBy: { nr: "asc" },
+            columns: { id: true, nr: true, result: true, excludedFromScoring: true },
+          },
         },
       }),
       db
@@ -115,6 +118,17 @@ export async function getVerlauf(championshipId: number): Promise<Verlauf> {
     const roundStart = steps.length;
 
     for (const match of round.matches) {
+      // Excluded matches get no step at all, unlike every other public view
+      // (which shows them struck through as part of the historical record).
+      // The chart is a *selection* of what actually moved someone's rank —
+      // same reasoning as getCurrentMatches()/getMatchdayTips() — and an
+      // excluded match never can, since its tips always score null. Leaves
+      // a gap in the match-nr labels where it would have been, same as the
+      // "Erg." tables already show for a genuinely nr-noncontiguous match;
+      // nothing downstream keys off nr being contiguous, only off array
+      // position, so no renumbering is needed.
+      if (match.excludedFromScoring) continue;
+
       const stepIndex = steps.length;
       steps.push({ kind: "match", nr: match.nr, roundNr: round.nr, endsRound: false });
       // An unplayed match still gets its step, so the axis shows the whole

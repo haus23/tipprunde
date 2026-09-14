@@ -91,7 +91,9 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
     );
   }
 
-  const allMatches = rounds.flatMap((r) => r.matches);
+  // Excluded matches still show (struck through) in the round tables below,
+  // but carry no statistical relevance — same reasoning as _round-item.tsx.
+  const allMatches = rounds.flatMap((r) => r.matches).filter((m) => !m.excludedFromScoring);
   const matchesWithResult = allMatches.filter((m) => m.result !== null).length;
   const totalMatches = allMatches.length;
   // Per-match average uses tip points only — extra-question points aren't per-match.
