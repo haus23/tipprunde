@@ -81,7 +81,7 @@ export function PlayerRoundItem({
                 key={match.id}
                 className={cx(
                   "border-subtle border-b last:border-b-0",
-                  match.excludedFromScoring && "text-subtle",
+                  match.excludedFromScoring && "text-subtle line-through",
                 )}
               >
                 <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
@@ -90,9 +90,7 @@ export function PlayerRoundItem({
                 <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
                   {match.date ? formatDate(match.date) : "–"}
                 </td>
-                <td
-                  className={cx("xs:px-2 px-1 py-3", match.excludedFromScoring && "line-through")}
-                >
+                <td className="xs:px-2 px-1 py-3">
                   <AppLink href={scoped(`/spiele/${match.nr}`)}>
                     <span className="hidden sm:inline">
                       {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}

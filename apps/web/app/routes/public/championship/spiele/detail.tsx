@@ -97,7 +97,11 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
   ]
     .filter(Boolean)
     .join(" · ");
-  const pointsLabel = match.points !== null ? `${match.points} Pkt` : null;
+  // "– Pkt" for an excluded match (it has a result, just no points — see
+  // getMatch()) reads as "does not count", not "not played yet" (null with
+  // no result at all, which hides this segment entirely below).
+  const pointsLabel =
+    match.points !== null ? `${match.points} Pkt` : match.excludedFromScoring ? "– Pkt" : null;
 
   function handleSort(col: SortCol) {
     if (sortCol !== col) {

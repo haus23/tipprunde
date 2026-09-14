@@ -53,11 +53,12 @@ export async function getRounds(championshipId: number) {
       result: m.result,
       // Stored points are doubled for a lowestSumBonus match — show the raw
       // sum the field actually scored, the one the bonus was picked from.
-      // An excluded match sums to 0 regardless (every tip scores null) —
-      // correct on its own, but the UI still needs the flag below to explain
-      // why, rather than reading as "nobody scored anything here".
-      points:
-        m.result !== null
+      // An excluded match shows "–" like an unplayed one, not "0" — every
+      // tip on it scores null, so 0 would read as "the field flopped" rather
+      // than "this doesn't count".
+      points: m.excludedFromScoring
+        ? null
+        : m.result !== null
           ? m.lowestSumBonus
             ? (pointsByMatch.get(m.id) ?? 0) / 2
             : (pointsByMatch.get(m.id) ?? 0)
@@ -110,8 +111,12 @@ export async function getMatch(championshipId: number, nr: number) {
   // The aggregate stays the raw, pre-bonus figure — same reasoning as
   // getRounds() above, it's what explains the match being picked. Individual
   // tips are returned as stored (i.e. doubled for a lowestSumBonus match):
-  // the detail view shows each player's real, counted points.
-  const rawSum = match.result !== null ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0) : null;
+  // the detail view shows each player's real, counted points. An excluded
+  // match shows "–" like an unplayed one — see getRounds() above.
+  const rawSum =
+    !match.excludedFromScoring && match.result !== null
+      ? match.tips.reduce((s, t) => s + (t.points ?? 0), 0)
+      : null;
   const points = rawSum !== null && match.lowestSumBonus ? rawSum / 2 : rawSum;
 
   return {
