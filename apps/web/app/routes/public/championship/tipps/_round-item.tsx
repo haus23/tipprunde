@@ -1,4 +1,6 @@
 import { calcGoalDeviation } from "@tipprunde/domain/scoring";
+import { cx } from "@tipprunde/ui";
+import { BanIcon } from "lucide-react";
 import { useMemo } from "react";
 
 import { AppLink } from "#/components/app-link.tsx";
@@ -25,9 +27,11 @@ export function PlayerRoundItem({
     round.tipsPublished && matchesWithResult > 0
       ? formatAverage(roundPoints / matchesWithResult)
       : null;
+  // Matches the exclusion filter in applyRoundRule() (round.server.ts) — an
+  // excluded match must not move this player's deviation sum either.
   const deviationSum = hasDeviationRule
     ? round.matches
-        .filter((m) => m.result !== null)
+        .filter((m) => m.result !== null && !m.excludedFromScoring)
         .reduce((sum, m) => sum + calcGoalDeviation(m.tips[0]?.tip ?? null, m.result!), 0)
     : null;
   const roundBonus = round.roundPoints[0]?.points ?? null;
@@ -68,14 +72,22 @@ export function PlayerRoundItem({
             const tip = match.tips[0];
             const showTip = round.tipsPublished && tip?.tip;
             return (
-              <tr key={match.id} className="border-subtle border-b last:border-b-0">
+              <tr
+                key={match.id}
+                className={cx(
+                  "border-subtle border-b last:border-b-0",
+                  match.excludedFromScoring && "text-subtle",
+                )}
+              >
                 <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
                   <AppLink href={scoped(`/spiele/${match.nr}`)}>{match.nr}</AppLink>
                 </td>
                 <td className="hidden w-px px-2 py-3 tabular-nums md:table-cell">
                   {match.date ? formatDate(match.date) : "–"}
                 </td>
-                <td className="xs:px-2 px-1 py-3">
+                <td
+                  className={cx("xs:px-2 px-1 py-3", match.excludedFromScoring && "line-through")}
+                >
                   <AppLink href={scoped(`/spiele/${match.nr}`)}>
                     <span className="hidden sm:inline">
                       {match.hometeam?.name ?? "–"} – {match.awayteam?.name ?? "–"}
@@ -98,6 +110,13 @@ export function PlayerRoundItem({
                   {match.lowestSumBonus && !!tip?.points && (
                     <CellFlag
                       label={`Niedrigste Spielsumme — Verdoppelt (${tip.points / 2} → ${tip.points})`}
+                    />
+                  )}
+                  {match.excludedFromScoring && (
+                    <CellFlag
+                      icon={BanIcon}
+                      tone="muted"
+                      label="Spiel wurde aus der Wertung genommen"
                     />
                   )}
                 </td>

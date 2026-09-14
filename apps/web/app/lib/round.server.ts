@@ -64,13 +64,18 @@ export async function applyRoundRule(roundId: number, { completed }: { completed
       // Fetch all matches in this round with results, nested with all tips
       const roundMatches = await db.query.matches.findMany({
         where: { roundId },
-        columns: { id: true, result: true },
+        columns: { id: true, result: true, excludedFromScoring: true },
         with: {
           tips: { columns: { userId: true, tip: true } },
         },
       });
 
-      const matchesWithResult = roundMatches.filter((m) => m.result !== null);
+      // An excluded match contributes to nobody's deviation sum — same
+      // "does not count" as its null tip points, just for a rule that
+      // doesn't go through tip points at all.
+      const matchesWithResult = roundMatches.filter(
+        (m) => m.result !== null && !m.excludedFromScoring,
+      );
 
       if (matchesWithResult.length > 0) {
         // Collect all player userIds from tips across all matches
