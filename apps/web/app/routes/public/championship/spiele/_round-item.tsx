@@ -1,3 +1,5 @@
+import { cx } from "@tipprunde/ui";
+import { BanIcon } from "lucide-react";
 import { useMemo } from "react";
 
 import { AppLink } from "#/components/app-link.tsx";
@@ -41,7 +43,13 @@ export function SpieleRoundItem({
         </thead>
         <tbody>
           {round.matches.map((match) => (
-            <tr key={match.id} className="border-subtle border-b last:border-b-0">
+            <tr
+              key={match.id}
+              className={cx(
+                "border-subtle border-b last:border-b-0",
+                match.excludedFromScoring && "text-subtle line-through",
+              )}
+            >
               <td className="text-subtle xs:px-2 w-px px-1 py-3 text-right tabular-nums">
                 <AppLink href={scoped(`/spiele/${match.nr}`)}>{match.nr}</AppLink>
               </td>
@@ -64,6 +72,13 @@ export function SpieleRoundItem({
                 {match.points ?? "–"}
                 {match.lowestSumBonus && (
                   <CellFlag label="Niedrigste Spielsumme — Punkte werden verdoppelt" />
+                )}
+                {match.excludedFromScoring && (
+                  <CellFlag
+                    icon={BanIcon}
+                    tone="muted"
+                    label="Spiel wurde aus der Wertung genommen"
+                  />
                 )}
               </td>
             </tr>

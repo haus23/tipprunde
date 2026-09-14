@@ -3,11 +3,13 @@ import {
   matches as matchesTable,
   rounds as roundsTable,
   teams,
+  tips as tipsTable,
 } from "@tipprunde/db/schema";
+import { calcTipPoints, type TipRuleId } from "@tipprunde/domain/scoring";
 import { Button, Card, CardContent, DateField, Label } from "@tipprunde/ui";
 import { cx } from "@tipprunde/ui";
-import { desc, eq, max } from "drizzle-orm";
-import { PencilIcon, PlusIcon } from "lucide-react";
+import { and, desc, eq, max } from "drizzle-orm";
+import { BanIcon, PencilIcon, PlusIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Button as RACButton,
@@ -25,6 +27,8 @@ import { TeamDialog } from "#/components/team-dialog.tsx";
 import { championshipContext } from "#/lib/context.ts";
 import { db } from "#/lib/db.server.ts";
 import { getRound, isLocked } from "#/lib/lock.server.ts";
+import { updateRanking } from "#/lib/ranking.server.ts";
+import { applyRoundRule } from "#/lib/round.server.ts";
 import { formatDate, sortGerman } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/spiele";
@@ -44,6 +48,7 @@ type MatchRow = {
   hometeamId: string | null;
   awayteamId: string | null;
   leagueId: string | null;
+  excludedFromScoring: boolean;
   hometeam: Team | null;
   awayteam: Team | null;
   league: League | null;
@@ -89,6 +94,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
         hometeamId: true,
         awayteamId: true,
         leagueId: true,
+        excludedFromScoring: true,
       },
       with: {
         hometeam: true,
@@ -170,6 +176,70 @@ export async function action({ request, context }: Route.ActionArgs) {
       .set({ date, leagueId, hometeamId, awayteamId })
       .where(eq(matchesTable.id, id));
     return null;
+  }
+
+  if (intent === "toggle-match-excluded") {
+    const id = Number(formData.get("id"));
+    if (championship.completed) return null;
+
+    const [match, ruleset] = await Promise.all([
+      db.query.matches.findFirst({
+        where: { id },
+        with: {
+          round: {
+            columns: { id: true, championshipId: true, isDoubleRound: true, completed: true },
+          },
+          tips: { columns: { userId: true, tip: true, joker: true, extraJoker: true } },
+        },
+      }),
+      championship.rulesetId
+        ? db.query.rulesets.findFirst({
+            where: { id: championship.rulesetId },
+            columns: { tipRuleId: true },
+          })
+        : Promise.resolve(null),
+    ]);
+    if (!match || !match.round || match.round.championshipId !== championship.id) return null;
+
+    const excluded = !match.excludedFromScoring;
+    await db
+      .update(matchesTable)
+      .set({ excludedFromScoring: excluded })
+      .where(eq(matchesTable.id, id));
+
+    const tipRuleId = ruleset?.tipRuleId as TipRuleId | undefined;
+    if (tipRuleId && match.tips.length > 0) {
+      await Promise.all(
+        match.tips.map((tip) => {
+          const points = calcTipPoints(
+            tip.tip,
+            match.result,
+            tipRuleId,
+            match.round.isDoubleRound,
+            tip.joker,
+            tip.extraJoker,
+            excluded,
+          );
+          return db
+            .update(tipsTable)
+            .set({ points })
+            .where(and(eq(tipsTable.matchId, id), eq(tipsTable.userId, tip.userId)));
+        }),
+      );
+    }
+
+    // The round's own round-rule effects (e.g. "niedrigste Spielsumme") may
+    // have been picked based on this match's contribution — recompute them
+    // from scratch rather than trying to patch just this match's share.
+    // Only relevant once the round is actually completed; before that,
+    // nothing has been applied yet for this to invalidate.
+    if (match.round.completed) {
+      await applyRoundRule(match.round.id, { completed: true });
+    }
+
+    await updateRanking(championship.id);
+
+    return { ok: true, excluded };
   }
 
   return null;
@@ -282,6 +352,16 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
   const [leagueId, setLeagueId] = useState<string | null>(editMatch?.leagueId ?? null);
   const [createDialog, setCreateDialog] = useState<CreateDialog>(null);
 
+  // Its own fetcher, separate from the save/create one above — toggling
+  // exclusion must never trip the `onDone()` effect below and close the form.
+  const excludeFetcher = useFetcher<{ ok: boolean; excluded: boolean }>();
+  const [excluded, setExcluded] = useState(editMatch?.excludedFromScoring ?? false);
+  useEffect(() => {
+    if (excludeFetcher.state === "idle" && excludeFetcher.data?.ok) {
+      setExcluded(excludeFetcher.data.excluded);
+    }
+  }, [excludeFetcher.state, excludeFetcher.data]);
+
   if (fetcher.state === "idle" && fetcher.data !== undefined) {
     onDone();
   }
@@ -350,13 +430,37 @@ function MatchForm({ roundId, editMatch, defaultDate, teams, leagues, onDone }: 
           />
         </div>
 
-        <div className="flex justify-end gap-3">
-          <Button intent="secondary" type="button" onPress={onDone} excludeFromTabOrder>
-            Abbrechen
-          </Button>
-          <Button type="submit" isDisabled={isPending}>
-            {isPending ? "…" : isEdit ? "Speichern" : "Anlegen"}
-          </Button>
+        <div className={cx("flex items-center gap-3", isEdit ? "justify-between" : "justify-end")}>
+          {isEdit && (
+            <Button
+              intent="secondary"
+              type="button"
+              size="sm"
+              className="text-error data-hovered:bg-error"
+              isDisabled={excludeFetcher.state !== "idle"}
+              onPress={() =>
+                void excludeFetcher.submit(
+                  { intent: "toggle-match-excluded", id: String(editMatch.id) },
+                  { method: "post" },
+                )
+              }
+            >
+              <BanIcon className="size-3.5" />
+              {excludeFetcher.state !== "idle"
+                ? "…"
+                : excluded
+                  ? "Wieder in die Wertung aufnehmen"
+                  : "Aus der Wertung nehmen"}
+            </Button>
+          )}
+          <div className="flex gap-3">
+            <Button intent="secondary" type="button" onPress={onDone} excludeFromTabOrder>
+              Abbrechen
+            </Button>
+            <Button type="submit" isDisabled={isPending}>
+              {isPending ? "…" : isEdit ? "Speichern" : "Anlegen"}
+            </Button>
+          </div>
         </div>
       </Form>
 
@@ -406,16 +510,25 @@ function MatchesTable({
       </thead>
       <tbody>
         {matches.map((match) => (
-          <tr key={match.id} className="border-subtle border-b last:border-0">
+          <tr
+            key={match.id}
+            className={cx(
+              "border-subtle border-b last:border-0",
+              match.excludedFromScoring && "text-subtle",
+            )}
+          >
             <td className="text-muted py-3 pr-4 text-right tabular-nums">{match.nr}</td>
             <td className="xs:table-cell hidden py-3 pr-4 tabular-nums">
               {match.date ? formatDate(match.date) : "—"}
             </td>
-            <td className="py-3 pr-4">
+            <td className={cx("py-3 pr-4", match.excludedFromScoring && "line-through")}>
               {match.hometeam?.name ?? "?"} – {match.awayteam?.name ?? "?"}
+              {match.excludedFromScoring && (
+                <BanIcon className="ml-1.5 inline size-3.5 align-text-top no-underline" />
+              )}
               {/* Below xs the date and league columns are gone; they come back
                   here as a meta line rather than being dropped entirely. */}
-              <span className="text-muted xs:hidden mt-0.5 block text-xs">
+              <span className="text-muted xs:hidden mt-0.5 block text-xs no-underline">
                 <span className="tabular-nums">{match.date ? formatDate(match.date) : "—"}</span>
                 {match.league?.shortName && ` · ${match.league.shortName}`}
               </span>

@@ -38,6 +38,18 @@ void describe("calcTipPoints — null/0 distinction", () => {
   void it("wrong tip → 0 (result exists, tip was wrong)", () => {
     assert.equal(calcTipPoints("0:2", "2:1", rule, false, false), 0);
   });
+
+  void it("excluded → null, even for an exact tip on a valid result", () => {
+    assert.equal(calcTipPoints("2:1", "2:1", rule, false, false, false, true), null);
+  });
+
+  void it("excluded overrides joker/extraJoker — still null, not just un-doubled", () => {
+    assert.equal(calcTipPoints("2:1", "2:1", rule, false, true, true, true), null);
+  });
+
+  void it("not excluded (default) → scores normally", () => {
+    assert.equal(calcTipPoints("2:1", "2:1", rule, false, false), 3);
+  });
 });
 
 void describe("calcTipPoints — drei-zwei-oder-ein-punkt", () => {

@@ -184,6 +184,7 @@ export async function action({ request, context }: Route.ActionArgs) {
         match.round.isDoubleRound,
         joker,
         extraJoker,
+        match.excludedFromScoring,
       );
       await db
         .update(tipsTable)
@@ -274,6 +275,7 @@ export async function action({ request, context }: Route.ActionArgs) {
           match.round.isDoubleRound,
           joker,
           extraJoker,
+          match.excludedFromScoring,
         );
         await db
           .update(tipsTable)
