@@ -50,6 +50,17 @@ void describe("calcTipPoints — null/0 distinction", () => {
   void it("not excluded (default) → scores normally", () => {
     assert.equal(calcTipPoints("2:1", "2:1", rule, false, false), 3);
   });
+
+  void it("malformed tip (colon swapped for a neighboring key) → 0, not a spurious draw match", () => {
+    // Real historical case: "2_0" against a 2:2 draw. Both parse to NaN via
+    // parseScore, and signOf(NaN) === 0 happens to equal signOf(0) (the
+    // draw's own tendency) — without the NaN guard this silently scores 1.
+    assert.equal(calcTipPoints("2_0", "2:2", rule, false, false), 0);
+  });
+
+  void it("malformed result → 0 too, same guard", () => {
+    assert.equal(calcTipPoints("2:0", "2_2", rule, false, false), 0);
+  });
 });
 
 void describe("calcTipPoints — drei-zwei-oder-ein-punkt", () => {

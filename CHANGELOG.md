@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.11.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.11.0...v1.11.1)
+
+### 🩹 Fixes
+
+- NaN in calcTipPoints scored a spurious point, plus wider separator normalization ([b7fdd63](https://github.com/haus23/tipprunde/commit/b7fdd63))
+
 ## v1.11.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.10.1...v1.11.0)

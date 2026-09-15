@@ -25,7 +25,11 @@ function signOf(n: number): -1 | 0 | 1 {
  * value, for a different reason (see `matches.excludedFromScoring`); every
  * summation in the app already treats null as zero, so nothing downstream
  * needs to know which of the two reasons applies.
- * Returns 0 for a null or empty tip with a valid result.
+ * Returns 0 for a null or empty tip with a valid result, and for a
+ * malformed one (e.g. "2_0" — a real historical typo, colon swapped for a
+ * neighboring key): `parseScore` turns that into NaN, and without this
+ * guard `signOf(NaN) === 0` happens to equal `signOf(0)`, silently
+ * "matching" a drawn result and awarding a point that was never earned.
  */
 export function calcTipPoints(
   tip: string | null,
@@ -40,6 +44,8 @@ export function calcTipPoints(
 
   const [tipHome, tipAway] = parseScore(tip);
   const [resHome, resAway] = parseScore(result);
+
+  if (![tipHome, tipAway, resHome, resAway].every(Number.isFinite)) return 0;
 
   let points = 0;
 
