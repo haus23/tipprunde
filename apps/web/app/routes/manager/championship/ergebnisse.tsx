@@ -144,8 +144,13 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 const RESULT_PATTERN = /^\d{1,2}:\d{1,2}$/;
 
+// ".", "-", "_", "," and ";" all sit next to ":" on a German keyboard and
+// show up as typos often enough to normalize, not just reject.
 function normalizeResult(raw: string): string {
-  return raw.replace(/\s+/g, "").replace(/[-.]/g, ":").replace(/:+/g, ":");
+  return raw
+    .replace(/\s+/g, "")
+    .replace(/[-.,;_]/g, ":")
+    .replace(/:+/g, ":");
 }
 
 type ResultEntry = { result: string; invalid?: boolean };
