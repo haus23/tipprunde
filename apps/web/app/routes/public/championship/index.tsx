@@ -15,20 +15,20 @@ import { SectionLink } from "./_overview/section-link.tsx";
 import { ChampionshipStandings } from "./_overview/standings.tsx";
 import { ChampionshipSwitcher } from "./_switcher.tsx";
 
-export async function loader({ context, params }: Route.LoaderArgs) {
+export async function loader({ context }: Route.LoaderArgs) {
   // Non-null: the branch layout above throws when it cannot resolve one.
   const championship = context.get(viewedChampionshipContext)!;
   const user = context.get(userContext);
-  // Only the archiv branch of this twice-mounted route carries `:slug` —
-  // see routes.ts. The Stadionsenf comment only ever shows there.
-  const isArchived = params.slug !== undefined;
 
   const [ranking, matches, ruleset, publicChampionships, comment] = await Promise.all([
     getRanking(championship.id),
     getCurrentMatches(championship.id),
     getRuleset(championship.id),
     getPublicChampionships(),
-    isArchived ? getTurnierComment(championship.slug) : Promise.resolve(null),
+    // Shown on the running championship's own homepage too, not just the
+    // Archiv — usually null there until it wraps up and gets one written,
+    // same as any other tournament before its comment exists.
+    getTurnierComment(championship.slug),
   ]);
 
   // Sorted nr desc — the first entry is the running championship, the only
