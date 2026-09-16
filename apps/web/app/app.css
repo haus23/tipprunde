@@ -26,7 +26,10 @@
    narrow-container spacing. */
 .prose {
   container-type: inline-size;
-  color: var(--text-color-app);
+  /* sand11, not sand12 — the theme's own comment calls this one out for
+     "prose / descriptions" by name, and it's what Regelwerk's <p> already
+     uses via the text-subtle utility. */
+  color: var(--text-color-subtle);
   font-size: var(--text-base);
   line-height: var(--text-base--line-height);
 }
@@ -42,6 +45,7 @@
 }
 
 .prose strong {
+  color: var(--text-color-app);
   font-weight: 600;
 }
 
@@ -77,6 +81,7 @@
 
 .prose h2,
 .prose h3 {
+  color: var(--text-color-app);
   font-weight: 600;
   margin-top: 1.5em;
 }
