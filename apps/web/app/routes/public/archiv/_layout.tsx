@@ -42,23 +42,24 @@ export async function loader({ context }: Route.LoaderArgs) {
 export default function ArchivChampionshipLayout({ loaderData }: Route.ComponentProps) {
   const { slug, prev, next } = loaderData;
   // Season switching keeps whichever view is open, rather than dropping back
-  // to the overview: /archiv/a/tabelle → /archiv/b/tabelle. Match numbers are
-  // the one exception — unlike a player, a match number carries no meaning
-  // across seasons (match 38 of two different Rückrunden have nothing to do
-  // with each other), so it would resolve or 404 by coincidence rather than
-  // intent. Falls back to that season's Spiele overview instead.
-  const rawRest = useLocation().pathname.replace(`/archiv/${slug}`, "");
+  // to the overview: /archiv/turnier/a/tabelle → /archiv/turnier/b/tabelle.
+  // Match numbers are the one exception — unlike a player, a match number
+  // carries no meaning across seasons (match 38 of two different Rückrunden
+  // have nothing to do with each other), so it would resolve or 404 by
+  // coincidence rather than intent. Falls back to that season's Spiele
+  // overview instead.
+  const rawRest = useLocation().pathname.replace(`/archiv/turnier/${slug}`, "");
   const rest = /^\/spiele\/\d+/.test(rawRest) ? "/spiele" : rawRest;
 
   return (
-    <ChampionshipScopeProvider basePath={`/archiv/${slug}`}>
+    <ChampionshipScopeProvider basePath={`/archiv/turnier/${slug}`}>
       {/* Grid, not flex+justify-between: a 3-column grid keeps "Archiv"
           centred even when prev or next is absent — justify-between would
           pull it toward whichever side still has content. */}
       <div className="xs:px-0 mx-auto grid w-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 pt-8">
         {prev ? (
           <Link
-            to={`/archiv/${prev.slug}${rest}`}
+            to={`/archiv/turnier/${prev.slug}${rest}`}
             prefetch="intent"
             className={cx(navLinkClass, "min-w-0 max-w-[70%] text-sm")}
           >
@@ -82,7 +83,7 @@ export default function ArchivChampionshipLayout({ loaderData }: Route.Component
 
         {next ? (
           <Link
-            to={`/archiv/${next.slug}${rest}`}
+            to={`/archiv/turnier/${next.slug}${rest}`}
             prefetch="intent"
             className={cx(navLinkClass, "min-w-0 max-w-[70%] justify-end justify-self-end text-sm")}
           >

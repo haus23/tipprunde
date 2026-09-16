@@ -32,12 +32,12 @@ export async function loader({ context }: Route.LoaderArgs) {
   ]);
 
   // Sorted nr desc — the first entry is the running championship, the only
-  // one the switcher links to "/" rather than its /archiv/<slug>.
+  // one the switcher links to "/" rather than its /archiv/turnier/<slug>.
   const runningSlug = publicChampionships[0]?.slug;
   const switcherChampionships = publicChampionships.map((c) => ({
     slug: c.slug,
     name: c.name,
-    href: c.slug === runningSlug ? "/" : `/archiv/${c.slug}`,
+    href: c.slug === runningSlug ? "/" : `/archiv/turnier/${c.slug}`,
   }));
 
   return {

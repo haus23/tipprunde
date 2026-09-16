@@ -7,7 +7,7 @@ with an all-time table, and a final table per championship.
 > current-season views (Zusatzfragen, Tipps, Spiele) — the championship is a
 > URL dimension, and the seven view files under
 > `routes/public/championship/` are mounted once at the root and once per
-> `/archiv/:slug`, distinguished only by route id. The dashboard is the shared
+> `/archiv/turnier/:slug`, distinguished only by route id. The dashboard is the shared
 > per-championship overview; the Archiv sub-nav is gone, replaced by the
 > header nav plus a season switcher on the championship name. See
 > [05-championship-scope.md](./decisions/05-championship-scope.md). **The routes

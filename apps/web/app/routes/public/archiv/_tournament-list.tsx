@@ -96,7 +96,7 @@ export function TournamentList({ championships }: { championships: ChampionshipE
             key={entry.slug}
             className="border-subtle col-span-3 grid h-11 grid-cols-subgrid items-center border-b text-base last:border-b-0"
           >
-            <AppLink href={`/archiv/${entry.slug}`}>{entry.name}</AppLink>
+            <AppLink href={`/archiv/turnier/${entry.slug}`}>{entry.name}</AppLink>
             <div className="text-sm">
               {entry.completed ? (
                 entry.winners.map((w, i) => (

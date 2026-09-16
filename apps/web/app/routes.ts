@@ -10,7 +10,8 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
 
 /**
  * The championship-scoped public views, mounted **twice**: once for the running
- * championship at the root, once per archived championship under /archiv/:slug.
+ * championship at the root, once per archived championship under
+ * /archiv/turnier/:slug.
  *
  * Same files both times — only the `id` differs, which is what lets React
  * Router mount one module at two places. The views read the championship from
@@ -25,8 +26,8 @@ const championshipViews = (id: string) => [
   route("spiele", "routes/public/championship/spiele/index.tsx", { id: `${id}-spiele` }),
   route("spiele/:nr", "routes/public/championship/spiele/detail.tsx", { id: `${id}-match` }),
   route("tabelle", "routes/public/championship/tabelle.tsx", { id: `${id}-tabelle` }),
-  // :playerSlug, not :slug — under /archiv/:slug the parent already owns
-  // `slug`, and an unmatched optional child param does not shadow it.
+  // :playerSlug, not :slug — under /archiv/turnier/:slug the parent already
+  // owns `slug`, and an unmatched optional child param does not shadow it.
   route("tipps/:playerSlug?", "routes/public/championship/tipps/index.tsx", {
     id: `${id}-tipps`,
   }),
@@ -42,9 +43,11 @@ const championshipViews = (id: string) => [
 export default [
   layout("routes/public/_layout.tsx", [
     // Archiv spans all championships — the index (list + Ewige Tabelle) sits
-    // outside any championship scope; :slug below opens one.
+    // outside any championship scope; turnier/:slug below opens one. The
+    // "turnier" segment reserves the rest of /archiv/* for siblings that
+    // aren't a championship slug (e.g. a future /archiv/spieler/:playerSlug).
     route("archiv", "routes/public/archiv/index.tsx"),
-    route("archiv/:slug", "routes/public/archiv/_layout.tsx", championshipViews("archiv")),
+    route("archiv/turnier/:slug", "routes/public/archiv/_layout.tsx", championshipViews("archiv")),
     route("login", "routes/public/login.tsx"),
     layout("routes/public/_championship-layout.tsx", championshipViews("current")),
     // Unmatched URLs render the 404 inside the public shell. Static siblings

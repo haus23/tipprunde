@@ -92,10 +92,10 @@ links championships but not players.
   are championship-scoped and therefore mounted twice
   (see [05-championship-scope.md](./decisions/05-championship-scope.md)); this
   one is cross-championship like `/archiv` itself, so it mounts once.
-- **The URL needs a decision.** `archiv/:slug` already owns that segment. A
-  static sibling such as `archiv/spieler/:playerSlug?` does win over the dynamic
-  route in React Router's ranking, but it permanently reserves `spieler` as a
-  championship slug. A separate top-level path avoids that.
+- **The URL question is resolved.** Championships now live under
+  `archiv/turnier/:slug`, not `archiv/:slug` directly — a static sibling like
+  `archiv/spieler/:playerSlug?` no longer collides with anything or reserves
+  `spieler` as a championship slug. No separate top-level path needed.
 
 ### Redundant heading — ready
 
