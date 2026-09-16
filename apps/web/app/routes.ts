@@ -9,8 +9,9 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
 // pages alphabetically, then the catch-all.
 
 /**
- * The championship-scoped public views, mounted **twice**: once for the running
- * championship at the root, once per archived championship under
+ * The championship-scoped public views that sit outside the Übersicht/
+ * Tabelle/Verlauf trio (see `overviewNav` below), mounted **twice**: once for
+ * the running championship at the root, once per archived championship under
  * /archiv/turnier/:slug.
  *
  * Same files both times — only the `id` differs, which is what lets React
@@ -18,28 +19,30 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
  * `viewedChampionshipContext` and never learn which branch rendered them, so a
  * new public feature is written once and appears in both.
  *
- * The index view (the championship overview) is deliberately **not** in this
- * list — each branch mounts it itself, since only the running one needs it
- * pulled out from under `_championship-chrome.tsx` (see below).
- *
  * See docs/decisions/05-championship-scope.md.
  */
 const championshipViews = (id: string) => [
   route("regelwerk", "routes/public/championship/regelwerk.tsx", { id: `${id}-regelwerk` }),
   route("spiele", "routes/public/championship/spiele/index.tsx", { id: `${id}-spiele` }),
   route("spiele/:nr", "routes/public/championship/spiele/detail.tsx", { id: `${id}-match` }),
-  route("tabelle", "routes/public/championship/tabelle.tsx", { id: `${id}-tabelle` }),
   // :playerSlug, not :slug — under /archiv/turnier/:slug the parent already
   // owns `slug`, and an unmatched optional child param does not shadow it.
   route("tipps/:playerSlug?", "routes/public/championship/tipps/index.tsx", {
     id: `${id}-tipps`,
   }),
+  route("zusatzfragen", "routes/public/championship/zusatzfragen/index.tsx", {
+    id: `${id}-zusatzfragen`,
+  }),
+];
+
+// Tabelle and Verlauf, the two views `_overview-nav.tsx` wraps alongside the
+// index (see there) — split out so the root branch can mount them separately
+// from the index (inside the season chrome, unlike the index itself).
+const overviewSiblingViews = (id: string) => [
+  route("tabelle", "routes/public/championship/tabelle.tsx", { id: `${id}-tabelle` }),
   // :playerSlug only picks the highlighted line — see docs/decisions/06-verlauf-bump-chart.md.
   route("verlauf/:playerSlug?", "routes/public/championship/verlauf/index.tsx", {
     id: `${id}-verlauf`,
-  }),
-  route("zusatzfragen", "routes/public/championship/zusatzfragen/index.tsx", {
-    id: `${id}-zusatzfragen`,
   }),
 ];
 
@@ -52,22 +55,30 @@ export default [
     route("archiv", "routes/public/archiv/index.tsx"),
     route("archiv/turnier/:slug", "routes/public/archiv/_layout.tsx", [
       // Unlike the running championship, an archived one has no competing
-      // "homepage" identity at its own index URL — so its overview sits
-      // inside the chrome along with the other six views, not carved out.
+      // "homepage" identity at its own index URL — so its Übersicht/Tabelle/
+      // Verlauf trio sits inside the season chrome together, not carved out.
       layout("routes/public/_championship-chrome.tsx", { id: "archiv-chrome" }, [
-        index("routes/public/championship/index.tsx", { id: "archiv-index" }),
+        layout("routes/public/_overview-nav.tsx", { id: "archiv-overview" }, [
+          index("routes/public/championship/index.tsx", { id: "archiv-index" }),
+          ...overviewSiblingViews("archiv"),
+        ]),
         ...championshipViews("archiv"),
       ]),
     ]),
     route("login", "routes/public/login.tsx"),
     layout("routes/public/_championship-layout.tsx", [
-      // "/" keeps the site's own identity and switcher — no season-chrome bar.
-      index("routes/public/championship/index.tsx", { id: "current-index" }),
-      layout(
-        "routes/public/_championship-chrome.tsx",
-        { id: "current-chrome" },
-        championshipViews("current"),
-      ),
+      // "/" keeps the site's own identity and switcher — no season-chrome
+      // bar, but still the Übersicht/Tabelle/Verlauf rahmen (its own mount,
+      // since Tabelle/Verlauf below need the chrome this one doesn't).
+      layout("routes/public/_overview-nav.tsx", { id: "current-index-overview" }, [
+        index("routes/public/championship/index.tsx", { id: "current-index" }),
+      ]),
+      layout("routes/public/_championship-chrome.tsx", { id: "current-chrome" }, [
+        layout("routes/public/_overview-nav.tsx", { id: "current-overview" }, [
+          ...overviewSiblingViews("current"),
+        ]),
+        ...championshipViews("current"),
+      ]),
     ]),
     // Unmatched URLs render the 404 inside the public shell. Static siblings
     // (/manager, /logout, …) outrank the splat, so they are unaffected.
