@@ -103,6 +103,9 @@ export async function getArchivChampionshipBySlug(slug: string) {
 
 /**
  * Nearest lower/higher published championship by nr — null at the ends.
+ * Shared by both the running championship's chrome (`nr` of the latest one —
+ * `next` always resolves `null` there, no special-casing needed) and every
+ * archived one's.
  *
  * `published`, not `completed` — same visibility rule as
  * `getArchivChampionshipBySlug`. Filtering on `completed` here would break
@@ -110,7 +113,7 @@ export async function getArchivChampionshipBySlug(slug: string) {
  * by slug (published), so Prev could step off of it, but Next could never
  * step back onto it.
  */
-export async function getAdjacentArchivChampionships(nr: number) {
+export async function getAdjacentChampionships(nr: number) {
   const [prev, next] = await Promise.all([
     db.query.championships.findFirst({
       where: { nr: { lt: nr }, published: true },

@@ -18,10 +18,13 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
  * `viewedChampionshipContext` and never learn which branch rendered them, so a
  * new public feature is written once and appears in both.
  *
+ * The index view (the championship overview) is deliberately **not** in this
+ * list — each branch mounts it itself, since only the running one needs it
+ * pulled out from under `_championship-chrome.tsx` (see below).
+ *
  * See docs/decisions/05-championship-scope.md.
  */
 const championshipViews = (id: string) => [
-  index("routes/public/championship/index.tsx", { id: `${id}-index` }),
   route("regelwerk", "routes/public/championship/regelwerk.tsx", { id: `${id}-regelwerk` }),
   route("spiele", "routes/public/championship/spiele/index.tsx", { id: `${id}-spiele` }),
   route("spiele/:nr", "routes/public/championship/spiele/detail.tsx", { id: `${id}-match` }),
@@ -47,9 +50,25 @@ export default [
     // "turnier" segment reserves the rest of /archiv/* for siblings that
     // aren't a championship slug (e.g. a future /archiv/spieler/:playerSlug).
     route("archiv", "routes/public/archiv/index.tsx"),
-    route("archiv/turnier/:slug", "routes/public/archiv/_layout.tsx", championshipViews("archiv")),
+    route("archiv/turnier/:slug", "routes/public/archiv/_layout.tsx", [
+      // Unlike the running championship, an archived one has no competing
+      // "homepage" identity at its own index URL — so its overview sits
+      // inside the chrome along with the other six views, not carved out.
+      layout("routes/public/_championship-chrome.tsx", { id: "archiv-chrome" }, [
+        index("routes/public/championship/index.tsx", { id: "archiv-index" }),
+        ...championshipViews("archiv"),
+      ]),
+    ]),
     route("login", "routes/public/login.tsx"),
-    layout("routes/public/_championship-layout.tsx", championshipViews("current")),
+    layout("routes/public/_championship-layout.tsx", [
+      // "/" keeps the site's own identity and switcher — no season-chrome bar.
+      index("routes/public/championship/index.tsx", { id: "current-index" }),
+      layout(
+        "routes/public/_championship-chrome.tsx",
+        { id: "current-chrome" },
+        championshipViews("current"),
+      ),
+    ]),
     // Unmatched URLs render the 404 inside the public shell. Static siblings
     // (/manager, /logout, …) outrank the splat, so they are unaffected.
     route("*", "routes/public/_not-found.tsx"),
