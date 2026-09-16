@@ -19,7 +19,7 @@
     "@tipprunde/domain": "workspace:*",
     "@tipprunde/theme": "workspace:*",
     "@tipprunde/ui": "workspace:*",
-    "compression": "^1.8.1",
+    "compression": "^1.8.2",
     "drizzle-orm": "catalog:orm",
     "isbot": "^5.2.2",
     "lucide-react": "catalog:icons",
