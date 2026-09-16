@@ -369,10 +369,10 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
                 className={cx(
                   "transition-[stroke-width,opacity,color] duration-200 ease-out",
                   isFocus
-                    ? "text-accent [stroke-width:2.5]"
+                    ? "text-accent stroke-[2.5]"
                     : isLeader
-                      ? "text-app opacity-70 [stroke-width:2]"
-                      : "text-subtle opacity-30 [stroke-width:1.5]",
+                      ? "text-app opacity-70 stroke-2"
+                      : "text-subtle opacity-30 stroke-[1.5]",
                 )}
               />
             );
