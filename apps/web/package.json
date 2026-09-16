@@ -23,12 +23,14 @@
     "drizzle-orm": "catalog:orm",
     "isbot": "^5.2.2",
     "lucide-react": "catalog:icons",
+    "marked": "^18.0.13",
     "react": "catalog:react",
     "react-aria-components": "catalog:react",
     "react-dom": "catalog:react",
     "react-router": "^8.3.1",
     "sirv": "^3.0.2",
-    "valibot": "^1.5.0"
+    "valibot": "^1.5.0",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@react-aria/optimize-locales-plugin": "^2.0.2",

@@ -3,26 +3,32 @@ import { hasExtraQuestions } from "@tipprunde/domain/ranking";
 import { ChampionshipRegelwerk } from "#/components/championship-regelwerk.tsx";
 import { useChampionshipScope, useScopedPath } from "#/components/championship-scope.tsx";
 import { getPublicChampionships, getRuleset } from "#/lib/championship.server.ts";
+import { getTurnierComment } from "#/lib/content.server.ts";
 import { userContext, viewedChampionshipContext } from "#/lib/context.ts";
 import { getRanking } from "#/lib/ranking.server.ts";
 import { getCurrentMatches } from "#/lib/spiele.server.ts";
 
 import type { Route } from "./+types/index";
+import { ChampionshipComment } from "./_overview/comment.tsx";
 import { ChampionshipCurrentMatches } from "./_overview/current-matches.tsx";
 import { SectionLink } from "./_overview/section-link.tsx";
 import { ChampionshipStandings } from "./_overview/standings.tsx";
 import { ChampionshipSwitcher } from "./_switcher.tsx";
 
-export async function loader({ context }: Route.LoaderArgs) {
+export async function loader({ context, params }: Route.LoaderArgs) {
   // Non-null: the branch layout above throws when it cannot resolve one.
   const championship = context.get(viewedChampionshipContext)!;
   const user = context.get(userContext);
+  // Only the archiv branch of this twice-mounted route carries `:slug` —
+  // see routes.ts. The Stadionsenf comment only ever shows there.
+  const isArchived = params.slug !== undefined;
 
-  const [ranking, matches, ruleset, publicChampionships] = await Promise.all([
+  const [ranking, matches, ruleset, publicChampionships, comment] = await Promise.all([
     getRanking(championship.id),
     getCurrentMatches(championship.id),
     getRuleset(championship.id),
     getPublicChampionships(),
+    isArchived ? getTurnierComment(championship.slug) : Promise.resolve(null),
   ]);
 
   // Sorted nr desc — the first entry is the running championship, the only
@@ -45,13 +51,25 @@ export async function loader({ context }: Route.LoaderArgs) {
     ruleset,
     userId: user?.id,
     switcherChampionships,
+    comment,
   };
 }
 
 export default function ChampionshipOverview({ loaderData }: Route.ComponentProps) {
-  const { championship, ranking, matches, ruleset, userId, switcherChampionships } = loaderData;
+  const { championship, ranking, matches, ruleset, userId, switcherChampionships, comment } =
+    loaderData;
   const scoped = useScopedPath();
   const { isArchived } = useChampionshipScope();
+
+  const regelwerk = ruleset && (
+    <ChampionshipRegelwerk ruleset={ruleset}>
+      {hasExtraQuestions({ extraQuestionRuleId: ruleset.extraQuestionRuleId }) && (
+        <div className="mt-4 flex justify-end">
+          <SectionLink to={scoped("/zusatzfragen")}>Zusatzfragen →</SectionLink>
+        </div>
+      )}
+    </ChampionshipRegelwerk>
+  );
 
   return (
     <div className="mx-auto w-full max-w-4xl py-8">
@@ -99,16 +117,19 @@ export default function ChampionshipOverview({ loaderData }: Route.ComponentProp
             userId={userId}
           />
           <ChampionshipCurrentMatches matches={matches} completed={championship.completed} />
+          {/* A Stadionsenf comment claims the grid's second row — Kommentar
+              under the table, Regelwerk under Letzte Spiele — instead of the
+              centered block below. On a single column (small screens),
+              auto-flow stacks all four in this same DOM order: Tabelle,
+              Letzte Spiele, Kommentar, Regelwerk. */}
+          {comment && (
+            <>
+              <ChampionshipComment comment={comment} />
+              {regelwerk}
+            </>
+          )}
         </div>
-        {ruleset && (
-          <ChampionshipRegelwerk ruleset={ruleset}>
-            {hasExtraQuestions({ extraQuestionRuleId: ruleset.extraQuestionRuleId }) && (
-              <div className="mt-4 flex justify-end">
-                <SectionLink to={scoped("/zusatzfragen")}>Zusatzfragen →</SectionLink>
-              </div>
-            )}
-          </ChampionshipRegelwerk>
-        )}
+        {!comment && regelwerk}
       </div>
     </div>
   );

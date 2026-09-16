@@ -17,3 +17,81 @@
     transform: translateX(350%);
   }
 }
+
+/* Hand-rolled prose, not `@tailwindcss/typography`: the whole point is
+   reading off our own `--color-*` tokens instead of a second, parallel
+   gray-scale. `container-type: inline-size` makes the line length react to
+   the box's actual width (a grid cell some places, full column elsewhere),
+   not the viewport — a narrow container on a wide screen still gets the
+   narrow-container spacing. */
+.prose {
+  container-type: inline-size;
+  /* sand11, not sand12 — the theme's own comment calls this one out for
+     "prose / descriptions" by name, and it's what Regelwerk's <p> already
+     uses via the text-subtle utility. */
+  color: var(--text-color-subtle);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+}
+
+.prose > * + * {
+  margin-top: 1em;
+}
+
+.prose a {
+  color: var(--text-color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose strong {
+  color: var(--text-color-app);
+  font-weight: 600;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25em;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose li + li {
+  margin-top: 0.25em;
+}
+
+.prose blockquote {
+  border-left: 2px solid var(--border-color-subtle);
+  padding-left: 1em;
+  color: var(--text-color-subtle);
+}
+
+.prose code {
+  background-color: var(--background-color-control);
+  border-radius: 0.25em;
+  padding: 0.15em 0.35em;
+  font-size: 0.9em;
+}
+
+.prose h2,
+.prose h3 {
+  color: var(--text-color-app);
+  font-weight: 600;
+  margin-top: 1.5em;
+}
+
+/* Once the box is wide enough to not be a grid cell squeezed to half the
+   column (a full-width blog article, say), give the read a bit more room
+   instead of keeping the same tight measure that width was chosen for. */
+@container (min-width: 28rem) {
+  .prose {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
