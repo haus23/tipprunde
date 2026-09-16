@@ -1,8 +1,8 @@
-import { AppLink } from "#/components/app-link.tsx";
 import { getArchivChampionshipList, getEwigeTabelle } from "#/lib/archiv.server.ts";
 import { formatPoints } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/index";
+import { TournamentList } from "./_tournament-list.tsx";
 
 export async function loader() {
   const [championships, entries] = await Promise.all([
@@ -25,43 +25,13 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
 
       <div className="xs:px-6 flex flex-col gap-10 px-4">
         <section>
-          <h2 className="text-muted mb-3 text-xs font-medium tracking-wide uppercase">Turniere</h2>
+          <h2 className="text-muted mb-3 text-xs font-medium tracking-wide uppercase">
+            Turniere und Sieger
+          </h2>
           {championships.length === 0 ? (
             <p className="text-subtle text-base">Noch keine Turniere.</p>
           ) : (
-            <table className="w-full text-base">
-              <thead>
-                <tr className="text-muted border-subtle border-b text-xs tracking-wide uppercase">
-                  <th className="pb-1.5 text-left font-medium">Turnier</th>
-                  <th className="pr-3 pb-1.5 text-left font-medium">Sieger</th>
-                  <th className="pb-1.5 text-right font-medium">Punkte</th>
-                </tr>
-              </thead>
-              <tbody>
-                {championships.map((entry) => (
-                  <tr key={entry.slug} className="border-subtle border-b last:border-b-0">
-                    <td className="text-subtle py-2 pr-3 text-sm">
-                      <AppLink href={`/archiv/${entry.slug}`}>{entry.name}</AppLink>
-                    </td>
-                    <td className="py-2 pr-3">
-                      {entry.completed ? (
-                        entry.winners.map((w, i) => (
-                          <span key={w.slug}>
-                            {i > 0 && ", "}
-                            {w.name}
-                          </span>
-                        ))
-                      ) : (
-                        <span className="text-subtle italic">(laufend)</span>
-                      )}
-                    </td>
-                    <td className="py-2 text-right font-medium tabular-nums">
-                      {entry.winners[0] ? formatPoints(entry.winners[0].total) : "–"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <TournamentList championships={championships} />
           )}
         </section>
 
