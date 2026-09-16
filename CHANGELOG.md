@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.12.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.11.1...v1.12.0)
+
+### 🚀 Enhancements
+
+- Show a tournament's Stadionsenf comment on its Archiv overview ([7295dea](https://github.com/haus23/tipprunde/commit/7295dea))
+
+### 🩹 Fixes
+
+- Prose body text used the wrong contrast token ([4bed872](https://github.com/haus23/tipprunde/commit/4bed872))
+
 ## v1.11.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.11.0...v1.11.1)
