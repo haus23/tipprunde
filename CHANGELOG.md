@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.12.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.12.0...v1.12.1)
+
+### 🚀 Enhancements
+
+- Show the Stadionsenf comment on the running championship's homepage too ([e0a712f](https://github.com/haus23/tipprunde/commit/e0a712f))
+
+### 🏡 Chore
+
+- Bump Node to v24.21.0 ([96207d3](https://github.com/haus23/tipprunde/commit/96207d3))
+- Update dependencies (patch/minor, all uncritical) ([14f0b4b](https://github.com/haus23/tipprunde/commit/14f0b4b))
+
+### 🎨 Styles
+
+- Use Tailwind's stroke-width utilities in the bump chart ([2c6d653](https://github.com/haus23/tipprunde/commit/2c6d653))
+
 ## v1.12.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.11.1...v1.12.0)
