@@ -1,5 +1,6 @@
+import { cx } from "@tipprunde/ui";
 import { CheckIcon, ChevronsUpDownIcon, FoldersIcon, SearchIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Autocomplete,
   Button,
@@ -36,6 +37,31 @@ const normalize = (s: string) =>
     .toLowerCase();
 
 /**
+ * "bottom" is the default — reads as the expected dropdown shape, and "end"
+ * visibly reflows sideways as the list shrinks while filtering, which reads
+ * worse than "bottom" simply growing/shrinking downward. The one shape that
+ * still needs "end": a short landscape viewport (a phone on its side), where
+ * the trigger sits close enough to vertical centre that "bottom" and its
+ * auto-flip to "top" both run out of room after a match or two. 479px is
+ * the `xs` breakpoint (30rem, see tokens.md) used as a height threshold here,
+ * not a width one — this is about the short axis specifically.
+ */
+function usePopoverPlacement(): "bottom" | "end" {
+  const query = "(orientation: landscape) and (max-height: 479px)";
+  const [placement, setPlacement] = useState<"bottom" | "end">("bottom");
+
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    const update = () => setPlacement(mql.matches ? "end" : "bottom");
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
+
+  return placement;
+}
+
+/**
  * Season switcher next to the championship name — mirrors MatchSwitch /
  * PlayerSwitch (chevron-only trigger, Autocomplete popover). Search earns its
  * keep here specifically: the list only has 5 entries today, but two decades
@@ -55,6 +81,7 @@ const normalize = (s: string) =>
 export function ChampionshipSwitcher({ championships, currentSlug, triggerClassName }: Props) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const placement = usePopoverPlacement();
 
   return (
     <DialogTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
@@ -65,9 +92,19 @@ export function ChampionshipSwitcher({ championships, currentSlug, triggerClassN
         <ChevronsUpDownIcon className="size-4" />
       </Button>
       <Popover
-        placement="bottom"
+        placement={placement}
         offset={6}
-        className="border-subtle bg-surface-raised shadow-popover flex w-64 origin-top flex-col overflow-hidden rounded-md border transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0"
+        className={cx(
+          "border-subtle bg-surface-raised shadow-popover flex w-64 flex-col overflow-hidden rounded-md border transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0",
+          "data-[placement=bottom]:origin-top data-[placement=left]:origin-right data-[placement=right]:origin-left data-[placement=top]:origin-bottom",
+          // Fixed, not just capped: "end" centres vertically on the trigger,
+          // so a height that follows the filtered list's own length makes it
+          // visibly recentre — creep up, then back down — on every keystroke.
+          // "bottom" doesn't have this problem (its top edge stays put), so
+          // it keeps shrinking to fit. RAC's own collision-computed
+          // max-height still wins on a viewport too short even for this.
+          placement === "end" && "h-72",
+        )}
       >
         <Dialog aria-label="Turnier suchen" className="flex min-h-0 flex-1 flex-col outline-none">
           <Autocomplete
