@@ -42,8 +42,9 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 Public routes live at the root; the manager sits under `/manager`.
 
 The championship-scoped views below are mounted **twice** from one set of
-files — at the root for the running championship, and under `/archiv/:slug`
-for any other published one (see `05-championship-scope.md`):
+files — at the root for the running championship, and under
+`/archiv/turnier/:slug` for any other published one (see
+`05-championship-scope.md`):
 
 - `/` — Championship overview: standings, current matches, ruleset
 - `/tabelle` — Current/final table
@@ -127,6 +128,7 @@ Shared docs are in the root `docs/` folder.
 - `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, hand-rolled SVG
 - `07-observability.md` — Auth-event log, error and alert mails; why no Sentry, no IPs, and no rate limit yet
 - `08-import.md` — Import JSON schema, why a textarea over file upload, scaling options if payloads outgrow it
+- `10-archiv-navigation.md` — `archiv/turnier/:slug`, the shared season-chrome and Übersicht/Tabelle/Verlauf rahmen, switcher fixes
 
 ## Environment variables
 

@@ -2,11 +2,12 @@ import { createContext, useContext } from "react";
 
 /**
  * URL prefix of the championship currently in scope — `""` for the running one,
- * `"/archiv/<slug>"` for an archived one.
+ * `"/archiv/turnier/<slug>"` for an archived one.
  *
  * Set by whichever branch layout rendered the view. It exists so the shared
  * championship views can build links without knowing which branch they are
- * mounted under: the same file serves `/tabelle` and `/archiv/rr0304/tabelle`.
+ * mounted under: the same file serves `/tabelle` and
+ * `/archiv/turnier/rr0304/tabelle`.
  */
 const ChampionshipScopeContext = createContext<string | null>(null);
 
@@ -24,7 +25,7 @@ export function ChampionshipScopeProvider({
   );
 }
 
-/** The raw prefix — `""` for the running championship, `/archiv/<slug>` otherwise. */
+/** The raw prefix — `""` for the running championship, `/archiv/turnier/<slug>` otherwise. */
 export function useChampionshipScope() {
   const basePath = useContext(ChampionshipScopeContext);
   if (basePath === null) {
@@ -35,7 +36,7 @@ export function useChampionshipScope() {
 
 /**
  * Builds a path inside the championship in scope:
- * `scoped("/tabelle")` → `/tabelle` or `/archiv/rr0304/tabelle`.
+ * `scoped("/tabelle")` → `/tabelle` or `/archiv/turnier/rr0304/tabelle`.
  */
 export function useScopedPath() {
   const { basePath } = useChampionshipScope();
@@ -49,6 +50,6 @@ export function useScopedPath() {
  * the hooks. Keeps the URL shape in one place all the same.
  */
 export function championshipBasePath(pathname: string): string {
-  const match = pathname.match(/^\/archiv\/([^/]+)/);
-  return match ? `/archiv/${match[1]}` : "";
+  const match = pathname.match(/^\/archiv\/turnier\/([^/]+)/);
+  return match ? `/archiv/turnier/${match[1]}` : "";
 }

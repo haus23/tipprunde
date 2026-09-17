@@ -1,5 +1,28 @@
 # Changelog
 
+## v2.0.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v1.12.1...v2.0.0)
+
+### 🚀 Enhancements
+
+- Replace the Archiv tournament table with a scrollable list ([c44d033](https://github.com/haus23/tipprunde/commit/c44d033))
+- Übersicht/Tabelle/Verlauf rahmen — fast navigation between them (Problem 3) ([fd1d36f](https://github.com/haus23/tipprunde/commit/fd1d36f))
+
+### 🩹 Fixes
+
+- Pin the switcher's Archiv entry outside the filtered list ([3928225](https://github.com/haus23/tipprunde/commit/3928225))
+- Responsive popover placement for the switcher, short-landscape safe ([bb2384e](https://github.com/haus23/tipprunde/commit/bb2384e))
+
+### 💅 Refactors
+
+- Move archived championships under /archiv/turnier/:slug ([9276fed](https://github.com/haus23/tipprunde/commit/9276fed))
+- Unify the season-chrome layout across both championship branches ([c060780](https://github.com/haus23/tipprunde/commit/c060780))
+
+### 📖 Documentation
+
+- Close out the Archiv navigation backlog items, new decision record ([0e19352](https://github.com/haus23/tipprunde/commit/0e19352))
+
 ## v1.12.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.12.0...v1.12.1)
