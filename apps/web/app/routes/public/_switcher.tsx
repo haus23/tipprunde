@@ -41,10 +41,16 @@ const normalize = (s: string) =>
  * keep here specifically: the list only has 5 entries today, but two decades
  * of legacy seasons are still being imported (see docs/decisions/02-hosting-railway.md).
  *
- * Lives on the shared championship overview (championship/index.tsx), so it
- * appears once for the running season and once per archived one — the same
- * file, per docs/decisions/05-championship-scope.md. This is the only way in and out
- * of the Archiv; there is deliberately no header nav entry for it.
+ * Lives in the shared Übersicht/Tabelle/Verlauf rahmen (`_overview-nav.tsx`),
+ * root-only — see there for why. The season-chrome bar's own Archiv link
+ * covers every other view, so this is no longer the sole way in and out.
+ *
+ * "Archiv | Ewige Tabelle" is a fixed footer, not a `MenuItem` — it sits
+ * outside the `Autocomplete`'s filtered collection (same reasoning as the
+ * `SearchField` above it, already pinned outside the scrolling list): a
+ * `MenuItem` there would disappear on any search that doesn't match its own
+ * text, and — once the championship list is long — could scroll out of
+ * reach even unfiltered. A fixed row can do neither.
  */
 export function ChampionshipSwitcher({ championships, currentSlug, triggerClassName }: Props) {
   const navigate = useNavigate();
@@ -84,13 +90,14 @@ export function ChampionshipSwitcher({ championships, currentSlug, triggerClassN
               className="min-h-0 flex-1 overflow-auto p-1 outline-none"
               onAction={(key) => {
                 setIsOpen(false);
-                if (key === "__archiv") {
-                  void navigate("/archiv");
-                  return;
-                }
                 const target = championships.find((c) => c.slug === key);
                 if (target) void navigate(target.href);
               }}
+              renderEmptyState={() => (
+                <p className="text-subtle px-2.5 py-4 text-center text-sm">
+                  Kein Turnier gefunden.
+                </p>
+              )}
             >
               {championships.map((c) => (
                 <MenuItem
@@ -105,16 +112,20 @@ export function ChampionshipSwitcher({ championships, currentSlug, triggerClassN
                   {c.name}
                 </MenuItem>
               ))}
-              <MenuItem
-                id="__archiv"
-                textValue="Alle Turniere"
-                className="text-accent data-focused:bg-nav-active border-subtle mt-1 flex cursor-default items-center gap-2 rounded-sm border-t px-2.5 py-1.5 pt-2.5 text-sm outline-none select-none"
-              >
-                <FoldersIcon className="size-3.5 shrink-0" />
-                Alle Turniere
-              </MenuItem>
             </Menu>
           </Autocomplete>
+          <div className="border-subtle shrink-0 border-t p-1">
+            <Button
+              onPress={() => {
+                setIsOpen(false);
+                void navigate("/archiv");
+              }}
+              className="text-accent data-hovered:bg-nav-active data-focus-visible:ring-accent flex w-full cursor-default items-center gap-2 rounded-sm px-2.5 py-1.5 text-sm outline-none data-focus-visible:ring-2"
+            >
+              <FoldersIcon className="size-3.5 shrink-0" />
+              Archiv | Ewige Tabelle
+            </Button>
+          </div>
         </Dialog>
       </Popover>
     </DialogTrigger>
