@@ -1,7 +1,6 @@
 import {
   matches as matchesTable,
   roundPoints as roundPointsTable,
-  rounds as roundsTable,
   tips as tipsTable,
 } from "@tipprunde/db/schema";
 import {
