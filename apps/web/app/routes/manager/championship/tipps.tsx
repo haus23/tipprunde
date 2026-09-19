@@ -387,6 +387,13 @@ function TipGrid({
       if (currentRoundNr <= 3) return vorrundeJokerCount < 3 || currentlyChecked;
       return roundJokerCount === 0 || currentlyChecked;
     }
+    if (jokerRuleId === "zwei-joker-vorrunde-dann-einmal-pro-runde") {
+      // The Vorrunde here is round 1 alone (not split across several rounds
+      // like the WM's group stage), so the budget is simply that round's own
+      // roundJokerCount — no cross-round pooling needed.
+      if (currentRoundNr === 1) return roundJokerCount < 2 || currentlyChecked;
+      return roundJokerCount === 0 || currentlyChecked;
+    }
     return false;
   }
 

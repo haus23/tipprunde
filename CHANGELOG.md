@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.1.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v2.0.0...v2.1.0)
+
+### 🚀 Enhancements
+
+- Joker rule for two jokers in a single-round Vorrunde ([39636a4](https://github.com/haus23/tipprunde/commit/39636a4))
+
+### 🏡 Chore
+
+- Update oxlint-tsgolint to 7.0.2002 ([3a6d712](https://github.com/haus23/tipprunde/commit/3a6d712))
+- Update react-router, @types/node, lucide-react ([2d99667](https://github.com/haus23/tipprunde/commit/2d99667))
+
 ## v2.0.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v1.12.1...v2.0.0)
