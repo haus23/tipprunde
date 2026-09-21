@@ -16,7 +16,10 @@ postponed — see "View Transitions — postponed" below.
 Everything a user can reach from the header at max width:
 
 - **Home link** (logo) — leftmost, always visible
-- **Primary nav** — Tabelle · Spieler · Spiele
+- **Top-level nav** — Tipprunde · Stadionsenf (always visible, every width —
+  see [11-turnier-stadionsenf-routing.md](./decisions/11-turnier-stadionsenf-routing.md))
+- **Sub-nav** — Tabelle · Spieler · Spiele, shown only inside the Tipprunde
+  section (`/`, `/turnier`, `/turnier/:slug` and their views), hidden below `sm`
 - **Chat** — see "Chat as a layout citizen" below (not a header item on wide screens)
 - **Scheme control** — single control (see consolidation note)
 - **User menu / Login** — rightmost, always visible
@@ -44,9 +47,13 @@ Do not merge them into one "everything" menu; it muddies what the ⋯ means.
 
 ## Navigation
 
-Three short items (Tabelle · Spieler · Spiele) fit at every practical width, so
-there is **no overflow menu** — the nav is always fully visible. No ⋯ button, no
-duplicate rendering, no collapse logic.
+Two top-level items (Tipprunde · Stadionsenf) fit at every practical width and
+are always visible — no ⋯ button, no collapse logic for them. The
+Tabelle/Spieler/Spiele sub-nav, shown alongside them only inside the
+Tipprunde section, does **not** hold to that promise below `sm`: five items
+at once don't fit a narrow header, so it hides there rather than truncating
+or wrapping. Not a loss on narrow screens — the page itself repeats the same
+destinations as the Übersicht/Tabelle/Verlauf tabs and inline links.
 
 ## Chat as a layout citizen
 

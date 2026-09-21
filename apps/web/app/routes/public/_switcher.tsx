@@ -17,7 +17,7 @@ import { useNavigate } from "react-router";
 interface SwitchChampionship {
   slug: string;
   name: string;
-  /** "/" for the running championship, "/archiv/turnier/<slug>" otherwise. */
+  /** "/" for the running championship, "/turnier/<slug>" otherwise. */
   href: string;
 }
 

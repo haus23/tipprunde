@@ -12,18 +12,16 @@ const tabLinkClass =
 
 /**
  * The Übersicht/Tabelle/Verlauf trio's shared rahmen — title above, the
- * three tabs below, then whichever of the three is active. Mounted three
+ * three tabs below, then whichever of the three is active. Mounted **four**
  * times, same file each time (see routes.ts for why it can't be one mount):
- * around the running championship's own index (outside the season chrome,
- * since "/" keeps its own identity), around the running championship's
- * Tabelle/Verlauf (inside the season chrome), and around all three archived
- * views together (also inside its chrome — an archived championship has no
- * competing "homepage" identity at its own index to protect).
+ * around "/"'s own index (outside the season chrome, since "/" alone keeps
+ * the site's own identity), around "/"'s Tabelle/Verlauf and around the
+ * /turnier and /turnier/:slug branches' full trio, index included (inside
+ * their chrome each time — nothing to carve out there, only "/" is special).
  *
  * All three tabs always render, even the currently redundant "Übersicht" on
- * the running championship's own Tabelle/Verlauf (the header's home link
- * already reaches it) — deliberate, so the trio stays consistent if the
- * running championship's index ever stops being simply "/".
+ * a branch's own Tabelle/Verlauf (the header's home/Tipprunde links already
+ * reach it) — deliberate, so the trio stays consistent everywhere.
  */
 export async function loader({ context }: Route.LoaderArgs) {
   // Non-null: the branch layout above throws when it cannot resolve one.
@@ -31,12 +29,12 @@ export async function loader({ context }: Route.LoaderArgs) {
   const publicChampionships = await getPublicChampionships();
 
   // Sorted nr desc — the first entry is the running championship, the only
-  // one the switcher links to "/" rather than its /archiv/turnier/<slug>.
+  // one the switcher links to "/" rather than its /turnier/<slug>.
   const runningSlug = publicChampionships[0]?.slug;
   const switcherChampionships = publicChampionships.map((c) => ({
     slug: c.slug,
     name: c.name,
-    href: c.slug === runningSlug ? "/" : `/archiv/turnier/${c.slug}`,
+    href: c.slug === runningSlug ? "/" : `/turnier/${c.slug}`,
   }));
 
   return {

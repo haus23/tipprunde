@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
 import { marked } from "marked";
@@ -54,4 +54,76 @@ export async function getTurnierComment(slug: string): Promise<TurnierComment | 
     date: String(frontmatter.date ?? ""),
     html: await marked.parse(body.trim()),
   };
+}
+
+export type BlogPostSummary = {
+  slug: string;
+  title: string;
+  date: string;
+  championships: string[];
+};
+
+export type BlogPost = BlogPostSummary & { html: string };
+
+function parseBlogFrontmatter(
+  frontmatter: Record<string, unknown>,
+): Omit<BlogPostSummary, "slug"> | null {
+  // Skips a file with no (or empty) title — the stub content author habit of
+  // leaving a placeholder .md around while drafting, same directory as the
+  // real posts. Not an error, just not ready to list.
+  if (!frontmatter.title) return null;
+  if (frontmatter.draft && process.env.NODE_ENV === "production") return null;
+
+  return {
+    title: String(frontmatter.title),
+    date: String(frontmatter.date ?? ""),
+    championships: Array.isArray(frontmatter.championships)
+      ? frontmatter.championships.map(String)
+      : [],
+  };
+}
+
+/**
+ * The Stadionsenf blog — every post under `content/blog/*.md`, unlike
+ * `getTurnierComment` above (one fixed file, known slug). The filename minus
+ * `.md` is the slug. Newest first.
+ */
+export async function getBlogPosts(): Promise<BlogPostSummary[]> {
+  let filenames: string[];
+  try {
+    filenames = await readdir(path.join(CONTENT_DIR, "blog"));
+  } catch {
+    return [];
+  }
+
+  const posts = await Promise.all(
+    filenames
+      .filter((f) => f.endsWith(".md"))
+      .map(async (filename) => {
+        const raw = await readFile(path.join(CONTENT_DIR, "blog", filename), "utf-8");
+        const { frontmatter } = parseMarkdownFile(raw);
+        const parsed = parseBlogFrontmatter(frontmatter);
+        return parsed && { slug: filename.slice(0, -3), ...parsed };
+      }),
+  );
+
+  return posts
+    .filter((p): p is BlogPostSummary => p !== null)
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/** One Stadionsenf blog post by slug, with its rendered body. */
+export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  let raw: string;
+  try {
+    raw = await readFile(path.join(CONTENT_DIR, "blog", `${slug}.md`), "utf-8");
+  } catch {
+    return null;
+  }
+
+  const { frontmatter, body } = parseMarkdownFile(raw);
+  const parsed = parseBlogFrontmatter(frontmatter);
+  if (!parsed) return null;
+
+  return { slug, ...parsed, html: await marked.parse(body.trim()) };
 }

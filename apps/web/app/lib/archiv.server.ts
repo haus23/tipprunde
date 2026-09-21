@@ -88,16 +88,19 @@ export async function getEwigeTabelle() {
 }
 
 /**
- * A championship by slug, resolved once by the Archiv's layout route and
- * shared with its child routes via context — same pattern as
- * `_championship-layout.tsx`.
+ * A published championship by slug, resolved once by the /turnier/:slug
+ * layout route and shared with its child routes via context — same pattern
+ * as `_championship-layout.tsx`. Not `getChampionshipBySlug`
+ * (`championship.server.ts`) on purpose — that one is unfiltered, this one
+ * enforces the public visibility rule.
  *
  * `published`, not `completed`: visibility and "finished" are orthogonal
  * (see docs/decisions/05-championship-scope.md). The running championship is
- * reachable this way too — a harmless coincidence, not a special case to
- * guard against.
+ * reachable this way too — deliberately: /turnier and /turnier/<runningSlug>
+ * resolve the same championship, see
+ * docs/decisions/11-turnier-stadionsenf-routing.md.
  */
-export async function getArchivChampionshipBySlug(slug: string) {
+export async function getPublicChampionshipBySlug(slug: string) {
   return (await db.query.championships.findFirst({ where: { slug, published: true } })) ?? null;
 }
 
@@ -105,10 +108,10 @@ export async function getArchivChampionshipBySlug(slug: string) {
  * Nearest lower/higher published championship by nr — null at the ends.
  * Shared by both the running championship's chrome (`nr` of the latest one —
  * `next` always resolves `null` there, no special-casing needed) and every
- * archived one's.
+ * other one's.
  *
  * `published`, not `completed` — same visibility rule as
- * `getArchivChampionshipBySlug`. Filtering on `completed` here would break
+ * `getPublicChampionshipBySlug`. Filtering on `completed` here would break
  * the chain asymmetrically: the still-running championship stays reachable
  * by slug (published), so Prev could step off of it, but Next could never
  * step back onto it.

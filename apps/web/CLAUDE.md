@@ -41,10 +41,12 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 
 Public routes live at the root; the manager sits under `/manager`.
 
-The championship-scoped views below are mounted **twice** from one set of
-files — at the root for the running championship, and under
-`/archiv/turnier/:slug` for any other published one (see
-`05-championship-scope.md`):
+The championship-scoped views below are mounted **three times** from one set
+of files — at the root ("/") for the running championship, again under
+`/turnier` for it (transitional duplicate of "/", see
+`11-turnier-stadionsenf-routing.md`), and under `/turnier/:slug` for any
+published championship, current or archived alike (see
+`05-championship-scope.md`, `11-turnier-stadionsenf-routing.md`):
 
 - `/` — Championship overview: standings, current matches, ruleset
 - `/tabelle` — Current/final table
@@ -58,6 +60,9 @@ files — at the root for the running championship, and under
 Cross-championship, outside that scope:
 
 - `/archiv` — All published championships + all-time table
+- `/stadionsenf`, `/stadionsenf/:slug` — Blog (list, detail); the per-
+  championship "Stadionsenf" comment on `/`/`/turnier`/`/turnier/:slug` is a
+  separate, narrower content source (see `11-turnier-stadionsenf-routing.md`)
 - `/login` — TOTP login (two steps, intent-based action)
 - `/color-scheme`, `/logout` — action-only, shared by both shells
 - `/matchday-tips/:userId` — Resource route for the ranking table's popover
@@ -128,7 +133,8 @@ Shared docs are in the root `docs/` folder.
 - `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, hand-rolled SVG
 - `07-observability.md` — Auth-event log, error and alert mails; why no Sentry, no IPs, and no rate limit yet
 - `08-import.md` — Import JSON schema, why a textarea over file upload, scaling options if payloads outgrow it
-- `10-archiv-navigation.md` — `archiv/turnier/:slug`, the shared season-chrome and Übersicht/Tabelle/Verlauf rahmen, switcher fixes
+- `10-archiv-navigation.md` — the shared season-chrome and Übersicht/Tabelle/Verlauf rahmen, switcher fixes (route shape superseded by 11)
+- `11-turnier-stadionsenf-routing.md` — `/turnier` + `/turnier/:slug` merge (replaces `/archiv/turnier/:slug`), the Stadionsenf blog
 
 ## Environment variables
 
