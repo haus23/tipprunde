@@ -1,6 +1,7 @@
+import { cx } from "@tipprunde/ui";
 import { Link, Outlet, useLocation } from "react-router";
 
-import { useChampionshipScope, useScopedPath } from "#/components/championship-scope.tsx";
+import { useScopedPath } from "#/components/championship-scope.tsx";
 import { getPublicChampionships } from "#/lib/championship.server.ts";
 import { viewedChampionshipContext } from "#/lib/context.ts";
 
@@ -49,13 +50,12 @@ export async function loader({ context }: Route.LoaderArgs) {
 
 export default function OverviewNav({ loaderData }: Route.ComponentProps) {
   const { championship, switcherChampionships } = loaderData;
-  const { isArchived } = useChampionshipScope();
   const scoped = useScopedPath();
   const pathname = useLocation().pathname;
-  // Only "/" itself gets the site's rich identity block + switcher — "/tabelle"
-  // and "/verlauf" get the same plain name heading an archived championship's
-  // views do, so the trio looks uniform regardless of which tab is active.
-  const isHome = !isArchived && pathname === "/";
+  // Only "/" itself gets the site's rich identity block + switcher — every
+  // other view gets the same plain name heading, so the trio looks uniform
+  // regardless of which tab is active or which branch mounted it.
+  const isHome = pathname === "/";
 
   const tabs = [
     // matchNested only on Verlauf: its own route carries an optional
@@ -75,8 +75,10 @@ export default function OverviewNav({ loaderData }: Route.ComponentProps) {
     <div className="mx-auto w-full max-w-4xl py-8">
       {/* The site identity belongs to "/" alone; every other view here —
           Tabelle and Verlauf included, on either branch — gets the same
-          plain heading. */}
-      <div className="mb-6 flex flex-col items-center">
+          plain heading. From sm up the sticky championship row already
+          names the championship, so the heading stays for screen readers
+          only (sr-only, not hidden — the page keeps its h1). */}
+      <div className={cx("mb-6 flex flex-col items-center", !isHome && "sm:sr-only")}>
         {!isHome ? (
           <h1 className="text-2xl font-semibold tracking-tight">{championship.name}</h1>
         ) : (

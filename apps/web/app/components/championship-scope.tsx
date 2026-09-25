@@ -33,7 +33,7 @@ export function useChampionshipScope() {
   if (basePath === null) {
     throw new Error("useChampionshipScope must be used inside a ChampionshipScopeProvider");
   }
-  return { basePath, isArchived: basePath !== "" };
+  return { basePath };
 }
 
 /**

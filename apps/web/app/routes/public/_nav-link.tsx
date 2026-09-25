@@ -1,6 +1,15 @@
 import { cx } from "@tipprunde/ui";
 import { NavLink } from "react-router";
 
+/** The championship-level nav — relative to the scope's basePath. Rendered by
+ * the public header on narrow screens and by the championship chrome's
+ * sticky row from `sm` up. */
+export const championshipNavItems = [
+  { to: "/tabelle", label: "Tabelle" },
+  { to: "/tipps", label: "Spieler" },
+  { to: "/spiele", label: "Spiele" },
+] as const;
+
 /** Top-nav item for the public shell — underlined via the wrapper's border. */
 export function PublicNavLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (

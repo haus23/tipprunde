@@ -15,17 +15,11 @@ import { userContext } from "#/lib/context.ts";
 import type { loader as rootLoader } from "#/root.tsx";
 
 import type { Route } from "./+types/_layout";
-import { PublicNavLink } from "./_nav-link.tsx";
+import { PublicNavLink, championshipNavItems } from "./_nav-link.tsx";
 import { NavigationProgress } from "./_navigation-progress.tsx";
 import { UserArea } from "./_user-area.tsx";
 
-const navItems = [
-  { to: "/tabelle", label: "Tabelle" },
-  { to: "/tipps", label: "Spieler" },
-  { to: "/spiele", label: "Spiele" },
-] as const;
-
-const topLevelItems = [
+const siteNavItems = [
   { to: "/turnier/tabelle", label: "Tipprunde" },
   { to: "/stadionsenf", label: "Stadionsenf" },
 ] as const;
@@ -81,20 +75,28 @@ export function ErrorBoundary() {
 
 function PublicShell({ user, children }: { user: User | null; children: React.ReactNode }) {
   const pathname = useLocation().pathname;
-  // null outside any championship (/archiv, /stadionsenf, /login, 404) — the
-  // Tabelle/Spieler/Spiele sub-nav only makes sense inside one. "" (root) and
-  // "/turnier"/"/turnier/<slug>" all count as "inside".
+  // Two nav levels, never side by side: the site level (Tipprunde ·
+  // Stadionsenf) and the championship level (Tabelle · Spieler · Spiele).
+  // "/" belongs to the site level even while it still shows the running
+  // championship's overview. See docs/decisions/11-turnier-stadionsenf-routing.md.
   const basePath = championshipBasePath(pathname);
-  const isTipprundeActive = basePath !== null;
+  const inChampionship = basePath !== null && pathname !== "/";
   const isStadionsenfActive = pathname === "/stadionsenf" || pathname.startsWith("/stadionsenf/");
 
   return (
     <>
       <NavigationProgress />
       <div className="flex min-h-svh flex-col">
-        <header className="border-subtle bg-surface sticky top-0 z-10 h-14 border-b">
+        {/* Inside a championship from sm up, this row scrolls away and the
+            chrome's own championship row takes over as the sticky one. */}
+        <header
+          className={cx(
+            "border-subtle bg-surface sticky top-0 z-10 h-14 border-b",
+            inChampionship && "sm:static",
+          )}
+        >
           <div className="xs:px-4 mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center px-2">
-            {/* Left: home link */}
+            {/* Left: home link — one level up from the championship level */}
             <div className="col-start-1 flex items-center">
               <Link
                 to="/"
@@ -109,54 +111,50 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
                 </span>
               </Link>
             </div>
-            {/* Center: top-level nav (Tipprunde/Stadionsenf), plus the
-                Tabelle/Spieler/Spiele sub-nav only while inside the
-                Tipprunde section — active state computed explicitly rather
-                than via NavLink's own path matching, since "Tipprunde" must
-                stay highlighted across "/", "/turnier" and "/turnier/<slug>"
-                alike, not just literal descendants of its own href. */}
+            {/* Center: the site level — or, inside a championship on narrow
+                screens, the championship level in its place (same bar,
+                same height, only the items swap). Site-level active state is
+                explicit rather than NavLink's path matching: "Tipprunde"
+                links to /turnier/tabelle but stands for every championship
+                URL, "/turnier/<slug>" included. */}
             <nav className="col-start-2 flex h-full items-center justify-center gap-1">
-              {topLevelItems.map((item) => {
-                const isActive =
-                  item.label === "Tipprunde" ? isTipprundeActive : isStadionsenfActive;
-                return (
-                  <div
-                    key={item.to}
-                    className="has-aria-[current=page]:border-accent flex h-full items-center border-b-2 border-transparent"
-                  >
-                    <Link
-                      to={item.to}
-                      prefetch="intent"
-                      aria-current={isActive ? "page" : undefined}
-                      className={cx(
-                        "focus-visible:ring-accent hover:bg-nav-active hover:text-app rounded-sm px-3 py-1.5 text-sm font-medium transition ease-out outline-none focus-visible:ring-2",
-                        isActive ? "text-app" : "text-muted",
-                      )}
+              <div
+                className={cx(
+                  "h-full items-center gap-1",
+                  inChampionship ? "hidden sm:flex" : "flex",
+                )}
+              >
+                {siteNavItems.map((item) => {
+                  const isActive =
+                    item.label === "Tipprunde" ? inChampionship : isStadionsenfActive;
+                  return (
+                    <div
+                      key={item.to}
+                      className="has-aria-[current=page]:border-accent flex h-full items-center border-b-2 border-transparent"
                     >
-                      {item.label}
-                    </Link>
-                  </div>
-                );
-              })}
-              {/* Hidden below sm — five items at once don't fit a narrow
-                  header (the two-tier nav is new territory web-shell.md's
-                  "always visible, no overflow" didn't have to reckon with).
-                  Not a loss on narrow screens: the page itself repeats these
-                  as the Übersicht/Tabelle/Verlauf tabs and inline links. */}
-              {basePath !== null && (
-                <>
-                  <span
-                    className="border-subtle mx-1 hidden h-5 border-l sm:block"
-                    aria-hidden="true"
-                  />
-                  <span className="hidden items-center gap-1 sm:flex">
-                    {navItems.map((item) => (
-                      <PublicNavLink key={item.to} to={`${basePath}${item.to}`}>
+                      <Link
+                        to={item.to}
+                        prefetch="intent"
+                        aria-current={isActive ? "page" : undefined}
+                        className={cx(
+                          "focus-visible:ring-accent hover:bg-nav-active hover:text-app rounded-sm px-3 py-1.5 text-sm font-medium transition ease-out outline-none focus-visible:ring-2",
+                          isActive ? "text-app" : "text-muted",
+                        )}
+                      >
                         {item.label}
-                      </PublicNavLink>
-                    ))}
-                  </span>
-                </>
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>
+              {inChampionship && (
+                <div className="flex h-full items-center gap-1 sm:hidden">
+                  {championshipNavItems.map((item) => (
+                    <PublicNavLink key={item.to} to={`${basePath}${item.to}`}>
+                      {item.label}
+                    </PublicNavLink>
+                  ))}
+                </div>
               )}
             </nav>
             {/* Right: scheme + user */}

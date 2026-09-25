@@ -82,17 +82,30 @@ The header uses `null` to hide the Tabelle/Spieler/Spiele sub-nav entirely,
 and explicit boolean checks (not `NavLink`'s own path matching) to highlight
 "Tipprunde" across all three in-scope shapes at once.
 
-## Why the sub-nav gives up "always visible, no overflow" below `sm`
+## Two nav levels, one at a time
 
-`web-shell.md` documented the three-item primary nav as fitting every
-practical width, no overflow menu needed. Five items at once (two top-level
-plus three sub-nav) don't hold to that below `sm` — verified by hitting
-actual overlap in the browser at 375px. Rather than add overflow-menu
-machinery for a Stufe-1 change, the sub-nav simply hides below `sm`: the page
-itself already repeats the same three destinations as the
-Übersicht/Tabelle/Verlauf tabs plus inline "Vollständige Tabelle →" /
-"Komplette Übersicht →" links, so nothing becomes unreachable, only the
-header shortcut.
+A first pass put both levels side by side in one header row (Tipprunde ·
+Stadionsenf | Tabelle · Spieler · Spiele). It overflowed at 375px and shifted
+the header layout between sections. Replaced by a hierarchy: the site level
+and the championship level are never shown next to each other, the logo
+always leads one level up, and no hamburger menu. Details and per-breakpoint
+behaviour in [web-shell.md](../web-shell.md#navigation).
+
+Two consequences worth recording:
+
+- **The championship row names the championship.** The old header nav's
+  "Tabelle" never said _which_ championship's table it meant — it silently
+  belonged to the running one. The sticky row from `sm` up carries the name
+  on its left, so the nav always reads in context.
+- **The season-chrome bar moved into that row** from `sm` up (prev · Archiv ·
+  next as icons, full names in `title`), freeing the page from a second
+  navigation strip. Below `sm` there is no room in the single bar, so the old
+  in-flow bar stays there.
+
+The row lives in `_championship-chrome.tsx`, not the public header: that file
+already sits inside the championship scope with the championship and its
+neighbours loaded, while `_layout.tsx` sits above the provider and knows
+neither.
 
 ## Stadionsenf: one brand, two ausschnitte
 
