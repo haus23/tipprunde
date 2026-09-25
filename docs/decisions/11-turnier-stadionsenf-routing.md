@@ -102,9 +102,15 @@ comment (`content/turniere/<slug>.md`, shown as a "Stadionsenf" section on
 every championship's own Übersicht) — deliberately, not a naming collision.
 Both are fan commentary; the championship page shows only the one comment
 explicitly written for that tournament, `/stadionsenf` shows everything.
-Same brand, narrower vs. wider view, no technical merge of the two content
-sources — `getTurnierComment()` and `getBlogPosts()`/`getBlogPost()` stay
-separate functions in `content.server.ts`, reading separate directories.
+Same brand, narrower vs. wider view: `/stadionsenf` reads **both**
+directories as one stream (`getBlogPosts()`/`getBlogPost()`), so every
+turnier comment is also a blog article under `/stadionsenf/<championship
+slug>`, implicitly linked to its own championship. A turnier comment only
+appears there once its championship is published — same visibility rule as
+the championship itself. Blog posts and turnier comments share the
+`/stadionsenf/:slug` namespace, so a blog filename must never equal a
+championship slug (blog wins if it does). `getTurnierComment()` stays the
+by-slug lookup for the championship overview.
 
 A blog post's optional `championships: [slug, ...]` frontmatter field
 produces a forward link only (post → `/turnier/<slug>`) for this iteration —

@@ -1,11 +1,16 @@
 import { AppLink } from "#/components/app-link.tsx";
+import { getPublicChampionships } from "#/lib/championship.server.ts";
 import { getBlogPosts } from "#/lib/content.server.ts";
 import { formatDate } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/index";
 
 export async function loader() {
-  return { posts: await getBlogPosts() };
+  const [posts, championships] = await Promise.all([getBlogPosts(), getPublicChampionships()]);
+  // A turnier comment belongs to its championship's visibility — an
+  // unpublished championship's comment must not surface here first.
+  const published = new Set(championships.map((c) => c.slug));
+  return { posts: posts.filter((p) => p.source !== "turniere" || published.has(p.slug)) };
 }
 
 export default function StadionsenfIndex({ loaderData }: Route.ComponentProps) {

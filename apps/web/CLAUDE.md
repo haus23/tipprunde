@@ -60,9 +60,9 @@ published championship, current or archived alike (see
 Cross-championship, outside that scope:
 
 - `/archiv` — All published championships + all-time table
-- `/stadionsenf`, `/stadionsenf/:slug` — Blog (list, detail); the per-
-  championship "Stadionsenf" comment on `/`/`/turnier`/`/turnier/:slug` is a
-  separate, narrower content source (see `11-turnier-stadionsenf-routing.md`)
+- `/stadionsenf`, `/stadionsenf/:slug` — Blog (list, detail): `content/blog/`
+  plus every per-championship comment from `content/turniere/` (see
+  `11-turnier-stadionsenf-routing.md`)
 - `/login` — TOTP login (two steps, intent-based action)
 - `/color-scheme`, `/logout` — action-only, shared by both shells
 - `/matchday-tips/:userId` — Resource route for the ranking table's popover

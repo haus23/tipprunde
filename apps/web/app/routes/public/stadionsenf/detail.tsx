@@ -8,17 +8,24 @@ import { formatDate } from "#/lib/utils.ts";
 import type { Route } from "./+types/detail";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const post = await getBlogPost(params.slug);
-  if (!post) throw data("Beitrag nicht gefunden.", { status: 404 });
+  const [post, publicChampionships] = await Promise.all([
+    getBlogPost(params.slug),
+    getPublicChampionships(),
+  ]);
+  // Same visibility rule as the list: a turnier comment only exists
+  // publicly once its championship does.
+  if (
+    !post ||
+    (post.source === "turniere" && !publicChampionships.some((c) => c.slug === post.slug))
+  ) {
+    throw data("Beitrag nicht gefunden.", { status: 404 });
+  }
 
   // Forward link only, for v1: the post names its championships, not the
   // other way round — a championship page listing "related posts" would need
   // a full-directory scan on every championship view for a feature nobody
-  // has asked to see there yet.
-  const championships =
-    post.championships.length === 0
-      ? []
-      : (await getPublicChampionships()).filter((c) => post.championships.includes(c.slug));
+  // has asked to see there yet. A turnier comment names its own.
+  const championships = publicChampionships.filter((c) => post.championships.includes(c.slug));
 
   return { post, championships };
 }

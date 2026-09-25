@@ -58,6 +58,8 @@ export async function getTurnierComment(slug: string): Promise<TurnierComment | 
 
 export type BlogPostSummary = {
   slug: string;
+  /** "turniere" = a championship's own comment, slug = championship slug. */
+  source: "blog" | "turniere";
   title: string;
   date: string;
   championships: string[];
@@ -67,7 +69,7 @@ export type BlogPost = BlogPostSummary & { html: string };
 
 function parseBlogFrontmatter(
   frontmatter: Record<string, unknown>,
-): Omit<BlogPostSummary, "slug"> | null {
+): Omit<BlogPostSummary, "slug" | "source"> | null {
   // Skips a file with no (or empty) title — the stub content author habit of
   // leaving a placeholder .md around while drafting, same directory as the
   // real posts. Not an error, just not ready to list.
@@ -83,40 +85,18 @@ function parseBlogFrontmatter(
   };
 }
 
-/**
- * The Stadionsenf blog — every post under `content/blog/*.md`, unlike
- * `getTurnierComment` above (one fixed file, known slug). The filename minus
- * `.md` is the slug. Newest first.
- */
-export async function getBlogPosts(): Promise<BlogPostSummary[]> {
-  let filenames: string[];
-  try {
-    filenames = await readdir(path.join(CONTENT_DIR, "blog"));
-  } catch {
-    return [];
-  }
+// The Stadionsenf blog reads two directories as one stream: free posts in
+// `blog/`, and the per-championship comments in `turniere/` — the same
+// articles `getTurnierComment` shows on a championship's own overview. A
+// turnier comment is implicitly about its own championship (the filename is
+// the slug), so it gets that one as `championships` without needing the field.
+const SOURCES = ["blog", "turniere"] as const satisfies BlogPostSummary["source"][];
+type Source = BlogPostSummary["source"];
 
-  const posts = await Promise.all(
-    filenames
-      .filter((f) => f.endsWith(".md"))
-      .map(async (filename) => {
-        const raw = await readFile(path.join(CONTENT_DIR, "blog", filename), "utf-8");
-        const { frontmatter } = parseMarkdownFile(raw);
-        const parsed = parseBlogFrontmatter(frontmatter);
-        return parsed && { slug: filename.slice(0, -3), ...parsed };
-      }),
-  );
-
-  return posts
-    .filter((p): p is BlogPostSummary => p !== null)
-    .sort((a, b) => b.date.localeCompare(a.date));
-}
-
-/** One Stadionsenf blog post by slug, with its rendered body. */
-export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+async function readPost(source: Source, slug: string): Promise<BlogPost | null> {
   let raw: string;
   try {
-    raw = await readFile(path.join(CONTENT_DIR, "blog", `${slug}.md`), "utf-8");
+    raw = await readFile(path.join(CONTENT_DIR, source, `${slug}.md`), "utf-8");
   } catch {
     return null;
   }
@@ -125,5 +105,49 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   const parsed = parseBlogFrontmatter(frontmatter);
   if (!parsed) return null;
 
-  return { slug, ...parsed, html: await marked.parse(body.trim()) };
+  return {
+    slug,
+    source,
+    ...parsed,
+    championships: source === "turniere" ? [slug] : parsed.championships,
+    html: await marked.parse(body.trim()),
+  };
+}
+
+async function listSlugs(source: Source): Promise<string[]> {
+  try {
+    const filenames = await readdir(path.join(CONTENT_DIR, source));
+    return filenames.filter((f) => f.endsWith(".md")).map((f) => f.slice(0, -3));
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Every Stadionsenf article — blog posts and turnier comments alike —
+ * newest first. Turnier comments come back regardless of whether their
+ * championship is published; the caller filters, since that needs the DB.
+ */
+export async function getBlogPosts(): Promise<BlogPostSummary[]> {
+  const posts = await Promise.all(
+    SOURCES.flatMap(async (source) => {
+      const slugs = await listSlugs(source);
+      return Promise.all(slugs.map((slug) => readPost(source, slug)));
+    }),
+  );
+
+  return posts
+    .flat()
+    .filter((p): p is BlogPost => p !== null)
+    .map(({ html: _html, ...summary }) => summary)
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/**
+ * One Stadionsenf article by slug. Blog posts and turnier comments share the
+ * `/stadionsenf/:slug` namespace, so a blog filename must never equal a
+ * championship slug — blog wins if it ever does.
+ */
+export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  return (await readPost("blog", slug)) ?? (await readPost("turniere", slug));
 }
