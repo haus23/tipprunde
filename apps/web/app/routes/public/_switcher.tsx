@@ -17,7 +17,7 @@ import { useNavigate } from "react-router";
 interface SwitchChampionship {
   slug: string;
   name: string;
-  /** "/" for the running championship, "/turnier/<slug>" otherwise. */
+  /** "/turnier" for the running championship, "/turnier/<slug>" otherwise. */
   href: string;
 }
 
@@ -67,9 +67,8 @@ function usePopoverPlacement(): "bottom" | "end" {
  * keep here specifically: the list only has 5 entries today, but two decades
  * of legacy seasons are still being imported (see docs/decisions/02-hosting-railway.md).
  *
- * Lives in the shared Übersicht/Tabelle/Verlauf rahmen (`_overview-nav.tsx`),
- * root-only — see there for why. The season-chrome bar's own Archiv link
- * covers every other view, so this is no longer the sole way in and out.
+ * Lives on the homepage, next to the running championship's name. The
+ * season-chrome bar's own Archiv link covers every championship view.
  *
  * "Archiv | Ewige Tabelle" is a fixed footer, not a `MenuItem` — it sits
  * outside the `Autocomplete`'s filtered collection (same reasoning as the

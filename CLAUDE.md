@@ -78,7 +78,7 @@ is. Superseded, never quietly rewritten:**
 - `07-observability.md` — Auth-event log, error and alert mails; why no Sentry, no IPs, and no rate limit yet
 - `08-import.md` — Import JSON schema, why a textarea over file upload, scaling options if payloads outgrow it
 - `10-archiv-navigation.md` — the shared season-chrome and Übersicht/Tabelle/Verlauf rahmen, switcher fixes (route shape superseded by 11)
-- `11-turnier-stadionsenf-routing.md` — `/turnier` + `/turnier/:slug` merge (replaces `/archiv/turnier/:slug`), the Stadionsenf blog
+- `11-turnier-routing-homepage.md` — championships only under `/turnier` + `/turnier/:slug`, `/` as a module-based homepage, the Nachspielzeit; nav designs tried and dropped
 
 ## Skills
 

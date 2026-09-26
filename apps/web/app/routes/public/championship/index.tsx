@@ -1,7 +1,10 @@
 import { hasExtraQuestions } from "@tipprunde/domain/ranking";
 
+import { ChampionshipCurrentMatches } from "#/components/championship-current-matches.tsx";
 import { ChampionshipRegelwerk } from "#/components/championship-regelwerk.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
+import { ChampionshipStandings } from "#/components/championship-standings.tsx";
+import { SectionLink } from "#/components/section-link.tsx";
 import { getRuleset } from "#/lib/championship.server.ts";
 import { getTurnierComment } from "#/lib/content.server.ts";
 import { userContext, viewedChampionshipContext } from "#/lib/context.ts";
@@ -10,9 +13,6 @@ import { getCurrentMatches } from "#/lib/spiele.server.ts";
 
 import type { Route } from "./+types/index";
 import { ChampionshipComment } from "./_overview/comment.tsx";
-import { ChampionshipCurrentMatches } from "./_overview/current-matches.tsx";
-import { SectionLink } from "./_overview/section-link.tsx";
-import { ChampionshipStandings } from "./_overview/standings.tsx";
 
 export async function loader({ context }: Route.LoaderArgs) {
   // Non-null: the branch layout above throws when it cannot resolve one.

@@ -9,16 +9,12 @@ import type { Route } from "./+types/_layout";
 /**
  * Championship-by-slug branch of the shared views — scoped to whichever
  * published championship :slug names, current or archived alike. The other
- * two branches are `_championship-layout.tsx` (root, "/") and its /turnier
- * mount (see routes.ts); all three mount the same view files, see
- * docs/decisions/05-championship-scope.md and
- * docs/decisions/11-turnier-stadionsenf-routing.md.
+ * branch is `_championship-layout.tsx` at /turnier (always the running one);
+ * both mount the same view files, see docs/decisions/05-championship-scope.md
+ * and docs/decisions/11-turnier-routing-homepage.md.
  *
  * Renders no chrome of its own — the season-switching bar lives in
- * `_championship-chrome.tsx`, mounted below this for every view including
- * the index, since a championship reached this way (unlike "/") has no
- * competing "homepage" identity at its own index URL that would need it
- * carved out.
+ * `_championship-chrome.tsx`, mounted below this for every view.
  */
 const resolveChampionship: Route.MiddlewareFunction = async ({ params, context }) => {
   context.set(viewedChampionshipContext, await getPublicChampionshipBySlug(params.slug));

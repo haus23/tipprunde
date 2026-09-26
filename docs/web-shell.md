@@ -15,8 +15,8 @@ postponed — see "View Transitions — postponed" below.
 
 Everything a user can reach from the header at max width:
 
-- **Home link** (logo) — leftmost, always visible; one nav level up
-- **Nav** — one level at a time, see "Navigation" below
+- **Home link** (logo) — leftmost, always visible
+- **Primary nav** — Tabelle · Spieler · Spiele
 - **Chat** — see "Chat as a layout citizen" below (not a header item on wide screens)
 - **Scheme control** — single control (see consolidation note)
 - **User menu / Login** — rightmost, always visible
@@ -44,30 +44,9 @@ Do not merge them into one "everything" menu; it muddies what the ⋯ means.
 
 ## Navigation
 
-Two levels, **never side by side**, and no hamburger:
-
-- **Site level** — Tipprunde · Stadionsenf. On `/`, `/stadionsenf`, `/archiv`,
-  `/login`. "/" belongs here even while it still shows the running
-  championship's overview.
-- **Championship level** — Tabelle · Spieler · Spiele. On every championship
-  view below "/" (`/tabelle`, `/turnier`, `/turnier/:slug`, …).
-
-The logo always leads one level up, to "/". From a championship to the blog
-is two clicks — deliberate, and no more than a hamburger would cost.
-
-**Below `sm`:** one sticky bar, same height everywhere; inside a championship
-its center items simply swap to the championship level. Season switching
-(prev · Archiv · next) stays in the page flow under it.
-
-**From `sm` up:** the site row sits on top and scrolls away. Inside a
-championship, a slim sticky championship row follows (`_championship-chrome.tsx`):
-the championship's name on the left — the answer to "which Tabelle is this?"
-that the old always-on nav never gave —, its nav in the middle, season
-switching on the right. Once the site row has scrolled out, a small logo fades
-in ahead of the name to take over the way home.
-
-Each level holds at most three items, so every row fits every practical width
-— no ⋯ overflow menu needed.
+Three short items (Tabelle · Spieler · Spiele) fit at every practical width, so
+there is **no overflow menu** — the nav is always fully visible. No ⋯ button, no
+duplicate rendering, no collapse logic.
 
 ## Chat as a layout citizen
 

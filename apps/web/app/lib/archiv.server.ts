@@ -98,7 +98,7 @@ export async function getEwigeTabelle() {
  * (see docs/decisions/05-championship-scope.md). The running championship is
  * reachable this way too — deliberately: /turnier and /turnier/<runningSlug>
  * resolve the same championship, see
- * docs/decisions/11-turnier-stadionsenf-routing.md.
+ * docs/decisions/11-turnier-routing-homepage.md.
  */
 export async function getPublicChampionshipBySlug(slug: string) {
   return (await db.query.championships.findFirst({ where: { slug, published: true } })) ?? null;

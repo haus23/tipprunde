@@ -55,10 +55,10 @@ links championships but not players.
   one is cross-championship like `/archiv` itself, so it mounts once.
 - **The URL question needs a fresh look.** Championships now live under
   `/turnier/:slug`, not under `/archiv` at all (see
-  [11-turnier-stadionsenf-routing.md](./decisions/11-turnier-stadionsenf-routing.md)),
+  [11-turnier-routing-homepage.md](./decisions/11-turnier-routing-homepage.md)),
   so the old plan of nesting this as `archiv/spieler/:playerSlug?` no longer
   fits — `/archiv` is just the list + Ewige Tabelle now. A top-level
-  `/spieler/:playerSlug?`, alongside `/archiv` and `/stadionsenf`, is the
+  `/spieler/:playerSlug?`, alongside `/archiv` and `/nachspielzeit`, is the
   natural shape instead; not yet decided.
 
 ## Import payload cleanup — noticed in passing, not urgent

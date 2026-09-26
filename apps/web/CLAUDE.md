@@ -41,14 +41,14 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 
 Public routes live at the root; the manager sits under `/manager`.
 
-The championship-scoped views below are mounted **three times** from one set
-of files — at the root ("/") for the running championship, again under
-`/turnier` for it (transitional duplicate of "/", see
-`11-turnier-stadionsenf-routing.md`), and under `/turnier/:slug` for any
-published championship, current or archived alike (see
-`05-championship-scope.md`, `11-turnier-stadionsenf-routing.md`):
+The championship-scoped views below are mounted **twice** from one set of
+files — under `/turnier` for the running championship, and under
+`/turnier/:slug` for any published one, current or archived alike (see
+`05-championship-scope.md`, `11-turnier-routing-homepage.md`). Paths are
+relative to that prefix:
 
-- `/` — Championship overview: standings, current matches, ruleset
+- `/` — Championship overview: standings, current matches, Stadionsenf
+  comment, ruleset
 - `/tabelle` — Current/final table
 - `/spiele`, `/spiele/:nr` — Match overview (accordion) and per-match tips
 - `/tipps/:playerSlug?` — One player's tips (defaults to self, else rank 1)
@@ -59,10 +59,11 @@ published championship, current or archived alike (see
 
 Cross-championship, outside that scope:
 
+- `/` — Homepage: branding + season switcher, the running championship's
+  standings and current matches, the latest from the Nachspielzeit
 - `/archiv` — All published championships + all-time table
-- `/stadionsenf`, `/stadionsenf/:slug` — Blog (list, detail): `content/blog/`
-  plus every per-championship comment from `content/turniere/` (see
-  `11-turnier-stadionsenf-routing.md`)
+- `/nachspielzeit`, `/nachspielzeit/:slug` — Nachspielzeit: occasional
+  articles from `content/blog/` (list, detail)
 - `/login` — TOTP login (two steps, intent-based action)
 - `/color-scheme`, `/logout` — action-only, shared by both shells
 - `/matchday-tips/:userId` — Resource route for the ranking table's popover
@@ -134,7 +135,7 @@ Shared docs are in the root `docs/` folder.
 - `07-observability.md` — Auth-event log, error and alert mails; why no Sentry, no IPs, and no rate limit yet
 - `08-import.md` — Import JSON schema, why a textarea over file upload, scaling options if payloads outgrow it
 - `10-archiv-navigation.md` — the shared season-chrome and Übersicht/Tabelle/Verlauf rahmen, switcher fixes (route shape superseded by 11)
-- `11-turnier-stadionsenf-routing.md` — `/turnier` + `/turnier/:slug` merge (replaces `/archiv/turnier/:slug`), the Stadionsenf blog
+- `11-turnier-routing-homepage.md` — championships only under `/turnier` + `/turnier/:slug`, `/` as a module-based homepage, the Nachspielzeit; nav designs tried and dropped
 
 ## Environment variables
 

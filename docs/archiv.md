@@ -3,19 +3,18 @@
 The Archiv surfaces completed championships: a dashboard preview, a full list
 with an all-time table, and a final table per championship.
 
-> **Routing rebuilt (2026-08-18), route shape changed again (2026-09-22).**
+> **Routing rebuilt (2026-08-18), route shape changed again (2026-09-27).**
 > The Archiv has full parity with the current-season views (Zusatzfragen,
 > Tipps, Spiele) — the championship is a URL dimension, and the seven view
-> files under `routes/public/championship/` are mounted at `/`, `/turnier`
-> and once per `/turnier/:slug`, distinguished only by route id. The
-> dashboard is the shared per-championship overview; the Archiv sub-nav is
-> gone, replaced by the header nav plus a season switcher on the
-> championship name. See [05-championship-scope.md](./decisions/05-championship-scope.md),
+> files under `routes/public/championship/` are mounted under `/turnier`
+> (the running championship) and `/turnier/:slug` (any published one),
+> distinguished only by route id. See
+> [05-championship-scope.md](./decisions/05-championship-scope.md),
 > [10-archiv-navigation.md](./decisions/10-archiv-navigation.md) for the
 > navigation rebuild, and
-> [11-turnier-stadionsenf-routing.md](./decisions/11-turnier-stadionsenf-routing.md)
-> for the current `/turnier`/`/turnier/:slug` route shape (replaces the
-> `/archiv/turnier/:slug` shape 10 introduced) and the Stadionsenf blog.
+> [11-turnier-routing-homepage.md](./decisions/11-turnier-routing-homepage.md)
+> for the current route shape (replaces the `/archiv/turnier/:slug` shape 10
+> introduced).
 > **The routes described below are stale** — kept for the data design
 > (materialized ranking columns), which is unaffected and stays valid.
 

@@ -8,34 +8,27 @@ import { formatDate } from "#/lib/utils.ts";
 import type { Route } from "./+types/detail";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const [post, publicChampionships] = await Promise.all([
-    getBlogPost(params.slug),
-    getPublicChampionships(),
-  ]);
-  // Same visibility rule as the list: a turnier comment only exists
-  // publicly once its championship does.
-  if (
-    !post ||
-    (post.source === "turniere" && !publicChampionships.some((c) => c.slug === post.slug))
-  ) {
-    throw data("Beitrag nicht gefunden.", { status: 404 });
-  }
+  const post = await getBlogPost(params.slug);
+  if (!post) throw data("Beitrag nicht gefunden.", { status: 404 });
 
-  // Forward link only, for v1: the post names its championships, not the
-  // other way round — a championship page listing "related posts" would need
-  // a full-directory scan on every championship view for a feature nobody
-  // has asked to see there yet. A turnier comment names its own.
-  const championships = publicChampionships.filter((c) => post.championships.includes(c.slug));
+  // Forward link only: the article names its championships, not the other
+  // way round — a championship page listing "related articles" would need a
+  // full-directory scan on every championship view for a feature nobody has
+  // asked to see there yet.
+  const championships =
+    post.championships.length === 0
+      ? []
+      : (await getPublicChampionships()).filter((c) => post.championships.includes(c.slug));
 
   return { post, championships };
 }
 
-export default function StadionsenfDetail({ loaderData }: Route.ComponentProps) {
+export default function NachspielzeitDetail({ loaderData }: Route.ComponentProps) {
   const { post, championships } = loaderData;
 
   return (
     <div className="mx-auto w-full max-w-4xl py-8">
-      <title>{`${post.title} · Stadionsenf · runde.tips`}</title>
+      <title>{`${post.title} · Nachspielzeit · runde.tips`}</title>
       <div className="xs:px-6 mx-auto flex max-w-2xl flex-col gap-6 px-4">
         <div>
           <p className="text-muted mb-1 text-xs tracking-wide uppercase">{formatDate(post.date)}</p>
