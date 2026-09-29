@@ -48,6 +48,26 @@ No module framework: the modules are plain components
 sit in a `ChampionshipScopeProvider basePath="/turnier"`, so their links lead
 into the running championship like everywhere else.
 
+What moving the championships out buys: **the homepage is free.** It no
+longer has to double as a championship's overview, so it can take whatever
+modules make sense for the site as a whole — the Nachspielzeit teaser is the
+first, not the last.
+
+## Three ways into a championship
+
+Each entry has its own job, so none of them needs to do the others' work:
+
+- **The header nav** (Tabelle · Spieler · Spiele) — the everyday way in, always
+  into the championship in scope, the running one outside any.
+- **The season switcher** — the _special_ entry: straight into any
+  championship other than the running one. Prominent on the homepage only,
+  next to the running championship's name; inside a championship the season
+  chrome's prev/next already covers moving between neighbours.
+- **The Archiv** (`/archiv`) — the overview across all championships: the
+  list with winners as a direct way into any of them, the Ewige Tabelle, and
+  later per-player history (see `docs/backlog.md`). Its purpose is unchanged
+  by this decision; only its links now lead to `/turnier/<slug>`.
+
 ## Nachspielzeit — occasional articles, not a blog
 
 A few times a year there is something worth writing up (Regelkunde, the
