@@ -76,6 +76,12 @@ wildest Zusatzfragen, Wolfgang's odd match picks). These live in
 three on the homepage. An article's optional `championships: [slug, …]`
 frontmatter links forward to those championships.
 
+Articles sort by an optional `updated` date (falling back to `date`), not
+by `date`: an article that grows over time ("Fortsetzung folgt …") moves
+back to the top whenever it does. Both dates are kept, so "updated on" can be
+shown later without changing the content format. Stadionsenf comments have
+no `updated` — they are written once, after their championship ends.
+
 **Excerpts are set by hand:** a `<!-- more -->` line in the article marks
 where the teaser ends. Everything above it is rendered as the excerpt on
 `/nachspielzeit` (the homepage stays at titles); the full article shows it

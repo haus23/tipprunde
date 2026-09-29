@@ -69,7 +69,12 @@ export async function getTurnierComment(slug: string): Promise<TurnierComment | 
 export type BlogPostSummary = {
   slug: string;
   title: string;
+  /** When the article was first published. */
   date: string;
+  /** When it last changed substantially — `updated` in the frontmatter, else
+   * `date`. The Nachspielzeit sorts by this, so a continued article
+   * ("Fortsetzung folgt …") moves back to the top when it grows. */
+  updated: string;
   championships: string[];
   /** Everything above the `<!-- more -->` marker, rendered — null without one. */
   excerptHtml: string | null;
@@ -108,6 +113,7 @@ async function readPost(slug: string): Promise<BlogPost | null> {
     slug,
     title: String(frontmatter.title),
     date: String(frontmatter.date ?? ""),
+    updated: String(frontmatter.updated ?? frontmatter.date ?? ""),
     championships: Array.isArray(frontmatter.championships)
       ? frontmatter.championships.map(String)
       : [],
@@ -116,7 +122,7 @@ async function readPost(slug: string): Promise<BlogPost | null> {
   };
 }
 
-/** Every published article, newest first. */
+/** Every published article, most recently updated first. */
 export async function getBlogPosts(): Promise<BlogPostSummary[]> {
   let filenames: string[];
   try {
@@ -132,7 +138,7 @@ export async function getBlogPosts(): Promise<BlogPostSummary[]> {
   return posts
     .filter((p): p is BlogPost => p !== null)
     .map(({ html: _html, ...summary }) => summary)
-    .sort((a, b) => b.date.localeCompare(a.date));
+    .sort((a, b) => b.updated.localeCompare(a.updated));
 }
 
 /** One article by slug, with its rendered body. */
