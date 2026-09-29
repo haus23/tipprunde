@@ -76,6 +76,19 @@ wildest Zusatzfragen, Wolfgang's odd match picks). These live in
 three on the homepage. An article's optional `championships: [slug, …]`
 frontmatter links forward to those championships.
 
+**Excerpts are set by hand:** a `<!-- more -->` line in the article marks
+where the teaser ends. Everything above it is rendered as the excerpt on
+`/nachspielzeit` (the homepage stays at titles); the full article shows it
+all, the marker being an invisible HTML comment. Deliberately neither "first
+paragraph" nor truncation — a good teaser ends where the text says so, not
+where a rule guesses. Without a marker, an article lists by title only.
+
+**Every other HTML comment is a private author note** — a gap still to fill,
+an idea for later — inline where it belongs or as a block at the end. Notes
+are stripped before rendering, in the Nachspielzeit and the Stadionsenf
+comments alike. Stripping matters: `marked` passes raw HTML through, so a
+kept comment would be invisible on the page but readable in its source.
+
 The name: what comes on top of the actual game, no promise of a regular
 schedule — two articles a year feel right under it rather than abandoned. It
 pairs with "Stadionsenf", which stays the name of the per-championship

@@ -30,6 +30,16 @@ function parseMarkdownFile(raw: string): { frontmatter: Record<string, unknown>;
   return { frontmatter: parseYaml(frontmatterBlock) ?? {}, body };
 }
 
+// Every HTML comment in content is a private author note — a gap still to
+// fill, an idea for later — and is stripped before rendering. Stripping, not
+// just relying on comments being invisible: `marked` passes raw HTML through,
+// so a kept comment would be readable in the page source.
+const AUTHOR_NOTE = /<!--[\s\S]*?-->/g;
+
+function renderMarkdown(markdown: string) {
+  return marked.parse(markdown.replace(AUTHOR_NOTE, "").trim());
+}
+
 /**
  * Reads the "Stadionsenf" comment for one championship, if it exists —
  * `content/turniere/<slug>.md`. The filename *is* the championship slug, on
@@ -52,7 +62,7 @@ export async function getTurnierComment(slug: string): Promise<TurnierComment | 
   return {
     title: String(frontmatter.title ?? ""),
     date: String(frontmatter.date ?? ""),
-    html: await marked.parse(body.trim()),
+    html: await renderMarkdown(body),
   };
 }
 
@@ -61,9 +71,17 @@ export type BlogPostSummary = {
   title: string;
   date: string;
   championships: string[];
+  /** Everything above the `<!-- more -->` marker, rendered — null without one. */
+  excerptHtml: string | null;
 };
 
 export type BlogPost = BlogPostSummary & { html: string };
+
+// The author decides where the teaser ends, by putting this on a line of its
+// own — no automatic "first paragraph", no truncation. The one HTML comment
+// that isn't an author note: it is read before notes are stripped, and goes
+// with them.
+const EXCERPT_MARKER = /^<!--\s*more\s*-->\s*$/m;
 
 // Occasional articles (Regelkunde, Zusatzfragen, …) in `content/blog/`, the
 // filename minus `.md` as slug. Not the per-championship comments above —
@@ -84,6 +102,8 @@ async function readPost(slug: string): Promise<BlogPost | null> {
   if (!frontmatter.title) return null;
   if (frontmatter.draft && process.env.NODE_ENV === "production") return null;
 
+  const [intro, rest] = body.split(EXCERPT_MARKER, 2);
+
   return {
     slug,
     title: String(frontmatter.title),
@@ -91,7 +111,8 @@ async function readPost(slug: string): Promise<BlogPost | null> {
     championships: Array.isArray(frontmatter.championships)
       ? frontmatter.championships.map(String)
       : [],
-    html: await marked.parse(body.trim()),
+    excerptHtml: rest === undefined ? null : await renderMarkdown(intro),
+    html: await renderMarkdown(body),
   };
 }
 

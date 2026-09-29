@@ -16,7 +16,7 @@ export default function NachspielzeitIndex({ loaderData }: Route.ComponentProps)
       </div>
 
       <div className="xs:px-6 mx-auto max-w-2xl px-4">
-        <PostList posts={loaderData.posts} />
+        <PostList posts={loaderData.posts} withExcerpts />
       </div>
     </div>
   );

@@ -50,7 +50,8 @@ export async function loader({ context }: Route.LoaderArgs) {
     switcherChampionships,
     ranking,
     matches,
-    posts: posts.slice(0, LATEST_POSTS),
+    // Titles only here — no point shipping excerpts the teaser never shows.
+    posts: posts.slice(0, LATEST_POSTS).map((post) => ({ ...post, excerptHtml: null })),
     userId: context.get(userContext)?.id,
   };
 }
