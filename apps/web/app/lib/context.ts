@@ -14,9 +14,8 @@ export const championshipContext = createContext<Championship>();
 
 /**
  * The championship the public views are scoped to — the running one under
- * `/` or `/turnier`, any published one under `/turnier/:slug`. Set by
- * whichever branch layout matched, so the shared views below work
- * identically across all three.
+ * `/turnier`, any published one under `/turnier/:slug`. Set by whichever
+ * branch layout matched, so the shared views below work identically in both.
  *
  * Nullable only because middleware runs before the layout's loader can reject:
  * on a miss the layout loader throws, so the views may assert it non-null.
