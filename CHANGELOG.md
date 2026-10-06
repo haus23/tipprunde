@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.1.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.0.0...v3.1.0)
+
+### 🚀 Enhancements
+
+- Show Nachspielzeit excerpts on the homepage ([7b71ef2](https://github.com/haus23/tipprunde/commit/7b71ef2))
+
 ## v3.0.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v2.1.0...v3.0.0)
