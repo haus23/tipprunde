@@ -50,8 +50,7 @@ export async function loader({ context }: Route.LoaderArgs) {
     switcherChampionships,
     ranking,
     matches,
-    // Titles only here — no point shipping excerpts the teaser never shows.
-    posts: posts.slice(0, LATEST_POSTS).map((post) => ({ ...post, excerptHtml: null })),
+    posts: posts.slice(0, LATEST_POSTS),
     userId: context.get(userContext)?.id,
   };
 }
@@ -98,7 +97,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
         <section>
           <SectionHeading>Nachspielzeit</SectionHeading>
-          <PostList posts={posts} />
+          <PostList posts={posts} withExcerpts />
           <div className="mt-4 flex justify-end">
             <SectionLink to="/nachspielzeit">Mehr aus der Nachspielzeit →</SectionLink>
           </div>
