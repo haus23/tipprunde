@@ -5,7 +5,7 @@ updated: 2026-09-29
 draft: false
 ---
 
-Die Auswahl der Spiele in unseren Runden obliegt seit jeher dem Chef-Trainer unserer Runde – ein Titel, der nach deutlich mehr Videoanalyse klingt, als am Ende tatsächlich betrieben wurde. In der allerersten Runde (Hinrunde 2002/03) war Wolfgangs Matchplan denkbar simpel: alle Pflichtspiele von Energie Cottbus in der Bundesliga und im DFB-Pokal sowie alle Nationalmannschaftsspiele. Fertig, aus, Schlusspfiff.
+Die Auswahl der Spiele in unseren Runden obliegt seit jeher dem Chef-Trainer unserer Runde – ein Titel, der nach deutlich mehr Videoanalyse klingt, als am Ende tatsächlich betrieben wurde. In der allerersten Runde (Hinrunde 2002/03) war Wolfgangs Matchplan denkbar simpel: alle Pflichtspiele von Energie Cottbus in der Bundesliga und im DFB-Pokal sowie alle Nationalmannschaftsspiele. Fertig, aus, Schlusspfiff. Aber genau das änderte sich ...
 
 <!-- more -->
 
