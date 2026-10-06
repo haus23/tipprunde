@@ -1,10 +1,9 @@
 import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { SectionHeading } from "#/components/section-heading.tsx";
+import { SectionLink } from "#/components/section-link.tsx";
 import type { CurrentMatch } from "#/lib/spiele.server.ts";
 import { formatDate } from "#/lib/utils.ts";
-
-import { SectionLink } from "./section-link.tsx";
 
 export function ChampionshipCurrentMatches({
   matches,

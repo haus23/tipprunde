@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
 import { marked } from "marked";
@@ -30,6 +30,16 @@ function parseMarkdownFile(raw: string): { frontmatter: Record<string, unknown>;
   return { frontmatter: parseYaml(frontmatterBlock) ?? {}, body };
 }
 
+// Every HTML comment in content is a private author note — a gap still to
+// fill, an idea for later — and is stripped before rendering. Stripping, not
+// just relying on comments being invisible: `marked` passes raw HTML through,
+// so a kept comment would be readable in the page source.
+const AUTHOR_NOTE = /<!--[\s\S]*?-->/g;
+
+function renderMarkdown(markdown: string) {
+  return marked.parse(markdown.replace(AUTHOR_NOTE, "").trim());
+}
+
 /**
  * Reads the "Stadionsenf" comment for one championship, if it exists —
  * `content/turniere/<slug>.md`. The filename *is* the championship slug, on
@@ -52,6 +62,86 @@ export async function getTurnierComment(slug: string): Promise<TurnierComment | 
   return {
     title: String(frontmatter.title ?? ""),
     date: String(frontmatter.date ?? ""),
-    html: await marked.parse(body.trim()),
+    html: await renderMarkdown(body),
   };
+}
+
+export type BlogPostSummary = {
+  slug: string;
+  title: string;
+  /** When the article was first published. */
+  date: string;
+  /** When it last changed substantially — `updated` in the frontmatter, else
+   * `date`. The Nachspielzeit sorts by this, so a continued article
+   * ("Fortsetzung folgt …") moves back to the top when it grows. */
+  updated: string;
+  championships: string[];
+  /** Everything above the `<!-- more -->` marker, rendered — null without one. */
+  excerptHtml: string | null;
+};
+
+export type BlogPost = BlogPostSummary & { html: string };
+
+// The author decides where the teaser ends, by putting this on a line of its
+// own — no automatic "first paragraph", no truncation. The one HTML comment
+// that isn't an author note: it is read before notes are stripped, and goes
+// with them.
+const EXCERPT_MARKER = /^<!--\s*more\s*-->\s*$/m;
+
+// Occasional articles (Regelkunde, Zusatzfragen, …) in `content/blog/`, the
+// filename minus `.md` as slug. Not the per-championship comments above —
+// those stay on their championship's own overview.
+const BLOG_DIR = path.join(CONTENT_DIR, "blog");
+
+async function readPost(slug: string): Promise<BlogPost | null> {
+  let raw: string;
+  try {
+    raw = await readFile(path.join(BLOG_DIR, `${slug}.md`), "utf-8");
+  } catch {
+    return null;
+  }
+
+  const { frontmatter, body } = parseMarkdownFile(raw);
+  // Skips a file with no (or empty) title — a placeholder .md left around
+  // while drafting. Not an error, just not ready to list.
+  if (!frontmatter.title) return null;
+  if (frontmatter.draft && process.env.NODE_ENV === "production") return null;
+
+  const [intro, rest] = body.split(EXCERPT_MARKER, 2);
+
+  return {
+    slug,
+    title: String(frontmatter.title),
+    date: String(frontmatter.date ?? ""),
+    updated: String(frontmatter.updated ?? frontmatter.date ?? ""),
+    championships: Array.isArray(frontmatter.championships)
+      ? frontmatter.championships.map(String)
+      : [],
+    excerptHtml: rest === undefined ? null : await renderMarkdown(intro),
+    html: await renderMarkdown(body),
+  };
+}
+
+/** Every published article, most recently updated first. */
+export async function getBlogPosts(): Promise<BlogPostSummary[]> {
+  let filenames: string[];
+  try {
+    filenames = await readdir(BLOG_DIR);
+  } catch {
+    return [];
+  }
+
+  const posts = await Promise.all(
+    filenames.filter((f) => f.endsWith(".md")).map((f) => readPost(f.slice(0, -3))),
+  );
+
+  return posts
+    .filter((p): p is BlogPost => p !== null)
+    .map(({ html: _html, ...summary }) => summary)
+    .sort((a, b) => b.updated.localeCompare(a.updated));
+}
+
+/** One article by slug, with its rendered body. */
+export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  return readPost(slug);
 }

@@ -8,14 +8,6 @@ It serves **https://next.runde.tips** from the Railway production deployment. Th
 
 ## Commands
 
-All commands run from `apps/web` (or root with `pnpm --filter web`):
-
-```bash
-pnpm dev          # Start dev server (vite-plus)
-pnpm build        # Build for production
-pnpm typecheck    # Type-check files
-```
-
 Database commands:
 There are currently no commands for managing the database. That happens in another project.
 This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
@@ -42,11 +34,13 @@ This app reads and writes the DB with drizzle-orm. No drizzle-kit setup here.
 Public routes live at the root; the manager sits under `/manager`.
 
 The championship-scoped views below are mounted **twice** from one set of
-files — at the root for the running championship, and under
-`/archiv/turnier/:slug` for any other published one (see
-`05-championship-scope.md`):
+files — under `/turnier` for the running championship, and under
+`/turnier/:slug` for any published one, current or archived alike (see
+`05-championship-scope.md`, `11-turnier-routing-homepage.md`). Paths are
+relative to that prefix:
 
-- `/` — Championship overview: standings, current matches, ruleset
+- `/` — Championship overview: standings, current matches, Stadionsenf
+  comment, ruleset
 - `/tabelle` — Current/final table
 - `/spiele`, `/spiele/:nr` — Match overview (accordion) and per-match tips
 - `/tipps/:playerSlug?` — One player's tips (defaults to self, else rank 1)
@@ -57,25 +51,15 @@ files — at the root for the running championship, and under
 
 Cross-championship, outside that scope:
 
+- `/` — Homepage: branding + season switcher, the running championship's
+  standings and current matches, the latest from the Nachspielzeit
 - `/archiv` — All published championships + all-time table
+- `/nachspielzeit`, `/nachspielzeit/:slug` — Nachspielzeit: occasional
+  articles from `content/blog/` (list, detail)
 - `/login` — TOTP login (two steps, intent-based action)
 - `/color-scheme`, `/logout` — action-only, shared by both shells
 - `/matchday-tips/:userId` — Resource route for the ranking table's popover
-- `/manager` → redirects to latest championship or `/manager/start`
-- `/manager/start` — Onboarding (guides through initial ruleset setup)
-- `/manager/:slug` — Championship parent route (validates slug, sets championship context)
-- `/manager/:slug` (index) — Tournament overview: flags, rounds, enrolled players
-- `/manager/:slug/spiele/:nr?` — Match management
-- `/manager/:slug/tipps/:nr?` — Tip entry grid
-- `/manager/:slug/ergebnisse/:nr?` — Result entry and auto-scoring
-- `/manager/:slug/zusatzfragen` — Bonus/extra question points
-- `/manager/turniere` — Championship master data (CRUD)
-- `/manager/spieler` — User management (players, managers, admins)
-- `/manager/teams` — Team master data
-- `/manager/ligen` — League master data
-- `/manager/regelwerke` — Ruleset master data
-- `/manager/shell` — Action-only route (sidebar collapse cookie)
-- `/manager/*` — Catch-all rendering the 404 inside the manager shell
+- `/manager/…` — the management UI, see the `manager` block in `routes.ts`
 
 **Database layer** (`app/lib/db.server.ts`):
 
@@ -103,32 +87,6 @@ Cross-championship, outside that scope:
 - One fetcher per independently-savable row — never share a `useFetcher()` across a list (see `docs/decisions/04-app-merge.md` history and the grid routes)
 - Errors that should **render** are thrown from a loader, never from middleware — a `data()` thrown in middleware short-circuits as a raw response body and never reaches an `ErrorBoundary`. `redirect()` from middleware is fine.
 - Mount an `ErrorBoundary` on a **child** route, not on the layout whose chrome should survive the error — a layout-level boundary replaces that layout. Public 404s go through `public/_layout.tsx` + the `*` route, manager 404s through `manager/_not-found.tsx` and `manager/championship/_layout.tsx`.
-
-## Docs
-
-Shared docs are in the root `docs/` folder.
-
-**Reference — kept current as the code changes:**
-
-- `domain.md` — Domain model: championship/round feature flags, ruleset rule IDs, scoring chain logic
-- `theme.md` — Color system: Radix Sand/Orange tokens, `--color-*` CSS properties, Tailwind setup
-- `tokens.md` — Design tokens: breakpoints, easing, shadows, border-radius, typography scale
-- `deployment.md` — Railway service + environments, environment variables (full table), first-deploy bootstrap
-- `web-shell.md` — Public shell: header contents, nav strategy, planned chat panel
-- `archiv.md` — Archiv: the materialized ranking columns on `players` and what depends on them
-- `backlog.md` — Loose ends, grouped by what belongs in one branch (not an issue tracker)
-
-**Decisions (`docs/decisions/`) — dated records of why something is the way it is:**
-
-- `01-chat.md` — In-app chat: separate DB, WebSocket transport (not built)
-- `02-hosting-railway.md` — Railway hosting, custom Node server
-- `03-color-scheme.md` — Single-button light/dark switch spec
-- `04-app-merge.md` — How this app absorbed the separate web app (why things look the way they do)
-- `05-championship-scope.md` — Championship as a URL dimension, shared route files for Archiv + current season
-- `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, hand-rolled SVG
-- `07-observability.md` — Auth-event log, error and alert mails; why no Sentry, no IPs, and no rate limit yet
-- `08-import.md` — Import JSON schema, why a textarea over file upload, scaling options if payloads outgrow it
-- `10-archiv-navigation.md` — `archiv/turnier/:slug`, the shared season-chrome and Übersicht/Tabelle/Verlauf rahmen, switcher fixes
 
 ## Environment variables
 

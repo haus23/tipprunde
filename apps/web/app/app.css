@@ -86,12 +86,29 @@
   margin-top: 1.5em;
 }
 
+/* One step up from h3 (body size, bold) — in em, so it follows the prose's
+   own size (14px in a grid cell, 16px full width): 18px next to an article's
+   24px title, clearly between title and text. The extra top margin keeps the
+   bigger heading from crowding the paragraph above it. */
+.prose h2 {
+  font-size: 1.125em;
+  line-height: 1.35;
+  margin-top: 1.75em;
+}
+
 /* Once the box is wide enough to not be a grid cell squeezed to half the
    column (a full-width blog article, say), give the read a bit more room
    instead of keeping the same tight measure that width was chosen for. */
+/* Targets the children, not `.prose` itself: an element can't query its own
+   container size, so a rule on `.prose` in here would never match. */
 @container (min-width: 28rem) {
-  .prose {
+  .prose > * {
     font-size: 1rem;
     line-height: 1.6;
+  }
+
+  .prose > h2 {
+    font-size: 1.125rem;
+    line-height: 1.35;
   }
 }

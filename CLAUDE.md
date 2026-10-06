@@ -20,17 +20,9 @@ Related agent instructions:
 
 ### DB package (`packages/db`)
 
-In the `src` folder:
-
-- `schema.ts` — Drizzle table definitions (SQLite). Core entities: `users`, `sessions`, `totpCodes`, `championships`, `rounds`, `matches`, `teams`, `leagues`, `tips`, `players`, `rulesets`, `extraQuestions`, `extraAnswers`
-- `relations.ts` — Drizzle RQB v2 relations via `defineRelations`
-
-This package uses the drizzle-orm@1.0 package. So all code querying these schemas should use the Drizzle RQB v2 query syntax: object shorthand in `where` with operators (`in`, `gt`, `isNotNull`, etc.) — do not use v1 callback form
+This package uses the drizzle-orm@1.0 package. So all code querying its schema should use the Drizzle RQB v2 query syntax: object shorthand in `where` with operators (`in`, `gt`, `isNotNull`, etc.) — do not use v1 callback form
 
 ### Domain package (`packages/domain`)
-
-- `rules.ts` — Rule ID constants (tip rules, joker rules, match rules, round rules, extra question rules)
-- `scoring.ts` — `calcTipPoints(tip, result, tipRuleId, isDoubleRound, joker)` — returns `number | null` (null = no result yet, 0 = wrong tip)
 
 Test: `node --experimental-strip-types --test src/scoring.test.ts`
 
@@ -77,7 +69,8 @@ is. Superseded, never quietly rewritten:**
 - `06-verlauf-bump-chart.md` — Punkteverlauf as a bump chart, and the measurement that picked that form
 - `07-observability.md` — Auth-event log, error and alert mails; why no Sentry, no IPs, and no rate limit yet
 - `08-import.md` — Import JSON schema, why a textarea over file upload, scaling options if payloads outgrow it
-- `10-archiv-navigation.md` — `archiv/turnier/:slug`, the shared season-chrome and Übersicht/Tabelle/Verlauf rahmen, switcher fixes
+- `10-archiv-navigation.md` — the shared season-chrome and Übersicht/Tabelle/Verlauf rahmen, switcher fixes (route shape superseded by 11)
+- `11-turnier-routing-homepage.md` — championships only under `/turnier` + `/turnier/:slug`, `/` as a module-based homepage, the Nachspielzeit; nav designs tried and dropped
 
 ## Skills
 

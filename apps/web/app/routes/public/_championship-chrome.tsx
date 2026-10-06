@@ -13,11 +13,8 @@ const navLinkClass =
 
 /**
  * The season-switching bar — prev/next championship plus a way back to the
- * Archiv list. Mounted **twice**, same file both times: around the running
- * championship's non-home views, and around every archived championship's
- * views (index included — unlike the running one, an archived championship
- * has no competing "homepage" identity at its own index URL, so nothing
- * needs to be carved out there). Whichever branch mounted it already set
+ * Archiv list. Mounted twice, same file both times: around every view under
+ * /turnier and under /turnier/:slug. Whichever branch mounted it already set
  * `viewedChampionshipContext` and the `ChampionshipScopeProvider`, so this
  * file only reads them — it does not know or care which branch it is in.
  */
@@ -47,7 +44,7 @@ export default function ChampionshipChrome({ loaderData }: Route.ComponentProps)
       <div className="xs:px-0 mx-auto grid w-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 pt-8">
         {prev ? (
           <Link
-            to={`/archiv/turnier/${prev.slug}${rest}`}
+            to={`/turnier/${prev.slug}${rest}`}
             prefetch="intent"
             className={cx(navLinkClass, "min-w-0 max-w-[70%] text-sm")}
           >
@@ -71,7 +68,7 @@ export default function ChampionshipChrome({ loaderData }: Route.ComponentProps)
 
         {next ? (
           <Link
-            to={`/archiv/turnier/${next.slug}${rest}`}
+            to={`/turnier/${next.slug}${rest}`}
             prefetch="intent"
             className={cx(navLinkClass, "min-w-0 max-w-[70%] justify-end justify-self-end text-sm")}
           >

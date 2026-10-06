@@ -77,7 +77,8 @@ export function ErrorBoundary() {
 function PublicShell({ user, children }: { user: User | null; children: React.ReactNode }) {
   // The nav follows whichever championship is in scope, so browsing an archived
   // season stays in that season — the same way the manager sidebar keeps to
-  // /manager/:slug. Empty prefix outside any season (/archiv, /login, 404).
+  // /manager/:slug. Outside any season (/, /archiv, /login, 404) it points at
+  // the running one under /turnier.
   const basePath = championshipBasePath(useLocation().pathname);
 
   return (

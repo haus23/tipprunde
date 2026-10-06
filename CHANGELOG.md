@@ -1,5 +1,27 @@
 # Changelog
 
+## v3.0.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v2.1.0...v3.0.0)
+
+### 🚀 Enhancements
+
+- Unify /turnier + /turnier/:slug routing, add Stadionsenf blog ([e776558](https://github.com/haus23/tipprunde/commit/e776558))
+- Include turnier comments in the Stadionsenf blog ([9600f1a](https://github.com/haus23/tipprunde/commit/9600f1a))
+- Two-level public nav, one level at a time ([22ab7af](https://github.com/haus23/tipprunde/commit/22ab7af))
+- Real homepage, championships only under /turnier, Nachspielzeit ([97f9747](https://github.com/haus23/tipprunde/commit/97f9747))
+- Nachspielzeit excerpts, private author notes, prose type scale ([d442bef](https://github.com/haus23/tipprunde/commit/d442bef))
+- Sort Nachspielzeit articles by an optional updated date ([d8558fc](https://github.com/haus23/tipprunde/commit/d8558fc))
+
+### 📖 Documentation
+
+- Homepage freedom and the three ways into a championship ([42fcf94](https://github.com/haus23/tipprunde/commit/42fcf94))
+- Fix stale branch description on viewedChampionshipContext ([3137e99](https://github.com/haus23/tipprunde/commit/3137e99))
+
+### 🏡 Chore
+
+- Update Claude instructions. ([5021b96](https://github.com/haus23/tipprunde/commit/5021b96))
+
 ## v2.1.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v2.0.0...v2.1.0)
