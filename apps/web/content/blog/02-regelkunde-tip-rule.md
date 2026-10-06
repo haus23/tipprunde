@@ -1,12 +1,12 @@
 ---
 title: "Regelkunde: Punkte pro Tipp"
 date: 2026-10-06
-draft: true
+draft: false
 ---
 
 ## Drei, zwei oder eins: was richtig ist, zeigt euch gleich das Licht.
 
-Wie viele Punkte bringt ein Tipp? Eine Frage, die in jeder Tipprunde schneller beantwortet ist, als ein Elfmeter geschossen wird – dachten wir zumindest. Bei uns hat die Antwort eine kleine Geschichte: erst so einfach wie ein Bierdeckel, dann mit einer Feinheit, über die man ganze Stammtischabende streiten kann.
+Wie viele Punkte bringt ein Tipp? Eine Frage, die in jeder Tipprunde schneller beantwortet ist, als mancher Elfmeter geschossen wird – dachten wir zumindest. Bei uns hat die Antwort eine kleine Geschichte: erst so einfach wie ein Bierdeckel, dann mit einer Feinheit, über die man ganze Stammtischabende streiten kann.
 
 <!-- more -->
 
