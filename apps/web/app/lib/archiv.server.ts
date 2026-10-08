@@ -1,5 +1,5 @@
 import { championships, players, users } from "@tipprunde/db/schema";
-import { count, eq, sum } from "drizzle-orm";
+import { count, eq, sql, sum } from "drizzle-orm";
 
 import { db } from "./db.server";
 
@@ -63,6 +63,11 @@ export async function getEwigeTabelle() {
       name: users.name,
       totalPoints: sum(players.total),
       played: count(),
+      // Titles: only completed championships. `rank` is live-updated all
+      // season, so the running one would count a false win — the opposite of
+      // the points above, where provisional totals deliberately count. A
+      // shared first place counts for everyone who shares it.
+      wins: sql<number>`coalesce(sum(case when ${players.rank} = 1 and ${championships.completed} then 1 else 0 end), 0)`,
     })
     .from(players)
     .innerJoin(championships, eq(players.championshipId, championships.id))
@@ -76,6 +81,7 @@ export async function getEwigeTabelle() {
       name: r.name,
       totalPoints: Number(r.totalPoints ?? 0),
       played: r.played,
+      wins: Number(r.wins),
     }))
     .sort((a, b) => b.totalPoints - a.totalPoints || a.name.localeCompare(b.name, "de"));
 

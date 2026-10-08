@@ -83,7 +83,7 @@ Consequences, all of which the Archiv relies on:
 - Historical rankings are preserved with no extra work
 - One shape serves all three views:
   - **Dashboard preview / Turniere** — `WHERE rank = 1` per championship
-  - **Ewige Tabelle** — `SUM(total) GROUP BY userId ORDER BY SUM(total) DESC`
+  - **Ewige Tabelle** — `SUM(total) GROUP BY userId ORDER BY SUM(total) DESC`, plus a **Siege** column: the count of `rank = 1` rows in _completed_ championships (see `getEwigeTabelle`)
   - **Championship drill-down** — `WHERE championshipId = ?`
 
 Because the ranking is materialized, **a direct DB write that changes results
