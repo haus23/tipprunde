@@ -32,7 +32,7 @@ export default function NachspielzeitDetail({ loaderData }: Route.ComponentProps
       <div className="xs:px-6 mx-auto flex max-w-2xl flex-col gap-6 px-4">
         <div>
           <p className="text-muted mb-1 text-xs tracking-wide uppercase">{formatDate(post.date)}</p>
-          <h1 className="text-2xl font-semibold tracking-tight">{post.title}</h1>
+          <h1 className="poster-title text-3xl">{post.title}</h1>
         </div>
 
         {/* Markdown from our own repo, never user input — safe to inject. */}

@@ -31,7 +31,7 @@ export default function Spiele({ loaderData }: Route.ComponentProps) {
     <div className="mx-auto w-full max-w-4xl py-8">
       <title>{`Spiele · ${championshipName} · runde.tips`}</title>
       <div className="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
-        <h1 className="text-2xl font-semibold tracking-tight">Spielübersicht</h1>
+        <h1 className="poster-title text-3xl">Spielübersicht</h1>
         <p className="text-subtle text-sm">{championshipName}</p>
       </div>
 

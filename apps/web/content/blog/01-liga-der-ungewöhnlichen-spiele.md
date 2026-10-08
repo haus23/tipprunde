@@ -54,6 +54,14 @@ Und nun mit Frauen und Westfalen:
 - **Chemie Leipzig – Energie Cottbus II** (Oberliga, Gruß nach Leipzig)
 - **SF Warburg 08 – SuS Bad Westernkotten** (Landesliga Westfalen, Gruß an Christian M.)
 
+### Hinrunde 2007/08
+
+Die Regionalliga ist zurück, und mit ihr die zweite Mannschaft von Energie. Dazu ein Spiel von den Färöern, das sich in der Tipprunde nicht halten konnte:
+
+- **B71 Sandur – B36 Tórshavn** (Färöer, die Geschichte dazu steht im [Stadionsenf der Hinrunde](/turnier/hr0708). Am Ende kam das Spiel nicht in die Wertung)
+- **Energie Cottbus II – 1. FC Union Berlin** (Regionalliga Nord, Union mal wieder zu Gast)
+- **Dynamo Dresden – Energie Cottbus II** (Regionalliga Nord, und Dresden schon wieder)
+
 Fortsetzung folgt ...
 
 <!--

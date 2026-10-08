@@ -110,7 +110,7 @@ export default function Tipps({ loaderData }: Route.ComponentProps) {
       <title>{`${player.name} · ${championshipName} · runde.tips`}</title>
       <div className="xs:px-0 mb-6 flex flex-col items-center gap-2 px-4">
         <div className="flex items-center gap-1.5">
-          <h1 className="text-2xl font-semibold tracking-tight">{player.name}</h1>
+          <h1 className="poster-title text-3xl">{player.name}</h1>
           <PlayerSwitch players={players} currentSlug={player.slug} basePath="/tipps" />
         </div>
         <p className="text-subtle text-center text-sm leading-relaxed">

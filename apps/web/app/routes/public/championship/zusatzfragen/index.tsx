@@ -40,7 +40,7 @@ export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
     <div className="mx-auto w-full max-w-3xl py-8">
       <title>{`Zusatzfragen · ${championshipName} · runde.tips`}</title>
       <div className="mb-6 flex flex-col items-center gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">Zusatzfragen</h1>
+        <h1 className="poster-title text-3xl">Zusatzfragen</h1>
         <p className="text-subtle text-sm">{championshipName}</p>
       </div>
 

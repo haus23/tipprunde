@@ -1,11 +1,74 @@
 @import "tailwindcss";
 @source "../node_modules/@tipprunde/ui";
 @import "@tipprunde/theme";
+/* Latin subset only — covers German including umlauts; self-hosted, so Vite
+   hashes the font file and the immutable asset cache stays safe. */
+@import "@fontsource/anton/latin-400.css";
 
 @theme {
   /* Content body size — chrome (nav, captions, manager grids) stays text-sm. */
   --text-base: 0.875rem;
   --text-base--line-height: calc(1.25 / 0.875);
+
+  /* Condensed display face for the public site's titles, ranks and points. */
+  --font-display: "Anton", "Arial Narrow", sans-serif;
+
+  /* Leader's star on the public site. Decorative only (1.6:1 on cream) —
+     never the sole carrier of meaning. */
+  --text-color-gold: #e8b53a;
+}
+
+/* The public site's poster theme, as light-dark() pairs like the base theme:
+   cream, ink and red by day; warm ink black with cream text and a brighter red
+   by night. Set on <html> by root.tsx for everything outside /manager and
+   follows the user's own light/dark choice. Only the tokens that differ are
+   overridden; error colors and everything else fall through to the regular
+   theme. Contrast, light: ink 15.5:1, subtle 6.7:1, accent text 6.1:1, white on
+   the red surface 5.7:1. Dark: cream 15.5:1, subtle 8.0:1, accent text 5.6:1.
+   See docs/decisions/13-public-poster-theme.md. */
+[data-theme="poster"] {
+  --background-color-surface: light-dark(#f2e8d5, #15110e);
+  --background-color-surface-raised: light-dark(#ebdfc7, #1e1914);
+  --background-color-nav-active: light-dark(#e2d4b8, #2a231d);
+  --background-color-control: light-dark(#d8c8a8, #352c24);
+  --background-color-accent: #c82028;
+  --background-color-accent-hover: light-dark(#7a1418, #d62b33);
+  --background-color-accent-subtle: light-dark(#f3d4c8, #3a1619);
+  --background-color-inverted: light-dark(#15110e, #f2e8d5);
+
+  --text-color-app: light-dark(#15110e, #f2e8d5);
+  --text-color-subtle: light-dark(#5a4e40, #b5a892);
+  --text-color-accent: light-dark(#a81b22, #f1666a);
+  --text-color-inverted: light-dark(#f2e8d5, #15110e);
+
+  --border-color-subtle: light-dark(#b5a892, #3a3128);
+  --border-color-accent: light-dark(#c82028, #e0343b);
+  --ring-color-accent: light-dark(#c82028, #e0343b);
+
+  /* The browser's own scrollbar (page and inner scroll areas alike): stone
+     thumb on the surface instead of the default white or black track.
+     Inherited, so it also covers the switcher's list. */
+  scrollbar-color: light-dark(#b5a892, #4a4036) light-dark(#f2e8d5, #15110e);
+}
+
+/* Page titles on the public site: condensed display caps. Anton ships a
+   single weight — the 400 here stops a synthetic bold from `font-semibold`
+   elsewhere. The bar variant adds the red rule for centered titles. */
+.poster-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+}
+
+.poster-title-bar::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 0.25rem;
+  margin: 0.6rem auto 0;
+  background-color: var(--background-color-accent);
 }
 
 /* Indeterminate sweep for the top navigation progress bar. */

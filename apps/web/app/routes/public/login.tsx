@@ -216,7 +216,7 @@ export default function Login({ loaderData, actionData }: Route.ComponentProps) 
     <div className="mx-auto flex w-full max-w-sm flex-col px-4 py-12">
       <title>Anmelden · runde.tips</title>
       <div className="mb-6 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">Anmelden</h1>
+        <h1 className="poster-title text-3xl">Anmelden</h1>
         <p className="text-subtle mt-1 text-base">
           {step === "email"
             ? "Melde dich mit deiner E-Mail-Adresse an."

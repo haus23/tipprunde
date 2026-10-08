@@ -63,7 +63,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <title>runde.tips</title>
       <div className="mb-10 flex flex-col items-center">
         <p className="text-subtle text-xs tracking-widest uppercase">Haus23</p>
-        <h1 className="text-3xl font-semibold tracking-tight">Tipprunde</h1>
+        <h1 className="poster-title poster-title-bar text-4xl">Tipprunde</h1>
         {championship && (
           // relative + inline-block: the switcher trigger sits absolute,
           // outside the flow, so it can't push the name off-centre the way a

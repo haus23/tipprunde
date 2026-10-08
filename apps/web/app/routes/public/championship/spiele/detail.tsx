@@ -140,7 +140,7 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
         <div className="flex items-center gap-1.5">
           <h1
             className={cx(
-              "text-center text-2xl font-semibold tracking-tight",
+              "poster-title text-center text-3xl",
               match.excludedFromScoring && "text-subtle line-through",
             )}
           >

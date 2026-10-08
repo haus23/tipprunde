@@ -50,7 +50,7 @@ export function ErrorBoundary() {
     <PublicShell user={root?.user ?? null}>
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-center">
         <title>{isNotFound ? "Seite nicht gefunden · runde.tips" : "Fehler · runde.tips"}</title>
-        <h1 className="text-xl font-semibold">
+        <h1 className="poster-title text-2xl">
           {isNotFound ? "Seite nicht gefunden" : "Etwas ist schiefgelaufen"}
         </h1>
         <p className="text-subtle text-sm">
@@ -112,7 +112,9 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
             </nav>
             {/* Right: scheme + user */}
             <div className="col-start-3 flex items-center justify-end gap-1">
-              <ColorSchemeToggle />
+              {/* Same 32px square as its neighbours: the icon variant's padding
+                  trick would paint a 44px hover and focus box. */}
+              <ColorSchemeToggle className="m-0 size-8 p-0" />
               <UserArea user={user} />
             </div>
           </div>

@@ -75,18 +75,30 @@ export function RankingTable({
                 isCurrentUser && "bg-accent-subtle",
               )}
             >
-              <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-right tabular-nums">
+              {/* Podium ranks in the accent color, the leader with a star — the
+                  poster theme's one bit of decoration inside a table. */}
+              <td
+                className={cx(
+                  "font-display xs:px-3 xs:py-3 px-2 py-2 text-right text-xl leading-none tracking-[0.05em] tabular-nums",
+                  entry.rank <= 3 ? "text-accent" : "text-subtle",
+                )}
+              >
                 {sharesRankAbove ? "" : entry.rank}
               </td>
               <td className={cx("xs:px-3 xs:py-3 px-2 py-2", isCurrentUser && "font-medium")}>
                 <AppLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</AppLink>
+                {entry.rank === 1 && (
+                  <span aria-hidden="true" className="text-gold ml-1">
+                    ★
+                  </span>
+                )}
               </td>
               {showExtras && (
                 <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
                   {entry.extraQuestionPoints > 0 ? formatPoints(entry.extraQuestionPoints) : "–"}
                 </td>
               )}
-              <td className="xs:px-3 xs:py-3 px-2 py-2 text-center font-medium tabular-nums">
+              <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none tracking-[0.05em] tabular-nums">
                 <span className="relative inline-block">
                   {formatPoints(entry.total)}
                   {entry.roundPoints !== null && (
