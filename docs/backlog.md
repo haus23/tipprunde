@@ -23,24 +23,7 @@ chrome, the Übersicht/Tabelle/Verlauf rahmen, and the switcher's fixed
 footer. See
 [10-archiv-navigation.md](./decisions/10-archiv-navigation.md) for the why.
 
-Two items left, both parked for a later feature branch:
-
-### Wins column in the all-time table
-
-The all-time table is where a reader would look for "who actually won
-things", and today it only shows rank, name, points and games played.
-
-The data is one aggregate away — `getArchivChampionshipList()` already reads
-`players` at `rank: 1`. Two details to get right, both of which the existing
-code already knows about:
-
-- **Count only completed championships.** `rank` is live-updated all season, so
-  the running championship would contribute a false win.
-  `getEwigeTabelle()` deliberately does the opposite for points — provisional
-  totals count. The two aggregates would therefore disagree on which
-  championships they span, on purpose, and that is worth a comment at the site.
-- **Shared first places count for everyone who shares them** — `groupWinners()`
-  exists precisely because several players can hold `rank: 1`.
+One item left, parked for a later feature branch:
 
 ### Per-player results view — new
 
@@ -109,8 +92,8 @@ goes away.
 
 1. **Legacy imports** — running, championship by championship. Tracked outside
    the repo, not here.
-2. **Archiv** — navigation done; the wins column and per-player view remain,
-   on a later feature branch.
+2. **Archiv** — navigation and the wins column done; the per-player view
+   remains, on a later feature branch.
 3. **Chat** — last of the features, and knowingly.
 4. **Apex move** — when the history is in.
 

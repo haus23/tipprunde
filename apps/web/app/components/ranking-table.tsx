@@ -79,7 +79,7 @@ export function RankingTable({
                   poster theme's one bit of decoration inside a table. */}
               <td
                 className={cx(
-                  "font-display xs:px-3 xs:py-3 px-2 py-2 text-right text-xl leading-none tracking-[0.05em] tabular-nums",
+                  "font-display xs:px-3 xs:py-3 px-2 py-2 text-right text-xl leading-none tracking-wider tabular-nums",
                   entry.rank <= 3 ? "text-accent" : "text-subtle",
                 )}
               >
@@ -98,7 +98,7 @@ export function RankingTable({
                   {entry.extraQuestionPoints > 0 ? formatPoints(entry.extraQuestionPoints) : "–"}
                 </td>
               )}
-              <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none tracking-[0.05em] tabular-nums">
+              <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none tracking-wider tabular-nums">
                 <span className="relative inline-block">
                   {formatPoints(entry.total)}
                   {entry.roundPoints !== null && (

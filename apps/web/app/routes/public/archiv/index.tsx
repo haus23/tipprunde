@@ -48,6 +48,7 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                   <th className="w-px pr-3 pb-1.5 text-right font-medium">Platz</th>
                   <th className="pb-1.5 pl-3 text-left font-medium">Spieler</th>
                   <th className="w-px px-3 pb-1.5 text-center font-medium">Turniere</th>
+                  <th className="w-px px-3 pb-1.5 text-center font-medium">Siege</th>
                   <th className="w-px pb-1.5 pl-3 text-right font-medium">Punkte</th>
                 </tr>
               </thead>
@@ -62,6 +63,9 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                       <td className="py-2 pl-3">{entry.name}</td>
                       <td className="text-subtle w-px px-3 py-2 text-center tabular-nums">
                         {entry.played}
+                      </td>
+                      <td className="text-subtle w-px px-3 py-2 text-center tabular-nums">
+                        {entry.wins > 0 ? entry.wins : ""}
                       </td>
                       <td className="w-px py-2 pl-3 text-right font-medium tabular-nums">
                         {formatPoints(entry.totalPoints)}
