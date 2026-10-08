@@ -1,7 +1,7 @@
 // Single-button color-scheme switch, shared by both shells.
 // Three stored states (system / light / dark), only two ever shown.
 // See docs/decisions/03-color-scheme.md for the model and the state table.
-import { Button } from "@tipprunde/ui";
+import { Button, cx } from "@tipprunde/ui";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useFetcher } from "react-router";
 
@@ -23,7 +23,7 @@ function readSchemes(): { resolved: Resolved; system: Resolved } {
   return { resolved: stored === "system" ? system : stored, system };
 }
 
-export function ColorSchemeToggle() {
+export function ColorSchemeToggle({ className }: { className?: string }) {
   const fetcher = useFetcher();
 
   function toggle() {
@@ -48,7 +48,7 @@ export function ColorSchemeToggle() {
       onPress={toggle}
       // Only 4px from the user-area button on its right — cap that one side
       // so the expanded hit areas meet instead of overlapping (see button.tsx).
-      className="-mr-0.5 pr-2"
+      className={cx("-mr-0.5 pr-2", className)}
     >
       {/*
         Icon and label are CSS-driven on purpose: while "system" is stored the

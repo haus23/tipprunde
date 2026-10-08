@@ -58,8 +58,8 @@ variables. Do not switch it back to `inline`.
 
 The public site (everything outside `/manager`) overrides these tokens with
 a cream / ink / red palette under `[data-theme="poster"]` in
-`apps/web/app/app.css` — app-specific, so not in this package. Light only;
-the manager keeps Sand/Orange. Values, contrasts and scoping in
+`apps/web/app/app.css` — app-specific, so not in this package. Light and dark
+as `light-dark()` pairs; the manager keeps Sand/Orange. Values, contrasts and scoping in
 [13-public-poster-theme.md](./decisions/13-public-poster-theme.md).
 
 ## Enforcing the design system

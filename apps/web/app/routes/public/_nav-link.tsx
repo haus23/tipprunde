@@ -1,10 +1,10 @@
 import { cx } from "@tipprunde/ui";
 import { NavLink } from "react-router";
 
-/** Top-nav item for the public shell — underlined via the wrapper's border. */
+/** Top-nav item for the public shell — underlined via the wrapper's bottom border (the transparent top one keeps the link centered with its neighbours). */
 export function PublicNavLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (
-    <div className="has-aria-[current=page]:border-accent flex h-full items-center border-b-2 border-transparent">
+    <div className="has-aria-[current=page]:border-b-accent flex h-full items-center border-y-2 border-transparent">
       <NavLink
         to={to}
         prefetch="intent"

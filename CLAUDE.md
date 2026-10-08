@@ -71,7 +71,7 @@ is. Superseded, never quietly rewritten:**
 - `08-import.md` — Import JSON schema, why a textarea over file upload, scaling options if payloads outgrow it
 - `10-archiv-navigation.md` — the shared season-chrome and Übersicht/Tabelle/Verlauf rahmen, switcher fixes (route shape superseded by 11)
 - `11-turnier-routing-homepage.md` — championships only under `/turnier` + `/turnier/:slug`, `/` as a module-based homepage, the Nachspielzeit; nav designs tried and dropped
-- `13-public-poster-theme.md` — cream/ink/red theme + Anton for the public site only, light only; why `@theme` is not `inline`
+- `13-public-poster-theme.md` — cream/ink/red theme (light and dark) + Anton for the public site only; why `@theme` is not `inline`
 
 ## Skills
 

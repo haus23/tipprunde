@@ -37,13 +37,13 @@ export const meta: Route.MetaFunction = () => [{ tagName: "link", rel: "icon", h
 export function Layout({ children }: { children: React.ReactNode }) {
   const loaderData = useRouteLoaderData<typeof loader>("root");
   const { pathname } = useLocation();
-  // The public site wears the poster theme, light only for now; the manager
-  // keeps the regular theme and the user's own light/dark choice. Set here on
-  // <html> rather than in the public shell so <body>, the navigation progress
-  // bar and React Aria's portalled popovers are covered too. See
+  // The public site wears the poster theme (light and dark); the manager keeps
+  // the regular Sand/Orange one. Both follow the user's light/dark choice. Set
+  // here on <html> rather than in the public shell so <body>, the navigation
+  // progress bar and React Aria's portalled popovers are covered too. See
   // docs/decisions/13-public-poster-theme.md.
   const isManager = pathname === "/manager" || pathname.startsWith("/manager/");
-  const colorScheme = isManager ? (loaderData?.colorScheme ?? "system") : "light";
+  const colorScheme = loaderData?.colorScheme ?? "system";
 
   return (
     <html lang="de" data-color-scheme={colorScheme} data-theme={isManager ? undefined : "poster"}>

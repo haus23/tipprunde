@@ -7,10 +7,7 @@ Describes the header contents, the navigation strategy, and the planned chat
 panel's docked/drawer behaviour. Breakpoint _values_ live in
 [tokens.md](./tokens.md); this doc describes how the shell uses them.
 
-Built today: header, nav, user area. The color-scheme toggle left the public
-header with the light-only poster theme (see
-[13-public-poster-theme.md](./decisions/13-public-poster-theme.md)); it lives on
-in the manager, and the scheme notes below apply again if a poster dark mode comes. The chat panel is
+Built today: header, nav, color-scheme toggle, user area. The chat panel is
 planned — see [01-chat.md](./decisions/01-chat.md). View Transitions were considered and
 postponed — see "View Transitions — postponed" below.
 

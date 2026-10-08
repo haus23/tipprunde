@@ -18,52 +18,37 @@
   --text-color-gold: #e8b53a;
 }
 
-/* The public site's poster theme: cream, ink, red. Set on <html> by root.tsx
-   for everything outside /manager, together with a forced light scheme —
-   these are plain light values, no light-dark(). Only the tokens that differ
-   are overridden; error colors and everything else fall through to the
-   regular theme. Contrast on cream: ink 15.5:1, subtle 6.7:1, accent text
-   6.1:1, white on the red surface 5.7:1. See
-   docs/decisions/13-public-poster-theme.md. */
+/* The public site's poster theme, as light-dark() pairs like the base theme:
+   cream, ink and red by day; warm ink black with cream text and a brighter red
+   by night. Set on <html> by root.tsx for everything outside /manager and
+   follows the user's own light/dark choice. Only the tokens that differ are
+   overridden; error colors and everything else fall through to the regular
+   theme. Contrast, light: ink 15.5:1, subtle 6.7:1, accent text 6.1:1, white on
+   the red surface 5.7:1. Dark: cream 15.5:1, subtle 8.0:1, accent text 5.6:1.
+   See docs/decisions/13-public-poster-theme.md. */
 [data-theme="poster"] {
-  --background-color-surface: #f2e8d5;
-  --background-color-surface-raised: #ebdfc7;
-  --background-color-nav-active: #e2d4b8;
-  --background-color-control: #d8c8a8;
+  --background-color-surface: light-dark(#f2e8d5, #15110e);
+  --background-color-surface-raised: light-dark(#ebdfc7, #1e1914);
+  --background-color-nav-active: light-dark(#e2d4b8, #2a231d);
+  --background-color-control: light-dark(#d8c8a8, #352c24);
   --background-color-accent: #c82028;
-  --background-color-accent-hover: #7a1418;
-  --background-color-accent-subtle: #f3d4c8;
-  --background-color-inverted: #15110e;
+  --background-color-accent-hover: light-dark(#7a1418, #d62b33);
+  --background-color-accent-subtle: light-dark(#f3d4c8, #3a1619);
+  --background-color-inverted: light-dark(#15110e, #f2e8d5);
 
-  --text-color-app: #15110e;
-  --text-color-subtle: #5a4e40;
-  --text-color-accent: #a81b22;
-  --text-color-inverted: #f2e8d5;
+  --text-color-app: light-dark(#15110e, #f2e8d5);
+  --text-color-subtle: light-dark(#5a4e40, #b5a892);
+  --text-color-accent: light-dark(#a81b22, #f1666a);
+  --text-color-inverted: light-dark(#f2e8d5, #15110e);
 
-  --border-color-subtle: #b5a892;
-  --border-color-accent: #c82028;
-  --ring-color-accent: #c82028;
+  --border-color-subtle: light-dark(#b5a892, #3a3128);
+  --border-color-accent: light-dark(#c82028, #e0343b);
+  --ring-color-accent: light-dark(#c82028, #e0343b);
 
   /* The browser's own scrollbar (page and inner scroll areas alike): stone
-     thumb on the cream surface instead of the default white track. Inherited,
-     so it also covers the switcher's list. */
-  scrollbar-color: #b5a892 #f2e8d5;
-}
-
-/* An ink-black band inside the poster theme (the public header): the same
-   tokens, flipped, so everything inside — nav links, buttons, the user menu
-   trigger — reads light on dark without its own class changes. `muted` is
-   repeated because it was resolved from `subtle` up on <html>. Portalled
-   popovers sit outside and keep the cream look. Stone 8.0:1, red 5.6:1 on
-   ink. */
-[data-theme="poster"] .poster-ink {
-  --background-color-surface: #15110e;
-  --background-color-nav-active: #2a231d;
-  --text-color-app: #f2e8d5;
-  --text-color-subtle: #b5a892;
-  --text-color-muted: #b5a892;
-  --text-color-accent: #ef5a5f;
-  --border-color-subtle: #15110e;
+     thumb on the surface instead of the default white or black track.
+     Inherited, so it also covers the switcher's list. */
+  scrollbar-color: light-dark(#b5a892, #4a4036) light-dark(#f2e8d5, #15110e);
 }
 
 /* Page titles on the public site: condensed display caps. Anton ships a
