@@ -44,6 +44,21 @@ links championships but not players.
   `/spieler/:playerSlug?`, alongside `/archiv` and `/nachspielzeit`, is the
   natural shape instead; not yet decided.
 
+## Plakat design features — to think about
+
+The poster theme shipped with palette, Anton and a few details
+([13-public-poster-theme.md](./decisions/13-public-poster-theme.md)). What it
+left out on purpose is still open, and nothing here is decided yet: lines
+(rules, diagonals, thick frames), the logo's sunburst as a motif, stars as
+bullets, halftone textures.
+
+- **Where they belong:** show pages — homepage, a season's final table
+  (Ehrentafel), login, error pages. Not in tables or forms.
+- **How much is enough:** the red rule under the page titles is the only
+  such device so far, and the yardstick.
+- **Both modes:** anything added has to work in the dark variant too, not
+  just on cream.
+
 ## Import payload cleanup — noticed in passing, not urgent
 
 Two fields go into every `import.json` unconditionally null, verified against
@@ -97,6 +112,8 @@ goes away.
 3. **Chat** — last of the features, and knowingly.
 4. **Apex move** — when the history is in.
 
-**Import payload cleanup** and the **blog** are not in this order: the first
-only becomes worth doing if payload size ever actually bites, the second moves
-whenever there is something written.
+The **Plakat design features**, the **import payload cleanup** and the
+**blog** are not in this order: the design features move when there is
+appetite for them, the payload cleanup only becomes worth doing if payload
+size ever actually bites, and the blog moves whenever there is something
+written.

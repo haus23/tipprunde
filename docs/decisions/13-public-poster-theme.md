@@ -100,8 +100,20 @@ other UI text stay in the regular face.
 - Ranks 1–3 in red; a gold star next to the leader
 - The red rule under the main page titles
 
-Not in this iteration: poster motifs on show pages (homepage, a season's
-final table, a hall of fame), anything in the manager.
+Not in this iteration: anything in the manager, and the loud poster devices
+below.
+
+## Still open: poster design features
+
+The palette, the type and the details above carry the look. The genre's
+louder devices were left out on purpose and are **to be thought about, not
+decided** — lines (rules, diagonals, thick frames), the logo's sunburst as a
+motif, stars as bullets, halftone textures. The rule that came out of the
+first round: they belong on **show pages** — the homepage, a season's final
+table, a hall of fame, the login and error pages — and never in dense tables
+or forms, where they would cost legibility for nothing. The red rule under
+the page titles is the one such device already in; it is the yardstick for
+how much is enough. Collected in [backlog.md](../backlog.md).
 
 ## Tried and dropped
 
