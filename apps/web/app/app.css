@@ -1,11 +1,89 @@
 @import "tailwindcss";
 @source "../node_modules/@tipprunde/ui";
 @import "@tipprunde/theme";
+/* Latin subset only — covers German including umlauts; self-hosted, so Vite
+   hashes the font file and the immutable asset cache stays safe. */
+@import "@fontsource/anton/latin-400.css";
 
 @theme {
   /* Content body size — chrome (nav, captions, manager grids) stays text-sm. */
   --text-base: 0.875rem;
   --text-base--line-height: calc(1.25 / 0.875);
+
+  /* Condensed display face for the public site's titles, ranks and points. */
+  --font-display: "Anton", "Arial Narrow", sans-serif;
+
+  /* Leader's star on the public site. Decorative only (1.6:1 on cream) —
+     never the sole carrier of meaning. */
+  --text-color-gold: #e8b53a;
+}
+
+/* The public site's poster theme: cream, ink, red. Set on <html> by root.tsx
+   for everything outside /manager, together with a forced light scheme —
+   these are plain light values, no light-dark(). Only the tokens that differ
+   are overridden; error colors and everything else fall through to the
+   regular theme. Contrast on cream: ink 15.5:1, subtle 6.7:1, accent text
+   6.1:1, white on the red surface 5.7:1. See
+   docs/decisions/13-public-poster-theme.md. */
+[data-theme="poster"] {
+  --background-color-surface: #f2e8d5;
+  --background-color-surface-raised: #ebdfc7;
+  --background-color-nav-active: #e2d4b8;
+  --background-color-control: #d8c8a8;
+  --background-color-accent: #c82028;
+  --background-color-accent-hover: #7a1418;
+  --background-color-accent-subtle: #f3d4c8;
+  --background-color-inverted: #15110e;
+
+  --text-color-app: #15110e;
+  --text-color-subtle: #5a4e40;
+  --text-color-accent: #a81b22;
+  --text-color-inverted: #f2e8d5;
+
+  --border-color-subtle: #b5a892;
+  --border-color-accent: #c82028;
+  --ring-color-accent: #c82028;
+
+  /* The browser's own scrollbar (page and inner scroll areas alike): stone
+     thumb on the cream surface instead of the default white track. Inherited,
+     so it also covers the switcher's list. */
+  scrollbar-color: #b5a892 #f2e8d5;
+}
+
+/* An ink-black band inside the poster theme (the public header): the same
+   tokens, flipped, so everything inside — nav links, buttons, the user menu
+   trigger — reads light on dark without its own class changes. `muted` is
+   repeated because it was resolved from `subtle` up on <html>. Portalled
+   popovers sit outside and keep the cream look. Stone 8.0:1, red 5.6:1 on
+   ink. */
+[data-theme="poster"] .poster-ink {
+  --background-color-surface: #15110e;
+  --background-color-nav-active: #2a231d;
+  --text-color-app: #f2e8d5;
+  --text-color-subtle: #b5a892;
+  --text-color-muted: #b5a892;
+  --text-color-accent: #ef5a5f;
+  --border-color-subtle: #15110e;
+}
+
+/* Page titles on the public site: condensed display caps. Anton ships a
+   single weight — the 400 here stops a synthetic bold from `font-semibold`
+   elsewhere. The bar variant adds the red rule for centered titles. */
+.poster-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+}
+
+.poster-title-bar::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 0.25rem;
+  margin: 0.6rem auto 0;
+  background-color: var(--background-color-accent);
 }
 
 /* Indeterminate sweep for the top navigation progress bar. */

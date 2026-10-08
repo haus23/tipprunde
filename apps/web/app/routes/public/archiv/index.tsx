@@ -20,7 +20,7 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
     <div className="mx-auto w-full max-w-4xl py-8">
       <title>Archiv · runde.tips</title>
       <div className="mb-10 flex flex-col items-center gap-2">
-        <h1 className="text-3xl font-semibold tracking-tight">Archiv</h1>
+        <h1 className="poster-title poster-title-bar text-4xl">Archiv</h1>
       </div>
 
       <div className="xs:px-6 flex flex-col gap-10 px-4">

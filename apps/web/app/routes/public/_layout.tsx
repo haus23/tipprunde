@@ -9,7 +9,6 @@ import {
 } from "react-router";
 
 import { championshipBasePath } from "#/components/championship-scope.tsx";
-import { ColorSchemeToggle } from "#/components/color-scheme-toggle.tsx";
 import type { User } from "#/lib/context.ts";
 import { userContext } from "#/lib/context.ts";
 import type { loader as rootLoader } from "#/root.tsx";
@@ -50,7 +49,7 @@ export function ErrorBoundary() {
     <PublicShell user={root?.user ?? null}>
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-center">
         <title>{isNotFound ? "Seite nicht gefunden · runde.tips" : "Fehler · runde.tips"}</title>
-        <h1 className="text-xl font-semibold">
+        <h1 className="poster-title text-2xl">
           {isNotFound ? "Seite nicht gefunden" : "Etwas ist schiefgelaufen"}
         </h1>
         <p className="text-subtle text-sm">
@@ -85,7 +84,7 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
     <>
       <NavigationProgress />
       <div className="flex min-h-svh flex-col">
-        <header className="border-subtle bg-surface sticky top-0 z-10 h-14 border-b">
+        <header className="poster-ink border-subtle bg-surface text-app sticky top-0 z-10 h-14 border-b">
           <div className="xs:px-4 mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center px-2">
             {/* Left: home link */}
             <div className="col-start-1 flex items-center">
@@ -110,9 +109,8 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
                 </PublicNavLink>
               ))}
             </nav>
-            {/* Right: scheme + user */}
+            {/* Right: user */}
             <div className="col-start-3 flex items-center justify-end gap-1">
-              <ColorSchemeToggle />
               <UserArea user={user} />
             </div>
           </div>

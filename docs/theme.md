@@ -47,9 +47,24 @@ A derived color between two steps may be used for subtle distinctions. Semantic 
 
 `--background-color-inverted` (sand12) + `--text-color-inverted` (sand1) form an inverted pair for tooltips/toasts — a dark surface with light text in light mode, flipping in dark mode. Utilities: `bg-inverted` / `text-inverted`.
 
+### `@theme`, not `@theme inline`
+
+The block is a plain `@theme`, so utilities reference the variables
+(`.text-subtle { color: var(--text-color-subtle) }`) instead of baking the
+values in. That is what lets an app re-skin a subtree by overriding the
+variables. Do not switch it back to `inline`.
+
+## Public poster theme
+
+The public site (everything outside `/manager`) overrides these tokens with
+a cream / ink / red palette under `[data-theme="poster"]` in
+`apps/web/app/app.css` — app-specific, so not in this package. Light only;
+the manager keeps Sand/Orange. Values, contrasts and scoping in
+[13-public-poster-theme.md](./decisions/13-public-poster-theme.md).
+
 ## Enforcing the design system
 
-Tailwind's default color palette (`red-500`, `blue-100`, etc.) is disabled via `--color-*: initial` at the top of the `@theme inline {}` block. All color usage must go through the semantic tokens. Do not remove this line.
+Tailwind's default color palette (`red-500`, `blue-100`, etc.) is disabled via `--color-*: initial` at the top of the `@theme {}` block. All color usage must go through the semantic tokens. Do not remove this line.
 
 ## Reference Sand/Orange CSS colors
 

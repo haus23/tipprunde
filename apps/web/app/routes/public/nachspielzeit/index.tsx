@@ -12,7 +12,7 @@ export default function NachspielzeitIndex({ loaderData }: Route.ComponentProps)
     <div className="mx-auto w-full max-w-4xl py-8">
       <title>Nachspielzeit · runde.tips</title>
       <div className="mb-10 flex flex-col items-center gap-2">
-        <h1 className="text-3xl font-semibold tracking-tight">Nachspielzeit</h1>
+        <h1 className="poster-title poster-title-bar text-4xl">Nachspielzeit</h1>
       </div>
 
       <div className="xs:px-6 mx-auto max-w-2xl px-4">

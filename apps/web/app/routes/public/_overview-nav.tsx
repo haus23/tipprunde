@@ -44,7 +44,7 @@ export default function OverviewNav({ loaderData }: Route.ComponentProps) {
   return (
     <div className="mx-auto w-full max-w-4xl py-8">
       <div className="mb-6 flex flex-col items-center">
-        <h1 className="text-2xl font-semibold tracking-tight">{championship.name}</h1>
+        <h1 className="poster-title poster-title-bar text-3xl">{championship.name}</h1>
       </div>
 
       <div className="mb-6 flex items-center justify-center gap-4 text-sm">
