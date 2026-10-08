@@ -1,7 +1,7 @@
 ---
 title: "Liga der ungewöhnlichen Spiele"
 date: 2026-09-29
-updated: 2026-09-29
+updated: 2026-10-08
 draft: false
 ---
 
