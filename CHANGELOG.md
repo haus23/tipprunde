@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.2.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.1.0...v3.2.0)
+
+### 🚀 Enhancements
+
+- Poster theme for the public site ([0a611f0](https://github.com/haus23/tipprunde/commit/0a611f0))
+- Poster theme in light and dark, plain header ([a3ac158](https://github.com/haus23/tipprunde/commit/a3ac158))
+
 ## v3.1.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.0.0...v3.1.0)
