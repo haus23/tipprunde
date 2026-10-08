@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.3.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.2.0...v3.3.0)
+
+### 🚀 Enhancements
+
+- Wins column in the all-time table ([7b10e4d](https://github.com/haus23/tipprunde/commit/7b10e4d))
+
+### 💅 Refactors
+
+- Tracking-wider for rank and points digits ([0377f33](https://github.com/haus23/tipprunde/commit/0377f33))
+
 ## v3.2.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.1.0...v3.2.0)
