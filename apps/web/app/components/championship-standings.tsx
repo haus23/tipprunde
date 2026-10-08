@@ -33,7 +33,7 @@ export function ChampionshipStandings({
               <tr key={entry.userId} className="border-subtle border-b last:border-b-0">
                 {/* Every row here is a podium place — accent color throughout,
                     the leader with a star. */}
-                <td className="font-display text-accent w-px py-2 pr-3 text-right text-xl leading-none tracking-[0.05em] tabular-nums">
+                <td className="font-display text-accent w-px py-2 pr-3 text-right text-xl leading-none tracking-wider tabular-nums">
                   {sharesRankAbove ? "" : entry.rank}
                 </td>
                 <td className={`py-2 ${isUser ? "font-medium" : ""}`}>
@@ -44,7 +44,7 @@ export function ChampionshipStandings({
                     </span>
                   )}
                 </td>
-                <td className="font-display py-2 text-right text-xl leading-none tracking-[0.05em] tabular-nums">
+                <td className="font-display py-2 text-right text-xl leading-none tracking-wider tabular-nums">
                   {formatPoints(entry.total)}
                 </td>
               </tr>
@@ -61,7 +61,7 @@ export function ChampionshipStandings({
               </tr>
             )}
             <tr className="border-subtle border-t">
-              <td className="font-display text-subtle w-px py-2 pr-3 text-right text-xl leading-none tracking-[0.05em] tabular-nums">
+              <td className="font-display text-subtle w-px py-2 pr-3 text-right text-xl leading-none tracking-wider tabular-nums">
                 {userBelowTop3.rank}
               </td>
               <td className="py-2 font-medium">
@@ -69,7 +69,7 @@ export function ChampionshipStandings({
                   {userBelowTop3.name}
                 </AppLink>
               </td>
-              <td className="font-display py-2 text-right text-xl leading-none tracking-[0.05em] tabular-nums">
+              <td className="font-display py-2 text-right text-xl leading-none tracking-wider tabular-nums">
                 {formatPoints(userBelowTop3.total)}
               </td>
             </tr>
