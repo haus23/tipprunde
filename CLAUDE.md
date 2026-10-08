@@ -71,6 +71,7 @@ is. Superseded, never quietly rewritten:**
 - `08-import.md` — Import JSON schema, why a textarea over file upload, scaling options if payloads outgrow it
 - `10-archiv-navigation.md` — the shared season-chrome and Übersicht/Tabelle/Verlauf rahmen, switcher fixes (route shape superseded by 11)
 - `11-turnier-routing-homepage.md` — championships only under `/turnier` + `/turnier/:slug`, `/` as a module-based homepage, the Nachspielzeit; nav designs tried and dropped
+- `12-public-app-split.md` — Future idea (not decided, not planned): framework-free public site — as a Cloudflare Worker reading published JSON, or beside the app in the same Node server; the app keeps writes and login
 - `13-public-poster-theme.md` — cream/ink/red theme (light and dark) + Anton for the public site only; why `@theme` is not `inline`
 
 ## Skills

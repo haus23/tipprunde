@@ -1,11 +1,19 @@
 # Public App Split — a Separate, Framework-Free Public Site
 
-**Status: idea (2026-09-29). Not decided, not started.** A thought experiment
-about a different architecture, written down so it can be picked up later.
-It is deliberately **separate from the existing app**: nothing here changes
-how `apps/web` works today, and how it would relate to the current web-shell
-plan or [11-turnier-routing-homepage.md](./11-turnier-routing-homepage.md) is
-left open on purpose.
+**Status: future idea (written 2026-09-29, kept as a record).** Not
+decided, not planned, not started — and nothing in the roadmap depends on
+it. A thought experiment about a different architecture, written down so it
+can be picked up later, or dropped. It is deliberately **separate from the
+existing app**: nothing here changes how `apps/web` works today, and how it
+would relate to the current web-shell plan or
+[11-turnier-routing-homepage.md](./11-turnier-routing-homepage.md) is left
+open on purpose.
+
+**Since then (2026-10-08):** the public site got its poster theme
+([13-public-poster-theme.md](./13-public-poster-theme.md)) inside the React
+app. Its tokens are plain CSS variables and Anton is a self-hosted font, so a
+framework-free public site could carry the look over — but it would have to
+reimplement the light/dark switch and the `data-theme` scoping.
 
 ## Why think about it at all
 
