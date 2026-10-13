@@ -54,11 +54,11 @@ repeat `muted` too.
 
 | Role           | Light     | Dark      | Contrast (light / dark)                  |
 | -------------- | --------- | --------- | ---------------------------------------- |
-| Surface        | `#F2E8D5` | `#15110E` | cream / warm ink                         |
-| Raised, hover  | `#EBDFC7` | `#1E1914` |                                          |
-| Text           | `#15110E` | `#F2E8D5` | 15.5 / 15.5                              |
-| Subtle         | `#5A4E40` | `#B5A892` | 6.7 / 8.0                                |
-| Accent text    | `#A81B22` | `#F1666A` | 6.1 / 5.6                                |
+| Surface        | `#F8F2E5` | `#15110E` | cream / warm ink                         |
+| Raised, hover  | `#F0E7D3` | `#1E1914` |                                          |
+| Text           | `#15110E` | `#F2E8D5` | 16.8 / 15.5                              |
+| Subtle         | `#5A4E40` | `#B5A892` | 7.2 / 8.0                                |
+| Accent text    | `#A81B22` | `#F1666A` | 6.6 / 5.6                                |
 | Accent surface | `#C82028` | `#C82028` | white text 5.7 in both                   |
 | Accent hover   | `#7A1418` | `#D62B33` | white text 10.8 / 4.9                    |
 | Borders        | `#B5A892` | `#3A3128` | separators only                          |
