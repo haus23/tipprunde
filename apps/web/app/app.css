@@ -23,13 +23,13 @@
    by night. Set on <html> by root.tsx for everything outside /manager and
    follows the user's own light/dark choice. Only the tokens that differ are
    overridden; error colors and everything else fall through to the regular
-   theme. Contrast, light: ink 15.5:1, subtle 6.7:1, accent text 6.1:1, white on
+   theme. Contrast, light: ink 16.8:1, subtle 7.2:1, accent text 6.6:1, white on
    the red surface 5.7:1. Dark: cream 15.5:1, subtle 8.0:1, accent text 5.6:1.
    See docs/decisions/13-public-poster-theme.md. */
 [data-theme="poster"] {
-  --background-color-surface: light-dark(#f2e8d5, #15110e);
-  --background-color-surface-raised: light-dark(#ebdfc7, #1e1914);
-  --background-color-nav-active: light-dark(#e2d4b8, #2a231d);
+  --background-color-surface: light-dark(#f8f2e5, #15110e);
+  --background-color-surface-raised: light-dark(#f0e7d3, #1e1914);
+  --background-color-nav-active: light-dark(#e6dac0, #2a231d);
   --background-color-control: light-dark(#d8c8a8, #352c24);
   --background-color-accent: #c82028;
   --background-color-accent-hover: light-dark(#7a1418, #d62b33);
@@ -48,7 +48,7 @@
   /* The browser's own scrollbar (page and inner scroll areas alike): stone
      thumb on the surface instead of the default white or black track.
      Inherited, so it also covers the switcher's list. */
-  scrollbar-color: light-dark(#b5a892, #4a4036) light-dark(#f2e8d5, #15110e);
+  scrollbar-color: light-dark(#b5a892, #4a4036) light-dark(#f8f2e5, #15110e);
 }
 
 /* Page titles on the public site: condensed display caps. Anton ships a

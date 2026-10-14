@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.3.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.3.0...v3.3.1)
+
+### 🩹 Fixes
+
+- Lighter cream in the light poster theme ([5a87ee8](https://github.com/haus23/tipprunde/commit/5a87ee8))
+
+### 📖 Documentation
+
+- Poster design features are still open ([df55b27](https://github.com/haus23/tipprunde/commit/df55b27))
+- 12 - public app split as a future idea ([adc88a0](https://github.com/haus23/tipprunde/commit/adc88a0))
+
 ## v3.3.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.2.0...v3.3.0)
