@@ -30,6 +30,14 @@ function parseMarkdownFile(raw: string): { frontmatter: Record<string, unknown>;
   return { frontmatter: parseYaml(frontmatterBlock) ?? {}, body };
 }
 
+/** A frontmatter value as text. Anything that is not a plain scalar (a
+ * missing field, a nested object) reads as empty instead of "[object Object]". */
+function frontmatterText(value: unknown): string {
+  return typeof value === "string" || typeof value === "number" || typeof value === "boolean"
+    ? String(value)
+    : "";
+}
+
 // Every HTML comment in content is a private author note — a gap still to
 // fill, an idea for later — and is stripped before rendering. Stripping, not
 // just relying on comments being invisible: `marked` passes raw HTML through,
@@ -60,8 +68,8 @@ export async function getTurnierComment(slug: string): Promise<TurnierComment | 
   if (frontmatter.draft && process.env.NODE_ENV === "production") return null;
 
   return {
-    title: String(frontmatter.title ?? ""),
-    date: String(frontmatter.date ?? ""),
+    title: frontmatterText(frontmatter.title),
+    date: frontmatterText(frontmatter.date),
     html: await renderMarkdown(body),
   };
 }
@@ -111,9 +119,9 @@ async function readPost(slug: string): Promise<BlogPost | null> {
 
   return {
     slug,
-    title: String(frontmatter.title),
-    date: String(frontmatter.date ?? ""),
-    updated: String(frontmatter.updated ?? frontmatter.date ?? ""),
+    title: frontmatterText(frontmatter.title),
+    date: frontmatterText(frontmatter.date),
+    updated: frontmatterText(frontmatter.updated ?? frontmatter.date),
     championships: Array.isArray(frontmatter.championships)
       ? frontmatter.championships.map(String)
       : [],
