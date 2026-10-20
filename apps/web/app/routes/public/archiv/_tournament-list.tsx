@@ -94,7 +94,7 @@ export function TournamentList({ championships }: { championships: ChampionshipE
         {championships.map((entry) => (
           <li
             key={entry.slug}
-            className="border-subtle col-span-3 grid h-11 grid-cols-subgrid items-center border-b text-base last:border-b-0"
+            className="border-subtle col-span-3 grid min-h-11 grid-cols-subgrid items-center border-b py-1.5 text-base last:border-b-0"
           >
             <AppLink href={`/turnier/${entry.slug}`}>{entry.name}</AppLink>
             <div className="text-sm">

@@ -27,102 +27,106 @@ export function RankingTable({
 }) {
   const scoped = useScopedPath();
   const showTotal = showExtras;
+  // Own scroller: below ~340px the columns do not fit, and then only the
+  // table scrolls sideways instead of the whole page.
   return (
-    <table className="w-full border-collapse text-base">
-      <thead>
-        <tr className="text-muted text-xs tracking-wide uppercase">
-          <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-right font-medium">
-            Platz
-          </th>
-          <th className="border-subtle xs:px-3 xs:py-2.5 border-b px-2 py-2 text-left font-medium">
-            Spieler
-          </th>
-          {showExtras && (
-            <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
-              <AppLink href={scoped("/zusatzfragen")}>
-                <span className="xs:inline-flex hidden items-baseline gap-1">
-                  <StarIcon className="relative top-[0.1em] size-3.5 shrink-0" />
-                  Zusatzpunkte
-                </span>
-                <span className="xs:hidden">Zusatzpkt.</span>
-              </AppLink>
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-base">
+        <thead>
+          <tr className="text-muted text-xs tracking-wide uppercase">
+            <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-right font-medium">
+              Platz
             </th>
-          )}
-          <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
-            {showTotal ? (
-              <>
-                <span className="xs:inline hidden">Gesamtpunkte</span>
-                <span className="xs:hidden">Gesamt</span>
-              </>
-            ) : (
-              "Punkte"
+            <th className="border-subtle xs:px-3 xs:py-2.5 border-b px-2 py-2 text-left font-medium">
+              Spieler
+            </th>
+            {showExtras && (
+              <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
+                <AppLink href={scoped("/zusatzfragen")}>
+                  <span className="xs:inline-flex hidden items-baseline gap-1">
+                    <StarIcon className="relative top-[0.1em] size-3.5 shrink-0" />
+                    Zusatzpunkte
+                  </span>
+                  <span className="xs:hidden">Zusatz</span>
+                </AppLink>
+              </th>
             )}
-          </th>
-          {isOngoing && (
-            <th aria-label="Aktuelle Tipps" className="border-subtle w-px border-b px-2 py-2" />
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {ranking.map((entry, index) => {
-          const isCurrentUser = currentUserId === entry.userId;
-          const sharesRankAbove = index > 0 && ranking[index - 1].rank === entry.rank;
-          return (
-            <tr
-              key={entry.userId}
-              className={cx(
-                "border-subtle border-b last:border-0",
-                isCurrentUser && "bg-accent-subtle",
+            <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
+              {showTotal ? (
+                <>
+                  <span className="xs:inline hidden">Gesamtpunkte</span>
+                  <span className="xs:hidden">Gesamt</span>
+                </>
+              ) : (
+                "Punkte"
               )}
-            >
-              {/* Podium ranks in the accent color, the leader with a star — the
-                  poster theme's one bit of decoration inside a table. */}
-              <td
+            </th>
+            {isOngoing && (
+              <th aria-label="Aktuelle Tipps" className="border-subtle w-px border-b px-2 py-2" />
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {ranking.map((entry, index) => {
+            const isCurrentUser = currentUserId === entry.userId;
+            const sharesRankAbove = index > 0 && ranking[index - 1].rank === entry.rank;
+            return (
+              <tr
+                key={entry.userId}
                 className={cx(
-                  "font-display xs:px-3 xs:py-3 px-2 py-2 text-right text-xl leading-none tracking-wider tabular-nums",
-                  entry.rank <= 3 ? "text-accent" : "text-subtle",
+                  "border-subtle border-b last:border-0",
+                  isCurrentUser && "bg-accent-subtle",
                 )}
               >
-                {sharesRankAbove ? "" : entry.rank}
-              </td>
-              <td className={cx("xs:px-3 xs:py-3 px-2 py-2", isCurrentUser && "font-medium")}>
-                <AppLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</AppLink>
-                {entry.rank === 1 && (
-                  <span aria-hidden="true" className="text-gold ml-1">
-                    ★
-                  </span>
-                )}
-              </td>
-              {showExtras && (
-                <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
-                  {entry.extraQuestionPoints > 0 ? formatPoints(entry.extraQuestionPoints) : "–"}
-                </td>
-              )}
-              <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none tracking-wider tabular-nums">
-                <span className="relative inline-block">
-                  {formatPoints(entry.total)}
-                  {entry.roundPoints !== null && (
-                    <CellFlag
-                      label={`Rundenpunkte: ${entry.roundPoints > 0 ? `+${entry.roundPoints}` : entry.roundPoints}`}
-                      className="left-full ml-0.5"
-                    />
+                {/* Podium ranks in the accent color, the leader with a star — the
+                  poster theme's one bit of decoration inside a table. */}
+                <td
+                  className={cx(
+                    "font-display xs:px-3 xs:py-3 px-2 py-2 text-right text-xl leading-none tracking-wider tabular-nums",
+                    entry.rank <= 3 ? "text-accent" : "text-subtle",
                   )}
-                </span>
-              </td>
-              {isOngoing && (
-                <td className="xs:px-3 xs:py-3 py-2 pr-4">
-                  <MatchdayButton
-                    userId={entry.userId}
-                    name={entry.name}
-                    championshipId={championshipId!}
-                  />
+                >
+                  {sharesRankAbove ? "" : entry.rank}
                 </td>
-              )}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+                <td className={cx("xs:px-3 xs:py-3 px-2 py-2", isCurrentUser && "font-medium")}>
+                  <AppLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</AppLink>
+                  {entry.rank === 1 && (
+                    <span aria-hidden="true" className="text-gold ml-1">
+                      ★
+                    </span>
+                  )}
+                </td>
+                {showExtras && (
+                  <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
+                    {entry.extraQuestionPoints > 0 ? formatPoints(entry.extraQuestionPoints) : "–"}
+                  </td>
+                )}
+                <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none tracking-wider tabular-nums">
+                  <span className="relative inline-block">
+                    {formatPoints(entry.total)}
+                    {entry.roundPoints !== null && (
+                      <CellFlag
+                        label={`Rundenpunkte: ${entry.roundPoints > 0 ? `+${entry.roundPoints}` : entry.roundPoints}`}
+                        className="left-full ml-0.5"
+                      />
+                    )}
+                  </span>
+                </td>
+                {isOngoing && (
+                  <td className="xs:px-3 xs:py-3 py-2 pr-4">
+                    <MatchdayButton
+                      userId={entry.userId}
+                      name={entry.name}
+                      championshipId={championshipId!}
+                    />
+                  </td>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
