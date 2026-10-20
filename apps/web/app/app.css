@@ -6,10 +6,6 @@
 @import "@fontsource/anton/latin-400.css";
 
 @theme {
-  /* Content body size — chrome (nav, captions, manager grids) stays text-sm. */
-  --text-base: 0.875rem;
-  --text-base--line-height: calc(1.25 / 0.875);
-
   /* Condensed display face for the public site's titles, ranks and points. */
   --font-display: "Anton", "Arial Narrow", sans-serif;
 
@@ -150,7 +146,7 @@
 }
 
 /* One step up from h3 (body size, bold) — in em, so it follows the prose's
-   own size (14px in a grid cell, 16px full width): 18px next to an article's
+   own size: 18px next to an article's
    24px title, clearly between title and text. The extra top margin keeps the
    bigger heading from crowding the paragraph above it. */
 .prose h2 {
