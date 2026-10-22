@@ -56,17 +56,23 @@ Und nun mit Frauen und Westfalen:
 
 ### Hinrunde 2007/08
 
-Die Regionalliga ist zurück, und mit ihr die zweite Mannschaft von Energie. Dazu ein Spiel von den Färöern, das sich in der Tipprunde nicht halten konnte:
+Die Regionalliga ist zurück, und mit ihr die zweite Mannschaft von Energie. Dazu ein Spiel von den Färöern, das tatsächlich den Deckel auf den Topf machte:
 
 - **B71 Sandur – B36 Tórshavn** (Färöer, die Geschichte dazu steht im [Stadionsenf der Hinrunde](/turnier/hr0708). Am Ende kam das Spiel nicht in die Wertung)
 - **Energie Cottbus II – 1. FC Union Berlin** (Regionalliga Nord, Union mal wieder zu Gast)
 - **Dynamo Dresden – Energie Cottbus II** (Regionalliga Nord, und Dresden schon wieder)
 
+### Rückrunde 2007/08
+
+Der Fehlgriff bei **B71 - B36** sorgte dafür, dass es jetzt ruhiger wurde. **Energie II** durfte/musste weiterhin getippt werden. Und immer wieder deshalb auch Dynamo.
+
+- **Fortuna Düsseldorf – Energie Cottbus II** (Regionalliga)
+- **1. FC Union Berlin – Energie Cottbus II** (Regionalliga)
+- **Energie Cottbus II – Dynamo Dresden** (Regionalliga)
+
 Fortsetzung folgt ...
 
 <!--
-Das "B71 – B36"-Spiel aus deinem Entwurf ist Spiel 4 der Hinrunde 2007/08: B71 Sandur gegen B36 Tórshavn, 0:3.
-Die Regionalliga-Spiele drehen sich fast alle um Energie Cottbus II und Dynamo Dresden. Das ist eher die regionale Fortsetzung von Wolfgangs Energie-Fokus als etwas wirklich Exotisches.
 
 Und später die Ära Wolfgang abschließen, Übergangsära Schiller und dann Falk
 Einordnen nach Ära.
