@@ -42,39 +42,41 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
           {entries.length === 0 ? (
             <p className="text-subtle text-base">Keine Daten.</p>
           ) : (
-            <table className="w-full text-base">
-              <thead>
-                <tr className="text-muted border-subtle border-b text-xs tracking-wide uppercase">
-                  <th className="w-px pr-3 pb-1.5 text-right font-medium">Platz</th>
-                  <th className="pb-1.5 pl-3 text-left font-medium">Spieler</th>
-                  <th className="w-px px-3 pb-1.5 text-center font-medium">Turniere</th>
-                  <th className="w-px px-3 pb-1.5 text-center font-medium">Siege</th>
-                  <th className="w-px pb-1.5 pl-3 text-right font-medium">Punkte</th>
-                </tr>
-              </thead>
-              <tbody>
-                {entries.map((entry, i) => {
-                  const sharesRankAbove = i > 0 && entries[i - 1].rank === entry.rank;
-                  return (
-                    <tr key={entry.userId} className="border-subtle border-b last:border-b-0">
-                      <td className="text-subtle w-px py-2 pr-3 text-right tabular-nums">
-                        {sharesRankAbove ? "" : entry.rank}
-                      </td>
-                      <td className="py-2 pl-3">{entry.name}</td>
-                      <td className="text-subtle w-px px-3 py-2 text-center tabular-nums">
-                        {entry.played}
-                      </td>
-                      <td className="text-subtle w-px px-3 py-2 text-center tabular-nums">
-                        {entry.wins > 0 ? entry.wins : ""}
-                      </td>
-                      <td className="w-px py-2 pl-3 text-right font-medium tabular-nums">
-                        {formatPoints(entry.totalPoints)}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div className="overflow-x-auto">
+              <table className="w-full text-base">
+                <thead>
+                  <tr className="text-muted border-subtle border-b text-xs tracking-wide uppercase">
+                    <th className="xs:pr-3 w-px pr-2 pb-1.5 text-right font-medium">Platz</th>
+                    <th className="xs:pl-3 pb-1.5 pl-2 text-left font-medium">Spieler</th>
+                    <th className="xs:px-3 w-px px-2 pb-1.5 text-center font-medium">Turniere</th>
+                    <th className="xs:px-3 w-px px-2 pb-1.5 text-center font-medium">Siege</th>
+                    <th className="xs:pl-3 w-px pb-1.5 pl-2 text-right font-medium">Punkte</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {entries.map((entry, i) => {
+                    const sharesRankAbove = i > 0 && entries[i - 1].rank === entry.rank;
+                    return (
+                      <tr key={entry.userId} className="border-subtle border-b last:border-b-0">
+                        <td className="text-subtle xs:pr-3 w-px py-2 pr-2 text-right tabular-nums">
+                          {sharesRankAbove ? "" : entry.rank}
+                        </td>
+                        <td className="xs:pl-3 py-2 pl-2">{entry.name}</td>
+                        <td className="text-subtle xs:px-3 w-px px-2 py-2 text-center tabular-nums">
+                          {entry.played}
+                        </td>
+                        <td className="text-subtle xs:px-3 w-px px-2 py-2 text-center tabular-nums">
+                          {entry.wins > 0 ? entry.wins : ""}
+                        </td>
+                        <td className="xs:pl-3 w-px py-2 pl-2 text-right font-medium tabular-nums">
+                          {formatPoints(entry.totalPoints)}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           )}
         </section>
       </div>

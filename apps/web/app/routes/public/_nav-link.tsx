@@ -10,7 +10,7 @@ export function PublicNavLink({ to, children }: { to: string; children: React.Re
         prefetch="intent"
         className={({ isActive }) =>
           cx(
-            "focus-visible:ring-accent hover:bg-nav-active hover:text-app rounded-sm px-3 py-1.5 text-sm font-medium transition ease-out outline-none focus-visible:ring-2",
+            "focus-visible:ring-accent hover:bg-nav-active hover:text-app xs:px-3 rounded-sm px-2 py-1.5 text-sm font-medium transition ease-out outline-none focus-visible:ring-2",
             isActive ? "text-app" : "text-muted",
           )
         }

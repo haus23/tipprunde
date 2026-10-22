@@ -90,21 +90,16 @@ inheritance, or it won't track the token.
 
 ### Content size
 
-The app sets a smaller content base in `apps/web/app/app.css` (app-local —
-**not** in the shared `@tipprunde/theme`, which stays generic):
+`text-base` is Tailwind's default (16px, line-height 1.5). Until 2026-10-17 the
+app overrode it to 14px with text-sm's line-height ratio (1.25 / 0.875) in
+`apps/web/app/app.css`, for the public site and the manager alike. That
+override is gone: body content is back at 16px, and chrome (nav, captions,
+manager grids) stays at `text-sm`.
 
-```css
-@theme {
-  --text-base: 0.875rem; /* 14px — matches the old text-sm */
-  --text-base--line-height: calc(1.25 / 0.875); /* Tailwind's text-sm ratio */
-}
-```
-
-Since the app merge this applies to the public site and the manager alike —
-manager dialog headings moved 16px → 14px with it, which is intended.
-
-Adjust `--text-base` to experiment with content size; the unitless line-height
-ratio keeps the rhythm proportional.
+The convention above is what keeps the lever cheap: should content size ever
+need retuning again, override `--text-base` **together with**
+`--text-base--line-height` (the line-height is a separate token — changing only
+the size leaves the old ratio behind).
 
 ### Display face
 

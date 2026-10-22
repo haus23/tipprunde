@@ -44,6 +44,30 @@ links championships but not players.
   `/spieler/:playerSlug?`, alongside `/archiv` and `/nachspielzeit`, is the
   natural shape instead; not yet decided.
 
+## Middleware errors render without the shell — found in the Railway outage
+
+Seen on 2026-10-22 on a PR preview whose Turso token had just been rotated
+away, so every query failed. `/` showed its error page inside the public
+shell (header and nav); `/turnier/tabelle` showed a bare page without either.
+
+Verified in the code: the championship views resolve their championship in a
+**middleware** (`resolveChampionship` in
+`routes/public/_championship-layout.tsx` and `routes/public/turnier/_layout.tsx`).
+An error thrown there skips the layout's `ErrorBoundary` and lands in the
+last-resort boundary in `root.tsx`, which has no navigation by design. The
+"not found" case already follows the `apps/web/CLAUDE.md` rule (middleware sets
+`null`, the loader throws the 404); an **unexpected** error, such as an
+unreachable database, still throws inside the middleware.
+
+- **Fix idea:** catch in the middleware, put the error into the context, and
+  rethrow it from the layout loader, so it renders in the shell like on `/`.
+- **Open:** the child loaders read the championship from the context and run in
+  parallel with the layout loader — check which boundary renders when several
+  of them fail, and whether they need to tolerate the error marker.
+- **Also check** the manager's middlewares (role gate, championship) for the
+  same pattern.
+- Own branch, not part of an unrelated PR.
+
 ## Plakat design features — to think about
 
 The poster theme shipped with palette, Anton and a few details
@@ -112,8 +136,9 @@ goes away.
 3. **Chat** — last of the features, and knowingly.
 4. **Apex move** — when the history is in.
 
-The **Plakat design features**, the **import payload cleanup** and the
-**blog** are not in this order: the design features move when there is
+The **middleware error fix**, the **Plakat design features**, the **import
+payload cleanup** and the **blog** are not in this order: the middleware fix is
+small and can go in any quiet moment, the design features move when there is
 appetite for them, the payload cleanup only becomes worth doing if payload
 size ever actually bites, and the blog moves whenever there is something
 written.

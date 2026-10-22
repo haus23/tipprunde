@@ -1,5 +1,27 @@
 # Changelog
 
+## v3.3.2
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.3.1...v3.3.2)
+
+### 🩹 Fixes
+
+- Layout on narrow screens (320-360px) ([b9b3534](https://github.com/haus23/tipprunde/commit/b9b3534))
+- Center the match detail meta line without a doubling flag ([8cf351e](https://github.com/haus23/tipprunde/commit/8cf351e))
+
+### 💅 Refactors
+
+- Back to 16px content text ([2340df5](https://github.com/haus23/tipprunde/commit/2340df5))
+
+### 📖 Documentation
+
+- Backlog entry for middleware errors rendering without the shell ([c446b4a](https://github.com/haus23/tipprunde/commit/c446b4a))
+
+### 🏡 Chore
+
+- Update dependencies ([df1c09e](https://github.com/haus23/tipprunde/commit/df1c09e))
+- Update lucide-react to 1.61 ([4cb0ca3](https://github.com/haus23/tipprunde/commit/4cb0ca3))
+
 ## v3.3.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.3.0...v3.3.1)
