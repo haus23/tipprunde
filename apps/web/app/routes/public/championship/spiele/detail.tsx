@@ -154,7 +154,9 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
           {pointsLabel && (
             <>
               {metaLead && " · "}
-              <span className="relative inline-block pr-6">
+              {/* The padding only makes room for the flag — without it the
+                  centered line would sit off-center. */}
+              <span className={cx("relative inline-block", match.lowestSumBonus && "pr-6")}>
                 {pointsLabel}
                 {match.lowestSumBonus && (
                   <CellFlag
