@@ -42,7 +42,8 @@ export async function loader() {
 
   return {
     championships: data,
-    rulesets: sortGerman(rulesetList, (r) => r.name),
+    // Newest first, same order as the Regelwerke table.
+    rulesets: sortGerman(rulesetList, (r) => r.name).toReversed(),
     nextNr: (data[0]?.nr ?? 0) + 1,
   };
 }

@@ -1,3 +1,5 @@
+import { cx } from "@tipprunde/ui";
+
 import { getArchivChampionshipList, getEwigeTabelle } from "#/lib/archiv.server.ts";
 import { formatPoints } from "#/lib/utils.ts";
 
@@ -50,7 +52,10 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                     <th className="xs:pl-3 pb-1.5 pl-2 text-left font-medium">Spieler</th>
                     <th className="xs:px-3 w-px px-2 pb-1.5 text-center font-medium">Turniere</th>
                     <th className="xs:px-3 w-px px-2 pb-1.5 text-center font-medium">Siege</th>
-                    <th className="xs:pl-3 w-px pb-1.5 pl-2 text-right font-medium">Punkte</th>
+                    <th className="xs:pl-3 w-px pb-1.5 pl-2 text-right font-medium">
+                      <span className="xs:hidden">Pkt</span>
+                      <span className="xs:inline hidden">Punkte</span>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -58,7 +63,13 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                     const sharesRankAbove = i > 0 && entries[i - 1].rank === entry.rank;
                     return (
                       <tr key={entry.userId} className="border-subtle border-b last:border-b-0">
-                        <td className="text-subtle xs:pr-3 w-px py-2 pr-2 text-right tabular-nums">
+                        {/* Same display digits and podium colors as the ranking table. */}
+                        <td
+                          className={cx(
+                            "font-display xs:pr-3 w-px py-2 pr-2 text-right text-xl leading-none tracking-wider tabular-nums",
+                            entry.rank <= 3 ? "text-accent" : "text-subtle",
+                          )}
+                        >
                           {sharesRankAbove ? "" : entry.rank}
                         </td>
                         <td className="xs:pl-3 py-2 pl-2">{entry.name}</td>
@@ -68,7 +79,7 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                         <td className="text-subtle xs:px-3 w-px px-2 py-2 text-center tabular-nums">
                           {entry.wins > 0 ? entry.wins : ""}
                         </td>
-                        <td className="xs:pl-3 w-px py-2 pl-2 text-right font-medium tabular-nums">
+                        <td className="font-display xs:pl-3 w-px py-2 pl-2 text-right text-xl leading-none tracking-wider tabular-nums">
                           {formatPoints(entry.totalPoints)}
                         </td>
                       </tr>

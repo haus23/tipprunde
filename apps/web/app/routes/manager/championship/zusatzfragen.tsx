@@ -2,7 +2,7 @@ import {
   extraAnswers as extraAnswersTable,
   extraQuestions as extraQuestionsTable,
 } from "@tipprunde/db/schema";
-import { Button, Card, CardContent, Disclosure, Input, cx } from "@tipprunde/ui";
+import { Button, Card, CardContent, Disclosure, Input, TextArea, cx } from "@tipprunde/ui";
 import { and, eq } from "drizzle-orm";
 import { PlusIcon, XIcon } from "lucide-react";
 import { useState } from "react";
@@ -329,7 +329,7 @@ function QuestionCard({
           <div className="space-y-1.5">
             <p className="text-muted text-xs font-medium tracking-wide uppercase">Beschreibung</p>
             {isChampionshipClosed ? (
-              <p className="text-sm">{question.description || "–"}</p>
+              <p className="text-sm whitespace-pre-line">{question.description || "–"}</p>
             ) : (
               <TextField
                 aria-label="Beschreibung"
@@ -340,7 +340,11 @@ function QuestionCard({
                   if (trimmed !== question.description) saveField("description", trimmed);
                 }}
               >
-                <Input placeholder="Punkteverteilung beschreiben ..." className="w-full" />
+                <TextArea
+                  rows={3}
+                  placeholder="Punkteverteilung beschreiben ..."
+                  className="w-full"
+                />
               </TextField>
             )}
           </div>
