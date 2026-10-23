@@ -27,7 +27,9 @@ const rulesetSchema = createInsertSchema(rulesets, {
 
 export async function loader() {
   const data = await db.query.rulesets.findMany();
-  return { rulesets: sortGerman(data, (r) => r.name) };
+  // Newest first: the names start with the season ("Regelwerk 2004 EM",
+  // "Regelwerk 2004/05 HR"), so the name order is the chronological one.
+  return { rulesets: sortGerman(data, (r) => r.name).toReversed() };
 }
 
 export async function action({ request }: Route.ActionArgs) {
