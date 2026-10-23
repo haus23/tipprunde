@@ -52,7 +52,10 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                     <th className="xs:pl-3 pb-1.5 pl-2 text-left font-medium">Spieler</th>
                     <th className="xs:px-3 w-px px-2 pb-1.5 text-center font-medium">Turniere</th>
                     <th className="xs:px-3 w-px px-2 pb-1.5 text-center font-medium">Siege</th>
-                    <th className="xs:pl-3 w-px pb-1.5 pl-2 text-right font-medium">Punkte</th>
+                    <th className="xs:pl-3 w-px pb-1.5 pl-2 text-right font-medium">
+                      <span className="xs:hidden">Pkt</span>
+                      <span className="xs:inline hidden">Punkte</span>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

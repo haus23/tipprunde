@@ -110,7 +110,14 @@ export function TournamentList({ championships }: { championships: ChampionshipE
               )}
             </div>
             <div className="text-right font-medium tabular-nums">
-              {entry.winners[0] ? `${formatPoints(entry.winners[0].total)} Punkte` : "–"}
+              {entry.winners[0] ? (
+                <>
+                  {formatPoints(entry.winners[0].total)} <span className="xs:hidden">Pkt</span>
+                  <span className="xs:inline hidden">Punkte</span>
+                </>
+              ) : (
+                "–"
+              )}
             </div>
           </li>
         ))}
