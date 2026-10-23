@@ -5,8 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import { AppLink } from "#/components/app-link.tsx";
 import { formatPoints } from "#/lib/utils.ts";
 
-/** Roughly five rows tall — the box scrolls internally rather than the page growing. */
-const BOX_HEIGHT = "13.75rem";
+/** Four full rows plus most of a fifth that fades out under the bottom
+ * chevron — the box scrolls internally rather than the page growing. */
+const BOX_HEIGHT = "14.5rem";
 /** Pixels per animation frame while a chevron is hovered. */
 const SCROLL_SPEED = 3;
 /** One discrete step for a click/keyboard activation of a chevron. */
@@ -32,7 +33,10 @@ type ChampionshipEntry = {
 export function TournamentList({ championships }: { championships: ChampionshipEntry[] }) {
   const scrollRef = useRef<HTMLUListElement>(null);
   const [canScrollUp, setCanScrollUp] = useState(false);
-  const [canScrollDown, setCanScrollDown] = useState(false);
+  // Starts true when the list can't fit: the box holds fewer than five rows
+  // (each at least 44px), so the bottom fade and chevron are there from the
+  // first server-rendered paint instead of popping in after hydration.
+  const [canScrollDown, setCanScrollDown] = useState(championships.length > 4);
 
   function updateEdges() {
     const el = scrollRef.current;
@@ -125,17 +129,20 @@ export function TournamentList({ championships }: { championships: ChampionshipE
 
       <div
         className={cx(
-          "from-surface pointer-events-none absolute inset-x-0 top-0 h-3 bg-gradient-to-b to-transparent transition-opacity duration-200",
+          "from-surface pointer-events-none absolute left-0 right-4 top-0 h-3 bg-linear-to-b to-transparent transition-opacity duration-200",
           canScrollUp ? "opacity-100" : "opacity-0",
         )}
       />
       <div
         className={cx(
-          "from-surface pointer-events-none absolute inset-x-0 bottom-0 h-3 bg-gradient-to-t to-transparent transition-opacity duration-200",
+          "from-surface pointer-events-none absolute left-0 right-4 bottom-0 h-3 bg-linear-to-t to-transparent transition-opacity duration-200",
           canScrollDown ? "opacity-100" : "opacity-0",
         )}
       />
 
+      {/* The chevrons carry their own fade: solid under the icon, so no row
+          text shows through it, fading out toward the list, so the cut-off
+          row still reads as "more to come". */}
       <button
         type="button"
         aria-label="Nach oben scrollen"
@@ -145,7 +152,7 @@ export function TournamentList({ championships }: { championships: ChampionshipE
         onPointerLeave={stopScroll}
         className={cx(
           "hidden [@media(hover:hover)_and_(pointer:fine)]:flex",
-          "absolute inset-x-0 top-0 h-6 items-center justify-center transition-opacity duration-200",
+          "from-surface absolute left-0 right-4 top-0 h-10 items-start justify-center bg-linear-to-b from-50% to-transparent pt-1 transition-opacity duration-200",
           canScrollUp ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       >
@@ -160,7 +167,7 @@ export function TournamentList({ championships }: { championships: ChampionshipE
         onPointerLeave={stopScroll}
         className={cx(
           "hidden [@media(hover:hover)_and_(pointer:fine)]:flex",
-          "absolute inset-x-0 bottom-0 h-6 items-center justify-center transition-opacity duration-200",
+          "from-surface absolute left-0 right-4 bottom-0 h-10 items-end justify-center bg-linear-to-t from-50% to-transparent pb-1 transition-opacity duration-200",
           canScrollDown ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       >
