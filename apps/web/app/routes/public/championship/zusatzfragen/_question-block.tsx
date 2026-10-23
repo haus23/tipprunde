@@ -24,7 +24,9 @@ export function QuestionBlock({
       title={
         <div className="min-w-0">
           <h2 className="text-base font-medium">{question.question}</h2>
-          {question.description && <p className="text-subtle text-sm">{question.description}</p>}
+          {question.description && (
+            <p className="text-subtle text-sm whitespace-pre-line">{question.description}</p>
+          )}
           <p className="text-subtle mt-1 text-sm">
             {pointsPublished ? "Richtige Antwort:" : "Aktueller Stand:"}{" "}
             <span className="text-app">{question.answer ?? "noch offen"}</span>
