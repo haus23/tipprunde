@@ -31,7 +31,10 @@ export default function NachspielzeitDetail({ loaderData }: Route.ComponentProps
       <title>{`${post.title} · Nachspielzeit · runde.tips`}</title>
       <div className="xs:px-6 mx-auto flex max-w-2xl flex-col gap-6 px-4">
         <div>
-          <p className="text-muted mb-1 text-xs tracking-wide uppercase">{formatDate(post.date)}</p>
+          <p className="text-muted mb-1 text-xs tracking-wide uppercase">
+            {formatDate(post.date)}
+            {post.updated !== post.date && ` · Aktualisiert ${formatDate(post.updated)}`}
+          </p>
           <h1 className="poster-title text-3xl">{post.title}</h1>
         </div>
 
