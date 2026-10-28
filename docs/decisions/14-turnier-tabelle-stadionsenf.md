@@ -1,0 +1,73 @@
+# The Championship Page Is Its Table, With the Stadionsenf Beside It
+
+**Status: built (2026-10-28).** Supersedes the Übersicht part of
+[11-turnier-routing-homepage.md](./11-turnier-routing-homepage.md) and the
+Übersicht/Tabelle/Verlauf rahmen of
+[10-archiv-navigation.md](./10-archiv-navigation.md). The `/turnier` and
+`/turnier/:slug` route shape from 11, the season chrome from 10 and the
+homepage-as-modules idea from 11 are unchanged.
+
+## The problem
+
+`/turnier[/:slug]` used to be an **Übersicht**: a standings excerpt, the
+latest matches, the Stadionsenf comment and the ruleset. It had become a page
+of leftovers:
+
+- the **table** was there only as an excerpt, the full one lived at
+  `/tabelle`;
+- the **latest matches** are what the homepage shows anyway, and matter only
+  while a championship runs;
+- what was left, the **Stadionsenf** and the **ruleset**, is reading on
+  request, not a reason for a page of its own.
+
+And the page was hard to reach: the header's "Tabelle" led to `/tabelle`, so
+from the main navigation the Übersicht was only one tab of the rahmen; from
+the Archiv, on the other hand, a visitor landed on it directly. Two ways into
+a championship, two different first pages.
+
+## The decision
+
+**The championship's own page is its table.** `/turnier` and `/turnier/:slug`
+show the full table — the information every visitor comes for, and while a
+championship runs the only one that matters.
+
+**The Stadionsenf sits beside the table, in full** — next to it from `lg` up,
+under it below that. It is the story of exactly this table, so it belongs on
+the same page, not behind a tab where it would read like small print. A
+running championship has no comment yet (it is written once the round is
+over), so the page then shows the table alone, and nobody misses anything.
+
+**The rahmen's tabs are Tabelle · Verlauf · Regelwerk.** The ruleset is
+reference material, a tab is enough; it moved into the rahmen and carries the
+link to the Zusatzfragen that used to sit under it on the Übersicht.
+
+**The header's "Tabelle" leads to the championship page** and stays lit on its
+Verlauf and Regelwerk tabs; Spieler and Spiele stay as they were. The shell
+decides which item is active (`_layout.tsx`), because the table's link is the
+championship root — a prefix of every other view.
+
+**`/tabelle` redirects** (301) to the championship page, under both mounts,
+keeping the query string. Shared and bookmarked links keep working, so this
+is a minor, not a major.
+
+## The homepage
+
+Left the running championship's standings; on the right whatever is current
+about it:
+
+- **while it runs:** the latest matches;
+- **once it is over and has a Stadionsenf:** a teaser — title, the excerpt
+  above a `<!-- more -->` line if the author set one, "Weiterlesen →" to the
+  championship page;
+- **over, no comment yet:** nothing.
+
+The excerpt follows the same rule as the Nachspielzeit articles (11): set by
+hand with `<!-- more -->`, never a guessed first paragraph. Without the marker
+the teaser shows the title and the link only.
+
+## Tried and dropped
+
+- **The Stadionsenf as a fourth tab** (Tabelle · Verlauf · Stadionsenf ·
+  Regelwerk). Considered first; dropped because the comment would disappear
+  among the reference tabs, while it is the one piece of text an archived
+  championship is worth opening for.

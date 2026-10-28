@@ -6,6 +6,12 @@ is replaced by `/turnier/:slug`, and the running championship moves from the
 root to `/turnier`. 10's season-chrome and Übersicht/Tabelle/Verlauf rahmen
 reasoning are unaffected and stay the reference for those.
 
+**Partly superseded (2026-10-28)** by
+[14-turnier-tabelle-stadionsenf.md](./14-turnier-tabelle-stadionsenf.md): the
+championship page is no longer an Übersicht but its table, with the
+Stadionsenf beside it; `/tabelle` redirects there. The route shape and the
+homepage-as-modules idea below still hold.
+
 ## Championships live under `/turnier`, and only there
 
 - `/turnier` — the running championship (latest published)
