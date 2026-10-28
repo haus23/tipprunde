@@ -7,8 +7,8 @@ import { createContext, useContext } from "react";
  *
  * Set by whichever branch layout rendered the view. It exists so the shared
  * championship views can build links without knowing which branch they are
- * mounted under: the same file serves `/turnier/tabelle` and
- * `/turnier/rr0304/tabelle`.
+ * mounted under: the same file serves `/turnier/spiele` and
+ * `/turnier/rr0304/spiele`.
  */
 const ChampionshipScopeContext = createContext<string | null>(null);
 
@@ -37,8 +37,8 @@ export function useChampionshipScope() {
 
 /**
  * Builds a path inside the championship in scope:
- * `scoped("/tabelle")` → `/turnier/tabelle` or `/turnier/rr0304/tabelle`,
- * `scoped("/")` → the championship's own overview.
+ * `scoped("/spiele")` → `/turnier/spiele` or `/turnier/rr0304/spiele`,
+ * `scoped("/")` → the championship's own page, its table.
  */
 export function useScopedPath() {
   const { basePath } = useChampionshipScope();

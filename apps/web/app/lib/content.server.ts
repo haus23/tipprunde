@@ -19,6 +19,9 @@ export type TurnierComment = {
   title: string;
   date: string;
   html: string;
+  /** Everything above the `<!-- more -->` marker, rendered — null without one.
+   * The homepage's teaser; same rule as the Nachspielzeit articles. */
+  excerptHtml: string | null;
 };
 
 const FRONTMATTER_PATTERN = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/;
@@ -44,6 +47,12 @@ function frontmatterText(value: unknown): string {
 // so a kept comment would be readable in the page source.
 const AUTHOR_NOTE = /<!--[\s\S]*?-->/g;
 
+// The author decides where the teaser ends, by putting this on a line of its
+// own — no automatic "first paragraph", no truncation. The one HTML comment
+// that isn't an author note: it is read before notes are stripped, and goes
+// with them.
+const EXCERPT_MARKER = /^<!--\s*more\s*-->\s*$/m;
+
 function renderMarkdown(markdown: string) {
   return marked.parse(markdown.replace(AUTHOR_NOTE, "").trim());
 }
@@ -67,10 +76,13 @@ export async function getTurnierComment(slug: string): Promise<TurnierComment | 
   const { frontmatter, body } = parseMarkdownFile(raw);
   if (frontmatter.draft && process.env.NODE_ENV === "production") return null;
 
+  const [intro, rest] = body.split(EXCERPT_MARKER, 2);
+
   return {
     title: frontmatterText(frontmatter.title),
     date: frontmatterText(frontmatter.date),
     html: await renderMarkdown(body),
+    excerptHtml: rest === undefined ? null : await renderMarkdown(intro),
   };
 }
 
@@ -89,12 +101,6 @@ export type BlogPostSummary = {
 };
 
 export type BlogPost = BlogPostSummary & { html: string };
-
-// The author decides where the teaser ends, by putting this on a line of its
-// own — no automatic "first paragraph", no truncation. The one HTML comment
-// that isn't an author note: it is read before notes are stripped, and goes
-// with them.
-const EXCERPT_MARKER = /^<!--\s*more\s*-->\s*$/m;
 
 // Occasional articles (Regelkunde, Zusatzfragen, …) in `content/blog/`, the
 // filename minus `.md` as slug. Not the per-championship comments above —

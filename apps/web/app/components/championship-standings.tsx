@@ -77,7 +77,7 @@ export function ChampionshipStandings({
         )}
       </table>
       <div className="mt-3 flex justify-end">
-        <SectionLink to={scoped("/tabelle")}>Vollständige Tabelle →</SectionLink>
+        <SectionLink to={scoped("/")}>Vollständige Tabelle →</SectionLink>
       </div>
     </section>
   );

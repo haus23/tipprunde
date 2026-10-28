@@ -19,11 +19,21 @@ import { PublicNavLink } from "./_nav-link.tsx";
 import { NavigationProgress } from "./_navigation-progress.tsx";
 import { UserArea } from "./_user-area.tsx";
 
+// `to` is relative to the championship in scope; "" is the championship's
+// own page, its table. `section` lists the paths an item stays active on —
+// the table also owns the Verlauf and Regelwerk tabs of its rahmen.
 const navItems = [
-  { to: "/tabelle", label: "Tabelle" },
-  { to: "/tipps", label: "Spieler" },
-  { to: "/spiele", label: "Spiele" },
+  { to: "", label: "Tabelle", section: ["", "/verlauf", "/regelwerk"] },
+  { to: "/tipps", label: "Spieler", section: ["/tipps"] },
+  { to: "/spiele", label: "Spiele", section: ["/spiele"] },
 ] as const;
+
+function isInSection(pathname: string, basePath: string, section: readonly string[]) {
+  return section.some((path) => {
+    const target = `${basePath}${path}`;
+    return pathname === target || (path !== "" && pathname.startsWith(`${target}/`));
+  });
+}
 
 export function loader({ context }: Route.LoaderArgs) {
   return { user: context.get(userContext) };
@@ -79,7 +89,8 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
   // season stays in that season — the same way the manager sidebar keeps to
   // /manager/:slug. Outside any season (/, /archiv, /login, 404) it points at
   // the running one under /turnier.
-  const basePath = championshipBasePath(useLocation().pathname);
+  const { pathname } = useLocation();
+  const basePath = championshipBasePath(pathname);
 
   return (
     <>
@@ -105,7 +116,11 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
             {/* Center: nav — always visible */}
             <nav className="col-start-2 flex h-full items-center justify-center gap-1">
               {navItems.map((item) => (
-                <PublicNavLink key={item.to} to={`${basePath}${item.to}`}>
+                <PublicNavLink
+                  key={item.label}
+                  to={`${basePath}${item.to}`}
+                  isActive={isInSection(pathname, basePath, item.section)}
+                >
                   {item.label}
                 </PublicNavLink>
               ))}

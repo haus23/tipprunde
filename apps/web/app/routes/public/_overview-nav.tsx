@@ -9,10 +9,11 @@ const tabLinkClass =
   "text-subtle hover:text-app focus-visible:ring-accent rounded-sm transition-colors outline-none focus-visible:ring-2";
 
 /**
- * The Übersicht/Tabelle/Verlauf trio's shared rahmen — title above, the
+ * The Tabelle/Verlauf/Regelwerk trio's shared rahmen — title above, the
  * three tabs below, then whichever of the three is active. Mounted twice,
  * same file each time: under /turnier and under /turnier/:slug (see
- * routes.ts).
+ * routes.ts). The table is the championship's own page, so its tab points
+ * at the branch's basePath.
  */
 export async function loader({ context }: Route.LoaderArgs) {
   // Non-null: the branch layout above throws when it cannot resolve one.
@@ -29,16 +30,16 @@ export default function OverviewNav({ loaderData }: Route.ComponentProps) {
 
   const tabs = [
     // matchNested only on Verlauf: its own route carries an optional
-    // trailing :playerSlug. Übersicht's "to" is the branch's basePath, a
-    // prefix of every one of these tabs' own paths too — matching nested
-    // there would wrongly mark it active from Tabelle or Verlauf as well.
-    { label: "Übersicht", to: scoped("/"), matchNested: false },
+    // trailing :playerSlug. The table's "to" is the branch's basePath, a
+    // prefix of every other tab's path too — matching nested there would
+    // wrongly mark it active from Verlauf or Regelwerk as well.
     {
       label: championship.completed ? "Abschlusstabelle" : "Aktuelle Tabelle",
-      to: scoped("/tabelle"),
+      to: scoped("/"),
       matchNested: false,
     },
     { label: "Verlauf", to: scoped("/verlauf"), matchNested: true },
+    { label: "Regelwerk", to: scoped("/regelwerk"), matchNested: false },
   ];
 
   return (
