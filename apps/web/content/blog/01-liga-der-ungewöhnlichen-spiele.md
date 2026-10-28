@@ -25,7 +25,7 @@ Hier nun die lose Liste der Liga der außergewöhnlichen Spiele:
 
 Ein sportliches Highlight des Fußballs in Cottbus, das verdientermaßen den Einzug in unsere Tipprunde nahm. Ergebnis habe ich vergessen oder vertrunken:
 
-- **Marie United – Goldbrand 1450** (Brenner-Liga)
+- **Marie United – Goldbrand 14,50** (Brenner-Liga)
 
 ### Rückrunde 2005/06
 

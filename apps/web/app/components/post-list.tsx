@@ -30,8 +30,12 @@ export function PostList({
               withExcerpts ? "py-6" : "py-3",
             )}
           >
+            {/* The date the list is sorted by: a continued article shows when it
+                last grew, labelled, so it doesn't pass for a new one. */}
             <p className="text-muted mb-0.5 text-xs tracking-wide uppercase">
-              {formatDate(post.date)}
+              {post.updated !== post.date
+                ? `Aktualisiert ${formatDate(post.updated)}`
+                : formatDate(post.date)}
             </p>
             {/* -ml-1 offsets AppLink's own p-1, so the title lines up with the date. */}
             <div className={cx("-ml-1", withExcerpts && "text-lg font-semibold")}>
