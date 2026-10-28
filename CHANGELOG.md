@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.3.3
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.3.2...v3.3.3)
+
+### 🩹 Fixes
+
+- Show when a Nachspielzeit article was updated ([8adcf10](https://github.com/haus23/tipprunde/commit/8adcf10))
+- **manager:** List rulesets newest first ([480b820](https://github.com/haus23/tipprunde/commit/480b820))
+- **manager:** Multi-line description for extra questions ([28a3659](https://github.com/haus23/tipprunde/commit/28a3659))
+- Display digits and podium colors in the Ewige Tabelle ([85152d4](https://github.com/haus23/tipprunde/commit/85152d4))
+- "Pkt" instead of "Punkte" on narrow screens in the Archiv ([f3ed30c](https://github.com/haus23/tipprunde/commit/f3ed30c))
+- Visible fade at the edges of the Archiv tournament list ([23d6181](https://github.com/haus23/tipprunde/commit/23d6181))
+- Update team name. ([916a3ff](https://github.com/haus23/tipprunde/commit/916a3ff))
+
 ## v3.3.2
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.3.1...v3.3.2)
