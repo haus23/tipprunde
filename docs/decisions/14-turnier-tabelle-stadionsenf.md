@@ -55,11 +55,15 @@ is a minor, not a major.
 Left the running championship's standings; on the right whatever is current
 about it:
 
-- **while it runs:** the latest matches;
+- **while it runs:** the latest matches — even if a Stadionsenf already
+  exists. As a rule one is only written once the championship is over, but
+  that is a habit, not a constraint, and while matches are still being played
+  they are what the homepage is for;
 - **once it is over and has a Stadionsenf:** a teaser — title, the excerpt
   above a `<!-- more -->` line if the author set one, "Weiterlesen →" to the
   championship page;
-- **over, no comment yet:** nothing.
+- **over, no comment yet:** the last matches, until the comment is there. The
+  column never stands empty.
 
 The excerpt follows the same rule as the Nachspielzeit articles (11): set by
 hand with `<!-- more -->`, never a guessed first paragraph. Without the marker

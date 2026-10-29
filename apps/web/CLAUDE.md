@@ -52,8 +52,9 @@ files — under `/turnier` for the running championship, and under
 Cross-championship, outside that scope:
 
 - `/` — Homepage: branding + season switcher, the running championship's
-  standings and, beside them, its current matches while it runs or its
-  Stadionsenf teaser once it is over; the latest from the Nachspielzeit
+  standings and, beside them, its current matches while it runs; once it is
+  over its Stadionsenf teaser, or its last matches until one is written; the
+  latest from the Nachspielzeit
 - `/archiv` — All published championships + all-time table
 - `/nachspielzeit`, `/nachspielzeit/:slug` — Nachspielzeit: occasional
   articles from `content/blog/` (list, detail)

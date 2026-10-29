@@ -31,9 +31,9 @@ export async function loader({ context }: Route.LoaderArgs) {
     getPublicChampionships(),
     getBlogPosts(),
     championship ? getRanking(championship.id) : Promise.resolve([]),
-    championship && !championship.completed
-      ? getCurrentMatches(championship.id)
-      : Promise.resolve([]),
+    championship ? getCurrentMatches(championship.id) : Promise.resolve([]),
+    // Only a finished championship shows its Stadionsenf here — while one
+    // runs, the matches win even if a comment has already been written.
     championship?.completed ? getTurnierComment(championship.slug) : Promise.resolve(null),
   ]);
 
@@ -92,18 +92,18 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           // here that's the running championship at /turnier.
           <ChampionshipScopeProvider basePath="/turnier">
             {/* Right column: the latest matches while the championship
-                runs, its Stadionsenf once it is over — nothing if it is over
-                and nobody has written one yet. */}
+                runs; once it is over its Stadionsenf, or the last matches
+                until somebody has written one. */}
             <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
               <ChampionshipStandings
                 ranking={ranking}
                 completed={championship.completed}
                 userId={userId}
               />
-              {!championship.completed ? (
-                <ChampionshipCurrentMatches matches={matches} completed={false} />
+              {comment ? (
+                <StadionsenfTeaser comment={comment} />
               ) : (
-                comment && <StadionsenfTeaser comment={comment} />
+                <ChampionshipCurrentMatches matches={matches} completed={championship.completed} />
               )}
             </div>
           </ChampionshipScopeProvider>
