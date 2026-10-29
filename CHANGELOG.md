@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.4.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.4.0...v3.4.1)
+
+### 🚀 Enhancements
+
+- Homepage teaser leads straight to the Stadionsenf, unfolded ([67bbda0](https://github.com/haus23/tipprunde/commit/67bbda0))
+
 ## v3.4.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.3.3...v3.4.0)

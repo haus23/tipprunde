@@ -72,6 +72,14 @@ it in place (a short fade, focus moves to the revealed text). Without the
 marker the comment shows in full. Stacked, nothing follows the comment, so its
 length gets in nobody's way — the marker does nothing there.
 
+**The teaser leads to the text.** Its links point at `#stadionsenf`, the
+aside's id: whoever clicked "Weiterlesen" has asked for the comment, so they
+get it — stacked, scrolled to under the table; beside it, unfolded, with the
+page left at the top (a scroll margin taller than the screen keeps title and
+tabs in view). Not CSS `:target`: it does not follow client-side navigation,
+so the component reads the hash. A fresh load with the hash renders folded on
+the server, which never sees it, and unfolds right after hydration.
+
 The fold is a marker of its own, not `<!-- more -->`: the excerpt answers
 "what makes people curious?" for the homepage teaser, the fold "how much fits
 beside the table?" — two cuts in different places.
