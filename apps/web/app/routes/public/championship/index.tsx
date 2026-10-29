@@ -59,18 +59,12 @@ export default function ChampionshipTable({ loaderData }: Route.ComponentProps) 
       className={cx(
         "mx-auto w-full",
         // Side by side from lg up, the comment under the table below that.
-        // The table stays full-bleed on phones; only the prose needs the
-        // padding the shell's <main> leaves out below xs.
         comment ? "grid gap-x-10 gap-y-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : "max-w-3xl",
       )}
     >
       <title>{`${championship.name} · runde.tips`}</title>
       <div>{table}</div>
-      {comment && (
-        <div className="xs:px-0 px-4">
-          <ChampionshipComment comment={comment} />
-        </div>
-      )}
+      {comment && <ChampionshipComment comment={comment} />}
     </div>
   );
 }

@@ -22,6 +22,9 @@ export type TurnierComment = {
   /** Everything above the `<!-- more -->` marker, rendered — null without one.
    * The homepage's teaser; same rule as the Nachspielzeit articles. */
   excerptHtml: string | null;
+  /** The text split at the `<!-- fold -->` marker, rendered — null without
+   * one. Beside the table, the part below stays folded until asked for. */
+  fold: { aboveHtml: string; belowHtml: string } | null;
 };
 
 const FRONTMATTER_PATTERN = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/;
@@ -53,6 +56,12 @@ const AUTHOR_NOTE = /<!--[\s\S]*?-->/g;
 // with them.
 const EXCERPT_MARKER = /^<!--\s*more\s*-->\s*$/m;
 
+// Stadionsenf only: where the text folds beside the table. A cut of its own,
+// not the excerpt's — the teaser asks "what makes people curious?", the fold
+// "how much fits beside the table?". Like the excerpt, it belongs on a line of
+// its own between two paragraphs; both halves are rendered separately.
+const FOLD_MARKER = /^<!--\s*fold\s*-->\s*$/m;
+
 function renderMarkdown(markdown: string) {
   return marked.parse(markdown.replace(AUTHOR_NOTE, "").trim());
 }
@@ -77,12 +86,17 @@ export async function getTurnierComment(slug: string): Promise<TurnierComment | 
   if (frontmatter.draft && process.env.NODE_ENV === "production") return null;
 
   const [intro, rest] = body.split(EXCERPT_MARKER, 2);
+  const [above, below] = body.split(FOLD_MARKER, 2);
 
   return {
     title: frontmatterText(frontmatter.title),
     date: frontmatterText(frontmatter.date),
     html: await renderMarkdown(body),
     excerptHtml: rest === undefined ? null : await renderMarkdown(intro),
+    fold:
+      below === undefined
+        ? null
+        : { aboveHtml: await renderMarkdown(above), belowHtml: await renderMarkdown(below) },
   };
 }
 

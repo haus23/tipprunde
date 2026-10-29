@@ -50,6 +50,32 @@ championship root — a prefix of every other view.
 keeping the query string. Shared and bookmarked links keep working, so this
 is a minor, not a major.
 
+## The Stadionsenf as an aside
+
+The comment is commentary on the table, not part of it, and should read that
+way — without being turned down: same text size, same colour as any prose.
+The difference is a frame and a voice:
+
+- **One voice on every size:** an `<aside>` with a red "Stadionsenf" label and
+  the title in the poster face (Anton), like a newspaper column.
+- **A frame per layout:** beside the table, a column set off by a red rule;
+  stacked under it, a full-width band of darker cream (`surface-raised`), a new
+  page after the table. Different frames for one and two columns are fine as
+  long as the content and the voice stay the same, and the switch is CSS, so
+  server and client render alike.
+
+**Long comments fold, where the author says so.** Beside the table a long
+comment runs far past it and leaves a column of nothing on the left. A
+`<!-- fold -->` line, on its own between two paragraphs, cuts the text there:
+from `lg` up the rest stays hidden behind "Ganzen Senf lesen ↓", which shows
+it in place (a short fade, focus moves to the revealed text). Without the
+marker the comment shows in full. Stacked, nothing follows the comment, so its
+length gets in nobody's way — the marker does nothing there.
+
+The fold is a marker of its own, not `<!-- more -->`: the excerpt answers
+"what makes people curious?" for the homepage teaser, the fold "how much fits
+beside the table?" — two cuts in different places.
+
 ## The homepage
 
 Left the running championship's standings; on the right whatever is current
@@ -70,6 +96,19 @@ hand with `<!-- more -->`, never a guessed first paragraph. Without the marker
 the teaser shows the title and the link only.
 
 ## Tried and dropped
+
+- **A sticky table** beside a long comment, so the players named in the text
+  stay in view. Works only while the table fits the viewport; a table of 16
+  already did not at 800px, and its last rows could then only be reached by
+  scrolling to the end of the comment. Sticking it by its bottom edge instead
+  loses the leaders, scrolling with the reader both ways needs scroll logic.
+  Dropped.
+- **Folding by height** — the comment cut to the table's height with a fade.
+  Dropped for the explicit marker: the author picks the place, and a cut
+  between paragraphs needs no fade.
+- **An inner scroll area** at the table's height, and **a side sheet** for the
+  full text: a scroll box inside the page fights the page's own scrolling, a
+  sheet hides the text again.
 
 - **The Stadionsenf as a fourth tab** (Tabelle · Verlauf · Stadionsenf ·
   Regelwerk). Considered first; dropped because the comment would disappear
