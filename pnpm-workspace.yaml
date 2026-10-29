@@ -10,11 +10,11 @@ allowBuilds:
 
 catalog:
   typescript: ~7.0.2 # Align with .zed/settings.json
-  vite: ^8.3.4
+  vite: ^8.3.5
 
 catalogs:
   icons:
-    lucide-react: ^1.61.0
+    lucide-react: ^1.63.0
   orm:
     "@libsql/client": 0.18.0
     drizzle-orm: 1.0.0-rc.4
@@ -25,7 +25,7 @@ catalogs:
     react-aria-components: ^1.22.1
   tailwind:
     "@tailwindcss/vite": ^4.3.3
-    cn: ^0.4.0
+    cn: ^0.5.0
     "tailwindcss": ^4.3.3
   types:
     "@types/node": ^26.6.5

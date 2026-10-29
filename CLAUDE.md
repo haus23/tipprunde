@@ -73,6 +73,7 @@ is. Superseded, never quietly rewritten:**
 - `11-turnier-routing-homepage.md` — championships only under `/turnier` + `/turnier/:slug`, `/` as a module-based homepage, the Nachspielzeit; nav designs tried and dropped
 - `12-public-app-split.md` — Future idea (not decided, not planned): framework-free public site — as a Cloudflare Worker reading published JSON, or beside the app in the same Node server; the app keeps writes and login
 - `13-public-poster-theme.md` — cream/ink/red theme (light and dark) + Anton for the public site only; why `@theme` is not `inline`
+- `14-turnier-tabelle-stadionsenf.md` — the championship page is its table with the Stadionsenf beside it; tabs Tabelle · Verlauf · Regelwerk; `/tabelle` redirects; homepage shows matches or the Stadionsenf teaser
 
 ## Skills
 

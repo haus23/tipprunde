@@ -48,6 +48,12 @@ Three short items (Tabelle · Spieler · Spiele) fit at every practical width, s
 there is **no overflow menu** — the nav is always fully visible. No ⋯ button, no
 duplicate rendering, no collapse logic.
 
+"Tabelle" leads to the championship's own page, which _is_ its table, and stays
+lit on that page's Verlauf and Regelwerk tabs; the shell decides which item is
+active rather than plain URL matching, because the table's link is a prefix of
+every other view. See
+[14-turnier-tabelle-stadionsenf.md](./decisions/14-turnier-tabelle-stadionsenf.md).
+
 ## Chat as a layout citizen
 
 Chat is high priority and **always visible on wide screens** — it is a layout region,

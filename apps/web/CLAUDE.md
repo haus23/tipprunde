@@ -36,12 +36,12 @@ Public routes live at the root; the manager sits under `/manager`.
 The championship-scoped views below are mounted **twice** from one set of
 files — under `/turnier` for the running championship, and under
 `/turnier/:slug` for any published one, current or archived alike (see
-`05-championship-scope.md`, `11-turnier-routing-homepage.md`). Paths are
-relative to that prefix:
+`05-championship-scope.md`, `11-turnier-routing-homepage.md`,
+`14-turnier-tabelle-stadionsenf.md`). Paths are relative to that prefix:
 
-- `/` — Championship overview: standings, current matches, Stadionsenf
-  comment, ruleset
-- `/tabelle` — Current/final table
+- `/` — The championship's page: its full table, plus the Stadionsenf
+  comment beside it (under it on small screens) once one is published
+- `/tabelle` — Redirect (301) to `/`, for old links
 - `/spiele`, `/spiele/:nr` — Match overview (accordion) and per-match tips
 - `/tipps/:playerSlug?` — One player's tips (defaults to self, else rank 1)
 - `/verlauf/:playerSlug?` — Rank progression bump chart; the slug only picks
@@ -52,7 +52,9 @@ relative to that prefix:
 Cross-championship, outside that scope:
 
 - `/` — Homepage: branding + season switcher, the running championship's
-  standings and current matches, the latest from the Nachspielzeit
+  standings and, beside them, its current matches while it runs; once it is
+  over its Stadionsenf teaser, or its last matches until one is written; the
+  latest from the Nachspielzeit
 - `/archiv` — All published championships + all-time table
 - `/nachspielzeit`, `/nachspielzeit/:slug` — Nachspielzeit: occasional
   articles from `content/blog/` (list, detail)

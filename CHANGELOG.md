@@ -1,5 +1,24 @@
 # Changelog
 
+## v3.4.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.3.3...v3.4.0)
+
+### 🚀 Enhancements
+
+- The championship page is its table, with the Stadionsenf beside it ([4ee14f1](https://github.com/haus23/tipprunde/commit/4ee14f1))
+- Homepage shows the last matches until a Stadionsenf is written ([bee0944](https://github.com/haus23/tipprunde/commit/bee0944))
+- Stadionsenf as an aside, with an optional fold beside the table ([158ff2b](https://github.com/haus23/tipprunde/commit/158ff2b))
+
+### 📖 Documentation
+
+- Decision 14 - championship page as table with Stadionsenf ([d19a46f](https://github.com/haus23/tipprunde/commit/d19a46f))
+- Route list for the championship page and homepage ([c536f16](https://github.com/haus23/tipprunde/commit/c536f16))
+
+### 🏡 Chore
+
+- Update dependencies ([1e78f4f](https://github.com/haus23/tipprunde/commit/1e78f4f))
+
 ## v3.3.3
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.3.2...v3.3.3)

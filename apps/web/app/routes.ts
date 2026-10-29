@@ -12,7 +12,9 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
  * Every championship-scoped public view, mounted **twice** — for the running
  * championship under /turnier, and per published championship under
  * /turnier/:slug. Same files both times, same shape: the season chrome
- * around everything, the Übersicht/Tabelle/Verlauf rahmen around those three.
+ * around everything, the Tabelle/Verlauf/Regelwerk rahmen around those three.
+ * The championship's own page *is* its table, with the Stadionsenf beside it
+ * — see docs/decisions/14-turnier-tabelle-stadionsenf.md.
  *
  * Only the `id` differs, which is what lets React Router mount one module at
  * two places. The views read the championship from `viewedChampionshipContext`
@@ -26,6 +28,8 @@ const championshipTree = (id: string) => [
   layout("routes/public/_championship-chrome.tsx", { id: `${id}-chrome` }, [
     layout("routes/public/_overview-nav.tsx", { id: `${id}-overview` }, [
       index("routes/public/championship/index.tsx", { id: `${id}-index` }),
+      route("regelwerk", "routes/public/championship/regelwerk.tsx", { id: `${id}-regelwerk` }),
+      // Redirect only: the table moved to the index, old links keep working.
       route("tabelle", "routes/public/championship/tabelle.tsx", { id: `${id}-tabelle` }),
       // :playerSlug only picks the highlighted line — see docs/decisions/06-verlauf-bump-chart.md.
       route("verlauf/:playerSlug?", "routes/public/championship/verlauf/index.tsx", {
@@ -37,7 +41,6 @@ const championshipTree = (id: string) => [
 ];
 
 const championshipViews = (id: string) => [
-  route("regelwerk", "routes/public/championship/regelwerk.tsx", { id: `${id}-regelwerk` }),
   route("spiele", "routes/public/championship/spiele/index.tsx", { id: `${id}-spiele` }),
   route("spiele/:nr", "routes/public/championship/spiele/detail.tsx", { id: `${id}-match` }),
   // :playerSlug, not :slug — under /turnier/:slug the parent already owns

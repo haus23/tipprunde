@@ -1,6 +1,6 @@
 {
   "name": "tipprunde",
-  "version": "3.3.3",
+  "version": "3.4.0",
   "description": "Haus23 Tipprunde",
   "license": "MIT",
   "type": "module",
@@ -12,9 +12,9 @@
   },
   "devDependencies": {
     "lint-staged": "^17.6.0",
-    "oxfmt": "^0.73.0",
-    "oxlint": "^1.88.0",
-    "oxlint-tsgolint": "^7.0.2004",
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.90.0",
+    "oxlint-tsgolint": "^7.0.2005",
     "simple-git-hooks": "^2.14.0",
     "typescript": "catalog:"
   },
