@@ -11,20 +11,22 @@ import type { TurnierComment } from "#/lib/content.server.ts";
  */
 export function StadionsenfTeaser({ comment }: { comment: TurnierComment }) {
   const scoped = useScopedPath();
+  // Straight to the text, unfolded — the reader has already asked for it.
+  const href = `${scoped("/")}#stadionsenf`;
 
   return (
     <section>
       <SectionHeading>Stadionsenf</SectionHeading>
       {/* -ml-1 offsets AppLink's own p-1, so the title lines up with the heading. */}
       <div className="-ml-1 text-lg font-semibold">
-        <AppLink href={scoped("/")}>{comment.title}</AppLink>
+        <AppLink href={href}>{comment.title}</AppLink>
       </div>
       {comment.excerptHtml && (
         // Markdown from our own repo, never user input — safe to inject.
         <div className="prose mt-2" dangerouslySetInnerHTML={{ __html: comment.excerptHtml }} />
       )}
       <div className="mt-2 flex justify-end">
-        <SectionLink to={scoped("/")}>Weiterlesen →</SectionLink>
+        <SectionLink to={href}>Weiterlesen →</SectionLink>
       </div>
     </section>
   );
