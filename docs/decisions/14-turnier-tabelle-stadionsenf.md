@@ -41,6 +41,14 @@ over), so the page then shows the table alone, and nobody misses anything.
 reference material, a tab is enough; it moved into the rahmen and carries the
 link to the Zusatzfragen that used to sit under it on the Übersicht.
 
+> **Update 2026-10-29:** that link left the Zusatzfragen hidden — reachable
+> only from the bottom of the ruleset and the table's column header. They are
+> meta content about the championship like the ruleset, so they became a tab
+> of their own: **Tabelle · Zusatzfragen · Regelwerk · Verlauf**, the
+> Zusatzfragen tab only for a ruleset that asks extra questions. The ruleset's
+> link went. On narrow screens the tabs wrap instead of squeezing into one
+> line.
+
 **The header's "Tabelle" leads to the championship page** and stays lit on its
 Verlauf and Regelwerk tabs; Spieler and Spiele stay as they were. The shell
 decides which item is active (`_layout.tsx`), because the table's link is the

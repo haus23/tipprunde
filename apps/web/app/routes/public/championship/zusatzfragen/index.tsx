@@ -6,10 +6,8 @@ import type { Route } from "./+types/index";
 import { QuestionBlock } from "./_question-block.tsx";
 
 export async function loader({ context }: Route.LoaderArgs) {
-  const championship = context.get(viewedChampionshipContext);
-  if (!championship) {
-    return { championshipName: null, questions: [], ranking: [], pointsPublished: false };
-  }
+  // Non-null: the branch layout above throws when it cannot resolve one.
+  const championship = context.get(viewedChampionshipContext)!;
 
   const [ranking, questions] = await Promise.all([
     getRanking(championship.id),
@@ -27,23 +25,10 @@ export async function loader({ context }: Route.LoaderArgs) {
 export default function Zusatzfragen({ loaderData }: Route.ComponentProps) {
   const { championshipName, questions, ranking, pointsPublished } = loaderData;
 
-  if (!championshipName) {
-    return (
-      <div className="mx-auto w-full max-w-3xl py-8">
-        <title>Zusatzfragen · runde.tips</title>
-        <p className="text-subtle py-16 text-center text-base">Kein aktives Turnier.</p>
-      </div>
-    );
-  }
-
+  // Title and championship name come from the rahmen (_overview-nav.tsx).
   return (
-    <div className="mx-auto w-full max-w-3xl py-8">
+    <div className="mx-auto w-full max-w-3xl">
       <title>{`Zusatzfragen · ${championshipName} · runde.tips`}</title>
-      <div className="mb-6 flex flex-col items-center gap-2">
-        <h1 className="poster-title text-3xl">Zusatzfragen</h1>
-        <p className="text-subtle text-sm">{championshipName}</p>
-      </div>
-
       {questions.length === 0 ? (
         <p className="text-subtle py-16 text-center text-base">
           Keine Zusatzfragen für dieses Turnier.

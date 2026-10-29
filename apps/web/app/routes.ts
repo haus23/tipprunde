@@ -28,6 +28,9 @@ const championshipTree = (id: string) => [
   layout("routes/public/_championship-chrome.tsx", { id: `${id}-chrome` }, [
     layout("routes/public/_overview-nav.tsx", { id: `${id}-overview` }, [
       index("routes/public/championship/index.tsx", { id: `${id}-index` }),
+      route("zusatzfragen", "routes/public/championship/zusatzfragen/index.tsx", {
+        id: `${id}-zusatzfragen`,
+      }),
       route("regelwerk", "routes/public/championship/regelwerk.tsx", { id: `${id}-regelwerk` }),
       // Redirect only: the table moved to the index, old links keep working.
       route("tabelle", "routes/public/championship/tabelle.tsx", { id: `${id}-tabelle` }),
@@ -47,9 +50,6 @@ const championshipViews = (id: string) => [
   // `slug`, and an unmatched optional child param does not shadow it.
   route("tipps/:playerSlug?", "routes/public/championship/tipps/index.tsx", {
     id: `${id}-tipps`,
-  }),
-  route("zusatzfragen", "routes/public/championship/zusatzfragen/index.tsx", {
-    id: `${id}-zusatzfragen`,
   }),
 ];
 
