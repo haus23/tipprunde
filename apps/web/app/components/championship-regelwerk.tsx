@@ -5,22 +5,16 @@ import type { Ruleset } from "#/lib/championship.server.ts";
 import { SectionHeading } from "./section-heading.tsx";
 
 /**
- * Shared between the dashboard (current championship) and the Archiv
- * (completed ones) — kept free of any route-specific assumptions. The
- * dashboard's own "Zusatzfragen →" link is passed in as children rather than
- * hardcoded here, since that route only ever shows the *current* season's
- * questions and would be wrong to link to from an archived one.
+ * A championship's ruleset: its description and every rule it activates.
  */
 export function ChampionshipRegelwerk({
   ruleset,
   showHeading = true,
-  children,
 }: {
   ruleset: Ruleset;
   /** Archiv's own sub-nav already announces "Regelwerk" — repeating it as a
    * heading right below the active nav item read as redundant there. */
   showHeading?: boolean;
-  children?: React.ReactNode;
 }) {
   const activeRules = RULE_CATEGORIES.flatMap(({ field, label, rules }) => {
     const ruleId = ruleset[field];
@@ -41,7 +35,6 @@ export function ChampionshipRegelwerk({
           </div>
         ))}
       </div>
-      {children}
     </section>
   );
 }

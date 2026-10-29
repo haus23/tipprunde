@@ -23,7 +23,7 @@ import { UserArea } from "./_user-area.tsx";
 // own page, its table. `section` lists the paths an item stays active on —
 // the table also owns the Verlauf and Regelwerk tabs of its rahmen.
 const navItems = [
-  { to: "", label: "Tabelle", section: ["", "/verlauf", "/regelwerk"] },
+  { to: "", label: "Tabelle", section: ["", "/zusatzfragen", "/regelwerk", "/verlauf"] },
   { to: "/tipps", label: "Spieler", section: ["/tipps"] },
   { to: "/spiele", label: "Spiele", section: ["/spiele"] },
 ] as const;
