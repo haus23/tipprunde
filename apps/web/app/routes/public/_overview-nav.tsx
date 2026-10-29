@@ -42,6 +42,8 @@ export default function OverviewNav({ loaderData }: Route.ComponentProps) {
     // wrongly mark it active from Verlauf or Regelwerk as well.
     {
       label: championship.completed ? "Abschlusstabelle" : "Aktuelle Tabelle",
+      // Below xs the long name would push the fourth tab onto a line of its own.
+      shortLabel: "Tabelle",
       to: scoped("/"),
       matchNested: false,
     },
@@ -51,6 +53,16 @@ export default function OverviewNav({ loaderData }: Route.ComponentProps) {
     { label: "Regelwerk", to: scoped("/regelwerk"), matchNested: false },
     { label: "Verlauf", to: scoped("/verlauf"), matchNested: true },
   ];
+
+  const tabLabel = (tab: (typeof tabs)[number]) =>
+    "shortLabel" in tab ? (
+      <>
+        <span className="xs:hidden">{tab.shortLabel}</span>
+        <span className="xs:inline hidden">{tab.label}</span>
+      </>
+    ) : (
+      tab.label
+    );
 
   return (
     <div className="mx-auto w-full max-w-4xl py-8">
@@ -66,11 +78,11 @@ export default function OverviewNav({ loaderData }: Route.ComponentProps) {
             pathname === tab.to || (tab.matchNested && pathname.startsWith(`${tab.to}/`));
           return isActive ? (
             <span key={tab.label} className="font-medium">
-              {tab.label}
+              {tabLabel(tab)}
             </span>
           ) : (
             <Link key={tab.label} to={tab.to} prefetch="intent" className={tabLinkClass}>
-              {tab.label}
+              {tabLabel(tab)}
             </Link>
           );
         })}
