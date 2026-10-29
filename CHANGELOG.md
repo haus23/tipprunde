@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.5.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.4.1...v3.5.0)
+
+### 🚀 Enhancements
+
+- Zusatzfragen as a tab beside the table ([690124f](https://github.com/haus23/tipprunde/commit/690124f))
+- Short "Tabelle" tab label below xs ([73de9c6](https://github.com/haus23/tipprunde/commit/73de9c6))
+
 ## v3.4.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.4.0...v3.4.1)
