@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.7.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.6.0...v3.7.0)
+
+### 🚀 Enhancements
+
+- Turnierleitung per championship ([346d6eb](https://github.com/haus23/tipprunde/commit/346d6eb))
+
 ## v3.6.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.5.0...v3.6.0)
