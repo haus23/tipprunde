@@ -1,5 +1,6 @@
 import { cx } from "@tipprunde/ui";
 
+import { AppLink } from "#/components/app-link.tsx";
 import { getArchivChampionshipList, getEwigeTabelle } from "#/lib/archiv.server.ts";
 import { formatPoints } from "#/lib/utils.ts";
 
@@ -37,7 +38,9 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
           )}
         </section>
 
-        <section>
+        {/* The player page's back link lands here; scroll-mt clears the
+            sticky header. */}
+        <section id="ewige-tabelle" className="scroll-mt-20">
           <h2 className="text-muted mb-3 text-xs font-medium tracking-wide uppercase">
             Ewige Tabelle
           </h2>
@@ -72,7 +75,9 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                         >
                           {sharesRankAbove ? "" : entry.rank}
                         </td>
-                        <td className="xs:pl-3 py-2 pl-2">{entry.name}</td>
+                        <td className="xs:pl-3 py-2 pl-2">
+                          <AppLink href={`/archiv/spieler/${entry.slug}`}>{entry.name}</AppLink>
+                        </td>
                         <td className="text-subtle xs:px-3 w-px px-2 py-2 text-center tabular-nums">
                           {entry.played}
                         </td>

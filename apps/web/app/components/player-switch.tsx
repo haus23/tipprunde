@@ -13,8 +13,6 @@ import {
 } from "react-aria-components";
 import { useNavigate } from "react-router";
 
-import { useScopedPath } from "#/components/championship-scope.tsx";
-
 interface Player {
   slug: string;
   name: string;
@@ -24,10 +22,11 @@ interface Props {
   players: Player[];
   currentSlug: string;
   /**
-   * Championship-relative route the picked player is appended to — `/tipps`
-   * opens their tips, `/verlauf` highlights their line.
+   * Where picking a player leads — their tips, their highlighted Verlauf
+   * line, their Archiv page. The caller builds the path, so the switcher
+   * works inside a championship scope and outside one alike.
    */
-  basePath: string;
+  hrefFor: (slug: string) => string;
   label?: string;
 }
 
@@ -43,9 +42,8 @@ const normalize = (s: string) =>
  * opens a command-palette popover (search field + filtered list). Self-contained
  * so the internals can later be swapped for a `cmdk`-based palette.
  */
-export function PlayerSwitch({ players, currentSlug, basePath, label }: Props) {
+export function PlayerSwitch({ players, currentSlug, hrefFor, label }: Props) {
   const navigate = useNavigate();
-  const scoped = useScopedPath();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -82,7 +80,7 @@ export function PlayerSwitch({ players, currentSlug, basePath, label }: Props) {
               className="min-h-0 flex-1 overflow-auto p-1 outline-none"
               onAction={(key) => {
                 setIsOpen(false);
-                void navigate(scoped(`${basePath}/${key}`), { preventScrollReset: true });
+                void navigate(hrefFor(String(key)), { preventScrollReset: true });
               }}
             >
               {players.map((p) => (

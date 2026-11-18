@@ -56,6 +56,8 @@ Cross-championship, outside that scope:
   over its Stadionsenf teaser, or its last matches until one is written; the
   latest from the Nachspielzeit
 - `/archiv` — All published championships + all-time table
+- `/archiv/spieler/:slug` — One player across all championships (rank, extra
+  points, total per championship), linked from the all-time table
 - `/nachspielzeit`, `/nachspielzeit/:slug` — Nachspielzeit: occasional
   articles from `content/blog/` (list, detail)
 - `/login` — TOTP login (two steps, intent-based action)

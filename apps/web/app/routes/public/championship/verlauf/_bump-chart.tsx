@@ -241,7 +241,7 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
             <PlayerSwitch
               players={players}
               currentSlug={focus.slug}
-              basePath="/verlauf"
+              hrefFor={(slug) => scoped(`/verlauf/${slug}`)}
               label="Hervorgehobenen Spieler wechseln"
             />
           </div>

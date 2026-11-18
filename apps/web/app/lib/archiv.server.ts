@@ -1,5 +1,5 @@
 import { championships, players, users } from "@tipprunde/db/schema";
-import { count, eq, sql, sum } from "drizzle-orm";
+import { and, count, desc, eq, sql, sum } from "drizzle-orm";
 
 import { db } from "./db.server";
 
@@ -61,6 +61,7 @@ export async function getEwigeTabelle() {
     .select({
       userId: players.userId,
       name: users.name,
+      slug: users.slug,
       totalPoints: sum(players.total),
       played: count(),
       // Titles: only completed championships. `rank` is live-updated all
@@ -79,6 +80,7 @@ export async function getEwigeTabelle() {
     .map((r) => ({
       userId: r.userId,
       name: r.name,
+      slug: r.slug,
       totalPoints: Number(r.totalPoints ?? 0),
       played: r.played,
       wins: Number(r.wins),
@@ -91,6 +93,44 @@ export async function getEwigeTabelle() {
     if (i > 0 && sorted[i - 1].totalPoints !== entry.totalPoints) rank = i + 1;
     return { ...entry, rank };
   });
+}
+
+/**
+ * One player's championships for the Archiv's player page — every published
+ * championship they played, newest first, with rank, extra points, total and
+ * the size of the field. The running championship is included, like in the
+ * Ewige Tabelle; the page marks it as provisional. Null for an unknown slug.
+ */
+export async function getArchivPlayer(slug: string) {
+  const user = await db.query.users.findFirst({
+    where: { slug },
+    columns: { id: true, slug: true, name: true },
+  });
+  if (!user) return null;
+
+  const fieldSizes = db
+    .select({ championshipId: players.championshipId, size: count().as("size") })
+    .from(players)
+    .groupBy(players.championshipId)
+    .as("field_sizes");
+
+  const rows = await db
+    .select({
+      slug: championships.slug,
+      name: championships.name,
+      completed: championships.completed,
+      rank: players.rank,
+      extraQuestionPoints: players.extraQuestionPoints,
+      total: players.total,
+      fieldSize: fieldSizes.size,
+    })
+    .from(players)
+    .innerJoin(championships, eq(players.championshipId, championships.id))
+    .innerJoin(fieldSizes, eq(fieldSizes.championshipId, players.championshipId))
+    .where(and(eq(players.userId, user.id), eq(championships.published, true)))
+    .orderBy(desc(championships.nr));
+
+  return { player: user, championships: rows };
 }
 
 /**

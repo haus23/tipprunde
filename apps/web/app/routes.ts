@@ -61,6 +61,8 @@ export default [
     // Archiv spans all championships — list + Ewige Tabelle, outside any
     // championship scope. The championships themselves live under /turnier.
     route("archiv", "routes/public/archiv/index.tsx"),
+    // One player across all championships, linked from the Ewige Tabelle.
+    route("archiv/spieler/:slug", "routes/public/archiv/spieler.tsx"),
     route("nachspielzeit", "routes/public/nachspielzeit/index.tsx"),
     route("nachspielzeit/:slug", "routes/public/nachspielzeit/detail.tsx"),
     route("login", "routes/public/login.tsx"),
