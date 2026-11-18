@@ -33,6 +33,28 @@ layout, since the Archiv spans all championships rather than the current one.
 Queries are in `apps/web/app/lib/archiv.server.ts`: `getArchivPreview`,
 `getAllCompletedChampionships`, `getEwigeTabelle`, `getArchivChampionship`.
 
+## Player page (2026-11-18)
+
+`/archiv/spieler/:slug` — one player across every **completed** championship:
+rank (with the size of the field), extra points and total, newest first, and
+on top the sums of exactly those rows (championships, titles, points; the best
+placement when there is no title). Every name in the Ewige Tabelle links here;
+the `PlayerSwitch` beside the name moves to the next player, alphabetically
+(it has a search field — the ranking order is one click back on
+`/archiv#ewige-tabelle`). Query: `getArchivPlayer` in `archiv.server.ts`.
+
+**The running championship is left out on purpose** (decided 2026-11-18):
+the page is the player's record, and a live rank is not one. The Ewige
+Tabelle keeps counting it — so during a season the two differ, which is why
+the player page shows no "Platz N der Ewigen Tabelle". A newcomer who so far
+plays only the running championship is linked and in the switcher like
+everyone else; their page shows "Noch kein abgeschlossenes Turnier." instead
+of the list (user decision, 2026-11-18 — preferred over leaving the name
+unlinked). Only a user with no published championship at all gets a 404.
+
+No index route — nothing links to a bare `/archiv/spieler`, so it is the
+shell's 404, like an unknown slug.
+
 ## Data design decision
 
 The `players` join table (`championshipId`, `userId`) already has one row per
