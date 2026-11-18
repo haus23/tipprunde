@@ -1,7 +1,7 @@
 ---
 title: "Liga der ungewöhnlichen Spiele"
 date: 2026-09-29
-updated: 2026-10-08
+updated: 2026-11-17
 draft: false
 ---
 
@@ -69,6 +69,12 @@ Der Fehlgriff bei **B71 - B36** sorgte dafür, dass es jetzt ruhiger wurde. **En
 - **Fortuna Düsseldorf – Energie Cottbus II** (Regionalliga)
 - **1. FC Union Berlin – Energie Cottbus II** (Regionalliga)
 - **Energie Cottbus II – Dynamo Dresden** (Regionalliga)
+
+### Hinrunde 2008/09
+
+Wolfgangs letzte Runde als Chef-Trainer – und die Liga der ungewöhnlichen Spiele machte Pause. Mit der Einführung der 3. Liga rutschte die Regionalliga zur Saison 2008/09 eine Etage tiefer, **Energie II** spielte jetzt nur noch viertklassig und flog damit vom Tippzettel. Exoten aus dem Ausland suchte man ebenfalls vergeblich. Unterklassig wurde es nur noch im DFB-Pokal, wo **Tennis Borussia Berlin**, **Holstein Kiel**, **Rot-Weiß Erfurt** und **Erzgebirge Aue** ihre Chance gegen die Großen bekamen – aber das ist Pokal und keine Liga der ungewöhnlichen Spiele.
+
+Damit endet die Ära Wolfgang in dieser Liga ganz unspektakulär: ohne Färöer, ohne Türkei, ohne Landesliga Westfalen. Wie es unter Schiller weiterging, steht im nächsten Kapitel.
 
 Fortsetzung folgt ...
 
