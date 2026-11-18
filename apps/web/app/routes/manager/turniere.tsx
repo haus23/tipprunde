@@ -29,15 +29,26 @@ const championshipSchema = createInsertSchema(championships, {
     v.minValue(1, "Muss mindestens 1 sein"),
   ),
   rulesetId: (schema) => v.pipe(schema, v.nonEmpty("Bitte ein Regelwerk wählen")),
+  // Nullable in the schema (see packages/db), required here — the form is the
+  // only place a championship is created or changed.
+  leaderId: v.pipe(
+    v.string(),
+    v.nonEmpty("Bitte eine Turnierleitung wählen"),
+    v.toNumber(),
+    v.integer(),
+  ),
 });
 
 export async function loader() {
-  const [data, rulesetList] = await Promise.all([
+  const [data, rulesetList, userList] = await Promise.all([
     db.query.championships.findMany({
       orderBy: { nr: "desc" },
       with: { ruleset: { columns: { name: true } } },
     }),
     db.query.rulesets.findMany(),
+    // Any player can lead a championship — deliberately not tied to the
+    // manager role, which is about permissions, not history.
+    db.query.users.findMany({ columns: { id: true, name: true } }),
   ]);
 
   return {
@@ -45,6 +56,9 @@ export async function loader() {
     // Newest first, same order as the Regelwerke table.
     rulesets: sortGerman(rulesetList, (r) => r.name).toReversed(),
     nextNr: (data[0]?.nr ?? 0) + 1,
+    leaders: sortGerman(userList, (u) => u.name),
+    // A new championship usually keeps the previous one's leader.
+    defaultLeaderId: data[0]?.leaderId ?? null,
   };
 }
 
@@ -76,7 +90,12 @@ export async function action({ request }: Route.ActionArgs) {
     // Ruleset is immutable after creation — never apply rulesetId on update.
     const [championship] = await db
       .update(championships)
-      .set({ nr: result.output.nr, name: result.output.name, slug: result.output.slug })
+      .set({
+        nr: result.output.nr,
+        name: result.output.name,
+        slug: result.output.slug,
+        leaderId: result.output.leaderId,
+      })
       .where(eq(championships.id, result.output.id))
       .returning();
     return { championship };
@@ -86,7 +105,13 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function Turniere({ loaderData }: Route.ComponentProps) {
-  const { championships: championshipList, rulesets: rulesetList, nextNr } = loaderData;
+  const {
+    championships: championshipList,
+    rulesets: rulesetList,
+    nextNr,
+    leaders,
+    defaultLeaderId,
+  } = loaderData;
   const navigate = useNavigate();
   const [filter, setFilter] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -174,6 +199,8 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
         isOpen={isCreateOpen}
         onOpenChange={setIsCreateOpen}
         rulesets={rulesetList}
+        leaders={leaders}
+        defaultLeaderId={defaultLeaderId}
         nextNr={nextNr}
         onSuccess={(championship) => navigate(`/manager/${championship.slug}`)}
       />
@@ -183,6 +210,7 @@ export default function Turniere({ loaderData }: Route.ComponentProps) {
         onOpenChange={(open) => !open && setEditingChampionship(null)}
         defaultValues={editingChampionship ?? undefined}
         rulesets={rulesetList}
+        leaders={leaders}
       />
     </div>
   );

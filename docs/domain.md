@@ -25,6 +25,21 @@ across the slugged championship routes.
 > Primary purpose is to trigger a final stat recalculation. Whether certain
 > edit operations are blocked when `completed = true` is TBD.
 
+## Championship leader (`leaderId`)
+
+Who ran the championship — the "Turnierleitung" (Wolfgang for every
+championship up to the Hinrunde 2008/09, Schiller from the Rückrunde 2008/09).
+References `users.id`; any player can be chosen, **deliberately not tied to
+the `manager` role**: the role is about permissions today, the leader is
+history. Whether leading a championship should ever grant rights is open.
+
+Required by the manager's championship form (create and edit; a new
+championship pre-selects the previous one's leader) but **nullable in the
+schema**: SQLite adds a referencing column only as nullable, and NOT NULL
+afterwards would rebuild the whole table. The migration that added the column
+filled every existing championship with Wolfgang. Not shown anywhere yet —
+recorded for later use, statistics among them.
+
 ---
 
 ## Round flags
