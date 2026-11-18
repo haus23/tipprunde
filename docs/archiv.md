@@ -47,9 +47,10 @@ the `PlayerSwitch` beside the name moves to the next player, alphabetically
 the page is the player's record, and a live rank is not one. The Ewige
 Tabelle keeps counting it — so during a season the two differ, which is why
 the player page shows no "Platz N der Ewigen Tabelle". A newcomer who so far
-plays only the running championship has no page yet; their name in the Ewige
-Tabelle is plain text until their first completed championship
-(`completedPlayed`).
+plays only the running championship is linked and in the switcher like
+everyone else; their page shows "Noch kein abgeschlossenes Turnier." instead
+of the list (user decision, 2026-11-18 — preferred over leaving the name
+unlinked). Only a user with no published championship at all gets a 404.
 
 No index route — nothing links to a bare `/archiv/spieler`, so it is the
 shell's 404, like an unknown slug.

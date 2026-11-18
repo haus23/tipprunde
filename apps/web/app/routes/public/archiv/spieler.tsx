@@ -23,9 +23,10 @@ export async function loader({ params }: Route.LoaderArgs) {
     getEwigeTabelle(),
   ]);
   // Thrown from the loader, not middleware, so the public shell's
-  // ErrorBoundary renders it. No completed championship (a newcomer in the
-  // running one, an admin who never tipped) means no page either.
-  if (!found || found.championships.length === 0) {
+  // ErrorBoundary renders it. Not in the Ewige Tabelle at all (an admin who
+  // never tipped) means no page; a newcomer in the running championship does
+  // get one, with an empty list until their first championship is completed.
+  if (!found || !ewigeTabelle.some((e) => e.slug === params.slug)) {
     throw data("Spieler nicht gefunden.", { status: 404 });
   }
 
@@ -45,11 +46,8 @@ export async function loader({ params }: Route.LoaderArgs) {
     },
     // Alphabetical, not by Ewige Tabelle rank: the switcher is for finding a
     // name, and it has a search field — the ranking order is one click back.
-    // Only players who have a page, i.e. a completed championship.
     switchPlayers: sortGerman(
-      ewigeTabelle
-        .filter((e) => e.completedPlayed > 0)
-        .map((e) => ({ slug: e.slug, name: e.name })),
+      ewigeTabelle.map((e) => ({ slug: e.slug, name: e.name })),
       (p) => p.name,
     ),
   };
@@ -104,71 +102,81 @@ export default function ArchivSpieler({ loaderData }: Route.ComponentProps) {
             hrefFor={(slug) => `/archiv/spieler/${slug}`}
           />
         </div>
-        <p className="text-subtle text-center text-sm leading-relaxed">{facts.join(" · ")}</p>
+        {summary.played > 0 && (
+          <p className="text-subtle text-center text-sm leading-relaxed">{facts.join(" · ")}</p>
+        )}
       </div>
 
-      <div className="mx-auto w-full max-w-3xl overflow-x-auto">
-        <table className="w-full text-base">
-          <thead>
-            <tr className="text-muted text-xs tracking-wide uppercase">
-              <th className="border-subtle xs:px-3 xs:py-2.5 border-b px-2 py-2 text-left font-medium">
-                Turnier
-              </th>
-              <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-right font-medium">
-                Platz
-              </th>
-              <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
-                <span className="xs:inline hidden">Zusatzpunkte</span>
-                <span className="xs:hidden">Zusatz</span>
-              </th>
-              <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
-                <span className="xs:inline hidden">Gesamtpunkte</span>
-                <span className="xs:hidden">Gesamt</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {championships.map((c) => (
-              <tr key={c.slug} className="border-subtle border-b last:border-0">
-                <td className="xs:px-3 xs:py-3 px-2 py-2">
-                  <AppLink href={`/turnier/${c.slug}`} aria-label={c.name}>
-                    <span className="xs:hidden">{shortName(c.name)}</span>
-                    <span className="xs:inline hidden">{c.name}</span>
-                  </AppLink>
-                  {c.rank === 1 && (
-                    <span aria-hidden="true" className="text-gold ml-1">
-                      ★
-                    </span>
-                  )}
-                </td>
-                <td className="xs:px-3 xs:py-3 px-2 py-2 text-right whitespace-nowrap">
-                  {c.rank !== null ? (
-                    <>
-                      <span
-                        className={cx(
-                          "font-display text-xl leading-none tracking-wider tabular-nums",
-                          c.rank <= 3 ? "text-accent" : "text-subtle",
-                        )}
-                      >
-                        {c.rank}
-                      </span>
-                      <span className="text-muted text-xs tabular-nums"> / {c.fieldSize}</span>
-                    </>
-                  ) : (
-                    "–"
-                  )}
-                </td>
-                <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
-                  {c.extraQuestionPoints ? formatPoints(c.extraQuestionPoints) : "–"}
-                </td>
-                <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none tracking-wider tabular-nums">
-                  {c.total !== null ? formatPoints(c.total) : "–"}
-                </td>
+      {championships.length === 0 ? (
+        // A newcomer: in the Ewige Tabelle with the running championship
+        // already, but nothing on record here until it is completed.
+        <p className="text-subtle py-16 text-center text-base">
+          Noch kein abgeschlossenes Turnier.
+        </p>
+      ) : (
+        <div className="mx-auto w-full max-w-3xl overflow-x-auto">
+          <table className="w-full text-base">
+            <thead>
+              <tr className="text-muted text-xs tracking-wide uppercase">
+                <th className="border-subtle xs:px-3 xs:py-2.5 border-b px-2 py-2 text-left font-medium">
+                  Turnier
+                </th>
+                <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-right font-medium">
+                  Platz
+                </th>
+                <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
+                  <span className="xs:inline hidden">Zusatzpunkte</span>
+                  <span className="xs:hidden">Zusatz</span>
+                </th>
+                <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
+                  <span className="xs:inline hidden">Gesamtpunkte</span>
+                  <span className="xs:hidden">Gesamt</span>
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {championships.map((c) => (
+                <tr key={c.slug} className="border-subtle border-b last:border-0">
+                  <td className="xs:px-3 xs:py-3 px-2 py-2">
+                    <AppLink href={`/turnier/${c.slug}`} aria-label={c.name}>
+                      <span className="xs:hidden">{shortName(c.name)}</span>
+                      <span className="xs:inline hidden">{c.name}</span>
+                    </AppLink>
+                    {c.rank === 1 && (
+                      <span aria-hidden="true" className="text-gold ml-1">
+                        ★
+                      </span>
+                    )}
+                  </td>
+                  <td className="xs:px-3 xs:py-3 px-2 py-2 text-right whitespace-nowrap">
+                    {c.rank !== null ? (
+                      <>
+                        <span
+                          className={cx(
+                            "font-display text-xl leading-none tracking-wider tabular-nums",
+                            c.rank <= 3 ? "text-accent" : "text-subtle",
+                          )}
+                        >
+                          {c.rank}
+                        </span>
+                        <span className="text-muted text-xs tabular-nums"> / {c.fieldSize}</span>
+                      </>
+                    ) : (
+                      "–"
+                    )}
+                  </td>
+                  <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
+                    {c.extraQuestionPoints ? formatPoints(c.extraQuestionPoints) : "–"}
+                  </td>
+                  <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none tracking-wider tabular-nums">
+                    {c.total !== null ? formatPoints(c.total) : "–"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

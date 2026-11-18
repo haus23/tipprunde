@@ -69,9 +69,6 @@ export async function getEwigeTabelle() {
       // the points above, where provisional totals deliberately count. A
       // shared first place counts for everyone who shares it.
       wins: sql<number>`coalesce(sum(case when ${players.rank} = 1 and ${championships.completed} then 1 else 0 end), 0)`,
-      // The player page counts completed championships only — a newcomer
-      // who so far plays just the running one has none yet, and no page.
-      completedPlayed: sql<number>`coalesce(sum(case when ${championships.completed} then 1 else 0 end), 0)`,
     })
     .from(players)
     .innerJoin(championships, eq(players.championshipId, championships.id))
@@ -87,7 +84,6 @@ export async function getEwigeTabelle() {
       totalPoints: Number(r.totalPoints ?? 0),
       played: r.played,
       wins: Number(r.wins),
-      completedPlayed: Number(r.completedPlayed),
     }))
     .sort((a, b) => b.totalPoints - a.totalPoints || a.name.localeCompare(b.name, "de"));
 

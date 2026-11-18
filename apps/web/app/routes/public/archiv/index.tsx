@@ -76,13 +76,7 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                           {sharesRankAbove ? "" : entry.rank}
                         </td>
                         <td className="xs:pl-3 py-2 pl-2">
-                          {/* A player page exists from the first completed
-                              championship on — until then, plain text. */}
-                          {entry.completedPlayed > 0 ? (
-                            <AppLink href={`/archiv/spieler/${entry.slug}`}>{entry.name}</AppLink>
-                          ) : (
-                            entry.name
-                          )}
+                          <AppLink href={`/archiv/spieler/${entry.slug}`}>{entry.name}</AppLink>
                         </td>
                         <td className="text-subtle xs:px-3 w-px px-2 py-2 text-center tabular-nums">
                           {entry.played}
