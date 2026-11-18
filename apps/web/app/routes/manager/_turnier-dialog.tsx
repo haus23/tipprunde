@@ -1,4 +1,4 @@
-import type { championships, rulesets } from "@tipprunde/db/schema";
+import type { championships, rulesets, users } from "@tipprunde/db/schema";
 import { Button, FieldError, Label, TextField } from "@tipprunde/ui";
 import { cx } from "@tipprunde/ui";
 import { ChevronDownIcon } from "lucide-react";
@@ -31,6 +31,7 @@ function deriveSlug(name: string): string {
 
 type Championship = typeof championships.$inferSelect;
 type Ruleset = Pick<typeof rulesets.$inferSelect, "id" | "name">;
+type Leader = Pick<typeof users.$inferSelect, "id" | "name">;
 
 // Local mirror of the /turniere action's return shape — no route import needed
 type ChampionshipActionData =
@@ -41,12 +42,23 @@ type ChampionshipActionData =
 type TurnierFormProps = {
   defaultValues?: Championship;
   rulesets: Ruleset[];
+  leaders: Leader[];
+  /** Pre-selected when creating: the previous championship's leader. */
+  defaultLeaderId?: number | null;
   nextNr?: number;
   onClose: () => void;
   onSuccess?: (championship: Championship) => void;
 };
 
-function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: TurnierFormProps) {
+function TurnierForm({
+  defaultValues,
+  rulesets,
+  leaders,
+  defaultLeaderId,
+  nextNr,
+  onClose,
+  onSuccess,
+}: TurnierFormProps) {
   const fetcher = useFetcher<ChampionshipActionData>();
   const isEdit = !!defaultValues;
   const isPending = fetcher.state !== "idle";
@@ -170,6 +182,48 @@ function TurnierForm({ defaultValues, rulesets, nextNr, onClose, onSuccess }: Tu
         </Select>
       )}
 
+      {/* Editable on purpose, unlike the ruleset: a wrong pick at creation is
+          easy to make and costs nothing to fix. Shown nowhere else yet. */}
+      <Select
+        name="leaderId"
+        isRequired
+        defaultValue={defaultValues?.leaderId ?? defaultLeaderId ?? undefined}
+        className="flex flex-col gap-1.5"
+      >
+        <Label>Turnierleitung</Label>
+        <RACButton className={cx(inputClass, "flex w-full items-center justify-between gap-2")}>
+          <SelectValue className="text-sm">
+            {({ isPlaceholder, defaultChildren }) =>
+              isPlaceholder ? (
+                <span className="text-subtle">Turnierleitung wählen …</span>
+              ) : (
+                defaultChildren
+              )
+            }
+          </SelectValue>
+          <ChevronDownIcon className="text-muted size-4 shrink-0" />
+        </RACButton>
+        <FieldError />
+        <Popover className="bg-surface-raised border-subtle max-h-72 w-[--trigger-width] overflow-auto rounded-sm border shadow-lg outline-none">
+          <ListBox className="p-1">
+            {leaders.map((leader) => (
+              <ListBoxItem
+                key={leader.id}
+                id={leader.id}
+                className={cx(
+                  "cursor-pointer rounded-sm px-2.5 py-1.5 text-sm outline-none",
+                  "hover:bg-nav-active",
+                  "data-focused:bg-nav-active",
+                  "data-selected:bg-accent-subtle",
+                )}
+              >
+                {leader.name}
+              </ListBoxItem>
+            ))}
+          </ListBox>
+        </Popover>
+      </Select>
+
       <div className="border-subtle flex justify-end gap-3 border-t pt-4">
         <Button intent="secondary" type="button" onPress={onClose}>
           Abbrechen
@@ -187,6 +241,8 @@ type TurnierDialogProps = {
   onOpenChange: (open: boolean) => void;
   defaultValues?: Championship;
   rulesets: Ruleset[];
+  leaders: Leader[];
+  defaultLeaderId?: number | null;
   nextNr?: number;
   onSuccess?: (championship: Championship) => void;
 };
@@ -196,6 +252,8 @@ export function TurnierDialog({
   onOpenChange,
   defaultValues,
   rulesets,
+  leaders,
+  defaultLeaderId,
   nextNr,
   onSuccess,
 }: TurnierDialogProps) {
@@ -220,6 +278,8 @@ export function TurnierDialog({
               <TurnierForm
                 defaultValues={defaultValues}
                 rulesets={rulesets}
+                leaders={leaders}
+                defaultLeaderId={defaultLeaderId}
                 nextNr={nextNr}
                 onClose={onClose}
                 onSuccess={onSuccess}

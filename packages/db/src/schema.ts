@@ -126,6 +126,11 @@ export const championships = sqliteTable("championships", {
   extraQuestionPointsPublished: integer("extra_question_points_published", { mode: "boolean" })
     .notNull()
     .default(false),
+  // Who ran the championship (the "Turnierleitung"). Required by the app, but
+  // nullable here: SQLite adds a referencing column only as nullable, and
+  // making it NOT NULL later would rebuild the whole table. The migration
+  // that added it filled every existing championship.
+  leaderId: integer("leader_id").references(() => users.id),
 });
 
 export const rounds = sqliteTable(
