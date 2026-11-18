@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.6.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.5.0...v3.6.0)
+
+### 🚀 Enhancements
+
+- Archiv page per player, linked from the Ewige Tabelle ([850dce8](https://github.com/haus23/tipprunde/commit/850dce8))
+- Player page counts completed championships only ([e90e29d](https://github.com/haus23/tipprunde/commit/e90e29d))
+- Newcomers get a player page with an empty state ([b8344eb](https://github.com/haus23/tipprunde/commit/b8344eb))
+
 ## v3.5.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.4.1...v3.5.0)
