@@ -10,9 +10,10 @@ import { formatPoints, sortGerman } from "#/lib/utils.ts";
 import type { Route } from "./+types/spieler";
 
 /**
- * One player across the Archiv: every championship they played, with rank and
- * points, plus their line of the Ewige Tabelle on top. Reached from a name in
- * the Ewige Tabelle; the switcher beside the name moves to the next player.
+ * One player across the Archiv: every completed championship they played,
+ * with rank and points, and the sums of exactly those rows on top. Reached
+ * from a name in the Ewige Tabelle; the switcher beside the name moves to the
+ * next player.
  * No index route at /archiv/spieler — nothing in the app links there, so a
  * bare or unknown slug is the shell's ordinary 404.
  */
@@ -22,31 +23,33 @@ export async function loader({ params }: Route.LoaderArgs) {
     getEwigeTabelle(),
   ]);
   // Thrown from the loader, not middleware, so the public shell's
-  // ErrorBoundary renders it. A user without a published championship (an
-  // admin who never tipped) has no Archiv page either.
-  const entry = ewigeTabelle.find((e) => e.slug === params.slug);
-  if (!found || !entry || found.championships.length === 0) {
+  // ErrorBoundary renders it. No completed championship (a newcomer in the
+  // running one, an admin who never tipped) means no page either.
+  if (!found || found.championships.length === 0) {
     throw data("Spieler nicht gefunden.", { status: 404 });
   }
 
-  const completedRanks = found.championships
-    .filter((c) => c.completed && c.rank !== null)
-    .map((c) => c.rank!);
+  // Summed from the rows shown below, not taken from the Ewige Tabelle: that
+  // one counts the running championship too, the page does not.
+  const rows = found.championships;
+  const ranks = rows.flatMap((c) => (c.rank !== null ? [c.rank] : []));
 
   return {
     player: found.player,
-    championships: found.championships,
+    championships: rows,
     summary: {
-      rank: entry.rank,
-      played: entry.played,
-      wins: entry.wins,
-      totalPoints: entry.totalPoints,
-      bestRank: completedRanks.length > 0 ? Math.min(...completedRanks) : null,
+      played: rows.length,
+      wins: ranks.filter((r) => r === 1).length,
+      totalPoints: rows.reduce((sum, c) => sum + (c.total ?? 0), 0),
+      bestRank: ranks.length > 0 ? Math.min(...ranks) : null,
     },
     // Alphabetical, not by Ewige Tabelle rank: the switcher is for finding a
     // name, and it has a search field — the ranking order is one click back.
+    // Only players who have a page, i.e. a completed championship.
     switchPlayers: sortGerman(
-      ewigeTabelle.map((e) => ({ slug: e.slug, name: e.name })),
+      ewigeTabelle
+        .filter((e) => e.completedPlayed > 0)
+        .map((e) => ({ slug: e.slug, name: e.name })),
       (p) => p.name,
     ),
   };
@@ -69,7 +72,6 @@ export default function ArchivSpieler({ loaderData }: Route.ComponentProps) {
   const { player, championships, summary, switchPlayers } = loaderData;
 
   const facts = [
-    `Platz ${summary.rank} der Ewigen Tabelle`,
     summary.played === 1 ? "1 Turnier" : `${summary.played} Turniere`,
     summary.wins > 0 && (summary.wins === 1 ? "1 Sieg" : `${summary.wins} Siege`),
     summary.bestRank !== null && summary.wins === 0 && `bester Platz: ${summary.bestRank}`,
@@ -133,14 +135,11 @@ export default function ArchivSpieler({ loaderData }: Route.ComponentProps) {
                     <span className="xs:hidden">{shortName(c.name)}</span>
                     <span className="xs:inline hidden">{c.name}</span>
                   </AppLink>
-                  {c.completed && c.rank === 1 && (
+                  {c.rank === 1 && (
                     <span aria-hidden="true" className="text-gold ml-1">
                       ★
                     </span>
                   )}
-                  {/* Rank and points of the running championship are live, so
-                      they can still move — same rule as the Ewige Tabelle. */}
-                  {!c.completed && <span className="text-muted ml-2 text-xs">läuft</span>}
                 </td>
                 <td className="xs:px-3 xs:py-3 px-2 py-2 text-right whitespace-nowrap">
                   {c.rank !== null ? (

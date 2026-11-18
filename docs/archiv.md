@@ -35,14 +35,22 @@ Queries are in `apps/web/app/lib/archiv.server.ts`: `getArchivPreview`,
 
 ## Player page (2026-11-18)
 
-`/archiv/spieler/:slug` — one player across every published championship:
-rank (with the size of the field), extra points and total, newest first, plus
-their line of the Ewige Tabelle on top (rank, championships, titles, points;
-the best placement when there is no title). Every name in the Ewige Tabelle
-links here; the `PlayerSwitch` beside the name moves to the next player,
-alphabetically (it has a search field — the ranking order is one click back
-on `/archiv#ewige-tabelle`). The running championship counts as in the Ewige
-Tabelle and is marked "läuft". Query: `getArchivPlayer` in `archiv.server.ts`.
+`/archiv/spieler/:slug` — one player across every **completed** championship:
+rank (with the size of the field), extra points and total, newest first, and
+on top the sums of exactly those rows (championships, titles, points; the best
+placement when there is no title). Every name in the Ewige Tabelle links here;
+the `PlayerSwitch` beside the name moves to the next player, alphabetically
+(it has a search field — the ranking order is one click back on
+`/archiv#ewige-tabelle`). Query: `getArchivPlayer` in `archiv.server.ts`.
+
+**The running championship is left out on purpose** (decided 2026-11-18):
+the page is the player's record, and a live rank is not one. The Ewige
+Tabelle keeps counting it — so during a season the two differ, which is why
+the player page shows no "Platz N der Ewigen Tabelle". A newcomer who so far
+plays only the running championship has no page yet; their name in the Ewige
+Tabelle is plain text until their first completed championship
+(`completedPlayed`).
+
 No index route — nothing links to a bare `/archiv/spieler`, so it is the
 shell's 404, like an unknown slug.
 

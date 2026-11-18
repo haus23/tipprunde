@@ -69,6 +69,9 @@ export async function getEwigeTabelle() {
       // the points above, where provisional totals deliberately count. A
       // shared first place counts for everyone who shares it.
       wins: sql<number>`coalesce(sum(case when ${players.rank} = 1 and ${championships.completed} then 1 else 0 end), 0)`,
+      // The player page counts completed championships only — a newcomer
+      // who so far plays just the running one has none yet, and no page.
+      completedPlayed: sql<number>`coalesce(sum(case when ${championships.completed} then 1 else 0 end), 0)`,
     })
     .from(players)
     .innerJoin(championships, eq(players.championshipId, championships.id))
@@ -84,6 +87,7 @@ export async function getEwigeTabelle() {
       totalPoints: Number(r.totalPoints ?? 0),
       played: r.played,
       wins: Number(r.wins),
+      completedPlayed: Number(r.completedPlayed),
     }))
     .sort((a, b) => b.totalPoints - a.totalPoints || a.name.localeCompare(b.name, "de"));
 
@@ -96,10 +100,11 @@ export async function getEwigeTabelle() {
 }
 
 /**
- * One player's championships for the Archiv's player page — every published
+ * One player's championships for the Archiv's player page — every completed
  * championship they played, newest first, with rank, extra points, total and
- * the size of the field. The running championship is included, like in the
- * Ewige Tabelle; the page marks it as provisional. Null for an unknown slug.
+ * the size of the field. Unlike the Ewige Tabelle, the running championship
+ * is left out: the page is the player's record, and a live rank is not one.
+ * Null for an unknown slug.
  */
 export async function getArchivPlayer(slug: string) {
   const user = await db.query.users.findFirst({
@@ -118,7 +123,6 @@ export async function getArchivPlayer(slug: string) {
     .select({
       slug: championships.slug,
       name: championships.name,
-      completed: championships.completed,
       rank: players.rank,
       extraQuestionPoints: players.extraQuestionPoints,
       total: players.total,
@@ -127,7 +131,13 @@ export async function getArchivPlayer(slug: string) {
     .from(players)
     .innerJoin(championships, eq(players.championshipId, championships.id))
     .innerJoin(fieldSizes, eq(fieldSizes.championshipId, players.championshipId))
-    .where(and(eq(players.userId, user.id), eq(championships.published, true)))
+    .where(
+      and(
+        eq(players.userId, user.id),
+        eq(championships.published, true),
+        eq(championships.completed, true),
+      ),
+    )
     .orderBy(desc(championships.nr));
 
   return { player: user, championships: rows };
