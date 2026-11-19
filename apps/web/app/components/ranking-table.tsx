@@ -61,7 +61,11 @@ export function RankingTable({
                   <span className="xs:hidden">Gesamt</span>
                 </>
               ) : (
-                "Punkte"
+                // Same short form as the Ewige Tabelle below xs.
+                <>
+                  <span className="xs:inline hidden">Punkte</span>
+                  <span className="xs:hidden">Pkt</span>
+                </>
               )}
             </th>
             {isOngoing && (
