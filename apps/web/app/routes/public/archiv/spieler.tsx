@@ -112,7 +112,9 @@ export default function ArchivSpieler({ loaderData }: Route.ComponentProps) {
                   Turnier
                 </th>
                 <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-right font-medium">
-                  Platz
+                  {/* Same "Pl." as the other tables below xs. */}
+                  <span className="xs:hidden">Pl.</span>
+                  <span className="xs:inline hidden">Platz</span>
                 </th>
                 <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
                   <span className="xs:inline hidden">Zusatzpunkte</span>
