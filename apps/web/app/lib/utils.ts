@@ -68,3 +68,13 @@ export function slugify(value: string): string {
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9-]/g, "");
 }
+
+/**
+ * "Hinrunde 2008/09" → "HR 08/09", "Rückrunde 2007/08" → "RR 07/08"; the
+ * tournaments ("EM 2008", "WM 2006") are short already. For narrow screens,
+ * where the long half-season names would wrap.
+ */
+export function shortChampionshipName(name: string): string {
+  const m = /^(Hin|Rück)runde \d{2}(\d{2})\/(\d{2})$/.exec(name);
+  return m ? `${m[1] === "Hin" ? "HR" : "RR"} ${m[2]}/${m[3]}` : name;
+}

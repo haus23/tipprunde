@@ -3,7 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { AppLink } from "#/components/app-link.tsx";
-import { formatPoints } from "#/lib/utils.ts";
+import { formatPoints, shortChampionshipName } from "#/lib/utils.ts";
 
 /** Four full rows plus most of a fifth that fades out under the bottom
  * chevron — the box scrolls internally rather than the page growing. */
@@ -100,7 +100,10 @@ export function TournamentList({ championships }: { championships: ChampionshipE
             key={entry.slug}
             className="border-subtle col-span-3 grid min-h-11 grid-cols-subgrid items-center border-b py-1.5 text-base last:border-b-0"
           >
-            <AppLink href={`/turnier/${entry.slug}`}>{entry.name}</AppLink>
+            <AppLink href={`/turnier/${entry.slug}`} aria-label={entry.name}>
+              <span className="xs:hidden">{shortChampionshipName(entry.name)}</span>
+              <span className="xs:inline hidden">{entry.name}</span>
+            </AppLink>
             <div className="text-sm">
               {entry.completed ? (
                 entry.winners.map((w, i) => (

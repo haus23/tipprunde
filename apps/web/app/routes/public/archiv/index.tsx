@@ -39,23 +39,31 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
         </section>
 
         {/* The player page's back link lands here; scroll-mt clears the
-            sticky header. */}
-        <section id="ewige-tabelle" className="scroll-mt-20">
-          <h2 className="text-muted mb-3 text-xs font-medium tracking-wide uppercase">
+            sticky header. Full-bleed below xs, like the ranking tables: the
+            16px the page adds on each side is what the linked names need at
+            360px. Heading and outer cells sit 8px in, so the heading lines
+            up with the "Pl." column. */}
+        <section id="ewige-tabelle" className="xs:mx-0 -mx-4 scroll-mt-20">
+          <h2 className="text-muted xs:px-0 mb-3 px-2 text-xs font-medium tracking-wide uppercase">
             Ewige Tabelle
           </h2>
           {entries.length === 0 ? (
-            <p className="text-subtle text-base">Keine Daten.</p>
+            <p className="text-subtle xs:px-0 px-2 text-base">Keine Daten.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-base">
                 <thead>
                   <tr className="text-muted border-subtle border-b text-xs tracking-wide uppercase">
-                    <th className="xs:pr-3 w-px pr-2 pb-1.5 text-right font-medium">Platz</th>
+                    <th className="xs:pr-3 xs:pl-0 w-px pr-2 pb-1.5 pl-2 text-right font-medium">
+                      {/* The header, not the one- or two-digit ranks, sets
+                          this column's width — shortened like the Kicker does. */}
+                      <span className="xs:hidden">Pl.</span>
+                      <span className="xs:inline hidden">Platz</span>
+                    </th>
                     <th className="xs:pl-3 pb-1.5 pl-2 text-left font-medium">Spieler</th>
                     <th className="xs:px-3 w-px px-2 pb-1.5 text-center font-medium">Turniere</th>
                     <th className="xs:px-3 w-px px-2 pb-1.5 text-center font-medium">Siege</th>
-                    <th className="xs:pl-3 w-px pb-1.5 pl-2 text-right font-medium">
+                    <th className="xs:pl-3 xs:pr-0 w-px pr-2 pb-1.5 pl-2 text-right font-medium">
                       <span className="xs:hidden">Pkt</span>
                       <span className="xs:inline hidden">Punkte</span>
                     </th>
@@ -69,7 +77,7 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                         {/* Same display digits and podium colors as the ranking table. */}
                         <td
                           className={cx(
-                            "font-display xs:pr-3 w-px py-2 pr-2 text-right text-xl leading-none tracking-wider tabular-nums",
+                            "font-display xs:pr-3 xs:pl-0 w-px py-2 pr-2 pl-2 text-right text-xl leading-none tracking-wider tabular-nums",
                             entry.rank <= 3 ? "text-accent" : "text-subtle",
                           )}
                         >
@@ -84,7 +92,7 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                         <td className="text-subtle xs:px-3 w-px px-2 py-2 text-center tabular-nums">
                           {entry.wins > 0 ? entry.wins : ""}
                         </td>
-                        <td className="font-display xs:pl-3 w-px py-2 pl-2 text-right text-xl leading-none tracking-wider tabular-nums">
+                        <td className="font-display xs:pl-3 xs:pr-0 w-px py-2 pr-2 pl-2 text-right text-xl leading-none tracking-wider tabular-nums">
                           {formatPoints(entry.totalPoints)}
                         </td>
                       </tr>

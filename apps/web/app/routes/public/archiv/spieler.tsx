@@ -5,7 +5,7 @@ import { data, Link } from "react-router";
 import { AppLink } from "#/components/app-link.tsx";
 import { PlayerSwitch } from "#/components/player-switch.tsx";
 import { getArchivPlayer, getEwigeTabelle } from "#/lib/archiv.server.ts";
-import { formatPoints, sortGerman } from "#/lib/utils.ts";
+import { formatPoints, shortChampionshipName, sortGerman } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/spieler";
 
@@ -51,16 +51,6 @@ export async function loader({ params }: Route.LoaderArgs) {
       (p) => p.name,
     ),
   };
-}
-
-/**
- * "Hinrunde 2008/09" → "HR 08/09", "Rückrunde 2007/08" → "RR 07/08"; the
- * tournaments ("EM 2008", "WM 2006") are short already. Below xs only, where
- * the long half-season names would wrap.
- */
-function shortName(name: string) {
-  const m = /^(Hin|Rück)runde \d{2}(\d{2})\/(\d{2})$/.exec(name);
-  return m ? `${m[1] === "Hin" ? "HR" : "RR"} ${m[2]}/${m[3]}` : name;
 }
 
 const navLinkClass =
@@ -122,7 +112,9 @@ export default function ArchivSpieler({ loaderData }: Route.ComponentProps) {
                   Turnier
                 </th>
                 <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-right font-medium">
-                  Platz
+                  {/* Same "Pl." as the other tables below xs. */}
+                  <span className="xs:hidden">Pl.</span>
+                  <span className="xs:inline hidden">Platz</span>
                 </th>
                 <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-center font-medium">
                   <span className="xs:inline hidden">Zusatzpunkte</span>
@@ -139,7 +131,7 @@ export default function ArchivSpieler({ loaderData }: Route.ComponentProps) {
                 <tr key={c.slug} className="border-subtle border-b last:border-0">
                   <td className="xs:px-3 xs:py-3 px-2 py-2">
                     <AppLink href={`/turnier/${c.slug}`} aria-label={c.name}>
-                      <span className="xs:hidden">{shortName(c.name)}</span>
+                      <span className="xs:hidden">{shortChampionshipName(c.name)}</span>
                       <span className="xs:inline hidden">{c.name}</span>
                     </AppLink>
                     {c.rank === 1 && (

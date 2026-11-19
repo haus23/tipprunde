@@ -35,7 +35,10 @@ export function RankingTable({
         <thead>
           <tr className="text-muted text-xs tracking-wide uppercase">
             <th className="border-subtle xs:px-3 xs:py-2.5 w-px border-b px-2 py-2 text-right font-medium">
-              Platz
+              {/* "Pl." below xs, as in the Ewige Tabelle — the header, not the
+                  ranks, sets this column's width. */}
+              <span className="xs:hidden">Pl.</span>
+              <span className="xs:inline hidden">Platz</span>
             </th>
             <th className="border-subtle xs:px-3 xs:py-2.5 border-b px-2 py-2 text-left font-medium">
               Spieler
@@ -58,7 +61,11 @@ export function RankingTable({
                   <span className="xs:hidden">Gesamt</span>
                 </>
               ) : (
-                "Punkte"
+                // Same short form as the Ewige Tabelle below xs.
+                <>
+                  <span className="xs:inline hidden">Punkte</span>
+                  <span className="xs:hidden">Pkt</span>
+                </>
               )}
             </th>
             {isOngoing && (
