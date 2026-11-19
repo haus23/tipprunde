@@ -1,5 +1,16 @@
 # Changelog
 
+## v3.7.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.7.0...v3.7.1)
+
+### 🩹 Fixes
+
+- Archiv on narrow screens – short championship names, full-bleed Ewige Tabelle ([eea115b](https://github.com/haus23/tipprunde/commit/eea115b))
+- Ewige Tabelle header "Pl." and heading aligned below xs ([717caf7](https://github.com/haus23/tipprunde/commit/717caf7))
+- "Pl." for the Platz header in every table below xs ([935d224](https://github.com/haus23/tipprunde/commit/935d224))
+- "Pkt" for the points header in the ranking table below xs ([55bc0c8](https://github.com/haus23/tipprunde/commit/55bc0c8))
+
 ## v3.7.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.6.0...v3.7.0)
