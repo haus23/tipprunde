@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.8.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.7.1...v3.8.0)
+
+### 🚀 Enhancements
+
+- Back link from a Nachspielzeit article to the overview ([fad0570](https://github.com/haus23/tipprunde/commit/fad0570))
+
 ## v3.7.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.7.0...v3.7.1)

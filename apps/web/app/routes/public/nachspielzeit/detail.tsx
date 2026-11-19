@@ -1,4 +1,6 @@
-import { data } from "react-router";
+import { cx } from "@tipprunde/ui";
+import { ArrowLeftIcon } from "lucide-react";
+import { data, Link } from "react-router";
 
 import { AppLink } from "#/components/app-link.tsx";
 import { getPublicChampionships } from "#/lib/championship.server.ts";
@@ -23,6 +25,10 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { post, championships };
 }
 
+// Same quiet back link as the Archiv player page's "Archiv".
+const navLinkClass =
+  "text-subtle hover:text-app focus-visible:ring-accent flex w-fit items-center gap-1 rounded-sm outline-none transition-colors focus-visible:ring-2";
+
 export default function NachspielzeitDetail({ loaderData }: Route.ComponentProps) {
   const { post, championships } = loaderData;
 
@@ -30,6 +36,16 @@ export default function NachspielzeitDetail({ loaderData }: Route.ComponentProps
     <div className="mx-auto w-full max-w-4xl py-8">
       <title>{`${post.title} · Nachspielzeit · runde.tips`}</title>
       <div className="xs:px-6 mx-auto flex max-w-2xl flex-col gap-6 px-4">
+        {/* Without it, the only way on to the other articles was the homepage
+            or the nav. */}
+        <Link
+          to="/nachspielzeit"
+          prefetch="intent"
+          className={cx(navLinkClass, "text-xs hover:underline")}
+        >
+          <ArrowLeftIcon className="size-3.5 shrink-0" />
+          Alles aus der Nachspielzeit
+        </Link>
         <div>
           <p className="text-muted mb-1 text-xs tracking-wide uppercase">
             {formatDate(post.date)}
