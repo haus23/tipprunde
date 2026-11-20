@@ -17,6 +17,10 @@ export const users = sqliteTable("users", {
   role: text("role", { enum: ["user", "manager", "admin"] })
     .notNull()
     .default("user"),
+  // Trusted player: may enter a match result before a manager does (first in
+  // wins, pending until a manager or admin approves). A permission on top of
+  // the role, not a role — see docs/decisions/15-player-self-service.md.
+  canEnterResults: integer("can_enter_results", { mode: "boolean" }).notNull().default(false),
   createdAt: text("created_at")
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
@@ -29,6 +33,9 @@ export const sessions = sqliteTable("sessions", {
     .references(() => users.id, { onDelete: "cascade" }),
   rememberMe: integer("remember_me", { mode: "boolean" }).notNull().default(false),
   expiresAt: text("expires_at").notNull(),
+  // Raw User-Agent header at login, parsed only for display (the player's
+  // own session list). Null for sessions from before the column existed.
+  userAgent: text("user_agent"),
   createdAt: text("created_at")
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
@@ -145,6 +152,10 @@ export const rounds = sqliteTable(
     tipsPublished: integer("tips_published", { mode: "boolean" }).notNull().default(false),
     completed: integer("completed", { mode: "boolean" }),
     isDoubleRound: integer("is_double_round", { mode: "boolean" }),
+    // When the round starts, as a UTC ISO string — players may tip until
+    // then. Null means nobody can tip it themselves, which also keeps the
+    // legacy championships still being imported closed.
+    startsAt: text("starts_at"),
   },
   (table) => [unique().on(table.championshipId, table.nr)],
 );
@@ -170,6 +181,12 @@ export const matches = sqliteTable("matches", {
   excludedFromScoring: integer("excluded_from_scoring", { mode: "boolean" })
     .notNull()
     .default(false),
+  // Who entered the current result, and when (UTC ISO). A result is pending
+  // while it has an enterer but no approver; legacy and imported results
+  // have neither and count as approved. A manager's own entry sets both.
+  resultEnteredBy: integer("result_entered_by").references(() => users.id),
+  resultEnteredAt: text("result_entered_at"),
+  resultApprovedBy: integer("result_approved_by").references(() => users.id),
 });
 
 export const tips = sqliteTable(
@@ -185,6 +202,10 @@ export const tips = sqliteTable(
     points: integer("points"),
     joker: integer("joker", { mode: "boolean" }),
     extraJoker: integer("extra_joker", { mode: "boolean" }),
+    // Last change only, by the player or a manager; no history. Null for
+    // tips from before the column existed and for imports.
+    updatedBy: integer("updated_by").references(() => users.id),
+    updatedAt: text("updated_at"),
   },
   (table) => [primaryKey({ columns: [table.matchId, table.userId] })],
 );
