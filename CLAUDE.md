@@ -74,6 +74,7 @@ is. Superseded, never quietly rewritten:**
 - `12-public-app-split.md` — Future idea (not decided, not planned): framework-free public site — as a Cloudflare Worker reading published JSON, or beside the app in the same Node server; the app keeps writes and login
 - `13-public-poster-theme.md` — cream/ink/red theme (light and dark) + Anton for the public site only; why `@theme` is not `inline`
 - `14-turnier-tabelle-stadionsenf.md` — the championship page is its table with the Stadionsenf beside it; tabs Tabelle · Zusatzfragen · Regelwerk · Verlauf; `/tabelle` redirects; homepage shows matches or the Stadionsenf teaser
+- `15-player-self-service.md` — planned: players tip themselves until `rounds.starts_at`, trusted players enter results (pending until a manager approves), players see and end their own sessions; the eight-column migration
 
 ## Skills
 
