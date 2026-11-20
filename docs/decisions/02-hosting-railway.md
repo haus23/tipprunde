@@ -11,6 +11,9 @@ little today. The one thing that would force it is **outgrowing Turso's free
 tier**. Everything below about step 3 stays as a worked-out plan for that case,
 not as pending work.
 
+**Update 2026-11-20:** step 3 is the goal again — postponed, not optional.
+See [Step 3 revisited](#step-3-revisited-2026-11-20) at the end.
+
 **Railway project (2026-08-13):** `tipprunde` service at
 `https://tipprunde.up.railway.app`. It now runs against this rebuild's own
 "prod" Turso database — switched over deliberately, with a backup taken first,
@@ -213,7 +216,7 @@ before its own step:
   `runde.tips` regardless (it already owns the DNS), so if proxied is chosen,
   CF's default edge cache already respects `Cache-Control` — which
   `server/app.ts`'s `sirv` already sets to `public, max-age=31536000,
-immutable` on every hashed asset. Railway also has its own CDN (opt-in per
+  immutable` on every hashed asset. Railway also has its own CDN (opt-in per
   service; was fully disabled for a few months after a March 2026 incident,
   back since ~July 2026 — see
   [docs.railway.com/networking/cdn](https://docs.railway.com/networking/cdn)).
@@ -228,3 +231,42 @@ Still genuinely open:
   infra change. (The fate of `hinterhof`/`unterbau` is decided — see above;
   this is only about the timing of the production hostname move. `next.` then
   becomes redundant and goes away with it.)
+
+## Step 3 revisited (2026-11-20)
+
+**Step 3 is the final target again, just not soon.** The paragraph at the top
+made it depend on outgrowing Turso's free tier. That trigger is gone, and the
+move stays planned anyway: development carries on against Turso for now, and
+the switch to SQLite + Litestream comes later, at a time still open.
+
+**Why the free tier no longer pushes.** An October warning (single days at
+~50M rows read, a tenth of the monthly allowance each) looked like the trigger.
+Turso's query insights traced most of it to one missing index: the
+"tips of one championship" joins (match overview, match detail, Verlauf)
+scanned the whole `tips` table and filtered last — ~45K rows read per query,
+growing with every imported championship. `matches_round_id_idx` (v3.8.1)
+cuts that to about 1K. November stood at ~30% on the 20th, before the fix.
+Turso bills **scanned** rows, so new queries on large tables get an
+`EXPLAIN QUERY PLAN` first; the same index helps on plain SQLite.
+
+**The open worries, answered** — what kept step 3 from feeling routine:
+
+- **Resetting the dev database.** Today: delete the Turso dev database and
+  clone prod. After the move: `litestream restore` the latest prod replica
+  from R2 into a local file — seconds, offline, no tier limits. One script,
+  e.g. `pnpm --filter db db:reset-dev`.
+- **Railway PR environments.** Simplest first: keep them on a small Turso
+  database. The libsql client speaks both `file:` and `libsql://`, so only
+  `TURSO_DATABASE_URL` in `pr-base` differs — prod moves alone. Later option:
+  each preview restores a copy from R2 at boot into an ephemeral file, with
+  Litestream read-only there so nothing is ever replicated back.
+- **drizzle-kit.** `generate` needs no database. `push`/`migrate` work against
+  the local dev file. Prod migrations run at container start
+  (`migrate()` from drizzle-orm, before the server listens) — which settles
+  the "migrate-on-boot vs `railway ssh`" open question above and drops the
+  manual `db:migrate:prod` step, along with the rule to migrate prod before
+  merging. A failing migration keeps the new container from starting; Railway
+  keeps the old deployment running.
+- **Drizzle Studio.** Fully usable on the dev file. On prod only against a
+  restored copy, read-only by nature; changes to prod go through the manager
+  or migrations, never through Studio.
