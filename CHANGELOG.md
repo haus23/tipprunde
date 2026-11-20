@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.8.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.8.0...v3.8.1)
+
+### 🚀 Enhancements
+
+- **db:** Schema for player self-service (tips, results, sessions) ([94089d8](https://github.com/haus23/tipprunde/commit/94089d8))
+
+### 🩹 Fixes
+
+- **db:** Index matches.round_id for the championship tips joins ([aa71728](https://github.com/haus23/tipprunde/commit/aa71728))
+
 ## v3.8.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.7.1...v3.8.0)
