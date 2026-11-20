@@ -20,7 +20,7 @@
   "devDependencies": {
     "@libsql/client": "catalog:orm",
     "@types/node": "catalog:types",
-    "dotenv-cli": "^11.0.0",
+    "dotenv-cli": "^11.1.0",
     "drizzle-kit": "catalog:orm"
   }
 }
