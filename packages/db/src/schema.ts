@@ -160,34 +160,41 @@ export const rounds = sqliteTable(
   (table) => [unique().on(table.championshipId, table.nr)],
 );
 
-export const matches = sqliteTable("matches", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  roundId: integer("round_id")
-    .notNull()
-    .references(() => rounds.id),
-  nr: integer("nr").notNull(),
-  date: text("date"),
-  leagueId: text("league_id").references(() => leagues.id),
-  hometeamId: text("hometeam_id").references(() => teams.id),
-  awayteamId: text("awayteam_id").references(() => teams.id),
-  result: text("result"),
-  lowestSumBonus: integer("lowest_sum_bonus", { mode: "boolean" }),
-  // A user decision, not a computed value (unlike lowestSumBonus above) — so
-  // it is never null, just true/false. Excludes the match from scoring: its
-  // tips always score null (see calcTipPoints), which every summation in the
-  // app already treats as "contributes nothing". The match itself, its
-  // result, and its tips stay otherwise untouched — this is not "did not
-  // happen", just "does not count".
-  excludedFromScoring: integer("excluded_from_scoring", { mode: "boolean" })
-    .notNull()
-    .default(false),
-  // Who entered the current result, and when (UTC ISO). A result is pending
-  // while it has an enterer but no approver; legacy and imported results
-  // have neither and count as approved. A manager's own entry sets both.
-  resultEnteredBy: integer("result_entered_by").references(() => users.id),
-  resultEnteredAt: text("result_entered_at"),
-  resultApprovedBy: integer("result_approved_by").references(() => users.id),
-});
+export const matches = sqliteTable(
+  "matches",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    roundId: integer("round_id")
+      .notNull()
+      .references(() => rounds.id),
+    nr: integer("nr").notNull(),
+    date: text("date"),
+    leagueId: text("league_id").references(() => leagues.id),
+    hometeamId: text("hometeam_id").references(() => teams.id),
+    awayteamId: text("awayteam_id").references(() => teams.id),
+    result: text("result"),
+    lowestSumBonus: integer("lowest_sum_bonus", { mode: "boolean" }),
+    // A user decision, not a computed value (unlike lowestSumBonus above) — so
+    // it is never null, just true/false. Excludes the match from scoring: its
+    // tips always score null (see calcTipPoints), which every summation in the
+    // app already treats as "contributes nothing". The match itself, its
+    // result, and its tips stay otherwise untouched — this is not "did not
+    // happen", just "does not count".
+    excludedFromScoring: integer("excluded_from_scoring", { mode: "boolean" })
+      .notNull()
+      .default(false),
+    // Who entered the current result, and when (UTC ISO). A result is pending
+    // while it has an enterer but no approver; legacy and imported results
+    // have neither and count as approved. A manager's own entry sets both.
+    resultEnteredBy: integer("result_entered_by").references(() => users.id),
+    resultEnteredAt: text("result_entered_at"),
+    resultApprovedBy: integer("result_approved_by").references(() => users.id),
+  },
+  // Without it, every "tips of one championship" join scanned the whole tips
+  // table and filtered last — ~45K rows read per query, growing with every
+  // imported championship. With it: rounds → matches → tips, ~1K rows.
+  (table) => [index("matches_round_id_idx").on(table.roundId)],
+);
 
 export const tips = sqliteTable(
   "tips",
