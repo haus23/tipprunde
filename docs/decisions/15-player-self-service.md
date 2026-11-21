@@ -4,6 +4,10 @@
 of the player-facing UI is built yet. The manager part of feature 1 can be
 built ahead of the rest.
 
+**Update 2026-11-22:** the manager part of feature 1 is built (v3.9.0) — see
+[Manager part](#manager-part--built-v390). The schema migration is on prod
+since 2026-11-20. Everything player-facing is still open.
+
 Until now only a manager touches the data: tips arrive by Excel, results are
 typed in by hand. Three features hand part of that to the players
 themselves. Each brings columns; this record fixes them, and the reasoning,
@@ -83,7 +87,12 @@ has not started, and disappears by itself after that. An × hides it for that
 round, remembered in a cookie. **No user setting, no column:** a hint that
 only appears when there is something to do needs no switch.
 
-### Manager part — buildable now
+### Manager part — built (v3.9.0)
+
+Built as planned, plus two details found on the way: a **future start is
+refused once the round's tips are public** (it would reopen tipping while
+everyone's tips are visible), and **Enter in the field saves**, as in a plain
+input — Enter in the calendar popover still picks a day.
 
 The championship page's round row gets a **"Start"** field: date and time to
 the minute, 24-hour, always Europe/Berlin, clearable. A new generic
