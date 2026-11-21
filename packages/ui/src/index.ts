@@ -1,6 +1,7 @@
 export { Button } from "./components/button.tsx";
 export { Card, CardContent } from "./components/card.tsx";
 export { DateField } from "./components/date-field.tsx";
+export { DateTimeField } from "./components/date-time-field.tsx";
 export { Disclosure } from "./components/disclosure.tsx";
 export { Checkbox } from "./components/checkbox.tsx";
 export { FieldError } from "./components/field-error.tsx";

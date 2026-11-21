@@ -23,6 +23,28 @@ export function formatDate(date: string) {
 }
 
 /**
+ * The Tipprunde's clock. Points in time (`rounds.starts_at`) are stored as
+ * UTC ISO strings and only entered and shown in this zone — never in the
+ * server's or the browser's own.
+ */
+export const APP_TIME_ZONE = "Europe/Berlin";
+
+const dateTimeFormat = new Intl.DateTimeFormat("de-DE", {
+  timeZone: APP_TIME_ZONE,
+  weekday: "short",
+  day: "2-digit",
+  month: "2-digit",
+  year: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+/** A UTC ISO instant in Berlin time: "Sa., 21.11.26, 15:30". */
+export function formatDateTime(iso: string): string {
+  return dateTimeFormat.format(new Date(iso));
+}
+
+/**
  * Point values in German notation. Only extra-question points are ever
  * fractional, and always in halves — so a single decimal is enough, and
  * whole numbers stay free of a pointless ",0".
