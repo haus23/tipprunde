@@ -239,6 +239,22 @@ made it depend on outgrowing Turso's free tier. That trigger is gone, and the
 move stays planned anyway: development carries on against Turso for now, and
 the switch to SQLite + Litestream comes later, at a time still open.
 
+**Why it still comes (2026-11-21).** Not cost — the benefits:
+
+- **A dev copy on demand.** `litestream restore` the latest prod state into a
+  local file, in seconds and without tier limits, instead of deleting and
+  re-cloning a Turso database.
+- **A real backup.** Point-in-time restore from R2; today the data's safety
+  rests on Turso alone.
+- **No Turso dependency.** The data is a plain SQLite file.
+- **Free choice of hosting.** With the Dockerfile (node + litestream) the
+  container is the product: Railway, a self-hosted Docker host once the app
+  is stable, or whatever cloud option comes along — moving is start the
+  container, restore from R2, switch DNS.
+
+Until then, nothing Turso-specific goes in — no embedded replicas, no Turso
+platform API, no vector search: only what plain SQLite can do too.
+
 **Why the free tier no longer pushes.** An October warning (single days at
 ~50M rows read, a tenth of the monthly allowance each) looked like the trigger.
 Turso's query insights traced most of it to one missing index: the
