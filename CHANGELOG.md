@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.9.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.8.1...v3.9.0)
+
+### 🚀 Enhancements
+
+- **manager:** Round start time ([95c45a0](https://github.com/haus23/tipprunde/commit/95c45a0))
+
+### 📖 Documentation
+
+- Hosting step 3 stays the target, postponed ([7e6aef3](https://github.com/haus23/tipprunde/commit/7e6aef3))
+- Why hosting step 3 still comes ([05c2674](https://github.com/haus23/tipprunde/commit/05c2674))
+
 ## v3.8.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.8.0...v3.8.1)
