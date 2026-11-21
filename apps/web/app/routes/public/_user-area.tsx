@@ -1,7 +1,7 @@
 import { Button } from "@tipprunde/ui";
-import { ChevronDownIcon, LogInIcon, LogOutIcon, SettingsIcon } from "lucide-react";
+import { ChevronDownIcon, LogInIcon, LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
 import { Menu, MenuItem, MenuTrigger, Popover } from "react-aria-components";
-import { Form, Link, useSubmit } from "react-router";
+import { Link, useSubmit } from "react-router";
 
 import type { User } from "#/lib/context.ts";
 
@@ -23,21 +23,12 @@ export function UserArea({ user }: { user: User | null }) {
     );
   }
 
-  // Plain players have nothing to reach behind a menu — one button is enough.
-  if (user.role === "user") {
-    return (
-      <Form method="post" action="/logout">
-        <Button type="submit" intent="ghost" size="sm" className="h-8 max-sm:px-2">
-          <span className="max-sm:sr-only">Abmelden</span>
-          <LogOutIcon className="size-4" />
-        </Button>
-      </Form>
-    );
-  }
-
   return (
     <MenuTrigger>
       <Button intent="ghost" size="sm" className="h-8 max-sm:px-2">
+        {/* Below sm the name is screen-reader only; a bare chevron would
+            leave nothing to recognise the menu by. */}
+        <UserIcon aria-hidden className="size-4 sm:hidden" />
         <span className="max-sm:sr-only">{user.name}</span>
         <ChevronDownIcon className="size-4" />
       </Button>
@@ -47,10 +38,16 @@ export function UserArea({ user }: { user: User | null }) {
         className="border-subtle bg-surface-raised shadow-popover w-44 origin-top-right rounded-md border p-1 transition duration-150 ease-out data-entering:scale-95 data-entering:opacity-0 data-exiting:scale-95 data-exiting:opacity-0"
       >
         <Menu className="outline-none">
-          <MenuItem href="/manager" className={menuItemClass}>
-            <SettingsIcon aria-hidden className="text-muted size-4" />
-            Manager
+          <MenuItem href="/konto" className={menuItemClass}>
+            <UserIcon aria-hidden className="text-muted size-4" />
+            Mein Konto
           </MenuItem>
+          {user.role !== "user" && (
+            <MenuItem href="/manager" className={menuItemClass}>
+              <SettingsIcon aria-hidden className="text-muted size-4" />
+              Manager
+            </MenuItem>
+          )}
           <MenuItem
             onAction={() => void submit(null, { method: "post", action: "/logout" })}
             className={menuItemClass}
