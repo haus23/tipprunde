@@ -7,9 +7,9 @@ import { isRoundCompletable, type RoundRuleId } from "@tipprunde/domain/scoring"
 import { Button, Card, CardContent } from "@tipprunde/ui";
 import { cx } from "@tipprunde/ui";
 import { and, eq, max } from "drizzle-orm";
-import { CalendarIcon, PlusIcon } from "lucide-react";
+import { CalendarIcon, ClockIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { SwitchButton, SwitchField } from "react-aria-components";
+import { Button as AriaButton, SwitchButton, SwitchField } from "react-aria-components";
 import { Link, useFetcher } from "react-router";
 import * as v from "valibot";
 
@@ -18,11 +18,12 @@ import { db } from "#/lib/db.server.ts";
 import { isLocked } from "#/lib/lock.server.ts";
 import { updateRanking } from "#/lib/ranking.server.ts";
 import { applyRoundRule } from "#/lib/round.server.ts";
-import { sortGerman } from "#/lib/utils.ts";
+import { formatDateTime, sortGerman } from "#/lib/utils.ts";
 
 import type { Route } from "./+types/index";
 import { LockProvider, useLock } from "./_lock-provider.tsx";
 import { MitspielerCard } from "./_mitspieler-card.tsx";
+import { RoundStartDialog } from "./_round-start-dialog.tsx";
 import { RundeDialog } from "./_runde-dialog.tsx";
 
 export const handle = { title: "Übersicht" };
@@ -42,7 +43,14 @@ export async function loader({ context }: Route.LoaderArgs) {
     }),
     db.query.rounds.findMany({
       where: { championshipId: championship.id },
-      columns: { id: true, nr: true, published: true, tipsPublished: true, completed: true },
+      columns: {
+        id: true,
+        nr: true,
+        published: true,
+        tipsPublished: true,
+        completed: true,
+        startsAt: true,
+      },
       orderBy: { nr: "asc" },
     }),
     db.query.players.findMany({
@@ -54,6 +62,9 @@ export async function loader({ context }: Route.LoaderArgs) {
       columns: { id: true, name: true, slug: true },
     }),
   ]);
+  // Judged here, on the server's clock, so the switch lock and the action's
+  // guard agree. ISO strings in UTC compare correctly as plain strings.
+  const now = new Date().toISOString();
   return {
     championship,
     hasExtraQuestions: ruleset?.extraQuestionRuleId === "mit-zusatzfragen",
@@ -61,7 +72,10 @@ export async function loader({ context }: Route.LoaderArgs) {
     // the round needs the "Abgeschlossen" toggle — some round rules only
     // reach later rounds (e.g. "...-ab-runde-3"), not the whole championship.
     roundRuleId: ruleset?.roundRuleId as RoundRuleId | undefined,
-    roundList,
+    roundList: roundList.map((r) => ({
+      ...r,
+      isBeforeStart: r.startsAt !== null && r.startsAt > now,
+    })),
     playerUserIds: playerList.map((p) => p.userId),
     allUsers: sortGerman(allUsers, (u) => u.name),
   };
@@ -80,6 +94,7 @@ export async function action({ request, context }: Route.ActionArgs) {
     "create-round",
     "toggle-round-flag",
     "toggle-round-completed",
+    "set-round-start",
     "add-player",
     "remove-player",
   ];
@@ -101,6 +116,15 @@ export async function action({ request, context }: Route.ActionArgs) {
     const roundId = Number(formData.get("roundId"));
     const field = v.parse(roundFlagField, formData.get("field"));
     const value = formData.get("value") === "true";
+    // Players tip themselves until the start; tips made public before it
+    // could simply be copied. Without a start nothing changes.
+    if (field === "tipsPublished" && value) {
+      const round = await db.query.rounds.findFirst({
+        where: { id: roundId, championshipId: championship.id },
+        columns: { startsAt: true },
+      });
+      if (round?.startsAt && round.startsAt > new Date().toISOString()) return null;
+    }
     await db
       .update(roundsTable)
       .set({ [field]: value })
@@ -122,6 +146,44 @@ export async function action({ request, context }: Route.ActionArgs) {
     await updateRanking(championship.id);
 
     return null;
+  }
+
+  if (intent === "set-round-start") {
+    const roundId = Number(formData.get("roundId"));
+    const rawValue = formData.get("startsAt");
+    const raw = typeof rawValue === "string" ? rawValue : "";
+    const round = await db.query.rounds.findFirst({
+      where: { id: roundId, championshipId: championship.id },
+      columns: { completed: true, tipsPublished: true },
+    });
+    if (!round || round.completed) {
+      return { errors: { startsAt: ["Die Runde ist abgeschlossen."] } };
+    }
+
+    let startsAt: string | null = null;
+    if (raw) {
+      // DateTimeField submits "2026-11-21T15:30:00+01:00[Europe/Berlin]" —
+      // without the bracketed zone it is an exact instant with offset.
+      const date = new Date(raw.replace(/\[[^\]]*\]$/, ""));
+      if (Number.isNaN(date.getTime())) {
+        return { errors: { startsAt: ["Kein gültiger Zeitpunkt."] } };
+      }
+      // A future start with tips already public would reopen tipping while
+      // everyone's tips are visible.
+      if (round.tipsPublished && date > new Date()) {
+        return {
+          errors: {
+            startsAt: [
+              "Die Tipps sind schon öffentlich – ein Start in der Zukunft würde das Tippen wieder öffnen.",
+            ],
+          },
+        };
+      }
+      startsAt = date.toISOString();
+    }
+
+    await db.update(roundsTable).set({ startsAt }).where(eq(roundsTable.id, roundId));
+    return { ok: true as const };
   }
 
   if (intent === "add-player") {
@@ -261,11 +323,14 @@ type Round = {
   published: boolean;
   tipsPublished: boolean;
   completed: boolean | null;
+  startsAt: string | null;
+  isBeforeStart: boolean;
 };
 
 function RoundRow({ round, roundRuleId }: { round: Round; roundRuleId: RoundRuleId | undefined }) {
   const fetcher = useFetcher();
   const isPending = fetcher.state !== "idle";
+  const [isStartOpen, setIsStartOpen] = useState(false);
   const { isDisabled: isChampionshipLocked } = useLock();
   const canComplete = isRoundCompletable(roundRuleId, round.nr);
 
@@ -301,36 +366,63 @@ function RoundRow({ round, roundRuleId }: { round: Round; roundRuleId: RoundRule
   // Dependency chain: published → tipsPublished → completed
   // Once completed, published and tipsPublished are locked
   const publishedDisabled = isChampionshipLocked || isPending || tipsPublished || completed;
-  const tipsPublishedDisabled = isChampionshipLocked || isPending || !published || completed;
+  // Players tip until the start — tips made public before it could be copied.
+  const tipsPublishedDisabled =
+    isChampionshipLocked || isPending || !published || completed || round.isBeforeStart;
+  const startDisabled = isChampionshipLocked || completed;
   const completedDisabled = isChampionshipLocked || isPending || !tipsPublished;
 
   return (
     <div className="flex items-start gap-4 py-3 sm:items-center">
       <span className="text-muted w-8 shrink-0 text-right text-sm tabular-nums">{round.nr}</span>
-      {/* Three switches abreast need ~410px; below sm they stack instead of
+      <div className="flex flex-1 flex-col gap-2">
+        {/* Three switches abreast need ~410px; below sm they stack instead of
           running off the right edge, which cut "Abgeschlossen" in half. */}
-      <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:gap-6">
-        <CompactSwitch
-          label="Spiele öffentlich"
-          isSelected={published}
-          onChange={() => toggle("published", published)}
-          isDisabled={publishedDisabled}
-        />
-        <CompactSwitch
-          label="Tipps öffentlich"
-          isSelected={tipsPublished}
-          onChange={() => toggle("tipsPublished", tipsPublished)}
-          isDisabled={tipsPublishedDisabled}
-        />
-        {canComplete && (
+        <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
           <CompactSwitch
-            label="Abgeschlossen"
-            isSelected={completed}
-            onChange={() => toggleCompleted(completed)}
-            isDisabled={completedDisabled}
+            label="Spiele öffentlich"
+            isSelected={published}
+            onChange={() => toggle("published", published)}
+            isDisabled={publishedDisabled}
           />
-        )}
+          <CompactSwitch
+            label="Tipps öffentlich"
+            isSelected={tipsPublished}
+            onChange={() => toggle("tipsPublished", tipsPublished)}
+            isDisabled={tipsPublishedDisabled}
+          />
+          {canComplete && (
+            <CompactSwitch
+              label="Abgeschlossen"
+              isSelected={completed}
+              onChange={() => toggleCompleted(completed)}
+              isDisabled={completedDisabled}
+            />
+          )}
+        </div>
+        {/* Its own line: beside three switches it would not fit once the
+          sidebar takes its 208px. */}
+        <AriaButton
+          isDisabled={startDisabled}
+          onPress={() => setIsStartOpen(true)}
+          className={cx(
+            "flex w-fit items-center gap-1.5 rounded-sm text-xs transition-colors",
+            round.startsAt ? "text-app" : "text-muted",
+            "data-hovered:text-accent data-disabled:opacity-50",
+            "data-focus-visible:outline-2 data-focus-visible:outline-offset-2 data-focus-visible:outline-accent",
+          )}
+        >
+          <ClockIcon className="size-3.5 shrink-0" />
+          {round.startsAt ? `Start: ${formatDateTime(round.startsAt)}` : "Start festlegen"}
+        </AriaButton>
       </div>
+      <RoundStartDialog
+        isOpen={isStartOpen}
+        onOpenChange={setIsStartOpen}
+        roundId={round.id}
+        roundNr={round.nr}
+        startsAt={round.startsAt}
+      />
       <Link
         to={`spiele/${round.nr}`}
         title={`Spiele der Runde ${round.nr}`}
