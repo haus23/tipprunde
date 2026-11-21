@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.10.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.9.0...v3.10.0)
+
+### 🚀 Enhancements
+
+- Mein Konto with the player's logged-in devices ([2839522](https://github.com/haus23/tipprunde/commit/2839522))
+
+### 📖 Documentation
+
+- Feature 1 manager part built (v3.9.0) ([54bbbe9](https://github.com/haus23/tipprunde/commit/54bbbe9))
+
 ## v3.9.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.8.1...v3.9.0)
