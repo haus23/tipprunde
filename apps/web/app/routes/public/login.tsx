@@ -156,7 +156,7 @@ export async function action({ request, url }: Route.ActionArgs) {
 
     if (result === "valid") {
       await logAuthEvent({ type: "login_succeeded", userId: user.id, email });
-      const sessionId = await createSession(user.id, rememberMe);
+      const sessionId = await createSession(user.id, rememberMe, request.headers.get("User-Agent"));
       session.unset("pendingEmail");
       session.set("sessionId", sessionId);
       return redirect(redirectTo, {

@@ -31,13 +31,16 @@ Two things deliberately do **not** get their own top-level header slot:
    three-item menu, would spend scarce header width on a rarely-touched setting.
 2. **Manager link + Logout live inside the user menu.** Manager is role-gated (only
    managers/admins see it) and rarely clicked; Logout is by definition an account
-   action. Logged out → "Login"; logged in → avatar/name → { Manager (if role), Logout }.
+   action. Logged out → "Login"; logged in → name (a person icon below `sm`) →
+   { Mein Konto, Manager (if role), Logout }. Since v3.10 every logged-in user
+   gets the menu — plain players used to get a lone logout button, but
+   "Mein Konto" (`/konto`: account data, logged-in devices) is for everyone.
 
 ### Two distinct menus
 
 Keep these separate — they have different jobs:
 
-- **User menu** (right cluster) — identity/account: Manager, Logout, profile actions.
+- **User menu** (right cluster) — identity/account: Mein Konto, Manager, Logout.
 - **⋯ overflow menu** — navigation items that didn't fit at the current width.
 
 Do not merge them into one "everything" menu; it muddies what the ⋯ means.

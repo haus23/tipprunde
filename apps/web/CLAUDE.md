@@ -61,6 +61,9 @@ Cross-championship, outside that scope:
 - `/nachspielzeit`, `/nachspielzeit/:slug` — Nachspielzeit: occasional
   articles from `content/blog/` (list, detail)
 - `/login` — TOTP login (two steps, intent-based action)
+- `/konto` — the logged-in player's own account: name, email, logged-in
+  devices with "Abmelden" per device and for all others (redirects to `/login`
+  without a user)
 - `/color-scheme`, `/logout` — action-only, shared by both shells
 - `/matchday-tips/:userId` — Resource route for the ranking table's popover
 - `/manager/…` — the management UI, see the `manager` block in `routes.ts`

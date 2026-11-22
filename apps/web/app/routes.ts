@@ -66,6 +66,9 @@ export default [
     route("nachspielzeit", "routes/public/nachspielzeit/index.tsx"),
     route("nachspielzeit/:slug", "routes/public/nachspielzeit/detail.tsx"),
     route("login", "routes/public/login.tsx"),
+    // The logged-in player's own account and devices; redirects to /login
+    // without one.
+    route("konto", "routes/public/konto.tsx"),
     // The running championship. Same tree as /turnier/:slug below — see
     // docs/decisions/11-turnier-routing-homepage.md.
     route("turnier", "routes/public/_championship-layout.tsx", championshipTree("current")),

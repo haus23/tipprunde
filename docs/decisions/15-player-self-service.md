@@ -8,6 +8,9 @@ built ahead of the rest.
 [Manager part](#manager-part--built-v390). The schema migration is on prod
 since 2026-11-20. Everything player-facing is still open.
 
+**Update 2026-11-22:** feature 3 is built (v3.10.0) — `/konto` ("Mein
+Konto"), reached from the user menu, which every logged-in user now gets.
+
 Until now only a manager touches the data: tips arrive by Excel, results are
 typed in by hand. Three features hand part of that to the players
 themselves. Each brings columns; this record fixes them, and the reasoning,
@@ -184,7 +187,14 @@ few cases need.
 - **IP address or location** — ruled out in
   [07-observability.md](./07-observability.md).
 
-### Behaviour
+### Behaviour — built (v3.10.0)
+
+Built as below, with three details settled on the way: the page also shows
+the account's name and email (read-only, the place a future email change
+goes); **"Alle anderen Geräte abmelden"** appears once two or more other
+sessions exist; and the browser never sees a session id — the list names each
+session by a hash of it, since the id _is_ the login. Every self-service
+revocation is logged as `sessions_revoked` ("Selbst beendet (n Geräte)").
 
 - A page of the player's own, e.g. `/konto`, reached from the user area: the
   unexpired sessions, newest first — device and browser, login time in

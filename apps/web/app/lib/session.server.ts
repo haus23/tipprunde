@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 import { sessions } from "@tipprunde/db/schema";
 import { and, eq, lt, ne } from "drizzle-orm";
 import { createCookieSessionStorage } from "react-router";
@@ -70,12 +72,24 @@ function generateSessionId(): string {
   return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-/** Creates the DB-side session. Returns the id to put into the cookie. */
-export async function createSession(userId: number, rememberMe: boolean): Promise<string> {
+/**
+ * Creates the DB-side session. Returns the id to put into the cookie.
+ *
+ * The User-Agent is kept raw, only for the player's own session list on
+ * /konto; it is parsed when shown. Capped, because the header is whatever the
+ * client sends.
+ */
+export async function createSession(
+  userId: number,
+  rememberMe: boolean,
+  userAgent: string | null,
+): Promise<string> {
   const id = generateSessionId();
   const duration = rememberMe ? SESSION_DURATION_REMEMBER : SESSION_DURATION_DEFAULT;
   const expiresAt = new Date(Date.now() + duration * 1000).toISOString();
-  await db.insert(sessions).values({ id, userId, rememberMe, expiresAt });
+  await db
+    .insert(sessions)
+    .values({ id, userId, rememberMe, expiresAt, userAgent: userAgent?.slice(0, 512) ?? null });
 
   // Piggybacks on login rather than every request: the table only grows when
   // someone signs in, so that is exactly when a sweep of the dead rows is
@@ -130,6 +144,53 @@ export async function revokeUserSessions(userId: number, keepSessionId?: string)
     )
     .returning({ id: sessions.id });
   return deleted.length;
+}
+
+/**
+ * Stands in for a session id wherever one would reach the browser. The id is
+ * the login itself — the cookie only signs it — so the session list on
+ * /konto names each row by a hash of it instead.
+ */
+function sessionKey(sessionId: string): string {
+  return createHash("sha256").update(sessionId).digest("hex").slice(0, 16);
+}
+
+/**
+ * A user's live sessions, newest first, for their own list on /konto. Each
+ * row carries a `key` instead of its id, and `isCurrent` for the one the
+ * request came in with.
+ */
+export async function getUserSessions(userId: number, currentSessionId: string | undefined) {
+  const rows = await db.query.sessions.findMany({
+    where: { userId, expiresAt: { gt: new Date().toISOString() } },
+    columns: { id: true, rememberMe: true, expiresAt: true, createdAt: true, userAgent: true },
+    orderBy: { createdAt: "desc" },
+  });
+  return rows.map(({ id, createdAt, ...row }) => ({
+    ...row,
+    key: sessionKey(id),
+    isCurrent: id === currentSessionId,
+    // SQLite's CURRENT_TIMESTAMP writes "2026-11-22 12:52:06", UTC without
+    // saying so — read as is, `new Date()` would take it for local time.
+    createdAt: `${createdAt.replace(" ", "T")}Z`,
+  }));
+}
+
+/**
+ * Ends one of a user's own sessions, named by its key. Scoped to the user,
+ * so another user's session never matches, and never the current one —
+ * that is what logging out is for. Returns whether a row went.
+ */
+export async function deleteUserSession(
+  userId: number,
+  key: string,
+  currentSessionId: string | undefined,
+): Promise<boolean> {
+  const rows = await db.query.sessions.findMany({ where: { userId }, columns: { id: true } });
+  const target = rows.find((r) => sessionKey(r.id) === key && r.id !== currentSessionId);
+  if (!target) return false;
+  await db.delete(sessions).where(and(eq(sessions.userId, userId), eq(sessions.id, target.id)));
+  return true;
 }
 
 export async function deleteSession(sessionId: string) {
