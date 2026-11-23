@@ -104,7 +104,7 @@ kept comment would be invisible on the page but readable in its source.
 The name: what comes on top of the actual game, no promise of a regular
 schedule — two articles a year feel right under it rather than abandoned. It
 pairs with "Stadionsenf", which stays the name of the per-championship
-comment (`content/turniere/<slug>.md`) on that championship's own Übersicht
+comment (`content/turniere/<slug>.md`, see the 2026-11-23 note below) on that championship's own Übersicht
 and is _not_ part of the Nachspielzeit list. Rejected alternatives included
 "Beiträge" (too plain), "Stammtisch" (reads as discussion rather than
 writing) and "Verlängerung" (already a scoring term here — results after 120
@@ -138,3 +138,14 @@ What dissolved the problem was the content decision, not a nav pattern:
 occasional articles don't need a top-level nav slot. A teaser on the
 homepage is enough, and with no second section to navigate to, the original
 single header works again.
+
+## Update 2026-11-23: Stadionsenf filenames season-first
+
+The Stadionsenf files are no longer named exactly like the championship slug.
+The season comes first, then the kind: `hr0405` lives in `0405hr.md`,
+`wm2006` in `2006wm.md`. With `hr0405.md` the directory sorted all
+Hinrunden before all Rückrunden; season-first lists the league seasons in
+chronological order, with the EMs and WMs grouped after them. The slugs, the
+URLs and the one-file-per-championship rule are unchanged — the loader
+(`turnierCommentFilename` in `app/lib/content.server.ts`) derives the
+filename from the slug, still without scanning the directory.

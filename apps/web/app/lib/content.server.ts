@@ -67,17 +67,28 @@ function renderMarkdown(markdown: string) {
 }
 
 /**
+ * The Stadionsenf file for a championship slug: the season first, then the
+ * kind — `hr0405` → `0405hr`, `em2004` → `2004em`. So the directory lists the
+ * league seasons in chronological order (the tournaments sort among
+ * themselves, after them). Any other slug is its own filename.
+ */
+function turnierCommentFilename(slug: string): string {
+  const match = /^(hr|rr|em|wm)(\d{4})$/.exec(slug);
+  return match ? `${match[2]}${match[1]}.md` : `${slug}.md`;
+}
+
+/**
  * Reads the "Stadionsenf" comment for one championship, if it exists —
- * `content/turniere/<slug>.md`. The filename *is* the championship slug, on
- * purpose: one comment per tournament, structurally (two files can't share a
- * name), with a lookup that never has to scan the directory. No
- * `championships` frontmatter field, for the same reason — it would just be
- * a second place for the same fact to drift out of sync with the first.
+ * `content/turniere/<filename>.md`, the filename derived from the
+ * championship slug (see `turnierCommentFilename`). Derived on purpose: one
+ * comment per tournament, structurally (two files can't share a name), with a
+ * lookup that never has to scan the directory. The `championships`
+ * frontmatter field the files carry is not read — the filename decides.
  */
 export async function getTurnierComment(slug: string): Promise<TurnierComment | null> {
   let raw: string;
   try {
-    raw = await readFile(path.join(CONTENT_DIR, "turniere", `${slug}.md`), "utf-8");
+    raw = await readFile(path.join(CONTENT_DIR, "turniere", turnierCommentFilename(slug)), "utf-8");
   } catch {
     return null;
   }
