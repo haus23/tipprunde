@@ -1,4 +1,4 @@
-import { cx } from "@tipprunde/ui";
+import { FixedDigits, cx } from "@tipprunde/ui";
 import { CalendarIcon, StarIcon } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button, Dialog, OverlayArrow, Popover } from "react-aria-components";
@@ -89,11 +89,11 @@ export function RankingTable({
                   poster theme's one bit of decoration inside a table. */}
                 <td
                   className={cx(
-                    "font-display xs:px-3 xs:py-3 px-2 py-2 text-right text-xl leading-none tracking-wider tabular-nums",
+                    "font-display xs:px-3 xs:py-3 px-2 py-2 text-right text-xl leading-none",
                     entry.rank <= 3 ? "text-accent" : "text-subtle",
                   )}
                 >
-                  {sharesRankAbove ? "" : entry.rank}
+                  {sharesRankAbove ? "" : <FixedDigits value={entry.rank} />}
                 </td>
                 <td className={cx("xs:px-3 xs:py-3 px-2 py-2", isCurrentUser && "font-medium")}>
                   <AppLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</AppLink>
@@ -108,9 +108,9 @@ export function RankingTable({
                     {entry.extraQuestionPoints > 0 ? formatPoints(entry.extraQuestionPoints) : "–"}
                   </td>
                 )}
-                <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none tracking-wider tabular-nums">
+                <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none">
                   <span className="relative inline-block">
-                    {formatPoints(entry.total)}
+                    <FixedDigits value={formatPoints(entry.total)} />
                     {entry.roundPoints !== null && (
                       <CellFlag
                         label={`Rundenpunkte: ${entry.roundPoints > 0 ? `+${entry.roundPoints}` : entry.roundPoints}`}

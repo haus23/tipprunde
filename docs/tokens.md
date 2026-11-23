@@ -109,5 +109,8 @@ the size leaves the old ratio behind).
 
 App-local in `apps/web/app/app.css`, self-hosted via `@fontsource/anton`.
 Anton has one weight (400) — never combine it with `font-semibold`/`font-bold`.
+Anton has no tabular figures (its "1" is narrower, and `tabular-nums` does
+nothing), so ranks and points go through `<FixedDigits>` from `@tipprunde/ui`,
+which boxes each digit at `0.55em`.
 Page titles use the `.poster-title` class rather than the bare utility. See
 [13-public-poster-theme.md](./decisions/13-public-poster-theme.md).

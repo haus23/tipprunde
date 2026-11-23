@@ -1,4 +1,4 @@
-import { cx } from "@tipprunde/ui";
+import { FixedDigits, cx } from "@tipprunde/ui";
 
 import { AppLink } from "#/components/app-link.tsx";
 import { getArchivChampionshipList, getEwigeTabelle } from "#/lib/archiv.server.ts";
@@ -77,11 +77,11 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                         {/* Same display digits and podium colors as the ranking table. */}
                         <td
                           className={cx(
-                            "font-display xs:pr-3 xs:pl-0 w-px py-2 pr-2 pl-2 text-right text-xl leading-none tracking-wider tabular-nums",
+                            "font-display xs:pr-3 xs:pl-0 w-px py-2 pr-2 pl-2 text-right text-xl leading-none",
                             entry.rank <= 3 ? "text-accent" : "text-subtle",
                           )}
                         >
-                          {sharesRankAbove ? "" : entry.rank}
+                          {sharesRankAbove ? "" : <FixedDigits value={entry.rank} />}
                         </td>
                         <td className="xs:pl-3 py-2 pl-2">
                           <AppLink href={`/archiv/spieler/${entry.slug}`}>{entry.name}</AppLink>
@@ -92,8 +92,8 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                         <td className="text-subtle xs:px-3 w-px px-2 py-2 text-center tabular-nums">
                           {entry.wins > 0 ? entry.wins : ""}
                         </td>
-                        <td className="font-display xs:pl-3 xs:pr-0 w-px py-2 pr-2 pl-2 text-right text-xl leading-none tracking-wider tabular-nums">
-                          {formatPoints(entry.totalPoints)}
+                        <td className="font-display xs:pl-3 xs:pr-0 w-px py-2 pr-2 pl-2 text-right text-xl leading-none">
+                          <FixedDigits value={formatPoints(entry.totalPoints)} />
                         </td>
                       </tr>
                     );
