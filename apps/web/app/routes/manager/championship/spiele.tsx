@@ -276,16 +276,27 @@ function MatchComboBox({
   placeholder,
   optionLabel = defaultOptionLabel,
 }: MatchComboBoxProps) {
+  // Labels can repeat — "Deutschland" is the men's, the U-20 and the women's
+  // team. Those carry their slug in the text, which is also what the input
+  // shows once one is picked, so the choice stays visible after the list
+  // closes. Unique labels stay short.
+  const labelCounts = new Map<string, number>();
+  for (const o of options) {
+    labelCounts.set(optionLabel(o), (labelCounts.get(optionLabel(o)) ?? 0) + 1);
+  }
+  const textValue = (o: Team | League) =>
+    (labelCounts.get(optionLabel(o)) ?? 0) > 1 ? `${optionLabel(o)} (${o.id})` : optionLabel(o);
+
   return (
     <ComboBox
       name={name}
       value={value}
       onChange={(key) => onChange(key ? String(key) : null)}
-      defaultFilter={(textValue, search) => {
-        // Matches on name and shortName regardless of which one is displayed,
-        // so typing either always finds the option.
-        const option = options.find((o) => optionLabel(o) === textValue);
-        return [option?.name, option?.shortName]
+      defaultFilter={(text, search) => {
+        // Matches on name, shortName and slug regardless of which one is
+        // displayed, so typing any of them finds the option.
+        const option = options.find((o) => textValue(o) === text);
+        return [option?.name, option?.shortName, option?.id]
           .filter(Boolean)
           .join(" ")
           .toLocaleLowerCase()
@@ -316,11 +327,18 @@ function MatchComboBox({
           </RACButton>
         )}
       </div>
-      <Popover className="bg-surface-raised border-subtle w-(--trigger-width) rounded-sm border shadow-lg outline-none">
+      {/* At least as wide as the field, wider when name and slug need it —
+          the team boxes are narrow below lg. */}
+      <Popover className="bg-surface-raised border-subtle max-w-[calc(100vw-2rem)] min-w-(--trigger-width) rounded-sm border shadow-lg outline-none">
         <ListBox items={options} className="max-h-60 overflow-y-auto p-1 outline-none">
           {(item) => (
-            <ListBoxItem id={item.id} textValue={optionLabel(item)} className={listBoxItemClass}>
-              {optionLabel(item)}
+            <ListBoxItem
+              id={item.id}
+              textValue={textValue(item)}
+              className={cx(listBoxItemClass, "flex items-baseline justify-between gap-3")}
+            >
+              <span className="truncate">{optionLabel(item)}</span>
+              <span className="text-muted shrink-0 font-mono text-xs">{item.id}</span>
             </ListBoxItem>
           )}
         </ListBox>

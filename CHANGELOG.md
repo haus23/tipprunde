@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.12.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.11.1...v3.12.0)
+
+### 🚀 Enhancements
+
+- **manager:** Show team and league slugs ([aa29375](https://github.com/haus23/tipprunde/commit/aa29375))
+
 ## v3.11.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.11.0...v3.11.1)
