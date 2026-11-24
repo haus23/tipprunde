@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.11.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.11.0...v3.11.1)
+
+### 🩹 Fixes
+
+- Screen reader announcements for table sorting and the Verlauf readout ([63adf12](https://github.com/haus23/tipprunde/commit/63adf12))
+
 ## v3.11.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.10.0...v3.11.0)

@@ -15,6 +15,9 @@ import type { Route } from "./+types/detail";
 import { MatchSwitch } from "./_match-switch.tsx";
 import { type SortCol, type SortDir, SortableTh } from "./_sortable-th.tsx";
 
+/** Column names as they are spoken — the headers abbreviate "Pkt". */
+const SORT_NAMES: Record<SortCol, string> = { name: "Spieler", tip: "Tipp", points: "Punkte" };
+
 const navLinkClass =
   "text-subtle hover:text-app focus-visible:ring-accent flex items-center gap-1 rounded-sm outline-none transition-colors focus-visible:ring-2";
 
@@ -99,14 +102,22 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
     .join(" · ");
   const pointsLabel = match.points !== null ? `${match.points} Pkt` : null;
 
+  // What the last sort did, for screen readers: the rows move silently, and
+  // aria-sort is only read when focus reaches a header. Empty until the
+  // first click, so nothing is announced on page load.
+  const [sortAnnouncement, setSortAnnouncement] = useState("");
+
   function handleSort(col: SortCol) {
     if (sortCol !== col) {
       setSortCol(col);
       setSortDir("asc");
+      setSortAnnouncement(`Sortiert nach ${SORT_NAMES[col]}, aufsteigend`);
     } else if (sortDir === "asc") {
       setSortDir("desc");
+      setSortAnnouncement(`Sortiert nach ${SORT_NAMES[col]}, absteigend`);
     } else {
       setSortCol(null); // third click → back to ranking order
+      setSortAnnouncement("Sortiert nach Tabellenplatz");
     }
   }
 
@@ -214,6 +225,9 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
       </div>
 
       <div className="mx-auto w-full max-w-3xl">
+        <p role="status" className="sr-only">
+          {sortAnnouncement}
+        </p>
         <table aria-label={`Tipps zu Spiel ${match.nr}`} className="w-full text-base">
           <thead>
             <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">

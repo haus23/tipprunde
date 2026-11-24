@@ -144,6 +144,8 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
   const { ref, width } = useMeasuredWidth();
   const scoped = useScopedPath();
   const [activeStep, setActiveStep] = useState<number | null>(null);
+  /** Whether the step last moved by arrow key — only then is it announced. */
+  const [viaKeyboard, setViaKeyboard] = useState(false);
   const [hoverSlug, setHoverSlug] = useState<string | null>(null);
   const labelsRef = useRef<SVGGElement>(null);
   const [measuredLabelWidth, setMeasuredLabelWidth] = useState<number | null>(null);
@@ -214,6 +216,26 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
   const shownStepDef = steps[shownStep];
   const gap = readout.leader && readout.focus ? readout.leader.points - readout.focus.points : 0;
 
+  // Screen readers hear the readout only for keyboard steps. Bound to the
+  // visible line, every mouse move across the chart was read out — a
+  // continuous stream nobody asked for. Empty otherwise, so moving the mouse
+  // stays silent and the region does not repeat the last keyboard step.
+  const announcement =
+    viaKeyboard && activeStep !== null && shownStepDef
+      ? [
+          stepTitle(shownStepDef),
+          readout.focus && `Rang ${readout.focus.rank}`,
+          readout.focus && `${formatPoints(readout.focus.points)} Punkte`,
+          readout.focus?.tiedWith.length &&
+            `punktgleich mit ${formatTiedWith(readout.focus.tiedWith)}`,
+          readout.leader &&
+            gap > 0 &&
+            `Rückstand auf ${readout.leader.name}: ${formatPoints(gap)} Punkte`,
+        ]
+          .filter(Boolean)
+          .join(", ")
+      : "";
+
   // Measure the rendered names once they exist, so the reservation matches the
   // font rather than the estimate. Widths do not depend on where the labels
   // sit, so this settles after one correction.
@@ -259,10 +281,7 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
           </div>
         )}
         {/* min-h reserves the wrapped line so the chart does not shift. */}
-        <p
-          aria-live="polite"
-          className="text-subtle xs:min-h-5 min-h-10 text-center text-xs leading-5"
-        >
+        <p className="text-subtle xs:min-h-5 min-h-10 text-center text-xs leading-5">
           {shownStepDef && <span className="text-muted">{stepTitle(shownStepDef)}</span>}
           {readout.focus && (
             <>
@@ -285,6 +304,9 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
             </>
           )}
         </p>
+        <p aria-live="polite" className="sr-only">
+          {announcement}
+        </p>
       </div>
 
       <svg
@@ -293,6 +315,7 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
         role="img"
         tabIndex={0}
         onKeyDown={(event) => {
+          setViaKeyboard(true);
           // Functional updates, so a held-down arrow key does not lose steps
           // to a stale closure between renders.
           switch (event.key) {
@@ -416,9 +439,14 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
             width={plotWidth}
             height={plotHeight}
             fill="transparent"
-            onPointerDown={(event) => setActiveStep(stepAt(event.clientX))}
+            onPointerDown={(event) => {
+              setViaKeyboard(false);
+              setActiveStep(stepAt(event.clientX));
+            }}
             onPointerMove={(event) => {
-              if (event.pointerType === "mouse") setActiveStep(stepAt(event.clientX));
+              if (event.pointerType !== "mouse") return;
+              setViaKeyboard(false);
+              setActiveStep(stepAt(event.clientX));
             }}
             onPointerLeave={(event) => {
               if (event.pointerType === "mouse") setActiveStep(null);
