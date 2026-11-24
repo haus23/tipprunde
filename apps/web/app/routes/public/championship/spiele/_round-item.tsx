@@ -32,7 +32,7 @@ export function SpieleRoundItem({
 
   return (
     <RoundAccordion title={`Runde ${round.nr}`} defaultOpen={defaultOpen} meta={meta}>
-      <table className="w-full text-base">
+      <table aria-label={`Spiele der Runde ${round.nr}`} className="w-full text-base">
         <thead>
           <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">
             <th className="xs:px-2 w-px px-1 pt-2 pb-3 text-right font-medium">#</th>

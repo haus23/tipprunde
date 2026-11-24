@@ -25,6 +25,15 @@ const LABEL_BREAKPOINT = 640;
 const DEFAULT_WIDTH = 900;
 /** Minimum horizontal room per x-axis label before we start skipping some. */
 const LABEL_PITCH = 30;
+/**
+ * A line picked out by hovering its name: the accent, half mixed with the text
+ * color. That pushes it away from the background in both themes — a pale
+ * rose on ink (10:1), a dark wine red on cream (11.5:1) — and sets it apart
+ * from the focus red by lightness. Mixing toward white instead only works on
+ * ink: on cream it washes out to 2.3:1, below 3:1 for the line and 4.5:1 for
+ * the name.
+ */
+const HOVER_COLOR = "text-[color-mix(in_oklab,var(--text-color-accent)_50%,var(--text-color-app))]";
 
 interface Props {
   steps: VerlaufStep[];
@@ -135,6 +144,7 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
   const { ref, width } = useMeasuredWidth();
   const scoped = useScopedPath();
   const [activeStep, setActiveStep] = useState<number | null>(null);
+  const [hoverSlug, setHoverSlug] = useState<string | null>(null);
   const labelsRef = useRef<SVGGElement>(null);
   const [measuredLabelWidth, setMeasuredLabelWidth] = useState<number | null>(null);
 
@@ -157,6 +167,8 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
 
   const leader = players[0];
   const focus = players.find((p) => p.slug === focusSlug);
+  /** The focus is already highlighted; hovering its own name adds nothing. */
+  const hovered = players.find((p) => p.slug === hoverSlug && p !== focus);
   /** Labels hang off the last played step, not the plot edge — see below. */
   const labelX = x(Math.max(0, playedSteps - 1)) + LABEL_GAP;
   /** SVG has no z-index; paint order is document order. */
@@ -378,6 +390,23 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
             );
           })}
 
+          {/* The hovered player's line, drawn once more on top so it is not
+              buried under the field. A second element rather than a move in
+              the paint order: reordering the keyed lines would cut their
+              transitions short. No animation — it follows the mouse across
+              the names, and anything slower than instant would trail it. */}
+          {hovered && (
+            <polyline
+              points={line(hovered)}
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              pointerEvents="none"
+              className={cx(HOVER_COLOR, "stroke-[2.5]")}
+            />
+          )}
+
           {/* Hit area for the crosshair. Pointer moves only track a mouse —
               on touch a tap sets the step and it stays put, so dragging over
               the chart still scrolls the page. */}
@@ -430,7 +459,9 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
                 textAnchor="middle"
                 className={cx(
                   "fill-current text-[10px] tabular-nums",
-                  step.kind === "match" ? "text-muted opacity-60" : "text-app opacity-80",
+                  // No opacity on the match numbers: at 10px they need the full
+                  // 4.5:1 that text-muted gives; faded they fell to 2.8:1.
+                  step.kind === "match" ? "text-muted" : "text-app opacity-80",
                 )}
               >
                 {stepLabel(step)}
@@ -453,6 +484,15 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
                     to={scoped(`/verlauf/${player.slug}`)}
                     preventScrollReset
                     aria-label={`${player.name} hervorheben`}
+                    // A mouse only: on touch the tap navigates anyway, and an
+                    // emulated hover would stick after it. Keyboard focus
+                    // previews the same way.
+                    onPointerEnter={(event) => {
+                      if (event.pointerType === "mouse") setHoverSlug(player.slug);
+                    }}
+                    onPointerLeave={() => setHoverSlug(null)}
+                    onFocus={() => setHoverSlug(player.slug)}
+                    onBlur={() => setHoverSlug(null)}
                     className="focus-visible:outline-accent outline-none focus-visible:outline-2"
                   >
                     {/* The glyphs alone are a poor target, especially on touch. */}
@@ -468,12 +508,14 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
                       y={y(row)}
                       dominantBaseline="middle"
                       className={cx(
-                        "fill-current text-[11px] transition-[opacity,color] duration-150 ease-out",
+                        "fill-current text-[11px]",
                         player === focus
                           ? "text-accent font-medium"
-                          : player === leader
-                            ? "text-app"
-                            : "text-subtle opacity-70 hover:opacity-100",
+                          : player === hovered
+                            ? cx(HOVER_COLOR, "font-medium")
+                            : player === leader
+                              ? "text-app"
+                              : "text-subtle opacity-70",
                       )}
                     >
                       {player.name}

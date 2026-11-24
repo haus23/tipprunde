@@ -1,4 +1,4 @@
-import { cx } from "@tipprunde/ui";
+import { FixedDigits, cx } from "@tipprunde/ui";
 
 import { AppLink } from "#/components/app-link.tsx";
 import { getArchivChampionshipList, getEwigeTabelle } from "#/lib/archiv.server.ts";
@@ -44,14 +44,17 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
             360px. Heading and outer cells sit 8px in, so the heading lines
             up with the "Pl." column. */}
         <section id="ewige-tabelle" className="xs:mx-0 -mx-4 scroll-mt-20">
-          <h2 className="text-muted xs:px-0 mb-3 px-2 text-xs font-medium tracking-wide uppercase">
+          <h2
+            id="ewige-tabelle-titel"
+            className="text-muted xs:px-0 mb-3 px-2 text-xs font-medium tracking-wide uppercase"
+          >
             Ewige Tabelle
           </h2>
           {entries.length === 0 ? (
             <p className="text-subtle xs:px-0 px-2 text-base">Keine Daten.</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-base">
+              <table aria-labelledby="ewige-tabelle-titel" className="w-full text-base">
                 <thead>
                   <tr className="text-muted border-subtle border-b text-xs tracking-wide uppercase">
                     <th className="xs:pr-3 xs:pl-0 w-px pr-2 pb-1.5 pl-2 text-right font-medium">
@@ -77,11 +80,11 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                         {/* Same display digits and podium colors as the ranking table. */}
                         <td
                           className={cx(
-                            "font-display xs:pr-3 xs:pl-0 w-px py-2 pr-2 pl-2 text-right text-xl leading-none tracking-wider tabular-nums",
+                            "font-display xs:pr-3 xs:pl-0 w-px py-2 pr-2 pl-2 text-right text-xl leading-none",
                             entry.rank <= 3 ? "text-accent" : "text-subtle",
                           )}
                         >
-                          {sharesRankAbove ? "" : entry.rank}
+                          {sharesRankAbove ? "" : <FixedDigits value={entry.rank} />}
                         </td>
                         <td className="xs:pl-3 py-2 pl-2">
                           <AppLink href={`/archiv/spieler/${entry.slug}`}>{entry.name}</AppLink>
@@ -92,8 +95,8 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
                         <td className="text-subtle xs:px-3 w-px px-2 py-2 text-center tabular-nums">
                           {entry.wins > 0 ? entry.wins : ""}
                         </td>
-                        <td className="font-display xs:pl-3 xs:pr-0 w-px py-2 pr-2 pl-2 text-right text-xl leading-none tracking-wider tabular-nums">
-                          {formatPoints(entry.totalPoints)}
+                        <td className="font-display xs:pl-3 xs:pr-0 w-px py-2 pr-2 pl-2 text-right text-xl leading-none">
+                          <FixedDigits value={formatPoints(entry.totalPoints)} />
                         </td>
                       </tr>
                     );

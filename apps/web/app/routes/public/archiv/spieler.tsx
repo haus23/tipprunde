@@ -1,4 +1,4 @@
-import { cx } from "@tipprunde/ui";
+import { FixedDigits, cx } from "@tipprunde/ui";
 import { FoldersIcon } from "lucide-react";
 import { data, Link } from "react-router";
 
@@ -105,7 +105,7 @@ export default function ArchivSpieler({ loaderData }: Route.ComponentProps) {
         </p>
       ) : (
         <div className="mx-auto w-full max-w-3xl overflow-x-auto">
-          <table className="w-full text-base">
+          <table aria-label={`Turniere von ${player.name}`} className="w-full text-base">
             <thead>
               <tr className="text-muted text-xs tracking-wide uppercase">
                 <th className="border-subtle xs:px-3 xs:py-2.5 border-b px-2 py-2 text-left font-medium">
@@ -145,11 +145,11 @@ export default function ArchivSpieler({ loaderData }: Route.ComponentProps) {
                       <>
                         <span
                           className={cx(
-                            "font-display text-xl leading-none tracking-wider tabular-nums",
+                            "font-display text-xl leading-none",
                             c.rank <= 3 ? "text-accent" : "text-subtle",
                           )}
                         >
-                          {c.rank}
+                          <FixedDigits value={c.rank} />
                         </span>
                         <span className="text-muted text-xs tabular-nums"> / {c.fieldSize}</span>
                       </>
@@ -160,8 +160,8 @@ export default function ArchivSpieler({ loaderData }: Route.ComponentProps) {
                   <td className="text-subtle xs:px-3 xs:py-3 px-2 py-2 text-center tabular-nums">
                     {c.extraQuestionPoints ? formatPoints(c.extraQuestionPoints) : "–"}
                   </td>
-                  <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none tracking-wider tabular-nums">
-                    {c.total !== null ? formatPoints(c.total) : "–"}
+                  <td className="font-display xs:px-3 xs:py-3 px-2 py-2 text-center text-xl leading-none">
+                    {c.total !== null ? <FixedDigits value={formatPoints(c.total)} /> : "–"}
                   </td>
                 </tr>
               ))}

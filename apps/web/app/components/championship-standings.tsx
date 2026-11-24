@@ -1,3 +1,6 @@
+import { FixedDigits } from "@tipprunde/ui";
+import { useId } from "react";
+
 import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { SectionHeading } from "#/components/section-heading.tsx";
@@ -15,6 +18,7 @@ export function ChampionshipStandings({
   userId: number | undefined;
 }) {
   const scoped = useScopedPath();
+  const headingId = useId();
   const top3 = ranking.slice(0, 3);
   const userEntry = userId !== undefined ? ranking.find((e) => e.userId === userId) : undefined;
   const userBelowTop3 =
@@ -23,8 +27,26 @@ export function ChampionshipStandings({
 
   return (
     <section className="flex flex-col">
-      <SectionHeading>{completed ? "Abschlusstabelle" : "Aktuelle Tabelle"}</SectionHeading>
-      <table className="w-full text-base">
+      <SectionHeading id={headingId}>
+        {completed ? "Abschlusstabelle" : "Aktuelle Tabelle"}
+      </SectionHeading>
+      <table aria-labelledby={headingId} className="w-full text-base">
+        {/* No visible header — three rows read fine without one — but the
+            columns still get names for screen readers. The row collapses to
+            nothing: the cells hold only visually hidden text. */}
+        <thead>
+          <tr>
+            <th scope="col" className="p-0">
+              <span className="sr-only">Platz</span>
+            </th>
+            <th scope="col" className="p-0">
+              <span className="sr-only">Spieler</span>
+            </th>
+            <th scope="col" className="p-0">
+              <span className="sr-only">Punkte</span>
+            </th>
+          </tr>
+        </thead>
         <tbody>
           {top3.map((entry, index) => {
             const sharesRankAbove = index > 0 && top3[index - 1].rank === entry.rank;
@@ -33,8 +55,8 @@ export function ChampionshipStandings({
               <tr key={entry.userId} className="border-subtle border-b last:border-b-0">
                 {/* Every row here is a podium place — accent color throughout,
                     the leader with a star. */}
-                <td className="font-display text-accent w-px py-2 pr-3 text-right text-xl leading-none tracking-wider tabular-nums">
-                  {sharesRankAbove ? "" : entry.rank}
+                <td className="font-display text-accent w-px py-2 pr-3 text-right text-xl leading-none">
+                  {sharesRankAbove ? "" : <FixedDigits value={entry.rank} />}
                 </td>
                 <td className={`py-2 ${isUser ? "font-medium" : ""}`}>
                   <AppLink href={scoped(`/tipps/${entry.slug}`)}>{entry.name}</AppLink>
@@ -44,8 +66,8 @@ export function ChampionshipStandings({
                     </span>
                   )}
                 </td>
-                <td className="font-display py-2 text-right text-xl leading-none tracking-wider tabular-nums">
-                  {formatPoints(entry.total)}
+                <td className="font-display py-2 text-right text-xl leading-none">
+                  <FixedDigits value={formatPoints(entry.total)} />
                 </td>
               </tr>
             );
@@ -61,16 +83,16 @@ export function ChampionshipStandings({
               </tr>
             )}
             <tr className="border-subtle border-t">
-              <td className="font-display text-subtle w-px py-2 pr-3 text-right text-xl leading-none tracking-wider tabular-nums">
-                {userBelowTop3.rank}
+              <td className="font-display text-subtle w-px py-2 pr-3 text-right text-xl leading-none">
+                <FixedDigits value={userBelowTop3.rank} />
               </td>
               <td className="py-2 font-medium">
                 <AppLink href={scoped(`/tipps/${userBelowTop3.slug}`)}>
                   {userBelowTop3.name}
                 </AppLink>
               </td>
-              <td className="font-display py-2 text-right text-xl leading-none tracking-wider tabular-nums">
-                {formatPoints(userBelowTop3.total)}
+              <td className="font-display py-2 text-right text-xl leading-none">
+                <FixedDigits value={formatPoints(userBelowTop3.total)} />
               </td>
             </tr>
           </tbody>

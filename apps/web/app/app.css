@@ -7,7 +7,7 @@
 
 @theme {
   /* Condensed display face for the public site's titles, ranks and points. */
-  --font-display: "Anton", "Arial Narrow", sans-serif;
+  --font-display: "Anton", "Anton Fallback", "Arial Narrow", sans-serif;
 
   /* Leader's star on the public site. Decorative only (1.6:1 on cream) —
      never the sole carrier of meaning. */
@@ -43,8 +43,27 @@
 
   /* The browser's own scrollbar (page and inner scroll areas alike): stone
      thumb on the surface instead of the default white or black track.
-     Inherited, so it also covers the switcher's list. */
+     Inherited, so it also covers the switcher's list. Progressive
+     enhancement: scrollbar-color is Baseline only since 2025-12 — browsers
+     without it keep their default scrollbar. */
   scrollbar-color: light-dark(#b5a892, #4a4036) light-dark(#f8f2e5, #15110e);
+}
+
+/* Arial Narrow scaled to Anton's width, with Anton's ascent and descent, so
+   titles and points keep their size and line box while Anton is still
+   loading (font-display: swap) — no reflow when it swaps in. Measured on the
+   string "0123456789HINRUNDE 2009/10 ARCHIV TABELLE": Anton 1786, Arial Narrow
+   1917 units at 100px, so 93%; ascent 118 and descent 33 divided by 0.93.
+   Matching the width, not the height: a taller fallback would wrap titles.
+   Where Arial Narrow is not installed (Android) the stack falls through to
+   sans-serif unadjusted. */
+@font-face {
+  font-family: "Anton Fallback";
+  src: local("Arial Narrow"), local("ArialNarrow");
+  size-adjust: 93%;
+  ascent-override: 127%;
+  descent-override: 35.5%;
+  line-gap-override: 0%;
 }
 
 /* Page titles on the public site: condensed display caps. Anton ships a

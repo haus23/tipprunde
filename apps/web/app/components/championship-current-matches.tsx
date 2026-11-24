@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
 import { SectionHeading } from "#/components/section-heading.tsx";
@@ -13,13 +15,30 @@ export function ChampionshipCurrentMatches({
   completed: boolean;
 }) {
   const scoped = useScopedPath();
+  const headingId = useId();
   return (
     <section className="flex flex-col">
-      <SectionHeading>{completed ? "Letzte Spiele" : "Aktuelle Spiele"}</SectionHeading>
+      <SectionHeading id={headingId}>
+        {completed ? "Letzte Spiele" : "Aktuelle Spiele"}
+      </SectionHeading>
       {matches.length === 0 ? (
         <p className="text-subtle text-base">Noch keine Spiele.</p>
       ) : (
-        <table className="w-full text-base">
+        <table aria-labelledby={headingId} className="w-full text-base">
+          {/* Column names for screen readers only, as in the standings. */}
+          <thead>
+            <tr>
+              <th scope="col" className="p-0">
+                <span className="sr-only">Datum</span>
+              </th>
+              <th scope="col" className="p-0">
+                <span className="sr-only">Spiel</span>
+              </th>
+              <th scope="col" className="p-0">
+                <span className="sr-only">Ergebnis</span>
+              </th>
+            </tr>
+          </thead>
           <tbody>
             {matches.map((match) => (
               <tr key={match.nr} className="border-subtle border-b last:border-b-0">

@@ -4,6 +4,7 @@ export { DateField } from "./components/date-field.tsx";
 export { DateTimeField } from "./components/date-time-field.tsx";
 export { Disclosure } from "./components/disclosure.tsx";
 export { Checkbox } from "./components/checkbox.tsx";
+export { FixedDigits } from "./components/fixed-digits.tsx";
 export { FieldError } from "./components/field-error.tsx";
 export { Input } from "./components/input.tsx";
 export { Label } from "./components/label.tsx";

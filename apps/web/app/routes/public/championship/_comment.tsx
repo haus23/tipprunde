@@ -68,6 +68,8 @@ export function ChampionshipComment({ comment }: { comment: TurnierComment }) {
               folded && "lg:hidden",
               // Only on expand, not on first paint (stacked, it renders from
               // the start): a short fade, so the text arrives, not snaps in.
+              // @starting-style is Baseline only since 2024-08; without it the
+              // text simply appears.
               expanded && "transition-opacity duration-200 ease-out starting:opacity-0",
             )}
             dangerouslySetInnerHTML={{ __html: comment.fold.belowHtml }}

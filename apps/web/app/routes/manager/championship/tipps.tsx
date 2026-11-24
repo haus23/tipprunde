@@ -456,6 +456,9 @@ function TipGrid({
     }
   }
 
+  // The button is a shortcut on top of plain Ctrl+V (`onPaste` below), which
+  // works everywhere — reading the clipboard from a button
+  // (`navigator.clipboard.readText`) reached Firefox only in 2024.
   async function handleClipboardPaste() {
     const text = await navigator.clipboard.readText();
     if (!text.trim() || matches.length === 0) return;

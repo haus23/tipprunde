@@ -28,6 +28,8 @@ export function MobileNav({ slug, isAdmin }: MobileNavProps) {
         if (!open) closeMobileMenu();
       }}
       isDismissable
+      // backdrop-filter is Baseline only since 2024; without it the overlay is
+      // just dimmed, not blurred.
       className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-opacity duration-200 ease-out data-entering:opacity-0 data-exiting:opacity-0 md:hidden"
     >
       <Modal className="bg-surface-raised border-subtle fixed inset-y-0 left-0 flex w-64 flex-col border-r transition-transform duration-300 ease-out data-entering:-translate-x-full data-exiting:-translate-x-full">

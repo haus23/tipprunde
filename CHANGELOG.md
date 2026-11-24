@@ -1,5 +1,28 @@
 # Changelog
 
+## v3.11.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.10.0...v3.11.0)
+
+### 🚀 Enhancements
+
+- Highlight a player's Verlauf line while hovering their name ([989a2c6](https://github.com/haus23/tipprunde/commit/989a2c6))
+
+### 🩹 Fixes
+
+- Equal-width digits for ranks and points in Anton ([1581472](https://github.com/haus23/tipprunde/commit/1581472))
+- Public UI accessibility and font loading ([d2645b5](https://github.com/haus23/tipprunde/commit/d2645b5))
+
+### 💅 Refactors
+
+- Season-first Stadionsenf filenames (0405hr.md, 2006wm.md) ([4474e28](https://github.com/haus23/tipprunde/commit/4474e28))
+
+### 📖 Documentation
+
+- Baseline Widely Available as the browser support rule ([b2a9aec](https://github.com/haus23/tipprunde/commit/b2a9aec))
+- Mark newer-than-Baseline features as progressive enhancement ([23da916](https://github.com/haus23/tipprunde/commit/23da916))
+- Only @property is newer than Widely Available in Tailwind v4 ([3a50bfa](https://github.com/haus23/tipprunde/commit/3a50bfa))
+
 ## v3.10.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.9.0...v3.10.0)

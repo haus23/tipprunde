@@ -123,3 +123,27 @@ how much is enough. Collected in [backlog.md](../backlog.md).
   like the rest of the page.
 - **Light only.** A forced `data-color-scheme="light"` on the public site and
   no switch in its header. Replaced once the palette had a dark side.
+
+## Update 2026-11-23: equal-width digits in Anton
+
+Anton has no tabular figures: its "1" is about two thirds as wide as the
+other digits, and `tabular-nums` has no effect, so a points column with 51
+next to 52 did not line up. Kept Anton and fixed the digits instead:
+`<FixedDigits>` (`@tipprunde/ui`) puts each digit in a centered box of
+`0.55em` — Anton's digit width plus the tracking the cells had — and hands
+screen readers the whole number from a visually hidden copy. Used for ranks
+and points in the ranking table, the homepage standings, the all-time table
+and the Archiv player page.
+
+Compared side by side on the hr0910 table and dropped:
+
+- **Barlow Condensed 700** for the numbers (suggested by an outside
+  typography review, together with a third face for prose and UI). Real
+  tabular figures, but beside Anton it reads smaller and softer, and even a
+  size up it loses the poster character. The rest of that review — three
+  families with five roles, a condensed face for the nav — was more upkeep
+  than the site needs; the header fits at 360px already.
+- **Other poster faces with tabular figures:** Bebas Neue (one weight, too
+  thin beside Anton), Sofia Sans Extra Condensed 800 (the closest, but
+  rounder), Archivo Extra Condensed 800, Fjalla One. Oswald, League Gothic,
+  Big Shoulders, Teko, Saira and Antonio have no tabular figures either.

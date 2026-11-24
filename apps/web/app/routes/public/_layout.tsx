@@ -1,3 +1,4 @@
+import antonLatin from "@fontsource/anton/files/anton-latin-400-normal.woff2?url";
 import { Logo } from "@tipprunde/ui";
 import {
   Link,
@@ -34,6 +35,15 @@ function isInSection(pathname: string, basePath: string, section: readonly strin
     return pathname === target || (path !== "" && pathname.startsWith(`${target}/`));
   });
 }
+
+// Anton sets every page title and the table's points, all above the fold —
+// fetched with the HTML instead of after the CSS, so it is usually there
+// before first paint. Same Vite-hashed URL as the @font-face in app.css, so
+// the preload is what the font face then uses. Public pages only: the
+// manager never shows Anton.
+export const links: Route.LinksFunction = () => [
+  { rel: "preload", href: antonLatin, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
+];
 
 export function loader({ context }: Route.LoaderArgs) {
   return { user: context.get(userContext) };
