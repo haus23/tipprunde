@@ -286,3 +286,15 @@ Turso bills **scanned** rows, so new queries on large tables get an
 - **Drizzle Studio.** Fully usable on the dev file. On prod only against a
   restored copy, read-only by nature; changes to prod go through the manager
   or migrations, never through Studio.
+- **Read-only checks against prod (2026-11-25).** Import verification and
+  the data behind a Stadionsenf query prod today over the network, read-only
+  via `packages/db/.env.prod`. A file on the Railway volume has no such
+  address. The replacement is the same restore as for the dev copy:
+  `litestream restore` the latest prod replica into a scratch file and query
+  that — read-only by nature, since the copy is detached from the live
+  database, and only seconds behind it, which is plenty for checking an
+  import. It needs a **read-only** R2 token on the laptop, kept beside the
+  other prod secrets and never with write access. The scripts stay as they
+  are: `@libsql/client` reads `file:` URLs too. `railway ssh` onto the live
+  volume would work but sits too close to the real file; the public
+  championship page still serves as the fallback for final standings.
