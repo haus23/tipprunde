@@ -103,11 +103,13 @@ the size leaves the old ratio behind).
 
 ### Display face
 
-| Token            | Utility        | Value                                 | Use case                                   |
-| ---------------- | -------------- | ------------------------------------- | ------------------------------------------ |
-| `--font-display` | `font-display` | `"Anton", "Arial Narrow", sans-serif` | Public site: page titles, ranks and points |
+| Token            | Utility        | Value                                                   | Use case                                   |
+| ---------------- | -------------- | ------------------------------------------------------- | ------------------------------------------ |
+| `--font-display` | `font-display` | `"Anton", "Anton Fallback", "Arial Narrow", sans-serif` | Public site: page titles, ranks and points |
 
-App-local in `apps/web/app/app.css`, self-hosted via `@fontsource/anton`.
+App-local in `apps/web/app/app.css`, self-hosted via `@fontsource/anton` and
+preloaded by the public layout. `Anton Fallback` is Arial Narrow scaled to
+Anton's width and line box, so nothing reflows when Anton swaps in.
 Anton has one weight (400) — never combine it with `font-semibold`/`font-bold`.
 Anton has no tabular figures (its "1" is narrower, and `tabular-nums` does
 nothing), so ranks and points go through `<FixedDigits>` from `@tipprunde/ui`,

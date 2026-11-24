@@ -105,7 +105,7 @@ export default function ArchivSpieler({ loaderData }: Route.ComponentProps) {
         </p>
       ) : (
         <div className="mx-auto w-full max-w-3xl overflow-x-auto">
-          <table className="w-full text-base">
+          <table aria-label={`Turniere von ${player.name}`} className="w-full text-base">
             <thead>
               <tr className="text-muted text-xs tracking-wide uppercase">
                 <th className="border-subtle xs:px-3 xs:py-2.5 border-b px-2 py-2 text-left font-medium">

@@ -1,4 +1,5 @@
 import { Disclosure } from "@tipprunde/ui";
+import { useId } from "react";
 
 import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
@@ -16,6 +17,7 @@ export function QuestionBlock({
   pointsPublished: boolean;
 }) {
   const scoped = useScopedPath();
+  const headingId = useId();
   const answersByUser = new Map(question.extraAnswers.map((a) => [a.userId, a]));
 
   return (
@@ -23,7 +25,9 @@ export function QuestionBlock({
       name="zusatzfragen"
       title={
         <div className="min-w-0">
-          <h2 className="text-base font-medium">{question.question}</h2>
+          <h2 id={headingId} className="text-base font-medium">
+            {question.question}
+          </h2>
           {question.description && (
             <p className="text-subtle text-sm whitespace-pre-line">{question.description}</p>
           )}
@@ -39,7 +43,7 @@ export function QuestionBlock({
       // table text sits (body px-2 + cell px-2), so the two line up.
       summaryClassName="items-start px-4 xs:px-3"
     >
-      <table className="w-full text-base">
+      <table aria-labelledby={headingId} className="w-full text-base">
         <thead>
           <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">
             <th className="xs:px-3 px-2 pt-2 pb-3 font-medium">Spieler</th>

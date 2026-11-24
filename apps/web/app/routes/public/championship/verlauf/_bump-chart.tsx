@@ -459,7 +459,9 @@ export function BumpChart({ steps, playedSteps, players, focusSlug }: Props) {
                 textAnchor="middle"
                 className={cx(
                   "fill-current text-[10px] tabular-nums",
-                  step.kind === "match" ? "text-muted opacity-60" : "text-app opacity-80",
+                  // No opacity on the match numbers: at 10px they need the full
+                  // 4.5:1 that text-muted gives; faded they fell to 2.8:1.
+                  step.kind === "match" ? "text-muted" : "text-app opacity-80",
                 )}
               >
                 {stepLabel(step)}

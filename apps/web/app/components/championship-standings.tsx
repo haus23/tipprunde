@@ -1,4 +1,5 @@
 import { FixedDigits } from "@tipprunde/ui";
+import { useId } from "react";
 
 import { AppLink } from "#/components/app-link.tsx";
 import { useScopedPath } from "#/components/championship-scope.tsx";
@@ -17,6 +18,7 @@ export function ChampionshipStandings({
   userId: number | undefined;
 }) {
   const scoped = useScopedPath();
+  const headingId = useId();
   const top3 = ranking.slice(0, 3);
   const userEntry = userId !== undefined ? ranking.find((e) => e.userId === userId) : undefined;
   const userBelowTop3 =
@@ -25,8 +27,26 @@ export function ChampionshipStandings({
 
   return (
     <section className="flex flex-col">
-      <SectionHeading>{completed ? "Abschlusstabelle" : "Aktuelle Tabelle"}</SectionHeading>
-      <table className="w-full text-base">
+      <SectionHeading id={headingId}>
+        {completed ? "Abschlusstabelle" : "Aktuelle Tabelle"}
+      </SectionHeading>
+      <table aria-labelledby={headingId} className="w-full text-base">
+        {/* No visible header — three rows read fine without one — but the
+            columns still get names for screen readers. The row collapses to
+            nothing: the cells hold only visually hidden text. */}
+        <thead>
+          <tr>
+            <th scope="col" className="p-0">
+              <span className="sr-only">Platz</span>
+            </th>
+            <th scope="col" className="p-0">
+              <span className="sr-only">Spieler</span>
+            </th>
+            <th scope="col" className="p-0">
+              <span className="sr-only">Punkte</span>
+            </th>
+          </tr>
+        </thead>
         <tbody>
           {top3.map((entry, index) => {
             const sharesRankAbove = index > 0 && top3[index - 1].rank === entry.rank;

@@ -44,14 +44,17 @@ export default function Archiv({ loaderData }: Route.ComponentProps) {
             360px. Heading and outer cells sit 8px in, so the heading lines
             up with the "Pl." column. */}
         <section id="ewige-tabelle" className="xs:mx-0 -mx-4 scroll-mt-20">
-          <h2 className="text-muted xs:px-0 mb-3 px-2 text-xs font-medium tracking-wide uppercase">
+          <h2
+            id="ewige-tabelle-titel"
+            className="text-muted xs:px-0 mb-3 px-2 text-xs font-medium tracking-wide uppercase"
+          >
             Ewige Tabelle
           </h2>
           {entries.length === 0 ? (
             <p className="text-subtle xs:px-0 px-2 text-base">Keine Daten.</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-base">
+              <table aria-labelledby="ewige-tabelle-titel" className="w-full text-base">
                 <thead>
                   <tr className="text-muted border-subtle border-b text-xs tracking-wide uppercase">
                     <th className="xs:pr-3 xs:pl-0 w-px pr-2 pb-1.5 pl-2 text-right font-medium">

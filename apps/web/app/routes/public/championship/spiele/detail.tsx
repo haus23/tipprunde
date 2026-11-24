@@ -214,7 +214,7 @@ export default function MatchDetail({ loaderData }: Route.ComponentProps) {
       </div>
 
       <div className="mx-auto w-full max-w-3xl">
-        <table className="w-full text-base">
+        <table aria-label={`Tipps zu Spiel ${match.nr}`} className="w-full text-base">
           <thead>
             <tr className="border-subtle text-muted border-b text-left text-xs tracking-wide uppercase">
               <SortableTh
