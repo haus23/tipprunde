@@ -32,6 +32,13 @@ Single export: `@tipprunde/theme` → `src/theme.css`
 
 Consumed in apps via `@import "@tipprunde/theme"` in the app's main CSS file. Contains the full `@theme {}` block (deliberately not `inline`, so apps can override tokens per scope), `@custom-variant dark`, and `@layer base` styles. Do not add app-specific tokens here.
 
+## Browser support
+
+Browser-facing code (`apps/web`, `packages/ui`, `packages/theme`) uses web
+platform features that are **Baseline Widely Available**. A newer feature
+(Baseline Newly Available, or not yet Baseline) only as progressive
+enhancement — the page still works without it — and with a comment saying so.
+
 ## Commands (from repo root)
 
 Use pnpm workspace filters instead of `cd`-ing into a package — `--filter web`
