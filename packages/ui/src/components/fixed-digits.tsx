@@ -21,7 +21,10 @@ export function FixedDigits({ value, className }: FixedDigitsProps) {
       {/* Not selectable, or copying a table row would carry every number
           twice ("5151"). user-select does not touch the accessibility tree. */}
       <span className="sr-only select-none">{text}</span>
-      <span aria-hidden="true">
+      {/* nowrap: each boxed digit is an atomic inline, and the line may break
+          between two of them — a shrink-to-fit cell (`w-px`) would stack "13"
+          into two lines. */}
+      <span aria-hidden="true" className="whitespace-nowrap">
         {Array.from(text, (char, i) =>
           /\d/.test(char) ? (
             <span key={i} className="inline-block w-[0.55em] text-center tracking-normal">
