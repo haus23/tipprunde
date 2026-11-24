@@ -15,7 +15,11 @@ export function StadionsenfTeaser({ comment }: { comment: TurnierComment }) {
   const href = `${scoped("/")}#stadionsenf`;
 
   return (
-    <section>
+    // From md on beside the table, set off by a quiet rule in the table
+    // lines' color — it marks the uneven 2:3 split as intended. The accent
+    // rule of the championship page's Stadionsenf was tried here and read
+    // too loud next to three rows.
+    <section className="md:border-subtle md:border-l md:pl-8">
       <SectionHeading>Stadionsenf</SectionHeading>
       {/* -ml-1 offsets AppLink's own p-1, so the title lines up with the heading. */}
       <div className="-ml-1 text-lg font-semibold">

@@ -1,3 +1,5 @@
+import { cx } from "@tipprunde/ui";
+
 import { ChampionshipCurrentMatches } from "#/components/championship-current-matches.tsx";
 import { ChampionshipScopeProvider } from "#/components/championship-scope.tsx";
 import { ChampionshipStandings } from "#/components/championship-standings.tsx";
@@ -93,8 +95,15 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           <ChampionshipScopeProvider basePath="/turnier">
             {/* Right column: the latest matches while the championship
                 runs; once it is over its Stadionsenf, or the last matches
-                until somebody has written one. */}
-            <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
+                until somebody has written one. With the Stadionsenf the
+                columns split 2:3 from md on: three table rows need little
+                width, while the text wraps shorter when given more. */}
+            <div
+              className={cx(
+                "grid gap-x-8 gap-y-10 sm:grid-cols-2",
+                comment && "md:grid-cols-[2fr_3fr] md:gap-x-10",
+              )}
+            >
               <ChampionshipStandings
                 ranking={ranking}
                 completed={championship.completed}
