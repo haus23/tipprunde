@@ -22,7 +22,9 @@ export function SortableTh({
   const Icon = !active ? ArrowUpDownIcon : sortDir === "asc" ? ArrowUpIcon : ArrowDownIcon;
   return (
     <th
-      aria-sort={active ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
+      // Only on the sorted column — a list of "none"s is noise. Without a
+      // sort the table is in ranking order, which no header owns.
+      aria-sort={active ? (sortDir === "asc" ? "ascending" : "descending") : undefined}
       className={`xs:px-3 px-2 pt-2 pb-3 font-medium ${align === "center" ? "w-px text-center" : ""}`}
     >
       <button
