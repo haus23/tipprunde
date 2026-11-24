@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.12.1
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.12.0...v3.12.1)
+
+### 🩹 Fixes
+
+- Keep multi-digit ranks on one line ([57aa053](https://github.com/haus23/tipprunde/commit/57aa053))
+- Balance the homepage's table and Stadionsenf columns ([5cba030](https://github.com/haus23/tipprunde/commit/5cba030))
+
+### 📖 Documentation
+
+- **content:** Stadionsenf Rückrunde 2009/10 ([ec36abb](https://github.com/haus23/tipprunde/commit/ec36abb))
+- Record the homepage teaser's layout in decision 14 ([a5f35ac](https://github.com/haus23/tipprunde/commit/a5f35ac))
+
 ## v3.12.0
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.11.1...v3.12.0)

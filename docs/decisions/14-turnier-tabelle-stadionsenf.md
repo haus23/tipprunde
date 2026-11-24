@@ -130,3 +130,28 @@ the teaser shows the title and the link only.
   Regelwerk). Considered first; dropped because the comment would disappear
   among the reference tabs, while it is the one piece of text an archived
   championship is worth opening for.
+
+## Update 2026-11-24: the homepage teaser's layout
+
+With equal columns the homepage read lopsided once the Stadionsenf stood
+beside the standings: the three table rows ended early while the excerpt ran
+on for nine lines, and only 32px separated the table's right-aligned Anton
+digits from the text.
+
+- **2:3 from `md` on**, but only beside the Stadionsenf. Three rows need
+  little width; the text gets more and wraps shorter (seven lines instead of
+  nine at 1280px). While the championship runs, the matches beside the table
+  keep the even split — two tables of similar height don't have the problem.
+- **A quiet rule, not the accent.** The teaser is set off by a 1px line in
+  the table lines' color, with a 32px indent. The line marks the uneven split
+  as intended instead of leaving it to look accidental.
+
+The two pages are graded on purpose: the homepage hints that table and
+comment belong together, the championship page then shows the full table with
+the comment set off by the accent rule. The accent was tried on the homepage
+too and was too loud next to three rows — keep the two different, don't
+"align" the homepage to the championship page.
+
+Also tried and dropped: both "→" links bottom-aligned with `mt-auto`, so the
+two columns end on one line. It left the table's link floating away from its
+table; the rule does the framing instead.
