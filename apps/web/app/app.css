@@ -43,7 +43,9 @@
 
   /* The browser's own scrollbar (page and inner scroll areas alike): stone
      thumb on the surface instead of the default white or black track.
-     Inherited, so it also covers the switcher's list. */
+     Inherited, so it also covers the switcher's list. Progressive
+     enhancement: scrollbar-color is Baseline only since 2025-12 — browsers
+     without it keep their default scrollbar. */
   scrollbar-color: light-dark(#b5a892, #4a4036) light-dark(#f8f2e5, #15110e);
 }
 

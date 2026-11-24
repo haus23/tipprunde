@@ -27,6 +27,10 @@ export function Disclosure({
   const generatedId = useId();
   const resolvedName = name ?? generatedId;
 
+  // Always named: the theme's height animation targets `details[name]`, and
+  // a shared name makes a group exclusive (one open at a time). Exclusive
+  // <details> are Baseline only since 2024-09 — older browsers let several
+  // open, which costs nothing.
   return (
     <details name={resolvedName} open={defaultOpen} className={cx("group", className)}>
       <summary

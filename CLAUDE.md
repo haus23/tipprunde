@@ -38,6 +38,9 @@ Browser-facing code (`apps/web`, `packages/ui`, `packages/theme`) uses web
 platform features that are **Baseline Widely Available**. A newer feature
 (Baseline Newly Available, or not yet Baseline) only as progressive
 enhancement — the page still works without it — and with a comment saying so.
+Tailwind v4's own browser floor (Safari 16.4, Chrome 111, Firefox 128) is
+accepted as given: it relies on `@property` and cascade layers for all styles,
+not as an enhancement.
 
 ## Commands (from repo root)
 
