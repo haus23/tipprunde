@@ -39,8 +39,9 @@ platform features that are **Baseline Widely Available**. A newer feature
 (Baseline Newly Available, or not yet Baseline) only as progressive
 enhancement — the page still works without it — and with a comment saying so.
 Tailwind v4's own browser floor (Safari 16.4, Chrome 111, Firefox 128) is
-accepted as given: it relies on `@property` and cascade layers for all styles,
-not as an enhancement.
+accepted as given. The one feature it needs beyond the rule is `@property`
+(Baseline since 2024-07-09, Widely Available from 2027-01) — cascade layers
+and `color-mix()` already are.
 
 ## Commands (from repo root)
 
