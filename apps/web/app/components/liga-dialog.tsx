@@ -48,7 +48,6 @@ function LigaForm({ defaultValues, onClose, onSuccess }: LigaFormProps) {
       validationErrors={serverErrors}
     >
       <input type="hidden" name="intent" value={isEdit ? "update" : "create"} />
-      {isEdit && <input type="hidden" name="id" value={defaultValues.id} />}
 
       <TextField name="name" defaultValue={defaultValues?.name} isRequired label="Name" />
 
@@ -66,7 +65,19 @@ function LigaForm({ defaultValues, onClose, onSuccess }: LigaFormProps) {
         }}
       />
 
-      {!isEdit && (
+      {isEdit ? (
+        // The slug is the primary key the matches point to — changing it
+        // would have to carry every match along. A different slug means a
+        // new entry, with the matches moved over to it.
+        <TextField
+          name="id"
+          value={defaultValues.id}
+          isReadOnly
+          label="Kennung"
+          description="Nicht änderbar – Spiele verweisen darauf"
+          inputProps={{ className: "text-subtle border-dashed bg-transparent font-mono" }}
+        />
+      ) : (
         <TextField
           name="id"
           value={idValue}

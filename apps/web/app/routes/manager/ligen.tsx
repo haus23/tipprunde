@@ -59,7 +59,8 @@ export default function Ligen({ loaderData }: Route.ComponentProps) {
   const [editingLeague, setEditingLeague] = useState<League | null>(null);
 
   const filtered = leagueList.filter(
-    (l) => !filter || `${l.name} ${l.shortName}`.toLowerCase().includes(filter.toLowerCase()),
+    (l) =>
+      !filter || `${l.name} ${l.shortName} ${l.id}`.toLowerCase().includes(filter.toLowerCase()),
   );
 
   return (
@@ -104,7 +105,10 @@ export default function Ligen({ loaderData }: Route.ComponentProps) {
                 className="border-subtle hover:bg-surface-raised border-b transition-colors last:border-0"
               >
                 <td className="px-3 py-3 font-medium">{league.shortName}</td>
-                <td className="text-subtle px-3 py-3">{league.name}</td>
+                <td className="px-3 py-3">
+                  <div className="text-subtle">{league.name}</div>
+                  <div className="text-muted truncate font-mono text-xs">{league.id}</div>
+                </td>
                 <td className="px-3 py-3 text-right">
                   <Button
                     intent="ghost"

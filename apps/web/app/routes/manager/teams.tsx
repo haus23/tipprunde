@@ -59,7 +59,8 @@ export default function Teams({ loaderData }: Route.ComponentProps) {
   const [editingTeam, setEditingTeam] = useState<Team | null>(null);
 
   const filtered = teamList.filter(
-    (t) => !filter || `${t.name} ${t.shortName}`.toLowerCase().includes(filter.toLowerCase()),
+    (t) =>
+      !filter || `${t.name} ${t.shortName} ${t.id}`.toLowerCase().includes(filter.toLowerCase()),
   );
 
   return (
@@ -104,7 +105,10 @@ export default function Teams({ loaderData }: Route.ComponentProps) {
                 className="border-subtle hover:bg-surface-raised border-b transition-colors last:border-0"
               >
                 <td className="px-3 py-3 font-medium">{team.shortName}</td>
-                <td className="text-subtle px-3 py-3">{team.name}</td>
+                <td className="px-3 py-3">
+                  <div className="text-subtle">{team.name}</div>
+                  <div className="text-muted truncate font-mono text-xs">{team.id}</div>
+                </td>
                 <td className="px-3 py-3 text-right">
                   <Button
                     intent="ghost"
