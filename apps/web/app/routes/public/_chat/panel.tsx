@@ -3,6 +3,7 @@ import { ArrowDownIcon, SendHorizontalIcon, XIcon } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { type ChatMessage, mockHistory, mockIncoming } from "./mock.ts";
+import { useAttention } from "./use-attention.ts";
 import { useStickToBottom } from "./use-stick-to-bottom.ts";
 
 const PAGE_SIZE = 40;
@@ -73,22 +74,32 @@ export default function ChatPanel({
 
   useEffect(() => onUnreadChange(unread), [unread, onUnreadChange]);
 
-  // "Neu" marks where reading stopped, as it was when the chat opened: it
-  // stays put while the new messages get read, so the reader keeps their
-  // bearings, and moves only on the next open. Sending clears it — whoever
-  // writes is caught up. Docked, the chat opens once, at mount.
+  // The reader is here: the chat on screen (open, or docked) and the tab
+  // visible and focused. Only then does anything count as read.
+  const attending = useAttention();
+  const present = open && attending;
+
+  // "Neu" marks the first message the reader had not seen when they arrived —
+  // opening the chat, or coming back to the tab or window (docked, the chat
+  // never reopens, so returning is its "open"). It is a fixed message, not
+  // "everything after the last read one": what arrives while the reader
+  // watches is read live and gets no line of its own. It stays put while the
+  // new messages get read, and moves only on the next arrival; sending clears
+  // it — whoever writes is caught up.
   const lastReadRef = useRef(lastReadId);
+  const messagesRef = useRef(messages);
   useEffect(() => {
     lastReadRef.current = lastReadId;
-  }, [lastReadId]);
-  const [markerAfterId, setMarkerAfterId] = useState<number | null>(null);
+    messagesRef.current = messages;
+  }, [lastReadId, messages]);
+  const [markerId, setMarkerId] = useState<number | null>(null);
   useEffect(() => {
-    if (open) setMarkerAfterId(lastReadRef.current);
-  }, [open]);
-  const firstUnreadId =
-    markerAfterId === null
-      ? undefined
-      : visible.find((m) => m.id > markerAfterId && m.author !== null)?.id;
+    if (!present) return;
+    const firstUnread = messagesRef.current.find(
+      (m) => m.id > lastReadRef.current && m.author !== null,
+    );
+    setMarkerId(firstUnread?.id ?? null);
+  }, [present]);
 
   // More unread than fit below it: open at the marker, not at the end, so the
   // first new message is not scrolled past unseen.
@@ -99,7 +110,7 @@ export default function ChatPanel({
     const markerTop = marker.getBoundingClientRect().top - scroller.getBoundingClientRect().top;
     if (markerTop < 0) scroller.scrollTop += markerTop - 8;
     // Only when the marker is (re)placed — not on every new message.
-  }, [scrollerRef, markerAfterId]);
+  }, [scrollerRef, markerId]);
 
   // Mock only: someone else writes now and then.
   useEffect(() => {
@@ -136,11 +147,12 @@ export default function ChatPanel({
     return () => observer.disconnect();
   }, [scrollerRef, preparePrepend, hasOlder, isLoadingOlder]);
 
-  // A message counts as read once it has been on screen with the panel open.
-  // Recreated on open, so whatever is already in view gets reported at once.
+  // A message counts as read once it has been on screen while the reader was
+  // present. Recreated on arrival, so whatever is already in view gets
+  // reported at once — after the marker effect above has taken its snapshot.
   useEffect(() => {
     const scroller = scrollerRef.current;
-    if (!open || !scroller) return;
+    if (!present || !scroller) return;
     const observer = new IntersectionObserver(
       (entries) => {
         const seen = entries
@@ -152,7 +164,7 @@ export default function ChatPanel({
     );
     for (const row of scroller.querySelectorAll("[data-id]")) observer.observe(row);
     return () => observer.disconnect();
-  }, [open, scrollerRef, visible.length]);
+  }, [present, scrollerRef, visible.length]);
 
   function send() {
     const body = draft.trim();
@@ -160,7 +172,7 @@ export default function ChatPanel({
     const id = messages.at(-1)!.id + 1;
     setMessages((current) => [...current, { id, author: null, body, createdAt: new Date() }]);
     setLastReadId(id);
-    setMarkerAfterId(null);
+    setMarkerId(null);
     setDraft("");
     // Your own message always brings you back to the end.
     scrollToBottom();
@@ -201,7 +213,7 @@ export default function ChatPanel({
                   key={message.id}
                   message={message}
                   previous={visible[i - 1]}
-                  isFirstUnread={message.id === firstUnreadId}
+                  isFirstUnread={message.id === markerId}
                   userName={userName}
                 />
               ))}

@@ -53,7 +53,14 @@ kept as it was.
 > - **Open questions answered:** one global room. Senders are shown **by name
 >   only**: most players go by a first name, some with a suffix to tell them
 >   apart, so initials would collide all over. The unread badge is in from the
->   start. Notifications (push/mail) stay out. Retention and moderation stay
+>   start, and so is a "Neu" line at the first unread message.
+> - **Read means seen while present:** the chat on screen _and_ the tab
+>   visible _and_ the window focused (`visibilitychange` plus window
+>   `focus`/`blur`, the signals TanStack Query refetches on). A tab visible
+>   but behind another app counts as away, as in Slack or Discord. Coming
+>   back counts as opening: the "Neu" line moves to the first message not
+>   seen since — which is what makes it work docked, where the chat never
+>   reopens. Notifications (push/mail) stay out. Retention and moderation stay
 >   open until the storage work.
 
 > **The hosting premise below has already changed (2026-08-20).** It was written
