@@ -76,6 +76,18 @@ every other view. See
 > rail at 1024px both would fall back to one column; docking may only pay off
 > from `xl`, or not at all.
 >
+> **Open is a history entry, `#chat`** (found on two Android phones): without
+> one, the back gesture left the page beneath the chat, and the chat stayed
+> open over the previous page, because the shell keeps its state across
+> navigations. Now back closes the chat and the page stays; ✕, Escape and
+> the backdrop go back over that same entry, so none is left behind; a link
+> to `…#chat` opens it. Opening is a hash-only change and runs no loaders;
+> closing drops the hash, which React Router treats as a real navigation and
+> revalidates once — accepted. The drawer reads the router's navigation
+> target, so it closes at once rather than after that refetch. Also from the
+> phones: the transcript contains overscroll on the vertical axis only —
+> `overscroll-contain` on both swallowed Chrome's sideways back swipe.
+>
 > Known tight spot: at 320px the toggle leaves the header no air — it meets
 > "Spiele" and the right cluster overruns by a pixel. The "< `xs`" row of the
 > cascade below already plans for it (fold the scheme control into the user

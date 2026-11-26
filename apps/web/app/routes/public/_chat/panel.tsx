@@ -143,9 +143,11 @@ export default function ChatPanel({
       </div>
 
       <div className="relative min-h-0 flex-1">
+        {/* Vertical only: contained on both axes it also swallows the
+            browser's sideways swipe-back gesture over the list. */}
         <div
           ref={scrollerRef}
-          className="h-full overflow-y-auto overscroll-contain [overflow-anchor:none]"
+          className="h-full overflow-y-auto overscroll-y-contain [overflow-anchor:none]"
         >
           <div ref={contentRef} className="px-4 pb-3">
             {/* Fixed height whatever it shows: a row changing size above the

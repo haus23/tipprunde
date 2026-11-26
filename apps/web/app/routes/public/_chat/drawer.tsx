@@ -30,7 +30,14 @@ export function ChatToggle({ open, unread, onToggle, ref }: ToggleProps) {
       className="relative m-0 size-8 p-0"
     >
       <MessageCircleIcon aria-hidden className="size-4" />
-      <span className="sr-only">Chat{unread > 0 ? `, ${unread} ungelesene Nachrichten` : ""}</span>
+      <span className="sr-only">
+        Chat
+        {unread === 1
+          ? ", 1 ungelesene Nachricht"
+          : unread > 1
+            ? `, ${unread} ungelesene Nachrichten`
+            : ""}
+      </span>
       {unread > 0 && (
         <span
           aria-hidden

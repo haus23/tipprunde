@@ -6,6 +6,8 @@ import {
   Outlet,
   isRouteErrorResponse,
   useLocation,
+  useNavigate,
+  useNavigation,
   useRouteError,
   useRouteLoaderData,
 } from "react-router";
@@ -114,15 +116,51 @@ function PublicShell({
   // season stays in that season — the same way the manager sidebar keeps to
   // /manager/:slug. Outside any season (/, /archiv, /login, 404) it points at
   // the running one under /turnier.
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const { pathname } = location;
   const basePath = championshipBasePath(pathname);
 
-  const [chatOpen, setChatOpen] = useState(false);
+  // The open chat is a history entry of its own, `#chat`: Android's back
+  // gesture (and the browser's back button) then closes the chat instead of
+  // leaving the page beneath it. Opening runs no loaders (adding a hash is a
+  // hash-only change to React Router); closing does once — dropping a hash is
+  // not, so the page's loaders revalidate. Accepted: one cheap refetch per
+  // close, against a `shouldRevalidate` on every public route. The hash never
+  // reaches the server, so it only counts once hydrated — otherwise the first
+  // client render would differ from the server's.
+  const navigate = useNavigate();
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+  // Read from where the router is heading, not where it is: a close waits on
+  // that revalidation, and the drawer should not wait with it.
+  const target = useNavigation().location ?? location;
+  const chatOpen = !!chat && !!user && hydrated && target.hash === "#chat";
+
+  // Mounted on first open, then kept — see ChatDrawer.
   const [chatMounted, setChatMounted] = useState(false);
+  if (chatOpen && !chatMounted) setChatMounted(true);
   const [unread, setUnread] = useState(chat?.unread ?? 0);
   const chatToggleRef = useRef<HTMLButtonElement>(null);
 
-  const closeChat = useCallback(() => setChatOpen(false), []);
+  function openChat() {
+    void navigate(
+      { pathname: location.pathname, search: location.search, hash: "chat" },
+      { state: { chatPushed: true }, preventScrollReset: true },
+    );
+  }
+
+  // Back over the entry we pushed, so closing leaves no stray `#chat` behind
+  // for the next "back" to land on. Opened from a link instead, there is no
+  // entry of ours to go back over — drop the hash in place.
+  const chatPushed = (location.state as { chatPushed?: boolean } | null)?.chatPushed === true;
+  const closeChat = useCallback(() => {
+    if (chatPushed) void navigate(-1);
+    else
+      void navigate(
+        { pathname: location.pathname, search: location.search },
+        { replace: true, preventScrollReset: true },
+      );
+  }, [chatPushed, navigate, location.pathname, location.search]);
 
   // Focus goes back to the toggle on close — after the commit: until then the
   // page around it is still inert and refuses focus.
@@ -184,10 +222,7 @@ function PublicShell({
                   ref={chatToggleRef}
                   open={chatOpen}
                   unread={unread}
-                  onToggle={() => {
-                    setChatMounted(true);
-                    setChatOpen((open) => !open);
-                  }}
+                  onToggle={() => (chatOpen ? closeChat() : openChat())}
                 />
               )}
               {/* Same 32px square as its neighbours: the icon variant's padding
