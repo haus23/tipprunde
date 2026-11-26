@@ -333,7 +333,7 @@ function MessageRow({
         )}
       >
         {newGroup && (
-          <div className="text-subtle mb-0.5 px-1 text-xs">
+          <div className="text-subtle mb-1 px-1 text-xs">
             <span className="text-app font-semibold">{isOwn ? userName : message.author}</span>{" "}
             {timeFormat.format(message.createdAt)}
           </div>
@@ -342,7 +342,7 @@ function MessageRow({
           data-scroll-anchor
           className={cx(
             "max-w-[85%] rounded-md px-3 py-1.5 text-sm break-words whitespace-pre-wrap",
-            isOwn ? "bg-accent-subtle" : "bg-surface-raised",
+            isOwn ? "bg-chat-own" : "bg-chat-other",
           )}
         >
           {message.body}

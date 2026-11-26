@@ -111,7 +111,7 @@ export function ChatDrawer({
         aria-hidden
         onClick={onClose}
         className={cx(
-          "dock:hidden fixed inset-0 z-40 bg-black/30 transition-opacity ease-out",
+          "dock:hidden fixed inset-0 z-40 bg-black/30 transition-opacity ease-out dark:bg-black/60",
           open ? "duration-300" : "pointer-events-none opacity-0 duration-200",
           instant && "transition-none",
         )}
@@ -125,7 +125,8 @@ export function ChatDrawer({
         tabIndex={-1}
         inert={!open}
         className={cx(
-          "bg-surface shadow-overlay fixed inset-y-0 right-0 z-50 w-full max-w-sm outline-none",
+          // Dark, the shadow disappears into the page: an edge keeps the drawer apart.
+          "bg-surface shadow-overlay dark:border-subtle fixed inset-y-0 right-0 z-50 w-full max-w-sm outline-none dark:border-l",
           // The iOS sheet curve: quick off the mark, long soft landing. Out
           // faster than in — closing is the system answering, not something
           // to watch. Reduced motion: no slide, the backdrop's fade remains.
