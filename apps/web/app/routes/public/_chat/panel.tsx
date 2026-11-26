@@ -236,7 +236,7 @@ export default function ChatPanel({
           <ArrowDownIcon aria-hidden className="size-4" />
           <span className="sr-only">Zu den neuesten Nachrichten</span>
           {unread > 0 && (
-            <span className="bg-accent text-accent-fg absolute -top-1.5 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold tabular-nums">
+            <span className="bg-accent text-accent-fg absolute -top-2 -right-2 flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-semibold tabular-nums">
               {unread}
             </span>
           )}
