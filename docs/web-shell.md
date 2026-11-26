@@ -102,6 +102,29 @@ every other view. See
 > of air on each side of the nav at 320px). Dropping the padding already
 > below `xs` pushed the logo too far to the edge at 479px.
 
+> **Update 2026-11-26, later the same day: docked from 1360px.** Measured
+> devices (see [tokens.md](./tokens.md)) split 70 : 30 into phones and desktops,
+> with nothing between 480 and 1023px and nothing between 1280 and 1359px — so
+> the rule became simply: **phones get the drawer, desktops get the column.**
+>
+> - `dock` breakpoint, `85rem` (1360px), in `apps/web/app/app.css`.
+> - Docked, content and chat stand side by side as **one centred pair**
+>   (83rem): 896px content, 32px gap, 384px chat. Header and page centre over
+>   the content column (`dock:mx-auto dock:max-w-[83rem] dock:pr-[26rem]` on
+>   the header's inner row and on `<main>`); the chat is `fixed` below the
+>   header at the right end of that pair. On the 24 % of screens ≥ 1536px it
+>   therefore does not drift to the window edge.
+> - Docked, it is no overlay: no backdrop, nothing inert, no scroll lock, no
+>   toggle and no ✕; `role="complementary"` instead of `dialog`. The
+>   breakpoint is CSS (`dock:`) for placement, so the server render is already
+>   right, and a `matchMedia` copy in the shell switches the overlay
+>   behaviour.
+> - Same element, same place in the tree: crossing the breakpoint moves it by
+>   CSS only, and the draft survives (checked). A `#chat` left in the address
+>   while docked reopens the drawer when the window narrows again.
+> - Only for users who have the chat; everyone else keeps the 896px page as
+>   it was. Pages wider than that (Verlauf, `max-w-5xl`) shrink to the column.
+
 Chat is high priority and **always visible on wide screens** — it is a layout region,
 not a header action. The header "chat toggle" is only the narrow-screen affordance to
 reveal it.

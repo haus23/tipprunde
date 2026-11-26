@@ -136,7 +136,13 @@ export default function ChatPanel({
     <div className="flex h-full flex-col">
       <div className="border-subtle flex h-14 shrink-0 items-center justify-between border-b px-4">
         <h2 className="font-semibold">Chat</h2>
-        <Button intent="ghost" size="icon" onPress={onClose} className="m-0 size-8 p-0">
+        <Button
+          intent="ghost"
+          size="icon"
+          onPress={onClose}
+          // Docked, the chat is always there — nothing to close.
+          className="dock:hidden m-0 size-8 p-0"
+        >
           <XIcon aria-hidden className="size-4" />
           <span className="sr-only">Chat schließen</span>
         </Button>

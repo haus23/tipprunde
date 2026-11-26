@@ -9,8 +9,9 @@ kept as it was.
 > **Update 2026-11-26: where things stand before the first line of chat code.**
 >
 > - **Built so far:** the UI only, on mocked data — header toggle with unread
->   badge, an overlay drawer on every width, transcript, composer
->   (`apps/web/app/routes/public/_chat/`). No server, no database.
+>   badge, an overlay drawer on phones and a docked column from 1360px,
+>   transcript, composer (`apps/web/app/routes/public/_chat/`). No server, no
+>   database. Layout details in [web-shell.md](../web-shell.md).
 > - **Feature flag `CHAT`**, read in `lib/chat.server.ts`: unset → off,
 >   `admins` → admins only, `on` → every logged-in player. It lets the work in
 >   progress land on `main` piece by piece — no long-lived chat branch beside

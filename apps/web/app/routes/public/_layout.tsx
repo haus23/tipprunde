@@ -1,6 +1,6 @@
 import antonLatin from "@fontsource/anton/files/anton-latin-400-normal.woff2?url";
-import { Logo } from "@tipprunde/ui";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Logo, cx } from "@tipprunde/ui";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   Link,
   Outlet,
@@ -143,9 +143,16 @@ function PublicShell({
   const target = useNavigation().location ?? location;
   const chatOpen = !!chat && !!user && hydrated && target.hash === "#chat";
 
-  // Mounted on first open, then kept — see ChatDrawer.
+  // From the `dock` breakpoint the chat is a column beside the content, always
+  // there: no overlay, so nothing goes inert, nothing locks, no toggle. The
+  // breakpoint lives in CSS too (`dock:`), which places everything from the
+  // server render on; this copy only switches the overlay's behaviour.
+  const docked = useMediaQuery(DOCK_QUERY) && !!chat && !!user;
+  const overlayOpen = chatOpen && !docked;
+
+  // Mounted on first open (or once docked), then kept — see ChatDrawer.
   const [chatMounted, setChatMounted] = useState(false);
-  if (chatOpen && !chatMounted) setChatMounted(true);
+  if ((chatOpen || docked) && !chatMounted) setChatMounted(true);
   const [unread, setUnread] = useState(chat?.unread ?? 0);
   const chatToggleRef = useRef<HTMLButtonElement>(null);
 
@@ -173,12 +180,12 @@ function PublicShell({
   // page around it is still inert and refuses focus.
   const wasChatOpen = useRef(false);
   useEffect(() => {
-    if (wasChatOpen.current && !chatOpen) {
+    if (wasChatOpen.current && !overlayOpen) {
       chatToggleRef.current?.focus();
       setChatOpenOnLoad(false);
     }
-    wasChatOpen.current = chatOpen;
-  }, [chatOpen]);
+    wasChatOpen.current = overlayOpen;
+  }, [overlayOpen]);
 
   // The page behind the open drawer does not scroll along. Hiding the overflow
   // takes a classic scrollbar with it, and the page would widen by its width;
@@ -186,7 +193,7 @@ function PublicShell({
   // nothing to make up for — a page too short to scroll, overlay scrollbars
   // as on macOS and phones.
   useEffect(() => {
-    if (!chatOpen) return;
+    if (!overlayOpen) return;
     const root = document.documentElement;
     const scrollbar = window.innerWidth - root.clientWidth;
     root.style.overflow = "hidden";
@@ -195,12 +202,17 @@ function PublicShell({
       root.style.overflow = "";
       root.style.paddingRight = "";
     };
-  }, [chatOpen]);
+  }, [overlayOpen]);
+
+  // Docked, the content and the chat stand side by side as one centred pair
+  // (83rem): header and page centre over the content column, the chat takes
+  // the reserved 26rem on the right (2rem gap + 24rem column).
+  const dockColumn = chat && user && "dock:mx-auto dock:max-w-[83rem] dock:pr-[26rem]";
 
   return (
     <>
       <NavigationProgress />
-      <div className="flex min-h-svh flex-col" inert={chatOpen}>
+      <div className="flex min-h-svh flex-col" inert={overlayOpen}>
         <header className="border-subtle bg-surface sticky top-0 z-10 h-14 border-b">
           {/* Equal side columns keep the nav centred on the page. The right
               cluster (chat, user menu) needs about 390px for that; below xs
@@ -208,7 +220,12 @@ function PublicShell({
               left. Below 360px the nav items close up, the user menu drops
               its chevron, and the header gives up its left padding — the
               logo link's own padding is margin enough there. */}
-          <div className="xs:px-4 max-xs:grid-cols-[auto_1fr_auto] mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center px-2 max-[360px]:pl-0">
+          <div
+            className={cx(
+              "xs:px-4 max-xs:grid-cols-[auto_1fr_auto] mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center px-2 max-[360px]:pl-0",
+              dockColumn,
+            )}
+          >
             {/* Left: home link */}
             <div className="col-start-1 flex items-center">
               <Link
@@ -241,7 +258,7 @@ function PublicShell({
               {chat && user && (
                 <ChatToggle
                   ref={chatToggleRef}
-                  open={chatOpen}
+                  open={overlayOpen}
                   unread={unread}
                   onToggle={() => (chatOpen ? closeChat() : openChat())}
                 />
@@ -254,11 +271,12 @@ function PublicShell({
             </div>
           </div>
         </header>
-        <main className="xs:px-4">{children}</main>
+        <main className={cx("xs:px-4", dockColumn)}>{children}</main>
       </div>
       {chat && user && (
         <ChatDrawer
-          open={chatOpen}
+          open={chatOpen || docked}
+          docked={docked}
           instant={chatOpenOnLoad}
           mounted={chatMounted}
           userName={user.name}
@@ -268,5 +286,20 @@ function PublicShell({
         />
       )}
     </>
+  );
+}
+
+const DOCK_QUERY = "(min-width: 85rem)";
+
+/** A media query as state — false on the server and through hydration. */
+function useMediaQuery(query: string) {
+  return useSyncExternalStore(
+    (onChange) => {
+      const list = window.matchMedia(query);
+      list.addEventListener("change", onChange);
+      return () => list.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(query).matches,
+    () => false,
   );
 }

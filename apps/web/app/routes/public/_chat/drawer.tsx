@@ -26,8 +26,9 @@ export function ChatToggle({ open, unread, onToggle, ref }: ToggleProps) {
       onFocus={() => void loadPanel()}
       aria-expanded={open}
       aria-controls="chat-panel"
-      // Same 32px square as its header neighbours.
-      className="relative m-0 size-8 p-0"
+      // Same 32px square as its header neighbours. Docked, the chat is
+      // always on screen and needs no toggle.
+      className="dock:hidden relative m-0 size-8 p-0"
     >
       <MessageCircleIcon aria-hidden className="size-4" />
       <span className="sr-only">
@@ -51,7 +52,10 @@ export function ChatToggle({ open, unread, onToggle, ref }: ToggleProps) {
 }
 
 type DrawerProps = {
+  /** Visible: open as a drawer, or docked. */
   open: boolean;
+  /** A column beside the content (from the `dock` breakpoint), not an overlay. */
+  docked: boolean;
   /** Open without the slide — the page was loaded with the chat open. */
   instant?: boolean;
   /** False until the first open — nothing is loaded before that. */
@@ -63,9 +67,10 @@ type DrawerProps = {
 };
 
 /**
- * The chat as an overlay drawer from the right, on every width for now —
- * docking it beside the content on wide screens is the next experiment (see
- * docs/web-shell.md).
+ * The chat as an overlay drawer from the right — or, from the `dock`
+ * breakpoint, as a column beside the content, always there. One element in
+ * one place in the tree for both: only CSS moves it, so nothing remounts when
+ * the window crosses the breakpoint. See docs/web-shell.md.
  *
  * Deliberately not a RAC `Modal`: that mounts its content on open and drops
  * it on close, and the chat has to keep its draft and scroll position (later
@@ -76,6 +81,7 @@ type DrawerProps = {
  */
 export function ChatDrawer({
   open,
+  docked,
   instant = false,
   mounted,
   userName,
@@ -85,8 +91,10 @@ export function ChatDrawer({
 }: DrawerProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
+  const modal = open && !docked;
+
   useEffect(() => {
-    if (!open) return;
+    if (!modal) return;
     // The dialog itself, not the text box: focusing that would pop up the
     // keyboard on a phone when someone only wants to read.
     panelRef.current?.focus();
@@ -95,7 +103,7 @@ export function ChatDrawer({
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open, onClose]);
+  }, [modal, onClose]);
 
   return (
     <>
@@ -103,7 +111,7 @@ export function ChatDrawer({
         aria-hidden
         onClick={onClose}
         className={cx(
-          "fixed inset-0 z-40 bg-black/30 transition-opacity ease-out",
+          "dock:hidden fixed inset-0 z-40 bg-black/30 transition-opacity ease-out",
           open ? "duration-300" : "pointer-events-none opacity-0 duration-200",
           instant && "transition-none",
         )}
@@ -111,8 +119,8 @@ export function ChatDrawer({
       <div
         ref={panelRef}
         id="chat-panel"
-        role="dialog"
-        aria-modal="true"
+        role={docked ? "complementary" : "dialog"}
+        aria-modal={docked ? undefined : true}
         aria-label="Chat"
         tabIndex={-1}
         inert={!open}
@@ -124,6 +132,10 @@ export function ChatDrawer({
           "transition-transform ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
           open ? "duration-300" : "translate-x-full shadow-none duration-200",
           instant && "transition-none",
+          // Docked: below the header, at the right end of the centred
+          // content-and-chat pair (83rem, see the shell), framed instead of
+          // floating. No slide when the window crosses the breakpoint.
+          "dock:top-14 dock:right-[max(0px,calc((100%-83rem)/2))] dock:border-subtle dock:z-0 dock:w-96 dock:max-w-none dock:translate-x-0 dock:border-x dock:shadow-none dock:transition-none",
         )}
       >
         {mounted && (
