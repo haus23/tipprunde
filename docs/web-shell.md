@@ -96,10 +96,11 @@ every other view. See
 >
 > Narrow header: the right cluster (chat, user menu) needs about 390px for the
 > nav to stay centred between equal side columns. Below `xs` the side columns
-> size to their content and the nav centres in what is left, and the header
-> has no left padding (the logo link's own padding is margin enough); below
-> 360px the nav items close up and the user menu drops its chevron (11px of
-> air on each side of the nav at 320px).
+> size to their content and the nav centres in what is left; below 360px the
+> nav items close up, the user menu drops its chevron and the header its left
+> padding — the logo link's own padding is margin enough at that width (11px
+> of air on each side of the nav at 320px). Dropping the padding already
+> below `xs` pushed the logo too far to the edge at 479px.
 
 Chat is high priority and **always visible on wide screens** — it is a layout region,
 not a header action. The header "chat toggle" is only the narrow-screen affordance to
