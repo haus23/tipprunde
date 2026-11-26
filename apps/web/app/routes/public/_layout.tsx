@@ -195,15 +195,16 @@ function PublicShell({
           {/* Equal side columns keep the nav centred on the page. The right
               cluster (chat, user menu) needs about 390px for that; below xs
               the sides size to their content and the nav centres in what is
-              left. Below 360px the nav items close up as well, and the user
-              menu drops its chevron. */}
-          <div className="xs:px-4 max-xs:grid-cols-[auto_1fr_auto] mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center px-2">
+              left, with no padding on the left: the logo link's own padding
+              is margin enough. Below 360px the nav items close up as well,
+              and the user menu drops its chevron. */}
+          <div className="xs:px-4 max-xs:grid-cols-[auto_1fr_auto] mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center pr-2">
             {/* Left: home link */}
             <div className="col-start-1 flex items-center">
               <Link
                 to="/"
                 prefetch="intent"
-                className="focus-visible:ring-accent flex items-center gap-2 rounded px-1 pb-0.5 outline-none focus-visible:ring-2"
+                className="focus-visible:ring-accent max-xs:focus-visible:ring-inset flex items-center gap-2 rounded px-1 pb-0.5 outline-none focus-visible:ring-2"
               >
                 <span className="text-accent size-8">
                   <Logo />
