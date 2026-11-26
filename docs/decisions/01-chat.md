@@ -139,7 +139,7 @@ and it is a restructure, not a flag:
   `vite.config.ts` — rather than a file Node reads directly with type stripping.
 - A thin outer `server.js`, plain JS and outside the build, boots Vite in
   middleware mode for dev and the built server for production. `--conditions
-development` goes in the dev script.
+  development` goes in the dev script.
 - In dev the build must be loaded **per request**, or HMR never takes effect.
   `createRequestHandler` accepts a function for exactly this and re-derives on
   each call, so the `handleError` injection (see

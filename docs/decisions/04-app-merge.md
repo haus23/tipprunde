@@ -195,7 +195,7 @@ preview):**
   package → `@tipprunde/web`.
 - **D3** — wrangler `name` → `tipprunde`; branch build verified as an
   upload-only preview version on the production Worker (`Source:
-version_upload`, live deployment untouched) before merging; then merged,
+  version_upload`, live deployment untouched) before merging; then merged,
   `/manager*` route and the `tipprunde-manager` Worker removed.
 - **D4** — Housekeeping: CLAUDE.md files, `.claude/launch.json`, docs, memory.
 
