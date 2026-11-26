@@ -221,7 +221,12 @@ export default function ChatPanel({
           // scrolls internally.
           className="border-subtle bg-control placeholder:text-placeholder focus-visible:ring-accent [field-sizing:content] max-h-32 min-h-9 flex-1 resize-none rounded-md border px-3 py-1.5 text-base outline-none focus-visible:ring-2 sm:text-sm"
         />
-        <Button type="submit" isDisabled={!draft.trim()} className="size-9 shrink-0 p-0">
+        <Button
+          type="submit"
+          isDisabled={!draft.trim()}
+          // Nothing to send reads as neutral, not as a faded accent.
+          className="disabled:bg-control disabled:text-subtle size-9 shrink-0 p-0 disabled:opacity-100"
+        >
           <SendHorizontalIcon aria-hidden className="size-4" />
           <span className="sr-only">Senden</span>
         </Button>

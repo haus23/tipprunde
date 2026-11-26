@@ -130,7 +130,14 @@ function PublicShell({
   // client render would differ from the server's.
   const navigate = useNavigate();
   const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
+  // Arrived on a `#chat` link: the drawer is simply open, it does not slide in
+  // over the page the reader came to see. Reset on the first close, which
+  // animates as usual.
+  const [chatOpenOnLoad, setChatOpenOnLoad] = useState(false);
+  useEffect(() => {
+    setHydrated(true);
+    if (window.location.hash === "#chat") setChatOpenOnLoad(true);
+  }, []);
   // Read from where the router is heading, not where it is: a close waits on
   // that revalidation, and the drawer should not wait with it.
   const target = useNavigation().location ?? location;
@@ -166,7 +173,10 @@ function PublicShell({
   // page around it is still inert and refuses focus.
   const wasChatOpen = useRef(false);
   useEffect(() => {
-    if (wasChatOpen.current && !chatOpen) chatToggleRef.current?.focus();
+    if (wasChatOpen.current && !chatOpen) {
+      chatToggleRef.current?.focus();
+      setChatOpenOnLoad(false);
+    }
     wasChatOpen.current = chatOpen;
   }, [chatOpen]);
 
@@ -249,6 +259,7 @@ function PublicShell({
       {chat && user && (
         <ChatDrawer
           open={chatOpen}
+          instant={chatOpenOnLoad}
           mounted={chatMounted}
           userName={user.name}
           initialUnread={chat.unread}

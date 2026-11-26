@@ -52,6 +52,8 @@ export function ChatToggle({ open, unread, onToggle, ref }: ToggleProps) {
 
 type DrawerProps = {
   open: boolean;
+  /** Open without the slide — the page was loaded with the chat open. */
+  instant?: boolean;
   /** False until the first open — nothing is loaded before that. */
   mounted: boolean;
   userName: string;
@@ -74,6 +76,7 @@ type DrawerProps = {
  */
 export function ChatDrawer({
   open,
+  instant = false,
   mounted,
   userName,
   initialUnread,
@@ -102,6 +105,7 @@ export function ChatDrawer({
         className={cx(
           "fixed inset-0 z-40 bg-black/30 transition-opacity ease-out",
           open ? "duration-300" : "pointer-events-none opacity-0 duration-200",
+          instant && "transition-none",
         )}
       />
       <div
@@ -119,6 +123,7 @@ export function ChatDrawer({
           // to watch. Reduced motion: no slide, the backdrop's fade remains.
           "transition-transform ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
           open ? "duration-300" : "translate-x-full shadow-none duration-200",
+          instant && "transition-none",
         )}
       >
         {mounted && (
