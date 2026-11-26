@@ -107,6 +107,9 @@ mail and code settings, not just the DB:
 `ALERT_EMAIL` is production-only — it is read by `server/app.ts`, which
 `react-router dev` never runs. Errors in development go to the console.
 
+`CHAT` is the chat's feature flag while it is being built (unset = off,
+`admins`, `on`) — see `lib/chat.server.ts`. Set `CHAT=admins` locally to see it.
+
 In production they are set per Railway environment. The first five are
 secrets and never belong in the repo. See `docs/deployment.md`.
 

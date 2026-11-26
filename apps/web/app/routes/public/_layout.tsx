@@ -1,5 +1,6 @@
 import antonLatin from "@fontsource/anton/files/anton-latin-400-normal.woff2?url";
 import { Logo } from "@tipprunde/ui";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Link,
   Outlet,
@@ -11,11 +12,13 @@ import {
 
 import { championshipBasePath } from "#/components/championship-scope.tsx";
 import { ColorSchemeToggle } from "#/components/color-scheme-toggle.tsx";
+import { type ChatSummary, getChatSummary } from "#/lib/chat.server.ts";
 import type { User } from "#/lib/context.ts";
 import { userContext } from "#/lib/context.ts";
 import type { loader as rootLoader } from "#/root.tsx";
 
 import type { Route } from "./+types/_layout";
+import { ChatDrawer, ChatToggle } from "./_chat/drawer.tsx";
 import { PublicNavLink } from "./_nav-link.tsx";
 import { NavigationProgress } from "./_navigation-progress.tsx";
 import { UserArea } from "./_user-area.tsx";
@@ -46,12 +49,13 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function loader({ context }: Route.LoaderArgs) {
-  return { user: context.get(userContext) };
+  const user = context.get(userContext);
+  return { user, chat: getChatSummary(user) };
 }
 
 export default function PublicLayout({ loaderData }: Route.ComponentProps) {
   return (
-    <PublicShell user={loaderData.user}>
+    <PublicShell user={loaderData.user} chat={loaderData.chat}>
       <Outlet />
     </PublicShell>
   );
@@ -64,10 +68,12 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
 export function ErrorBoundary() {
   const error = useRouteError();
   const root = useRouteLoaderData<typeof rootLoader>("root");
+  // Present when the error came from below — this layout's own loader ran.
+  const layout = useRouteLoaderData<typeof loader>("routes/public/_layout");
   const isNotFound = isRouteErrorResponse(error) && error.status === 404;
 
   return (
-    <PublicShell user={root?.user ?? null}>
+    <PublicShell user={root?.user ?? null} chat={layout?.chat ?? null}>
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-center">
         <title>{isNotFound ? "Seite nicht gefunden · runde.tips" : "Fehler · runde.tips"}</title>
         <h1 className="poster-title text-2xl">
@@ -94,7 +100,16 @@ export function ErrorBoundary() {
   );
 }
 
-function PublicShell({ user, children }: { user: User | null; children: React.ReactNode }) {
+function PublicShell({
+  user,
+  chat,
+  children,
+}: {
+  user: User | null;
+  /** Null while the chat is off for this user (flag, or not logged in). */
+  chat: ChatSummary | null;
+  children: React.ReactNode;
+}) {
   // The nav follows whichever championship is in scope, so browsing an archived
   // season stays in that season — the same way the manager sidebar keeps to
   // /manager/:slug. Outside any season (/, /archiv, /login, 404) it points at
@@ -102,10 +117,37 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
   const { pathname } = useLocation();
   const basePath = championshipBasePath(pathname);
 
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMounted, setChatMounted] = useState(false);
+  const [unread, setUnread] = useState(chat?.unread ?? 0);
+  const chatToggleRef = useRef<HTMLButtonElement>(null);
+
+  const closeChat = useCallback(() => setChatOpen(false), []);
+
+  // Focus goes back to the toggle on close — after the commit: until then the
+  // page around it is still inert and refuses focus.
+  const wasChatOpen = useRef(false);
+  useEffect(() => {
+    if (wasChatOpen.current && !chatOpen) chatToggleRef.current?.focus();
+    wasChatOpen.current = chatOpen;
+  }, [chatOpen]);
+
+  // The page behind the open drawer does not scroll along. (With classic
+  // scrollbars the page widens by the scrollbar meanwhile; overlay
+  // scrollbars, as on macOS and phones, do not show it.)
+  useEffect(() => {
+    if (!chatOpen) return;
+    const root = document.documentElement;
+    root.style.overflow = "hidden";
+    return () => {
+      root.style.overflow = "";
+    };
+  }, [chatOpen]);
+
   return (
     <>
       <NavigationProgress />
-      <div className="flex min-h-svh flex-col">
+      <div className="flex min-h-svh flex-col" inert={chatOpen}>
         <header className="border-subtle bg-surface sticky top-0 z-10 h-14 border-b">
           <div className="xs:px-4 mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center px-2">
             {/* Left: home link */}
@@ -137,6 +179,17 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
             </nav>
             {/* Right: scheme + user */}
             <div className="col-start-3 flex items-center justify-end gap-1">
+              {chat && user && (
+                <ChatToggle
+                  ref={chatToggleRef}
+                  open={chatOpen}
+                  unread={unread}
+                  onToggle={() => {
+                    setChatMounted(true);
+                    setChatOpen((open) => !open);
+                  }}
+                />
+              )}
               {/* Same 32px square as its neighbours: the icon variant's padding
                   trick would paint a 44px hover and focus box. */}
               <ColorSchemeToggle className="m-0 size-8 p-0" />
@@ -146,6 +199,16 @@ function PublicShell({ user, children }: { user: User | null; children: React.Re
         </header>
         <main className="xs:px-4">{children}</main>
       </div>
+      {chat && user && (
+        <ChatDrawer
+          open={chatOpen}
+          mounted={chatMounted}
+          userName={user.name}
+          initialUnread={chat.unread}
+          onClose={closeChat}
+          onUnreadChange={setUnread}
+        />
+      )}
     </>
   );
 }

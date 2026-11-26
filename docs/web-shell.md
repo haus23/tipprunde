@@ -8,8 +8,10 @@ panel's docked/drawer behaviour. Breakpoint _values_ live in
 [tokens.md](./tokens.md); this doc describes how the shell uses them.
 
 Built today: header, nav, color-scheme toggle, user area. The chat panel is
-planned — see [01-chat.md](./decisions/01-chat.md). View Transitions were considered and
-postponed — see "View Transitions — postponed" below.
+begun behind the `CHAT` flag, on mocked data — see
+[01-chat.md](./decisions/01-chat.md) and "Chat as a layout citizen" below. View
+Transitions were considered and postponed — see "View Transitions — postponed"
+below.
 
 ## Header contents (widest state)
 
@@ -58,6 +60,26 @@ every other view. See
 [14-turnier-tabelle-stadionsenf.md](./decisions/14-turnier-tabelle-stadionsenf.md).
 
 ## Chat as a layout citizen
+
+> **Update 2026-11-26: drawer first, on every width.** What is built is the
+> narrow-screen half below — the 💬 toggle in the right cluster (before the
+> scheme control, with an unread badge) and the overlay drawer, a ~384px
+> (`max-w-sm`) sheet from the right, full width on phones. It runs on every
+> width for now. The drawer is needed regardless and holds the hard parts
+> (keep-mounted, the overlay's own a11y); docking is then only a change of
+> position, and whether it is wanted at all is the next experiment, judged on
+> real pages in dev rather than on the arithmetic below.
+>
+> That arithmetic is already off: the shell caps at `max-w-4xl` (896px), not
+> `max-w-5xl`, and two pages now use the width themselves — the homepage's
+> 2:3 grid and the championship page's Stadionsenf aside. Next to a 340px
+> rail at 1024px both would fall back to one column; docking may only pay off
+> from `xl`, or not at all.
+>
+> Known tight spot: at 320px the toggle leaves the header no air — it meets
+> "Spiele" and the right cluster overruns by a pixel. The "< `xs`" row of the
+> cascade below already plans for it (fold the scheme control into the user
+> menu).
 
 Chat is high priority and **always visible on wide screens** — it is a layout region,
 not a header action. The header "chat toggle" is only the narrow-screen affordance to

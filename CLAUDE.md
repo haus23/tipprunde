@@ -72,7 +72,7 @@ Shared documentation in `docs/`:
 **Decisions (`docs/decisions/`) — dated records of why something is the way it
 is. Superseded, never quietly rewritten:**
 
-- `01-chat.md` — In-app chat: separate DB, WebSocket transport, TanStack Virtual (not built)
+- `01-chat.md` — In-app chat: separate local SQLite DB, WebSocket transport, own scroll hook instead of virtualization; UI begun behind the `CHAT` flag (2026-11-26)
 - `02-hosting-railway.md` — Single Node service on Railway (live); SQLite+Litestream still the final target, postponed (2026-11-20 update)
 - `03-color-scheme.md` — Single-button light/dark switch: stored vs. resolved state, click algorithm
 - `04-app-merge.md` — How the TanStack Start app merged into the RR8 app (done 2026-08-09)
