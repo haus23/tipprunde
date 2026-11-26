@@ -170,15 +170,20 @@ function PublicShell({
     wasChatOpen.current = chatOpen;
   }, [chatOpen]);
 
-  // The page behind the open drawer does not scroll along. (With classic
-  // scrollbars the page widens by the scrollbar meanwhile; overlay
-  // scrollbars, as on macOS and phones, do not show it.)
+  // The page behind the open drawer does not scroll along. Hiding the overflow
+  // takes a classic scrollbar with it, and the page would widen by its width;
+  // padding in its place keeps everything where it was. Zero where there is
+  // nothing to make up for — a page too short to scroll, overlay scrollbars
+  // as on macOS and phones.
   useEffect(() => {
     if (!chatOpen) return;
     const root = document.documentElement;
+    const scrollbar = window.innerWidth - root.clientWidth;
     root.style.overflow = "hidden";
+    if (scrollbar > 0) root.style.paddingRight = `${scrollbar}px`;
     return () => {
       root.style.overflow = "";
+      root.style.paddingRight = "";
     };
   }, [chatOpen]);
 
