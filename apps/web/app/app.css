@@ -14,8 +14,8 @@
   --text-color-gold: #e8b53a;
 
   /* From here the chat docks beside the content instead of being a drawer:
-     896px content + 32px gap + 384px chat + 16px padding = 1328px (83rem),
-     plus a little margin. Measured devices: none between 1280 and 1359px,
+     384px chat at the right edge, 896px content centred in the rest with at
+     least 32px either side = 1344px, plus a little margin. Measured devices: none between 1280 and 1359px,
      so the exact value hurts nobody — see docs/tokens.md. */
   --breakpoint-dock: 85rem;
 }

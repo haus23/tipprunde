@@ -204,16 +204,23 @@ function PublicShell({
     };
   }, [overlayOpen]);
 
-  // Docked, the content and the chat stand side by side as one centred pair
-  // (83rem): header and page centre over the content column, the chat takes
-  // the reserved 26rem on the right (2rem gap + 24rem column).
-  const dockColumn = chat && user && "dock:mx-auto dock:max-w-[83rem] dock:pr-[26rem]";
+  // Docked, the chat is a column flush with the window's right edge; header
+  // row and page reserve its 24rem and centre in what is left. (A centred
+  // content-and-chat pair was tried first: on a laptop-wide window the space
+  // it left right of the chat read as a deliberate gap, not as centring.)
+  // `<main>` carries its own 1rem side padding, the header row's sits inside
+  // it — so main reserves 1rem more, and both centre on the same axis.
+  const hasChat = chat && user;
+  const dockHeader = hasChat && "dock:pr-96";
+  const dockMain = hasChat && "dock:pr-[25rem]";
 
   return (
     <>
       <NavigationProgress />
       <div className="flex min-h-svh flex-col" inert={overlayOpen}>
-        <header className="border-subtle bg-surface sticky top-0 z-10 h-14 border-b">
+        <header
+          className={cx("border-subtle bg-surface sticky top-0 z-10 h-14 border-b", dockHeader)}
+        >
           {/* Equal side columns keep the nav centred on the page. The right
               cluster (chat, user menu) needs about 390px for that; below xs
               the sides size to their content and the nav centres in what is
@@ -223,7 +230,6 @@ function PublicShell({
           <div
             className={cx(
               "xs:px-4 max-xs:grid-cols-[auto_1fr_auto] mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center px-2 max-[360px]:pl-0",
-              dockColumn,
             )}
           >
             {/* Left: home link */}
@@ -271,7 +277,7 @@ function PublicShell({
             </div>
           </div>
         </header>
-        <main className={cx("xs:px-4", dockColumn)}>{children}</main>
+        <main className={cx("xs:px-4", dockMain)}>{children}</main>
       </div>
       {chat && user && (
         <ChatDrawer

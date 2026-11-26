@@ -108,12 +108,18 @@ every other view. See
 > the rule became simply: **phones get the drawer, desktops get the column.**
 >
 > - `dock` breakpoint, `85rem` (1360px), in `apps/web/app/app.css`.
-> - Docked, content and chat stand side by side as **one centred pair**
->   (83rem): 896px content, 32px gap, 384px chat. Header and page centre over
->   the content column (`dock:mx-auto dock:max-w-[83rem] dock:pr-[26rem]` on
->   the header's inner row and on `<main>`); the chat is `fixed` below the
->   header at the right end of that pair. On the 24 % of screens ≥ 1536px it
->   therefore does not drift to the window edge.
+> - Docked, the chat is a 384px column **flush with the window's right
+>   edge**, below the header. Header row and page reserve its width
+>   (`dock:pr-96` on the header, `dock:pr-[25rem]` on `<main>`, whose own 1rem
+>   padding sits outside) and centre in what is left — so the space left of
+>   the content and between content and chat is the same: 33px at 1360px, 88px
+>   at 1470px, 320px at 1920px.
+> - Tried first and dropped the same day: content and chat as **one centred
+>   pair** (83rem), the plan from the section below. On a laptop-wide window
+>   (~1470px) the space it left right of the chat read as a deliberate gap,
+>   not as centring; only very wide screens would show the pair as centred.
+>   How the edge variant looks on those (24 % are ≥ 1536px) is still to be
+>   seen on a real one.
 > - Docked, it is no overlay: no backdrop, nothing inert, no scroll lock, no
 >   toggle and no ✕; `role="complementary"` instead of `dialog`. The
 >   breakpoint is CSS (`dock:`) for placement, so the server render is already
@@ -183,6 +189,9 @@ When docked, chat and the main column sit side by side, so the outer shell max-w
 **content-max + chat-width**, not just content-max. If main content caps around
 `max-w-5xl` (1024px), the shell with the rail wants ~**1360–1400px** total, so the pair
 stays centred as a unit on ultra-wide screens rather than the chat drifting to the edge.
+
+> **Superseded 2026-11-26:** built and dropped — the chat sits at the window's
+> edge after all; see the update under "Chat as a layout citizen".
 
 ## Perceived performance
 
