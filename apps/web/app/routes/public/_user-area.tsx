@@ -1,8 +1,17 @@
 import { Button } from "@tipprunde/ui";
-import { ChevronDownIcon, LogInIcon, LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
+import {
+  ChevronDownIcon,
+  LogInIcon,
+  LogOutIcon,
+  MoonIcon,
+  SettingsIcon,
+  SunIcon,
+  UserIcon,
+} from "lucide-react";
 import { Menu, MenuItem, MenuTrigger, Popover } from "react-aria-components";
 import { Link, useSubmit } from "react-router";
 
+import { useColorSchemeToggle } from "#/components/color-scheme-toggle.tsx";
 import type { User } from "#/lib/context.ts";
 
 const menuItemClass =
@@ -10,6 +19,7 @@ const menuItemClass =
 
 export function UserArea({ user }: { user: User | null }) {
   const submit = useSubmit();
+  const toggleScheme = useColorSchemeToggle();
 
   if (!user) {
     return (
@@ -30,7 +40,8 @@ export function UserArea({ user }: { user: User | null }) {
             leave nothing to recognise the menu by. */}
         <UserIcon aria-hidden className="size-4 sm:hidden" />
         <span className="max-sm:sr-only">{user.name}</span>
-        <ChevronDownIcon className="size-4" />
+        {/* Dropped below 360px, where the header runs out of room. */}
+        <ChevronDownIcon className="size-4 max-[360px]:hidden" />
       </Button>
       <Popover
         placement="bottom end"
@@ -48,6 +59,16 @@ export function UserArea({ user }: { user: User | null }) {
               Manager
             </MenuItem>
           )}
+          {/* The scheme control lives here once logged in: a rarely used
+              setting, and the header needs the room for the chat. Icon and
+              label are CSS-driven like the header button's — while "system"
+              is stored the server cannot know which one applies. */}
+          <MenuItem onAction={toggleScheme} textValue="Design wechseln" className={menuItemClass}>
+            <MoonIcon aria-hidden className="text-muted size-4 dark:hidden" />
+            <SunIcon aria-hidden className="text-muted hidden size-4 dark:block" />
+            <span className="dark:hidden">Dunkles Design</span>
+            <span className="hidden dark:inline">Helles Design</span>
+          </MenuItem>
           <MenuItem
             onAction={() => void submit(null, { method: "post", action: "/logout" })}
             className={menuItemClass}

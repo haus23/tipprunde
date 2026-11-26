@@ -20,7 +20,8 @@ Everything a user can reach from the header at max width:
 - **Home link** (logo) — leftmost, always visible
 - **Primary nav** — Tabelle · Spieler · Spiele
 - **Chat** — see "Chat as a layout citizen" below (not a header item on wide screens)
-- **Scheme control** — single control (see consolidation note)
+- **Scheme control** — single control (see consolidation note); a header button only
+  while logged out, an entry in the user menu once logged in
 - **User menu / Login** — rightmost, always visible
 
 ### Consolidations
@@ -31,10 +32,15 @@ Two things deliberately do **not** get their own top-level header slot:
    and dark; "system" is reached implicitly, without occupying a slot of its own — see
    [03-color-scheme.md](./decisions/03-color-scheme.md). Two always-visible theming buttons, or a
    three-item menu, would spend scarce header width on a rarely-touched setting.
+   **Since 2026-11-26 it is a header button only while logged out.** Logged in, it is
+   an entry of the user menu ("Dunkles Design" / "Helles Design"), on every width:
+   the chat toggle needs the room, and players rarely touch the setting. Logged
+   out there is no other place for it — and no chat toggle competing for space.
+   One place per state rather than a breakpoint deciding between two.
 2. **Manager link + Logout live inside the user menu.** Manager is role-gated (only
    managers/admins see it) and rarely clicked; Logout is by definition an account
    action. Logged out → "Login"; logged in → name (a person icon below `sm`) →
-   { Mein Konto, Manager (if role), Logout }. Since v3.10 every logged-in user
+   { Mein Konto, Manager (if role), Design, Logout }. Since v3.10 every logged-in user
    gets the menu — plain players used to get a lone logout button, but
    "Mein Konto" (`/konto`: account data, logged-in devices) is for everyone.
 
@@ -88,10 +94,11 @@ every other view. See
 > phones: the transcript contains overscroll on the vertical axis only —
 > `overscroll-contain` on both swallowed Chrome's sideways back swipe.
 >
-> Known tight spot: at 320px the toggle leaves the header no air — it meets
-> "Spiele" and the right cluster overruns by a pixel. The "< `xs`" row of the
-> cascade below already plans for it (fold the scheme control into the user
-> menu).
+> Narrow header: the right cluster (chat, user menu) needs about 390px for the
+> nav to stay centred between equal side columns. Below `xs` the side columns
+> size to their content and the nav centres in what is left; below 360px the
+> nav items close up and the user menu drops its chevron (7px of air on each
+> side of the nav at 320px).
 
 Chat is high priority and **always visible on wide screens** — it is a layout region,
 not a header action. The header "chat toggle" is only the narrow-screen affordance to
@@ -140,6 +147,10 @@ collapses first; nav collapses later.
 | `md`–`lg`     | 💬 drawer toggle | inline           | Scheme · User             |
 | < `md`        | 💬 drawer toggle | inline           | Scheme · User             |
 | < `xs` (480)  | 💬 drawer toggle | inline           | Scheme may fold into User |
+
+> **As built (2026-11-26):** the drawer toggle on every width (no docked rail
+> yet); the scheme control in the user menu whenever logged in, on every
+> width — see "Consolidations". The table above is the original plan.
 
 ## Shell max-width
 

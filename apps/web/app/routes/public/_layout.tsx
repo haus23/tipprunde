@@ -192,7 +192,12 @@ function PublicShell({
       <NavigationProgress />
       <div className="flex min-h-svh flex-col" inert={chatOpen}>
         <header className="border-subtle bg-surface sticky top-0 z-10 h-14 border-b">
-          <div className="xs:px-4 mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center px-2">
+          {/* Equal side columns keep the nav centred on the page. The right
+              cluster (chat, user menu) needs about 390px for that; below xs
+              the sides size to their content and the nav centres in what is
+              left. Below 360px the nav items close up as well, and the user
+              menu drops its chevron. */}
+          <div className="xs:px-4 max-xs:grid-cols-[auto_1fr_auto] mx-auto grid h-full max-w-4xl grid-cols-[1fr_auto_1fr] items-center px-2">
             {/* Left: home link */}
             <div className="col-start-1 flex items-center">
               <Link
@@ -209,7 +214,7 @@ function PublicShell({
               </Link>
             </div>
             {/* Center: nav — always visible */}
-            <nav className="col-start-2 flex h-full items-center justify-center gap-1">
+            <nav className="col-start-2 flex h-full items-center justify-center gap-1 max-[360px]:gap-0">
               {navItems.map((item) => (
                 <PublicNavLink
                   key={item.label}
@@ -230,9 +235,10 @@ function PublicShell({
                   onToggle={() => (chatOpen ? closeChat() : openChat())}
                 />
               )}
-              {/* Same 32px square as its neighbours: the icon variant's padding
-                  trick would paint a 44px hover and focus box. */}
-              <ColorSchemeToggle className="m-0 size-8 p-0" />
+              {/* Logged out only — logged in, it is an entry in the user
+                  menu. Same 32px square as its neighbours: the icon variant's
+                  padding trick would paint a 44px hover and focus box. */}
+              {!user && <ColorSchemeToggle className="m-0 size-8 p-0" />}
               <UserArea user={user} />
             </div>
           </div>
