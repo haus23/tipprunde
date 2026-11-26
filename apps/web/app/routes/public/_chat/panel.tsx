@@ -90,14 +90,19 @@ export default function ChatPanel({
       ([entry]) => {
         if (!entry?.isIntersecting) return;
         setIsLoadingOlder(true);
-        // Mock latency, so the loading state is visible.
+        // Mock latency — about what a local database answers in, so the
+        // feel stays honest.
         setTimeout(() => {
           preparePrepend();
           setStart((current) => Math.max(0, current - PAGE_SIZE));
           setIsLoadingOlder(false);
-        }, 500);
+        }, 150);
       },
-      { root: scroller, rootMargin: "200px 0px 0px 0px" },
+      // A whole view ahead: the next page should be in before a fast scroll
+      // reaches the top. Inserting it then corrects the scroll position, and
+      // mid-fling that correction feels like a jump — on a Mac trackpad the
+      // remaining momentum even carries on through the new messages.
+      { root: scroller, rootMargin: "100% 0px 0px 0px" },
     );
     observer.observe(top);
     return () => observer.disconnect();
