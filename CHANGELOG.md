@@ -1,5 +1,38 @@
 # Changelog
 
+## v3.13.0
+
+[compare changes](https://github.com/haus23/tipprunde/compare/v3.12.1...v3.13.0)
+
+### 🚀 Enhancements
+
+- **chat:** Mocked chat UI behind the CHAT flag ([c7f0908](https://github.com/haus23/tipprunde/commit/c7f0908))
+- **web:** Scheme control into the user menu when logged in; narrow header fits ([fb5e44f](https://github.com/haus23/tipprunde/commit/fb5e44f))
+- **chat:** Dock the chat beside the content from 1360px ([09f856d](https://github.com/haus23/tipprunde/commit/09f856d))
+- **chat:** 'Neu' marks the first unread message ([29ff1b9](https://github.com/haus23/tipprunde/commit/29ff1b9))
+- **chat:** Read only while present; coming back moves the 'Neu' line ([2c12a3f](https://github.com/haus23/tipprunde/commit/2c12a3f))
+
+### 🩹 Fixes
+
+- **chat:** Back closes the chat, swipe-back works over the transcript ([e0a4cc1](https://github.com/haus23/tipprunde/commit/e0a4cc1))
+- **chat:** No layout shift from the scroll lock on desktop ([23756d4](https://github.com/haus23/tipprunde/commit/23756d4))
+- **web:** No left header padding below xs ([bb6133c](https://github.com/haus23/tipprunde/commit/bb6133c))
+- **web:** Drop the left header padding only below 360px ([bbd349d](https://github.com/haus23/tipprunde/commit/bbd349d))
+- **chat:** Neutral disabled send button; no slide when loaded with #chat ([86ba972](https://github.com/haus23/tipprunde/commit/86ba972))
+- **chat:** Dock the chat at the window's right edge ([6d2252d](https://github.com/haus23/tipprunde/commit/6d2252d))
+- **chat:** Docked chat full height, beside the header ([2496f3c](https://github.com/haus23/tipprunde/commit/2496f3c))
+- **chat:** Load older history a whole view ahead ([f1f9a7f](https://github.com/haus23/tipprunde/commit/f1f9a7f))
+
+### 📖 Documentation
+
+- Read-only prod checks after the Litestream move ([0443d69](https://github.com/haus23/tipprunde/commit/0443d69))
+- **content:** Stadionsenf WM 2010 ([8d230d5](https://github.com/haus23/tipprunde/commit/8d230d5))
+
+### 🎨 Styles
+
+- **chat:** Larger unread count on the jump-to-latest button ([81095a9](https://github.com/haus23/tipprunde/commit/81095a9))
+- **chat:** Dark mode reaches for the light one's effect; name sits off its bubble ([7a106be](https://github.com/haus23/tipprunde/commit/7a106be))
+
 ## v3.12.1
 
 [compare changes](https://github.com/haus23/tipprunde/compare/v3.12.0...v3.12.1)

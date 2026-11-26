@@ -8,8 +8,10 @@ panel's docked/drawer behaviour. Breakpoint _values_ live in
 [tokens.md](./tokens.md); this doc describes how the shell uses them.
 
 Built today: header, nav, color-scheme toggle, user area. The chat panel is
-planned — see [01-chat.md](./decisions/01-chat.md). View Transitions were considered and
-postponed — see "View Transitions — postponed" below.
+begun behind the `CHAT` flag, on mocked data — see
+[01-chat.md](./decisions/01-chat.md) and "Chat as a layout citizen" below. View
+Transitions were considered and postponed — see "View Transitions — postponed"
+below.
 
 ## Header contents (widest state)
 
@@ -18,7 +20,8 @@ Everything a user can reach from the header at max width:
 - **Home link** (logo) — leftmost, always visible
 - **Primary nav** — Tabelle · Spieler · Spiele
 - **Chat** — see "Chat as a layout citizen" below (not a header item on wide screens)
-- **Scheme control** — single control (see consolidation note)
+- **Scheme control** — single control (see consolidation note); a header button only
+  while logged out, an entry in the user menu once logged in
 - **User menu / Login** — rightmost, always visible
 
 ### Consolidations
@@ -29,10 +32,15 @@ Two things deliberately do **not** get their own top-level header slot:
    and dark; "system" is reached implicitly, without occupying a slot of its own — see
    [03-color-scheme.md](./decisions/03-color-scheme.md). Two always-visible theming buttons, or a
    three-item menu, would spend scarce header width on a rarely-touched setting.
+   **Since 2026-11-26 it is a header button only while logged out.** Logged in, it is
+   an entry of the user menu ("Dunkles Design" / "Helles Design"), on every width:
+   the chat toggle needs the room, and players rarely touch the setting. Logged
+   out there is no other place for it — and no chat toggle competing for space.
+   One place per state rather than a breakpoint deciding between two.
 2. **Manager link + Logout live inside the user menu.** Manager is role-gated (only
    managers/admins see it) and rarely clicked; Logout is by definition an account
    action. Logged out → "Login"; logged in → name (a person icon below `sm`) →
-   { Mein Konto, Manager (if role), Logout }. Since v3.10 every logged-in user
+   { Mein Konto, Manager (if role), Design, Logout }. Since v3.10 every logged-in user
    gets the menu — plain players used to get a lone logout button, but
    "Mein Konto" (`/konto`: account data, logged-in devices) is for everyone.
 
@@ -58,6 +66,77 @@ every other view. See
 [14-turnier-tabelle-stadionsenf.md](./decisions/14-turnier-tabelle-stadionsenf.md).
 
 ## Chat as a layout citizen
+
+> **Update 2026-11-26: drawer first, on every width.** What is built is the
+> narrow-screen half below — the 💬 toggle in the right cluster (before the
+> scheme control, with an unread badge) and the overlay drawer, a ~384px
+> (`max-w-sm`) sheet from the right, full width on phones. It runs on every
+> width for now. The drawer is needed regardless and holds the hard parts
+> (keep-mounted, the overlay's own a11y); docking is then only a change of
+> position, and whether it is wanted at all is the next experiment, judged on
+> real pages in dev rather than on the arithmetic below.
+>
+> That arithmetic is already off: the shell caps at `max-w-4xl` (896px), not
+> `max-w-5xl`, and two pages now use the width themselves — the homepage's
+> 2:3 grid and the championship page's Stadionsenf aside. Next to a 340px
+> rail at 1024px both would fall back to one column; docking may only pay off
+> from `xl`, or not at all.
+>
+> **Open is a history entry, `#chat`** (found on two Android phones): without
+> one, the back gesture left the page beneath the chat, and the chat stayed
+> open over the previous page, because the shell keeps its state across
+> navigations. Now back closes the chat and the page stays; ✕, Escape and
+> the backdrop go back over that same entry, so none is left behind; a link
+> to `…#chat` opens it. Opening is a hash-only change and runs no loaders;
+> closing drops the hash, which React Router treats as a real navigation and
+> revalidates once — accepted. The drawer reads the router's navigation
+> target, so it closes at once rather than after that refetch. Also from the
+> phones: the transcript contains overscroll on the vertical axis only —
+> `overscroll-contain` on both swallowed Chrome's sideways back swipe.
+>
+> Narrow header: the right cluster (chat, user menu) needs about 390px for the
+> nav to stay centred between equal side columns. Below `xs` the side columns
+> size to their content and the nav centres in what is left; below 360px the
+> nav items close up, the user menu drops its chevron and the header its left
+> padding — the logo link's own padding is margin enough at that width (11px
+> of air on each side of the nav at 320px). Dropping the padding already
+> below `xs` pushed the logo too far to the edge at 479px.
+
+> **Update 2026-11-26, later the same day: docked from 1360px.** Measured
+> devices (see [tokens.md](./tokens.md)) split 70 : 30 into phones and desktops,
+> with nothing between 480 and 1023px and nothing between 1280 and 1359px — so
+> the rule became simply: **phones get the drawer, desktops get the column.**
+>
+> - `dock` breakpoint, `85rem` (1360px), in `apps/web/app/app.css`.
+> - Docked, the chat is a 384px column **at the window's right edge, full
+>   height**: the screen becomes two panes, the page with its header on the
+>   left, the chat with its own 56px title row on the right, their bottom
+>   borders meeting as one line. The header ends where the chat begins
+>   (`dock:mr-96`); the page reserves the same width (`dock:pr-[25rem]` on
+>   `<main>`, whose own 1rem padding sits outside) and centres in what is
+>   left — nav and content on one axis, the same space left of the content
+>   and between content and chat: 33px at 1360px, 88px at 1470px, 320px at
+>   1920px.
+> - A full-width header above the chat was the step before: centred over the
+>   content it stopped short of the screen's middle; centred over the screen
+>   it would have left nav and content on different axes, with the user menu
+>   above the chat.
+> - Tried first and dropped the same day: content and chat as **one centred
+>   pair** (83rem), the plan from the section below. On a laptop-wide window
+>   (~1470px) the space it left right of the chat read as a deliberate gap,
+>   not as centring; only very wide screens would show the pair as centred.
+>   How the edge variant looks on those (24 % are ≥ 1536px) is still to be
+>   seen on a real one.
+> - Docked, it is no overlay: no backdrop, nothing inert, no scroll lock, no
+>   toggle and no ✕; `role="complementary"` instead of `dialog`. The
+>   breakpoint is CSS (`dock:`) for placement, so the server render is already
+>   right, and a `matchMedia` copy in the shell switches the overlay
+>   behaviour.
+> - Same element, same place in the tree: crossing the breakpoint moves it by
+>   CSS only, and the draft survives (checked). A `#chat` left in the address
+>   while docked reopens the drawer when the window narrows again.
+> - Only for users who have the chat; everyone else keeps the 896px page as
+>   it was. Pages wider than that (Verlauf, `max-w-5xl`) shrink to the column.
 
 Chat is high priority and **always visible on wide screens** — it is a layout region,
 not a header action. The header "chat toggle" is only the narrow-screen affordance to
@@ -107,12 +186,19 @@ collapses first; nav collapses later.
 | < `md`        | 💬 drawer toggle | inline           | Scheme · User             |
 | < `xs` (480)  | 💬 drawer toggle | inline           | Scheme may fold into User |
 
+> **As built (2026-11-26):** the drawer toggle on every width (no docked rail
+> yet); the scheme control in the user menu whenever logged in, on every
+> width — see "Consolidations". The table above is the original plan.
+
 ## Shell max-width
 
 When docked, chat and the main column sit side by side, so the outer shell max-width is
 **content-max + chat-width**, not just content-max. If main content caps around
 `max-w-5xl` (1024px), the shell with the rail wants ~**1360–1400px** total, so the pair
 stays centred as a unit on ultra-wide screens rather than the chat drifting to the edge.
+
+> **Superseded 2026-11-26:** built and dropped — the chat sits at the window's
+> edge after all; see the update under "Chat as a layout citizen".
 
 ## Perceived performance
 

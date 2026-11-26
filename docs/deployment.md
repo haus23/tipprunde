@@ -57,6 +57,7 @@ distinction, but the split still matters for where a value may be written down:
 | `SESSION_DURATION_REMEMBER` | `2592000`          | Lifetime with "angemeldet bleiben" |
 | `FROM_EMAIL`                | `hallo@runde.tips` | Sender of the login code mail      |
 | `ALERT_EMAIL`               | —                  | Where server errors are mailed     |
+| `CHAT`                      | —                  | Chat preview: `admins` or `on`     |
 
 The login flow needs all of them, not just the database pair: without
 `RESEND_API_KEY` or `APP_SECRET` nobody can get a code, and the failure looks
@@ -66,6 +67,10 @@ like a mail problem rather than a missing variable.
 a mailbox nobody reads, which is worse than none. Unset, errors are logged and
 no mail goes out. It is only read by the custom server, so it does nothing in
 local development.
+
+`CHAT` is the chat's feature flag while it is built behind it (see
+`decisions/01-chat.md`): unset is off, `admins` shows it to admins only, `on`
+to every logged-in player. It goes away when the chat ships.
 
 ## First-deploy bootstrap
 

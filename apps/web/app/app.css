@@ -12,6 +12,17 @@
   /* Leader's star on the public site. Decorative only (1.6:1 on cream) —
      never the sole carrier of meaning. */
   --text-color-gold: #e8b53a;
+
+  /* Chat bubbles — the poster theme below sets the real values; these only
+     make Tailwind generate bg-chat-own / bg-chat-other. */
+  --background-color-chat-other: var(--background-color-surface-raised);
+  --background-color-chat-own: var(--background-color-accent-subtle);
+
+  /* From here the chat docks beside the content instead of being a drawer:
+     384px chat at the right edge, 896px content centred in the rest with at
+     least 32px either side = 1344px, plus a little margin. Measured devices: none between 1280 and 1359px,
+     so the exact value hurts nobody — see docs/tokens.md. */
+  --breakpoint-dock: 85rem;
 }
 
 /* The public site's poster theme, as light-dark() pairs like the base theme:
@@ -38,6 +49,13 @@
   --text-color-inverted: light-dark(#f2e8d5, #15110e);
 
   --border-color-subtle: light-dark(#b5a892, #3a3128);
+
+  /* Chat bubbles. Light is the reference: cream slips on cream, your own in
+     the red's pale rosé. Dark reaches for the same effect rather than the same
+     tokens — the raised surface is too close to the page to read as a slip,
+     and accent-subtle's wine red is far heavier than its light twin. */
+  --background-color-chat-other: light-dark(#f0e7d3, #2a231d);
+  --background-color-chat-own: light-dark(#f3d4c8, #3d2621);
   --border-color-accent: light-dark(#c82028, #e0343b);
   --ring-color-accent: light-dark(#c82028, #e0343b);
 

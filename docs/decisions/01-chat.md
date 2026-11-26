@@ -1,8 +1,67 @@
 # In-App Chat — Plan
 
-**Status: planned, not started.**
+**Status: UI begun on mocked data, behind a feature flag (2026-11-26).**
 This doc records the architecture decisions and reasoning from the 2026-07
-discussion so the feature can start without re-deriving them.
+discussion so the feature can start without re-deriving them. The dated
+updates below take precedence over the original text further down, which is
+kept as it was.
+
+> **Update 2026-11-26: where things stand before the first line of chat code.**
+>
+> - **Built so far:** the UI only, on mocked data — header toggle with unread
+>   badge, an overlay drawer on phones and a docked column from 1360px,
+>   transcript, composer (`apps/web/app/routes/public/_chat/`). No server, no
+>   database. Layout details in [web-shell.md](../web-shell.md).
+> - **Feature flag `CHAT`**, read in `lib/chat.server.ts`: unset → off,
+>   `admins` → admins only, `on` → every logged-in player. It lets the work in
+>   progress land on `main` piece by piece — no long-lived chat branch beside
+>   the rule changes — and be tried on a real phone in production without
+>   anyone else seeing it. Chat PRs get no release commit while it is behind
+>   the flag; switching it to `on` is the **major release** the chat was
+>   always going to be. The flag goes away after that.
+> - **Storage is settled: a second, local SQLite database with Litestream from
+>   the start** — never Turso. That makes the chat the first practical step
+>   towards hosting step 3 (see [02-hosting-railway.md](./02-hosting-railway.md)).
+>   The "Storage" section below still describes a Turso phase; it no longer
+>   applies.
+> - **The transport is WebSockets** (decided 2026-08-20, below). The polling
+>   v1, the transport table and the Durable Objects contingency in
+>   "Transport" are history. What is _not_ history: moving `pnpm dev` onto the
+>   custom server ("Consequence … the dev server has to move too") — that is
+>   the prerequisite for the transport work, not for the UI.
+> - **No TanStack Virtual, no virtualization at all** — reversing "Message
+>   list UI" below. A friend group with a paged history never has more than a
+>   few hundred messages in the DOM, so virtualization would only bring its
+>   costs: measured row heights, and messages a screen reader or Ctrl+F cannot
+>   see because they are not rendered. TanStack Virtual also covers only the
+>   windowing; the behaviour a chat needs (follow the end only while there,
+>   prepend history without the view jumping, a "to the latest" button) would
+>   still be ours to write. That behaviour is now a hook of its own,
+>   `use-stick-to-bottom.ts`, on `ResizeObserver` and `IntersectionObserver`,
+>   correcting scroll by hand (`overflow-anchor: none`: Safari has no native
+>   scroll anchoring). Two libraries were looked at and passed over for now:
+>   - `@shadcn/react` (Message Scroller) — exactly this behaviour, headless,
+>     no virtualization either; but 0.x (0.3.1).
+>   - `@ui-sdk/core` (Vercel Labs) — `createStickToBottom` is the same
+>     behaviour, framework-agnostic on a DOM element; but a two-week-old beta
+>     (0.1.0-beta.17) in a 6 MB package of which we would use one function.
+>     It is the drop-in replacement if our hook ever fails on a device —
+>     both attach to the same scroll element.
+>
+>   React Aria offers nothing for this; its `Virtualizer` only virtualizes.
+>
+> - **Open questions answered:** one global room. Senders are shown **by name
+>   only**: most players go by a first name, some with a suffix to tell them
+>   apart, so initials would collide all over. The unread badge is in from the
+>   start, and so is a "Neu" line at the first unread message.
+> - **Read means seen while present:** the chat on screen _and_ the tab
+>   visible _and_ the window focused (`visibilitychange` plus window
+>   `focus`/`blur`, the signals TanStack Query refetches on). A tab visible
+>   but behind another app counts as away, as in Slack or Discord. Coming
+>   back counts as opening: the "Neu" line moves to the first message not
+>   seen since — which is what makes it work docked, where the chat never
+>   reopens. Notifications (push/mail) stay out. Retention and moderation stay
+>   open until the storage work.
 
 > **The hosting premise below has already changed (2026-08-20).** It was written
 > while the app ran on CF Workers with Railway as a future step. Railway is the

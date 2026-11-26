@@ -23,10 +23,14 @@ function readSchemes(): { resolved: Resolved; system: Resolved } {
   return { resolved: stored === "system" ? system : stored, system };
 }
 
-export function ColorSchemeToggle({ className }: { className?: string }) {
+/**
+ * The click algorithm behind every scheme control — the header button here,
+ * the public user menu's entry. Returns the function to call on press.
+ */
+export function useColorSchemeToggle() {
   const fetcher = useFetcher();
 
-  function toggle() {
+  return function toggle() {
     const { resolved, system } = readSchemes();
     const desired: Resolved = resolved === "dark" ? "light" : "dark";
     // Prefer "system" whenever it already yields the desired appearance — the
@@ -39,7 +43,11 @@ export function ColorSchemeToggle({ className }: { className?: string }) {
     // Optimistic: flip the attribute now so there is no wait for revalidation.
     document.documentElement.setAttribute("data-color-scheme", next);
     void fetcher.submit({ scheme: next }, { method: "post", action: "/color-scheme" });
-  }
+  };
+}
+
+export function ColorSchemeToggle({ className }: { className?: string }) {
+  const toggle = useColorSchemeToggle();
 
   return (
     <Button

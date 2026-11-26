@@ -36,7 +36,9 @@ const buttonClasses = cva({
   },
 });
 
-interface Props extends ButtonProps, VariantProps<typeof buttonClasses> {}
+interface Props extends ButtonProps, VariantProps<typeof buttonClasses> {
+  ref?: React.Ref<HTMLButtonElement>;
+}
 
 export function Button({ className, intent, size, ...props }: Props) {
   return <AriaButton className={buttonClasses({ intent, size, className })} {...props} />;

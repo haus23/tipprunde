@@ -15,6 +15,36 @@ Custom breakpoints defined in `@tipprunde/theme`. Tailwind's default breakpoints
 
 All breakpoints are mobile-first (`min-width`). Use `max-xs:`, `max-sm:` etc. for max-width variants.
 
+One app-specific breakpoint lives in `apps/web/app/app.css`, not in the theme
+package: `--breakpoint-dock` (`dock:`, `85rem`, 1360px) — from there the chat
+is a column beside the content instead of a drawer (see
+[web-shell.md](./web-shell.md)). The header also switches at two arbitrary
+widths, `max-[360px]:`, for the narrowest phones.
+
+### Measured device widths (2026-11)
+
+From the legacy app, per device (not per visit), anonymous, with bots removed
+(an 800×800 "device" was one). The basis for where the layout switches — check
+a new breakpoint against it rather than guessing.
+
+| Width        | Share | Note                                                                                                |
+| ------------ | ----: | --------------------------------------------------------------------------------------------------- |
+| < 340 px     |  11 % | split about evenly between 320 and 339 px                                                           |
+| 340–359 px   |   0 % |                                                                                                     |
+| 360–389 px   |  13 % |                                                                                                     |
+| 390–429 px   |  43 % | the largest group — the header's nav needs ≥ 390 px to stay page-centred, so it switches below `xs` |
+| 430–479 px   |   2 % |                                                                                                     |
+| 480–1023 px  |   0 % | no tablets, nothing at `sm` or `md`                                                                 |
+| 1024–1279 px |   2 % | `lg` — the chat stays a drawer                                                                      |
+| 1280–1359 px |   0 % | so the `dock` breakpoint's exact value hurts nobody                                                 |
+| 1360–1535 px |   4 % | chat docked                                                                                         |
+| ≥ 1536 px    |  24 % | chat docked                                                                                         |
+
+Phones against desktops: about 70 : 30. Light against dark: the system is light
+on 55 %, dark on 45 %; 94 % leave the app's scheme on "system", 3 % each pick
+light or dark — so a little over half see the site light, and both schemes
+matter equally.
+
 ## Easing
 
 | Token        | Utility    | Value                            | Use case                                                      |

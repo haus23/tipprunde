@@ -5,6 +5,14 @@ different controls — the public shell's three-item RAC menu (`ColorSchemeMenu`
 deleted) and the manager header's light/dark toggle — with **one shared
 single-button switch** used by both shells.
 
+> **Update 2026-11-26: a second place, same switch.** In the public shell a
+> logged-in user finds it in the user menu ("Dunkles Design" / "Helles
+> Design") instead of the header, which needs the room for the chat toggle
+> (see [web-shell.md](../web-shell.md)). Logged out, and in the manager, it
+> stays the header button. Both run the same click algorithm, now the
+> `useColorSchemeToggle()` hook in the same file, and the menu entry's icon and
+> label are CSS-driven for the same reason as the button's.
+
 Follows the argument in
 [Lea Verou, "Dark mode toggles: two states are enough"](https://lea.verou.me/blog/2026/dark-mode-toggles/)
 (2026-08-06): a three-state control exposes implementation detail rather than
