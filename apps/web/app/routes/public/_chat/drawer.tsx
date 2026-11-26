@@ -132,10 +132,10 @@ export function ChatDrawer({
           "transition-transform ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
           open ? "duration-300" : "translate-x-full shadow-none duration-200",
           instant && "transition-none",
-          // Docked: below the header, flush with the window's right edge —
-          // the shell keeps that 24rem free. No slide when the window crosses
-          // the breakpoint.
-          "dock:top-14 dock:border-subtle dock:z-0 dock:w-96 dock:max-w-none dock:translate-x-0 dock:border-l dock:shadow-none dock:transition-none",
+          // Docked: full height at the window's right edge, beside the page
+          // header rather than below it — the shell keeps that 24rem free. No
+          // slide when the window crosses the breakpoint.
+          "dock:border-subtle dock:z-0 dock:w-96 dock:max-w-none dock:translate-x-0 dock:border-l dock:shadow-none dock:transition-none",
         )}
       >
         {mounted && (

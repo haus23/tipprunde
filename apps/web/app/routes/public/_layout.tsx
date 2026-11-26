@@ -204,14 +204,18 @@ function PublicShell({
     };
   }, [overlayOpen]);
 
-  // Docked, the chat is a column flush with the window's right edge; header
-  // row and page reserve its 24rem and centre in what is left. (A centred
-  // content-and-chat pair was tried first: on a laptop-wide window the space
-  // it left right of the chat read as a deliberate gap, not as centring.)
-  // `<main>` carries its own 1rem side padding, the header row's sits inside
-  // it — so main reserves 1rem more, and both centre on the same axis.
+  // Docked, the chat is a full-height column at the window's right edge, and
+  // the screen becomes two panes side by side: the page with its header on
+  // the left, the chat with its own 56px title row on the right — the two
+  // bottom borders meet as one line. The header ends where the chat begins
+  // (a margin, so its background does not run under the chat); the page
+  // reserves the same 24rem and centres in what is left. `<main>` carries its
+  // own 1rem side padding, so it reserves 1rem more and both centre on one
+  // axis. (A centred content-and-chat pair below a full-width header was
+  // tried first: on a laptop-wide window the space it left right of the chat
+  // read as a deliberate gap.)
   const hasChat = chat && user;
-  const dockHeader = hasChat && "dock:pr-96";
+  const dockHeader = hasChat && "dock:mr-96";
   const dockMain = hasChat && "dock:pr-[25rem]";
 
   return (

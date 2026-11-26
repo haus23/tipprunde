@@ -108,12 +108,19 @@ every other view. See
 > the rule became simply: **phones get the drawer, desktops get the column.**
 >
 > - `dock` breakpoint, `85rem` (1360px), in `apps/web/app/app.css`.
-> - Docked, the chat is a 384px column **flush with the window's right
->   edge**, below the header. Header row and page reserve its width
->   (`dock:pr-96` on the header, `dock:pr-[25rem]` on `<main>`, whose own 1rem
->   padding sits outside) and centre in what is left — so the space left of
->   the content and between content and chat is the same: 33px at 1360px, 88px
->   at 1470px, 320px at 1920px.
+> - Docked, the chat is a 384px column **at the window's right edge, full
+>   height**: the screen becomes two panes, the page with its header on the
+>   left, the chat with its own 56px title row on the right, their bottom
+>   borders meeting as one line. The header ends where the chat begins
+>   (`dock:mr-96`); the page reserves the same width (`dock:pr-[25rem]` on
+>   `<main>`, whose own 1rem padding sits outside) and centres in what is
+>   left — nav and content on one axis, the same space left of the content
+>   and between content and chat: 33px at 1360px, 88px at 1470px, 320px at
+>   1920px.
+> - A full-width header above the chat was the step before: centred over the
+>   content it stopped short of the screen's middle; centred over the screen
+>   it would have left nav and content on different axes, with the user menu
+>   above the chat.
 > - Tried first and dropped the same day: content and chat as **one centred
 >   pair** (83rem), the plan from the section below. On a laptop-wide window
 >   (~1470px) the space it left right of the chat read as a deliberate gap,
