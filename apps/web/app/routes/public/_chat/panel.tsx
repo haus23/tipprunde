@@ -1,6 +1,6 @@
 import { Button, cx } from "@tipprunde/ui";
 import { ArrowDownIcon, SendHorizontalIcon, XIcon } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { type ChatMessage, mockHistory, mockIncoming } from "./mock.ts";
 import { useStickToBottom } from "./use-stick-to-bottom.ts";
@@ -73,6 +73,34 @@ export default function ChatPanel({
 
   useEffect(() => onUnreadChange(unread), [unread, onUnreadChange]);
 
+  // "Neu" marks where reading stopped, as it was when the chat opened: it
+  // stays put while the new messages get read, so the reader keeps their
+  // bearings, and moves only on the next open. Sending clears it — whoever
+  // writes is caught up. Docked, the chat opens once, at mount.
+  const lastReadRef = useRef(lastReadId);
+  useEffect(() => {
+    lastReadRef.current = lastReadId;
+  }, [lastReadId]);
+  const [markerAfterId, setMarkerAfterId] = useState<number | null>(null);
+  useEffect(() => {
+    if (open) setMarkerAfterId(lastReadRef.current);
+  }, [open]);
+  const firstUnreadId =
+    markerAfterId === null
+      ? undefined
+      : visible.find((m) => m.id > markerAfterId && m.author !== null)?.id;
+
+  // More unread than fit below it: open at the marker, not at the end, so the
+  // first new message is not scrolled past unseen.
+  useLayoutEffect(() => {
+    const scroller = scrollerRef.current;
+    const marker = scroller?.querySelector<HTMLElement>("[data-unread-marker]");
+    if (!scroller || !marker) return;
+    const markerTop = marker.getBoundingClientRect().top - scroller.getBoundingClientRect().top;
+    if (markerTop < 0) scroller.scrollTop += markerTop - 8;
+    // Only when the marker is (re)placed — not on every new message.
+  }, [scrollerRef, markerAfterId]);
+
   // Mock only: someone else writes now and then.
   useEffect(() => {
     const timer = setInterval(() => {
@@ -132,6 +160,7 @@ export default function ChatPanel({
     const id = messages.at(-1)!.id + 1;
     setMessages((current) => [...current, { id, author: null, body, createdAt: new Date() }]);
     setLastReadId(id);
+    setMarkerAfterId(null);
     setDraft("");
     // Your own message always brings you back to the end.
     scrollToBottom();
@@ -172,6 +201,7 @@ export default function ChatPanel({
                   key={message.id}
                   message={message}
                   previous={visible[i - 1]}
+                  isFirstUnread={message.id === firstUnreadId}
                   userName={userName}
                 />
               ))}
@@ -249,16 +279,19 @@ export default function ChatPanel({
 function MessageRow({
   message,
   previous,
+  isFirstUnread,
   userName,
 }: {
   message: ChatMessage;
   previous: ChatMessage | undefined;
+  isFirstUnread: boolean;
   userName: string;
 }) {
   const isOwn = message.author === null;
   const newDay = !previous || dayKey(previous.createdAt) !== dayKey(message.createdAt);
   const newGroup =
     newDay ||
+    isFirstUnread ||
     previous.author !== message.author ||
     message.createdAt.getTime() - previous.createdAt.getTime() > GROUP_GAP_MS;
 
@@ -269,6 +302,15 @@ function MessageRow({
           <span className="border-subtle flex-1 border-t" />
           {dayLabel(message.createdAt)}
           <span className="border-subtle flex-1 border-t" />
+        </div>
+      )}
+      {isFirstUnread && (
+        <div
+          data-unread-marker
+          className="text-accent flex items-center gap-3 pt-4 pb-1 text-xs font-semibold"
+        >
+          <span className="border-accent flex-1 border-t" />
+          Neu<span className="sr-only"> – ungelesene Nachrichten ab hier</span>
         </div>
       )}
       <div
@@ -285,6 +327,7 @@ function MessageRow({
           </div>
         )}
         <p
+          data-scroll-anchor
           className={cx(
             "max-w-[85%] rounded-md px-3 py-1.5 text-sm break-words whitespace-pre-wrap",
             isOwn ? "bg-accent-subtle" : "bg-surface-raised",
